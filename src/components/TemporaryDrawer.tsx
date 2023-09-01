@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
+import { Divider } from '@mui/material';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -45,9 +46,9 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}>
             <div className="flex justify-between items-center">
-              <h2 className="text-md pl-2">Menu</h2>
+              <h2 className="text-md pl-4">Menu</h2>
               <CloseIcon
-                className="pr-2 cursor-pointer"
+                className="pr-4 cursor-pointer"
                 onClick={toggleDrawer(anchor, false)}
               />
             </div>

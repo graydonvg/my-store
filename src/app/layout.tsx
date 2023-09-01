@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <StyledEngineProvider injectFirst>
         <body className={inter.className}>
           <Navbar />
-          <main className="flex max-h-screen flex-col">{children}</main>
+          <main className="flex flex-col">{children}</main>
         </body>
       </StyledEngineProvider>
     </html>

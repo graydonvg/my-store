@@ -27,6 +27,16 @@ export const navOptions = [
     label: 'Kids',
     path: '/product/listing/kids',
   },
+  {
+    id: 'myAccount',
+    label: 'My account',
+    path: '/user/account',
+  },
+  {
+    id: 'signOut',
+    label: 'Sign out',
+    path: '/',
+  },
 ];
 
 export const adminNavOptions = [
@@ -39,6 +49,16 @@ export const adminNavOptions = [
     id: 'adminNewProduct',
     label: 'Add New Product',
     path: '/admin-view/add-product',
+  },
+  {
+    id: 'myAccount',
+    label: 'My account',
+    path: '/user/account',
+  },
+  {
+    id: 'signOut',
+    label: 'Sign out',
+    path: '/',
   },
 ];
 

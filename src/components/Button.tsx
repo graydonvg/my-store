@@ -9,14 +9,20 @@ type PrimaryButtonProps = {
 const PrimaryButton: FC<PrimaryButtonProps> = ({ children }) => {
   return (
     <Button
+      className="active:scale-95"
       sx={{
+        backgroundColor: 'black',
+        boxShadow: 'none',
+        '&:active': {
+          inset: 'none',
+        },
         '&:hover': {
           backgroundColor: 'black',
-          opacity: 0.85,
+          boxShadow: 'none',
         },
       }}
-      variant="contained"
-      className="bg-black">
+      disableRipple={true}
+      variant="contained">
       {children}
     </Button>
   );
