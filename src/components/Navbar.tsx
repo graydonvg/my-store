@@ -23,61 +23,57 @@ function NavOptions({ isDrawerOpen = false }) {
       <ul
         role="navigation"
         className="flex flex-col pl-0 mt-0 mb-0 md:p-0 md:flex-row md:space-x-8">
-        {isAdminView
+        {user.role === 'admin'
           ? adminNavOptions
-              .filter((option, index) => (!isDrawerOpen ? index < 2 : option))
+              .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
               .map((option) => (
-                <>
-                  <li
-                    key={option.id}
-                    className="list-none py-2 px-4 md:p-0">
+                <li
+                  key={option.id}
+                  className="list-none h-12 px-4">
+                  <div className="md:p-0 h-full">
                     <Link
                       href={option.path}
                       aria-label={option.label}
-                      className="no-underline text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded focus-visible:ring-offset-4">
-                      <div className="w-full flex justify-between items-center">
-                        {option.label}
-                        <ArrowForwardIosIcon
-                          className={cn('text-gray-500', {
-                            hidden: !isDrawerOpen,
-                          })}
-                        />
-                      </div>
+                      className="h-full flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
+                      {option.label}
+                      <ArrowForwardIosIcon
+                        className={cn('text-gray-500', {
+                          hidden: !isDrawerOpen,
+                        })}
+                      />
                     </Link>
-                  </li>
-                  <Divider className={cn({ hidden: !isDrawerOpen })} />
-                </>
+                    <Divider className={cn({ hidden: !isDrawerOpen })} />
+                  </div>
+                </li>
               ))
           : navOptions
-              .filter((option, index) => (!isDrawerOpen ? index < 5 : option))
+              .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
               .map((option) => (
-                <>
-                  <li
-                    key={option.id}
-                    className="list-none py-2 px-4 md:p-0">
+                <li
+                  key={option.id}
+                  className="list-none h-12 px-4">
+                  <div className="md:p-0 h-full">
                     <Link
                       href={option.path}
                       aria-label={option.label}
-                      className="no-underline text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded focus-visible:ring-offset-4">
-                      <div className="w-full flex justify-between items-center">
-                        {option.label}
-                        <ArrowForwardIosIcon
-                          className={cn('text-gray-500', {
-                            hidden: !isDrawerOpen,
-                          })}
-                        />
-                      </div>
+                      className="h-full flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
+                      {option.label}
+                      <ArrowForwardIosIcon
+                        className={cn('text-gray-500', {
+                          hidden: !isDrawerOpen,
+                        })}
+                      />
                     </Link>
-                  </li>
-                  <Divider className={cn({ hidden: !isDrawerOpen })} />
-                </>
+                    <Divider className={cn({ hidden: !isDrawerOpen })} />
+                  </div>
+                </li>
               ))}
       </ul>
     </div>
   );
 }
 
-const isAdminView = true;
+const isAdminView = false;
 const isAuthUser = true;
 const user = {
   role: 'admin',
@@ -93,7 +89,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         <div className="max-w-screen-xl flex justify-between items-center mx-auto py-4 px-6 h-12">
           <Link
             href={'/'}
-            className="text-gray-900 order-2 md:order-1 self-center no-underline text-2xl font-semibold whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded focus-visible:ring-offset-4">
+            className="text-gray-900 order-2 md:order-1 self-center no-underline text-2xl font-semibold whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded">
             MyStore
           </Link>
           <MenuIcon
