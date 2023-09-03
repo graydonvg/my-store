@@ -30,14 +30,12 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
     <React.Fragment>
       <Tooltip title="Account settings">
         <IconButton
-          className="md:block hidden p-0 focus-visible:ring-offset-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded focus:rounded hover:bg-transparent"
           onClick={handleClick}
           size="small"
-          disableRipple={true}
           aria-controls={open ? 'account-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}>
-          <Avatar className="w-10 h-10">M</Avatar>
+          <Avatar>M</Avatar>
         </IconButton>
       </Tooltip>
       <Menu

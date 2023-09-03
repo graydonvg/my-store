@@ -22,6 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const lightTheme = createTheme({
     palette: {
       mode: 'light',
+      // mode: 'dark',
     },
   });
 

@@ -83,7 +83,7 @@ function NavOptions({ isDrawerOpen = false }) {
 }
 
 const isAdminView = false;
-const isAuthUser = false;
+const isAuthUser = true;
 const user = {
   // role: 'admin',
   role: 'customer',
@@ -98,6 +98,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar
+      color="inherit"
       elevation={0}
       position="static">
       <Container maxWidth="xl">
@@ -155,22 +156,15 @@ function ResponsiveAppBar() {
               MyStore
             </Typography>
           </Box>
-          <Box className="flex-1 hidden md:flex md:justify-center">
-            {navOptions.map((option) => (
-              <Button
-                key={option.id}
-                onClick={() => setIsDrawerOpen(false)}
-                sx={{ my: 2, color: 'white', display: 'block', whiteSpace: 'nowrap' }}>
-                {option.label}
-              </Button>
-            ))}
+          <Box className="flex-1 hidden md:flex md:justify-center gap-8">
+            <NavOptions />
           </Box>
           <Box className="flex gap-4 items-center grow-0">
             {isAuthUser ? (
               <>
                 {user?.role !== 'admin' ? (
                   <Tooltip title="Shopping cart">
-                    <IconButton className="text-white">
+                    <IconButton color="inherit">
                       <ShoppingCartIcon aria-label="Shopping cart" />
                     </IconButton>
                   </Tooltip>
