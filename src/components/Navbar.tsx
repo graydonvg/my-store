@@ -1,17 +1,44 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { adminNavOptions, cn, navOptions } from '@/lib/utils';
+import { useState } from 'react';
+import { NavOptions, adminNavOptions, cn, navOptions } from '@/lib/utils';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
-import UserButton from './UserButton';
+import AccountMenu from './AccountMenu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TemporaryDrawer from './TemporaryDrawer';
 import { Divider, Tooltip } from '@mui/material';
 import PrimaryButton from './Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-type NavbarProps = {};
+type NavOptionProps = {
+  option: NavOptions;
+  isDrawerOpen: boolean;
+};
+
+function NavOption({ option, isDrawerOpen }: NavOptionProps) {
+  return (
+    <li
+      className={cn('list-none', {
+        'h-12 px-4': isDrawerOpen,
+      })}>
+      <div className="md:p-0 h-full">
+        <Link
+          href={option.path}
+          aria-label={option.label}
+          className="h-full focus-visible:ring-offset-8 flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
+          {option.label}
+          <ArrowForwardIosIcon
+            className={cn('text-gray-500', {
+              hidden: !isDrawerOpen,
+            })}
+          />
+        </Link>
+        <Divider className={cn({ hidden: !isDrawerOpen })} />
+      </div>
+    </li>
+  );
+}
 
 function NavOptions({ isDrawerOpen = false }) {
   return (
@@ -27,46 +54,20 @@ function NavOptions({ isDrawerOpen = false }) {
           ? adminNavOptions
               .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
               .map((option) => (
-                <li
+                <NavOption
                   key={option.id}
-                  className="list-none h-12 px-4">
-                  <div className="md:p-0 h-full">
-                    <Link
-                      href={option.path}
-                      aria-label={option.label}
-                      className="h-full flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
-                      {option.label}
-                      <ArrowForwardIosIcon
-                        className={cn('text-gray-500', {
-                          hidden: !isDrawerOpen,
-                        })}
-                      />
-                    </Link>
-                    <Divider className={cn({ hidden: !isDrawerOpen })} />
-                  </div>
-                </li>
+                  option={option}
+                  isDrawerOpen={isDrawerOpen}
+                />
               ))
           : navOptions
               .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
               .map((option) => (
-                <li
+                <NavOption
                   key={option.id}
-                  className="list-none h-12 px-4">
-                  <div className="md:p-0 h-full">
-                    <Link
-                      href={option.path}
-                      aria-label={option.label}
-                      className="h-full flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
-                      {option.label}
-                      <ArrowForwardIosIcon
-                        className={cn('text-gray-500', {
-                          hidden: !isDrawerOpen,
-                        })}
-                      />
-                    </Link>
-                    <Divider className={cn({ hidden: !isDrawerOpen })} />
-                  </div>
-                </li>
+                  option={option}
+                  isDrawerOpen={isDrawerOpen}
+                />
               ))}
       </ul>
     </div>
@@ -76,11 +77,11 @@ function NavOptions({ isDrawerOpen = false }) {
 const isAdminView = false;
 const isAuthUser = true;
 const user = {
-  role: 'admin',
-  // role: 'customer',
+  // role: 'admin',
+  role: 'customer',
 };
 
-const Navbar: FC<NavbarProps> = ({}) => {
+function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -89,7 +90,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         <div className="max-w-screen-xl flex justify-between items-center mx-auto py-4 px-6 h-12">
           <Link
             href={'/'}
-            className="text-gray-900 order-2 md:order-1 self-center no-underline text-2xl font-semibold whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded">
+            className="text-gray-900 order-2 focus-visible:ring-offset-8 md:order-1 self-center no-underline text-2xl font-semibold whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded">
             MyStore
           </Link>
           <MenuIcon
@@ -100,7 +101,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
           <div className="md:order-2 md:block hidden">
             <NavOptions />
           </div>
-          <div className="order-3 flex items-center justify-center">
+          <div className="order-3 flex items-center justify-center gap-4">
             {isAuthUser ? (
               <>
                 {user?.role !== 'admin' ? (
@@ -109,11 +110,11 @@ const Navbar: FC<NavbarProps> = ({}) => {
                       tabIndex={0}
                       role="button"
                       aria-label="Shopping cart"
-                      className="text-gray-900 cursor-pointer p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded h-6 w-6"
+                      className="text-gray-900 cursor-pointer focus-visible:ring-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded h-6 w-6 p-2"
                     />
                   </Tooltip>
                 ) : null}
-                <UserButton
+                <AccountMenu
                   user={user}
                   isAdminView={isAdminView}
                 />
@@ -121,7 +122,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
             ) : (
               <PrimaryButton>Sign In</PrimaryButton>
             )}
-            <div className="flex md:order-2 gap-2"></div>
           </div>
         </div>
       </nav>
@@ -132,6 +132,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
       />
     </>
   );
-};
+}
 
 export default Navbar;

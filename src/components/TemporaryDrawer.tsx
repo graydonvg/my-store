@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
-import { Divider } from '@mui/material';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -12,7 +11,7 @@ type TemporaryDrawerProps = {
 };
 
 export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: TemporaryDrawerProps) {
-  const [state, setState] = React.useState({
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState({
     top: false,
     left: false,
     bottom: false,
@@ -20,7 +19,7 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
   });
 
   React.useEffect(() => {
-    setState({ ...state, [drawerAnchor]: isOpen });
+    setIsDrawerOpen({ ...isDrawerOpen, [drawerAnchor]: isOpen });
   }, [drawerAnchor, isOpen]);
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -31,11 +30,11 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setIsDrawerOpen({ ...isDrawerOpen, [anchor]: open });
   };
 
   return (
-    <div>
+    <>
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Drawer
@@ -43,7 +42,7 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
             elevation={1}
             hideBackdrop={true}
             anchor={anchor}
-            open={state[anchor]}
+            open={isDrawerOpen[anchor]}
             onClose={toggleDrawer(anchor, false)}>
             <div className="flex justify-between items-center">
               <h2 className="text-md pl-4">Menu</h2>
@@ -56,6 +55,6 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
           </Drawer>
         </React.Fragment>
       ))}
-    </div>
+    </>
   );
 }

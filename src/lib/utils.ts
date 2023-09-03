@@ -73,7 +73,7 @@ export const adminNavOptions = [
   },
 ];
 
-export type NavOptions = typeof adminNavOptions;
+export type NavOptions = (typeof navOptions)[0];
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
