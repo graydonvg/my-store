@@ -28,8 +28,21 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
   };
   return (
     <React.Fragment>
-      <Tooltip title="Account settings">
+      <Tooltip
+        title="Account settings"
+        arrow
+        PopperProps={{
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, -8],
+              },
+            },
+          ],
+        }}>
         <IconButton
+          className="hidden md:block"
           onClick={handleClick}
           size="small"
           aria-controls={open ? 'account-menu' : undefined}

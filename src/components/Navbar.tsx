@@ -1,15 +1,22 @@
 'use client';
-
-import { useState } from 'react';
-import { NavOptions, adminNavOptions, cn, navOptions } from '@/lib/utils';
-import Link from 'next/link';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountMenu from './AccountMenu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import TemporaryDrawer from './TemporaryDrawer';
-import { Divider, Tooltip } from '@mui/material';
-import PrimaryButton from './Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { NavOptions, adminNavOptions, cn, navOptions } from '@/lib/utils';
+import TemporaryDrawer from './TemporaryDrawer';
+import Link from 'next/link';
+import { Divider } from '@mui/material';
+import { useState } from 'react';
+import AccountMenu from './AccountMenu';
 
 type NavOptionProps = {
   option: NavOptions;
@@ -18,38 +25,50 @@ type NavOptionProps = {
 
 function NavOption({ option, isDrawerOpen }: NavOptionProps) {
   return (
-    <li
-      className={cn('list-none', {
-        'h-12 px-4': isDrawerOpen,
-      })}>
-      <div className="md:p-0 h-full">
+    <>
+      <Box
+        component={'li'}
+        className={cn('list-none', {
+          'h-10': isDrawerOpen,
+        })}>
         <Link
+          tabIndex={-1}
+          key={option.id}
           href={option.path}
           aria-label={option.label}
-          className="h-full focus-visible:ring-offset-8 flex items-center justify-between no-underline text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-600 rounded">
-          {option.label}
-          <ArrowForwardIosIcon
-            className={cn('text-gray-500', {
-              hidden: !isDrawerOpen,
-            })}
-          />
+          className="no-underline flex items-center md:p-0 h-full">
+          <Button
+            component={'div'}
+            className="text-gray-900 px-4 p-0 md:px-2 md:py-[6px] w-full h-full items-center md:justify-center justify-between flex rounded">
+            <Typography
+              fontWeight={500}
+              noWrap>
+              {option.label}
+            </Typography>
+            <ArrowForwardIosIcon
+              className={cn('text-gray-500', {
+                hidden: !isDrawerOpen,
+              })}
+            />
+          </Button>
         </Link>
-        <Divider className={cn({ hidden: !isDrawerOpen })} />
-      </div>
-    </li>
+      </Box>
+      <Divider className={cn({ hidden: !isDrawerOpen })} />
+    </>
   );
 }
 
 function NavOptions({ isDrawerOpen = false }) {
   return (
-    <div
+    <Box
       id="nav-items"
       className={cn('items-center justify-between w-screen md:flex md:w-auto ', {
         hidden: !isDrawerOpen,
       })}>
-      <ul
+      <Box
+        component={'ul'}
         role="navigation"
-        className="flex flex-col pl-0 mt-0 mb-0 md:p-0 md:flex-row md:space-x-8">
+        className="flex flex-col pl-0 mt-0 mb-0 md:p-0 md:flex-row md:gap-4">
         {user.role === 'admin'
           ? adminNavOptions
               .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
@@ -69,8 +88,8 @@ function NavOptions({ isDrawerOpen = false }) {
                   isDrawerOpen={isDrawerOpen}
                 />
               ))}
-      </ul>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -82,36 +101,97 @@ const user = {
 };
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+
+  const handleDrawer = () => {
+    setIsDrawerOpen((prev) => !prev);
+  };
 
   return (
-    <>
-      <nav className="bg-white sticky w-full z-200 top-0 left-0 border-b border-gray-200">
-        <div className="max-w-screen-xl flex justify-between items-center mx-auto py-4 px-6 h-12">
-          <Link
-            href={'/'}
-            className="text-gray-900 order-2 focus-visible:ring-offset-8 md:order-1 self-center no-underline text-2xl font-semibold whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded">
-            MyStore
-          </Link>
-          <MenuIcon
-            tabIndex={0}
-            onClick={() => setIsOpen((prev) => !prev)}
-            className="order-1 p-2 focus:outline-none text-gray-500 md:hidden hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded cursor-pointer"
-          />
-          <div className="md:order-2 md:block hidden">
+    <AppBar
+      component={'nav'}
+      color="inherit"
+      elevation={0}
+      position="static">
+      <Container maxWidth="xl">
+        <Toolbar
+          className="flex justify-between"
+          disableGutters>
+          <Box className="flex items-center">
+            <ShoppingBasketIcon className="hidden md:flex mr-2" />
+            <Typography
+              tabIndex={-1}
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              className="hidden md:flex mr-2"
+              sx={{
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}>
+              MyStore
+            </Typography>
+          </Box>
+          <Box className="flex md:hidden flex-1">
+            <IconButton
+              size="large"
+              aria-label="navigation drawer"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleDrawer}
+              color="inherit">
+              <MenuIcon />
+            </IconButton>
+            <TemporaryDrawer
+              drawerAnchor={'left'}
+              isOpen={isDrawerOpen}
+              content={<NavOptions isDrawerOpen={true} />}
+            />
+          </Box>
+          <Box className="flex md:hidden items-center">
+            <ShoppingBasketIcon className="mr-2" />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}>
+              MyStore
+            </Typography>
+          </Box>
+          <Box className="flex-1 hidden md:flex md:justify-center gap-8">
             <NavOptions />
-          </div>
-          <div className="order-3 flex items-center justify-center gap-4">
+          </Box>
+          <Box className="flex gap-4 items-center flex-1 justify-end md:grow-0">
             {isAuthUser ? (
               <>
                 {user?.role !== 'admin' ? (
-                  <Tooltip title="Shopping cart">
-                    <ShoppingCartIcon
-                      tabIndex={0}
-                      role="button"
-                      aria-label="Shopping cart"
-                      className="text-gray-900 cursor-pointer focus-visible:ring-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600 rounded h-6 w-6 p-2"
-                    />
+                  <Tooltip
+                    title="Shopping cart"
+                    arrow
+                    PopperProps={{
+                      modifiers: [
+                        {
+                          name: 'offset',
+                          options: {
+                            offset: [0, -2],
+                          },
+                        },
+                      ],
+                    }}>
+                    <IconButton color="inherit">
+                      <ShoppingCartIcon aria-label="Shopping cart" />
+                    </IconButton>
                   </Tooltip>
                 ) : null}
                 <AccountMenu
@@ -120,18 +200,12 @@ function Navbar() {
                 />
               </>
             ) : (
-              <PrimaryButton>Sign In</PrimaryButton>
+              <Button sx={{ my: 2, color: 'white', display: 'block', whiteSpace: 'nowrap' }}>Sign In</Button>
             )}
-          </div>
-        </div>
-      </nav>
-      <TemporaryDrawer
-        drawerAnchor={'left'}
-        isOpen={isOpen}
-        content={<NavOptions isDrawerOpen={true} />}
-      />
-    </>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
-
 export default Navbar;

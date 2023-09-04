@@ -1,14 +1,12 @@
 import './globals.css';
 import type { Metadata } from 'next';
-
-import Navbar from '@/components/Navbar';
-import { Providers } from '@/lib/providers';
+import { Providers } from '@/app/providers';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Container } from '@mui/material';
-import ResponsiveAppBar from '@/components/AppBar';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -21,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <Navbar />
-          <ResponsiveAppBar />
           <main className="flex flex-col">
             <Container>{children}</Container>
           </main>
