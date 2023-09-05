@@ -11,97 +11,94 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { NavOptions, adminNavOptions, cn, navOptions } from '@/lib/utils';
-import TemporaryDrawer from './TemporaryDrawer';
 import Link from 'next/link';
-import { Divider } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { DrawerAnchor } from '@/types';
 import AccountMenu from './AccountMenu';
+import { adminNavOptions, navOptions } from '@/lib/utils';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { DrawerAnchor } from '@/types';
+import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import TemporaryDrawer from './TemporaryDrawer';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Divider } from '@mui/material';
 
-type NavOptionProps = {
-  option: NavOptions;
-  isDrawerOpen: boolean;
+const isAdminView = false;
+const isAuthUser = true;
+const user = {
+  // role: 'admin'
+  role: 'customer',
 };
 
-function NavOption({ option, isDrawerOpen }: NavOptionProps) {
+function NavOptions() {
   return (
     <>
-      <Box
-        component={'li'}
-        className={cn('list-none', {
-          'h-10': isDrawerOpen,
-        })}>
-        <Link
-          tabIndex={-1}
-          key={option.id}
-          href={option.path}
-          aria-label={option.label}
-          className="no-underline flex items-center md:p-0 h-full">
-          <Button
-            component={'div'}
-            className="text-gray-900 px-4 p-0 md:px-2 md:py-[6px] w-full h-full items-center md:justify-center justify-between flex rounded hover:bg-white">
-            <Typography
-              fontWeight={500}
-              noWrap>
-              {option.label}
-            </Typography>
-            <ArrowForwardIosIcon
-              className={cn('text-gray-500', {
-                hidden: !isDrawerOpen,
-              })}
-            />
-          </Button>
-        </Link>
-      </Box>
-      <Divider className={cn({ hidden: !isDrawerOpen })} />
+      {user.role === 'admin'
+        ? adminNavOptions
+            .filter((option) => !option.temporaryDrawerOnly)
+            .map((option) => (
+              <Link
+                tabIndex={-1}
+                key={option.id}
+                href={option.path}>
+                <Button sx={{ my: 2, color: 'white', display: 'block' }}>{option.label}</Button>
+              </Link>
+            ))
+        : navOptions
+            .filter((option) => !option.temporaryDrawerOnly)
+            .map((option) => (
+              <Link
+                tabIndex={-1}
+                key={option.id}
+                href={option.path}>
+                <Button
+                  key={option.id}
+                  sx={{ my: 2, color: 'white', display: 'block' }}>
+                  {option.label}
+                </Button>
+              </Link>
+            ))}
     </>
   );
 }
 
-function NavOptions({ isDrawerOpen = false }) {
+function DrawerNavOptions() {
   return (
-    <Box
-      id="nav-items"
-      className={cn('items-center justify-between w-screen md:flex md:w-auto ', {
-        hidden: !isDrawerOpen,
-      })}>
-      <Box
-        component={'ul'}
-        role="navigation"
-        className="flex flex-col pl-0 mt-0 mb-0 md:p-0 md:flex-row md:gap-4">
-        {user.role === 'admin'
-          ? adminNavOptions
-              .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
-              .map((option) => (
-                <NavOption
+    <Box sx={{ width: '100vw' }}>
+      {user.role === 'admin'
+        ? adminNavOptions
+            .filter((option) => (isAuthUser ? option : option.id !== 'myAccount' && option.id !== 'signOut'))
+            .map((option) => (
+              <Link
+                tabIndex={-1}
+                key={option.id}
+                href={option.path}>
+                <Button
                   key={option.id}
-                  option={option}
-                  isDrawerOpen={isDrawerOpen}
-                />
-              ))
-          : navOptions
-              .filter((option) => (!isDrawerOpen ? !option.temporaryDrawerOnly : option))
-              .map((option) => (
-                <NavOption
+                  sx={{ color: 'black', display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
+                  {option.label}
+                  <ArrowForwardIosIcon />
+                </Button>
+                <Divider />
+              </Link>
+            ))
+        : navOptions
+            .filter((option) => (isAuthUser ? option : option.id !== 'myAccount' && option.id !== 'signOut'))
+            .map((option) => (
+              <Link
+                tabIndex={-1}
+                key={option.id}
+                href={option.path}>
+                <Button
                   key={option.id}
-                  option={option}
-                  isDrawerOpen={isDrawerOpen}
-                />
-              ))}
-      </Box>
+                  sx={{ color: 'black', display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
+                  {option.label}
+                  <ArrowForwardIosIcon />
+                </Button>
+                <Divider />
+              </Link>
+            ))}
     </Box>
   );
 }
-
-const isAdminView = false;
-const isAuthUser = false;
-const user = {
-  // role: 'admin',
-  role: 'customer',
-};
 
 function Navbar() {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
@@ -110,51 +107,46 @@ function Navbar() {
   const handleDrawer = (anchor: DrawerAnchor) => {
     dispatch(setIsDrawerOpen({ [anchor]: !isDrawerOpen[anchor] }));
   };
-
   return (
     <AppBar
-      component={'nav'}
-      color="inherit"
       elevation={0}
       position="static">
       <Container maxWidth="xl">
-        <Toolbar
-          className="flex justify-between"
-          disableGutters>
-          <Box className="flex items-center">
-            <ShoppingBasketIcon className="hidden md:flex mr-2" />
+        <Toolbar disableGutters>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+            <ShoppingBasketIcon sx={{ mr: 1 }} />
             <Typography
               tabIndex={-1}
               variant="h6"
               noWrap
               component="a"
               href="/"
-              className="hidden md:flex mr-2 text-gray-900"
               sx={{
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
+                color: 'inherit',
                 textDecoration: 'none',
               }}>
               MyStore
             </Typography>
           </Box>
-          <Box className="flex md:hidden flex-1">
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
-              aria-label="navigation drawer"
+              aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              className="text-gray-900"
-              onClick={() => handleDrawer('left')}>
+              onClick={() => handleDrawer('left')}
+              color="inherit">
               <MenuIcon />
             </IconButton>
-            <TemporaryDrawer content={<NavOptions isDrawerOpen={true} />} />
+            <TemporaryDrawer content={<DrawerNavOptions />} />
           </Box>
-          <Box className="flex md:hidden items-center">
-            <ShoppingBasketIcon className="mr-2" />
+          <Box
+            sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
+            <ShoppingBasketIcon sx={{ marginRight: 1 }} />
             <Typography
-              tabIndex={-1}
               variant="h5"
               noWrap
               component="a"
@@ -169,10 +161,11 @@ function Navbar() {
               MyStore
             </Typography>
           </Box>
-          <Box className="flex-1 hidden md:flex md:justify-center gap-8">
+          <Box
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
             <NavOptions />
           </Box>
-          <Box className="flex gap-4 items-center flex-1 justify-end md:grow-0">
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             {isAuthUser ? (
               <>
                 {user?.role !== 'admin' ? (
@@ -184,7 +177,7 @@ function Navbar() {
                         {
                           name: 'offset',
                           options: {
-                            offset: [0, -2],
+                            offset: [0, 5],
                           },
                         },
                       ],
@@ -200,10 +193,10 @@ function Navbar() {
                 />
               </>
             ) : (
-              <Link href={'/signin'}>
-                <Button className="my-4 text-white bg-gray-900 whitespace-nowrap hover:bg-gray-900 md:hover:opacity-95">
-                  Sign In
-                </Button>
+              <Link
+                tabIndex={-1}
+                href={'/signin'}>
+                <Button sx={{ my: 2, color: 'white', display: 'block' }}>Sign In</Button>
               </Link>
             )}
           </Box>

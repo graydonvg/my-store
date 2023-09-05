@@ -30,34 +30,24 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
     <React.Fragment>
       <Tooltip
         title="Account settings"
-        arrow
-        PopperProps={{
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, -8],
-              },
-            },
-          ],
-        }}>
+        arrow>
         <IconButton
-          className="hidden md:block"
           onClick={handleClick}
           size="small"
           aria-controls={open ? 'account-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}>
+          aria-expanded={open ? 'true' : undefined}
+          sx={{ display: { xs: 'none', md: 'block' } }}>
           <Avatar>M</Avatar>
         </IconButton>
       </Tooltip>
       <Menu
-        className="md:block hidden"
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
+        sx={{ display: { xs: 'none', md: 'block' } }}
         slotProps={{
           paper: {
             elevation: 0,
@@ -76,7 +66,7 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
                 display: 'block',
                 position: 'absolute',
                 top: 0,
-                right: 14,
+                right: 20,
                 width: 10,
                 height: 10,
                 bgcolor: 'background.paper',

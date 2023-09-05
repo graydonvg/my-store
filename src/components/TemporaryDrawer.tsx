@@ -2,7 +2,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { DrawerAnchor } from '@/types';
@@ -30,22 +30,20 @@ export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Drawer
-            className="md:hidden"
             hideBackdrop={true}
             anchor={anchor}
             open={isDrawerOpen[anchor]}
-            onClose={toggleDrawer(anchor, false)}>
-            <Box className="flex justify-between items-center">
+            onClose={toggleDrawer(anchor, false)}
+            sx={{ display: { md: 'none' } }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 1 }}>
               <Typography
-                className="pl-4 my-4"
                 variant="h5"
                 component={'h2'}>
                 Menu
               </Typography>
-              <CloseIcon
-                className="pr-4 cursor-pointer"
-                onClick={toggleDrawer(anchor, false)}
-              />
+              <IconButton onClick={toggleDrawer(anchor, false)}>
+                <CloseIcon sx={{ color: 'black' }} />
+              </IconButton>
             </Box>
             {content}
           </Drawer>
