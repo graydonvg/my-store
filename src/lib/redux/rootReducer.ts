@@ -1,5 +1,5 @@
-// import { counterSlice } from './slices'
+import { drawerSlice } from './drawer/drawerSlice';
 
 export const reducer = {
-  // counter: counterSlice.reducer,
+  drawer: drawerSlice.reducer,
 };

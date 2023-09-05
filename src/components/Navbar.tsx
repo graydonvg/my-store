@@ -16,7 +16,9 @@ import { NavOptions, adminNavOptions, cn, navOptions } from '@/lib/utils';
 import TemporaryDrawer from './TemporaryDrawer';
 import Link from 'next/link';
 import { Divider } from '@mui/material';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { DrawerAnchor } from '@/types';
 import AccountMenu from './AccountMenu';
 
 type NavOptionProps = {
@@ -40,7 +42,7 @@ function NavOption({ option, isDrawerOpen }: NavOptionProps) {
           className="no-underline flex items-center md:p-0 h-full">
           <Button
             component={'div'}
-            className="text-gray-900 px-4 p-0 md:px-2 md:py-[6px] w-full h-full items-center md:justify-center justify-between flex rounded">
+            className="text-gray-900 px-4 p-0 md:px-2 md:py-[6px] w-full h-full items-center md:justify-center justify-between flex rounded hover:bg-white">
             <Typography
               fontWeight={500}
               noWrap>
@@ -95,17 +97,18 @@ function NavOptions({ isDrawerOpen = false }) {
 }
 
 const isAdminView = false;
-const isAuthUser = true;
+const isAuthUser = false;
 const user = {
   // role: 'admin',
   role: 'customer',
 };
 
 function Navbar() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
+  const dispatch = useAppDispatch();
 
-  const handleDrawer = () => {
-    setIsDrawerOpen((prev) => !prev);
+  const handleDrawer = (anchor: DrawerAnchor) => {
+    dispatch(setIsDrawerOpen({ [anchor]: !isDrawerOpen[anchor] }));
   };
 
   return (
@@ -126,12 +129,11 @@ function Navbar() {
               noWrap
               component="a"
               href="/"
-              className="hidden md:flex mr-2"
+              className="hidden md:flex mr-2 text-gray-900"
               sx={{
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'inherit',
                 textDecoration: 'none',
               }}>
               MyStore
@@ -143,19 +145,16 @@ function Navbar() {
               aria-label="navigation drawer"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleDrawer}
-              color="inherit">
+              className="text-gray-900"
+              onClick={() => handleDrawer('left')}>
               <MenuIcon />
             </IconButton>
-            <TemporaryDrawer
-              drawerAnchor={'left'}
-              isOpen={isDrawerOpen}
-              content={<NavOptions isDrawerOpen={true} />}
-            />
+            <TemporaryDrawer content={<NavOptions isDrawerOpen={true} />} />
           </Box>
           <Box className="flex md:hidden items-center">
             <ShoppingBasketIcon className="mr-2" />
             <Typography
+              tabIndex={-1}
               variant="h5"
               noWrap
               component="a"
@@ -201,7 +200,11 @@ function Navbar() {
                 />
               </>
             ) : (
-              <Button sx={{ my: 2, color: 'white', display: 'block', whiteSpace: 'nowrap' }}>Sign In</Button>
+              <Link href={'/signin'}>
+                <Button className="my-4 text-white bg-gray-900 whitespace-nowrap hover:bg-gray-900 md:hover:opacity-95">
+                  Sign In
+                </Button>
+              </Link>
             )}
           </Box>
         </Toolbar>

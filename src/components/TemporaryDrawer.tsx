@@ -3,36 +3,26 @@ import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
-
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { DrawerAnchor } from '@/types';
 
 type TemporaryDrawerProps = {
-  drawerAnchor: string;
-  isOpen: boolean;
   content: JSX.Element;
 };
 
-export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: TemporaryDrawerProps) {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
+  const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
+  const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    setIsDrawerOpen({ ...isDrawerOpen, [drawerAnchor]: isOpen });
-  }, [drawerAnchor, isOpen]);
-
-  const toggleDrawer = (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+  const toggleDrawer = (anchor: DrawerAnchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === 'keydown' &&
       ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
     ) {
       return;
     }
-
-    setIsDrawerOpen({ ...isDrawerOpen, [anchor]: open });
+    dispatch(setIsDrawerOpen({ [anchor]: open }));
   };
 
   return (
@@ -41,7 +31,6 @@ export default function TemporaryDrawer({ drawerAnchor, isOpen, content }: Tempo
         <React.Fragment key={anchor}>
           <Drawer
             className="md:hidden"
-            elevation={1}
             hideBackdrop={true}
             anchor={anchor}
             open={isDrawerOpen[anchor]}
