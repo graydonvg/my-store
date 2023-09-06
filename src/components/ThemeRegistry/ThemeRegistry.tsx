@@ -6,14 +6,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 import { ThemeToggleContext } from '../ThemeToggle/ThemeToggleContext';
 import { grey } from '@mui/material/colors';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const mode = useAppSelector((state) => state.theme.mode);
+  const dispatch = useAppDispatch();
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        dispatch(toggleTheme());
       },
     }),
     []
@@ -32,6 +35,11 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
                 //   primary: '#ffffff',
                 //   secondary: '#ffffff',
                 // },
+                navbar: {
+                  background: '#1976d2',
+                  text: '#ffffff',
+                  icon: '#ffffff',
+                },
                 navDrawer: {
                   headerBackground: '#1976d2',
                   headerText: '#ffffff',
@@ -50,6 +58,11 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
                 //   primary: '#ffffff',
                 //   // secondary: grey[500],
                 // },
+                navbar: {
+                  background: grey[900],
+                  text: '#ffffff',
+                  icon: '#ffffff',
+                },
                 navDrawer: {
                   headerBackground: grey[900],
                   headerText: '#ffffff',

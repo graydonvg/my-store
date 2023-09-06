@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
@@ -6,12 +5,13 @@ import { Box, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { DrawerAnchor } from '@/types';
+import { ReactNode, Fragment } from 'react';
 
 type TemporaryDrawerProps = {
-  content: JSX.Element;
+  children: ReactNode;
 };
 
-export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
+export default function TemporaryDrawer({ children }: TemporaryDrawerProps) {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
   const dispatch = useAppDispatch();
 
@@ -28,7 +28,7 @@ export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
   return (
     <>
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
+        <Fragment key={anchor}>
           <Drawer
             PaperProps={{
               elevation: 0,
@@ -61,9 +61,9 @@ export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
                 <CloseIcon />
               </IconButton>
             </Box>
-            {content}
+            {children}
           </Drawer>
-        </React.Fragment>
+        </Fragment>
       ))}
     </>
   );

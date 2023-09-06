@@ -13,105 +13,19 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from 'next/link';
 import AccountMenu from './AccountMenu';
-import { adminNavOptions, navOptions } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DrawerAnchor } from '@/types';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import TemporaryDrawer from './TemporaryDrawer';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Divider } from '@mui/material';
-import { ThemeToggle } from './ThemeToggle/ThemeToggle';
+import DrawerNavOptions from './DrawerNavOptions';
+import NavbarOptions from './NavbarOptions';
 
 const isAdminView = false;
 const isAuthUser = true;
 const user = {
-  // role: 'admin'
+  // role: 'admin',
   role: 'customer',
 };
-
-function NavOptions() {
-  return (
-    <>
-      {user.role === 'admin'
-        ? adminNavOptions
-            .filter((option) => !option.temporaryDrawerOnly)
-            .map((option) => (
-              <Link
-                tabIndex={-1}
-                key={option.id}
-                href={option.path}>
-                <Button
-                  color="inherit"
-                  key={option.id}
-                  sx={{ my: 2, display: 'block' }}>
-                  {option.label}
-                </Button>
-              </Link>
-            ))
-        : navOptions
-            .filter((option) => !option.temporaryDrawerOnly)
-            .map((option) => (
-              <Link
-                tabIndex={-1}
-                key={option.id}
-                href={option.path}>
-                <Button
-                  color="inherit"
-                  key={option.id}
-                  sx={{ my: 2, display: 'block' }}>
-                  {option.label}
-                </Button>
-              </Link>
-            ))}
-    </>
-  );
-}
-
-function DrawerNavOptions() {
-  return (
-    <Box sx={{ width: '100vw' }}>
-      {user.role === 'admin'
-        ? adminNavOptions
-            .filter((option) => (isAuthUser ? option : option.id !== 'myAccount' && option.id !== 'signOut'))
-            .map((option) => (
-              <Link
-                tabIndex={-1}
-                key={option.id}
-                href={option.path}>
-                <Button
-                  key={option.id}
-                  sx={{ display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
-                  {option.label}
-                  <ArrowForwardIosIcon />
-                </Button>
-                <Divider />
-              </Link>
-            ))
-        : navOptions
-            .filter((option) => (isAuthUser ? option : option.id !== 'myAccount' && option.id !== 'signOut'))
-            .map((option) => (
-              <Link
-                tabIndex={-1}
-                key={option.id}
-                href={option.path}>
-                <Button
-                  key={option.id}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: 1,
-                    margin: 0,
-                    color: 'navDrawer.contentText',
-                  }}>
-                  {option.label}
-                  <ArrowForwardIosIcon />
-                </Button>
-                <Divider />
-              </Link>
-            ))}
-    </Box>
-  );
-}
 
 function Navbar() {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
@@ -122,12 +36,13 @@ function Navbar() {
   };
   return (
     <AppBar
+      sx={{ backgroundColor: 'navbar.background' }}
       elevation={0}
       position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-            <ShoppingBasketIcon sx={{ mr: 1 }} />
+            <ShoppingBasketIcon sx={{ mr: 1, color: 'navbar.icon' }} />
             <Typography
               tabIndex={-1}
               variant="h6"
@@ -138,7 +53,7 @@ function Navbar() {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'inherit',
+                color: 'navbar.text',
                 textDecoration: 'none',
               }}>
               MyStore
@@ -146,19 +61,24 @@ function Navbar() {
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
+              sx={{ color: 'navbar.icon' }}
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={() => handleDrawer('left')}
-              color="inherit">
+              onClick={() => handleDrawer('left')}>
               <MenuIcon />
             </IconButton>
-            <TemporaryDrawer content={<DrawerNavOptions />} />
+            <TemporaryDrawer>
+              <DrawerNavOptions
+                isAuthUser={isAuthUser}
+                user={user}
+              />
+            </TemporaryDrawer>
           </Box>
           <Box
             sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-            <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+            <ShoppingBasketIcon sx={{ marginRight: 1, color: 'navbar.icon' }} />
             <Typography
               variant="h5"
               noWrap
@@ -168,7 +88,7 @@ function Navbar() {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'inherit',
+                color: 'navbar.text',
                 textDecoration: 'none',
               }}>
               MyStore
@@ -176,7 +96,7 @@ function Navbar() {
           </Box>
           <Box
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
-            <NavOptions />
+            <NavbarOptions user={user} />
           </Box>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             {isAuthUser ? (
@@ -195,7 +115,7 @@ function Navbar() {
                         },
                       ],
                     }}>
-                    <IconButton color="inherit">
+                    <IconButton sx={{ color: 'navbar.icon' }}>
                       <ShoppingCartIcon aria-label="Shopping cart" />
                     </IconButton>
                   </Tooltip>
@@ -209,7 +129,7 @@ function Navbar() {
               <Link
                 tabIndex={-1}
                 href={'/signin'}>
-                <Button sx={{ my: 2, color: 'white', display: 'block' }}>Sign In</Button>
+                <Button sx={{ my: 2, color: 'navbar.text', display: 'block' }}>Sign In</Button>
               </Link>
             )}
           </Box>
