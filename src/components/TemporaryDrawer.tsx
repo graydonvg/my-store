@@ -30,19 +30,35 @@ export default function TemporaryDrawer({ content }: TemporaryDrawerProps) {
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Drawer
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                backgroundColor: 'navDrawer.contentBackground',
+              },
+            }}
             hideBackdrop={true}
             anchor={anchor}
             open={isDrawerOpen[anchor]}
             onClose={toggleDrawer(anchor, false)}
             sx={{ display: { md: 'none' } }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 1 }}>
+            <Box
+              sx={{
+                backgroundColor: 'navDrawer.headerBackground',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 1,
+              }}>
               <Typography
+                color="navDrawer.headerText"
                 variant="h5"
                 component={'h2'}>
                 Menu
               </Typography>
-              <IconButton onClick={toggleDrawer(anchor, false)}>
-                <CloseIcon sx={{ color: 'black' }} />
+              <IconButton
+                sx={{ color: 'navDrawer.headerText' }}
+                onClick={toggleDrawer(anchor, false)}>
+                <CloseIcon />
               </IconButton>
             </Box>
             {content}

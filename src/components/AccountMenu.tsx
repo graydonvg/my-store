@@ -11,6 +11,7 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import StoreIcon from '@mui/icons-material/Store';
+import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 
 type AccountMenuProps = {
   user: { role?: string };
@@ -20,12 +21,15 @@ type AccountMenuProps = {
 export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <React.Fragment>
       <Tooltip
@@ -46,7 +50,6 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         sx={{ display: { xs: 'none', md: 'block' } }}
         slotProps={{
           paper: {
@@ -114,6 +117,8 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
           </ListItemIcon>
           Settings
         </MenuItem>
+        {/* Theme */}
+        <ThemeToggle />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />

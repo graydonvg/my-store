@@ -20,6 +20,7 @@ import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import TemporaryDrawer from './TemporaryDrawer';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Divider } from '@mui/material';
+import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 
 const isAdminView = false;
 const isAuthUser = true;
@@ -39,7 +40,12 @@ function NavOptions() {
                 tabIndex={-1}
                 key={option.id}
                 href={option.path}>
-                <Button sx={{ my: 2, color: 'white', display: 'block' }}>{option.label}</Button>
+                <Button
+                  color="inherit"
+                  key={option.id}
+                  sx={{ my: 2, display: 'block' }}>
+                  {option.label}
+                </Button>
               </Link>
             ))
         : navOptions
@@ -50,8 +56,9 @@ function NavOptions() {
                 key={option.id}
                 href={option.path}>
                 <Button
+                  color="inherit"
                   key={option.id}
-                  sx={{ my: 2, color: 'white', display: 'block' }}>
+                  sx={{ my: 2, display: 'block' }}>
                   {option.label}
                 </Button>
               </Link>
@@ -73,7 +80,7 @@ function DrawerNavOptions() {
                 href={option.path}>
                 <Button
                   key={option.id}
-                  sx={{ color: 'black', display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
+                  sx={{ display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
                   {option.label}
                   <ArrowForwardIosIcon />
                 </Button>
@@ -89,7 +96,13 @@ function DrawerNavOptions() {
                 href={option.path}>
                 <Button
                   key={option.id}
-                  sx={{ color: 'black', display: 'flex', justifyContent: 'space-between', width: 1, margin: 0 }}>
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: 1,
+                    margin: 0,
+                    color: 'navDrawer.contentText',
+                  }}>
                   {option.label}
                   <ArrowForwardIosIcon />
                 </Button>
