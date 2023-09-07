@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppDispatch } from '../store';
 
 type ThemeState = {
   mode: 'light' | 'dark';

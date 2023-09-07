@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Button from '@mui/material/Button';
+import { grey } from '@mui/material/colors';
 
 type NavbarOptionType = {
   path: string;
@@ -11,7 +12,9 @@ export default function NavbarOption({ path, label }: NavbarOptionType) {
     <Link
       tabIndex={-1}
       href={path}>
-      <Button sx={{ my: 2, display: 'block', color: 'navbar.text' }}>{label}</Button>
+      <Button sx={{ my: 2, display: 'block', color: 'navbar.text', '&:hover': { backgroundColor: 'inherit' } }}>
+        {label}
+      </Button>
     </Link>
   );
 }
