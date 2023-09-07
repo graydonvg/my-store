@@ -3,7 +3,7 @@
 import { Fragment, MouseEvent, useState } from 'react';
 import { Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip } from '@mui/material';
 import { PersonAdd, Settings, Logout, AdminPanelSettings, Store } from '@mui/icons-material';
-import { ThemeToggle } from './ThemeToggle/ThemeToggle';
+import { ThemeToggle } from './Theme/ThemeToggle';
 
 type AccountMenuProps = {
   user: { role?: string };

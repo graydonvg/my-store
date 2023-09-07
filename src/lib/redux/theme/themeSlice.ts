@@ -19,12 +19,6 @@ export const themeSlice = createSlice({
   },
 });
 
-// export const asyncToggleTheme = () => (dispatch: AppDispatch) => {
-//   const mode = JSON.parse(localStorage.getItem('mode'));
-//   localStorage.setItem('darkMode', !isDarkMode);
-//   dispatch(toggleTheme());
-// };
-
 const { actions, reducer } = themeSlice;
 
 export const { toggleTheme } = actions;

@@ -13,13 +13,13 @@ export function ThemeToggle() {
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  function themeToggle() {
+  function changeTheme() {
     dispatch(toggleTheme());
   }
 
   return (
-    <MenuItem onClick={themeToggle}>
-      <ListItemIcon color="inherit">
+    <MenuItem onClick={changeTheme}>
+      <ListItemIcon>
         {mode === 'dark' ? <Brightness7Icon fontSize="small" /> : <Brightness4Icon fontSize="small" />}
       </ListItemIcon>
       {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
