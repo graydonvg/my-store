@@ -1,21 +1,24 @@
 'use client';
 
-import { useContext } from 'react';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { useTheme } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-
-import { ThemeToggleContext } from './ThemeToggleContext';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 
 export function ThemeToggle() {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const themeToggle = useContext(ThemeToggleContext);
   const mode = theme.palette.mode;
 
+  function themeToggle() {
+    dispatch(toggleTheme());
+  }
+
   return (
-    <MenuItem onClick={themeToggle.toggleColorMode}>
+    <MenuItem onClick={themeToggle}>
       <ListItemIcon color="inherit">
         {mode === 'dark' ? <Brightness7Icon fontSize="small" /> : <Brightness4Icon fontSize="small" />}
       </ListItemIcon>
