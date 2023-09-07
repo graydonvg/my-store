@@ -1,11 +1,10 @@
-import Drawer from '@mui/material/Drawer';
-import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import { Box, IconButton } from '@mui/material';
+'use client';
+
+import { ReactNode, Fragment } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor } from '@/types';
-import { ReactNode, Fragment } from 'react';
 
 type TemporaryDrawerProps = {
   children: ReactNode;
@@ -33,7 +32,7 @@ export default function TemporaryDrawer({ children }: TemporaryDrawerProps) {
             PaperProps={{
               elevation: 0,
               sx: {
-                backgroundColor: 'navDrawer.contentBackground',
+                backgroundColor: 'navDrawer.bodyBackground',
               },
             }}
             hideBackdrop={true}
@@ -41,26 +40,6 @@ export default function TemporaryDrawer({ children }: TemporaryDrawerProps) {
             open={isDrawerOpen[anchor]}
             onClose={toggleDrawer(anchor, false)}
             sx={{ display: { md: 'none' } }}>
-            <Box
-              sx={{
-                backgroundColor: 'navDrawer.headerBackground',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: 1,
-              }}>
-              <Typography
-                color="navDrawer.headerText"
-                variant="h5"
-                component={'h2'}>
-                Menu
-              </Typography>
-              <IconButton
-                sx={{ color: 'navDrawer.headerText' }}
-                onClick={toggleDrawer(anchor, false)}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
             {children}
           </Drawer>
         </Fragment>

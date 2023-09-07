@@ -1,16 +1,8 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import StoreIcon from '@mui/icons-material/Store';
+'use client';
+
+import { Fragment, MouseEvent, useState } from 'react';
+import { Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip } from '@mui/material';
+import { PersonAdd, Settings, Logout, AdminPanelSettings, Store } from '@mui/icons-material';
 import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 
 type AccountMenuProps = {
@@ -19,10 +11,10 @@ type AccountMenuProps = {
 };
 
 export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -31,7 +23,7 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Tooltip
         title="Account settings"
         arrow>
@@ -66,7 +58,7 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
               },
               '&:before': {
                 content: '""',
-                display: 'block',
+                display: { xs: 'none', md: 'block' },
                 position: 'absolute',
                 top: 0,
                 right: 20,
@@ -92,14 +84,14 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
           isAdminView ? (
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
-                <StoreIcon fontSize="small" />
+                <Store fontSize="small" />
               </ListItemIcon>
               Store view
             </MenuItem>
           ) : (
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
-                <AdminPanelSettingsIcon fontSize="small" />
+                <AdminPanelSettings fontSize="small" />
               </ListItemIcon>
               Admin panel
             </MenuItem>
@@ -117,7 +109,6 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
           </ListItemIcon>
           Settings
         </MenuItem>
-        {/* Theme */}
         <ThemeToggle />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -126,6 +117,6 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
           Logout
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </Fragment>
   );
 }

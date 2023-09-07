@@ -43,8 +43,8 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
                 navDrawer: {
                   headerBackground: '#1976d2',
                   headerText: '#ffffff',
-                  contentBackground: '#ffffff',
-                  contentText: grey[900],
+                  bodyBackground: '#ffffff',
+                  bodyText: grey[900],
                 },
               }
             : {
@@ -66,8 +66,8 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
                 navDrawer: {
                   headerBackground: grey[900],
                   headerText: '#ffffff',
-                  contentBackground: grey[800],
-                  contentText: '#ffffff',
+                  bodyBackground: grey[800],
+                  bodyText: '#ffffff',
                 },
               }),
         },

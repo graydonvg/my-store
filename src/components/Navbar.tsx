@@ -1,24 +1,15 @@
 'use client';
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from 'next/link';
-import AccountMenu from './AccountMenu';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { DrawerAnchor } from '@/types';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import AccountMenu from './AccountMenu';
 import TemporaryDrawer from './TemporaryDrawer';
-import DrawerNavOptions from './DrawerNavOptions';
 import NavbarOptions from './NavbarOptions';
+import DrawerNavContent from './DrawerNavContent';
+import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip } from '@mui/material';
+import { ShoppingBasket, Menu, ShoppingCart } from '@mui/icons-material';
+import { DrawerAnchor } from '@/types';
 
 const isAdminView = false;
 const isAuthUser = true;
@@ -42,7 +33,7 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-            <ShoppingBasketIcon sx={{ mr: 1, color: 'navbar.icon' }} />
+            <ShoppingBasket sx={{ mr: 1, color: 'navbar.icon' }} />
             <Typography
               tabIndex={-1}
               variant="h6"
@@ -67,10 +58,10 @@ function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={() => handleDrawer('left')}>
-              <MenuIcon />
+              <Menu />
             </IconButton>
             <TemporaryDrawer>
-              <DrawerNavOptions
+              <DrawerNavContent
                 isAuthUser={isAuthUser}
                 user={user}
               />
@@ -78,8 +69,9 @@ function Navbar() {
           </Box>
           <Box
             sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-            <ShoppingBasketIcon sx={{ marginRight: 1, color: 'navbar.icon' }} />
+            <ShoppingBasket sx={{ marginRight: 1, color: 'navbar.icon' }} />
             <Typography
+              tabIndex={-1}
               variant="h5"
               noWrap
               component="a"
@@ -115,8 +107,10 @@ function Navbar() {
                         },
                       ],
                     }}>
-                    <IconButton sx={{ color: 'navbar.icon' }}>
-                      <ShoppingCartIcon aria-label="Shopping cart" />
+                    <IconButton
+                      size="large"
+                      sx={{ color: 'navbar.icon' }}>
+                      <ShoppingCart aria-label="Shopping cart" />
                     </IconButton>
                   </Tooltip>
                 ) : null}
