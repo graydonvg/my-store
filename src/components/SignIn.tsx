@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -8,13 +8,16 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import GoogleIcon from '@mui/icons-material/Google';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import { signInWithGooglePopup } from '@/lib/firebase';
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
+  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,6 +34,21 @@ export default function SignIn() {
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
   }
 
+  async function signInWithGoogle() {
+    setIsLoadingUser(true);
+    try {
+      await signInWithGooglePopup();
+      dispatch(setIsModalOpen(false));
+    } catch (error) {
+      console.log(error);
+      if (error) {
+        console.log(error);
+        setIsModalOpen(true);
+      }
+    }
+    setIsLoadingUser(false);
+  }
+
   return (
     <Box
       sx={{
@@ -42,10 +60,25 @@ export default function SignIn() {
         <LockOutlinedIcon />
       </Avatar>
       <Typography
-        component="h1"
+        component="h2"
         variant="h5">
         Sign in
       </Typography>
+      <Button
+        onClick={signInWithGoogle}
+        disabled={isLoadingUser}
+        type="button"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 1, display: 'flex' }}>
+        <GoogleIcon />
+        <Typography
+          component="p"
+          variant="button"
+          sx={{ flexGrow: 1, marginRight: '24px' }}>
+          Sign with Google
+        </Typography>
+      </Button>
       <Box
         component="form"
         onSubmit={handleSubmit}

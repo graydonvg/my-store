@@ -1,24 +1,29 @@
 'use client';
 
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import DrawerNavOption from './DrawerNavOption';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, IconButton, List, Typography } from '@mui/material';
+import { Box, IconButton, List, Typography, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { adminNavOptions, navOptions } from '@/lib/utils';
+import { signOutUser } from '@/lib/firebase';
 
 type DrawerNavContentType = {
-  user: {
-    role: string;
-  };
-  isAuthUser: boolean;
+  userRole: { role: string };
 };
 
-export default function DrawerNavContent({ user, isAuthUser }: DrawerNavContentType) {
+export default function DrawerNavContent({ userRole }: DrawerNavContentType) {
+  const currenUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
 
   function closeDrawer(anchor: string, open: boolean) {
     dispatch(setIsDrawerOpen({ [anchor]: open }));
+  }
+
+  function handleSignOut() {
+    signOutUser();
+    dispatch(setIsDrawerOpen({ left: false }));
   }
 
   return (
@@ -48,25 +53,42 @@ export default function DrawerNavContent({ user, isAuthUser }: DrawerNavContentT
       <List
         disablePadding
         sx={{ width: '100vw' }}>
-        {user.role === 'admin'
-          ? adminNavOptions
-              .filter((option) => (isAuthUser ? option : !option.authRequired))
-              .map((option) => (
-                <DrawerNavOption
-                  key={option.id}
-                  label={option.label}
-                  path={option.path}
+        {userRole.role === 'admin'
+          ? adminNavOptions.map((option) => (
+              <DrawerNavOption
+                key={option.id}
+                label={option.label}
+                path={option.path}
+              />
+            ))
+          : navOptions.map((option) => (
+              <DrawerNavOption
+                key={option.id}
+                label={option.label}
+                path={option.path}
+              />
+            ))}
+        {currenUser ? (
+          <>
+            <DrawerNavOption
+              key={'myAccount'}
+              label={'My account'}
+              path={'/user/account'}
+            />
+            <ListItem
+              disablePadding
+              onClick={handleSignOut}>
+              <ListItemButton disableGutters>
+                <ListItemText
+                  primary={'Sign Out'}
+                  sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
                 />
-              ))
-          : navOptions
-              .filter((option) => (isAuthUser ? option : !option.authRequired))
-              .map((option) => (
-                <DrawerNavOption
-                  key={option.id}
-                  label={option.label}
-                  path={option.path}
-                />
-              ))}
+                <ArrowForwardIosIcon sx={{ marginRight: 2 }} />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </>
+        ) : null}
       </List>
     </>
   );

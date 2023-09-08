@@ -1,19 +1,33 @@
 'use client';
 
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import AccountMenu from './AccountMenu';
 import DrawerComponent from './Drawer';
 import NavbarOptions from './NavbarOptions';
 import DrawerNavContent from './DrawerNavContent';
-import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip, useTheme } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Container,
+  Button,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { ShoppingBasket, Menu, ShoppingCart } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { DrawerAnchor } from '@/types';
+import { CurrentUserType, DrawerAnchor } from '@/types';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import ModalComponent from './Modal';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import { useEffect } from 'react';
+import { onAuthStateChangedListener } from '@/lib/firebase';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 const isAdminView = false;
 const isAuthUser = false;
@@ -26,14 +40,33 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
+  const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
+  const currenUser = useAppSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    isBelowMedium ? dispatch(setIsDrawerOpen({ left: false })) : null;
+  }, [isBelowMedium]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      // if (user) {
+      //   createUserDocumentFromAuth();
+      // }
+
+      const selectedUserDetails =
+        user && (({ uid, displayName, email, photoURL }) => ({ uid, displayName, email, photoURL }))(user);
+      dispatch(setCurrentUser(selectedUserDetails as CurrentUserType));
+    });
+    return unsubscribe;
+  }, []);
 
   function changeTheme() {
     dispatch(toggleTheme());
   }
 
-  const openDrawer = (anchor: DrawerAnchor) => {
+  function openDrawer(anchor: DrawerAnchor) {
     dispatch(setIsDrawerOpen({ [anchor]: true }));
-  };
+  }
 
   function handleModal(content: string) {
     dispatch(setModalContent(content));
@@ -101,7 +134,7 @@ export default function Navbar() {
               <NavbarOptions user={user} />
             </Box>
             <Box sx={{ display: 'flex', gap: { xs: 0, md: 2 }, alignItems: 'center' }}>
-              {isAuthUser ? (
+              {currenUser ? (
                 <>
                   {user?.role !== 'admin' ? (
                     <Tooltip
@@ -125,7 +158,7 @@ export default function Navbar() {
                     </Tooltip>
                   ) : null}
                   <AccountMenu
-                    user={user}
+                    userRole={user}
                     isAdminView={isAdminView}
                   />
                 </>
@@ -165,10 +198,7 @@ export default function Navbar() {
       </AppBar>
       <ModalComponent />
       <DrawerComponent>
-        <DrawerNavContent
-          isAuthUser={isAuthUser}
-          user={user}
-        />
+        <DrawerNavContent userRole={user} />
       </DrawerComponent>
     </>
   );

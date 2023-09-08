@@ -12,7 +12,14 @@ export default function NavbarOption({ path, label }: NavbarOptionType) {
     <Link
       tabIndex={-1}
       href={path}>
-      <Button sx={{ my: 2, display: 'block', color: 'navbar.text', '&:hover': { backgroundColor: 'inherit' } }}>
+      <Button
+        sx={{
+          my: 2,
+          display: 'block',
+          color: 'navbar.text',
+          whiteSpace: 'nowrap',
+          '&:hover': { backgroundColor: 'inherit' },
+        }}>
         {label}
       </Button>
     </Link>

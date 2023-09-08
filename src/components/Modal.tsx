@@ -29,15 +29,17 @@ export default function ModalComponent() {
   }
 
   return (
-    <Modal
-      closeAfterTransition
-      open={isModalOpen}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description">
-      <Grow in={isModalOpen}>
-        <Box sx={style}>{modalContent === 'signIn' ? <SignIn /> : modalContent === 'signUp' ? <SignUp /> : null}</Box>
-      </Grow>
-    </Modal>
+    <>
+      <Modal
+        closeAfterTransition
+        open={isModalOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Grow in={isModalOpen}>
+          <Box sx={style}>{modalContent === 'signIn' ? <SignIn /> : modalContent === 'signUp' ? <SignUp /> : null}</Box>
+        </Grow>
+      </Modal>
+    </>
   );
 }

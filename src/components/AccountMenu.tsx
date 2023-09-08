@@ -7,20 +7,24 @@ import {
   MenuItem,
   ListItemIcon,
   Divider,
-  IconButton,
+  Button,
   Tooltip,
   useMediaQuery,
   useTheme,
+  Typography,
 } from '@mui/material';
-import { PersonAdd, Settings, Logout, AdminPanelSettings, Store } from '@mui/icons-material';
+import { PersonAdd, Settings, Logout, AdminPanelSettings, Store, ArrowDropDown } from '@mui/icons-material';
 import { ThemeToggle } from './Theme/ThemeToggle';
+import { signOutUser } from '@/lib/firebase';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 type AccountMenuProps = {
-  user: { role?: string };
+  userRole: { role: string };
   isAdminView: boolean;
 };
 
-export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
+export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps) {
+  const currenUser = useAppSelector((state) => state.user.currentUser);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,13 +34,18 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
     isBelowMedium ? handleClose() : null;
   }, [isBelowMedium]);
 
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
+  function handleClick(event: MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
-  const handleClose = () => {
+  function handleClose() {
     setAnchorEl(null);
-  };
+  }
+
+  function handleSignOut() {
+    signOutUser();
+    setAnchorEl(null);
+  }
 
   return (
     <>
@@ -45,20 +54,29 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
           <Tooltip
             title="Account settings"
             arrow>
-            <IconButton
+            <Button
+              disableTouchRipple
               onClick={handleClick}
-              size="small"
               aria-controls={open ? 'account-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}>
-              <Avatar>M</Avatar>
-            </IconButton>
+              aria-expanded={open ? 'true' : undefined}
+              sx={{ display: 'flex', gap: 1, textTransform: 'unset' }}>
+              <Typography
+                component="span"
+                sx={{
+                  color: 'navbar.text',
+                }}>
+                {currenUser?.displayName.split(' ')[0]}
+              </Typography>
+              <ArrowDropDown sx={{ color: 'navbar.text' }} />
+            </Button>
           </Tooltip>
           <Menu
             anchorEl={anchorEl}
             id="account-menu"
             open={open}
             onClose={handleClose}
+            sx={{ marginRight: 20 }}
             slotProps={{
               paper: {
                 elevation: 0,
@@ -77,7 +95,7 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
                     display: { xs: 'none', md: 'block' },
                     position: 'absolute',
                     top: 0,
-                    right: 20,
+                    right: 15,
                     width: 10,
                     height: 10,
                     bgcolor: 'background.paper',
@@ -96,7 +114,7 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
               <Avatar /> My account
             </MenuItem>
             <Divider />
-            {user.role === 'admin' ? (
+            {currenUser && userRole.role === 'admin' ? (
               isAdminView ? (
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
@@ -126,11 +144,11 @@ export default function AccountMenu({ user, isAdminView }: AccountMenuProps) {
               Settings
             </MenuItem>
             <ThemeToggle />
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleSignOut}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              Sign Out
             </MenuItem>
           </Menu>
         </>

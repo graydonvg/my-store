@@ -38,8 +38,7 @@ export default function DrawerComponent({ children }: TemporaryDrawerProps) {
             hideBackdrop={true}
             anchor={anchor}
             open={isDrawerOpen[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            sx={{ display: { md: 'none' } }}>
+            onClose={toggleDrawer(anchor, false)}>
             {children}
           </Drawer>
         </Fragment>
