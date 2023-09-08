@@ -4,24 +4,23 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { ReactNode } from 'react';
+import Grow from '@mui/material/Grow';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
+  translate: '-50% -50%',
   width: { xs: 300, sm: 400 },
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
 };
 
-type ModalComponentProps = {
-  children: ReactNode;
-};
-
-export default function ModalComponent({ children }: ModalComponentProps) {
+export default function ModalComponent() {
+  const modalContent = useAppSelector((state) => state.modal.modalContent);
   const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
   const dispatch = useAppDispatch();
 
@@ -36,7 +35,9 @@ export default function ModalComponent({ children }: ModalComponentProps) {
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description">
-      <Box sx={style}>{children}</Box>
+      <Grow in={isModalOpen}>
+        <Box sx={style}>{modalContent === 'signIn' ? <SignIn /> : modalContent === 'signUp' ? <SignUp /> : null}</Box>
+      </Grow>
     </Modal>
   );
 }

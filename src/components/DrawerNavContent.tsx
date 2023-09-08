@@ -29,17 +29,18 @@ export default function DrawerNavContent({ user, isAuthUser }: DrawerNavContentT
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 1,
+          height: 68.5,
         }}>
         <Typography
           color="navDrawer.headerText"
           variant="h5"
-          component={'h2'}>
+          component="span"
+          sx={{ marginLeft: 1 }}>
           Menu
         </Typography>
         <IconButton
           size="large"
-          sx={{ color: 'navDrawer.headerText' }}
+          sx={{ color: 'navDrawer.headerText', marginRight: 1 }}
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
         </IconButton>

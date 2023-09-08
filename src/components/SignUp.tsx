@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setModalContent } from '@/lib/redux/modal/modalSlice';
+import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 
 export default function SignUp() {
   const dispatch = useAppDispatch();
@@ -25,7 +25,9 @@ export default function SignUp() {
   };
 
   function goToSignIn() {
-    dispatch(setModalContent('signIn'));
+    dispatch(setIsModalOpen(false));
+    setTimeout(() => dispatch(setModalContent('signIn')), 300);
+    setTimeout(() => dispatch(setIsModalOpen(true)), 500);
   }
 
   return (

@@ -10,7 +10,7 @@ type TemporaryDrawerProps = {
   children: ReactNode;
 };
 
-export default function TemporaryDrawer({ children }: TemporaryDrawerProps) {
+export default function DrawerComponent({ children }: TemporaryDrawerProps) {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
   const dispatch = useAppDispatch();
 

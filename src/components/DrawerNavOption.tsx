@@ -9,12 +9,12 @@ export default function DrawerNavOption({ path, label }: { path: string; label: 
         tabIndex={-1}
         href={path}>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disableGutters>
             <ListItemText
               primary={label}
-              sx={{ color: 'navDrawer.bodyText' }}
+              sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
             />
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon sx={{ marginRight: 2 }} />
           </ListItemButton>
         </ListItem>
       </Link>
