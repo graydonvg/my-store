@@ -30,7 +30,6 @@ import { onAuthStateChangedListener } from '@/lib/firebase';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 const isAdminView = false;
-const isAuthUser = false;
 const user = {
   // role: 'admin',
   role: 'customer',

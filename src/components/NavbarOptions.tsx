@@ -11,24 +11,20 @@ export default function NavbarOptions({ user }: NavbarOptionsType) {
   return (
     <>
       {user.role === 'admin'
-        ? adminNavOptions
-            .filter((option) => !option.temporaryDrawerOnly)
-            .map((option) => (
-              <NavbarOption
-                key={option.id}
-                label={option.label}
-                path={option.path}
-              />
-            ))
-        : navOptions
-            .filter((option) => !option.temporaryDrawerOnly)
-            .map((option) => (
-              <NavbarOption
-                key={option.id}
-                label={option.label}
-                path={option.path}
-              />
-            ))}
+        ? adminNavOptions.map((option) => (
+            <NavbarOption
+              key={option.id}
+              label={option.label}
+              path={option.path}
+            />
+          ))
+        : navOptions.map((option) => (
+            <NavbarOption
+              key={option.id}
+              label={option.label}
+              path={option.path}
+            />
+          ))}
     </>
   );
 }
