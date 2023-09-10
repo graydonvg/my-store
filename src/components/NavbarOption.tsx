@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Button from '@mui/material/Button';
-import { grey } from '@mui/material/colors';
+import { navbarButtonStyles } from '@/lib/styles';
 
 type NavbarOptionType = {
   path: string;
@@ -13,13 +13,8 @@ export default function NavbarOption({ path, label }: NavbarOptionType) {
       tabIndex={-1}
       href={path}>
       <Button
-        sx={{
-          my: 2,
-          display: 'block',
-          color: 'navbar.text',
-          whiteSpace: 'nowrap',
-          '&:hover': { backgroundColor: 'inherit' },
-        }}>
+        disableTouchRipple
+        sx={navbarButtonStyles}>
         {label}
       </Button>
     </Link>

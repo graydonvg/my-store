@@ -21,13 +21,12 @@ import {
 import { ShoppingBasket, Menu, ShoppingCart } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { CurrentUserType, DrawerAnchor } from '@/types';
+import { DrawerAnchor } from '@/types';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import ModalComponent from './Modal';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { useEffect } from 'react';
-import { onAuthStateChangedListener } from '@/lib/firebase';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { navbarButtonStyles } from '@/lib/styles';
 
 const isAdminView = false;
 const user = {
@@ -45,19 +44,6 @@ export default function Navbar() {
   useEffect(() => {
     isBelowMedium ? dispatch(setIsDrawerOpen({ left: false })) : null;
   }, [isBelowMedium]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      // if (user) {
-      //   createUserDocumentFromAuth();
-      // }
-
-      const selectedUserDetails =
-        user && (({ uid, displayName, email, photoURL }) => ({ uid, displayName, email, photoURL }))(user);
-      dispatch(setCurrentUser(selectedUserDetails as CurrentUserType));
-    });
-    return unsubscribe;
-  }, []);
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -180,13 +166,8 @@ export default function Navbar() {
                   )}
                   <Button
                     onClick={() => handleModal('signIn')}
-                    sx={{
-                      my: 2,
-                      color: 'navbar.text',
-                      display: 'block',
-                      whiteSpace: 'nowrap',
-                      '&:hover': { backgroundColor: 'inherit' },
-                    }}>
+                    disableTouchRipple
+                    sx={navbarButtonStyles}>
                     Sign In
                   </Button>
                 </>

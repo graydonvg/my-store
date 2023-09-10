@@ -8,6 +8,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import AuthStateListener from '@/components/AuthStateListener';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main>
             <Container>{children}</Container>
           </main>
+          <AuthStateListener />
         </Providers>
       </body>
     </html>

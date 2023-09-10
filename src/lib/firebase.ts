@@ -9,18 +9,21 @@ import {
   NextOrObserver,
   User,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
+import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore/lite';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDUCp-SSzxV6KwvpnGHIOb4emPq69j43wc',
-  authDomain: 'my-store-88000.firebaseapp.com',
-  projectId: 'my-store-88000',
-  storageBucket: 'my-store-88000.appspot.com',
-  messagingSenderId: '115693309462',
-  appId: '1:115693309462:web:68ca67c602087457aa6f37',
+  apiKey: 'AIzaSyA9L6rqC6ZmaNrRWw1XO9ODlSU7ocFPLI4',
+  authDomain: 'my-shop-7cfcc.firebaseapp.com',
+  projectId: 'my-shop-7cfcc',
+  storageBucket: 'my-shop-7cfcc.appspot.com',
+  messagingSenderId: '575545358137',
+  appId: '1:575545358137:web:b4e524ba7bc29627ea5ae8',
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
@@ -49,4 +52,48 @@ export async function signInAuthUserWithEmailAndPassword(email: string, password
 
 export async function signOutUser() {
   signOut(auth);
+}
+
+export async function createUserDocumentFromAuth(additionalInformation = {}) {
+  if (!auth.currentUser) return;
+
+  const userDocRef = doc(db, 'users', auth.currentUser.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    return;
+  } else {
+    const { email, displayName } = auth.currentUser;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        createdAt,
+        displayName,
+        email,
+        ...additionalInformation,
+      });
+    } catch (error) {
+      console.error('error creating user', error);
+    }
+  }
+}
+
+export async function getUserDocFromAuth() {
+  if (!auth.currentUser) return;
+
+  const userDocRef = doc(db, 'users', auth.currentUser.uid);
+  const docSnap = await getDoc(userDocRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+}
+
+export async function updateUserProfile(displayName: string) {
+  if (!auth.currentUser) return;
+
+  await updateProfile(auth.currentUser, { displayName });
+
+  return auth.currentUser;
 }

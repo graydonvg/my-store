@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -13,40 +13,54 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { signInWithGooglePopup } from '@/lib/firebase';
+import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
+
+const defaultFromFields = {
+  email: '',
+  password: '',
+};
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
-  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formFields, setFormFields] = useState(defaultFromFields);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  async function signInWithGoogle() {
+    setIsLoading(true);
+    try {
+      await signInWithGooglePopup();
+      dispatch(setIsModalOpen(false));
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
+  }
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = event.target;
+    setFormFields({ ...formFields, [name]: value });
+  }
+
+  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    setIsLoading(true);
+
+    try {
+      await signInAuthUserWithEmailAndPassword(formFields.email, formFields.password);
+      setFormFields(defaultFromFields);
+      setIsLoading(false);
+      dispatch(setIsModalOpen(false));
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
+    dispatch(setIsModalOpen(false));
+  }
 
   function goToSignUp() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signUp')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
-  }
-
-  async function signInWithGoogle() {
-    setIsLoadingUser(true);
-    try {
-      await signInWithGooglePopup();
-      dispatch(setIsModalOpen(false));
-    } catch (error) {
-      console.log(error);
-      if (error) {
-        console.log(error);
-        setIsModalOpen(true);
-      }
-    }
-    setIsLoadingUser(false);
   }
 
   return (
@@ -66,7 +80,7 @@ export default function SignIn() {
       </Typography>
       <Button
         onClick={signInWithGoogle}
-        disabled={isLoadingUser}
+        disabled={isLoading}
         type="button"
         fullWidth
         variant="contained"
@@ -76,12 +90,12 @@ export default function SignIn() {
           component="p"
           variant="button"
           sx={{ flexGrow: 1, marginRight: '24px' }}>
-          Sign with Google
+          {!isLoading ? 'Sign with Google' : '...loading'}
         </Typography>
       </Button>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={handleSignIn}
         sx={{ mt: 1 }}>
         <TextField
           margin="normal"
@@ -91,6 +105,8 @@ export default function SignIn() {
           label="Email Address"
           name="email"
           autoComplete="email"
+          value={formFields.email}
+          onChange={handleInputChange}
           autoFocus
         />
         <TextField
@@ -102,6 +118,8 @@ export default function SignIn() {
           type="password"
           id="password"
           autoComplete="current-password"
+          value={formFields.password}
+          onChange={handleInputChange}
         />
         <FormControlLabel
           control={
@@ -113,6 +131,7 @@ export default function SignIn() {
           label="Remember me"
         />
         <Button
+          disabled={isLoading}
           type="submit"
           fullWidth
           variant="contained"

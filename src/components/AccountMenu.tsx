@@ -24,11 +24,12 @@ type AccountMenuProps = {
 };
 
 export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps) {
-  const currenUser = useAppSelector((state) => state.user.currentUser);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const currenUser = useAppSelector((state) => state.user.currentUser);
+  const displayName = currenUser?.displayName.split(' ')[0];
 
   useEffect(() => {
     isBelowMedium ? handleClose() : null;
@@ -66,7 +67,7 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
                 sx={{
                   color: 'navbar.text',
                 }}>
-                {currenUser?.displayName.split(' ')[0]}
+                {(currenUser && displayName) ?? 'Account'}
               </Typography>
               <ArrowDropDown sx={{ color: 'navbar.text' }} />
             </Button>

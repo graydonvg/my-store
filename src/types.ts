@@ -8,11 +8,9 @@ export type DrawerState = {
 };
 
 export type CurrentUserType = {
-  email: string;
-  uid: string;
   displayName: string;
-  photoURL: string;
-};
+  email: string;
+} | null;
 
 export type UserState = {
   currentUser: CurrentUserType | null;
