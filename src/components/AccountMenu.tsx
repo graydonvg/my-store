@@ -29,13 +29,13 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const currenUser = useAppSelector((state) => state.user.currentUser);
-  const displayName = currenUser?.displayName.split(' ')[0];
+  const firstName = currenUser?.displayName.split(' ')[0] ?? null;
 
   useEffect(() => {
     isBelowMedium ? handleClose() : null;
   }, [isBelowMedium]);
 
-  function handleClick(event: MouseEvent<HTMLElement>) {
+  function handleOpen(event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) {
     setAnchorEl(event.currentTarget);
   }
 
@@ -45,7 +45,6 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
 
   function handleSignOut() {
     signOutUser();
-    setAnchorEl(null);
   }
 
   return (
@@ -54,10 +53,20 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
         <>
           <Tooltip
             title="Account settings"
-            arrow>
+            arrow
+            PopperProps={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 10],
+                  },
+                },
+              ],
+            }}>
             <Button
               disableTouchRipple
-              onClick={handleClick}
+              onMouseOver={handleOpen}
               aria-controls={open ? 'account-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -67,7 +76,7 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
                 sx={{
                   color: 'navbar.text',
                 }}>
-                {(currenUser && displayName) ?? 'Account'}
+                {(currenUser && firstName) ?? 'Account'}
               </Typography>
               <ArrowDropDown sx={{ color: 'navbar.text' }} />
             </Button>
@@ -76,7 +85,7 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
             anchorEl={anchorEl}
             id="account-menu"
             open={open}
-            onClose={handleClose}
+            MenuListProps={{ onMouseLeave: handleClose }}
             sx={{ marginRight: 20 }}
             slotProps={{
               paper: {

@@ -26,7 +26,7 @@ export default function DrawerComponent({ children }: TemporaryDrawerProps) {
 
   return (
     <>
-      {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
+      {(['left', 'right'] as const).map((anchor) => (
         <Fragment key={anchor}>
           <Drawer
             PaperProps={{

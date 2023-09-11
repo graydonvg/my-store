@@ -1,12 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { Avatar, Button, TextField, Link, Grid, Box, Typography, LinearProgress } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, updateUserProfile } from '@/lib/firebase';
@@ -21,7 +15,7 @@ const defaultFromFields = {
   confirmPassword: '',
 };
 
-export default function SignUp() {
+export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formFields, setFormFields] = useState(defaultFromFields);
@@ -57,7 +51,7 @@ export default function SignUp() {
     dispatch(setIsModalOpen(false));
   }
 
-  function goToSignIn() {
+  function openSignInModal() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signIn')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
@@ -70,6 +64,7 @@ export default function SignUp() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
+      <Box sx={{ height: '4px', width: 1, mb: 2 }}>{isLoading ? <LinearProgress sx={{ width: 1 }} /> : null}</Box>
       <Avatar sx={{ m: 1 }}>
         <LockOutlinedIcon />
       </Avatar>
@@ -170,7 +165,7 @@ export default function SignUp() {
           Sign Up
         </Button>
         <Link
-          onClick={goToSignIn}
+          onClick={openSignInModal}
           sx={{ cursor: 'pointer' }}
           component="p"
           variant="body2">

@@ -3,29 +3,39 @@ import { twMerge } from 'tailwind-merge';
 
 export const navOptions = [
   {
-    id: 'home',
-    label: 'Home',
-    path: '/',
+    id: 'all-products',
+    label: 'all Products',
+    path: '/browse/all-products',
   },
   {
-    id: 'listing',
-    label: 'All Products',
-    path: '/product/listing/all-products',
+    id: 'women',
+    label: 'women',
+    path: '/browse/women',
   },
   {
-    id: 'listingMen',
-    label: 'Men',
-    path: '/product/listing/men',
+    id: 'men',
+    label: 'men',
+    path: '/browse/men',
   },
   {
-    id: 'listingWomen',
-    label: 'Women',
-    path: '/product/listing/women',
+    id: 'smartphones',
+    label: 'smartphones',
+    path: '/browse/smartphones',
   },
   {
-    id: 'listingKids',
-    label: 'Kids',
-    path: '/product/listing/kids',
+    id: 'tech',
+    label: 'tech',
+    path: '/browse/tech',
+  },
+  {
+    id: 'home-and-living',
+    label: 'home + living',
+    path: '/browse/home-and-living',
+  },
+  {
+    id: 'beauty',
+    label: 'beauty',
+    path: '/browse/beauty',
   },
 ];
 

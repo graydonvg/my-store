@@ -1,5 +1,6 @@
 import { adminNavOptions, navOptions } from '@/lib/utils';
 import NavbarOption from './NavbarOption';
+import NavbarMenu from './NavbarMenu';
 
 type NavbarOptionsType = {
   user: {
@@ -19,7 +20,7 @@ export default function NavbarOptions({ user }: NavbarOptionsType) {
             />
           ))
         : navOptions.map((option) => (
-            <NavbarOption
+            <NavbarMenu
               key={option.id}
               label={option.label}
               path={option.path}

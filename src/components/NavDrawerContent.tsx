@@ -2,18 +2,18 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import DrawerNavOption from './DrawerNavOption';
-import CloseIcon from '@mui/icons-material/Close';
 import { Box, IconButton, List, Typography, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
+import DrawerNavOption from './NavDrawerOption';
+import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { adminNavOptions, navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
 
-type DrawerNavContentType = {
+type NavDrawerContentType = {
   userRole: { role: string };
 };
 
-export default function DrawerNavContent({ userRole }: DrawerNavContentType) {
+export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
   const currenUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
 

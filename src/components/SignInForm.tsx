@@ -1,16 +1,9 @@
 'use client';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
+import { Avatar, Button, TextField, Box, Typography, Link, LinearProgress, Divider } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
@@ -20,7 +13,7 @@ const defaultFromFields = {
   password: '',
 };
 
-export default function SignIn() {
+export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formFields, setFormFields] = useState(defaultFromFields);
@@ -57,7 +50,7 @@ export default function SignIn() {
     dispatch(setIsModalOpen(false));
   }
 
-  function goToSignUp() {
+  function openSignUpModal() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signUp')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
@@ -70,6 +63,7 @@ export default function SignIn() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
+      <Box sx={{ height: '4px', width: 1, mb: 2 }}>{isLoading ? <LinearProgress sx={{ width: 1 }} /> : null}</Box>
       <Avatar sx={{ m: 1 }}>
         <LockOutlinedIcon />
       </Avatar>
@@ -78,21 +72,7 @@ export default function SignIn() {
         variant="h5">
         Sign in
       </Typography>
-      <Button
-        onClick={signInWithGoogle}
-        disabled={isLoading}
-        type="button"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 1, display: 'flex' }}>
-        <GoogleIcon />
-        <Typography
-          component="p"
-          variant="button"
-          sx={{ flexGrow: 1, marginRight: '24px' }}>
-          {!isLoading ? 'Sign with Google' : '...loading'}
-        </Typography>
-      </Button>
+
       <Box
         component="form"
         onSubmit={handleSignIn}
@@ -121,15 +101,6 @@ export default function SignIn() {
           value={formFields.password}
           onChange={handleInputChange}
         />
-        <FormControlLabel
-          control={
-            <Checkbox
-              value="remember"
-              color="primary"
-            />
-          }
-          label="Remember me"
-        />
         <Button
           disabled={isLoading}
           type="submit"
@@ -138,8 +109,30 @@ export default function SignIn() {
           sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
+        <Divider>
+          <Typography
+            component="span"
+            variant="caption">
+            OR
+          </Typography>
+        </Divider>
+        <Button
+          onClick={signInWithGoogle}
+          disabled={isLoading}
+          type="button"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 2, mb: 3, display: 'flex' }}>
+          <GoogleIcon />
+          <Typography
+            component="p"
+            variant="button"
+            sx={{ flexGrow: 1, marginRight: '24px' }}>
+            Sign with Google
+          </Typography>
+        </Button>
         <Link
-          onClick={goToSignUp}
+          onClick={openSignUpModal}
           sx={{ cursor: 'pointer' }}
           component="p"
           variant="body2">

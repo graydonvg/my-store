@@ -2,10 +2,6 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import AccountMenu from './AccountMenu';
-import DrawerComponent from './Drawer';
-import NavbarOptions from './NavbarOptions';
-import DrawerNavContent from './DrawerNavContent';
 import {
   AppBar,
   Box,
@@ -23,6 +19,10 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { DrawerAnchor } from '@/types';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import AccountMenu from './AccountMenu';
+import DrawerComponent from './Drawer';
+import NavbarOptions from './NavbarOptions';
+import NavDrawerContent from './NavDrawerContent';
 import ModalComponent from './Modal';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { useEffect } from 'react';
@@ -43,7 +43,7 @@ export default function Navbar() {
 
   useEffect(() => {
     isBelowMedium ? dispatch(setIsDrawerOpen({ left: false })) : null;
-  }, [isBelowMedium]);
+  }, [isBelowMedium, dispatch]);
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -178,7 +178,7 @@ export default function Navbar() {
       </AppBar>
       <ModalComponent />
       <DrawerComponent>
-        <DrawerNavContent userRole={user} />
+        <NavDrawerContent userRole={user} />
       </DrawerComponent>
     </>
   );

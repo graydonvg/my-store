@@ -13,6 +13,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
     ...(mode === 'light'
       ? {
           // palette values for light mode
+
           navbar: {
             background: '#1976d2',
             text: '#ffffff',

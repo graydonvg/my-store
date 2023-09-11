@@ -4,7 +4,12 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 
-export default function DrawerNavOption({ path, label }: { path: string; label: string }) {
+type NavDrawerNavOptionProps = {
+  path: string;
+  label: string;
+};
+
+export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionProps) {
   const dispatch = useAppDispatch();
 
   function closeDrawer() {

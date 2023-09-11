@@ -1,11 +1,15 @@
+import Products from '@/components/Products';
 import { Typography } from '@mui/material';
 
-export default function Home() {
+export default async function Home() {
   return (
-    <Typography
-      variant="h4"
-      component="h1">
-      My E-commerce Website
-    </Typography>
+    <>
+      <Typography
+        variant="h4"
+        component="h1">
+        My E-commerce Website
+      </Typography>
+      {/* <Products /> */}
+    </>
   );
 }

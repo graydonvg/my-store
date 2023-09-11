@@ -2,11 +2,9 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Grow from '@mui/material/Grow';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import { Box, Modal, Grow } from '@mui/material';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
 
 const style = {
   position: 'absolute',
@@ -37,7 +35,9 @@ export default function ModalComponent() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Grow in={isModalOpen}>
-          <Box sx={style}>{modalContent === 'signIn' ? <SignIn /> : modalContent === 'signUp' ? <SignUp /> : null}</Box>
+          <Box sx={style}>
+            {modalContent === 'signIn' ? <SignInForm /> : modalContent === 'signUp' ? <SignUpForm /> : null}
+          </Box>
         </Grow>
       </Modal>
     </>
