@@ -4,37 +4,37 @@ import { twMerge } from 'tailwind-merge';
 export const navOptions = [
   {
     id: 'all-products',
-    label: 'all Products',
+    label: 'All Products',
     path: '/browse/all-products',
   },
   {
     id: 'women',
-    label: 'women',
+    label: 'Women',
     path: '/browse/women',
   },
   {
     id: 'men',
-    label: 'men',
+    label: 'Men',
     path: '/browse/men',
   },
   {
     id: 'smartphones',
-    label: 'smartphones',
+    label: 'Smartphones',
     path: '/browse/smartphones',
   },
   {
-    id: 'tech',
-    label: 'tech',
+    id: 'electronics',
+    label: 'Electronics',
     path: '/browse/tech',
   },
   {
     id: 'home-and-living',
-    label: 'home + living',
+    label: 'Home + Living',
     path: '/browse/home-and-living',
   },
   {
     id: 'beauty',
-    label: 'beauty',
+    label: 'Beauty',
     path: '/browse/beauty',
   },
 ];

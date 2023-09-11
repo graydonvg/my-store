@@ -18,10 +18,6 @@ export default function NavbarMenu({ path, label }: NavbarMenuProps) {
     setAnchorEl(event.currentTarget);
   }
 
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-
   let timeoutId: NodeJS.Timeout | null = null;
 
   const handleClose = () => {
@@ -54,7 +50,6 @@ export default function NavbarMenu({ path, label }: NavbarMenuProps) {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           sx={{ ...navbarButtonStyles, zIndex: (theme) => theme.zIndex.modal + 1 }}
-          // onClick={handleOpen}
           onMouseEnter={handleOpen}
           onMouseLeave={handleClose}>
           {label}

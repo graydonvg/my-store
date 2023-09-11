@@ -29,7 +29,7 @@ export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionPr
               primary={label}
               sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
             />
-            <ArrowForwardIosIcon sx={{ marginRight: 2 }} />
+            <ArrowForwardIosIcon sx={{ marginRight: 2, color: 'navDrawer.bodyText' }} />
           </ListItemButton>
         </ListItem>
       </Link>

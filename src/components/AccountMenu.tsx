@@ -86,7 +86,7 @@ export default function AccountMenu({ userRole, isAdminView }: AccountMenuProps)
             id="account-menu"
             open={open}
             MenuListProps={{ onMouseLeave: handleClose }}
-            sx={{ marginRight: 20 }}
+            sx={{ marginRight: 20, zIndex: (theme) => theme.zIndex.modal + 1 }}
             slotProps={{
               paper: {
                 elevation: 0,

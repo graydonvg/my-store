@@ -34,7 +34,7 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: 68.5,
+          height: '48px',
         }}>
         <Typography
           color="navDrawer.headerText"
@@ -83,7 +83,7 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
                   primary={'Sign Out'}
                   sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
                 />
-                <ArrowForwardIosIcon sx={{ marginRight: 2 }} />
+                <ArrowForwardIosIcon sx={{ marginRight: 2, color: 'navDrawer.bodyText' }} />
               </ListItemButton>
             </ListItem>
             <Divider />
