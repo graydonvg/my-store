@@ -11,6 +11,7 @@ type NavDrawerNavOptionProps = {
 
 export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionProps) {
   const dispatch = useAppDispatch();
+  const marginX = 2;
 
   function closeDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));
@@ -27,9 +28,9 @@ export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionPr
           <ListItemButton disableGutters>
             <ListItemText
               primary={label}
-              sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
+              sx={{ color: 'navDrawer.bodyText', marginLeft: marginX }}
             />
-            <ArrowForwardIosIcon sx={{ marginRight: 2, color: 'navDrawer.bodyText' }} />
+            <ArrowForwardIosIcon sx={{ marginRight: marginX, color: 'navDrawer.bodyText' }} />
           </ListItemButton>
         </ListItem>
       </Link>

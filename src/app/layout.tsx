@@ -3,12 +3,15 @@ import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import AuthStateListener from '@/components/AuthStateListener';
+import ModalComponent from '@/components/ModalComponent';
+import DrawerComponent from '@/components/DrawerComponent';
+import NavDrawerContent from '@/components/NavDrawer/NavDrawerContent';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -22,8 +25,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           <Navbar />
           <main>
-            <Container>{children}</Container>
+            <Container maxWidth="lg">{children}</Container>
           </main>
+          <ModalComponent />
+          <DrawerComponent>
+            <NavDrawerContent />
+          </DrawerComponent>
           <AuthStateListener />
         </Providers>
       </body>

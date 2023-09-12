@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
-import { grey } from '@mui/material/colors';
+import { blue, green, grey } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 
 const getDesignTokens = (mode: 'light' | 'dark') => ({
@@ -33,23 +33,28 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             // default: grey[200],
             // paper: grey[200],
           },
-          navbarUpper: {
+          upperNavbar: {
+            background: '#2e3131',
+            text: '#ffffff',
+            primaryIcon: '#ffffff',
+            secondaryIcon: '#1976d2',
+          },
+          lowerNavbar: {
+            background: '#f2f2f2',
+            text: grey[700],
+            primaryIcon: '#ffffff',
+            secondaryIcon: '#1976d2',
+          },
+          dropdownMenu: {
             background: '#2e3131',
             text: '#ffffff',
             icon: '#ffffff',
-            iconHover: grey[800],
-          },
-          navbarLower: {
-            background: '#f2f2f2',
-            text: grey[700],
-            icon: grey[700],
-            menuItemHover: grey[800],
-            menuItemText: '#ffffff',
+            hover: grey[800],
           },
           navDrawer: {
             headerBackground: '#2e3131',
             headerText: '#ffffff',
-            bodyBackground: '#ffffff',
+            bodyBackground: '#f2f2f2',
             bodyText: grey[700],
           },
         }
@@ -59,17 +64,22 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             default: grey[700],
             paper: grey[900],
           },
-          navbarUpper: {
+          upperNavbar: {
             background: grey[900],
             text: '#ffffff',
-            icon: '#ffffff',
+            primaryIcon: '#ffffff',
+            secondaryIcon: '#1976d2',
           },
-          navbarLower: {
+          lowerNavbar: {
             background: grey[800],
             text: '#ffffff',
+            primaryIcon: '#ffffff',
+            secondaryIcon: '#1976d2',
+          },
+          dropdownMenu: {
+            text: '#ffffff',
             icon: '#ffffff',
-            menuItemHover: grey[800],
-            menuItemText: '#ffffff',
+            hover: grey[800],
           },
           navDrawer: {
             headerBackground: grey[900],

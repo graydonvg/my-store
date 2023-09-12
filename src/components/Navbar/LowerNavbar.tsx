@@ -7,18 +7,18 @@ import { ShoppingBasket, Menu } from '@mui/icons-material';
 import { DrawerAnchor } from '@/types';
 import NavbarOptions from './NavbarOptions';
 
-type NavbarLowerProps = { user: { role: string } };
-
-export default function NavbarLower({ user }: NavbarLowerProps) {
+export default function LowerNavbar() {
   return (
     <AppBar
       elevation={0}
       position="static"
-      sx={{ backgroundColor: 'navbarLower.background' }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      sx={{ backgroundColor: 'lowerNavbar.background' }}>
+      <Container maxWidth="lg">
+        <Toolbar
+          disableGutters
+          sx={{ height: 64 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <ShoppingBasket sx={{ mr: 1, color: 'navbarLower.icon' }} />
+            <ShoppingBasket sx={{ mr: 1, color: 'lowerNavbar.secondaryIcon' }} />
             <Typography
               tabIndex={-1}
               variant="h6"
@@ -29,15 +29,14 @@ export default function NavbarLower({ user }: NavbarLowerProps) {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'navbarLower.text',
+                color: 'lowerNavbar.text',
                 textDecoration: 'none',
               }}>
               MyStore
             </Typography>
           </Box>
-
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <NavbarOptions user={user} />
+            <NavbarOptions />
           </Box>
         </Toolbar>
       </Container>

@@ -6,15 +6,11 @@ import { Box, IconButton, List, Typography, ListItem, ListItemButton, ListItemTe
 import DrawerNavOption from './NavDrawerOption';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { adminNavOptions, navOptions } from '@/lib/utils';
+import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
-import { upperNavbarIconStyles } from '@/lib/styles';
+import { drawerContentMarginX, navbarAndNavDrawerHeaderHeightXs, upperNavbarPrimaryIconStyles } from '@/lib/styles';
 
-type NavDrawerContentType = {
-  userRole: { role: string };
-};
-
-export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
+export default function NavDrawerContent() {
   const currenUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
 
@@ -26,7 +22,6 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
     signOutUser();
     dispatch(setIsDrawerOpen({ left: false }));
   }
-
   return (
     <>
       <Box
@@ -35,18 +30,18 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: '42px',
+          height: navbarAndNavDrawerHeaderHeightXs,
         }}>
         <Typography
           color="navDrawer.headerText"
           variant="h5"
           component="span"
-          sx={{ marginLeft: 1 }}>
+          sx={{ marginLeft: drawerContentMarginX }}>
           Menu
         </Typography>
         <IconButton
           size="small"
-          sx={{ ...upperNavbarIconStyles, marginRight: 2 }}
+          sx={{ ...upperNavbarPrimaryIconStyles, marginRight: drawerContentMarginX }}
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
         </IconButton>
@@ -54,21 +49,13 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
       <List
         disablePadding
         sx={{ width: '100vw' }}>
-        {userRole.role === 'admin'
-          ? adminNavOptions.map((option) => (
-              <DrawerNavOption
-                key={option.id}
-                label={option.label}
-                path={option.path}
-              />
-            ))
-          : navOptions.map((option) => (
-              <DrawerNavOption
-                key={option.id}
-                label={option.label}
-                path={option.path}
-              />
-            ))}
+        {navOptions.map((option) => (
+          <DrawerNavOption
+            key={option.id}
+            label={option.label}
+            path={option.path}
+          />
+        ))}
         {currenUser ? (
           <>
             <DrawerNavOption
@@ -82,9 +69,9 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
               <ListItemButton disableGutters>
                 <ListItemText
                   primary={'Sign Out'}
-                  sx={{ color: 'navDrawer.bodyText', marginLeft: 1 }}
+                  sx={{ color: 'navDrawer.bodyText', marginLeft: drawerContentMarginX }}
                 />
-                <ArrowForwardIosIcon sx={{ marginRight: 2, color: 'navDrawer.bodyText' }} />
+                <ArrowForwardIosIcon sx={{ marginRight: drawerContentMarginX, color: 'navDrawer.bodyText' }} />
               </ListItemButton>
             </ListItem>
             <Divider />
