@@ -1,7 +1,11 @@
 export const navbarButtonStyles = {
-  my: 2,
+  my: 1,
   display: 'block',
-  color: 'navbar.text',
   whiteSpace: 'nowrap',
   '&:hover': { backgroundColor: 'inherit' },
+};
+
+export const upperNavbarIconStyles = {
+  color: 'navbarUpper.icon',
+  '&:hover': { backgroundColor: 'navbarUpper.iconHover' },
 };

@@ -26,7 +26,7 @@ import NavDrawerContent from './NavDrawerContent';
 import ModalComponent from './Modal';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { useEffect } from 'react';
-import { navbarButtonStyles } from '@/lib/styles';
+import { navbarButtonStyles, upperNavbarIconStyles } from '@/lib/styles';
 
 type NavbarUpperProps = {
   isAdminView: boolean;
@@ -56,7 +56,7 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
     <AppBar
       elevation={0}
       position="static"
-      color="secondary">
+      sx={{ backgroundColor: 'navbarUpper.background' }}>
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
@@ -64,8 +64,8 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
           sx={{ justifyContent: { xs: 'space-between', md: 'flex-end', height: '42px' } }}>
           <Box sx={{ display: { xs: 'block', md: 'none' } }}>
             <IconButton
-              sx={{ color: 'navbar.icon' }}
-              size="large"
+              sx={upperNavbarIconStyles}
+              size="small"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
@@ -74,7 +74,7 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-            <ShoppingBasket sx={{ marginRight: 1, color: 'navbar.icon' }} />
+            <ShoppingBasket sx={{ marginRight: 1, color: 'navbarUpper.icon' }} />
             <Typography
               tabIndex={-1}
               variant="h5"
@@ -85,7 +85,7 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'navbar.text',
+                color: 'navbarUpper.text',
                 textDecoration: 'none',
               }}>
               MyStore
@@ -109,8 +109,8 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
                       ],
                     }}>
                     <IconButton
-                      size="large"
-                      sx={{ color: 'navbar.icon' }}>
+                      size="small"
+                      sx={{ color: 'navbarUpper.icon' }}>
                       <ShoppingCart aria-label="Shopping cart" />
                     </IconButton>
                   </Tooltip>
@@ -126,21 +126,21 @@ export default function NavbarUpper({ isAdminView, user }: NavbarUpperProps) {
                   <IconButton
                     onClick={changeTheme}
                     size="small"
-                    sx={{ color: 'navbar.icon' }}>
+                    sx={upperNavbarIconStyles}>
                     <Brightness7Icon fontSize="small" />
                   </IconButton>
                 ) : (
                   <IconButton
                     onClick={changeTheme}
                     size="small"
-                    sx={{ color: 'navbar.icon' }}>
+                    sx={upperNavbarIconStyles}>
                     <Brightness4Icon fontSize="small" />
                   </IconButton>
                 )}
                 <Button
                   onClick={() => handleModal('signIn')}
                   disableTouchRipple
-                  sx={{ ...navbarButtonStyles, margin: 0 }}>
+                  sx={{ ...navbarButtonStyles, margin: 0, color: 'navbarUpper.text' }}>
                   Sign In
                 </Button>
               </Box>

@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { adminNavOptions, navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
+import { upperNavbarIconStyles } from '@/lib/styles';
 
 type NavDrawerContentType = {
   userRole: { role: string };
@@ -34,7 +35,7 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: '48px',
+          height: '42px',
         }}>
         <Typography
           color="navDrawer.headerText"
@@ -44,8 +45,8 @@ export default function NavDrawerContent({ userRole }: NavDrawerContentType) {
           Menu
         </Typography>
         <IconButton
-          size="large"
-          sx={{ color: 'navDrawer.headerText', marginRight: 1 }}
+          size="small"
+          sx={{ ...upperNavbarIconStyles, marginRight: 2 }}
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
         </IconButton>

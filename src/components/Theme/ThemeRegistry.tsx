@@ -26,34 +26,55 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
     ...(mode === 'light'
       ? {
           // palette values for light mode
-
-          navbar: {
-            background: '#1976d2',
+          action: {
+            // hover: 'green',
+          },
+          background: {
+            // default: grey[200],
+            // paper: grey[200],
+          },
+          navbarUpper: {
+            background: '#2e3131',
             text: '#ffffff',
             icon: '#ffffff',
+            iconHover: grey[800],
+          },
+          navbarLower: {
+            background: '#f2f2f2',
+            text: grey[700],
+            icon: grey[700],
+            menuItemHover: grey[800],
+            menuItemText: '#ffffff',
           },
           navDrawer: {
-            headerBackground: '#1976d2',
+            headerBackground: '#2e3131',
             headerText: '#ffffff',
             bodyBackground: '#ffffff',
-            bodyText: grey[900],
+            bodyText: grey[700],
           },
         }
       : {
           // palette values for dark mode
           background: {
-            default: grey[800],
+            default: grey[700],
             paper: grey[900],
           },
-          navbar: {
+          navbarUpper: {
             background: grey[900],
             text: '#ffffff',
             icon: '#ffffff',
           },
+          navbarLower: {
+            background: grey[800],
+            text: '#ffffff',
+            icon: '#ffffff',
+            menuItemHover: grey[800],
+            menuItemText: '#ffffff',
+          },
           navDrawer: {
             headerBackground: grey[900],
             headerText: '#ffffff',
-            bodyBackground: grey[800],
+            bodyBackground: grey[700],
             bodyText: '#ffffff',
           },
         }),

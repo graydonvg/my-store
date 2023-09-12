@@ -64,15 +64,11 @@ export default function SignInForm() {
         alignItems: 'center',
       }}>
       <Box sx={{ height: '4px', width: 1, mb: 2 }}>{isLoading ? <LinearProgress sx={{ width: 1 }} /> : null}</Box>
-      <Avatar sx={{ m: 1 }}>
-        <LockOutlinedIcon />
-      </Avatar>
       <Typography
         component="h2"
         variant="h5">
         Sign in
       </Typography>
-
       <Box
         component="form"
         onSubmit={handleSignIn}

@@ -18,11 +18,6 @@ export const navOptions = [
     path: '/browse/men',
   },
   {
-    id: 'smartphones',
-    label: 'Smartphones',
-    path: '/browse/smartphones',
-  },
-  {
     id: 'electronics',
     label: 'Electronics',
     path: '/browse/tech',

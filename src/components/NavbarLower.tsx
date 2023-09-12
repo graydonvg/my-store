@@ -13,11 +13,12 @@ export default function NavbarLower({ user }: NavbarLowerProps) {
   return (
     <AppBar
       elevation={0}
-      position="static">
+      position="static"
+      sx={{ backgroundColor: 'navbarLower.background' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <ShoppingBasket sx={{ mr: 1, color: 'navbar.icon' }} />
+            <ShoppingBasket sx={{ mr: 1, color: 'navbarLower.icon' }} />
             <Typography
               tabIndex={-1}
               variant="h6"
@@ -28,7 +29,7 @@ export default function NavbarLower({ user }: NavbarLowerProps) {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
-                color: 'navbar.text',
+                color: 'navbarLower.text',
                 textDecoration: 'none',
               }}>
               MyStore
