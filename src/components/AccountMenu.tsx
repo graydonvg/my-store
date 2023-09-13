@@ -5,7 +5,9 @@ import { ViewList, Logout, ArrowDropDown, AccountCircle } from '@mui/icons-mater
 import { ThemeToggle } from './Theme/ThemeToggle';
 import { signOutUser } from '@/lib/firebase';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { dropdownMenuItemStyles, upperNavbarOptions } from '@/lib/styles';
+import { dropdownMenuItemStyles } from '@/lib/styles';
+import CustomButton from './ui/CustomButton';
+import UpperNavbarOptionsContainer from './Navbar/UpperNavbarOptionsContainer';
 
 const accountMenuOptions = ['My Account', 'Orders', 'Sign Out'];
 
@@ -80,9 +82,7 @@ export default function AccountMenu() {
                 </MenuItem>
               </>
             }>
-            <Box
-              component="button"
-              sx={upperNavbarOptions}>
+            <UpperNavbarOptionsContainer>
               <Typography
                 component="span"
                 sx={{
@@ -91,7 +91,7 @@ export default function AccountMenu() {
                 {(currenUser && firstName) ?? 'Account'}
               </Typography>
               <ArrowDropDown sx={{ color: 'upperNavbar.secondaryIcon' }} />
-            </Box>
+            </UpperNavbarOptionsContainer>
           </Tooltip>
         </>
       ) : null}

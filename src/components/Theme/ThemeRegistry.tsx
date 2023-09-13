@@ -77,6 +77,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             secondaryIcon: '#1976d2',
           },
           dropdownMenu: {
+            background: grey[900],
             text: '#ffffff',
             icon: '#ffffff',
             hover: grey[800],

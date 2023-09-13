@@ -25,12 +25,12 @@ export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionPr
         <ListItem
           disablePadding
           onClick={closeDrawer}>
-          <ListItemButton disableGutters>
+          <ListItemButton>
             <ListItemText
               primary={label}
-              sx={{ color: 'navDrawer.bodyText', marginLeft: marginX }}
+              sx={{ color: 'navDrawer.bodyText' }}
             />
-            <ArrowForwardIosIcon sx={{ marginRight: marginX, color: 'navDrawer.bodyText' }} />
+            <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
           </ListItemButton>
         </ListItem>
       </Link>

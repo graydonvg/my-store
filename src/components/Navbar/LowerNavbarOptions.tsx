@@ -1,15 +1,15 @@
 import { navOptions } from '@/lib/utils';
-import NavbarOptionMenu from './NavbarOptionMenu';
+import LowerNavbarOptionMenu from './LowerNavbarOptionMenu';
 import Divider from '@mui/material/Divider';
 
-export default function NavbarOptions() {
+export default function LowerNavbarOptions() {
   const lastNavOption = navOptions.length - 1;
   return (
     <>
       {navOptions.map((option, index) => {
         return (
           <>
-            <NavbarOptionMenu
+            <LowerNavbarOptionMenu
               key={option.id}
               label={option.label}
               path={option.path}

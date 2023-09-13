@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
-import { drawerContentMarginX, navbarAndNavDrawerHeaderHeightXs, upperNavbarPrimaryIconStyles } from '@/lib/styles';
+import { navbarAndNavDrawerHeaderHeightXs, upperNavbarPrimaryIconStyles } from '@/lib/styles';
 
 export default function NavDrawerContent() {
   const currenUser = useAppSelector((state) => state.user.currentUser);
@@ -30,18 +30,19 @@ export default function NavDrawerContent() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          paddingX: 2,
           height: navbarAndNavDrawerHeaderHeightXs,
         }}>
         <Typography
           color="navDrawer.headerText"
           variant="h5"
-          component="span"
-          sx={{ marginLeft: drawerContentMarginX }}>
+          component="span">
           Menu
         </Typography>
         <IconButton
           size="small"
-          sx={{ ...upperNavbarPrimaryIconStyles, marginRight: drawerContentMarginX }}
+          sx={{ ...upperNavbarPrimaryIconStyles }}
+          aria-label="open drawer"
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
         </IconButton>
@@ -66,12 +67,12 @@ export default function NavDrawerContent() {
             <ListItem
               disablePadding
               onClick={handleSignOut}>
-              <ListItemButton disableGutters>
+              <ListItemButton>
                 <ListItemText
                   primary={'Sign Out'}
-                  sx={{ color: 'navDrawer.bodyText', marginLeft: drawerContentMarginX }}
+                  sx={{ color: 'navDrawer.bodyText' }}
                 />
-                <ArrowForwardIosIcon sx={{ marginRight: drawerContentMarginX, color: 'navDrawer.bodyText' }} />
+                <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
               </ListItemButton>
             </ListItem>
             <Divider />

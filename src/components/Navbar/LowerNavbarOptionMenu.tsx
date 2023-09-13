@@ -1,20 +1,20 @@
-import { dropdownMenuItemStyles, lowerNavbarButtonStyles } from '@/lib/styles';
-import { Button, Tooltip, Typography, MenuItem } from '@mui/material';
-import Link from 'next/link';
+import { dropdownMenuItemStyles } from '@/lib/styles';
+import { Tooltip, MenuItem } from '@mui/material';
+import CustomButton from '../ui/CustomButton';
 
-type NavbarOptionMenuProps = {
+type LowerNavbarOptionMenuProps = {
   path: string;
   label: string;
 };
 
-export default function NavbarOptionMenu({ path, label }: NavbarOptionMenuProps) {
+export default function LowerNavbarOptionMenu({ path, label }: LowerNavbarOptionMenuProps) {
   return (
     <Tooltip
       arrow
       slotProps={{
         arrow: {
           sx: {
-            color: 'upperNavbar.background',
+            color: 'dropdownMenu.background',
           },
         },
         popper: {
@@ -30,7 +30,7 @@ export default function NavbarOptionMenu({ path, label }: NavbarOptionMenuProps)
         tooltip: {
           sx: {
             padding: 1,
-            backgroundColor: 'upperNavbar.background',
+            backgroundColor: 'dropdownMenu.background',
             maxWidth: 220,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
@@ -46,7 +46,11 @@ export default function NavbarOptionMenu({ path, label }: NavbarOptionMenuProps)
           <MenuItem sx={dropdownMenuItemStyles}>Socks</MenuItem>
         </>
       }>
-      <Button sx={{ ...lowerNavbarButtonStyles }}>{label}</Button>
+      <CustomButton
+        textColor="lowerNavbar.text"
+        hoverBackgroundColor="lowerNavbar.background"
+        content={label}
+      />
     </Tooltip>
   );
 }
