@@ -1,5 +1,24 @@
+import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
+import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+type ElevationScrollProps = { children: ReactElement<any, string | JSXElementConstructor<any>> };
+export function ElevationScroll({ children }: ElevationScrollProps) {
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    // target: window ? window() : undefined,
+  });
+
+  return cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const navOptions = [
   {
@@ -34,6 +53,8 @@ export const navOptions = [
   },
 ];
 
+export type NavOptionsType = (typeof navOptions)[0];
+
 // export const adminNavOptions = [
 //   {
 //     id: 'adminListing',
@@ -46,9 +67,3 @@ export const navOptions = [
 //     path: '/admin-view/add-product',
 //   },
 // ];
-
-export type NavOptionsType = (typeof navOptions)[0];
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}

@@ -1,13 +1,12 @@
 'use client';
 
-import { MenuItem, ListItemIcon, Tooltip, useMediaQuery, useTheme, Typography, Box } from '@mui/material';
-import { ViewList, Logout, ArrowDropDown, AccountCircle } from '@mui/icons-material';
+import { Tooltip, useMediaQuery, useTheme, Typography } from '@mui/material';
+import { ArrowDropDown } from '@mui/icons-material';
 import { ThemeToggle } from './Theme/ThemeToggle';
 import { signOutUser } from '@/lib/firebase';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { dropdownMenuItemStyles } from '@/lib/styles';
-import CustomButton from './ui/CustomButton';
 import UpperNavbarOptionsContainer from './Navbar/UpperNavbarOptionsContainer';
+import DropdownMenuItem from './ui/DropdownMenuItem';
 
 const accountMenuOptions = ['My Account', 'Orders', 'Sign Out'];
 
@@ -50,36 +49,14 @@ export default function AccountMenu() {
             }}
             title={
               <>
-                <MenuItem sx={dropdownMenuItemStyles}>
-                  <ListItemIcon>
-                    <AccountCircle
-                      fontSize="small"
-                      sx={{ color: 'dropdownMenu.icon' }}
-                    />
-                  </ListItemIcon>
-                  My account
-                </MenuItem>
-                <MenuItem sx={dropdownMenuItemStyles}>
-                  <ListItemIcon>
-                    <ViewList
-                      fontSize="small"
-                      sx={{ color: 'dropdownMenu.icon' }}
-                    />
-                  </ListItemIcon>
-                  Orders
-                </MenuItem>
                 <ThemeToggle />
-                <MenuItem
-                  onClick={handleSignOut}
-                  sx={dropdownMenuItemStyles}>
-                  <ListItemIcon>
-                    <Logout
-                      fontSize="small"
-                      sx={{ color: 'dropdownMenu.icon' }}
-                    />
-                  </ListItemIcon>
-                  Sign Out
-                </MenuItem>
+                {accountMenuOptions.map((option, index) => (
+                  <DropdownMenuItem
+                    key={index}
+                    showIcons={true}
+                    menuItemText={option}
+                  />
+                ))}
               </>
             }>
             <UpperNavbarOptionsContainer>

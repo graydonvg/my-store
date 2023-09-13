@@ -6,10 +6,11 @@ export default async function Home() {
     <>
       <Typography
         variant="h4"
-        component="h1">
+        component="h1"
+        sx={{ textAlign: 'center', paddingTop: 5 }}>
         My E-commerce Website
       </Typography>
-      {/* <Products /> */}
+      <Products />
     </>
   );
 }

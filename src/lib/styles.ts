@@ -8,9 +8,4 @@ export const upperNavbarSecondaryIconStyles = {
   '&:hover': { backgroundColor: 'upperNavbar.background' },
 };
 
-export const dropdownMenuItemStyles = {
-  color: 'dropdownMenu.text',
-  '&:hover': { backgroundColor: 'dropdownMenu.hover' },
-};
-
 export const navbarAndNavDrawerHeaderHeightXs = '64px';

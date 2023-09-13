@@ -1,11 +1,13 @@
-import { dropdownMenuItemStyles } from '@/lib/styles';
-import { Tooltip, MenuItem } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import CustomButton from '../ui/CustomButton';
+import DropdownMenuItem from '../ui/DropdownMenuItem';
 
 type LowerNavbarOptionMenuProps = {
   path: string;
   label: string;
 };
+
+const lowerNavbarMenuOptions = ['T-Shirts', 'Pants', 'Shoes', 'Hats', 'Socks'];
 
 export default function LowerNavbarOptionMenu({ path, label }: LowerNavbarOptionMenuProps) {
   return (
@@ -39,11 +41,13 @@ export default function LowerNavbarOptionMenu({ path, label }: LowerNavbarOption
       }}
       title={
         <>
-          <MenuItem sx={dropdownMenuItemStyles}>T-Shirts</MenuItem>
-          <MenuItem sx={dropdownMenuItemStyles}>Pants</MenuItem>
-          <MenuItem sx={dropdownMenuItemStyles}>Shoes</MenuItem>
-          <MenuItem sx={dropdownMenuItemStyles}>Hats</MenuItem>
-          <MenuItem sx={dropdownMenuItemStyles}>Socks</MenuItem>
+          {lowerNavbarMenuOptions.map((option, index) => (
+            <DropdownMenuItem
+              key={index}
+              showIcons={false}
+              menuItemText={option}
+            />
+          ))}
         </>
       }>
       <CustomButton

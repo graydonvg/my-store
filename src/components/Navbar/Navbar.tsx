@@ -2,10 +2,11 @@
 
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { Box, useTheme, useMediaQuery } from '@mui/material';
+import { AppBar, Box, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
 import LowerNavbar from './LowerNavbar';
 import UpperNavbar from './UpperNavbar';
+import { ElevationScroll } from '@/lib/utils';
 
 export default function Navbar() {
   const dispatch = useAppDispatch();
@@ -17,11 +18,15 @@ export default function Navbar() {
   }, [isBelowMedium, dispatch]);
 
   return (
-    <>
-      <UpperNavbar />
-      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <LowerNavbar />
-      </Box>
-    </>
+    <ElevationScroll>
+      <AppBar
+        elevation={0}
+        position="sticky">
+        <UpperNavbar />
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+          <LowerNavbar />
+        </Box>
+      </AppBar>
+    </ElevationScroll>
   );
 }

@@ -16,9 +16,7 @@ export default function LowerNavbar() {
           display="flex"
           color="lowerNavbar.text"
         />
-        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <LowerNavbarOptions />
-        </Box>
+        <LowerNavbarOptions />
       </Toolbar>
     </NavbarContainer>
   );

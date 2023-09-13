@@ -2,7 +2,17 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { Box, IconButton, List, Typography, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  List,
+  Typography,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Toolbar,
+} from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -24,13 +34,13 @@ export default function NavDrawerContent() {
   }
   return (
     <>
-      <Box
+      <Toolbar
+        variant="regular"
         sx={{
           backgroundColor: 'navDrawer.headerBackground',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingX: 2,
           height: navbarAndNavDrawerHeaderHeightXs,
         }}>
         <Typography
@@ -46,7 +56,7 @@ export default function NavDrawerContent() {
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
         </IconButton>
-      </Box>
+      </Toolbar>
       <List
         disablePadding
         sx={{ width: '100vw' }}>

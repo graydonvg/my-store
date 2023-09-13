@@ -7,7 +7,6 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import { dropdownMenuItemStyles } from '@/lib/styles';
 
 export function ThemeToggle() {
   const dispatch = useAppDispatch();
@@ -21,7 +20,10 @@ export function ThemeToggle() {
   return (
     <MenuItem
       onClick={changeTheme}
-      sx={dropdownMenuItemStyles}>
+      sx={{
+        color: 'dropdownMenu.text',
+        '&:hover': { backgroundColor: 'dropdownMenu.hover' },
+      }}>
       <ListItemIcon>
         {mode === 'dark' ? (
           <Brightness4Icon

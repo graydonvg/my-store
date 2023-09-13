@@ -78,7 +78,7 @@ export default function UpperNavbar() {
               <AccountMenu />
             </>
           ) : (
-            <Box>
+            <UpperNavbarOptionsContainer>
               {mode === 'dark' ? (
                 <IconButton
                   onClick={changeTheme}
@@ -100,7 +100,7 @@ export default function UpperNavbar() {
                 hoverBackgroundColor="upperNavbar.background"
                 content="Sign In"
               />
-            </Box>
+            </UpperNavbarOptionsContainer>
           )}
         </Box>
       </Toolbar>
