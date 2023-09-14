@@ -27,7 +27,7 @@ export default function HoverDropdownMenu({
   const open = Boolean(anchorEl);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+    !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   };
 
   let timeoutId: NodeJS.Timeout | null = null;
@@ -38,7 +38,7 @@ export default function HoverDropdownMenu({
     }
     timeoutId = setTimeout(() => {
       setAnchorEl(null);
-    }, 200);
+    }, 0);
   };
 
   const handleMenuClose = () => {
@@ -54,6 +54,7 @@ export default function HoverDropdownMenu({
   return (
     <>
       <Button
+        tabIndex={0}
         disableTouchRipple
         sx={{
           display: 'flex',
@@ -74,6 +75,7 @@ export default function HoverDropdownMenu({
         sx={{
           '& .MuiMenu-paper': {
             padding: 1,
+            paddingTop: 0,
             backgroundColor: 'upperNavbar.background',
             maxWidth: 220,
             borderTopLeftRadius: 0,
