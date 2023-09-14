@@ -1,23 +1,28 @@
 'use client';
 
-import { Box, Toolbar } from '@mui/material';
+import { AppBar, Container, Toolbar } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
 import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
-import NavbarContainer from '../NavbarContainer';
 
 export default function LowerNavbar() {
   return (
-    <NavbarContainer backgroundColor="lowerNavbar.background">
-      <Toolbar
-        disableGutters
-        sx={{ height: 64 }}>
-        <NavbarTitleAndLogo
-          variant="h6"
-          display="flex"
-          color="lowerNavbar.text"
-        />
-        <LowerNavbarOptions />
-      </Toolbar>
-    </NavbarContainer>
+    <AppBar
+      component="div"
+      elevation={0}
+      position="sticky"
+      sx={{ backgroundColor: 'lowerNavbar.background', zIndex: 1 }}>
+      <Container maxWidth="lg">
+        <Toolbar
+          disableGutters
+          sx={{ height: 64 }}>
+          <NavbarTitleAndLogo
+            variant="h6"
+            display="flex"
+            color="lowerNavbar.text"
+          />
+          <LowerNavbarOptions />
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
