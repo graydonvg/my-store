@@ -11,7 +11,6 @@ type NavDrawerNavOptionProps = {
 
 export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionProps) {
   const dispatch = useAppDispatch();
-  const marginX = 2;
 
   function closeDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));

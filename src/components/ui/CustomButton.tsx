@@ -2,26 +2,28 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import { ReactNode, forwardRef } from 'react';
 
 type CustomButtonProps = ButtonProps & {
+  paddingX?: number;
   textColor?: string;
   hoverBackgroundColor: string;
-  content?: ReactNode;
+  children?: ReactNode;
 };
 
 const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(function MyComponent(props, ref) {
-  const { content, textColor, hoverBackgroundColor } = props;
+  const { children, textColor, paddingX, hoverBackgroundColor } = props;
   return (
     <Button
       disableTouchRipple
       sx={{
-        display: 'block',
+        display: 'flex',
         whiteSpace: 'nowrap',
         color: textColor,
         margin: 0,
         '&:hover': { backgroundColor: hoverBackgroundColor },
+        paddingX,
       }}
       {...props}
       ref={ref}>
-      {content}
+      {children}
     </Button>
   );
 });

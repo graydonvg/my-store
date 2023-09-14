@@ -6,6 +6,8 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, updateUserProfile } from '@/lib/firebase';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { CurrentUserType } from '@/types';
+import ModalProgressBar from '../ui/ModalProgressBar';
+import FormTitle from './FormTitle';
 
 const defaultFromFields = {
   firstName: '',
@@ -64,16 +66,12 @@ export default function SignUpForm() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-      <Box sx={{ height: '4px', width: 1, mb: 2 }}>{isLoading ? <LinearProgress sx={{ width: 1 }} /> : null}</Box>
-      <Typography
-        component="h2"
-        variant="h5">
-        Sign up
-      </Typography>
+      <ModalProgressBar isLoading={isLoading} />
+      <FormTitle text="Sign up" />
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ mt: 3 }}>
+        sx={{ mt: 1 }}>
         <Grid
           container
           spacing={2}>

@@ -2,23 +2,17 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import {
-  Box,
-  IconButton,
-  List,
-  Typography,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  Toolbar,
-} from '@mui/material';
+import { IconButton, List, Typography, ListItem, ListItemButton, ListItemText, Divider, Toolbar } from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
-import { navbarAndNavDrawerHeaderHeightXs, upperNavbarPrimaryIconStyles } from '@/lib/styles';
+
+const iconStyles = {
+  color: 'upperNavbar.primaryIcon',
+  '&:hover': { backgroundColor: 'upperNavbar.background' },
+};
 
 export default function NavDrawerContent() {
   const currenUser = useAppSelector((state) => state.user.currentUser);
@@ -51,7 +45,7 @@ export default function NavDrawerContent() {
         </Typography>
         <IconButton
           size="small"
-          sx={{ ...upperNavbarPrimaryIconStyles }}
+          sx={iconStyles}
           aria-label="open drawer"
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />

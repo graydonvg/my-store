@@ -57,6 +57,9 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             bodyBackground: '#f2f2f2',
             bodyText: grey[700],
           },
+          modal: {
+            background: '#f2f2f2',
+          },
         }
       : {
           // palette values for dark mode
@@ -87,6 +90,9 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             headerText: '#ffffff',
             bodyBackground: grey[700],
             bodyText: '#ffffff',
+          },
+          modal: {
+            background: grey[900],
           },
         }),
   },

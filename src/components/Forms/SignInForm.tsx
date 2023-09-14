@@ -7,6 +7,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
+import ModalProgressBar from '../ui/ModalProgressBar';
+import FormTitle from './FormTitle';
 
 const defaultFromFields = {
   email: '',
@@ -63,12 +65,8 @@ export default function SignInForm() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-      <Box sx={{ height: '4px', width: 1, mb: 2 }}>{isLoading ? <LinearProgress sx={{ width: 1 }} /> : null}</Box>
-      <Typography
-        component="h2"
-        variant="h5">
-        Sign in
-      </Typography>
+      <ModalProgressBar isLoading={isLoading} />
+      <FormTitle text="Sign in" />
       <Box
         component="form"
         onSubmit={handleSignIn}

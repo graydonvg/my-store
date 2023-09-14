@@ -3,8 +3,8 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
 import { Box, Modal, Grow } from '@mui/material';
-import SignInForm from './SignInForm';
-import SignUpForm from './SignUpForm';
+import SignInForm from './Forms/SignInForm';
+import SignUpForm from './Forms/SignUpForm';
 
 const style = {
   position: 'absolute',
@@ -12,7 +12,7 @@ const style = {
   left: '50%',
   translate: '-50% -50%',
   width: { xs: 300, sm: 400 },
-  bgcolor: 'background.paper',
+  backgroundColor: 'modal.background',
   boxShadow: 24,
   p: 4,
 };
@@ -27,19 +27,17 @@ export default function ModalComponent() {
   }
 
   return (
-    <>
-      <Modal
-        closeAfterTransition
-        open={isModalOpen}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Grow in={isModalOpen}>
-          <Box sx={style}>
-            {modalContent === 'signIn' ? <SignInForm /> : modalContent === 'signUp' ? <SignUpForm /> : null}
-          </Box>
-        </Grow>
-      </Modal>
-    </>
+    <Modal
+      closeAfterTransition
+      open={isModalOpen}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description">
+      <Grow in={isModalOpen}>
+        <Box sx={style}>
+          {modalContent === 'signIn' ? <SignInForm /> : modalContent === 'signUp' ? <SignUpForm /> : null}
+        </Box>
+      </Grow>
+    </Modal>
   );
 }

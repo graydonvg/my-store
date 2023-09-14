@@ -10,12 +10,11 @@ const UpperNavbarOptionsContainer = forwardRef<HTMLButtonElement, UpperNavbarOpt
     const { children } = props;
     return (
       <Box
-        component="button"
+        tabIndex={-1}
         sx={{
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          paddingX: 2,
         }}
         {...props}
         ref={ref}>

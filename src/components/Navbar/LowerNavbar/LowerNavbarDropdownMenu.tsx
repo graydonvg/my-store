@@ -1,5 +1,5 @@
 import { Tooltip } from '@mui/material';
-import CustomButton from '../ui/CustomButton';
+import CustomButton from '../../ui/CustomButton';
 import LowerNavbarDropdownMenuItem from './LowerNavbarDropdownMenuItem';
 
 type LowerNavbarDropdownMenuProps = {
@@ -51,9 +51,9 @@ export default function LowerNavbarDropdownMenu({ path, label }: LowerNavbarDrop
       }>
       <CustomButton
         textColor="lowerNavbar.text"
-        hoverBackgroundColor="lowerNavbar.background"
-        content={label}
-      />
+        hoverBackgroundColor="lowerNavbar.background">
+        {label}
+      </CustomButton>
     </Tooltip>
   );
 }

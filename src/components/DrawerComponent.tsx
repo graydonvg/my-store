@@ -6,11 +6,11 @@ import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor } from '@/types';
 
-type TemporaryDrawerProps = {
+type DrawerComponentProps = {
   children: ReactNode;
 };
 
-export default function DrawerComponent({ children }: TemporaryDrawerProps) {
+export default function DrawerComponent({ children }: DrawerComponentProps) {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
   const dispatch = useAppDispatch();
 
