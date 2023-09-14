@@ -1,14 +1,18 @@
 'use client';
 
-import { Tooltip, useMediaQuery, useTheme, Typography } from '@mui/material';
-import { ArrowDropDown } from '@mui/icons-material';
+import { Tooltip, useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
+import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
 import { ThemeToggle } from './Theme/ThemeToggle';
 import { signOutUser } from '@/lib/firebase';
 import { useAppSelector } from '@/lib/redux/hooks';
 import UpperNavbarOptionsContainer from './Navbar/UpperNavbarOptionsContainer';
-import DropdownMenuItem from './ui/DropdownMenuItem';
 
-const accountMenuOptions = ['My Account', 'Orders', 'Sign Out'];
+const menuItemStyles = {
+  color: 'dropdownMenu.text',
+  '&:hover': { backgroundColor: 'dropdownMenu.hover' },
+};
+const iconColor = 'dropdownMenu.icon';
+const iconSize = 'small';
 
 export default function AccountMenu() {
   const theme = useTheme();
@@ -50,13 +54,35 @@ export default function AccountMenu() {
             title={
               <>
                 <ThemeToggle />
-                {accountMenuOptions.map((option, index) => (
-                  <DropdownMenuItem
-                    key={index}
-                    showIcons={true}
-                    menuItemText={option}
-                  />
-                ))}
+                <MenuItem sx={menuItemStyles}>
+                  <ListItemIcon>
+                    <AccountCircle
+                      fontSize={iconSize}
+                      sx={{ color: iconColor }}
+                    />
+                  </ListItemIcon>
+                  My Account
+                </MenuItem>
+                <MenuItem sx={menuItemStyles}>
+                  <ListItemIcon>
+                    <ViewList
+                      fontSize={iconSize}
+                      sx={{ color: iconColor }}
+                    />
+                  </ListItemIcon>
+                  Orders
+                </MenuItem>
+                <MenuItem
+                  sx={menuItemStyles}
+                  onClick={handleSignOut}>
+                  <ListItemIcon>
+                    <Logout
+                      fontSize={iconSize}
+                      sx={{ color: iconColor }}
+                    />
+                  </ListItemIcon>
+                  Sign Out
+                </MenuItem>
               </>
             }>
             <UpperNavbarOptionsContainer>

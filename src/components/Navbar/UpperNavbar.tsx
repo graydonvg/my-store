@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { AppBar, Box, Toolbar, IconButton, Container, useTheme } from '@mui/material';
+import { Box, Toolbar, IconButton, useTheme } from '@mui/material';
 import { Menu, ShoppingCart } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -10,10 +10,10 @@ import { DrawerAnchor } from '@/types';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import AccountMenu from '../AccountMenu';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { navbarAndNavDrawerHeaderHeightXs, upperNavbarPrimaryIconStyles } from '@/lib/styles';
+import { upperNavbarPrimaryIconStyles } from '@/lib/styles';
 import CustomButton from '../ui/CustomButton';
 import UpperNavbarOptionsContainer from './UpperNavbarOptionsContainer';
-import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
+import NavbarTitleAndLogo from './NavbarTitleAndLogo';
 import NavbarContainer from './NavbarContainer';
 
 export default function UpperNavbar() {
@@ -39,10 +39,9 @@ export default function UpperNavbar() {
     <NavbarContainer backgroundColor="upperNavbar.background">
       <Toolbar
         disableGutters
-        variant="regular"
         sx={{
           justifyContent: { xs: 'space-between', md: 'flex-end' },
-          height: { xs: navbarAndNavDrawerHeaderHeightXs, md: '42px' },
+          height: { xs: '64px', md: '42px' },
         }}>
         <Box sx={{ display: { xs: 'block', md: 'none' } }}>
           <IconButton

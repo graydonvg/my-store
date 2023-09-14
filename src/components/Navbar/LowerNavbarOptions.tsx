@@ -1,5 +1,5 @@
 import { navOptions } from '@/lib/utils';
-import LowerNavbarOptionMenu from './LowerNavbarOptionMenu';
+import LowerNavbarDropdownMenu from './LowerNavbarDropdownMenu';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
 
@@ -12,7 +12,7 @@ export default function LowerNavbarOptions() {
       {navOptions.map((option, index) => {
         return (
           <>
-            <LowerNavbarOptionMenu
+            <LowerNavbarDropdownMenu
               key={option.id}
               label={option.label}
               path={option.path}

@@ -2,7 +2,7 @@
 
 import { Box, Toolbar } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
-import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
+import NavbarTitleAndLogo from './NavbarTitleAndLogo';
 import NavbarContainer from './NavbarContainer';
 
 export default function LowerNavbar() {

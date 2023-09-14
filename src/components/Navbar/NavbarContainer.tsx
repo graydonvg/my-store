@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Container } from '@mui/material';
+import { AppBar, Container } from '@mui/material';
 
 type NavbarContainerProps = {
   backgroundColor: 'upperNavbar.background' | 'lowerNavbar.background';
@@ -8,10 +8,12 @@ type NavbarContainerProps = {
 
 export default function NavbarContainer({ children, backgroundColor }: NavbarContainerProps) {
   return (
-    <Container
-      sx={{ backgroundColor }}
-      maxWidth="lg">
-      {children}
-    </Container>
+    <AppBar
+      component="div"
+      elevation={0}
+      position="sticky"
+      sx={{ backgroundColor }}>
+      <Container maxWidth="lg">{children}</Container>
+    </AppBar>
   );
 }

@@ -3,12 +3,10 @@ import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type ElevationScrollProps = { children: ReactElement<any, string | JSXElementConstructor<any>> };
-export function ElevationScroll({ children }: ElevationScrollProps) {
+export function ElevationScroll({ children }: { children: ReactElement<any, string | JSXElementConstructor<any>> }) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
-    // target: window ? window() : undefined,
   });
 
   return cloneElement(children, {

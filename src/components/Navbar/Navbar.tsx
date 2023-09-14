@@ -20,6 +20,7 @@ export default function Navbar() {
   return (
     <ElevationScroll>
       <AppBar
+        color="transparent"
         elevation={0}
         position="sticky">
         <UpperNavbar />

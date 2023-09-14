@@ -41,7 +41,7 @@ export default function NavDrawerContent() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: navbarAndNavDrawerHeaderHeightXs,
+          height: '64px',
         }}>
         <Typography
           color="navDrawer.headerText"
