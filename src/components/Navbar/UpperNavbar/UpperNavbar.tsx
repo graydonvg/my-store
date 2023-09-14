@@ -12,7 +12,7 @@ import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import ShoppingCart from './ShoppingCart';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
-import DropdownMenu from '@/components/DropdownMenu';
+import DropdownMenu from '@/components/HoverDropdownMenu';
 
 const iconButtonStyles = {
   color: 'upperNavbar.primaryIcon',
@@ -79,7 +79,7 @@ export default function UpperNavbar() {
                   orientation="vertical"
                   flexItem
                 />
-                <DropdownMenu />
+                <AccountMenu />
                 <Divider
                   orientation="vertical"
                   flexItem

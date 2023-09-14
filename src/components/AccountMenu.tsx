@@ -1,15 +1,12 @@
 'use client';
 
-import { Tooltip, useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon, Button, Menu } from '@mui/material';
+import { useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
 import { ThemeIcon } from './ui/ThemeIcon';
 import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import UpperNavbarOptionsContainer from './Navbar/UpperNavbarOptionsContainer';
-import CustomButton from './ui/CustomButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import DropdownMenu from './DropdownMenu';
-import { useState } from 'react';
+import HoverDropdownMenu from './HoverDropdownMenu';
 
 const menuItemStyles = {
   color: 'dropdownMenu.text',
@@ -19,7 +16,6 @@ const iconColor = 'dropdownMenu.icon';
 const iconSize = 'small';
 
 export default function AccountMenu() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -35,81 +31,27 @@ export default function AccountMenu() {
     signOutUser();
   }
 
-  const open = Boolean(anchorEl);
-
-  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  let timeoutId: NodeJS.Timeout | null = null;
-
-  const handleClose = () => {
-    if (!!timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      setAnchorEl(null);
-    }, 200);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuEnter = () => {
-    if (!!timeoutId) {
-      clearTimeout(timeoutId);
-    }
-  };
-
   return (
     <>
       {!isBelowMedium ? (
         <>
-          <Button
-            disableTouchRipple
-            sx={{
-              display: 'flex',
-              whiteSpace: 'nowrap',
-              margin: 0,
-              '&:hover': { backgroundColor: 'upperNavbar.background' },
-              paddingX: 2,
-              zIndex: (theme) => theme.zIndex.modal + 1,
-            }}
-            onClick={handleOpen}
-            onMouseEnter={handleOpen}
-            onMouseLeave={handleClose}>
-            <Typography
-              component="span"
-              sx={{
-                textTransform: 'none',
-                color: 'upperNavbar.text',
-              }}>
-              {(currenUser && firstName) ?? 'Account'}
-            </Typography>
-            <ArrowDropDown sx={{ color: 'upperNavbar.secondaryIcon', marginLeft: 2 }} />
-          </Button>
-          <Menu
-            elevation={0}
-            sx={{
-              '& .MuiMenu-paper': {
-                padding: 1,
-                backgroundColor: 'upperNavbar.background',
-                maxWidth: 220,
-                borderTopLeftRadius: 0,
-                borderTopRightRadius: 0,
-              },
-            }}
+          <HoverDropdownMenu
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            disablePortal
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleMenuClose}
-            MenuListProps={{
-              onMouseLeave: handleMenuClose,
-              onMouseEnter: handleMenuEnter,
-            }}>
+            btnHoverBackgroundColor="upperNavbar.background"
+            btnLabel={
+              <>
+                <Typography
+                  component="span"
+                  sx={{
+                    textTransform: 'none',
+                    color: 'upperNavbar.text',
+                  }}>
+                  {(currenUser && firstName) ?? 'Account'}
+                </Typography>
+                <ArrowDropDown sx={{ color: 'upperNavbar.secondaryIcon', marginLeft: 2 }} />
+              </>
+            }>
             <MenuItem
               sx={menuItemStyles}
               onClick={changeTheme}>
@@ -150,7 +92,7 @@ export default function AccountMenu() {
               </ListItemIcon>
               Sign Out
             </MenuItem>
-          </Menu>
+          </HoverDropdownMenu>
         </>
       ) : null}
     </>
