@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
-import { blue, green, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 
 const getDesignTokens = (mode: 'light' | 'dark') => ({

@@ -1,6 +1,7 @@
+'use client';
+
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Avatar, Button, TextField, Link, Grid, Box, Typography, LinearProgress } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Button, TextField, Link, Grid, Box } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, updateUserProfile } from '@/lib/firebase';

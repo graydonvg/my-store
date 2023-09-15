@@ -36,8 +36,9 @@ export default function AccountMenu() {
       {!isBelowMedium ? (
         <>
           <HoverDropdownMenu
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            btnPaddingX={2}
+            menuAnchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            menuTransformOrigin={{ vertical: 'top', horizontal: 'right' }}
             btnHoverBackgroundColor="upperNavbar.background"
             btnLabel={
               <>

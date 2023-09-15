@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { Box, Toolbar, IconButton, useTheme, Divider, AppBar, Container } from '@mui/material';
+import { Box, Toolbar, IconButton, Divider, AppBar, Container, List, ListItem } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { DrawerAnchor } from '@/types';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
@@ -12,18 +12,17 @@ import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import ShoppingCart from './ShoppingCart';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
-import DropdownMenu from '@/components/HoverDropdownMenu';
 
 const iconButtonStyles = {
   color: 'upperNavbar.primaryIcon',
   '&:hover': { backgroundColor: 'upperNavbar.background' },
 };
 
+const dividerStyles = { display: { xs: 'none', md: 'block' } };
+
 export default function UpperNavbar() {
   const dispatch = useAppDispatch();
   const currenUser = useAppSelector((state) => state.user.currentUser);
-  const theme = useTheme();
-  const mode = theme.palette.mode;
 
   function handleModal(content: string) {
     dispatch(setModalContent(content));
@@ -67,42 +66,55 @@ export default function UpperNavbar() {
           />
           <Box
             component="nav"
-            sx={{ display: 'flex', height: 1 }}>
+            sx={{ height: 1 }}>
             {currenUser ? (
-              <>
+              <List
+                sx={{ display: 'flex', height: 1 }}
+                disablePadding>
                 <Divider
+                  sx={dividerStyles}
                   orientation="vertical"
                   flexItem
                 />
-                <ShoppingCart />
+                <ListItem disablePadding>
+                  <ShoppingCart />
+                </ListItem>
                 <Divider
+                  sx={dividerStyles}
                   orientation="vertical"
                   flexItem
                 />
-                <AccountMenu />
+                <ListItem disablePadding>
+                  <AccountMenu />
+                </ListItem>
                 <Divider
+                  sx={dividerStyles}
                   orientation="vertical"
                   flexItem
                 />
-              </>
+              </List>
             ) : (
-              <>
-                <IconButton
-                  onClick={changeTheme}
-                  size="small"
-                  sx={iconButtonStyles}>
-                  <ThemeIcon
+              <List sx={{ display: 'flex', gap: 2, height: 1 }}>
+                <ListItem disablePadding>
+                  <IconButton
+                    onClick={changeTheme}
                     size="small"
-                    color="upperNavbar.primaryIcon"
-                  />
-                </IconButton>
-                <CustomButton
-                  onClick={() => handleModal('signIn')}
-                  textColor="upperNavbar.text"
-                  hoverBackgroundColor="upperNavbar.background">
-                  Sign in
-                </CustomButton>
-              </>
+                    sx={iconButtonStyles}>
+                    <ThemeIcon
+                      size="small"
+                      color="upperNavbar.primaryIcon"
+                    />
+                  </IconButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <CustomButton
+                    onClick={() => handleModal('signIn')}
+                    textColor="upperNavbar.text"
+                    hoverBackgroundColor="upperNavbar.background">
+                    Sign in
+                  </CustomButton>
+                </ListItem>
+              </List>
             )}
           </Box>
         </Toolbar>

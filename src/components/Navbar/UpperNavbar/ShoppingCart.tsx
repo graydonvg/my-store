@@ -2,8 +2,6 @@ import { Box } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CustomButton from '../../ui/CustomButton';
 
-type ShoppingCartProps = {};
-
 export default function ShoppingCart() {
   return (
     <CustomButton

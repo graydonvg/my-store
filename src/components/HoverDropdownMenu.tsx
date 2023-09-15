@@ -1,68 +1,70 @@
 'use client';
 
-import { Button, Menu, MenuProps, PopoverOrigin } from '@mui/material';
+import { Box, Button, Menu, PopoverOrigin } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type HoverDropdownMenuProps = {
   children: ReactNode;
+  menuOffsetBoxHeight?: string;
+  menuOffsetBoxBackgroundColor?: string;
+  menuAnchorOrigin: PopoverOrigin;
+  menuTransformOrigin: PopoverOrigin;
   btnLabel: ReactNode;
-  anchorOrigin: PopoverOrigin;
-  transformOrigin: PopoverOrigin;
-  btnHoverBackgroundColor: string;
   btnTextColor?: string;
-  btnPaddingX?: string;
+  btnPaddingX?: number;
+  btnHoverBackgroundColor: string;
 };
 
 export default function HoverDropdownMenu({
   children,
+  menuOffsetBoxHeight,
+  menuOffsetBoxBackgroundColor,
+  menuAnchorOrigin,
+  menuTransformOrigin,
   btnLabel,
-  anchorOrigin,
-  transformOrigin,
-  btnHoverBackgroundColor,
   btnTextColor,
   btnPaddingX,
+  btnHoverBackgroundColor,
 }: HoverDropdownMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const open = Boolean(anchorEl);
-
-  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
-  };
-
   let timeoutId: NodeJS.Timeout | null = null;
 
-  const handleClose = () => {
+  function handleOpen(event: React.MouseEvent<HTMLButtonElement>) {
+    !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
+  }
+
+  function handleClose() {
     if (!!timeoutId) {
       clearTimeout(timeoutId);
     }
     timeoutId = setTimeout(() => {
       setAnchorEl(null);
     }, 0);
-  };
+  }
 
-  const handleMenuClose = () => {
+  function handleMenuClose() {
     setAnchorEl(null);
-  };
+  }
 
-  const handleMenuEnter = () => {
+  function handleMenuEnter() {
     if (!!timeoutId) {
       clearTimeout(timeoutId);
     }
-  };
+  }
 
   return (
     <>
       <Button
-        tabIndex={0}
         disableTouchRipple
         sx={{
+          height: 1,
           display: 'flex',
           whiteSpace: 'nowrap',
           color: btnTextColor,
           margin: 0,
           '&:hover': { backgroundColor: btnHoverBackgroundColor },
-          btnPaddingX,
+          paddingX: btnPaddingX,
           zIndex: (theme) => theme.zIndex.modal + 1,
         }}
         onClick={handleOpen}
@@ -73,18 +75,19 @@ export default function HoverDropdownMenu({
       <Menu
         elevation={0}
         sx={{
+          '& .MuiMenu-list': {
+            padding: 0,
+          },
           '& .MuiMenu-paper': {
-            padding: 1,
-            paddingTop: 0,
             backgroundColor: 'upperNavbar.background',
-            maxWidth: 220,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
+            // overflow: 'visible',
           },
         }}
-        anchorOrigin={anchorOrigin}
-        transformOrigin={transformOrigin}
-        disablePortal
+        disablePortal={true}
+        anchorOrigin={menuAnchorOrigin}
+        transformOrigin={menuTransformOrigin}
         anchorEl={anchorEl}
         open={open}
         onClose={handleMenuClose}
@@ -92,7 +95,17 @@ export default function HoverDropdownMenu({
           onMouseLeave: handleMenuClose,
           onMouseEnter: handleMenuEnter,
         }}>
-        {children}
+        {menuOffsetBoxHeight ? (
+          <Box
+            tabIndex={-1}
+            sx={{ backgroundColor: menuOffsetBoxBackgroundColor, height: menuOffsetBoxHeight, width: 1 }}
+          />
+        ) : null}
+        <Box
+          tabIndex={-1}
+          sx={{ padding: 1 }}>
+          {children}
+        </Box>
       </Menu>
     </>
   );

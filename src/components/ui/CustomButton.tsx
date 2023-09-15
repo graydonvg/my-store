@@ -1,5 +1,5 @@
 import Button, { ButtonProps } from '@mui/material/Button';
-import { ReactNode, forwardRef } from 'react';
+import { ReactNode } from 'react';
 
 type CustomButtonProps = ButtonProps & {
   paddingX?: number;
@@ -8,12 +8,18 @@ type CustomButtonProps = ButtonProps & {
   children?: ReactNode;
 };
 
-const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(function MyComponent(props, ref) {
-  const { children, textColor, paddingX, hoverBackgroundColor } = props;
+export default function CustomButton({
+  children,
+  textColor,
+  paddingX,
+  hoverBackgroundColor,
+  ...props
+}: CustomButtonProps) {
   return (
     <Button
       disableTouchRipple
       sx={{
+        height: 1,
         display: 'flex',
         whiteSpace: 'nowrap',
         color: textColor,
@@ -21,11 +27,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(function M
         '&:hover': { backgroundColor: hoverBackgroundColor },
         paddingX,
       }}
-      {...props}
-      ref={ref}>
+      {...props}>
       {children}
     </Button>
   );
-});
-
-export default CustomButton;
+}

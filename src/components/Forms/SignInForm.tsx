@@ -1,8 +1,7 @@
 'use client';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Avatar, Button, TextField, Box, Typography, Link, LinearProgress, Divider } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Button, TextField, Box, Typography, Link, Divider } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';

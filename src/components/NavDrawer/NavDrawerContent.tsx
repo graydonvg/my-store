@@ -2,7 +2,17 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { IconButton, List, Typography, ListItem, ListItemButton, ListItemText, Divider, Toolbar } from '@mui/material';
+import {
+  IconButton,
+  List,
+  Typography,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Toolbar,
+  Box,
+} from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -33,6 +43,7 @@ export default function NavDrawerContent() {
         sx={{
           backgroundColor: 'navDrawer.headerBackground',
           display: 'flex',
+          flexShrink: 0,
           justifyContent: 'space-between',
           alignItems: 'center',
           height: '64px',
@@ -51,38 +62,41 @@ export default function NavDrawerContent() {
           <CloseIcon />
         </IconButton>
       </Toolbar>
-      <List
-        disablePadding
-        sx={{ width: '100vw' }}>
-        {navOptions.map((option) => (
-          <DrawerNavOption
-            key={option.id}
-            label={option.label}
-            path={option.path}
-          />
-        ))}
-        {currenUser ? (
-          <>
+      <Box component="nav">
+        <List
+          disablePadding
+          sx={{ width: '100vw' }}>
+          {navOptions.map((option) => (
             <DrawerNavOption
-              key={'myAccount'}
-              label={'My account'}
-              path={'/user/account'}
+              key={option.id}
+              label={option.label}
+              path={option.path}
             />
-            <ListItem
-              disablePadding
-              onClick={handleSignOut}>
-              <ListItemButton>
-                <ListItemText
-                  primary={'Sign Out'}
-                  sx={{ color: 'navDrawer.bodyText' }}
-                />
-                <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
-              </ListItemButton>
-            </ListItem>
-            <Divider />
-          </>
-        ) : null}
-      </List>
+          ))}
+          {currenUser ? (
+            <>
+              <DrawerNavOption
+                key={'myAccount'}
+                label={'My account'}
+                path={'/user/account'}
+              />
+              <ListItem
+                sx={{ width: 1 }}
+                disablePadding
+                onClick={handleSignOut}>
+                <ListItemButton>
+                  <ListItemText
+                    primary={'Sign Out'}
+                    sx={{ color: 'navDrawer.bodyText' }}
+                  />
+                  <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
+                </ListItemButton>
+              </ListItem>
+              <Divider />
+            </>
+          ) : null}
+        </List>
+      </Box>
     </>
   );
 }

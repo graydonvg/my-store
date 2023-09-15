@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -18,21 +20,21 @@ export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionPr
 
   return (
     <>
-      <Link
-        tabIndex={-1}
-        href={path}>
-        <ListItem
-          disablePadding
-          onClick={closeDrawer}>
-          <ListItemButton>
+      <ListItem
+        disablePadding
+        onClick={closeDrawer}>
+        <Link
+          tabIndex={-1}
+          href={path}>
+          <ListItemButton sx={{ width: '100vw' }}>
             <ListItemText
               primary={label}
               sx={{ color: 'navDrawer.bodyText' }}
             />
             <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
           </ListItemButton>
-        </ListItem>
-      </Link>
+        </Link>
+      </ListItem>
       <Divider />
     </>
   );
