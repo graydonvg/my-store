@@ -9,6 +9,7 @@ import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { CurrentUserType } from '@/types';
 import ModalProgressBar from '../ui/ModalProgressBar';
 import FormTitle from './FormTitle';
+import { buttonStyles, textFieldStyles } from './styles';
 
 const defaultFromFields = {
   firstName: '',
@@ -81,6 +82,7 @@ export default function SignUpForm() {
             xs={12}
             sm={6}>
             <TextField
+              sx={textFieldStyles}
               autoComplete="given-name"
               name="firstName"
               required
@@ -97,6 +99,7 @@ export default function SignUpForm() {
             xs={12}
             sm={6}>
             <TextField
+              sx={textFieldStyles}
               required
               fullWidth
               id="lastName"
@@ -111,6 +114,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
+              sx={textFieldStyles}
               required
               fullWidth
               id="email"
@@ -125,6 +129,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
+              sx={textFieldStyles}
               required
               fullWidth
               name="password"
@@ -140,6 +145,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
+              sx={textFieldStyles}
               required
               fullWidth
               name="confirmPassword"
@@ -157,7 +163,7 @@ export default function SignUpForm() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}>
+          sx={{ mt: 3, mb: 2, ...buttonStyles }}>
           Sign Up
         </Button>
         <Link

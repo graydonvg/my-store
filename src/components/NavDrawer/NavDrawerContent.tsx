@@ -12,6 +12,7 @@ import {
   Divider,
   Toolbar,
   Box,
+  useTheme,
 } from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,14 +20,15 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
 
-const iconStyles = {
-  color: 'upperNavbar.primaryIcon',
-  '&:hover': { backgroundColor: 'upperNavbar.background' },
-};
+const drawerWidth = '100vw';
 
 export default function NavDrawerContent() {
   const currenUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const bodyTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
+  const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
 
   function closeDrawer(anchor: string, open: boolean) {
     dispatch(setIsDrawerOpen({ [anchor]: open }));
@@ -39,24 +41,29 @@ export default function NavDrawerContent() {
   return (
     <>
       <Toolbar
-        variant="regular"
+        disableGutters
         sx={{
-          backgroundColor: 'navDrawer.headerBackground',
+          backgroundColor: 'custom.grey.dark',
           display: 'flex',
           flexShrink: 0,
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: '64px',
+          height: upperNavbarHeight,
+          paddingX: 2,
         }}>
         <Typography
-          color="navDrawer.headerText"
+          color="custom.grey.light"
           variant="h5"
           component="span">
           Menu
         </Typography>
         <IconButton
           size="small"
-          sx={iconStyles}
+          sx={{
+            padding: 0,
+            color: 'custom.grey.light',
+            '&:hover': { backgroundColor: 'custom.grey.dark' },
+          }}
           aria-label="open drawer"
           onClick={() => closeDrawer('left', false)}>
           <CloseIcon />
@@ -65,12 +72,14 @@ export default function NavDrawerContent() {
       <Box component="nav">
         <List
           disablePadding
-          sx={{ width: '100vw' }}>
+          sx={{ width: drawerWidth }}>
           {navOptions.map((option) => (
             <DrawerNavOption
               key={option.id}
               label={option.label}
               path={option.path}
+              drawerWidth={drawerWidth}
+              bodyTextColor={bodyTextColor}
             />
           ))}
           {currenUser ? (
@@ -79,17 +88,19 @@ export default function NavDrawerContent() {
                 key={'myAccount'}
                 label={'My account'}
                 path={'/user/account'}
+                drawerWidth={drawerWidth}
+                bodyTextColor={bodyTextColor}
               />
               <ListItem
-                sx={{ width: 1 }}
+                sx={{ width: drawerWidth }}
                 disablePadding
                 onClick={handleSignOut}>
                 <ListItemButton>
                   <ListItemText
                     primary={'Sign Out'}
-                    sx={{ color: 'navDrawer.bodyText' }}
+                    sx={{ color: bodyTextColor }}
                   />
-                  <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
+                  <ArrowForwardIosIcon sx={{ color: bodyTextColor }} />
                 </ListItemButton>
               </ListItem>
               <Divider />

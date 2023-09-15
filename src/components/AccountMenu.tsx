@@ -6,13 +6,14 @@ import { ThemeIcon } from './ui/ThemeIcon';
 import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import HoverDropdownMenu from './HoverDropdownMenu';
+import HoverDropdownMenu from './ui/HoverDropdownMenu';
 
 const menuItemStyles = {
-  color: 'dropdownMenu.text',
-  '&:hover': { backgroundColor: 'dropdownMenu.hover' },
+  borderRadius: 1,
+  color: 'custom.grey.light',
+  '&:hover': { backgroundColor: 'custom.blue.dark' },
 };
-const iconColor = 'dropdownMenu.icon';
+const iconColor = 'custom.grey.light';
 const iconSize = 'small';
 
 export default function AccountMenu() {
@@ -36,21 +37,22 @@ export default function AccountMenu() {
       {!isBelowMedium ? (
         <>
           <HoverDropdownMenu
-            btnPaddingX={2}
+            labelPaddingX={2}
             menuAnchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             menuTransformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            btnHoverBackgroundColor="upperNavbar.background"
-            btnLabel={
+            labelTextColorOnHover="custom.grey.dark"
+            labelTextUnderlineColorOnHover="custom.grey.dark"
+            labelContent={
               <>
                 <Typography
                   component="span"
                   sx={{
                     textTransform: 'none',
-                    color: 'upperNavbar.text',
+                    color: 'custom.grey.light',
                   }}>
                   {(currenUser && firstName) ?? 'Account'}
                 </Typography>
-                <ArrowDropDown sx={{ color: 'upperNavbar.secondaryIcon', marginLeft: 2 }} />
+                <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
               </>
             }>
             <MenuItem

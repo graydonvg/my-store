@@ -7,10 +7,16 @@ type LowerNavbarDropdownMenuItemProps = {
 export default function LowerNavbarDropdownMenuItem({ menuItemText }: LowerNavbarDropdownMenuItemProps) {
   return (
     <MenuItem
+      disableRipple
       sx={{
-        color: 'dropdownMenu.text',
-        '&:hover': { backgroundColor: 'dropdownMenu.hover' },
+        padding: 0,
+        marginX: 2,
+        marginY: '6px',
+        cursor: 'default',
+        color: 'custom.grey.light',
+        '&:hover': { backgroundColor: 'custom.grey.dark', color: 'custom.blue.light' },
       }}>
+      {/* make this a link. no need for cursor: 'pointer' */}
       {menuItemText}
     </MenuItem>
   );

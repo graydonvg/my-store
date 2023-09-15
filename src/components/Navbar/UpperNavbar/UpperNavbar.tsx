@@ -14,8 +14,9 @@ import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
 
 const iconButtonStyles = {
-  color: 'upperNavbar.primaryIcon',
-  '&:hover': { backgroundColor: 'upperNavbar.background' },
+  padding: 0,
+  color: 'custom.grey.light',
+  '&:hover': { backgroundColor: 'custom.grey.dark' },
 };
 
 const dividerStyles = { display: { xs: 'none', md: 'block' } };
@@ -39,16 +40,17 @@ export default function UpperNavbar() {
 
   return (
     <AppBar
+      id="upper-nav"
       component="div"
       elevation={0}
       position="sticky"
-      sx={{ backgroundColor: 'upperNavbar.background', zIndex: 2 }}>
+      sx={{ backgroundColor: 'custom.grey.dark', zIndex: 2 }}>
       <Container maxWidth="lg">
         <Toolbar
           disableGutters
           sx={{
             justifyContent: { xs: 'space-between', md: 'flex-end' },
-            height: { xs: '64px', md: '42px' },
+            height: { xs: '48px', md: '40px' },
           }}>
           <Box sx={{ display: { xs: 'block', md: 'none' } }}>
             <IconButton
@@ -62,14 +64,14 @@ export default function UpperNavbar() {
           <NavbarTitleAndLogo
             variant="h5"
             display={{ xs: 'flex', md: 'none' }}
-            color="upperNavbar.text"
+            color="custom.grey.light"
           />
           <Box
             component="nav"
             sx={{ height: 1 }}>
             {currenUser ? (
               <List
-                sx={{ display: 'flex', height: 1 }}
+                sx={{ display: 'flex', height: '100%' }}
                 disablePadding>
                 <Divider
                   sx={dividerStyles}
@@ -94,7 +96,7 @@ export default function UpperNavbar() {
                 />
               </List>
             ) : (
-              <List sx={{ display: 'flex', gap: 2, height: 1 }}>
+              <List sx={{ display: 'flex', gap: 2, height: '100%' }}>
                 <ListItem disablePadding>
                   <IconButton
                     onClick={changeTheme}
@@ -102,15 +104,15 @@ export default function UpperNavbar() {
                     sx={iconButtonStyles}>
                     <ThemeIcon
                       size="small"
-                      color="upperNavbar.primaryIcon"
+                      color="custom.grey.light"
                     />
                   </IconButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <CustomButton
                     onClick={() => handleModal('signIn')}
-                    textColor="upperNavbar.text"
-                    hoverBackgroundColor="upperNavbar.background">
+                    textColor="custom.grey.light"
+                    hoverBackgroundColor="custom.grey.dark">
                     Sign in
                   </CustomButton>
                 </ListItem>

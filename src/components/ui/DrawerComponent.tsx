@@ -32,7 +32,7 @@ export default function DrawerComponent({ children }: DrawerComponentProps) {
             PaperProps={{
               elevation: 0,
               sx: {
-                backgroundColor: 'navDrawer.bodyBackground',
+                backgroundColor: 'background.default',
               },
             }}
             hideBackdrop={true}

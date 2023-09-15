@@ -26,73 +26,38 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
     ...(mode === 'light'
       ? {
           // palette values for light mode
-          action: {
-            // hover: 'green',
-          },
           background: {
-            // default: grey[200],
+            default: 'white',
             // paper: grey[200],
           },
-          upperNavbar: {
-            background: '#2e3131',
-            text: '#ffffff',
-            primaryIcon: '#ffffff',
-            secondaryIcon: '#1976d2',
-          },
-          lowerNavbar: {
-            background: '#f2f2f2',
-            text: grey[700],
-            primaryIcon: '#ffffff',
-            secondaryIcon: '#1976d2',
-          },
-          dropdownMenu: {
-            background: '#2e3131',
-            text: '#ffffff',
-            icon: '#ffffff',
-            hover: grey[800],
-          },
-          navDrawer: {
-            headerBackground: '#2e3131',
-            headerText: '#ffffff',
-            bodyBackground: '#f2f2f2',
-            bodyText: grey[700],
-          },
-          modal: {
-            background: '#f2f2f2',
+          custom: {
+            grey: {
+              dark: '#2e3131',
+              medium: grey[600],
+              light: grey[200],
+            },
+            blue: {
+              dark: '#1976d2',
+              light: '#42a5f5',
+            },
           },
         }
       : {
           // palette values for dark mode
           background: {
             default: grey[700],
-            paper: grey[900],
+            // paper: grey[900],
           },
-          upperNavbar: {
-            background: grey[900],
-            text: '#ffffff',
-            primaryIcon: '#ffffff',
-            secondaryIcon: '#1976d2',
-          },
-          lowerNavbar: {
-            background: grey[800],
-            text: '#ffffff',
-            primaryIcon: '#ffffff',
-            secondaryIcon: '#1976d2',
-          },
-          dropdownMenu: {
-            background: grey[900],
-            text: '#ffffff',
-            icon: '#ffffff',
-            hover: grey[800],
-          },
-          navDrawer: {
-            headerBackground: grey[900],
-            headerText: '#ffffff',
-            bodyBackground: grey[700],
-            bodyText: '#ffffff',
-          },
-          modal: {
-            background: grey[900],
+          custom: {
+            grey: {
+              dark: grey[900],
+              medium: grey[800],
+              light: grey[300],
+            },
+            blue: {
+              dark: '#1976d2',
+              light: '#42a5f5',
+            },
           },
         }),
   },

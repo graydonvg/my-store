@@ -9,9 +9,11 @@ import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 type NavDrawerNavOptionProps = {
   path: string;
   label: string;
+  bodyTextColor: string;
+  drawerWidth: string;
 };
 
-export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionProps) {
+export default function NavDrawerNavOption({ path, label, bodyTextColor, drawerWidth }: NavDrawerNavOptionProps) {
   const dispatch = useAppDispatch();
 
   function closeDrawer() {
@@ -26,12 +28,12 @@ export default function NavDrawerNavOption({ path, label }: NavDrawerNavOptionPr
         <Link
           tabIndex={-1}
           href={path}>
-          <ListItemButton sx={{ width: '100vw' }}>
+          <ListItemButton sx={{ width: drawerWidth }}>
             <ListItemText
               primary={label}
-              sx={{ color: 'navDrawer.bodyText' }}
+              sx={{ color: bodyTextColor }}
             />
-            <ArrowForwardIosIcon sx={{ color: 'navDrawer.bodyText' }} />
+            <ArrowForwardIosIcon sx={{ color: bodyTextColor }} />
           </ListItemButton>
         </Link>
       </ListItem>

@@ -9,8 +9,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import AuthStateListener from '@/components/AuthStateListener';
-import ModalComponent from '@/components/ModalComponent';
-import DrawerComponent from '@/components/DrawerComponent';
+import ModalComponent from '@/components/ui/ModalComponent';
+import DrawerComponent from '@/components/ui/DrawerComponent';
 import NavDrawerContent from '@/components/NavDrawer/NavDrawerContent';
 
 export const metadata: Metadata = {

@@ -5,16 +5,16 @@ import CustomButton from '../../ui/CustomButton';
 export default function ShoppingCart() {
   return (
     <CustomButton
-      hoverBackgroundColor="upperNavbar.background"
+      hoverBackgroundColor="custom.grey.dark"
       paddingX={2}>
       <ShoppingCartIcon
         aria-label="Shopping cart"
-        sx={{ color: 'upperNavbar.text' }}
+        sx={{ color: 'custom.grey.light' }}
       />
       <Box
         sx={{
-          color: 'upperNavbar.text',
-          backgroundColor: 'upperNavbar.secondaryIcon',
+          color: 'custom.grey.light',
+          backgroundColor: 'custom.blue.dark',
           borderRadius: '50%',
           width: 20,
           height: 20,

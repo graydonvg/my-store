@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Menu, PopoverOrigin } from '@mui/material';
+import { Box, Button, Menu, PopoverOrigin, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type HoverDropdownMenuProps = {
@@ -9,10 +9,11 @@ type HoverDropdownMenuProps = {
   menuOffsetBoxBackgroundColor?: string;
   menuAnchorOrigin: PopoverOrigin;
   menuTransformOrigin: PopoverOrigin;
-  btnLabel: ReactNode;
-  btnTextColor?: string;
-  btnPaddingX?: number;
-  btnHoverBackgroundColor: string;
+  labelContent: ReactNode;
+  labelTextColor?: string;
+  labelTextColorOnHover?: string;
+  labelTextUnderlineColorOnHover?: string;
+  labelPaddingX?: number;
 };
 
 export default function HoverDropdownMenu({
@@ -21,10 +22,11 @@ export default function HoverDropdownMenu({
   menuOffsetBoxBackgroundColor,
   menuAnchorOrigin,
   menuTransformOrigin,
-  btnLabel,
-  btnTextColor,
-  btnPaddingX,
-  btnHoverBackgroundColor,
+  labelContent,
+  labelTextColor,
+  labelTextColorOnHover,
+  labelTextUnderlineColorOnHover,
+  labelPaddingX,
 }: HoverDropdownMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -55,23 +57,31 @@ export default function HoverDropdownMenu({
 
   return (
     <>
-      <Button
-        disableTouchRipple
+      <Typography
         sx={{
+          cursor: 'pointer',
           height: 1,
           display: 'flex',
+          alignItems: 'center',
           whiteSpace: 'nowrap',
-          color: btnTextColor,
+          color: labelTextColor,
           margin: 0,
-          '&:hover': { backgroundColor: btnHoverBackgroundColor },
-          paddingX: btnPaddingX,
+          paddingX: labelPaddingX,
+          paddingY: '6px',
           zIndex: (theme) => theme.zIndex.modal + 1,
+          '&:hover': {
+            color: labelTextColorOnHover,
+            textDecoration: 'underline',
+            textDecorationColor: labelTextUnderlineColorOnHover,
+            textDecorationThickness: 1,
+            textUnderlineOffset: 6,
+          },
         }}
         onClick={handleOpen}
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}>
-        {btnLabel}
-      </Button>
+        {labelContent}
+      </Typography>
       <Menu
         elevation={0}
         sx={{
@@ -79,10 +89,10 @@ export default function HoverDropdownMenu({
             padding: 0,
           },
           '& .MuiMenu-paper': {
-            backgroundColor: 'upperNavbar.background',
+            backgroundColor: 'custom.grey.dark',
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
-            // overflow: 'visible',
+            overflow: 'visible',
           },
         }}
         disablePortal={true}

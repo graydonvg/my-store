@@ -1,13 +1,14 @@
 'use client';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, TextField, Box, Typography, Link, Divider } from '@mui/material';
+import { Button, TextField, Box, Typography, Link, Divider, useTheme } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
 import ModalProgressBar from '../ui/ModalProgressBar';
 import FormTitle from './FormTitle';
+import { textFieldStyles, buttonStyles } from './styles';
 
 const defaultFromFields = {
   email: '',
@@ -71,6 +72,7 @@ export default function SignInForm() {
         onSubmit={handleSignIn}
         sx={{ mt: 1 }}>
         <TextField
+          sx={textFieldStyles}
           margin="normal"
           required
           fullWidth
@@ -83,6 +85,7 @@ export default function SignInForm() {
           autoFocus
         />
         <TextField
+          sx={textFieldStyles}
           margin="normal"
           required
           fullWidth
@@ -99,7 +102,11 @@ export default function SignInForm() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}>
+          sx={{
+            mt: 3,
+            mb: 2,
+            ...buttonStyles,
+          }}>
           Sign In
         </Button>
         <Divider>
@@ -115,7 +122,7 @@ export default function SignInForm() {
           type="button"
           fullWidth
           variant="contained"
-          sx={{ mt: 2, mb: 3, display: 'flex' }}>
+          sx={{ mt: 2, mb: 3, display: 'flex', ...buttonStyles }}>
           <GoogleIcon />
           <Typography
             component="p"
