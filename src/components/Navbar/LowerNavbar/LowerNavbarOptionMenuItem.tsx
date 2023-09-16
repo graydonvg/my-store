@@ -1,10 +1,10 @@
 import { MenuItem } from '@mui/material';
 
-type LowerNavbarDropdownMenuItemProps = {
+type LowerNavbarOptionMenuItemProps = {
   menuItemText: string;
 };
 
-export default function LowerNavbarDropdownMenuItem({ menuItemText }: LowerNavbarDropdownMenuItemProps) {
+export default function LowerNavbarOptionMenuItem({ menuItemText }: LowerNavbarOptionMenuItemProps) {
   return (
     <MenuItem
       disableRipple

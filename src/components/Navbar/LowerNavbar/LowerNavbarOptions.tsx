@@ -1,5 +1,5 @@
 import { navOptions } from '@/lib/utils';
-import LowerNavbarDropdownMenu from './LowerNavbarDropdownMenu';
+import LowerNavbarOption from './LowerNavbarOption';
 import Divider from '@mui/material/Divider';
 import { Box, List } from '@mui/material';
 import { Fragment } from 'react';
@@ -16,7 +16,7 @@ export default function LowerNavbarOptions() {
         {navOptions.map((option, index) => {
           return (
             <Fragment key={option.id}>
-              <LowerNavbarDropdownMenu
+              <LowerNavbarOption
                 label={option.label}
                 path={option.path}
               />

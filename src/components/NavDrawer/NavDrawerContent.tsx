@@ -40,12 +40,10 @@ export default function NavDrawerContent() {
   }
   return (
     <>
-      <Toolbar
-        disableGutters
+      <Box
         sx={{
           backgroundColor: 'custom.grey.dark',
           display: 'flex',
-          flexShrink: 0,
           justifyContent: 'space-between',
           alignItems: 'center',
           height: upperNavbarHeight,
@@ -57,18 +55,16 @@ export default function NavDrawerContent() {
           component="span">
           Menu
         </Typography>
-        <IconButton
-          size="small"
+        <CloseIcon
           sx={{
             padding: 0,
             color: 'custom.grey.light',
             '&:hover': { backgroundColor: 'custom.grey.dark' },
           }}
           aria-label="open drawer"
-          onClick={() => closeDrawer('left', false)}>
-          <CloseIcon />
-        </IconButton>
-      </Toolbar>
+          onClick={() => closeDrawer('left', false)}
+        />
+      </Box>
       <Box component="nav">
         <List
           disablePadding

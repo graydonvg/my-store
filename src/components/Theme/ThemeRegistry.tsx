@@ -8,18 +8,18 @@ import { grey } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 
 const getDesignTokens = (mode: 'light' | 'dark') => ({
-  components: {
-    MuiToolbar: {
-      styleOverrides: {
-        regular: {
-          minHeight: 'unset',
-          '@media (min-width: 600px)': {
-            minHeight: 'unset',
-          },
-        },
-      },
-    },
-  },
+  // components: {
+  //   MuiToolbar: {
+  //     styleOverrides: {
+  //       regular: {
+  //         minHeight: 'unset',
+  //         '@media (min-width: 600px)': {
+  //           minHeight: 'unset',
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 
   palette: {
     mode,

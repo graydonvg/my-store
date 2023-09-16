@@ -5,34 +5,26 @@ import { ReactNode, useState } from 'react';
 
 type HoverDropdownMenuProps = {
   children: ReactNode;
-  menuOffsetBoxHeight?: string;
-  menuOffsetBoxBackgroundColor?: string;
+  labelContent: ReactNode;
   menuAnchorOrigin: PopoverOrigin;
   menuTransformOrigin: PopoverOrigin;
-  labelContent: ReactNode;
-  labelTextColor?: string;
-  labelTextColorOnHover?: string;
-  labelTextUnderlineColorOnHover?: string;
-  labelPaddingX?: number;
+  menuOffsetBoxHeight?: string;
+  menuOffsetBoxBackgroundColor?: string;
 };
 
 export default function HoverDropdownMenu({
   children,
-  menuOffsetBoxHeight,
-  menuOffsetBoxBackgroundColor,
+  labelContent,
   menuAnchorOrigin,
   menuTransformOrigin,
-  labelContent,
-  labelTextColor,
-  labelTextColorOnHover,
-  labelTextUnderlineColorOnHover,
-  labelPaddingX,
+  menuOffsetBoxHeight,
+  menuOffsetBoxBackgroundColor,
 }: HoverDropdownMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
 
-  function handleOpen(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleOpen(event: React.MouseEvent<HTMLDivElement>) {
     !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   }
 
@@ -57,31 +49,21 @@ export default function HoverDropdownMenu({
 
   return (
     <>
-      <Typography
+      <Box
         sx={{
-          cursor: 'pointer',
-          height: 1,
           display: 'flex',
           alignItems: 'center',
           whiteSpace: 'nowrap',
-          color: labelTextColor,
-          margin: 0,
-          paddingX: labelPaddingX,
-          paddingY: '6px',
+          paddingX: 2,
+          paddingY: 1,
+          cursor: 'pointer',
           zIndex: (theme) => theme.zIndex.modal + 1,
-          '&:hover': {
-            color: labelTextColorOnHover,
-            textDecoration: 'underline',
-            textDecorationColor: labelTextUnderlineColorOnHover,
-            textDecorationThickness: 1,
-            textUnderlineOffset: 6,
-          },
         }}
         onClick={handleOpen}
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}>
         {labelContent}
-      </Typography>
+      </Box>
       <Menu
         elevation={0}
         sx={{

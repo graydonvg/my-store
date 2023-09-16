@@ -37,17 +37,13 @@ export default function AccountMenu() {
       {!isBelowMedium ? (
         <>
           <HoverDropdownMenu
-            labelPaddingX={2}
             menuAnchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             menuTransformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            labelTextColorOnHover="custom.grey.dark"
-            labelTextUnderlineColorOnHover="custom.grey.dark"
             labelContent={
               <>
                 <Typography
                   component="span"
                   sx={{
-                    textTransform: 'none',
                     color: 'custom.grey.light',
                   }}>
                   {(currenUser && firstName) ?? 'Account'}
