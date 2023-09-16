@@ -1,6 +1,4 @@
-'use client';
-
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 
 type NavbarTitleAndLogoProps = {
@@ -10,10 +8,6 @@ type NavbarTitleAndLogoProps = {
 };
 
 export default function NavbarTitleAndLogo({ display, variant, color }: NavbarTitleAndLogoProps) {
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const labelTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
-
   return (
     <Box sx={{ display, alignItems: 'center' }}>
       <ShoppingBasket sx={{ mr: 1, color }} />
@@ -26,7 +20,7 @@ export default function NavbarTitleAndLogo({ display, variant, color }: NavbarTi
         sx={{
           fontFamily: 'monospace',
           fontWeight: 700,
-          letterSpacing: '.1rem',
+          letterSpacing: '0.1rem',
           color,
           textDecoration: 'none',
         }}>

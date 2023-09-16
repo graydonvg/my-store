@@ -1,12 +1,12 @@
 'use client';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, TextField, Box, Typography, Link, Divider, useTheme } from '@mui/material';
+import { Button, TextField, Box, Typography, Link, Divider } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
-import ModalProgressBar from '../ui/ModalProgressBar';
+import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { textFieldStyles, buttonStyles } from './styles';
 

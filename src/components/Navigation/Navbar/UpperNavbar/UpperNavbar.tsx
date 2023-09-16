@@ -1,19 +1,12 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { Box, Container } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { DrawerAnchor } from '@/types';
-import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import UpperNavbarOptions from './UpperNavbarOptions';
-
-const iconButtonStyles = {
-  color: 'custom.grey.light',
-  cursor: 'pointer',
-};
 
 export default function UpperNavbar() {
   const dispatch = useAppDispatch();
@@ -35,7 +28,7 @@ export default function UpperNavbar() {
             height: { xs: '64px', md: '40px' },
           }}>
           <Menu
-            sx={{ display: { xs: 'block', md: 'none' }, ...iconButtonStyles }}
+            sx={{ display: { xs: 'block', md: 'none' }, color: 'custom.grey.light', cursor: 'pointer' }}
             aria-label="open navigation drawer"
             onClick={() => openDrawer('left')}
           />

@@ -1,17 +1,17 @@
-import './globals.css';
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
-import Navbar from '@/components/Navbar/Navbar';
+import AuthStateListener from '@/components/AuthStateListener';
+import ModalComponent from '@/components/ui/Modal/ModalComponent';
+import DrawerComponent from '@/components/ui/DrawerComponent';
+import NavDrawerContent from '@/components/Navigation/NavDrawer/NavDrawer';
+import Navbar from '@/components/Navigation/Navbar/Navbar';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import AuthStateListener from '@/components/AuthStateListener';
-import ModalComponent from '@/components/ui/ModalComponent';
-import DrawerComponent from '@/components/ui/DrawerComponent';
-import NavDrawerContent from '@/components/NavDrawer/NavDrawerContent';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'MyStore',

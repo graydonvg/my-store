@@ -3,8 +3,8 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
 import { Box, Modal, Grow, useTheme } from '@mui/material';
-import SignInForm from '../Forms/SignInForm';
-import SignUpForm from '../Forms/SignUpForm';
+import SignInForm from '../../Forms/SignInForm';
+import SignUpForm from '../../Forms/SignUpForm';
 
 export default function ModalComponent() {
   const modalContent = useAppSelector((state) => state.modal.modalContent);

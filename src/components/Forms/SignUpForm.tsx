@@ -7,7 +7,7 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, updateUserProfile } from '@/lib/firebase';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { CurrentUserType } from '@/types';
-import ModalProgressBar from '../ui/ModalProgressBar';
+import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { buttonStyles, textFieldStyles } from './styles';
 

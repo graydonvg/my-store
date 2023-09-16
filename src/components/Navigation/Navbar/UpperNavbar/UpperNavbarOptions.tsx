@@ -1,13 +1,13 @@
+'use client';
+
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
-import { Box, IconButton, Divider, List, ListItem } from '@mui/material';
-import { DrawerAnchor } from '@/types';
+import { Box, IconButton, List, ListItem } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import CustomButton from '../../ui/CustomButton';
 import ShoppingCart from './ShoppingCart';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
+import CustomButton from '@/components/ui/CustomButton';
 
 const componentOptions = [ShoppingCart, AccountMenu];
 
@@ -58,12 +58,7 @@ export default function UpperNavbarOptions() {
             </IconButton>
           </ListItem>
           <ListItem disablePadding>
-            <CustomButton
-              onClick={() => handleModal('signIn')}
-              textColor="custom.grey.light"
-              hoverBackgroundColor="custom.grey.dark">
-              Sign in
-            </CustomButton>
+            <CustomButton onClick={() => handleModal('signIn')}>Sign in</CustomButton>
           </ListItem>
         </List>
       )}

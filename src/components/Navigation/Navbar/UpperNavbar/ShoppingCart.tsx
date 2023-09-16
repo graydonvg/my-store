@@ -1,12 +1,10 @@
 import { Box } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import CustomButton from '../../ui/CustomButton';
+import CustomButton from '@/components/ui/CustomButton';
 
 export default function ShoppingCart() {
   return (
-    <CustomButton
-      hoverBackgroundColor="custom.grey.dark"
-      paddingX={2}>
+    <CustomButton>
       <ShoppingCartIcon
         aria-label="Shopping cart"
         sx={{ color: 'custom.grey.light' }}

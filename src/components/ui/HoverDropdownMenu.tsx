@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Menu, PopoverOrigin, Typography } from '@mui/material';
+import { Box, Menu, PopoverOrigin } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type HoverDropdownMenuProps = {

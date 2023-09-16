@@ -6,6 +6,7 @@ import { Fragment } from 'react';
 
 export default function LowerNavbarOptions() {
   const lastNavOption = navOptions.length - 1;
+
   return (
     <Box
       component="nav"
