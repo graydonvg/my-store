@@ -15,31 +15,34 @@ export default function NavDrawerContent() {
   }
 
   return (
-    <Box
-      sx={{
-        backgroundColor: 'custom.grey.dark',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: upperNavbarHeight,
-        paddingX: 2,
-      }}>
-      <Typography
-        color="custom.grey.light"
-        variant="h5"
-        component="span">
-        Menu
-      </Typography>
-      <CloseIcon
+    <>
+      <Box
         sx={{
-          padding: 0,
-          color: 'custom.grey.light',
-          '&:hover': { backgroundColor: 'custom.grey.dark' },
-        }}
-        aria-label="close navigation drawer"
-        onClick={() => closeDrawer('left', false)}
-      />
+          backgroundColor: 'custom.grey.dark',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: upperNavbarHeight,
+          paddingX: 2,
+        }}>
+        <Typography
+          color="custom.grey.light"
+          variant="h5"
+          component="span">
+          Menu
+        </Typography>
+        <CloseIcon
+          sx={{
+            cursor: 'pointer',
+            padding: 0,
+            color: 'custom.grey.light',
+            '&:hover': { backgroundColor: 'custom.grey.dark' },
+          }}
+          aria-label="close navigation drawer"
+          onClick={() => closeDrawer('left', false)}
+        />
+      </Box>
       <NavDraweOptions />
-    </Box>
+    </>
   );
 }
