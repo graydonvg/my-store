@@ -5,10 +5,11 @@ import { Button, TextField, Box, Typography, Link, Divider } from '@mui/material
 import GoogleIcon from '@mui/icons-material/Google';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
+import { createUserDocument, signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { textFieldStyles, buttonStyles } from './styles';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 const defaultFromFields = {
   email: '',
@@ -23,7 +24,12 @@ export default function SignInForm() {
   async function signInWithGoogle() {
     setIsLoading(true);
     try {
-      await signInWithGooglePopup();
+      const { user } = await signInWithGooglePopup();
+      const { displayName, email } = user;
+      const userDisplayName = displayName?.split(' ')[0];
+
+      await createUserDocument({ displayName: userDisplayName, email });
+      dispatch(setCurrentUser({ displayName: userDisplayName ?? '', email: email ?? '', isAdmin: false }));
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);

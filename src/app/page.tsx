@@ -10,7 +10,7 @@ export default async function Home() {
         sx={{ textAlign: 'center', paddingTop: 5 }}>
         My E-commerce Website
       </Typography>
-      <Products />
+      {/* <Products /> */}
     </>
   );
 }

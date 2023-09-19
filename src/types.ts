@@ -9,7 +9,10 @@ export type DrawerState = {
 
 export type CurrentUserType = {
   displayName: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
+  isAdmin: boolean;
 } | null;
 
 export type UserState = {

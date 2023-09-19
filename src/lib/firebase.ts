@@ -10,6 +10,7 @@ import {
   User,
   signOut,
   updateProfile,
+  Auth,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore/lite';
 
@@ -42,6 +43,7 @@ export async function signInWithGooglePopup() {
 
 export async function createAuthUserWithEmailAndPassword(email: string, password: string) {
   if (!email || !password) return;
+
   return await createUserWithEmailAndPassword(auth, email, password);
 }
 
@@ -51,49 +53,43 @@ export async function signInAuthUserWithEmailAndPassword(email: string, password
 }
 
 export async function signOutUser() {
-  signOut(auth);
+  await signOut(auth);
 }
 
-export async function createUserDocumentFromAuth(additionalInformation = {}) {
+export async function createUserDocument(userData = {}) {
   if (!auth.currentUser) return;
 
   const userDocRef = doc(db, 'users', auth.currentUser.uid);
-  const userSnapshot = await getDoc(userDocRef);
+  const userDoc = await getDoc(userDocRef);
 
-  if (userSnapshot.exists()) {
-    return;
-  } else {
-    const { email, displayName } = auth.currentUser;
+  if (!userDoc.exists()) {
     const createdAt = new Date();
 
     try {
       await setDoc(userDocRef, {
         createdAt,
-        displayName,
-        email,
-        ...additionalInformation,
+        firstName: '',
+        lastName: '',
+        isAdmin: false,
+        ...userData,
       });
     } catch (error) {
       console.error('error creating user', error);
     }
   }
+
+  return;
 }
 
-export async function getUserDocFromAuth() {
+export async function getUserDoc() {
   if (!auth.currentUser) return;
 
   const userDocRef = doc(db, 'users', auth.currentUser.uid);
-  const docSnap = await getDoc(userDocRef);
+  const userDoc = await getDoc(userDocRef);
 
-  if (docSnap.exists()) {
-    return docSnap.data();
+  if (userDoc.exists()) {
+    return userDoc.data();
   }
-}
 
-export async function updateUserProfile(displayName: string) {
-  if (!auth.currentUser) return;
-
-  await updateProfile(auth.currentUser, { displayName });
-
-  return auth.currentUser;
+  return;
 }

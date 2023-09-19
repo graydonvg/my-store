@@ -1,6 +1,6 @@
 'use client';
 
-import { createUserDocumentFromAuth, onAuthStateChangedListener } from '@/lib/firebase';
+import { getUserDoc, onAuthStateChangedListener } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { CurrentUserType } from '@/types';
@@ -10,13 +10,18 @@ export default function AuthStateListener() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        const displayName = user.displayName;
-        createUserDocumentFromAuth({ displayName });
-      }
+    const unsubscribe = onAuthStateChangedListener(async () => {
+      const userDoc = await getUserDoc();
 
-      const selectedUserDetails = user && (({ displayName, email }) => ({ displayName, email }))(user);
+      const selectedUserDetails =
+        userDoc &&
+        (({ displayName, firstName, lastName, email, isAdmin }) => ({
+          displayName,
+          firstName,
+          lastName,
+          email,
+          isAdmin,
+        }))(userDoc);
 
       dispatch(setCurrentUser(selectedUserDetails as CurrentUserType));
     });

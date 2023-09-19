@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { Button, TextField, Link, Grid, Box } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, updateUserProfile } from '@/lib/firebase';
+import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { CurrentUserType } from '@/types';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
@@ -23,7 +23,14 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formFields, setFormFields] = useState(defaultFromFields);
-  const displayName = `${formFields.firstName} ${formFields.lastName}`;
+  const displayName = formFields.firstName;
+  const userData = {
+    displayName,
+    firstName: formFields.firstName,
+    lastName: formFields.lastName,
+    email: formFields.email,
+    isAdmin: false,
+  };
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -42,10 +49,8 @@ export default function SignUpForm() {
 
     try {
       await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
-      await createUserDocumentFromAuth({ displayName });
-      const user = await updateUserProfile(displayName);
-      const selectedUserDetails = user && (({ displayName, email }) => ({ displayName, email }))(user);
-      dispatch(setCurrentUser(selectedUserDetails as CurrentUserType));
+      await createUserDocument(userData);
+      dispatch(setCurrentUser(userData));
       setFormFields(defaultFromFields);
       dispatch(setIsModalOpen(false));
     } catch (error) {
@@ -100,9 +105,9 @@ export default function SignUpForm() {
             sm={6}>
             <TextField
               sx={textFieldStyles}
-              required
               fullWidth
               id="lastName"
+              required
               label="Last Name"
               name="lastName"
               autoComplete="family-name"

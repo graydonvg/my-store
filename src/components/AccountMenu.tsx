@@ -7,6 +7,8 @@ import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { CurrentUserType } from '@/types';
 
 const menuItemStyles = {
   borderRadius: 1,
@@ -21,8 +23,7 @@ export default function AccountMenu() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const currenUser = useAppSelector((state) => state.user.currentUser);
-  const firstName = currenUser?.displayName.split(' ')[0] ?? null;
+  const currentUser = useAppSelector((state) => state.user.currentUser);
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -46,7 +47,7 @@ export default function AccountMenu() {
                   sx={{
                     color: 'custom.grey.light',
                   }}>
-                  {(currenUser && firstName) ?? 'Account'}
+                  {currentUser?.displayName ?? 'Account'}
                 </Typography>
                 <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
               </>
