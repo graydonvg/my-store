@@ -7,6 +7,10 @@ import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
+import { AdminViewIcon } from './ui/AdminViewToggle';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 const menuItemStyles = {
   borderRadius: 1,
@@ -22,13 +26,11 @@ export default function AccountMenu() {
   const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const currentUser = useAppSelector((state) => state.user.currentUser);
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('admin-view');
 
   function changeTheme() {
     dispatch(toggleTheme());
-  }
-
-  function handleSignOut() {
-    signOutUser();
   }
 
   return (
@@ -50,17 +52,6 @@ export default function AccountMenu() {
                 <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
               </>
             }>
-            <MenuItem
-              sx={menuItemStyles}
-              onClick={changeTheme}>
-              <ListItemIcon>
-                <ThemeIcon
-                  color={iconColor}
-                  size={iconSize}
-                />
-              </ListItemIcon>
-              {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
-            </MenuItem>
             <MenuItem sx={menuItemStyles}>
               <ListItemIcon>
                 <AccountCircle
@@ -70,18 +61,38 @@ export default function AccountMenu() {
               </ListItemIcon>
               My Account
             </MenuItem>
-            <MenuItem sx={menuItemStyles}>
+            {currentUser?.isAdmin ? (
+              <MenuItem sx={menuItemStyles}>
+                <ListItemIcon>
+                  <AdminViewIcon isAdminView={isAdminView} />
+                </ListItemIcon>
+                {isAdminView ? <Link href={'/'}>Client View</Link> : <Link href={'/admin-view'}>Admin View</Link>}
+              </MenuItem>
+            ) : (
+              <MenuItem sx={menuItemStyles}>
+                <ListItemIcon>
+                  <ViewList
+                    fontSize={iconSize}
+                    sx={{ color: iconColor }}
+                  />
+                </ListItemIcon>
+                Orders
+              </MenuItem>
+            )}
+            <MenuItem
+              sx={menuItemStyles}
+              onClick={changeTheme}>
               <ListItemIcon>
-                <ViewList
-                  fontSize={iconSize}
-                  sx={{ color: iconColor }}
+                <ThemeIcon
+                  color={iconColor}
+                  size={iconSize}
                 />
               </ListItemIcon>
-              Orders
+              {mode === 'dark' ? 'Light' : 'Dark'} Mode
             </MenuItem>
             <MenuItem
               sx={menuItemStyles}
-              onClick={handleSignOut}>
+              onClick={signOutUser}>
               <ListItemIcon>
                 <Logout
                   fontSize={iconSize}

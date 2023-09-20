@@ -40,7 +40,7 @@ export default function NavDraweOptions() {
           <>
             <DrawerNavOption
               key={'myAccount'}
-              label={'My account'}
+              label={'My Account'}
               path={'/user/account'}
               drawerWidth={drawerWidth}
               bodyTextColor={bodyTextColor}

@@ -16,12 +16,12 @@ export function ThemeIcon({ size, color }: ThemeIconProps) {
   return (
     <>
       {mode === 'dark' ? (
-        <Brightness4Icon
+        <Brightness7Icon
           fontSize={size}
           sx={{ color }}
         />
       ) : (
-        <Brightness7Icon
+        <Brightness4Icon
           fontSize={size}
           sx={{ color }}
         />

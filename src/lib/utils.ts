@@ -18,50 +18,78 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// export const navOptions = [
+//   {
+//     id: 'all-products',
+//     label: 'All Products',
+//     path: '/browse/all-products',
+//   },
+//   {
+//     id: 'women',
+//     label: 'Women',
+//     path: '/browse/women',
+//   },
+//   {
+//     id: 'men',
+//     label: 'Men',
+//     path: '/browse/men',
+//   },
+//   {
+//     id: 'electronics',
+//     label: 'Electronics',
+//     path: '/browse/tech',
+//   },
+//   {
+//     id: 'home-and-living',
+//     label: 'Home + Living',
+//     path: '/browse/home-and-living',
+//   },
+//   {
+//     id: 'beauty',
+//     label: 'Beauty',
+//     path: '/browse/beauty',
+//   },
+// ];
+
 export const navOptions = [
   {
-    id: 'all-products',
+    id: 'home',
+    label: 'Home',
+    path: '/',
+  },
+  {
+    id: 'listing',
     label: 'All Products',
-    path: '/browse/all-products',
+    path: '/product/listing/all-products',
   },
   {
-    id: 'women',
-    label: 'Women',
-    path: '/browse/women',
-  },
-  {
-    id: 'men',
+    id: 'listingMen',
     label: 'Men',
-    path: '/browse/men',
+    path: '/product/listing/men',
   },
   {
-    id: 'electronics',
-    label: 'Electronics',
-    path: '/browse/tech',
+    id: 'listingWomen',
+    label: 'Women',
+    path: '/product/listing/women',
   },
   {
-    id: 'home-and-living',
-    label: 'Home + Living',
-    path: '/browse/home-and-living',
+    id: 'listingKids',
+    label: 'Kids',
+    path: '/product/listing/kids',
+  },
+];
+
+export const adminNavOptions = [
+  {
+    id: 'adminListing',
+    label: 'Manage All Products',
+    path: '/admin-view/all-products',
   },
   {
-    id: 'beauty',
-    label: 'Beauty',
-    path: '/browse/beauty',
+    id: 'adminNewProduct',
+    label: 'Add New Product',
+    path: '/admin-view/add-product',
   },
 ];
 
 export type NavOptionsType = (typeof navOptions)[0];
-
-// export const adminNavOptions = [
-//   {
-//     id: 'adminListing',
-//     label: 'Manage All Products',
-//     path: '/admin-view/all-products',
-//   },
-//   {
-//     id: 'adminNewProduct',
-//     label: 'Add New Product',
-//     path: '/admin-view/add-product',
-//   },
-// ];

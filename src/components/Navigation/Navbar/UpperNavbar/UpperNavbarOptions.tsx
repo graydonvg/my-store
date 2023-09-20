@@ -1,13 +1,12 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import ShoppingCart from './ShoppingCart';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
-import CustomButton from '@/components/ui/CustomButton';
 import { Fragment } from 'react';
 
 const componentOptions = [ShoppingCart, AccountMenu];
@@ -69,9 +68,40 @@ export default function UpperNavbarOptions() {
               />
             </IconButton>
           </ListItem>
+          {!isBelowMedium ? (
+            <Divider
+              orientation="vertical"
+              variant="fullWidth"
+              flexItem
+              sx={{ backgroundColor: 'custom.grey.medium' }}
+            />
+          ) : null}
           <ListItem disablePadding>
-            <CustomButton onClick={() => handleModal('signIn')}>Sign in</CustomButton>
+            <Typography
+              variant="button"
+              sx={{ color: 'custom.grey.light', cursor: 'pointer', whiteSpace: 'nowrap' }}
+              onClick={() => handleModal('signIn')}>
+              Sign in
+            </Typography>
           </ListItem>
+          {!isBelowMedium ? (
+            <Divider
+              orientation="vertical"
+              variant="fullWidth"
+              flexItem
+              sx={{ backgroundColor: 'custom.grey.medium' }}
+            />
+          ) : null}
+          {!isBelowMedium ? (
+            <ListItem disablePadding>
+              <Typography
+                variant="button"
+                sx={{ color: 'custom.grey.light', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                onClick={() => handleModal('signUp')}>
+                Sign Up
+              </Typography>
+            </ListItem>
+          ) : null}
         </List>
       )}
     </Box>

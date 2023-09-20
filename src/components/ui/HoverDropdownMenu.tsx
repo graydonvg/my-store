@@ -50,13 +50,13 @@ export default function HoverDropdownMenu({
   return (
     <>
       <Box
+        component="button"
         sx={{
           display: 'flex',
           alignItems: 'center',
           whiteSpace: 'nowrap',
           paddingX: 2,
           paddingY: 1,
-          cursor: 'pointer',
           zIndex: (theme) => theme.zIndex.modal + 1,
         }}
         onClick={handleOpen}

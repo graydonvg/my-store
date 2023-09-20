@@ -6,6 +6,16 @@ import { Box, Modal, Grow, useTheme } from '@mui/material';
 import SignInForm from '../../Forms/SignInForm';
 import SignUpForm from '../../Forms/SignUpForm';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  translate: '-50% -50%',
+  width: { xs: 300, sm: 400 },
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function ModalComponent() {
   const modalContent = useAppSelector((state) => state.modal.modalContent);
   const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
@@ -13,17 +23,6 @@ export default function ModalComponent() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const modalBackgroundColor = mode === 'light' ? 'custom.grey.light' : 'custom.grey.dark';
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    translate: '-50% -50%',
-    width: { xs: 300, sm: 400 },
-    backgroundColor: modalBackgroundColor,
-    boxShadow: 24,
-    p: 4,
-  };
 
   function handleClose() {
     dispatch(setIsModalOpen(false));
@@ -37,7 +36,7 @@ export default function ModalComponent() {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description">
       <Grow in={isModalOpen}>
-        <Box sx={style}>
+        <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
           {modalContent === 'signIn' ? <SignInForm /> : modalContent === 'signUp' ? <SignUpForm /> : null}
         </Box>
       </Grow>

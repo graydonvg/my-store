@@ -1,11 +1,13 @@
-import { navOptions } from '@/lib/utils';
+import { navOptions, adminNavOptions } from '@/lib/utils';
 import LowerNavbarOption from './LowerNavbarOption';
 import Divider from '@mui/material/Divider';
 import { Box, List } from '@mui/material';
 import { Fragment } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function LowerNavbarOptions() {
-  const lastNavOption = navOptions.length - 1;
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('admin-view');
 
   return (
     <Box
@@ -14,23 +16,31 @@ export default function LowerNavbarOptions() {
       <List
         disablePadding
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {navOptions.map((option, index) => {
-          return (
-            <Fragment key={option.id}>
-              <LowerNavbarOption
-                label={option.label}
-                path={option.path}
-              />
-              {index !== lastNavOption ? (
-                <Divider
-                  orientation="vertical"
-                  variant="middle"
-                  flexItem
+        {isAdminView
+          ? adminNavOptions.map((option, index) => {
+              const isLastNavOption = adminNavOptions.length - 1 === index;
+
+              return (
+                <LowerNavbarOption
+                  key={option.id}
+                  label={option.label}
+                  path={option.path}
+                  isLastNavOption={isLastNavOption}
                 />
-              ) : null}
-            </Fragment>
-          );
-        })}
+              );
+            })
+          : navOptions.map((option, index) => {
+              const isLastNavOption = navOptions.length - 1 === index;
+
+              return (
+                <LowerNavbarOption
+                  key={option.id}
+                  label={option.label}
+                  path={option.path}
+                  isLastNavOption={isLastNavOption}
+                />
+              );
+            })}
       </List>
     </Box>
   );
