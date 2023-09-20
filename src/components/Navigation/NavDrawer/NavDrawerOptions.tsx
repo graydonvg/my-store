@@ -1,12 +1,15 @@
 'use client';
 
-import { List, ListItem, ListItemButton, ListItemText, Divider, Box, useTheme } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText, Divider, Box, useTheme, ListItemIcon } from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { usePathname } from 'next/navigation';
+import { ThemeIcon } from '@/components/ui/ThemeIcon';
+import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 
 const drawerWidth = '100vw';
 
@@ -16,10 +19,16 @@ export default function NavDraweOptions() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const bodyTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('admin-view');
 
   function handleSignOut() {
     signOutUser();
     dispatch(setIsDrawerOpen({ left: false }));
+  }
+
+  function changeTheme() {
+    dispatch(toggleTheme());
   }
 
   return (
@@ -45,6 +54,25 @@ export default function NavDraweOptions() {
               drawerWidth={drawerWidth}
               bodyTextColor={bodyTextColor}
             />
+            {currenUser.isAdmin ? (
+              isAdminView ? (
+                <DrawerNavOption
+                  key={'clientView'}
+                  label={'Client View'}
+                  path={'/'}
+                  drawerWidth={drawerWidth}
+                  bodyTextColor={bodyTextColor}
+                />
+              ) : (
+                <DrawerNavOption
+                  key={'adminView'}
+                  label={'Admin View'}
+                  path={'/admin-view'}
+                  drawerWidth={drawerWidth}
+                  bodyTextColor={bodyTextColor}
+                />
+              )
+            ) : null}
             <ListItem
               sx={{ width: drawerWidth }}
               disablePadding
@@ -60,6 +88,17 @@ export default function NavDraweOptions() {
             <Divider />
           </>
         ) : null}
+        <ListItem
+          sx={{ color: bodyTextColor, justifyContent: 'center', marginTop: 8 }}
+          onClick={changeTheme}>
+          <ListItemIcon sx={{ minWidth: 'unset', marginRight: 2 }}>
+            <ThemeIcon
+              color={bodyTextColor}
+              size={'small'}
+            />
+          </ListItemIcon>
+          {mode === 'dark' ? 'Light' : 'Dark'} Mode
+        </ListItem>
       </List>
     </Box>
   );
