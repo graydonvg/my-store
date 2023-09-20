@@ -1,19 +1,22 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, IconButton, List, ListItem } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import ShoppingCart from './ShoppingCart';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import AccountMenu from '@/components/AccountMenu';
 import CustomButton from '@/components/ui/CustomButton';
+import { Fragment } from 'react';
 
 const componentOptions = [ShoppingCart, AccountMenu];
 
 export default function UpperNavbarOptions() {
   const dispatch = useAppDispatch();
   const currenUser = useAppSelector((state) => state.user.currentUser);
+  const theme = useTheme();
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   function handleModal(content: string) {
     dispatch(setModalContent(content));
@@ -32,16 +35,25 @@ export default function UpperNavbarOptions() {
           sx={{ display: 'flex', height: '100%' }}
           disablePadding>
           {componentOptions.map((Component, index) => (
-            <ListItem
-              key={index}
-              disablePadding
-              sx={{
-                borderLeft: index === 0 ? '1px solid' : null,
-                borderRight: '1px solid',
-                borderColor: 'custom.grey.medium',
-              }}>
-              <Component />
-            </ListItem>
+            <Fragment key={index}>
+              {index === 0 && !isBelowMedium ? (
+                <Divider
+                  variant="fullWidth"
+                  orientation="vertical"
+                  sx={{ backgroundColor: 'custom.grey.medium' }}
+                />
+              ) : null}
+              <ListItem disablePadding>
+                <Component />
+              </ListItem>
+              {!isBelowMedium ? (
+                <Divider
+                  variant="fullWidth"
+                  orientation="vertical"
+                  sx={{ backgroundColor: 'custom.grey.medium' }}
+                />
+              ) : null}
+            </Fragment>
           ))}
         </List>
       ) : (

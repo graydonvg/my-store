@@ -7,8 +7,6 @@ import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { CurrentUserType } from '@/types';
 
 const menuItemStyles = {
   borderRadius: 1,
