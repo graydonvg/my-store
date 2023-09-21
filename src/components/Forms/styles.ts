@@ -1,4 +1,4 @@
-export const textFieldStyles = {
+export const formTextFieldStyles = {
   '& label.Mui-focused': {
     color: 'custom.blue.light',
   },
@@ -13,7 +13,7 @@ export const textFieldStyles = {
   },
 };
 
-export const buttonStyles = {
+export const formButtonStyles = {
   backgroundColor: 'custom.blue.dark',
   '&:hover': { backgroundColor: 'custom.blue.light' },
 };

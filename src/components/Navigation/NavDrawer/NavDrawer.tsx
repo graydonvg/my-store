@@ -22,6 +22,7 @@ export default function NavDrawerContent() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          flexShrink: 0,
           height: upperNavbarHeight,
           paddingX: 2,
         }}>

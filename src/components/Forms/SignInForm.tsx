@@ -1,15 +1,15 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, TextField, Box, Typography, Link, Divider } from '@mui/material';
+import { useState, ChangeEvent, FormEvent } from 'react';
+import { Box, Button, Divider, Link, TextField, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { createUserDocument, signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '@/lib/firebase';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
-import { textFieldStyles, buttonStyles } from './styles';
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { formTextFieldStyles, formButtonStyles } from './styles';
 
 const defaultFromFields = {
   email: '',
@@ -20,22 +20,6 @@ export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formFields, setFormFields] = useState(defaultFromFields);
-
-  async function signInWithGoogle() {
-    setIsLoading(true);
-    try {
-      const { user } = await signInWithGooglePopup();
-      const { displayName, email } = user;
-      const userDisplayName = displayName?.split(' ')[0];
-
-      await createUserDocument({ displayName: userDisplayName, email });
-      dispatch(setCurrentUser({ displayName: userDisplayName ?? '', email: email ?? '', isAdmin: false }));
-      dispatch(setIsModalOpen(false));
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -49,13 +33,35 @@ export default function SignInForm() {
     try {
       await signInAuthUserWithEmailAndPassword(formFields.email, formFields.password);
       setFormFields(defaultFromFields);
-      setIsLoading(false);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    dispatch(setIsModalOpen(false));
+  }
+
+  async function signInWithGoogle() {
+    setIsLoading(true);
+    try {
+      const { user } = await signInWithGooglePopup();
+      const { displayName, email } = user;
+      const userDisplayName = displayName?.split(' ')[0];
+
+      await createUserDocument({ displayName: userDisplayName, email });
+      dispatch(
+        setCurrentUser({
+          displayName: userDisplayName ?? '',
+          email: email ?? '',
+          isAdmin: false,
+        })
+      );
+      dispatch(setIsModalOpen(false));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function openSignUpModal() {
@@ -78,7 +84,7 @@ export default function SignInForm() {
         onSubmit={handleSignIn}
         sx={{ mt: 1 }}>
         <TextField
-          sx={textFieldStyles}
+          sx={formTextFieldStyles}
           margin="normal"
           required
           fullWidth
@@ -91,7 +97,7 @@ export default function SignInForm() {
           autoFocus
         />
         <TextField
-          sx={textFieldStyles}
+          sx={formTextFieldStyles}
           margin="normal"
           required
           fullWidth
@@ -111,7 +117,7 @@ export default function SignInForm() {
           sx={{
             mt: 3,
             mb: 2,
-            ...buttonStyles,
+            ...formButtonStyles,
           }}>
           Sign In
         </Button>
@@ -128,7 +134,7 @@ export default function SignInForm() {
           type="button"
           fullWidth
           variant="contained"
-          sx={{ mt: 2, mb: 3, display: 'flex', ...buttonStyles }}>
+          sx={{ mt: 2, mb: 3, display: 'flex', ...formButtonStyles }}>
           <GoogleIcon />
           <Typography
             component="p"

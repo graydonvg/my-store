@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-export default function ShoppingCart() {
+export default function ShoppingCartButton() {
   return (
     <Box
       component="button"

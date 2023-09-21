@@ -25,13 +25,22 @@ export default function UpperNavbar() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: { xs: 'space-between', md: 'flex-end' },
-            height: { xs: '64px', md: '40px' },
+            height: { xs: '56px', md: '40px' },
           }}>
-          <Menu
-            sx={{ display: { xs: 'block', md: 'none' }, color: 'custom.grey.light', cursor: 'pointer' }}
-            aria-label="open navigation drawer"
-            onClick={() => openDrawer('left')}
-          />
+          <Box
+            sx={{
+              display: { xs: 'block', md: 'none' },
+              minWidth: { xs: '52px', sm: '124px' },
+            }}>
+            <Menu
+              sx={{
+                color: 'custom.grey.light',
+                cursor: 'pointer',
+              }}
+              aria-label="open navigation drawer"
+              onClick={() => openDrawer('left')}
+            />
+          </Box>
           <NavbarTitleAndLogo
             variant="h5"
             display={{ xs: 'flex', md: 'none' }}

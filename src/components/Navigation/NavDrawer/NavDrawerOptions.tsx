@@ -1,20 +1,21 @@
 'use client';
 
+import React from 'react';
 import { List, ListItem, ListItemButton, ListItemText, Divider, Box, useTheme, ListItemIcon } from '@mui/material';
+import { Logout } from '@mui/icons-material';
 import DrawerNavOption from './NavDrawerOption';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { navOptions } from '@/lib/utils';
 import { signOutUser } from '@/lib/firebase';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import { navOptions, adminNavOptions } from '@/lib/utils';
 
 const drawerWidth = '100vw';
 
 export default function NavDraweOptions() {
-  const currenUser = useAppSelector((state) => state.user.currentUser);
+  const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -31,21 +32,25 @@ export default function NavDraweOptions() {
     dispatch(toggleTheme());
   }
 
+  function renderNavOptions(options: { id: string; label: string; path: string }[]) {
+    return options.map((option) => (
+      <DrawerNavOption
+        key={option.id}
+        label={option.label}
+        path={option.path}
+        drawerWidth={drawerWidth}
+        bodyTextColor={bodyTextColor}
+      />
+    ));
+  }
+
   return (
     <Box component="nav">
       <List
         disablePadding
         sx={{ width: drawerWidth }}>
-        {navOptions.map((option) => (
-          <DrawerNavOption
-            key={option.id}
-            label={option.label}
-            path={option.path}
-            drawerWidth={drawerWidth}
-            bodyTextColor={bodyTextColor}
-          />
-        ))}
-        {currenUser ? (
+        {currentUser?.isAdmin && isAdminView ? renderNavOptions(adminNavOptions) : renderNavOptions(navOptions)}
+        {currentUser && (
           <>
             <DrawerNavOption
               key={'myAccount'}
@@ -54,25 +59,15 @@ export default function NavDraweOptions() {
               drawerWidth={drawerWidth}
               bodyTextColor={bodyTextColor}
             />
-            {currenUser.isAdmin ? (
-              isAdminView ? (
-                <DrawerNavOption
-                  key={'clientView'}
-                  label={'Client View'}
-                  path={'/'}
-                  drawerWidth={drawerWidth}
-                  bodyTextColor={bodyTextColor}
-                />
-              ) : (
-                <DrawerNavOption
-                  key={'adminView'}
-                  label={'Admin View'}
-                  path={'/admin-view'}
-                  drawerWidth={drawerWidth}
-                  bodyTextColor={bodyTextColor}
-                />
-              )
-            ) : null}
+            {currentUser.isAdmin && (
+              <DrawerNavOption
+                key={'adminView'}
+                label={isAdminView ? 'Client View' : 'Admin View'}
+                path={isAdminView ? '/' : '/admin-view'}
+                drawerWidth={drawerWidth}
+                bodyTextColor={bodyTextColor}
+              />
+            )}
             <ListItem
               sx={{ width: drawerWidth }}
               disablePadding
@@ -82,12 +77,12 @@ export default function NavDraweOptions() {
                   primary={'Sign Out'}
                   sx={{ color: bodyTextColor }}
                 />
-                <ArrowForwardIosIcon sx={{ color: bodyTextColor }} />
+                <Logout sx={{ color: bodyTextColor }} />
               </ListItemButton>
             </ListItem>
             <Divider />
           </>
-        ) : null}
+        )}
         <ListItem
           sx={{ color: bodyTextColor, justifyContent: 'center', marginTop: 8 }}
           onClick={changeTheme}>

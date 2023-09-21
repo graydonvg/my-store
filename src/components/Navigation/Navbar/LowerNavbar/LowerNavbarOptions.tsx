@@ -1,8 +1,6 @@
 import { navOptions, adminNavOptions } from '@/lib/utils';
 import LowerNavbarOption from './LowerNavbarOption';
-import Divider from '@mui/material/Divider';
 import { Box, List } from '@mui/material';
-import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function LowerNavbarOptions() {

@@ -1,15 +1,14 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, TextField, Link, Grid, Box } from '@mui/material';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { CurrentUserType } from '@/types';
+import { useState, ChangeEvent, FormEvent } from 'react';
+import { Box, Button, TextField, Link, Grid } from '@mui/material';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
-import { buttonStyles, textFieldStyles } from './styles';
+import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { formTextFieldStyles, formButtonStyles } from './styles';
 
 const defaultFromFields = {
   firstName: '',
@@ -34,19 +33,23 @@ export default function SignUpForm() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
-
     setFormFields({ ...formFields, [name]: value });
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
 
     if (formFields.password !== formFields.confirmPassword) {
       setIsLoading(false);
-      return console.error('Passwords do not match!');
+      console.error('Passwords do not match!');
+      return;
     }
 
+    createAndSaveUser();
+  }
+
+  async function createAndSaveUser() {
     try {
       await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
       await createUserDocument(userData);
@@ -55,9 +58,10 @@ export default function SignUpForm() {
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
+      dispatch(setIsModalOpen(false));
     }
-    setIsLoading(false);
-    dispatch(setIsModalOpen(false));
   }
 
   function openSignInModal() {
@@ -87,7 +91,7 @@ export default function SignUpForm() {
             xs={12}
             sm={6}>
             <TextField
-              sx={textFieldStyles}
+              sx={formTextFieldStyles}
               autoComplete="given-name"
               name="firstName"
               required
@@ -104,7 +108,7 @@ export default function SignUpForm() {
             xs={12}
             sm={6}>
             <TextField
-              sx={textFieldStyles}
+              sx={formTextFieldStyles}
               fullWidth
               id="lastName"
               required
@@ -119,7 +123,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
-              sx={textFieldStyles}
+              sx={formTextFieldStyles}
               required
               fullWidth
               id="email"
@@ -134,7 +138,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
-              sx={textFieldStyles}
+              sx={formTextFieldStyles}
               required
               fullWidth
               name="password"
@@ -150,7 +154,7 @@ export default function SignUpForm() {
             item
             xs={12}>
             <TextField
-              sx={textFieldStyles}
+              sx={formTextFieldStyles}
               required
               fullWidth
               name="confirmPassword"
@@ -168,7 +172,7 @@ export default function SignUpForm() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2, ...buttonStyles }}>
+          sx={{ mt: 3, mb: 2, ...formButtonStyles }}>
           Sign Up
         </Button>
         <Link
