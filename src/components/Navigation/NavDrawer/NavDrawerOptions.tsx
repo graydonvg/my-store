@@ -1,7 +1,18 @@
 'use client';
 
 import React from 'react';
-import { List, ListItem, ListItemButton, ListItemText, Divider, Box, useTheme, ListItemIcon } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Box,
+  useTheme,
+  ListItemIcon,
+  Button,
+  IconButton,
+} from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import DrawerNavOption from './NavDrawerOption';
 import { signOutUser } from '@/lib/firebase';
@@ -12,8 +23,6 @@ import { ThemeIcon } from '@/components/ui/ThemeIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { navOptions, adminNavOptions } from '@/lib/utils';
 
-const drawerWidth = '100vw';
-
 export default function NavDraweOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
@@ -22,13 +31,18 @@ export default function NavDraweOptions() {
   const bodyTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
+  const drawerWidth = '100vw';
+
+  function handleCloseDrawer() {
+    dispatch(setIsDrawerOpen({ left: false }));
+  }
 
   function handleSignOut() {
     signOutUser();
     dispatch(setIsDrawerOpen({ left: false }));
   }
 
-  function changeTheme() {
+  function handleToggleTheme() {
     dispatch(toggleTheme());
   }
 
@@ -45,56 +59,53 @@ export default function NavDraweOptions() {
   }
 
   return (
-    <Box component="nav">
-      <List
-        disablePadding
-        sx={{ width: drawerWidth }}>
-        {currentUser?.isAdmin && isAdminView ? renderNavOptions(adminNavOptions) : renderNavOptions(navOptions)}
-        {currentUser && (
-          <>
-            <DrawerNavOption
-              key={'myAccount'}
-              label={'My Account'}
-              path={'/user/account'}
-              drawerWidth={drawerWidth}
-              bodyTextColor={bodyTextColor}
-            />
-            {currentUser.isAdmin && (
+    <>
+      <Box component="nav">
+        <List
+          disablePadding
+          sx={{ width: drawerWidth }}>
+          {currentUser?.isAdmin && isAdminView ? renderNavOptions(adminNavOptions) : renderNavOptions(navOptions)}
+          {currentUser && (
+            <>
               <DrawerNavOption
-                key={'adminView'}
-                label={isAdminView ? 'Client View' : 'Admin View'}
-                path={isAdminView ? '/' : '/admin-view'}
+                onClick={handleCloseDrawer}
+                key={'myAccount'}
+                label={'My Account'}
+                path={'/user/account'}
                 drawerWidth={drawerWidth}
                 bodyTextColor={bodyTextColor}
               />
-            )}
-            <ListItem
-              sx={{ width: drawerWidth }}
-              disablePadding
-              onClick={handleSignOut}>
-              <ListItemButton>
-                <ListItemText
-                  primary={'Sign Out'}
-                  sx={{ color: bodyTextColor }}
+              {currentUser.isAdmin && (
+                <DrawerNavOption
+                  onClick={handleCloseDrawer}
+                  key={'adminView'}
+                  label={isAdminView ? 'Client View' : 'Admin View'}
+                  path={isAdminView ? '/' : '/admin-view'}
+                  drawerWidth={drawerWidth}
+                  bodyTextColor={bodyTextColor}
                 />
-                <Logout sx={{ color: bodyTextColor }} />
-              </ListItemButton>
-            </ListItem>
-            <Divider />
-          </>
-        )}
-        <ListItem
-          sx={{ color: bodyTextColor, justifyContent: 'center', marginTop: 8 }}
-          onClick={changeTheme}>
-          <ListItemIcon sx={{ minWidth: 'unset', marginRight: 2 }}>
-            <ThemeIcon
-              color={bodyTextColor}
-              size={'small'}
-            />
-          </ListItemIcon>
-          {mode === 'dark' ? 'Light' : 'Dark'} Mode
-        </ListItem>
-      </List>
-    </Box>
+              )}
+              <DrawerNavOption
+                onClick={handleSignOut}
+                key={'signOut'}
+                label={'Sign Out'}
+                drawerWidth={drawerWidth}
+                bodyTextColor={bodyTextColor}
+              />
+            </>
+          )}
+        </List>
+      </Box>
+      <Button
+        sx={{ color: bodyTextColor, justifyContent: 'center', width: 'fit-content', margin: '64px auto' }}
+        onClick={handleToggleTheme}>
+        <ThemeIcon
+          color={bodyTextColor}
+          size={'small'}
+        />
+        <Box sx={{ width: 10 }} />
+        {mode === 'dark' ? 'Light' : 'Dark'} Mode
+      </Button>
+    </>
   );
 }

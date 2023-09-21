@@ -10,8 +10,8 @@ export default function NavDrawerContent() {
   const dispatch = useAppDispatch();
   const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
 
-  function closeDrawer(anchor: string, open: boolean) {
-    dispatch(setIsDrawerOpen({ [anchor]: open }));
+  function handleCloseNavDrawer() {
+    dispatch(setIsDrawerOpen({ left: false }));
   }
 
   return (
@@ -40,7 +40,7 @@ export default function NavDrawerContent() {
             '&:hover': { backgroundColor: 'custom.grey.dark' },
           }}
           aria-label="close navigation drawer"
-          onClick={() => closeDrawer('left', false)}
+          onClick={handleCloseNavDrawer}
         />
       </Box>
       <NavDraweOptions />

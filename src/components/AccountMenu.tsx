@@ -8,14 +8,14 @@ import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
-import { AdminViewToggle } from './ui/AdminViewToggle';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { AdminViewIcon } from './ui/AdminViewIcon';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
 
-function generateMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) {
+function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) {
   return (
     <MenuItem
       sx={{
@@ -39,7 +39,7 @@ export default function AccountMenu() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
 
-  function changeTheme() {
+  function handleToggleTheme() {
     dispatch(toggleTheme());
   }
 
@@ -62,7 +62,7 @@ export default function AccountMenu() {
                 <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
               </>
             }>
-            {generateMenuItem(
+            {renderMenuItem(
               <AccountCircle
                 fontSize={iconSize}
                 sx={{ color: iconColor }}
@@ -70,26 +70,26 @@ export default function AccountMenu() {
               'My Account'
             )}
             {currentUser?.isAdmin
-              ? generateMenuItem(
-                  <AdminViewToggle isAdminView={isAdminView} />,
+              ? renderMenuItem(
+                  <AdminViewIcon isAdminView={isAdminView} />,
                   isAdminView ? <Link href={'/'}>Client View</Link> : <Link href={'/admin-view'}>Admin View</Link>
                 )
-              : generateMenuItem(
+              : renderMenuItem(
                   <ViewList
                     fontSize={iconSize}
                     sx={{ color: iconColor }}
                   />,
                   'Orders'
                 )}
-            {generateMenuItem(
+            {renderMenuItem(
               <ThemeIcon
                 color={iconColor}
                 size={iconSize}
               />,
               `${mode === 'dark' ? 'Light' : 'Dark'} Mode`,
-              changeTheme
+              handleToggleTheme
             )}
-            {generateMenuItem(
+            {renderMenuItem(
               <Logout
                 fontSize={iconSize}
                 sx={{ color: iconColor }}

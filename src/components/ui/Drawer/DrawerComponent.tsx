@@ -5,24 +5,22 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor } from '@/types';
+import DrawerContentOptions from './DrawerContentOptions';
 
-type DrawerComponentProps = {
-  children: ReactNode;
-};
-
-export default function DrawerComponent({ children }: DrawerComponentProps) {
+export default function DrawerComponent() {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
   const dispatch = useAppDispatch();
 
-  const toggleDrawer = (anchor: DrawerAnchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-    dispatch(setIsDrawerOpen({ [anchor]: open }));
-  };
+  const handleToggleDrawer =
+    (anchor: DrawerAnchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+      dispatch(setIsDrawerOpen({ [anchor]: open }));
+    };
 
   return (
     <>
@@ -38,8 +36,8 @@ export default function DrawerComponent({ children }: DrawerComponentProps) {
             hideBackdrop={true}
             anchor={anchor}
             open={isDrawerOpen[anchor]}
-            onClose={toggleDrawer(anchor, false)}>
-            {children}
+            onClose={handleToggleDrawer(anchor, false)}>
+            <DrawerContentOptions />
           </Drawer>
         </Fragment>
       ))}

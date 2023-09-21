@@ -9,7 +9,7 @@ export default function ShoppingCartButton() {
         display: 'flex',
         alignItems: 'center',
         whiteSpace: 'nowrap',
-        paddingX: 2,
+        paddingX: { xs: 0, md: 2 },
         paddingY: 1,
       }}>
       <ShoppingCartIcon
@@ -25,7 +25,7 @@ export default function ShoppingCartButton() {
           height: 20,
           display: 'grid',
           placeContent: 'center',
-          marginLeft: 2,
+          marginLeft: { xs: 1, md: 2 },
         }}>
         2
       </Box>
