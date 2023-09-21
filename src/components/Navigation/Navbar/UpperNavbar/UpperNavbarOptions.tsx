@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import ShoppingCartButton from './ShoppingCartButton';
-import { ThemeIcon } from '@/components/ui/ThemeIcon';
+import ShoppingCartButton from '../../../ui/ShoppingCartButton';
+import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import { ComponentType, Fragment } from 'react';
-import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
+import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
 import { setDrawerContent, setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { Menu } from '@mui/icons-material';
 
@@ -36,6 +36,18 @@ function renderButton(label: string, onClick: () => void) {
   );
 }
 
+function renderComponent(Component: ComponentType, index: number, isBelowMedium: boolean) {
+  return (
+    <Fragment key={index}>
+      {index === 0 && !isBelowMedium && renderDivider()}
+      <ListItem disablePadding>
+        <Component />
+      </ListItem>
+      {!isBelowMedium && renderDivider()}
+    </Fragment>
+  );
+}
+
 export default function UpperNavbarOptions() {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -55,18 +67,6 @@ export default function UpperNavbarOptions() {
   function handleOpenNavDrawer() {
     dispatch(setDrawerContent('nav'));
     dispatch(setIsDrawerOpen({ left: true }));
-  }
-
-  function renderComponent(Component: ComponentType, index: number) {
-    return (
-      <Fragment key={index}>
-        {index === 0 && !isBelowMedium && renderDivider()}
-        <ListItem disablePadding>
-          <Component />
-        </ListItem>
-        {!isBelowMedium && renderDivider()}
-      </Fragment>
-    );
   }
 
   return (
@@ -96,7 +96,7 @@ export default function UpperNavbarOptions() {
             sx={{ display: 'flex', height: '100%' }}
             disablePadding>
             {[ShoppingCartButton, AccountMenu].map(function (Component, index) {
-              return renderComponent(Component, index);
+              return renderComponent(Component, index, isBelowMedium);
             })}
           </List>
         ) : (
@@ -107,7 +107,7 @@ export default function UpperNavbarOptions() {
                   disableRipple
                   onClick={handleToggleTheme}
                   size="small">
-                  <ThemeIcon
+                  <ThemeToggleIcon
                     size="small"
                     color="custom.grey.light"
                   />

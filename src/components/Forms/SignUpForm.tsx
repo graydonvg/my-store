@@ -10,7 +10,7 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { formTextFieldStyles, formButtonStyles } from './styles';
 
-const defaultFromFields = {
+const defaultFormFields = {
   firstName: '',
   lastName: '',
   email: '',
@@ -21,22 +21,17 @@ const defaultFromFields = {
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formFields, setFormFields] = useState(defaultFromFields);
-  const displayName = formFields.firstName;
-  const userData = {
-    displayName,
-    firstName: formFields.firstName,
-    lastName: formFields.lastName,
-    email: formFields.email,
-    isAdmin: false,
-  };
+  const [formFields, setFormFields] = useState(defaultFormFields);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
+    setFormFields((prevFormFields) => ({
+      ...prevFormFields,
+      [name]: value,
+    }));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
 
@@ -46,21 +41,26 @@ export default function SignUpForm() {
       return;
     }
 
-    createAndSaveUser();
-  }
+    const { email, password } = formFields;
+    const displayName = formFields.firstName;
+    const userData = {
+      displayName,
+      firstName: formFields.firstName,
+      lastName: formFields.lastName,
+      email,
+      isAdmin: false,
+    };
 
-  async function createAndSaveUser() {
     try {
-      await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
+      await createAuthUserWithEmailAndPassword(email, password);
       await createUserDocument(userData);
       dispatch(setCurrentUser(userData));
-      setFormFields(defaultFromFields);
+      setFormFields(defaultFormFields);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
     } finally {
       setIsLoading(false);
-      dispatch(setIsModalOpen(false));
     }
   }
 
@@ -86,86 +86,31 @@ export default function SignUpForm() {
         <Grid
           container
           spacing={2}>
-          <Grid
-            item
-            xs={12}
-            sm={6}>
-            <TextField
-              sx={formTextFieldStyles}
-              autoComplete="given-name"
-              name="firstName"
-              required
-              fullWidth
-              id="firstName"
-              label="First Name"
-              autoFocus
-              value={formFields.firstName}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}>
-            <TextField
-              sx={formTextFieldStyles}
-              fullWidth
-              id="lastName"
-              required
-              label="Last Name"
-              name="lastName"
-              autoComplete="family-name"
-              value={formFields.lastName}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}>
-            <TextField
-              sx={formTextFieldStyles}
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              value={formFields.email}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}>
-            <TextField
-              sx={formTextFieldStyles}
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              value={formFields.password}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}>
-            <TextField
-              sx={formTextFieldStyles}
-              required
-              fullWidth
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              id="confirm-password"
-              autoComplete="new-password"
-              value={formFields.confirmPassword}
-              onChange={handleInputChange}
-            />
-          </Grid>
+          {[
+            { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
+            { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
+            { label: 'Email Address', name: 'email', autoComplete: 'email' },
+            { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
+            { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
+          ].map((field) => (
+            <Grid
+              item
+              xs={12}
+              key={field.name}>
+              <TextField
+                sx={formTextFieldStyles}
+                required
+                fullWidth
+                id={field.name}
+                label={field.label}
+                name={field.name}
+                type={field.type || 'text'}
+                autoComplete={field.autoComplete}
+                value={formFields[field.name as keyof typeof formFields]}
+                onChange={handleInputChange}
+              />
+            </Grid>
+          ))}
         </Grid>
         <Button
           disabled={isLoading}

@@ -1,14 +1,19 @@
 'use client';
 
-import { ReactNode, Fragment } from 'react';
+import { Fragment } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor } from '@/types';
-import DrawerContentOptions from './DrawerContentOptions';
+import NavDrawerContent from '@/components/Navigation/NavDrawer/NavDrawerContent';
+
+function renderDrawerContent(drawerContent: 'nav' | 'cart' | null) {
+  return drawerContent === 'nav' ? <NavDrawerContent /> : null;
+}
 
 export default function DrawerComponent() {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
+  const drawerContent = useAppSelector((state) => state.drawer.drawerContent);
   const dispatch = useAppDispatch();
 
   const handleToggleDrawer =
@@ -24,7 +29,7 @@ export default function DrawerComponent() {
 
   return (
     <>
-      {(['left', 'right'] as const).map((anchor) => (
+      {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <Fragment key={anchor}>
           <Drawer
             PaperProps={{
@@ -37,7 +42,7 @@ export default function DrawerComponent() {
             anchor={anchor}
             open={isDrawerOpen[anchor]}
             onClose={handleToggleDrawer(anchor, false)}>
-            <DrawerContentOptions />
+            {renderDrawerContent(drawerContent)}
           </Drawer>
         </Fragment>
       ))}

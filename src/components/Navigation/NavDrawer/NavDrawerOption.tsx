@@ -12,6 +12,14 @@ type NavDrawerNavOptionProps = {
   drawerWidth: string;
 };
 
+function renderIcon(label: string, bodyTextColor: string) {
+  if (label === 'Sign Out') {
+    return <Logout sx={{ color: bodyTextColor }} />;
+  } else {
+    return <ArrowForwardIos sx={{ color: bodyTextColor }} />;
+  }
+}
+
 export default function NavDrawerNavOption({
   onClick,
   path,
@@ -19,14 +27,6 @@ export default function NavDrawerNavOption({
   bodyTextColor,
   drawerWidth,
 }: NavDrawerNavOptionProps) {
-  function renderIcon() {
-    if (label === 'Sign Out') {
-      return <Logout sx={{ color: bodyTextColor }} />;
-    } else {
-      return <ArrowForwardIos sx={{ color: bodyTextColor }} />;
-    }
-  }
-
   return (
     <>
       <ListItem
@@ -41,7 +41,7 @@ export default function NavDrawerNavOption({
                 primary={label}
                 sx={{ color: bodyTextColor }}
               />
-              {renderIcon()}
+              {renderIcon(label, bodyTextColor)}
             </ListItemButton>
           </Link>
         ) : (
@@ -50,7 +50,7 @@ export default function NavDrawerNavOption({
               primary={label}
               sx={{ color: bodyTextColor }}
             />
-            {renderIcon()}
+            {renderIcon(label, bodyTextColor)}
           </ListItemButton>
         )}
       </ListItem>

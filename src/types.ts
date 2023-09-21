@@ -1,4 +1,4 @@
-export type DrawerAnchor = 'left' | 'right';
+export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type DrawerState = {
   top: boolean;

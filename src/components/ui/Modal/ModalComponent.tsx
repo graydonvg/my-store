@@ -3,7 +3,8 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
 import { Box, Modal, Grow, useTheme } from '@mui/material';
-import ModalContentOptions from './ModalContentOptions';
+import SignInForm from '@/components/Forms/SignInForm';
+import SignUpForm from '@/components/Forms/SignUpForm';
 
 const style = {
   position: 'absolute',
@@ -15,8 +16,13 @@ const style = {
   p: 4,
 };
 
+function renderModalContent(modalContent: 'signIn' | 'signUp' | null) {
+  return modalContent === 'signIn' ? <SignInForm /> : modalContent === 'signUp' ? <SignUpForm /> : null;
+}
+
 export default function ModalComponent() {
   const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
+  const modalContent = useAppSelector((state) => state.modal.modalContent);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -34,9 +40,7 @@ export default function ModalComponent() {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description">
       <Grow in={isModalOpen}>
-        <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
-          <ModalContentOptions />
-        </Box>
+        <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>{renderModalContent(modalContent)}</Box>
       </Grow>
     </Modal>
   );

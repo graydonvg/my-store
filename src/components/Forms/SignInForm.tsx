@@ -11,7 +11,7 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { formTextFieldStyles, formButtonStyles } from './styles';
 
-const defaultFromFields = {
+const defaultFormFields = {
   email: '',
   password: '',
 };
@@ -19,11 +19,11 @@ const defaultFromFields = {
 export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formFields, setFormFields] = useState(defaultFromFields);
+  const [formFields, setFormFields] = useState(defaultFormFields);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
+    setFormFields((prevFormFields) => ({ ...prevFormFields, [name]: value }));
   }
 
   async function handleSignIn(event: FormEvent<HTMLFormElement>) {
@@ -32,7 +32,7 @@ export default function SignInForm() {
 
     try {
       await signInAuthUserWithEmailAndPassword(formFields.email, formFields.password);
-      setFormFields(defaultFromFields);
+      setFormFields(defaultFormFields);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
@@ -41,8 +41,9 @@ export default function SignInForm() {
     }
   }
 
-  async function signInWithGoogle() {
+  async function signInWithGoogleAndCreateUser() {
     setIsLoading(true);
+
     try {
       const { user } = await signInWithGooglePopup();
       const { displayName, email } = user;
@@ -83,42 +84,32 @@ export default function SignInForm() {
         component="form"
         onSubmit={handleSignIn}
         sx={{ mt: 1 }}>
-        <TextField
-          sx={formTextFieldStyles}
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          value={formFields.email}
-          onChange={handleInputChange}
-          autoFocus
-        />
-        <TextField
-          sx={formTextFieldStyles}
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={formFields.password}
-          onChange={handleInputChange}
-        />
+        {[
+          { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
+          { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
+        ].map((field) => (
+          <TextField
+            key={field.name}
+            sx={formTextFieldStyles}
+            margin="normal"
+            required
+            fullWidth
+            id={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            autoComplete={field.autoComplete}
+            value={formFields[field.name as keyof typeof formFields]}
+            onChange={handleInputChange}
+            autoFocus={field.name === 'email'}
+          />
+        ))}
         <Button
           disabled={isLoading}
           type="submit"
           fullWidth
           variant="contained"
-          sx={{
-            mt: 3,
-            mb: 2,
-            ...formButtonStyles,
-          }}>
+          sx={{ mt: 3, mb: 2, ...formButtonStyles }}>
           Sign In
         </Button>
         <Divider>
@@ -129,7 +120,7 @@ export default function SignInForm() {
           </Typography>
         </Divider>
         <Button
-          onClick={signInWithGoogle}
+          onClick={signInWithGoogleAndCreateUser}
           disabled={isLoading}
           type="button"
           fullWidth

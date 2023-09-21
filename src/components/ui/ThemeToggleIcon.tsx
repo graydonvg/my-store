@@ -4,12 +4,12 @@ import { useTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-type ThemeIconProps = {
+type ThemeToggleIconProps = {
   size: 'small' | 'medium' | 'large';
   color: string;
 };
 
-export function ThemeIcon({ size, color }: ThemeIconProps) {
+export function ThemeToggleIcon({ size, color }: ThemeToggleIconProps) {
   const theme = useTheme();
   const mode = theme.palette.mode;
 

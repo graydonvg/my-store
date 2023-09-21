@@ -1,7 +1,6 @@
 'use client';
 
-import { Divider, ListItem, Typography, useTheme } from '@mui/material';
-import LowerNavbarOptionMenuItem from './LowerNavbarOptionMenuItem';
+import { Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/material';
 import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
 
 type LowerNavbarOptionProps = {
@@ -9,6 +8,25 @@ type LowerNavbarOptionProps = {
   label: string;
   isLastNavOption: boolean;
 };
+
+function renderMenuItem(text: string, key: number) {
+  return (
+    <MenuItem
+      key={key}
+      disableRipple
+      sx={{
+        padding: 0,
+        marginX: 2,
+        marginY: '6px',
+        cursor: 'default',
+        color: 'custom.grey.light',
+        '&:hover': { backgroundColor: 'custom.grey.dark', color: 'custom.blue.light' },
+      }}>
+      {/* make this a link. no need for cursor: 'pointer' */}
+      {text}
+    </MenuItem>
+  );
+}
 
 const lowerNavbarMenuOptions = ['T-Shirts', 'Pants', 'Shoes', 'Hats', 'Socks'];
 
@@ -45,12 +63,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
               {label}
             </Typography>
           }>
-          {lowerNavbarMenuOptions.map((item, index) => (
-            <LowerNavbarOptionMenuItem
-              key={index}
-              menuItemText={item}
-            />
-          ))}
+          {lowerNavbarMenuOptions.map((option, index) => renderMenuItem(option, index))}
         </HoverDropdownMenu>
       </ListItem>
       {!isLastNavOption ? (

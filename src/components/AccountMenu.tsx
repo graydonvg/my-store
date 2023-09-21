@@ -3,14 +3,14 @@
 import { ReactNode } from 'react';
 import { useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
-import { ThemeIcon } from './ui/ThemeIcon';
+import { ThemeToggleIcon } from './ui/ThemeToggleIcon';
 import { signOutUser } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { AdminViewIcon } from './ui/AdminViewIcon';
+import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -57,7 +57,7 @@ export default function AccountMenu() {
                   sx={{
                     color: 'custom.grey.light',
                   }}>
-                  {currentUser?.displayName ?? 'Account'}
+                  {currentUser?.displayName ?? 'User'}
                 </Typography>
                 <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
               </>
@@ -71,7 +71,7 @@ export default function AccountMenu() {
             )}
             {currentUser?.isAdmin
               ? renderMenuItem(
-                  <AdminViewIcon isAdminView={isAdminView} />,
+                  <AdminViewToggleIcon isAdminView={isAdminView} />,
                   isAdminView ? <Link href={'/'}>Client View</Link> : <Link href={'/admin-view'}>Admin View</Link>
                 )
               : renderMenuItem(
@@ -82,7 +82,7 @@ export default function AccountMenu() {
                   'Orders'
                 )}
             {renderMenuItem(
-              <ThemeIcon
+              <ThemeToggleIcon
                 color={iconColor}
                 size={iconSize}
               />,

@@ -24,11 +24,11 @@ export default function HoverDropdownMenu({
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
 
-  function handleOpen(event: React.MouseEvent<HTMLDivElement>) {
+  function handleMenuOpen(event: React.MouseEvent<HTMLDivElement>) {
     !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   }
 
-  function handleClose() {
+  function handleMenuCloseAfterTimeout() {
     if (!!timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -59,9 +59,9 @@ export default function HoverDropdownMenu({
           paddingY: 1,
           zIndex: (theme) => theme.zIndex.modal + 1,
         }}
-        onClick={handleOpen}
-        onMouseEnter={handleOpen}
-        onMouseLeave={handleClose}>
+        onClick={handleMenuOpen}
+        onMouseEnter={handleMenuOpen}
+        onMouseLeave={handleMenuCloseAfterTimeout}>
         {labelContent}
       </Box>
       <Menu

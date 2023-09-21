@@ -1,27 +1,28 @@
 'use client';
 
-import React from 'react';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  Box,
-  useTheme,
-  ListItemIcon,
-  Button,
-  IconButton,
-} from '@mui/material';
-import { Logout } from '@mui/icons-material';
+import { List, Box, useTheme, Button } from '@mui/material';
 import DrawerNavOption from './NavDrawerOption';
 import { signOutUser } from '@/lib/firebase';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
-import { ThemeIcon } from '@/components/ui/ThemeIcon';
+import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { navOptions, adminNavOptions } from '@/lib/utils';
+
+const drawerWidth = '100vw';
+
+function renderNavOptions(options: { id: string; label: string; path: string }[], bodyTextColor: string) {
+  return options.map((option) => (
+    <DrawerNavOption
+      key={option.id}
+      label={option.label}
+      path={option.path}
+      drawerWidth={drawerWidth}
+      bodyTextColor={bodyTextColor}
+    />
+  ));
+}
 
 export default function NavDraweOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -31,7 +32,6 @@ export default function NavDraweOptions() {
   const bodyTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const drawerWidth = '100vw';
 
   function handleCloseDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));
@@ -46,25 +46,15 @@ export default function NavDraweOptions() {
     dispatch(toggleTheme());
   }
 
-  function renderNavOptions(options: { id: string; label: string; path: string }[]) {
-    return options.map((option) => (
-      <DrawerNavOption
-        key={option.id}
-        label={option.label}
-        path={option.path}
-        drawerWidth={drawerWidth}
-        bodyTextColor={bodyTextColor}
-      />
-    ));
-  }
-
   return (
     <>
       <Box component="nav">
         <List
           disablePadding
           sx={{ width: drawerWidth }}>
-          {currentUser?.isAdmin && isAdminView ? renderNavOptions(adminNavOptions) : renderNavOptions(navOptions)}
+          {currentUser?.isAdmin && isAdminView
+            ? renderNavOptions(adminNavOptions, bodyTextColor)
+            : renderNavOptions(navOptions, bodyTextColor)}
           {currentUser && (
             <>
               <DrawerNavOption
@@ -99,7 +89,7 @@ export default function NavDraweOptions() {
       <Button
         sx={{ color: bodyTextColor, justifyContent: 'center', width: 'fit-content', margin: '64px auto' }}
         onClick={handleToggleTheme}>
-        <ThemeIcon
+        <ThemeToggleIcon
           color={bodyTextColor}
           size={'small'}
         />
