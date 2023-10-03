@@ -95,9 +95,9 @@ export default function UpperNavbarOptions() {
           <List
             sx={{ display: 'flex', height: '100%' }}
             disablePadding>
-            {[ShoppingCartButton, AccountMenu].map(function (Component, index) {
-              return renderComponent(Component, index, isBelowMedium);
-            })}
+            {[ShoppingCartButton, AccountMenu].map((Component, index) =>
+              renderComponent(Component, index, isBelowMedium)
+            )}
           </List>
         ) : (
           <List sx={{ display: 'flex', gap: 2, height: '100%' }}>
@@ -118,6 +118,7 @@ export default function UpperNavbarOptions() {
             {renderButton('Sign in', () => handleModal('signIn'))}
             {!isBelowMedium ? renderDivider() : null}
             {!isBelowSmall ? renderButton('Sign Up', () => handleModal('signUp')) : null}
+            {!isBelowMedium ? renderDivider() : null}
           </List>
         )}
       </Box>
