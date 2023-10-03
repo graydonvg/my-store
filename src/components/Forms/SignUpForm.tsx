@@ -82,7 +82,7 @@ export default function SignUpForm() {
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ mt: 1 }}>
+        sx={{ mt: 3 }}>
         <Grid
           container
           spacing={2}>
@@ -96,6 +96,7 @@ export default function SignUpForm() {
             <Grid
               item
               xs={12}
+              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
               key={field.name}>
               <TextField
                 sx={formTextFieldStyles}
