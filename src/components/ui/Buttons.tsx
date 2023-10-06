@@ -6,7 +6,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 type BlueFormButtonProps = {
   label: ReactNode;
   startIcon?: ReactNode;
-  component: ElementType<any>;
+  component?: ElementType<any>;
   type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
   sx?: Record<string, string | number>;
@@ -30,7 +30,7 @@ export default function BlueFormButton({
     <Button
       onClick={onClick}
       disabled={disabled}
-      component={component}
+      component={component ?? 'button'}
       type={type}
       fullWidth={fullWidth}
       variant="contained"
