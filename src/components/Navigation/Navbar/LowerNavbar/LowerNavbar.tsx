@@ -3,12 +3,14 @@
 import { Box, Container, useTheme } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function LowerNavbar() {
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const backgroundColor = mode === 'light' ? 'custom.grey.light' : 'custom.grey.medium';
-  const logoColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
+  const backgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
+  const logoColor = mode === 'light' ? color.grey.medium : color.grey.light;
 
   return (
     <Box

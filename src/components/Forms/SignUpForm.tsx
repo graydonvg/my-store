@@ -1,14 +1,15 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Button, TextField, Link, Grid } from '@mui/material';
+import { Box, TextField, Link, Grid } from '@mui/material';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { formTextFieldStyles, formButtonStyles } from './styles';
+import { formTextFieldStyles } from './styles';
+import BlueFormButton from '../ui/Buttons';
 
 const defaultFormFields = {
   firstName: '',
@@ -109,18 +110,18 @@ export default function SignUpForm() {
                 autoComplete={field.autoComplete}
                 value={formFields[field.name as keyof typeof formFields]}
                 onChange={handleInputChange}
+                autoFocus={field.name === 'firstName'}
               />
             </Grid>
           ))}
         </Grid>
-        <Button
+        <BlueFormButton
+          label="sign up"
           disabled={isLoading}
           type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2, ...formButtonStyles }}>
-          Sign Up
-        </Button>
+          sx={{ mt: 3, mb: 2 }}
+          fullWidth={true}
+        />
         <Link
           onClick={openSignInModal}
           sx={{ cursor: 'pointer' }}

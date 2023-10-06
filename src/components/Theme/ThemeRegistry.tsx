@@ -63,6 +63,8 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
   },
 });
 
+export type GetDesignTokensType = ReturnType<typeof getDesignTokens>;
+
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
 

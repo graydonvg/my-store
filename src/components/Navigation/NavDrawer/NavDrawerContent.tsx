@@ -5,9 +5,11 @@ import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { Typography, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NavDraweOptions from './NavDrawerOptions';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function NavDrawerContent() {
   const dispatch = useAppDispatch();
+  const color = useCustomColorPalette();
   const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
 
   function handleCloseNavDrawer() {
@@ -18,7 +20,7 @@ export default function NavDrawerContent() {
     <>
       <Box
         sx={{
-          backgroundColor: 'custom.grey.dark',
+          backgroundColor: color.grey.dark,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -27,7 +29,7 @@ export default function NavDrawerContent() {
           paddingX: 2,
         }}>
         <Typography
-          color="custom.grey.light"
+          color={color.grey.light}
           variant="h5"
           component="span">
           Menu
@@ -36,8 +38,8 @@ export default function NavDrawerContent() {
           sx={{
             cursor: 'pointer',
             padding: 0,
-            color: 'custom.grey.light',
-            '&:hover': { backgroundColor: 'custom.grey.dark' },
+            color: color.grey.light,
+            '&:hover': { backgroundColor: color.grey.dark },
           }}
           aria-label="close navigation drawer"
           onClick={handleCloseNavDrawer}

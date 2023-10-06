@@ -11,6 +11,7 @@ import { ComponentType, Fragment } from 'react';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
 import { setDrawerContent, setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { Menu } from '@mui/icons-material';
+import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 
 function renderDivider() {
   return (
@@ -23,12 +24,12 @@ function renderDivider() {
   );
 }
 
-function renderButton(label: string, onClick: () => void) {
+function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
     <ListItem disablePadding>
       <Typography
         variant="button"
-        sx={{ color: 'custom.grey.light', cursor: 'pointer', whiteSpace: 'nowrap' }}
+        sx={{ color: color.grey.light, cursor: 'pointer', whiteSpace: 'nowrap' }}
         onClick={onClick}>
         {label}
       </Typography>
@@ -52,6 +53,7 @@ export default function UpperNavbarOptions() {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -78,7 +80,7 @@ export default function UpperNavbarOptions() {
         }}>
         <Menu
           sx={{
-            color: 'custom.grey.light',
+            color: color.grey.light,
             cursor: 'pointer',
           }}
           aria-label="open navigation drawer"
@@ -88,7 +90,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitleAndLogo
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color="custom.grey.light"
+        color={color.grey.light}
       />
       <Box component="nav">
         {currentUser ? (
@@ -109,15 +111,15 @@ export default function UpperNavbarOptions() {
                   size="small">
                   <ThemeToggleIcon
                     size="small"
-                    color="custom.grey.light"
+                    color={color.grey.light}
                   />
                 </IconButton>
               </ListItem>
             )}
             {!isBelowMedium ? renderDivider() : null}
-            {renderButton('Sign in', () => handleModal('signIn'))}
+            {renderButton('Sign in', color, () => handleModal('signIn'))}
             {!isBelowMedium ? renderDivider() : null}
-            {!isBelowSmall ? renderButton('Sign Up', () => handleModal('signUp')) : null}
+            {!isBelowSmall ? renderButton('Sign Up', color, () => handleModal('signUp')) : null}
             {!isBelowMedium ? renderDivider() : null}
           </List>
         )}

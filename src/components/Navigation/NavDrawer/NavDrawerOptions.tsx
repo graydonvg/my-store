@@ -9,12 +9,18 @@ import { usePathname } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { navOptions, adminNavOptions } from '@/lib/utils';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const drawerWidth = '100vw';
 
-function renderNavOptions(options: { id: string; label: string; path: string }[], bodyTextColor: string) {
+function renderNavOptions(
+  options: { id: string; label: string; path: string }[],
+  bodyTextColor: string,
+  onClick: () => void
+) {
   return options.map((option) => (
     <DrawerNavOption
+      onClick={onClick}
       key={option.id}
       label={option.label}
       path={option.path}
@@ -28,8 +34,9 @@ export default function NavDraweOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const bodyTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
+  const bodyTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
 
@@ -53,8 +60,8 @@ export default function NavDraweOptions() {
           disablePadding
           sx={{ width: drawerWidth }}>
           {currentUser?.isAdmin && isAdminView
-            ? renderNavOptions(adminNavOptions, bodyTextColor)
-            : renderNavOptions(navOptions, bodyTextColor)}
+            ? renderNavOptions(adminNavOptions, bodyTextColor, handleCloseDrawer)
+            : renderNavOptions(navOptions, bodyTextColor, handleCloseDrawer)}
           {currentUser && (
             <>
               <DrawerNavOption

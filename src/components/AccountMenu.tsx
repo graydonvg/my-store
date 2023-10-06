@@ -11,6 +11,7 @@ import HoverDropdownMenu from './ui/HoverDropdownMenu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -33,6 +34,7 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
 export default function AccountMenu() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -55,11 +57,11 @@ export default function AccountMenu() {
                 <Typography
                   component="span"
                   sx={{
-                    color: 'custom.grey.light',
+                    color: color.grey.light,
                   }}>
                   {currentUser?.displayName ?? 'User'}
                 </Typography>
-                <ArrowDropDown sx={{ color: 'custom.blue.dark', marginLeft: 2 }} />
+                <ArrowDropDown sx={{ color: color.blue.dark, marginLeft: 2 }} />
               </>
             }>
             {renderMenuItem(

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Button, Divider, Link, TextField, Typography } from '@mui/material';
+import { Box, Divider, Link, TextField, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
@@ -9,7 +9,8 @@ import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDo
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { formTextFieldStyles, formButtonStyles } from './styles';
+import { formTextFieldStyles } from './styles';
+import BlueFormButton from '../ui/Buttons';
 
 const defaultFormFields = {
   email: '',
@@ -104,14 +105,13 @@ export default function SignInForm() {
             autoFocus={field.name === 'email'}
           />
         ))}
-        <Button
+        <BlueFormButton
+          label="sign in"
           disabled={isLoading}
           type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2, ...formButtonStyles }}>
-          Sign In
-        </Button>
+          sx={{ mt: 3, mb: 2 }}
+          fullWidth={true}
+        />
         <Divider>
           <Typography
             component="span"
@@ -119,21 +119,15 @@ export default function SignInForm() {
             OR
           </Typography>
         </Divider>
-        <Button
+        <BlueFormButton
           onClick={signInWithGoogleAndCreateUser}
+          label="sign with google"
           disabled={isLoading}
           type="button"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 2, mb: 3, display: 'flex', ...formButtonStyles }}>
-          <GoogleIcon />
-          <Typography
-            component="p"
-            variant="button"
-            sx={{ flexGrow: 1, marginRight: '24px' }}>
-            Sign with Google
-          </Typography>
-        </Button>
+          sx={{ mt: 2, mb: 3 }}
+          fullWidth={true}
+          startIcon={<GoogleIcon />}
+        />
         <Link
           onClick={openSignUpModal}
           sx={{ cursor: 'pointer' }}

@@ -1,5 +1,6 @@
 'use client';
 
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { Box, Menu, PopoverOrigin } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
@@ -20,6 +21,7 @@ export default function HoverDropdownMenu({
   menuOffsetBoxHeight,
   menuOffsetBoxBackgroundColor,
 }: HoverDropdownMenuProps) {
+  const color = useCustomColorPalette();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
@@ -71,7 +73,7 @@ export default function HoverDropdownMenu({
             padding: 0,
           },
           '& .MuiMenu-paper': {
-            backgroundColor: 'custom.grey.dark',
+            backgroundColor: color.grey.dark,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             overflow: 'visible',

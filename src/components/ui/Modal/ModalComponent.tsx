@@ -5,6 +5,7 @@ import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
 import { Box, Modal, Grow, useTheme } from '@mui/material';
 import SignInForm from '@/components/Forms/SignInForm';
 import SignUpForm from '@/components/Forms/SignUpForm';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const style = {
   position: 'absolute',
@@ -25,8 +26,9 @@ export default function ModalComponent() {
   const modalContent = useAppSelector((state) => state.modal.modalContent);
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const modalBackgroundColor = mode === 'light' ? 'custom.grey.light' : 'custom.grey.dark';
+  const modalBackgroundColor = mode === 'light' ? color.grey.light : color.grey.dark;
 
   function handleClose() {
     dispatch(setIsModalOpen(false));

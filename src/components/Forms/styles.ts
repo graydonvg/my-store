@@ -12,8 +12,3 @@ export const formTextFieldStyles = {
     },
   },
 };
-
-export const formButtonStyles = {
-  backgroundColor: 'custom.blue.dark',
-  '&:hover': { backgroundColor: 'custom.blue.light' },
-};

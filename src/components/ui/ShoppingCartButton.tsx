@@ -1,7 +1,9 @@
 import { Box } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function ShoppingCartButton() {
+  const color = useCustomColorPalette();
   return (
     <Box
       component="button"
@@ -14,12 +16,12 @@ export default function ShoppingCartButton() {
       }}>
       <ShoppingCartIcon
         aria-label="Shopping cart"
-        sx={{ color: 'custom.grey.light' }}
+        sx={{ color: color.grey.light }}
       />
       <Box
         sx={{
-          color: 'custom.grey.light',
-          backgroundColor: 'custom.blue.dark',
+          color: color.grey.light,
+          backgroundColor: color.blue.dark,
           borderRadius: '50%',
           width: 20,
           height: 20,

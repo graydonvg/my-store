@@ -2,6 +2,8 @@
 
 import { Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/material';
 import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
+import Link from 'next/link';
+import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 
 type LowerNavbarOptionProps = {
   path: string;
@@ -9,7 +11,7 @@ type LowerNavbarOptionProps = {
   isLastNavOption: boolean;
 };
 
-function renderMenuItem(text: string, key: number) {
+function renderMenuItem(text: string, key: number, color: CustomColorPaletteReturnType) {
   return (
     <MenuItem
       key={key}
@@ -19,8 +21,8 @@ function renderMenuItem(text: string, key: number) {
         marginX: 2,
         marginY: '6px',
         cursor: 'default',
-        color: 'custom.grey.light',
-        '&:hover': { backgroundColor: 'custom.grey.dark', color: 'custom.blue.light' },
+        color: color.grey.light,
+        '&:hover': { backgroundColor: color.grey.dark, color: color.blue.light },
       }}>
       {/* make this a link. no need for cursor: 'pointer' */}
       {text}
@@ -32,9 +34,10 @@ const lowerNavbarMenuOptions = ['T-Shirts', 'Pants', 'Shoes', 'Hats', 'Socks'];
 
 export default function LowerNavbarOption({ path, label, isLastNavOption }: LowerNavbarOptionProps) {
   const theme = useTheme();
+  const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const labelTextColor = mode === 'light' ? 'custom.grey.medium' : 'custom.grey.light';
-  const menuOffsetBoxBackgroundColor = mode === 'light' ? 'custom.grey.light' : 'custom.grey.medium';
+  const labelTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
+  const menuOffsetBoxBackgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
 
   return (
     <>
@@ -53,17 +56,17 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
                 textTransform: 'none',
                 color: labelTextColor,
                 '&:hover': {
-                  color: 'custom.grey.dark',
+                  color: color.grey.dark,
                   textDecoration: 'underline',
-                  textDecorationColor: 'custom.grey.dark',
+                  textDecorationColor: color.grey.dark,
                   textDecorationThickness: 1,
                   textUnderlineOffset: 6,
                 },
               }}>
-              {label}
+              <Link href={path}>{label}</Link>
             </Typography>
           }>
-          {lowerNavbarMenuOptions.map((option, index) => renderMenuItem(option, index))}
+          {lowerNavbarMenuOptions.map((option, index) => renderMenuItem(option, index, color))}
         </HoverDropdownMenu>
       </ListItem>
       {!isLastNavOption ? (
