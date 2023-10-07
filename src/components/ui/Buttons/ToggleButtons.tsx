@@ -41,6 +41,9 @@ export default function ToggleButtons({
             key={button.value}
             sx={{
               padding: '8px 24px',
+              '&:hover': {
+                borderColor: 'blue',
+              },
               '&.MuiToggleButtonGroup-grouped': {
                 color: labelAndBorderColor,
                 border: `1px solid ${labelAndBorderColor} !important`,

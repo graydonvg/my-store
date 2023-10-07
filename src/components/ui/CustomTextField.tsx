@@ -1,25 +1,28 @@
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { TextField } from '@mui/material';
 import { ChangeEvent, ChangeEventHandler } from 'react';
 
 type CustomTextFieldProps = {
   key?: string | number;
-  sx?: Record<string, string | number>;
   margin?: 'dense' | 'normal' | 'none' | undefined;
   required?: boolean;
   fullWidth?: boolean;
   id?: string;
   label: string;
   name: string;
-  type: string;
+  type?: string;
   autoFocus?: boolean;
   autoComplete?: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  labelAndBorderColor?: string;
+  labelColor?: string;
+  focusedLabelColor?: string;
+  borderColor?: string;
 };
 
 export default function CustomTextField({
   key,
-  sx,
   margin,
   required,
   fullWidth,
@@ -31,22 +34,30 @@ export default function CustomTextField({
   value,
   onChange,
   autoFocus,
+  labelColor,
+  borderColor,
+  focusedLabelColor,
 }: CustomTextFieldProps) {
+  const color = useCustomColorPalette();
   return (
     <TextField
       key={key}
       sx={{
-        ...sx,
+        '& .MuiInputLabel-root': {
+          color: labelColor,
+        },
         '& label.Mui-focused': {
-          color: 'custom.blue.light',
+          color: focusedLabelColor,
         },
         '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: borderColor,
+          },
           '&:hover fieldset': {
-            borderColor: 'custom.blue.dark',
-            color: 'custom.blue.dark',
+            borderColor: color.blue.dark,
           },
           '&.Mui-focused fieldset': {
-            borderColor: 'custom.blue.light',
+            borderColor: color.blue.dark,
           },
         },
       }}
