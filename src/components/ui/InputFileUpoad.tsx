@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import BlueFormButton from './Buttons';
+import BlueFormButton from './Buttons/BlueFormButton';
 import { Input } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 

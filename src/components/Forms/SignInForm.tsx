@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Divider, Link, TextField, Typography } from '@mui/material';
+import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
@@ -9,8 +9,8 @@ import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDo
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { formTextFieldStyles } from './styles';
-import BlueFormButton from '../ui/Buttons';
+import BlueFormButton from '../ui/Buttons/BlueFormButton';
+import CustomTextField from '../ui/CustomTextField';
 
 const defaultFormFields = {
   email: '',
@@ -89,12 +89,11 @@ export default function SignInForm() {
           { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
           { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
         ].map((field) => (
-          <TextField
+          <CustomTextField
             key={field.name}
-            sx={formTextFieldStyles}
             margin="normal"
-            required
-            fullWidth
+            required={true}
+            fullWidth={true}
             id={field.name}
             label={field.label}
             name={field.name}

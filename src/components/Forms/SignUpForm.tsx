@@ -8,8 +8,8 @@ import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/fi
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import { formTextFieldStyles } from './styles';
-import BlueFormButton from '../ui/Buttons';
+import BlueFormButton from '../ui/Buttons/BlueFormButton';
+import CustomTextField from '../ui/CustomTextField';
 
 const defaultFormFields = {
   firstName: '',
@@ -99,10 +99,9 @@ export default function SignUpForm() {
               xs={12}
               sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
               key={field.name}>
-              <TextField
-                sx={formTextFieldStyles}
-                required
-                fullWidth
+              <CustomTextField
+                required={true}
+                fullWidth={true}
                 id={field.name}
                 label={field.label}
                 name={field.name}

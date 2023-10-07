@@ -2,7 +2,7 @@
 
 import { Box, Typography, useTheme } from '@mui/material';
 import InputFileUpload from '../ui/InputFileUpoad';
-import ToggleButtons from '../ui/ToggleButtons';
+import ToggleButtons from '../ui/Buttons/ToggleButtons';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type AddNewProductFormProps = {};

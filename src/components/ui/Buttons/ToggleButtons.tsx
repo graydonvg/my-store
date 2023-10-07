@@ -1,7 +1,6 @@
 'use client';
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 
 type ToggleButtonsProps = {
@@ -31,7 +30,7 @@ export default function ToggleButtons({
 
   return (
     <ToggleButtonGroup
-      sx={{ display: 'flex', gap: 1 }}
+      sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
       value={selection}
       exclusive
       onChange={handleSelection}
