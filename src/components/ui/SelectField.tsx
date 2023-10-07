@@ -1,22 +1,25 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { TextField, TextFieldProps } from '@mui/material';
+import { MenuItem, TextField, TextFieldProps } from '@mui/material';
 
-type CustomTextFieldProps = TextFieldProps & {
+type SelectFieldProps = TextFieldProps & {
+  options: string[];
   labelAndBorderColor?: string;
   labelColor?: string;
   focusedLabelColor?: string;
   borderColor?: string;
 };
 
-export default function CustomTextField({
+export default function SelectField({
+  options,
   labelColor,
   borderColor,
   focusedLabelColor,
   ...props
-}: CustomTextFieldProps) {
+}: SelectFieldProps) {
   const color = useCustomColorPalette();
   return (
     <TextField
+      select
       sx={{
         '& .MuiInputLabel-root': {
           color: labelColor,
@@ -36,7 +39,22 @@ export default function CustomTextField({
           },
         },
       }}
-      {...props}
-    />
+      {...props}>
+      {options.map((option) => (
+        <MenuItem
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: color.blue.dark,
+              '&:hover': {
+                backgroundColor: color.blue.light,
+              },
+            },
+          }}
+          key={option}
+          value={option}>
+          {option}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }

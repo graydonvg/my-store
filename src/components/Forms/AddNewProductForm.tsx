@@ -6,6 +6,8 @@ import ToggleButtons from '../ui/Buttons/ToggleButtons';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import CustomTextField from '../ui/CustomTextField';
 import { ChangeEvent, useState } from 'react';
+import SelectField from '../ui/SelectField';
+import BlueFormButton from '../ui/Buttons/BlueFormButton';
 
 type AddNewProductFormProps = {};
 
@@ -42,7 +44,8 @@ export default function AddNewProductForm() {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 8 }}>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <InputFileUpload />
         <Typography sx={{ color: textColor }}>No file chosen</Typography>
@@ -50,28 +53,56 @@ export default function AddNewProductForm() {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
         <ToggleButtons
+          aria-label="select size"
           buttons={toggleButtonOptions}
-          groupAriaLabel="select size"
           labelAndBorderColor={labelAndBorderColor}
+          hoverBorderColor={color.blue.dark}
           selectedLabelColor={color.grey.light}
           selectedBackgroundColor={color.grey.dark}
+          selectedHoverBackgroundColor={color.grey.dark}
           selectedBorderColor={color.grey.dark}
-          hoverBackgroundColor={color.grey.dark}
         />
       </Box>
-      {[{ label: 'Name', name: 'name', required: true }].map((field) => (
-        <CustomTextField
-          key={field.name}
-          label="Name"
-          name="name"
-          value={formFields[field.name as keyof typeof formFields]}
-          required={true}
-          onChange={handleInputChange}
-          borderColor={labelAndBorderColor}
-          labelColor={labelAndBorderColor}
-          focusedLabelColor={labelAndBorderColor}
-        />
-      ))}
+      {[
+        { label: 'Category', name: 'category', required: true, type: 'select', options: ['Men', 'Women', 'kids'] },
+        { label: 'Name', name: 'name', required: true },
+        { label: 'Description', name: 'description', required: true },
+        { label: 'Delivery info', name: 'delivery-info', required: true },
+        { label: 'Price', name: 'price', required: true },
+        { label: 'On sale', name: 'on-sale', required: true, type: 'select', options: ['No', 'Yes'] },
+        { label: 'Price drop', name: 'price-drop', required: true },
+      ].map((field) => {
+        return field.type === 'select' ? (
+          <SelectField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            value={formFields[field.name as keyof typeof formFields]}
+            required={true}
+            onChange={handleInputChange}
+            borderColor={labelAndBorderColor}
+            labelColor={labelAndBorderColor}
+            focusedLabelColor={labelAndBorderColor}
+            options={field.options}
+          />
+        ) : (
+          <CustomTextField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            value={formFields[field.name as keyof typeof formFields]}
+            required={true}
+            onChange={handleInputChange}
+            borderColor={labelAndBorderColor}
+            labelColor={labelAndBorderColor}
+            focusedLabelColor={labelAndBorderColor}
+          />
+        );
+      })}
+      <BlueFormButton
+        label="app product"
+        fullWidth
+      />
     </Box>
   );
 }
