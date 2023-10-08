@@ -36,7 +36,7 @@ const defaultFormValues = {
   description: '',
   deliveryInfo: '',
   price: undefined,
-  onSale: '',
+  onSale: 'No',
   salePercentage: undefined,
 };
 
@@ -47,6 +47,7 @@ export default function AddNewProductForm() {
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const labelAndBorderColor = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const isOnSale = formValues['onSale'] === 'Yes';
 
   console.log(formValues);
 
@@ -102,10 +103,11 @@ export default function AddNewProductForm() {
             required={true}
             onChange={handleInputChange}
             borderColor={labelAndBorderColor}
-            labelColor={labelAndBorderColor}
+            hoverBorderColor={!isOnSale && field.name === 'salePercentage' ? '' : color.blue.dark}
+            labelColor={!isOnSale && field.name === 'salePercentage' ? '' : labelAndBorderColor}
             focusedLabelColor={labelAndBorderColor}
             type={field.type === 'number' || field.type === 'percentage' ? 'number' : undefined}
-            disabled={formValues['onSale'] === 'No' && field.name === 'salePercentage' ? true : false}
+            disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
             InputProps={
               field.type === 'number'
                 ? {

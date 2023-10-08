@@ -6,12 +6,14 @@ type CustomTextFieldProps = TextFieldProps & {
   labelColor?: string;
   focusedLabelColor?: string;
   borderColor?: string;
+  hoverBorderColor?: string;
   styles?: {};
 };
 
 export default function CustomTextField({
   labelColor,
   borderColor,
+  hoverBorderColor,
   focusedLabelColor,
   styles,
   ...props
@@ -32,7 +34,7 @@ export default function CustomTextField({
             borderColor: borderColor,
           },
           '&:hover fieldset': {
-            borderColor: color.blue.dark,
+            borderColor: hoverBorderColor,
           },
           '&.Mui-focused fieldset': {
             borderColor: color.blue.dark,
