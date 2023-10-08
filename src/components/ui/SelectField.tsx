@@ -21,6 +21,9 @@ export default function SelectField({
     <TextField
       select
       sx={{
+        '& .mui-kc02vp-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+          backgroundColor: 'red',
+        },
         '& .MuiInputLabel-root': {
           color: labelColor,
         },

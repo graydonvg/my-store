@@ -100,7 +100,7 @@ export default function AddNewProductForm() {
         );
       })}
       <BlueFormButton
-        label="app product"
+        label="add product"
         fullWidth
       />
     </Box>
