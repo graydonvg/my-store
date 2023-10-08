@@ -46,10 +46,7 @@ export default function AddNewProductForm() {
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
-  const labelAndBorderColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formValues['onSale'] === 'Yes';
-
-  console.log(formValues);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -60,7 +57,7 @@ export default function AddNewProductForm() {
     }));
   }
 
-  function handleToggleButtonChange(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+  function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
       size: selectedSize,
@@ -69,6 +66,7 @@ export default function AddNewProductForm() {
 
   return (
     <Box
+      component="form"
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <InputFileUpload />
@@ -79,14 +77,8 @@ export default function AddNewProductForm() {
         <ToggleButtons
           aria-label="select size"
           selection={formValues.size}
-          onChange={handleToggleButtonChange}
+          onChange={handleSelectSize}
           buttons={toggleButtonOptions}
-          labelAndBorderColor={labelAndBorderColor}
-          hoverBorderColor={color.blue.dark}
-          selectedLabelColor={color.grey.light}
-          selectedBackgroundColor={color.grey.dark}
-          selectedHoverBackgroundColor={color.grey.dark}
-          selectedBorderColor={color.grey.dark}
         />
       </Box>
       {formFields.map((field) => {
@@ -97,9 +89,6 @@ export default function AddNewProductForm() {
             name={field.name}
             required={true}
             onChange={handleInputChange}
-            borderColor={labelAndBorderColor}
-            labelColor={labelAndBorderColor}
-            focusedLabelColor={labelAndBorderColor}
             options={field.options ?? []}
           />
         ) : (
@@ -110,10 +99,6 @@ export default function AddNewProductForm() {
             value={formValues[field.name as keyof typeof formValues]}
             required={true}
             onChange={handleInputChange}
-            borderColor={labelAndBorderColor}
-            hoverBorderColor={!isOnSale && field.name === 'salePercentage' ? '' : color.blue.dark}
-            labelColor={!isOnSale && field.name === 'salePercentage' ? '' : labelAndBorderColor}
-            focusedLabelColor={labelAndBorderColor}
             type={field.type === 'number' || field.type === 'percentage' ? 'number' : undefined}
             disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
             InputProps={

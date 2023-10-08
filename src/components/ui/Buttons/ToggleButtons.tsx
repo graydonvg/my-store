@@ -1,30 +1,23 @@
 'use client';
 
-import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
-  labelAndBorderColor: string;
-  hoverBorderColor: string;
-  selectedLabelColor: string;
-  selectedBackgroundColor: string;
-  selectedHoverBackgroundColor: string;
-  selectedBorderColor: string;
   selection: ReactNode;
 };
 
-export default function ToggleButtons({
-  buttons,
-  labelAndBorderColor,
-  hoverBorderColor,
-  selectedLabelColor,
-  selectedBackgroundColor,
-  selectedHoverBackgroundColor,
-  selectedBorderColor,
-  selection,
-  ...props
-}: ToggleButtonsProps) {
+export default function ToggleButtons({ buttons, selection, ...props }: ToggleButtonsProps) {
+  const theme = useTheme();
+  const color = useCustomColorPalette();
+  const mode = theme.palette.mode;
+  const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+  const borderColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
+  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+  const labelColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
+
   return (
     <ToggleButtonGroup
       sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
@@ -38,21 +31,22 @@ export default function ToggleButtons({
             sx={{
               padding: '8px 24px',
               '&.MuiToggleButtonGroup-grouped': {
-                color: labelAndBorderColor,
-                border: `1px solid ${labelAndBorderColor} !important`,
+                color: labelColor,
+                border: `1px solid ${borderColor} !important`,
                 borderRadius: '4px !important',
                 '&:hover': {
                   backgroundColor: 'transparent',
-                  borderColor: `${hoverBorderColor} !important`,
+                  color: labelColorHover,
+                  border: `1px solid ${borderColorHover} !important`,
                 },
               },
               '&.Mui-selected': {
-                color: selectedLabelColor,
-                backgroundColor: selectedBackgroundColor,
-                borderColor: `${selectedBorderColor} !important`,
+                color: color.grey.light,
+                backgroundColor: color.blue.dark,
+                borderColor: `${color.blue.dark} !important`,
                 '&:hover': {
-                  backgroundColor: selectedHoverBackgroundColor,
-                  opacity: '90%',
+                  backgroundColor: color.blue.light,
+                  // borderColor: `1px solid ${color.blue.light} !important`,
                 },
               },
             }}

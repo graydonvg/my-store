@@ -1,45 +1,27 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { MenuItem, TextField, TextFieldProps } from '@mui/material';
+import { MenuItem, TextField, TextFieldProps, useTheme } from '@mui/material';
 
 type SelectFieldProps = TextFieldProps & {
   options: string[];
-  labelAndBorderColor?: string;
-  labelColor?: string;
-  focusedLabelColor?: string;
-  borderColor?: string;
 };
 
-export default function SelectField({
-  options,
-  labelColor,
-  borderColor,
-  focusedLabelColor,
-  ...props
-}: SelectFieldProps) {
+export default function SelectField({ options, ...props }: SelectFieldProps) {
   const color = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const color1 = mode === 'dark' ? color.grey.light : color.grey.dark;
+
   return (
     <TextField
       select
       defaultValue=""
       sx={{
-        '& .mui-kc02vp-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-          backgroundColor: 'red',
-        },
-        '& .MuiInputLabel-root': {
-          color: labelColor,
-        },
         '& label.Mui-focused': {
-          color: focusedLabelColor,
+          color: color1,
         },
         '& .MuiOutlinedInput-root': {
-          '& fieldset': {
-            borderColor: borderColor,
-          },
-          '&:hover fieldset': {
-            borderColor: color.blue.dark,
-          },
           '&.Mui-focused fieldset': {
-            borderColor: color.blue.dark,
+            borderColor: color.blue.light,
           },
         },
       }}
@@ -48,6 +30,7 @@ export default function SelectField({
         <MenuItem
           sx={{
             '&.Mui-selected': {
+              color: color.grey.light,
               backgroundColor: color.blue.dark,
               '&:hover': {
                 backgroundColor: color.blue.light,

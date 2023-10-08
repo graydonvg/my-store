@@ -1,43 +1,27 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { TextField, TextFieldProps } from '@mui/material';
+import { TextField, TextFieldProps, useTheme } from '@mui/material';
 
 type CustomTextFieldProps = TextFieldProps & {
-  labelAndBorderColor?: string;
-  labelColor?: string;
-  focusedLabelColor?: string;
   borderColor?: string;
-  hoverBorderColor?: string;
   styles?: {};
 };
 
-export default function CustomTextField({
-  labelColor,
-  borderColor,
-  hoverBorderColor,
-  focusedLabelColor,
-  styles,
-  ...props
-}: CustomTextFieldProps) {
+export default function CustomTextField({ borderColor, styles, ...props }: CustomTextFieldProps) {
   const color = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const color1 = mode === 'dark' ? color.grey.light : color.grey.dark;
+
   return (
     <TextField
       sx={{
         ...styles,
-        '& .MuiInputLabel-root': {
-          color: labelColor,
-        },
         '& label.Mui-focused': {
-          color: focusedLabelColor,
+          color: color1,
         },
         '& .MuiOutlinedInput-root': {
-          '& fieldset': {
-            borderColor: borderColor,
-          },
-          '&:hover fieldset': {
-            borderColor: hoverBorderColor,
-          },
           '&.Mui-focused fieldset': {
-            borderColor: color.blue.dark,
+            borderColor: color.blue.light,
           },
         },
       }}

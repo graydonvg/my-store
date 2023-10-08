@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, TextField, Link, Grid, useTheme } from '@mui/material';
+import { Box, Link, Grid } from '@mui/material';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
@@ -10,7 +10,6 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
 import CustomTextField from '../ui/CustomTextField';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -32,10 +31,6 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formValues, setFormValues] = useState(defaultFormValues);
-  const theme = useTheme();
-  const color = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const labelColor = mode === 'dark' ? color.grey.light : color.grey.dark;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -117,7 +112,6 @@ export default function SignUpForm() {
                 value={formValues[field.name as keyof typeof formValues]}
                 onChange={handleInputChange}
                 autoFocus={field.name === 'firstName'}
-                focusedLabelColor={labelColor}
               />
             </Grid>
           ))}

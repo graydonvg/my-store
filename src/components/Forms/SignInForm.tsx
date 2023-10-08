@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Divider, Link, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import ModalProgressBar from '../ui/Modal/ModalProgressBar';
 import FormTitle from './FormTitle';
@@ -11,7 +11,6 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
 import CustomTextField from '../ui/CustomTextField';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -27,10 +26,6 @@ export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formValues, setFormValues] = useState(defaultFormValues);
-  const theme = useTheme();
-  const color = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const focusedLabelColor = mode === 'dark' ? color.grey.light : color.grey.dark;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -109,7 +104,6 @@ export default function SignInForm() {
             value={formValues[field.name as keyof typeof formValues]}
             onChange={handleInputChange}
             autoFocus={field.name === 'email'}
-            focusedLabelColor={focusedLabelColor}
           />
         ))}
         <BlueFormButton
