@@ -12,7 +12,15 @@ import BlueFormButton from '../ui/Buttons/BlueFormButton';
 import CustomTextField from '../ui/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-const defaultFormFields = {
+const formFields = [
+  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
+  { label: 'Email Address', name: 'email', autoComplete: 'email' },
+  { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
+  { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
+];
+
+const defaultFormValues = {
   firstName: '',
   lastName: '',
   email: '',
@@ -23,7 +31,7 @@ const defaultFormFields = {
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [formValues, setFormValues] = useState(defaultFormValues);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
@@ -31,8 +39,8 @@ export default function SignUpForm() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormFields((prevFormFields) => ({
-      ...prevFormFields,
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
       [name]: value,
     }));
   }
@@ -41,18 +49,18 @@ export default function SignUpForm() {
     event.preventDefault();
     setIsLoading(true);
 
-    if (formFields.password !== formFields.confirmPassword) {
+    if (formValues.password !== formValues.confirmPassword) {
       setIsLoading(false);
       console.error('Passwords do not match!');
       return;
     }
 
-    const { email, password } = formFields;
-    const displayName = formFields.firstName;
+    const { email, password } = formValues;
+    const displayName = formValues.firstName;
     const userData = {
       displayName,
-      firstName: formFields.firstName,
-      lastName: formFields.lastName,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
       email,
       isAdmin: false,
     };
@@ -61,7 +69,7 @@ export default function SignUpForm() {
       await createAuthUserWithEmailAndPassword(email, password);
       await createUserDocument(userData);
       dispatch(setCurrentUser(userData));
-      setFormFields(defaultFormFields);
+      setFormValues(defaultFormValues);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
@@ -92,13 +100,7 @@ export default function SignUpForm() {
         <Grid
           container
           spacing={2}>
-          {[
-            { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
-            { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
-            { label: 'Email Address', name: 'email', autoComplete: 'email' },
-            { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
-            { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
-          ].map((field) => (
+          {formFields.map((field) => (
             <Grid
               item
               xs={12}
@@ -112,7 +114,7 @@ export default function SignUpForm() {
                 name={field.name}
                 type={field.type || 'text'}
                 autoComplete={field.autoComplete}
-                value={formFields[field.name as keyof typeof formFields]}
+                value={formValues[field.name as keyof typeof formValues]}
                 onChange={handleInputChange}
                 autoFocus={field.name === 'firstName'}
                 focusedLabelColor={labelColor}

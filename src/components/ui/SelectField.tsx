@@ -20,6 +20,7 @@ export default function SelectField({
   return (
     <TextField
       select
+      defaultValue=""
       sx={{
         '& .mui-kc02vp-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
           backgroundColor: 'red',

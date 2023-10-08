@@ -13,7 +13,12 @@ import BlueFormButton from '../ui/Buttons/BlueFormButton';
 import CustomTextField from '../ui/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-const defaultFormFields = {
+const formFields = [
+  { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
+  { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
+];
+
+const defaultFormValues = {
   email: '',
   password: '',
 };
@@ -21,7 +26,7 @@ const defaultFormFields = {
 export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [formValues, setFormValues] = useState(defaultFormValues);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
@@ -29,7 +34,7 @@ export default function SignInForm() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormFields((prevFormFields) => ({ ...prevFormFields, [name]: value }));
+    setFormValues((prevFormValues) => ({ ...prevFormValues, [name]: value }));
   }
 
   async function handleSignIn(event: FormEvent<HTMLFormElement>) {
@@ -37,8 +42,8 @@ export default function SignInForm() {
     setIsLoading(true);
 
     try {
-      await signInAuthUserWithEmailAndPassword(formFields.email, formFields.password);
-      setFormFields(defaultFormFields);
+      await signInAuthUserWithEmailAndPassword(formValues.email, formValues.password);
+      setFormValues(defaultFormValues);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
@@ -90,10 +95,7 @@ export default function SignInForm() {
         component="form"
         onSubmit={handleSignIn}
         sx={{ mt: 1 }}>
-        {[
-          { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
-          { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
-        ].map((field) => (
+        {formFields.map((field) => (
           <CustomTextField
             key={field.name}
             margin="normal"
@@ -104,7 +106,7 @@ export default function SignInForm() {
             name={field.name}
             type={field.type}
             autoComplete={field.autoComplete}
-            value={formFields[field.name as keyof typeof formFields]}
+            value={formValues[field.name as keyof typeof formValues]}
             onChange={handleInputChange}
             autoFocus={field.name === 'email'}
             focusedLabelColor={focusedLabelColor}

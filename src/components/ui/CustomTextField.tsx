@@ -6,18 +6,21 @@ type CustomTextFieldProps = TextFieldProps & {
   labelColor?: string;
   focusedLabelColor?: string;
   borderColor?: string;
+  styles?: {};
 };
 
 export default function CustomTextField({
   labelColor,
   borderColor,
   focusedLabelColor,
+  styles,
   ...props
 }: CustomTextFieldProps) {
   const color = useCustomColorPalette();
   return (
     <TextField
       sx={{
+        ...styles,
         '& .MuiInputLabel-root': {
           color: labelColor,
         },

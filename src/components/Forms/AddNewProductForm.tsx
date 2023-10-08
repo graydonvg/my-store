@@ -19,26 +19,43 @@ const toggleButtonOptions = [
   { label: 'XL', value: 'extra-large' },
 ];
 
-const defaultFormFields = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+const formFields = [
+  { label: 'Category', name: 'category', required: true, type: 'select', options: ['Men', 'Women', 'kids'] },
+  { label: 'Name', name: 'name', required: true },
+  { label: 'Description', name: 'description', required: true },
+  { label: 'Delivery info', name: 'deliveryInfo', required: true },
+  { label: 'Price', name: 'price', type: 'number', required: true },
+  { label: 'On sale', name: 'onSale', required: true, type: 'select', options: ['No', 'Yes'] },
+  { label: 'Sale % (0 - 100)', name: 'salePercentage', type: 'percentage', required: true },
+];
+
+const defaultFormValues = {
+  size: '',
+  category: '',
+  name: '',
+  description: '',
+  deliveryInfo: '',
+  price: undefined,
+  onSale: '',
+  salePercentage: undefined,
 };
 
 export default function AddNewProductForm() {
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [formValues, setFormValues] = useState(defaultFormValues);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const labelAndBorderColor = mode === 'dark' ? color.grey.light : color.grey.dark;
 
+  console.log(formValues);
+
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormFields((prevFormFields) => ({
-      ...prevFormFields,
+    // console.log(name, value);
+
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
       [name]: value,
     }));
   }
@@ -63,44 +80,65 @@ export default function AddNewProductForm() {
           selectedBorderColor={color.grey.dark}
         />
       </Box>
-      {[
-        { label: 'Category', name: 'category', required: true, type: 'select', options: ['Men', 'Women', 'kids'] },
-        { label: 'Name', name: 'name', required: true },
-        { label: 'Description', name: 'description', required: true },
-        { label: 'Delivery info', name: 'delivery-info', required: true },
-        { label: 'Price', name: 'price', required: true },
-        { label: 'On sale', name: 'on-sale', required: true, type: 'select', options: ['No', 'Yes'] },
-        { label: 'Price drop', name: 'price-drop', required: true },
-      ].map((field) => {
+      {formFields.map((field) => {
         return field.type === 'select' ? (
           <SelectField
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formFields[field.name as keyof typeof formFields]}
             required={true}
             onChange={handleInputChange}
             borderColor={labelAndBorderColor}
             labelColor={labelAndBorderColor}
             focusedLabelColor={labelAndBorderColor}
-            options={field.options}
+            options={field.options ?? []}
           />
         ) : (
           <CustomTextField
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formFields[field.name as keyof typeof formFields]}
+            value={formValues[field.name as keyof typeof formValues]}
             required={true}
             onChange={handleInputChange}
             borderColor={labelAndBorderColor}
             labelColor={labelAndBorderColor}
             focusedLabelColor={labelAndBorderColor}
+            type={field.type === 'number' || field.type === 'percentage' ? 'number' : undefined}
+            disabled={formValues['onSale'] === 'No' && field.name === 'salePercentage' ? true : false}
+            InputProps={
+              field.type === 'number'
+                ? {
+                    inputProps: {
+                      min: 1,
+                    },
+                  }
+                : field.type === 'percentage'
+                ? {
+                    inputProps: {
+                      min: 1,
+                      max: 100,
+                    },
+                  }
+                : undefined
+            }
+            styles={
+              field.type === 'number' || field.type === 'percentage'
+                ? {
+                    '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+                      display: 'none',
+                    },
+                    '& input[type=number]': {
+                      MozAppearance: 'textfield',
+                    },
+                  }
+                : undefined
+            }
           />
         );
       })}
       <BlueFormButton
-        label="add product"
+        label="app product"
         fullWidth
       />
     </Box>
