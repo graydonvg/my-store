@@ -1,7 +1,7 @@
 'use client';
 
-import { ToggleButton, ToggleButtonGroup, Grid, ToggleButtonGroupProps } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
+import { ReactNode } from 'react';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
@@ -11,6 +11,7 @@ type ToggleButtonsProps = ToggleButtonGroupProps & {
   selectedBackgroundColor: string;
   selectedHoverBackgroundColor: string;
   selectedBorderColor: string;
+  selection: ReactNode;
 };
 
 export default function ToggleButtons({
@@ -21,19 +22,15 @@ export default function ToggleButtons({
   selectedBackgroundColor,
   selectedHoverBackgroundColor,
   selectedBorderColor,
+  selection,
+  ...props
 }: ToggleButtonsProps) {
-  const [selection, setSelection] = useState<string | null>('');
-
-  function handleSelection(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, newSelection: string | null) {
-    setSelection(newSelection);
-  }
-
   return (
     <ToggleButtonGroup
       sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
       value={selection}
       exclusive
-      onChange={handleSelection}>
+      {...props}>
       {buttons.map((button) => {
         return (
           <ToggleButton

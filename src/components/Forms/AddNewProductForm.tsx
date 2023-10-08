@@ -5,7 +5,7 @@ import InputFileUpload from '../ui/InputFileUpoad';
 import ToggleButtons from '../ui/Buttons/ToggleButtons';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import CustomTextField from '../ui/CustomTextField';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import SelectField from '../ui/SelectField';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
 
@@ -53,11 +53,17 @@ export default function AddNewProductForm() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    // console.log(name, value);
 
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
       [name]: value,
+    }));
+  }
+
+  function handleToggleButtonChange(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      size: selectedSize,
     }));
   }
 
@@ -72,6 +78,8 @@ export default function AddNewProductForm() {
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
         <ToggleButtons
           aria-label="select size"
+          selection={formValues.size}
+          onChange={handleToggleButtonChange}
           buttons={toggleButtonOptions}
           labelAndBorderColor={labelAndBorderColor}
           hoverBorderColor={color.blue.dark}
