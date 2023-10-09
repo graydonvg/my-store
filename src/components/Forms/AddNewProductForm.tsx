@@ -1,13 +1,15 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import InputFileUpload from '../ui/InputFileUpoad';
+import InputFileUpload from '../ui/InputFields/InputFileUpoad';
 import ToggleButtons from '../ui/Buttons/ToggleButtons';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import CustomTextField from '../ui/CustomTextField';
+import CustomTextField from '../ui/InputFields/CustomTextField';
 import { ChangeEvent, MouseEvent, useState } from 'react';
-import SelectField from '../ui/SelectField';
+import SelectField from '../ui/InputFields/SelectField';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
+import NumbertField from '../ui/InputFields/NumberField';
+import PercentageField from '../ui/InputFields/PercentageField';
 
 type AddNewProductFormProps = {};
 
@@ -48,13 +50,21 @@ export default function AddNewProductForm() {
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formValues['onSale'] === 'Yes';
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+  function generateUniqueFileName(file) {
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 12);
 
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      [name]: value,
-    }));
+    return `${file.name}-${timestamp}-${randomString}`;
+  }
+
+  function handleUploadImage(event: ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+
+    if (!files) return;
+
+    const file = files[0];
+    console.log(file);
+    // const fileName = generateUniqueFileName();
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
@@ -64,12 +74,21 @@ export default function AddNewProductForm() {
     }));
   }
 
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [name]: value,
+    }));
+  }
+
   return (
     <Box
       component="form"
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <InputFileUpload />
+        <InputFileUpload onChange={handleUploadImage} />
         <Typography sx={{ color: textColor }}>No file chosen</Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -91,6 +110,25 @@ export default function AddNewProductForm() {
             onChange={handleInputChange}
             options={field.options ?? []}
           />
+        ) : field.type === 'number' ? (
+          <NumbertField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            value={formValues[field.name as keyof typeof formValues]}
+            required={true}
+            onChange={handleInputChange}
+          />
+        ) : field.type === 'percentage' ? (
+          <PercentageField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            value={formValues[field.name as keyof typeof formValues]}
+            required={true}
+            onChange={handleInputChange}
+            disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
+          />
         ) : (
           <CustomTextField
             key={field.name}
@@ -99,36 +137,6 @@ export default function AddNewProductForm() {
             value={formValues[field.name as keyof typeof formValues]}
             required={true}
             onChange={handleInputChange}
-            type={field.type === 'number' || field.type === 'percentage' ? 'number' : undefined}
-            disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
-            InputProps={
-              field.type === 'number'
-                ? {
-                    inputProps: {
-                      min: 1,
-                    },
-                  }
-                : field.type === 'percentage'
-                ? {
-                    inputProps: {
-                      min: 1,
-                      max: 100,
-                    },
-                  }
-                : undefined
-            }
-            styles={
-              field.type === 'number' || field.type === 'percentage'
-                ? {
-                    '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-                      display: 'none',
-                    },
-                    '& input[type=number]': {
-                      MozAppearance: 'textfield',
-                    },
-                  }
-                : undefined
-            }
           />
         );
       })}

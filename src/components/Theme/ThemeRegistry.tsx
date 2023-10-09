@@ -45,7 +45,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
       : {
           // palette values for dark mode
           background: {
-            default: grey[900],
+            default: grey[700],
             // paper: grey[900],
           },
           custom: {

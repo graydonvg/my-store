@@ -1,10 +1,10 @@
 import { useTheme } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import BlueFormButton from './Buttons/BlueFormButton';
-import { Input } from '@mui/material';
+import BlueFormButton from '../Buttons/BlueFormButton';
+import { Input, InputProps } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-export default function InputFileUpload() {
+export default function InputFileUpload({ ...props }: InputProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -17,6 +17,8 @@ export default function InputFileUpload() {
         <>
           Upload file
           <Input
+            onChange={(e) => e}
+            inputProps={{ accept: 'image/*' }}
             type="file"
             sx={{
               clip: 'rect(0 0 0 0)',
@@ -29,6 +31,7 @@ export default function InputFileUpload() {
               whiteSpace: 'nowrap',
               width: 1,
             }}
+            {...props}
           />
         </>
       }

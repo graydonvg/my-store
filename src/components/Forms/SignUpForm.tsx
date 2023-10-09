@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
-import CustomTextField from '../ui/CustomTextField';
+import CustomTextField from '../ui/InputFields/CustomTextField';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },

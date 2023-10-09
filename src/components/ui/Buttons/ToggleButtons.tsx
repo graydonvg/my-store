@@ -15,8 +15,8 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
   const borderColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
-  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
-  const labelColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
+  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
+  const labelColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
 
   return (
     <ToggleButtonGroup
@@ -30,7 +30,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
             key={button.value}
             sx={{
               padding: '8px 24px',
-              '&.MuiToggleButtonGroup-grouped': {
+              '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: labelColor,
                 border: `1px solid ${borderColor} !important`,
                 borderRadius: '4px !important',
@@ -40,13 +40,15 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                   border: `1px solid ${borderColorHover} !important`,
                 },
               },
-              '&.Mui-selected': {
+              '&.MuiToggleButton-root.Mui-selected': {
                 color: color.grey.light,
-                backgroundColor: color.blue.dark,
-                borderColor: `${color.blue.dark} !important`,
+                backgroundColor: color.grey.dark,
+                borderColor: `${color.grey.dark} !important`,
                 '&:hover': {
-                  backgroundColor: color.blue.light,
-                  // borderColor: `1px solid ${color.blue.light} !important`,
+                  color: 'rgba(255, 255, 255, 1)',
+                  backgroundColor: color.grey.dark,
+                  border: `1px solid ${color.grey.dark} !important`,
+                  opacity: '95%',
                 },
               },
             }}

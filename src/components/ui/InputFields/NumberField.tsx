@@ -1,28 +1,40 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { TextField, TextFieldProps, useTheme } from '@mui/material';
 
-type CustomTextFieldProps = TextFieldProps & {
+type NumbertFieldFieldProps = TextFieldProps & {
   borderColor?: string;
   styles?: {};
 };
 
-export default function CustomTextField({ borderColor, styles, ...props }: CustomTextFieldProps) {
+export default function NumbertField({ borderColor, styles, ...props }: NumbertFieldFieldProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const color1 = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const greyLightOrDark = mode === 'dark' ? color.grey.light : color.grey.dark;
 
   return (
     <TextField
+      type="number"
       sx={{
         ...styles,
         '& label.Mui-focused': {
-          color: color1,
+          color: greyLightOrDark,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
             borderColor: color.blue.light,
           },
+        },
+        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+          display: 'none',
+        },
+        '& input[type=number]': {
+          MozAppearance: 'textfield',
+        },
+      }}
+      InputProps={{
+        inputProps: {
+          min: 0,
         },
       }}
       {...props}

@@ -9,7 +9,7 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const color1 = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const greyLightOrDark = mode === 'dark' ? color.grey.light : color.grey.dark;
 
   return (
     <TextField
@@ -17,7 +17,7 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
       defaultValue=""
       sx={{
         '& label.Mui-focused': {
-          color: color1,
+          color: greyLightOrDark,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
@@ -31,7 +31,7 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
           sx={{
             '&.Mui-selected': {
               color: color.grey.light,
-              backgroundColor: color.blue.dark,
+              backgroundColor: color.blue.light,
               '&:hover': {
                 backgroundColor: color.blue.light,
               },

@@ -13,6 +13,7 @@ import {
   Auth,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore/lite';
+import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA9L6rqC6ZmaNrRWw1XO9ODlSU7ocFPLI4',
@@ -25,6 +26,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app, 'gs://my-shop-7cfcc.appspot.com/');
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
@@ -92,4 +94,9 @@ export async function getUserDoc() {
   }
 
   return;
+}
+
+export async function uploadImageToStorage(file: any) {
+  const storageRef = ref(storage, 'ecommerce/{fileName}');
+  const uploadImage = uploadBytesResumable(storageRef, file);
 }
