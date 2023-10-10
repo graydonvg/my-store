@@ -4,7 +4,7 @@ import BlueFormButton from '../Buttons/BlueFormButton';
 import { Input, InputProps } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-export default function InputFileUpload({ ...props }: InputProps) {
+export default function InputImageUpload({ ...props }: InputProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -15,7 +15,7 @@ export default function InputFileUpload({ ...props }: InputProps) {
       sx={{ color: labelColor }}
       label={
         <>
-          Upload file
+          Upload images
           <Input
             inputProps={{ accept: 'image/*', multiple: true }}
             type="file"

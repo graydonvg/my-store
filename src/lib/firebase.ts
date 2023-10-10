@@ -13,7 +13,14 @@ import {
   Auth,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore/lite';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import {
+  StorageObserver,
+  UploadTaskSnapshot,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA9L6rqC6ZmaNrRWw1XO9ODlSU7ocFPLI4',
@@ -96,25 +103,18 @@ export async function getUserDoc() {
   return;
 }
 
-export async function uploadImageToStorage(file: Blob | Uint8Array | ArrayBuffer, fileName: string): Promise<string> {
+export async function uploadImageToStorage(
+  file: Blob | Uint8Array | ArrayBuffer,
+  fileName: string,
+  observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
+): Promise<string> {
   const storageRef = ref(storage, `ecommerce/${fileName}`);
   const uploadImage = uploadBytesResumable(storageRef, file);
 
   return new Promise((resolve, reject) => {
     uploadImage.on(
       'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
+      observer,
       (error) => {
         console.error(error);
         reject(error);
@@ -129,3 +129,16 @@ export async function uploadImageToStorage(file: Blob | Uint8Array | ArrayBuffer
     );
   });
 }
+
+// (snapshot) => {
+// 	const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+// 	// console.log('Upload is ' + progress + '% done');
+// 	switch (snapshot.state) {
+// 		case 'paused':
+// 			// console.log('Upload is paused');
+// 			break;
+// 		case 'running':
+// 			// console.log('Upload is running');
+// 			break;
+// 	}
+// }

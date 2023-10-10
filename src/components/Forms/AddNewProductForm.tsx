@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import InputFileUpload from '../ui/InputFields/InputFileUpoad';
+import InputImageUpload from '../ui/InputFields/InputImageUpload';
 import ToggleButtons from '../ui/Buttons/ToggleButtons';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import CustomTextField from '../ui/InputFields/CustomTextField';
@@ -12,6 +12,8 @@ import NumbertField from '../ui/InputFields/NumberField';
 import PercentageField from '../ui/InputFields/PercentageField';
 import { uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/lib/utils';
+import { CircularProgressWithLabel } from '../ui/CircularProgressWithLabel';
+import Image from 'next/image';
 
 type AddNewProductFormProps = {};
 
@@ -34,7 +36,7 @@ const formFields = [
 ];
 
 const defaultFormValues = {
-  imageUrls: [''],
+  imageUrls: [] as string[],
   size: '',
   category: '',
   name: '',
@@ -47,33 +49,47 @@ const defaultFormValues = {
 
 export default function AddNewProductForm() {
   const [formValues, setFormValues] = useState(defaultFormValues);
-  // const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState<number[]>([]);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formValues['onSale'] === 'Yes';
 
-  console.log(formValues);
-
-  async function handleUploadImage(event: ChangeEvent<HTMLInputElement>) {
+  async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
 
     if (!files) return;
 
-    console.log(files);
-
     const imagesToUpload = [];
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const uniqueFileName = generateUniqueFileName(file.name);
       imagesToUpload.push({ file, uniqueFileName });
     }
 
-    const imageUrlArray = await Promise.allSettled(
-      imagesToUpload.map((image) => uploadImageToStorage(image.file, image.uniqueFileName))
+    const uploadPromises = imagesToUpload.map((image, index) =>
+      uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+        setImageUploadProgress((prevProgress) => {
+          const updatedProgress = [...prevProgress];
+          updatedProgress[index] = progress;
+          return updatedProgress;
+        });
+
+        switch (snapshot.state) {
+          case 'paused':
+            // console.log('Upload is paused');
+            break;
+          case 'running':
+            // console.log('Upload is running');
+            break;
+        }
+      })
     );
+
+    const imageUrlArray = await Promise.allSettled(uploadPromises);
 
     const imageUrls = imageUrlArray.map((result) => {
       if (result.status === 'fulfilled') {
@@ -111,10 +127,31 @@ export default function AddNewProductForm() {
     <Box
       component="form"
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <InputFileUpload onChange={handleUploadImage} />
-        <Typography sx={{ color: textColor }}>No file chosen</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {imageUploadProgress.length > 0 ? (
+          imageUploadProgress.map((progress, index) =>
+            progress === 100 && formValues.imageUrls && formValues.imageUrls[index] ? (
+              <Box
+                key={index}
+                sx={{ position: 'relative', width: '100px', height: '100px' }}>
+                <Image
+                  fill
+                  src={formValues.imageUrls[index]}
+                  alt={`image of ${formValues.name}`}
+                />
+              </Box>
+            ) : (
+              <CircularProgressWithLabel
+                key={index}
+                value={progress}
+              />
+            )
+          )
+        ) : (
+          <Typography sx={{ color: textColor }}>No file chosen</Typography>
+        )}
       </Box>
+      <InputImageUpload onChange={handleImageUpload} />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
         <ToggleButtons
@@ -165,7 +202,7 @@ export default function AddNewProductForm() {
         );
       })}
       <BlueFormButton
-        label="app product"
+        label="add product"
         fullWidth
       />
     </Box>
