@@ -17,8 +17,7 @@ export default function InputFileUpload({ ...props }: InputProps) {
         <>
           Upload file
           <Input
-            onChange={(e) => e}
-            inputProps={{ accept: 'image/*' }}
+            inputProps={{ accept: 'image/*', multiple: true }}
             type="file"
             sx={{
               clip: 'rect(0 0 0 0)',

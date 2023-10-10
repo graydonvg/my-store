@@ -27,6 +27,7 @@ export default function BlueFormButton({
 
   return (
     <Button
+      disableElevation
       onClick={onClick}
       disabled={disabled}
       component={component ?? 'button'}

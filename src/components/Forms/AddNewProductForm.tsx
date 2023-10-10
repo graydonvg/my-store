@@ -10,6 +10,8 @@ import SelectField from '../ui/InputFields/SelectField';
 import BlueFormButton from '../ui/Buttons/BlueFormButton';
 import NumbertField from '../ui/InputFields/NumberField';
 import PercentageField from '../ui/InputFields/PercentageField';
+import { uploadImageToStorage } from '@/lib/firebase';
+import { generateUniqueFileName } from '@/lib/utils';
 
 type AddNewProductFormProps = {};
 
@@ -32,6 +34,7 @@ const formFields = [
 ];
 
 const defaultFormValues = {
+  imageUrls: [''],
   size: '',
   category: '',
   name: '',
@@ -44,27 +47,48 @@ const defaultFormValues = {
 
 export default function AddNewProductForm() {
   const [formValues, setFormValues] = useState(defaultFormValues);
+  // const [imageUrl, setImageUrl] = useState<string | null>(null);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formValues['onSale'] === 'Yes';
 
-  function generateUniqueFileName(file) {
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 12);
+  console.log(formValues);
 
-    return `${file.name}-${timestamp}-${randomString}`;
-  }
-
-  function handleUploadImage(event: ChangeEvent<HTMLInputElement>) {
+  async function handleUploadImage(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
 
     if (!files) return;
 
-    const file = files[0];
-    console.log(file);
-    // const fileName = generateUniqueFileName();
+    console.log(files);
+
+    const imagesToUpload = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const uniqueFileName = generateUniqueFileName(file.name);
+      imagesToUpload.push({ file, uniqueFileName });
+    }
+
+    const imageUrlArray = await Promise.allSettled(
+      imagesToUpload.map((image) => uploadImageToStorage(image.file, image.uniqueFileName))
+    );
+
+    const imageUrls = imageUrlArray.map((result) => {
+      if (result.status === 'fulfilled') {
+        return result.value;
+      } else {
+        // Handle the rejection case if needed
+        console.error('Image upload failed:', result.reason);
+        return '';
+      }
+    });
+
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      imageUrls: imageUrls,
+    }));
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
