@@ -8,7 +8,7 @@ export default function FormTitle({ text }: FormTitleProps) {
   return (
     <Typography
       component="h2"
-      variant="h5">
+      variant="h4">
       {text}
     </Typography>
   );

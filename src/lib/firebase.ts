@@ -1,3 +1,4 @@
+import { defaultProductFormDataType } from '@/types';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -128,6 +129,27 @@ export async function uploadImageToStorage(
       }
     );
   });
+}
+
+export async function addProductToDatabase(productData: defaultProductFormDataType) {
+  if (!auth.currentUser) return;
+
+  const productDocRef = doc(db, 'product-categories', productData.category);
+  const productDoc = await getDoc(productDocRef);
+
+  if (!productDoc.exists()) {
+    const createdAt = new Date();
+    try {
+      await setDoc(productDocRef, {
+        createdAt,
+        ...productData,
+      });
+    } catch (error) {
+      console.error('error creating user', error);
+    }
+  }
+
+  return;
 }
 
 // (snapshot) => {

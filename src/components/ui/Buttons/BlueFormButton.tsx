@@ -37,6 +37,7 @@ export default function BlueFormButton({
       startIcon={startIcon}
       sx={{
         ...sx,
+        height: '48px',
         backgroundColor: color.blue.dark,
         '&:hover': { backgroundColor: color.blue.light },
       }}>

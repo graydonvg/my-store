@@ -17,7 +17,7 @@ const formFields = [
   { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
 ];
 
-const defaultFormValues = {
+const defaultFormData = {
   email: '',
   password: '',
 };
@@ -25,11 +25,11 @@ const defaultFormValues = {
 export default function SignInForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formValues, setFormValues] = useState(defaultFormValues);
+  const [formData, setFormData] = useState(defaultFormData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormValues((prevFormValues) => ({ ...prevFormValues, [name]: value }));
+    setFormData((prevFormValues) => ({ ...prevFormValues, [name]: value }));
   }
 
   async function handleSignIn(event: FormEvent<HTMLFormElement>) {
@@ -37,8 +37,8 @@ export default function SignInForm() {
     setIsLoading(true);
 
     try {
-      await signInAuthUserWithEmailAndPassword(formValues.email, formValues.password);
-      setFormValues(defaultFormValues);
+      await signInAuthUserWithEmailAndPassword(formData.email, formData.password);
+      setFormData(defaultFormData);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
@@ -101,7 +101,7 @@ export default function SignInForm() {
             name={field.name}
             type={field.type}
             autoComplete={field.autoComplete}
-            value={formValues[field.name as keyof typeof formValues]}
+            value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
             autoFocus={field.name === 'email'}
           />

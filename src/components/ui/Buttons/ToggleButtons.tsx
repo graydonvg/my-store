@@ -29,7 +29,8 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
           <ToggleButton
             key={button.value}
             sx={{
-              padding: '8px 24px',
+              height: '48px',
+              width: '88px',
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: labelColor,
                 border: `1px solid ${borderColor} !important`,

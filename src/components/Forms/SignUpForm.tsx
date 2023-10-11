@@ -19,7 +19,7 @@ const formFields = [
   { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
 ];
 
-const defaultFormValues = {
+const defaultFormData = {
   firstName: '',
   lastName: '',
   email: '',
@@ -30,12 +30,12 @@ const defaultFormValues = {
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formValues, setFormValues] = useState(defaultFormValues);
+  const [formData, setFormData] = useState(defaultFormData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
     }));
   }
@@ -44,18 +44,18 @@ export default function SignUpForm() {
     event.preventDefault();
     setIsLoading(true);
 
-    if (formValues.password !== formValues.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setIsLoading(false);
       console.error('Passwords do not match!');
       return;
     }
 
-    const { email, password } = formValues;
-    const displayName = formValues.firstName;
+    const { email, password } = formData;
+    const displayName = formData.firstName;
     const userData = {
       displayName,
-      firstName: formValues.firstName,
-      lastName: formValues.lastName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
       email,
       isAdmin: false,
     };
@@ -64,7 +64,7 @@ export default function SignUpForm() {
       await createAuthUserWithEmailAndPassword(email, password);
       await createUserDocument(userData);
       dispatch(setCurrentUser(userData));
-      setFormValues(defaultFormValues);
+      setFormData(defaultFormData);
       dispatch(setIsModalOpen(false));
     } catch (error) {
       console.error(error);
@@ -109,7 +109,7 @@ export default function SignUpForm() {
                 name={field.name}
                 type={field.type || 'text'}
                 autoComplete={field.autoComplete}
-                value={formValues[field.name as keyof typeof formValues]}
+                value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
                 autoFocus={field.name === 'firstName'}
               />

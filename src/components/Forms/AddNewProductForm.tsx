@@ -14,6 +14,7 @@ import { uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/lib/utils';
 import { CircularProgressWithLabel } from '../ui/CircularProgressWithLabel';
 import Image from 'next/image';
+import { defaultProductFormDataType } from '@/types';
 
 type AddNewProductFormProps = {};
 
@@ -35,9 +36,9 @@ const formFields = [
   { label: 'Sale % (0 - 100)', name: 'salePercentage', type: 'percentage', required: true },
 ];
 
-const defaultFormValues = {
+const defaultProductFormData: defaultProductFormDataType = {
   imageUrls: [] as string[],
-  size: '',
+  sizes: [] as string[],
   category: '',
   name: '',
   description: '',
@@ -48,13 +49,13 @@ const defaultFormValues = {
 };
 
 export default function AddNewProductForm() {
-  const [formValues, setFormValues] = useState(defaultFormValues);
+  const [formData, setFormData] = useState(defaultProductFormData);
   const [imageUploadProgress, setImageUploadProgress] = useState<number[]>([]);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
-  const isOnSale = formValues['onSale'] === 'Yes';
+  const isOnSale = formData['onSale'] === 'Yes';
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -101,24 +102,31 @@ export default function AddNewProductForm() {
       }
     });
 
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       imageUrls: imageUrls,
     }));
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      size: selectedSize,
-    }));
+    if (formData.sizes.includes(selectedSize)) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        sizes: prevFormData.sizes.filter((size) => size !== selectedSize),
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        sizes: [...prevFormData.sizes, selectedSize],
+      }));
+    }
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
     }));
   }
@@ -127,28 +135,50 @@ export default function AddNewProductForm() {
     <Box
       component="form"
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+          border: `1px solid ${color.grey.dark}`,
+          borderRadius: '4px',
+          minHeight: '216px',
+          paddingX: '8px',
+        }}>
         {imageUploadProgress.length > 0 ? (
           imageUploadProgress.map((progress, index) =>
-            progress === 100 && formValues.imageUrls && formValues.imageUrls[index] ? (
+            progress === 100 && formData.imageUrls && formData.imageUrls[index] ? (
               <Box
                 key={index}
-                sx={{ position: 'relative', width: '100px', height: '100px' }}>
+                sx={{ position: 'relative', height: '200px', width: '133px' }}>
                 <Image
+                  objectFit="contain"
                   fill
-                  src={formValues.imageUrls[index]}
-                  alt={`image of ${formValues.name}`}
+                  src={formData.imageUrls[index]}
+                  alt={`image of ${formData.name}`}
                 />
               </Box>
             ) : (
-              <CircularProgressWithLabel
+              <Box
                 key={index}
-                value={progress}
-              />
+                sx={{
+                  display: 'grid',
+                  placeItems: 'center',
+                  height: '200px',
+                  width: '133px',
+                  border: `1px solid ${color.grey.medium}`,
+                  borderRadius: '4px',
+                }}>
+                <CircularProgressWithLabel
+                  key={index}
+                  value={progress}
+                />
+              </Box>
             )
           )
         ) : (
-          <Typography sx={{ color: textColor }}>No file chosen</Typography>
+          <Typography sx={{ color: textColor, margin: '0 auto' }}>No file chosen</Typography>
         )}
       </Box>
       <InputImageUpload onChange={handleImageUpload} />
@@ -156,7 +186,7 @@ export default function AddNewProductForm() {
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
         <ToggleButtons
           aria-label="select size"
-          selection={formValues.size}
+          selection={formData.sizes}
           onChange={handleSelectSize}
           buttons={toggleButtonOptions}
         />
@@ -176,7 +206,7 @@ export default function AddNewProductForm() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formValues[field.name as keyof typeof formValues]}
+            value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
           />
@@ -185,7 +215,7 @@ export default function AddNewProductForm() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formValues[field.name as keyof typeof formValues]}
+            value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
             disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
@@ -195,13 +225,14 @@ export default function AddNewProductForm() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formValues[field.name as keyof typeof formValues]}
+            value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
           />
         );
       })}
       <BlueFormButton
+        type="submit"
         label="add product"
         fullWidth
       />
