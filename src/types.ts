@@ -19,14 +19,14 @@ export type UserState = {
   currentUser: CurrentUserType | null;
 };
 
-export type defaultProductFormDataType = {
+export type productFormDataType = {
   imageUrls: string[];
   sizes: string[];
   category: string;
   name: string;
   description: string;
   deliveryInfo: string;
-  price: number | undefined;
-  onSale: string;
-  salePercentage: number | undefined;
+  price: number | '';
+  onSale: string | null;
+  salePercentage: number | '';
 };

@@ -14,7 +14,6 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
   return (
     <TextField
       select
-      defaultValue=""
       sx={{
         '& label.Mui-focused': {
           color: greyLightOrDark,

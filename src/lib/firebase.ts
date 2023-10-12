@@ -1,4 +1,4 @@
-import { defaultProductFormDataType } from '@/types';
+import { productFormDataType } from '@/types';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -13,7 +13,17 @@ import {
   updateProfile,
   Auth,
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+} from 'firebase/firestore/lite';
 import {
   StorageObserver,
   UploadTaskSnapshot,
@@ -131,21 +141,36 @@ export async function uploadImageToStorage(
   });
 }
 
-export async function addProductToDatabase(productData: defaultProductFormDataType) {
+export async function addProductToDatabase(productData: productFormDataType) {
   if (!auth.currentUser) return;
 
   const productDocRef = doc(db, 'product-categories', productData.category);
   const productDoc = await getDoc(productDocRef);
+  const createdAt = new Date();
 
   if (!productDoc.exists()) {
-    const createdAt = new Date();
     try {
       await setDoc(productDocRef, {
-        createdAt,
-        ...productData,
+        products: [
+          {
+            createdAt,
+            ...productData,
+          },
+        ],
       });
     } catch (error) {
-      console.error('error creating user', error);
+      console.error('error creating category', error);
+    }
+  } else {
+    try {
+      await updateDoc(productDocRef, {
+        products: arrayUnion({
+          createdAt,
+          ...productData,
+        }),
+      });
+    } catch (error) {
+      console.error('error updating category', error);
     }
   }
 
