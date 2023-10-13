@@ -1,24 +1,69 @@
 import { useTheme } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { CloudUpload, HighlightOff } from '@mui/icons-material';
 import BlueFormButton from '../Buttons/BlueFormButton';
 import { Box, Input, InputProps, Typography } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
-import { productFormDataType } from '@/types';
+import { AddNewProductFormDataType } from '@/types';
+import { deleteImageFromStorage } from '@/lib/firebase';
+
+function renderProductImage(index: number, url: string, name: string, iconColor: string, onClick: () => void) {
+  return (
+    <Box
+      key={index}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        height: '200px',
+        width: '133px',
+      }}>
+      <Image
+        objectFit="contain"
+        fill
+        src={url}
+        alt={`image of ${name}`}
+      />
+      <HighlightOff
+        onClick={onClick}
+        fontSize="large"
+        sx={{
+          position: 'absolute',
+          color: 'transparent',
+          cursor: 'pointer',
+          '&:hover': {
+            color: iconColor,
+          },
+        }}
+      />
+    </Box>
+  );
+}
 
 type InputImageUploadProps = InputProps & {
-  formData: productFormDataType;
+  formData: AddNewProductFormDataType;
   imageUploadProgress: number[];
+  isDisabled: boolean;
 };
 
-export default function InputImageUpload({ formData, imageUploadProgress, ...props }: InputImageUploadProps) {
+export default function InputImageUpload({
+  formData,
+  imageUploadProgress,
+  isDisabled,
+  ...props
+}: InputImageUploadProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const labelColor = mode === 'dark' ? color.grey.dark : color.grey.light;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+
+  function handleDeleteImageFromStorage(fileName: string) {
+    deleteImageFromStorage(fileName);
+  }
 
   return (
     <>
@@ -35,17 +80,10 @@ export default function InputImageUpload({ formData, imageUploadProgress, ...pro
         }}>
         {imageUploadProgress.length > 0 ? (
           imageUploadProgress.map((progress, index) =>
-            progress === 100 && formData.imageUrls && formData.imageUrls[index] ? (
-              <Box
-                key={index}
-                sx={{ position: 'relative', height: '200px', width: '133px' }}>
-                <Image
-                  objectFit="contain"
-                  fill
-                  src={formData.imageUrls[index]}
-                  alt={`image of ${formData.name}`}
-                />
-              </Box>
+            progress === 100 && formData.imageData[index] && formData.imageData[index].imageUrl.length > 0 ? (
+              renderProductImage(index, formData.imageData[index].imageUrl, formData.name, color.grey.light, () =>
+                handleDeleteImageFromStorage(formData.imageData[index].fileName)
+              )
             ) : (
               <Box
                 key={index}
@@ -54,7 +92,7 @@ export default function InputImageUpload({ formData, imageUploadProgress, ...pro
                   placeItems: 'center',
                   height: '200px',
                   width: '133px',
-                  border: `1px solid ${color.grey.medium}`,
+                  border: `1px solid ${borderColor}`,
                   borderRadius: '4px',
                 }}>
                 <CircularProgressWithLabel
@@ -64,11 +102,18 @@ export default function InputImageUpload({ formData, imageUploadProgress, ...pro
               </Box>
             )
           )
+        ) : formData.imageData && formData.imageData.length > 0 ? (
+          formData.imageData.map((data, index) =>
+            renderProductImage(index, data.imageUrl, formData.name, color.grey.light, () =>
+              handleDeleteImageFromStorage(data.fileName)
+            )
+          )
         ) : (
           <Typography sx={{ color: textColor, margin: '0 auto' }}>No file chosen</Typography>
         )}
       </Box>
       <BlueFormButton
+        disabled={isDisabled}
         sx={{ color: labelColor }}
         label={
           <>
@@ -91,7 +136,7 @@ export default function InputImageUpload({ formData, imageUploadProgress, ...pro
             />
           </>
         }
-        startIcon={<CloudUploadIcon sx={{ color: labelColor }} />}
+        startIcon={<CloudUpload sx={{ color: labelColor }} />}
         fullWidth={false}
         component="label"
       />

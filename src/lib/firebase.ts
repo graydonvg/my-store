@@ -1,4 +1,4 @@
-import { productFormDataType } from '@/types';
+import { AddNewProductFormDataType } from '@/types';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -27,6 +27,7 @@ import {
 import {
   StorageObserver,
   UploadTaskSnapshot,
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
@@ -95,6 +96,7 @@ export async function createUserDocument(userData = {}) {
       });
     } catch (error) {
       console.error('error creating user', error);
+      throw error;
     }
   }
 
@@ -118,30 +120,39 @@ export async function uploadImageToStorage(
   file: Blob | Uint8Array | ArrayBuffer,
   fileName: string,
   observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
-): Promise<string> {
-  const storageRef = ref(storage, `ecommerce/${fileName}`);
-  const uploadImage = uploadBytesResumable(storageRef, file);
+): Promise<{ imageUrl: string; fileName: string }> {
+  const imageRef = ref(storage, `product-images/${fileName}`);
+  const uploadImage = uploadBytesResumable(imageRef, file);
 
-  return new Promise((resolve, reject) => {
-    uploadImage.on(
-      'state_changed',
-      observer,
-      (error) => {
-        console.error(error);
-        reject(error);
-      },
-      () => {
-        getDownloadURL(uploadImage.snapshot.ref)
-          .then((downloadURL) => {
-            resolve(downloadURL);
-          })
-          .catch((error) => reject(error));
-      }
-    );
-  });
+  try {
+    return await new Promise((resolve, reject) => {
+      uploadImage.on('state_changed', observer, reject, async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
+          resolve({ imageUrl: downloadURL, fileName });
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
-export async function addProductToDatabase(productData: productFormDataType) {
+export async function deleteImageFromStorage(fileName: string) {
+  const imageRef = ref(storage, `product-images/${fileName}`);
+
+  try {
+    await deleteObject(imageRef);
+  } catch (error) {
+    console.error('error deleting image', error);
+    throw error;
+  }
+}
+
+export async function addProductToDatabase(productData: AddNewProductFormDataType) {
   if (!auth.currentUser) return;
 
   const productDocRef = doc(db, 'product-categories', productData.category);
@@ -160,6 +171,7 @@ export async function addProductToDatabase(productData: productFormDataType) {
       });
     } catch (error) {
       console.error('error creating category', error);
+      throw error;
     }
   } else {
     try {
@@ -171,21 +183,9 @@ export async function addProductToDatabase(productData: productFormDataType) {
       });
     } catch (error) {
       console.error('error updating category', error);
+      throw error;
     }
   }
 
   return;
 }
-
-// (snapshot) => {
-// 	const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-// 	// console.log('Upload is ' + progress + '% done');
-// 	switch (snapshot.state) {
-// 		case 'paused':
-// 			// console.log('Upload is paused');
-// 			break;
-// 		case 'running':
-// 			// console.log('Upload is running');
-// 			break;
-// 	}
-// }

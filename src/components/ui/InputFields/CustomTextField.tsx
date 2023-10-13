@@ -14,7 +14,6 @@ export default function CustomTextField({ borderColor, styles, ...props }: Custo
 
   return (
     <TextField
-      multiline
       sx={{
         ...styles,
         '& label.Mui-focused': {

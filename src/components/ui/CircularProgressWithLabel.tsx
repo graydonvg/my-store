@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -44,27 +43,3 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
     </Box>
   );
 }
-
-CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   * @default 0
-   */
-  value: PropTypes.number.isRequired,
-};
-
-// export default function CircularWithValueLabel() {
-//   const [progress, setProgress] = useState(10);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-//     }, 800);
-//     return () => {
-//       clearInterval(timer);
-//     };
-//   }, []);
-
-//   return <CircularProgressWithLabel value={progress} />;
-// }

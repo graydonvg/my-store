@@ -19,8 +19,8 @@ export type UserState = {
   currentUser: CurrentUserType | null;
 };
 
-export type productFormDataType = {
-  imageUrls: string[];
+export type AddNewProductFormDataType = {
+  imageData: { imageUrl: string; fileName: string }[];
   sizes: string[];
   category: string;
   name: string;

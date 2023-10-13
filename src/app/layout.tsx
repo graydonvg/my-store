@@ -11,6 +11,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
+import Toast from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <DrawerComponent />
           <ModalComponent />
           <AuthStateListener />
+          <Toast />
         </Providers>
       </body>
     </html>

@@ -2,10 +2,10 @@
 
 import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { addProductToDatabase, uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/lib/utils';
-import { productFormDataType } from '@/types';
+import { AddNewProductFormDataType } from '@/types';
 import InputImageUpload from '@/components/ui/InputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/Buttons/ToggleButtons';
 import SelectField from '@/components/ui/InputFields/SelectField';
@@ -13,6 +13,8 @@ import NumbertField from '@/components/ui/InputFields/NumberField';
 import PercentageField from '@/components/ui/InputFields/PercentageField';
 import CustomTextField from '@/components/ui/InputFields/CustomTextField';
 import BlueFormButton from '@/components/ui/Buttons/BlueFormButton';
+import { toast } from 'react-toastify';
+import { Spinner } from '@/components/ui/Spinner';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -25,16 +27,16 @@ const toggleButtonOptions = [
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
   { label: 'Name', name: 'name' },
-  { label: 'Description', name: 'description' },
-  { label: 'Delivery info', name: 'deliveryInfo' },
+  { label: 'Description', name: 'description', multiline: true },
+  { label: 'Delivery info', name: 'deliveryInfo', multiline: true },
   { label: 'Price', name: 'price', type: 'number' },
   { label: 'On sale', name: 'onSale', type: 'select', options: ['No', 'Yes'] },
   { label: 'Sale % (0 - 100)', name: 'salePercentage', type: 'percentage' },
 ];
 
-const defaultProductFormData: productFormDataType = {
-  imageUrls: [] as string[],
-  sizes: [] as string[],
+const defaultProductFormData: AddNewProductFormDataType = {
+  imageData: [],
+  sizes: [],
   category: '',
   name: '',
   description: '',
@@ -43,14 +45,28 @@ const defaultProductFormData: productFormDataType = {
   onSale: '',
   salePercentage: '',
 };
+
 export default function AdminViewAddNewProduct() {
   const [formData, setFormData] = useState(defaultProductFormData);
   const [imageUploadProgress, setImageUploadProgress] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formData['onSale'] === 'Yes';
+  const storageItem = 'addNewProductFormData';
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem(storageItem);
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(storageItem, JSON.stringify(formData));
+  }, [formData]);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -62,6 +78,7 @@ export default function AdminViewAddNewProduct() {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const uniqueFileName = generateUniqueFileName(file.name);
+
       imagesToUpload.push({ file, uniqueFileName });
     }
 
@@ -86,21 +103,21 @@ export default function AdminViewAddNewProduct() {
       })
     );
 
-    const imageUrlArray = await Promise.allSettled(uploadPromises);
+    const imageDataArray = await Promise.allSettled(uploadPromises);
 
-    const imageUrls = imageUrlArray.map((result) => {
+    const imageData = imageDataArray.map((result) => {
       if (result.status === 'fulfilled') {
         return result.value;
       } else {
         // Handle the rejection case if needed
         console.error('Image upload failed:', result.reason);
-        return '';
+        return {} as { imageUrl: string; fileName: string };
       }
     });
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      imageUrls: imageUrls,
+      imageData: imageData,
     }));
   }
 
@@ -130,12 +147,16 @@ export default function AdminViewAddNewProduct() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     const isUploadComplete = imageUploadProgress.every((uploadProgress) => uploadProgress === 100);
 
-    if (!isUploadComplete || formData.imageUrls.length === 0) {
-      //handle toast
-      console.log('Image upload still in progress');
-      return;
+    if (!isUploadComplete) {
+      return toast.error('Image upload still in progress', {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
 
     try {
@@ -144,7 +165,14 @@ export default function AdminViewAddNewProduct() {
       setImageUploadProgress([]);
     } catch (error) {
       console.error(error);
+      toast.error(`${error}`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } finally {
+      setIsLoading(false);
+      toast.success('Product added successfully', {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   }
 
@@ -157,6 +185,7 @@ export default function AdminViewAddNewProduct() {
         onChange={handleImageUpload}
         formData={formData}
         imageUploadProgress={imageUploadProgress}
+        isDisabled={isLoading}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
@@ -165,6 +194,7 @@ export default function AdminViewAddNewProduct() {
           selection={formData.sizes}
           onChange={handleSelectSize}
           buttons={toggleButtonOptions}
+          disabled={isLoading}
         />
         {formData.sizes.length === 0 ? (
           <Typography sx={{ color: textColor }}>Please select at least one size</Typography>
@@ -180,6 +210,7 @@ export default function AdminViewAddNewProduct() {
             onChange={handleInputChange}
             value={formData[field.name as keyof typeof formData]}
             options={field.options ?? []}
+            disabled={isLoading}
           />
         ) : field.type === 'number' ? (
           <NumbertField
@@ -189,6 +220,7 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
+            disabled={isLoading}
           />
         ) : field.type === 'percentage' ? (
           <PercentageField
@@ -198,7 +230,7 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
-            disabled={!isOnSale && field.name === 'salePercentage' ? true : false}
+            disabled={(!isOnSale && field.name === 'salePercentage') || isLoading}
           />
         ) : (
           <CustomTextField
@@ -208,13 +240,16 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             required={true}
             onChange={handleInputChange}
+            multiline={field.multiline ?? false}
+            disabled={isLoading}
           />
         );
       })}
       <BlueFormButton
         type="submit"
-        label="add product"
+        label={isLoading ? 'Loading...' : 'add product'}
         fullWidth
+        startIcon={isLoading ? <Spinner size={20} /> : null}
       />
     </Box>
   );

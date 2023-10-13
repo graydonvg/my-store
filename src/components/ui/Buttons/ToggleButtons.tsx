@@ -1,12 +1,12 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
+import { Box, TextField, ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
-  selection: ReactNode;
+  selection: string[];
 };
 
 export default function ToggleButtons({ buttons, selection, ...props }: ToggleButtonsProps) {

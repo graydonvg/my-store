@@ -25,6 +25,7 @@ export default function AuthStateListener() {
 
       dispatch(setCurrentUser(selectedUserDetails as CurrentUserType));
     });
+
     return unsubscribe;
   }, [dispatch]);
 

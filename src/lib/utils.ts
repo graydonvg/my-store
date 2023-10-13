@@ -25,39 +25,6 @@ export function generateUniqueFileName(fileName: string) {
   return `${fileName}-${timestamp}-${randomString}`;
 }
 
-// export const navOptions = [
-//   {
-//     id: 'all-products',
-//     label: 'All Products',
-//     path: '/browse/all-products',
-//   },
-//   {
-//     id: 'women',
-//     label: 'Women',
-//     path: '/browse/women',
-//   },
-//   {
-//     id: 'men',
-//     label: 'Men',
-//     path: '/browse/men',
-//   },
-//   {
-//     id: 'electronics',
-//     label: 'Electronics',
-//     path: '/browse/tech',
-//   },
-//   {
-//     id: 'home-and-living',
-//     label: 'Home + Living',
-//     path: '/browse/home-and-living',
-//   },
-//   {
-//     id: 'beauty',
-//     label: 'Beauty',
-//     path: '/browse/beauty',
-//   },
-// ];
-
 export const navOptions = [
   {
     id: 'home',
@@ -81,7 +48,7 @@ export const navOptions = [
   },
   {
     id: 'listingKids',
-    label: 'Kids',
+    label: 'kids',
     path: '/product/listing/kids',
   },
 ];
