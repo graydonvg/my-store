@@ -9,8 +9,9 @@ import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDo
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import BlueFormButton from '../ui/Buttons/BlueFormButton';
+import CustomButton from '../ui/Buttons/CustomButton';
 import CustomTextField from '../ui/InputFields/CustomTextField';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -24,6 +25,7 @@ const defaultFormData = {
 
 export default function SignInForm() {
   const dispatch = useAppDispatch();
+  const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -106,11 +108,11 @@ export default function SignInForm() {
             autoFocus={field.name === 'email'}
           />
         ))}
-        <BlueFormButton
+        <CustomButton
           label="sign in"
           disabled={isLoading}
           type="submit"
-          sx={{ mt: 3, mb: 2 }}
+          styles={{ mt: 3, mb: 2, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
           fullWidth={true}
         />
         <Divider>
@@ -120,12 +122,12 @@ export default function SignInForm() {
             OR
           </Typography>
         </Divider>
-        <BlueFormButton
+        <CustomButton
           onClick={signInWithGoogleAndCreateUser}
           label="sign with google"
           disabled={isLoading}
           type="button"
-          sx={{ mt: 2, mb: 3 }}
+          styles={{ mt: 2, mb: 3, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
           fullWidth={true}
           startIcon={<GoogleIcon />}
         />

@@ -25,6 +25,36 @@ export function generateUniqueFileName(fileName: string) {
   return `${fileName}-${timestamp}-${randomString}`;
 }
 
+export function getEmptyFormFields(formData: {}): string[] {
+  const unfilledFields: string[] = [];
+
+  for (const key in formData) {
+    const fieldValue = formData[key as keyof typeof formData] as {};
+
+    if (
+      fieldValue === undefined || // Check for undefined
+      (typeof fieldValue === 'string' && fieldValue.trim() === '') || // Check for empty string
+      (Array.isArray(fieldValue) && fieldValue.length === 0) || // Check for empty array
+      fieldValue === '' || // Check for empty string ('')
+      fieldValue === null // Check for null
+    ) {
+      unfilledFields.push(key);
+    }
+  }
+
+  return unfilledFields;
+}
+
+export function getNumberOfFormFields(formData: {}): number {
+  const formFieldsArray = [];
+
+  for (const key in formData) {
+    formFieldsArray.push(key);
+  }
+
+  return formFieldsArray.length;
+}
+
 export const navOptions = [
   {
     id: 'home',

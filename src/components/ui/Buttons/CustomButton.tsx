@@ -1,30 +1,27 @@
 import { Button } from '@mui/material';
 import { ElementType, ReactNode } from 'react';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-type BlueFormButtonProps = {
+type CustomButtonProps = {
   label: ReactNode;
   startIcon?: ReactNode;
   component?: ElementType<any>;
   type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
-  sx?: Record<string, string | number>;
+  styles?: Record<string, string | number | Record<string, string | number>>;
   fullWidth: boolean;
   onClick?: () => void;
 };
 
-export default function BlueFormButton({
+export default function CustomButton({
   label,
   startIcon,
   type,
   disabled,
-  sx,
+  styles,
   fullWidth,
   component,
   onClick,
-}: BlueFormButtonProps) {
-  const color = useCustomColorPalette();
-
+}: CustomButtonProps) {
   return (
     <Button
       disableElevation
@@ -36,10 +33,8 @@ export default function BlueFormButton({
       variant="contained"
       startIcon={startIcon}
       sx={{
-        ...sx,
         height: '48px',
-        backgroundColor: color.blue.dark,
-        '&:hover': { backgroundColor: color.blue.light },
+        ...styles,
       }}>
       {label}
     </Button>

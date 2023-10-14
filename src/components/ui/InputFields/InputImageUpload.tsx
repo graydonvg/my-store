@@ -1,12 +1,14 @@
 import { useTheme } from '@mui/material/styles';
-import { CloudUpload, HighlightOff } from '@mui/icons-material';
-import BlueFormButton from '../Buttons/BlueFormButton';
-import { Box, Input, InputProps, Typography } from '@mui/material';
+import { CloudUpload, DeleteForever } from '@mui/icons-material';
+import CustomButton from '../Buttons/CustomButton';
+import { Box, IconButton, Input, InputProps, Typography } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
-import { AddNewProductFormDataType } from '@/types';
 import { deleteImageFromStorage } from '@/lib/firebase';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { resetImageUploadProgress, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { toast } from 'react-toastify';
 
 function renderProductImage(index: number, url: string, name: string, iconColor: string, onClick: () => void) {
   return (
@@ -21,39 +23,41 @@ function renderProductImage(index: number, url: string, name: string, iconColor:
         width: '133px',
       }}>
       <Image
-        objectFit="contain"
+        style={{ objectFit: 'cover', borderRadius: '4px' }}
         fill
         src={url}
         alt={`image of ${name}`}
+        priority
       />
-      <HighlightOff
+      <IconButton
         onClick={onClick}
-        fontSize="large"
         sx={{
           position: 'absolute',
+          width: '100%',
+          height: '100%',
           color: 'transparent',
           cursor: 'pointer',
+          padding: 0,
+          borderRadius: '4px',
+          backgroundColor: 'transparent',
           '&:hover': {
             color: iconColor,
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
           },
-        }}
-      />
+        }}>
+        <DeleteForever sx={{ fontSize: '56px' }} />
+      </IconButton>
     </Box>
   );
 }
 
 type InputImageUploadProps = InputProps & {
-  formData: AddNewProductFormDataType;
-  imageUploadProgress: number[];
   isDisabled: boolean;
 };
 
-export default function InputImageUpload({
-  formData,
-  imageUploadProgress,
-  isDisabled,
-  ...props
-}: InputImageUploadProps) {
+export default function InputImageUpload({ isDisabled, ...inputProps }: InputImageUploadProps) {
+  const { formData, imageUploadProgress } = useAppSelector((state) => state.addNewProductFormData);
+  const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -61,9 +65,23 @@ export default function InputImageUpload({
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
 
-  function handleDeleteImageFromStorage(fileName: string) {
-    deleteImageFromStorage(fileName);
+  async function handleDeleteImage(fileName: string) {
+    const filteredImageData = formData.imageData.filter((data) => data.fileName !== fileName);
+
+    try {
+      const result = await deleteImageFromStorage(fileName);
+      if (result === 'success') {
+        dispatch(setFormData({ field: 'imageData', value: filteredImageData }));
+        dispatch(resetImageUploadProgress({ fileName }));
+      }
+    } catch (error) {
+      toast.error(`${error}`);
+    }
   }
+
+  // const noImagesOrLoaders = imageUploadProgress.length === 0 && formData.imageData.length === 0;
+  // const imagesEqualLoaders = (imageUploadProgress.length = formData.imageData.length);
+  // const moreLoaderThanImage = imageUploadProgress.length > formData.imageData.length;
 
   return (
     <>
@@ -75,14 +93,22 @@ export default function InputImageUpload({
           gap: 2,
           border: `1px solid ${borderColor}`,
           borderRadius: '4px',
-          minHeight: '216px',
-          paddingX: '8px',
+          minHeight: '232px',
+          padding: '16px',
         }}>
-        {imageUploadProgress.length > 0 ? (
-          imageUploadProgress.map((progress, index) =>
-            progress === 100 && formData.imageData[index] && formData.imageData[index].imageUrl.length > 0 ? (
+        {formData.imageData && formData.imageData.length > 0 ? (
+          formData.imageData.map((data, index) =>
+            renderProductImage(index, data.imageUrl, formData.name, color.grey.light, () =>
+              handleDeleteImage(data.fileName)
+            )
+          )
+        ) : imageUploadProgress.length > 0 ? (
+          imageUploadProgress.map((data, index) =>
+            data.uploadProgress === 100 &&
+            formData.imageData[index] &&
+            formData.imageData[index].imageUrl.length > 0 ? (
               renderProductImage(index, formData.imageData[index].imageUrl, formData.name, color.grey.light, () =>
-                handleDeleteImageFromStorage(formData.imageData[index].fileName)
+                handleDeleteImage(formData.imageData[index].fileName)
               )
             ) : (
               <Box
@@ -97,24 +123,22 @@ export default function InputImageUpload({
                 }}>
                 <CircularProgressWithLabel
                   key={index}
-                  value={progress}
+                  value={data.uploadProgress}
                 />
               </Box>
-            )
-          )
-        ) : formData.imageData && formData.imageData.length > 0 ? (
-          formData.imageData.map((data, index) =>
-            renderProductImage(index, data.imageUrl, formData.name, color.grey.light, () =>
-              handleDeleteImageFromStorage(data.fileName)
             )
           )
         ) : (
           <Typography sx={{ color: textColor, margin: '0 auto' }}>No file chosen</Typography>
         )}
       </Box>
-      <BlueFormButton
+      <CustomButton
         disabled={isDisabled}
-        sx={{ color: labelColor }}
+        styles={{
+          color: labelColor,
+          backgroundColor: color.blue.dark,
+          '&:hover': { backgroundColor: color.blue.light },
+        }}
         label={
           <>
             Upload images
@@ -132,12 +156,12 @@ export default function InputImageUpload({
                 whiteSpace: 'nowrap',
                 width: 1,
               }}
-              {...props}
+              {...inputProps}
             />
           </>
         }
         startIcon={<CloudUpload sx={{ color: labelColor }} />}
-        fullWidth={false}
+        fullWidth={true}
         component="label"
       />
     </>

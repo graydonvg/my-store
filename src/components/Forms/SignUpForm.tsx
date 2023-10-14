@@ -8,8 +8,9 @@ import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/fi
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import BlueFormButton from '../ui/Buttons/BlueFormButton';
+import CustomButton from '../ui/Buttons/CustomButton';
 import CustomTextField from '../ui/InputFields/CustomTextField';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -29,6 +30,7 @@ const defaultFormData = {
 
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
+  const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -116,11 +118,11 @@ export default function SignUpForm() {
             </Grid>
           ))}
         </Grid>
-        <BlueFormButton
+        <CustomButton
           label="sign up"
           disabled={isLoading}
           type="submit"
-          sx={{ mt: 3, mb: 2 }}
+          styles={{ mt: 3, mb: 2, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
           fullWidth={true}
         />
         <Link

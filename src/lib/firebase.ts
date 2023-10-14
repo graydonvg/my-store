@@ -124,32 +124,29 @@ export async function uploadImageToStorage(
   const imageRef = ref(storage, `product-images/${fileName}`);
   const uploadImage = uploadBytesResumable(imageRef, file);
 
-  try {
-    return await new Promise((resolve, reject) => {
-      uploadImage.on('state_changed', observer, reject, async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
-          resolve({ imageUrl: downloadURL, fileName });
-        } catch (error) {
-          reject(error);
-        }
-      });
+  return await new Promise((resolve, reject) => {
+    uploadImage.on('state_changed', observer, reject, async () => {
+      try {
+        const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
+        resolve({ imageUrl: downloadURL, fileName });
+      } catch (error) {
+        reject(error);
+      }
     });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  });
 }
 
 export async function deleteImageFromStorage(fileName: string) {
   const imageRef = ref(storage, `product-images/${fileName}`);
 
-  try {
-    await deleteObject(imageRef);
-  } catch (error) {
-    console.error('error deleting image', error);
-    throw error;
-  }
+  return await new Promise(async (resolve, reject) => {
+    try {
+      await deleteObject(imageRef);
+      resolve('success');
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 export async function addProductToDatabase(productData: AddNewProductFormDataType) {
