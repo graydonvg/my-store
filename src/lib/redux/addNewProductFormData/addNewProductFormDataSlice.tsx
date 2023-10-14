@@ -2,7 +2,6 @@ import { AddNewProductFormDataType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
-  imageUploadProgress: [] as { fileName: string; uploadProgress: number }[],
   formData: {
     imageData: [],
     sizes: [],
@@ -20,32 +19,38 @@ export const addNewProductFormDataSlice = createSlice({
   name: 'addNewProductFormData',
   initialState,
   reducers: {
-    setImageUploadProgress(state, action: PayloadAction<{ fileName: string; uploadProgress: number; index: number }>) {
-      const { fileName, uploadProgress, index } = action.payload;
-      state.imageUploadProgress[index] = { fileName, uploadProgress };
-    },
-    resetImageUploadProgress(state, action: PayloadAction<{ fileName: string | null }>) {
-      const { fileName } = action.payload;
-      if (fileName) {
-        const filteredArray = state.imageUploadProgress.filter((data) => data.fileName !== action.payload.fileName);
-        state.imageUploadProgress = filteredArray;
+    setFormData(state, action: PayloadAction<{ field: keyof AddNewProductFormDataType; value: any; index?: number }>) {
+      const { field, value, index } = action.payload;
+
+      if (field === 'imageData') {
+        // Ensure that state.formData.imageData is an array
+        if (!Array.isArray(state.formData.imageData)) {
+          state.formData.imageData = [];
+        }
+
+        // Check if value.fileName already exists in the array
+        const existingIndex = state.formData.imageData.findIndex((item) => item.fileName === value.fileName);
+
+        if (existingIndex !== -1) {
+          // If value.fileName already exists, update the existing object
+          state.formData.imageData[existingIndex] = { ...state.formData.imageData[existingIndex], ...value };
+        } else {
+          // If value.fileName doesn't exist, push a new object
+          state.formData.imageData.push({ ...value });
+        }
       } else {
-        state.imageUploadProgress = [];
+        // For fields other than 'imageData', update state.formData as before
+        state.formData = { ...state.formData, [field]: value };
       }
-    },
-    setFormData(state, action: PayloadAction<{ field: keyof AddNewProductFormDataType; value: any }>) {
-      const { field, value } = action.payload;
-      state.formData = { ...state.formData, [field]: value };
     },
     resetFormData(state) {
       state.formData = initialState.formData;
-      state.imageUploadProgress = [];
     },
   },
 });
 
 const { actions, reducer } = addNewProductFormDataSlice;
 
-export const { setImageUploadProgress, resetImageUploadProgress, setFormData, resetFormData } = actions;
+export const { setFormData, resetFormData } = actions;
 
 export const userReducer = reducer;

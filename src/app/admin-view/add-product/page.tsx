@@ -15,11 +15,7 @@ import CustomTextField from '@/components/ui/InputFields/CustomTextField';
 import CustomButton from '@/components/ui/Buttons/CustomButton';
 import { Spinner } from '@/components/ui/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  resetFormData,
-  setFormData,
-  setImageUploadProgress,
-} from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
 import { DeleteForever } from '@mui/icons-material';
 
@@ -42,7 +38,7 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
-  const { formData, imageUploadProgress } = useAppSelector((state) => state.addNewProductFormData);
+  const { formData } = useAppSelector((state) => state.addNewProductFormData);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -53,11 +49,14 @@ export default function AdminViewAddNewProduct() {
   const isOnSale = formData['onSale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberFormFields = getNumberOfFormFields(formData);
-  const uploadsCompleted = imageUploadProgress.every((data) => data.uploadProgress === 100);
-  const uploadProgressMessage = 'Upload in progress. Please wait for the current upload(s) to finish.';
+  // const uploadInProgress = formData.imageData.some((data) => typeof data.imageUrl === 'number');
+  // const uploadInProgressMessage = 'Please wait for the current upload to complete';
+
+  console.log(formData.imageData);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    if (!uploadsCompleted) return toast.error(uploadProgressMessage);
+    // if (uploadInProgress) return toast.error(uploadInProgressMessage);
+
     const files = event.target.files;
 
     if (!files) return;
@@ -75,7 +74,13 @@ export default function AdminViewAddNewProduct() {
       uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        dispatch(setImageUploadProgress({ fileName: image.uniqueFileName, uploadProgress: progress, index }));
+        dispatch(
+          setFormData({
+            field: 'imageData',
+            value: { imageUrl: progress, fileName: image.uniqueFileName },
+            index,
+          })
+        );
 
         switch (snapshot.state) {
           case 'paused':
@@ -99,9 +104,8 @@ export default function AdminViewAddNewProduct() {
       }
     });
 
-    dispatch(setFormData({ field: 'imageData', value: [...formData.imageData, ...imageData] }));
+    dispatch(setFormData({ field: 'imageData', value: imageData }));
   }
-  console.log(imageUploadProgress);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     if (formData.sizes.includes(selectedSize)) {
@@ -119,8 +123,7 @@ export default function AdminViewAddNewProduct() {
   }
 
   async function handleClearAllFormFields() {
-    if (!uploadsCompleted) return toast.error(uploadProgressMessage);
-
+    // if (uploadInProgress) return toast.error(uploadInProgressMessage);
     setIsClearingAllFields(true);
     const imagesToDelete = formData.imageData.map((data) => data.fileName);
 

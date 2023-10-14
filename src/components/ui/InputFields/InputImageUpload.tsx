@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetImageUploadProgress, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
 
 function renderProductImage(index: number, url: string, name: string, iconColor: string, onClick: () => void) {
@@ -56,7 +56,7 @@ type InputImageUploadProps = InputProps & {
 };
 
 export default function InputImageUpload({ isDisabled, ...inputProps }: InputImageUploadProps) {
-  const { formData, imageUploadProgress } = useAppSelector((state) => state.addNewProductFormData);
+  const { formData } = useAppSelector((state) => state.addNewProductFormData);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const theme = useTheme();
@@ -72,16 +72,11 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
       const result = await deleteImageFromStorage(fileName);
       if (result === 'success') {
         dispatch(setFormData({ field: 'imageData', value: filteredImageData }));
-        dispatch(resetImageUploadProgress({ fileName }));
       }
     } catch (error) {
       toast.error(`${error}`);
     }
   }
-
-  // const noImagesOrLoaders = imageUploadProgress.length === 0 && formData.imageData.length === 0;
-  // const imagesEqualLoaders = (imageUploadProgress.length = formData.imageData.length);
-  // const moreLoaderThanImage = imageUploadProgress.length > formData.imageData.length;
 
   return (
     <>
@@ -98,19 +93,7 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
         }}>
         {formData.imageData && formData.imageData.length > 0 ? (
           formData.imageData.map((data, index) =>
-            renderProductImage(index, data.imageUrl, formData.name, color.grey.light, () =>
-              handleDeleteImage(data.fileName)
-            )
-          )
-        ) : imageUploadProgress.length > 0 ? (
-          imageUploadProgress.map((data, index) =>
-            data.uploadProgress === 100 &&
-            formData.imageData[index] &&
-            formData.imageData[index].imageUrl.length > 0 ? (
-              renderProductImage(index, formData.imageData[index].imageUrl, formData.name, color.grey.light, () =>
-                handleDeleteImage(formData.imageData[index].fileName)
-              )
-            ) : (
+            typeof data.imageUrl === 'number' ? (
               <Box
                 key={index}
                 sx={{
@@ -123,8 +106,45 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
                 }}>
                 <CircularProgressWithLabel
                   key={index}
-                  value={data.uploadProgress}
+                  value={data.imageUrl as number}
                 />
+              </Box>
+            ) : (
+              <Box
+                key={index}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'relative',
+                  height: '200px',
+                  width: '133px',
+                }}>
+                <Image
+                  style={{ objectFit: 'cover', borderRadius: '4px' }}
+                  fill
+                  src={data.imageUrl as string}
+                  alt={`Image of ${formData.name}`}
+                  priority
+                />
+                <IconButton
+                  onClick={() => handleDeleteImage(data.fileName)}
+                  sx={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    color: 'transparent',
+                    cursor: 'pointer',
+                    padding: 0,
+                    borderRadius: '4px',
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                      color: color.grey.light,
+                      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    },
+                  }}>
+                  <DeleteForever sx={{ fontSize: '56px' }} />
+                </IconButton>
               </Box>
             )
           )
