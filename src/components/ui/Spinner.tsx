@@ -1,12 +1,10 @@
 import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useTheme } from '@mui/material';
 
 export function Spinner(props: CircularProgressProps) {
-  const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const spinnerColor = mode === 'dark' ? color.grey.dark : color.grey.light;
+  const spinnerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)';
 
   return (
     <CircularProgress

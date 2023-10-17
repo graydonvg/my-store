@@ -1,12 +1,7 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { TextField, TextFieldProps, useTheme } from '@mui/material';
 
-type CustomTextFieldProps = TextFieldProps & {
-  borderColor?: string;
-  styles?: {};
-};
-
-export default function CustomTextField({ borderColor, styles, ...props }: CustomTextFieldProps) {
+export default function CustomTextField({ ...props }: TextFieldProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -15,7 +10,6 @@ export default function CustomTextField({ borderColor, styles, ...props }: Custo
   return (
     <TextField
       sx={{
-        ...styles,
         '& label.Mui-focused': {
           color: greyLightOrDark,
         },

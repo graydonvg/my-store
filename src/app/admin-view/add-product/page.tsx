@@ -2,8 +2,8 @@
 
 import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { ChangeEvent, MouseEvent, useState } from 'react';
-import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { addProductToDatabase, deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
 import { AddNewProductFormDataType } from '@/types';
 import InputImageUpload from '@/components/ui/InputFields/InputImageUpload';
@@ -38,6 +38,7 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
+  const currentUser = useAppSelector((state) => state.user.currentUser);
   const { formData } = useAppSelector((state) => state.addNewProductFormData);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,15 +49,12 @@ export default function AdminViewAddNewProduct() {
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
   const isOnSale = formData['onSale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
-  const numberFormFields = getNumberOfFormFields(formData);
-  // const uploadInProgress = formData.imageData.some((data) => typeof data.imageUrl === 'number');
-  // const uploadInProgressMessage = 'Please wait for the current upload to complete';
+  const numberOfFormFields = getNumberOfFormFields(formData);
+  const uploadInProgress = formData.imageData.some((data) => data.hasOwnProperty('uploadProgress'));
 
-  console.log(formData.imageData);
+  if (!currentUser || currentUser?.isAdmin === false) return <p>Not authorized</p>;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    // if (uploadInProgress) return toast.error(uploadInProgressMessage);
-
     const files = event.target.files;
 
     if (!files) return;
@@ -98,8 +96,7 @@ export default function AdminViewAddNewProduct() {
       if (result.status === 'fulfilled') {
         return dispatch(setFormData({ field: 'imageData', value: result.value }));
       } else if (result.status === 'rejected') {
-        toast.error(`Image upload failed. Reason: ${result.reason}`);
-        return dispatch(setFormData({ field: 'imageData', value: {} }));
+        return toast.error(`Image upload failed. Reason: ${result.reason}`);
       }
     });
 
@@ -122,8 +119,8 @@ export default function AdminViewAddNewProduct() {
   }
 
   async function handleClearAllFormFields() {
-    // if (uploadInProgress) return toast.error(uploadInProgressMessage);
     setIsClearingAllFields(true);
+
     const imagesToDelete = formData.imageData.map((data) => data.fileName);
 
     const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
@@ -140,46 +137,38 @@ export default function AdminViewAddNewProduct() {
     setIsClearingAllFields(false);
   }
 
-  // async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  //   if (isLoading) return;
+    setIsLoading(true);
 
-  //   setIsLoading(true);
-
-  //   const isUploadComplete = imageUploadProgress.every((uploadProgress) => uploadProgress === 100);
-
-  //   if (!isUploadComplete) {
-  //     return toast.error('Image upload still in progress', {
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-
-  //   try {
-  //     await addProductToDatabase(formData);
-  //     setFormData(defaultProductFormData);
-  //     setImageUploadProgress([]);
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error(`${error}`, {
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   } finally {
-  //     setIsLoading(false);
-  //     toast.success('Product added successfully', {
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-  // }
+    try {
+      const response = await addProductToDatabase(formData);
+      if (response === 'success') {
+        dispatch(resetFormData());
+        setIsLoading(false);
+        toast.success('Product added successfully', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(`${error}`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <Box
       component="form"
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
       <InputImageUpload
         onChange={handleImageUpload}
-        isDisabled={isLoading}
+        isLoading={isLoading || uploadInProgress}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
@@ -190,9 +179,6 @@ export default function AdminViewAddNewProduct() {
           buttons={toggleButtonOptions}
           disabled={isLoading || isClearingAllFields}
         />
-        {/* {formData.sizes.length === 0 ? (
-          <Typography sx={{ color: textColor }}>Please select at least one size</Typography>
-        ) : null} */}
       </Box>
       {formFields.map((field) => {
         return field.type === 'select' ? (
@@ -200,7 +186,6 @@ export default function AdminViewAddNewProduct() {
             key={field.name}
             label={field.label}
             name={field.name}
-            required={true}
             onChange={handleInputChange}
             value={formData[field.name as keyof typeof formData]}
             options={field.options ?? []}
@@ -212,7 +197,6 @@ export default function AdminViewAddNewProduct() {
             label={field.label}
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
-            required={true}
             onChange={handleInputChange}
             disabled={isLoading || isClearingAllFields}
           />
@@ -222,7 +206,6 @@ export default function AdminViewAddNewProduct() {
             label={field.label}
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
-            required={true}
             onChange={handleInputChange}
             disabled={(!isOnSale && field.name === 'salePercentage') || isLoading || isClearingAllFields}
           />
@@ -232,7 +215,6 @@ export default function AdminViewAddNewProduct() {
             label={field.label}
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
-            required={true}
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
             disabled={isLoading || isClearingAllFields}
@@ -242,7 +224,7 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={emptyFormFields.length === numberFormFields}
+        disabled={emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
@@ -254,8 +236,12 @@ export default function AdminViewAddNewProduct() {
       />
       <CustomButton
         type="submit"
-        disabled={isClearingAllFields || isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1}
-        label={isLoading ? 'Loading...' : 'add product'}
+        disabled={
+          uploadInProgress || isLoading || isClearingAllFields || isOnSale
+            ? emptyFormFields.length > 0
+            : emptyFormFields.length > 1
+        }
+        label={isLoading ? 'loading...' : 'add product'}
         fullWidth
         startIcon={isLoading ? <Spinner size={20} /> : null}
         styles={{

@@ -7,14 +7,15 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteImage, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { deleteImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
+import { Spinner } from '../Spinner';
 
 type InputImageUploadProps = InputProps & {
-  isDisabled: boolean;
+  isLoading: boolean;
 };
 
-export default function InputImageUpload({ isDisabled, ...inputProps }: InputImageUploadProps) {
+export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
   const { formData } = useAppSelector((state) => state.addNewProductFormData);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
@@ -107,7 +108,7 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
         )}
       </Box>
       <CustomButton
-        disabled={isDisabled}
+        disabled={isLoading}
         styles={{
           color: labelColor,
           backgroundColor: color.blue.dark,
@@ -115,7 +116,7 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
         }}
         label={
           <>
-            Upload images
+            {isLoading ? 'uploading...' : 'upload images'}
             <Input
               inputProps={{ accept: 'image/*', multiple: true }}
               type="file"
@@ -134,7 +135,7 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
             />
           </>
         }
-        startIcon={<CloudUpload sx={{ color: labelColor }} />}
+        startIcon={isLoading ? <Spinner size={20} /> : <CloudUpload sx={{ color: labelColor }} />}
         fullWidth={true}
         component="label"
       />

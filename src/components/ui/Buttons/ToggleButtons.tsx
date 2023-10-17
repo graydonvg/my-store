@@ -21,7 +21,12 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
   return (
     <ToggleButtonGroup
       aria-required
-      sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
+      sx={{
+        display: 'flex',
+        gap: 1,
+        flexWrap: 'wrap',
+        width: 'fit-content',
+      }}
       value={selection}
       exclusive
       {...props}>

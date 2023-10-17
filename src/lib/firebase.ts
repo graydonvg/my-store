@@ -10,20 +10,8 @@ import {
   NextOrObserver,
   User,
   signOut,
-  updateProfile,
-  Auth,
 } from 'firebase/auth';
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  query,
-  getDocs,
-  updateDoc,
-  arrayUnion,
-} from 'firebase/firestore/lite';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
 import {
   StorageObserver,
   UploadTaskSnapshot,
@@ -70,6 +58,7 @@ export async function createAuthUserWithEmailAndPassword(email: string, password
 
 export async function signInAuthUserWithEmailAndPassword(email: string, password: string) {
   if (!email || !password) return;
+
   return await signInWithEmailAndPassword(auth, email, password);
 }
 
@@ -95,7 +84,6 @@ export async function createUserDocument(userData = {}) {
         ...userData,
       });
     } catch (error) {
-      console.error('error creating user', error);
       throw error;
     }
   }
@@ -109,11 +97,9 @@ export async function getUserDoc() {
   const userDocRef = doc(db, 'users', auth.currentUser.uid);
   const userDoc = await getDoc(userDocRef);
 
-  if (userDoc.exists()) {
-    return userDoc.data();
-  }
+  if (!userDoc.exists()) return;
 
-  return;
+  return userDoc.data();
 }
 
 export async function uploadImageToStorage(
@@ -139,14 +125,12 @@ export async function uploadImageToStorage(
 export async function deleteImageFromStorage(fileName: string) {
   const imageRef = ref(storage, `product-images/${fileName}`);
 
-  return await new Promise(async (resolve, reject) => {
-    try {
-      await deleteObject(imageRef);
-      resolve('success');
-    } catch (error) {
-      reject(error);
-    }
-  });
+  try {
+    await deleteObject(imageRef);
+    return 'success';
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function addProductToDatabase(productData: AddNewProductFormDataType) {
@@ -166,8 +150,8 @@ export async function addProductToDatabase(productData: AddNewProductFormDataTyp
           },
         ],
       });
+      return 'success';
     } catch (error) {
-      console.error('error creating category', error);
       throw error;
     }
   } else {
@@ -178,11 +162,9 @@ export async function addProductToDatabase(productData: AddNewProductFormDataTyp
           ...productData,
         }),
       });
+      return 'success';
     } catch (error) {
-      console.error('error updating category', error);
       throw error;
     }
   }
-
-  return;
 }

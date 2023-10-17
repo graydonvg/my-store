@@ -19,14 +19,16 @@ export const addNewProductFormDataSlice = createSlice({
   name: 'addNewProductFormData',
   initialState,
   reducers: {
-    setFormData(state, action: PayloadAction<{ field: keyof AddNewProductFormDataType; value: any }>) {
+    setFormData(
+      state,
+      action: PayloadAction<{
+        field: keyof AddNewProductFormDataType;
+        value: any;
+      }>
+    ) {
       const { field, value } = action.payload;
 
       if (field === 'imageData') {
-        if (!Array.isArray(state.formData.imageData)) {
-          state.formData.imageData = [];
-        }
-
         const existingIndex = state.formData.imageData.findIndex((item) => item.fileName === value.fileName);
 
         if (existingIndex !== -1) {

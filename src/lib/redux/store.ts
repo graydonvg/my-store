@@ -20,7 +20,7 @@ type ExtendedPersistConfig = PersistConfig<RootState> & {
 const persistConfig: ExtendedPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['theme', 'user'],
+  whitelist: ['theme', 'user', 'addNewProductFormData'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
