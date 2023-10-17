@@ -20,7 +20,7 @@ export type UserState = {
 };
 
 export type AddNewProductFormDataType = {
-  imageData: { imageUrl: string | number; fileName: string }[];
+  imageData: { imageUrl: string; fileName: string }[] | { uploadProgress: number; fileName: string }[];
   sizes: string[];
   category: string;
   name: string;

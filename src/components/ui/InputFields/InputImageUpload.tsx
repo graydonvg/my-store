@@ -7,49 +7,8 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { deleteImage, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
-
-function renderProductImage(index: number, url: string, name: string, iconColor: string, onClick: () => void) {
-  return (
-    <Box
-      key={index}
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        height: '200px',
-        width: '133px',
-      }}>
-      <Image
-        style={{ objectFit: 'cover', borderRadius: '4px' }}
-        fill
-        src={url}
-        alt={`image of ${name}`}
-        priority
-      />
-      <IconButton
-        onClick={onClick}
-        sx={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          color: 'transparent',
-          cursor: 'pointer',
-          padding: 0,
-          borderRadius: '4px',
-          backgroundColor: 'transparent',
-          '&:hover': {
-            color: iconColor,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          },
-        }}>
-        <DeleteForever sx={{ fontSize: '56px' }} />
-      </IconButton>
-    </Box>
-  );
-}
 
 type InputImageUploadProps = InputProps & {
   isDisabled: boolean;
@@ -66,12 +25,10 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
   const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
 
   async function handleDeleteImage(fileName: string) {
-    const filteredImageData = formData.imageData.filter((data) => data.fileName !== fileName);
-
     try {
       const result = await deleteImageFromStorage(fileName);
       if (result === 'success') {
-        dispatch(setFormData({ field: 'imageData', value: filteredImageData }));
+        dispatch(deleteImage({ fileName }));
       }
     } catch (error) {
       toast.error(`${error}`);
@@ -92,8 +49,8 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
           padding: '16px',
         }}>
         {formData.imageData && formData.imageData.length > 0 ? (
-          formData.imageData.map((data, index) =>
-            typeof data.imageUrl === 'number' ? (
+          formData.imageData.map((data, index) => {
+            return 'uploadProgress' in data ? (
               <Box
                 key={index}
                 sx={{
@@ -104,10 +61,7 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
                   border: `1px solid ${borderColor}`,
                   borderRadius: '4px',
                 }}>
-                <CircularProgressWithLabel
-                  key={index}
-                  value={data.imageUrl as number}
-                />
+                <CircularProgressWithLabel value={data.uploadProgress} />
               </Box>
             ) : (
               <Box
@@ -146,8 +100,8 @@ export default function InputImageUpload({ isDisabled, ...inputProps }: InputIma
                   <DeleteForever sx={{ fontSize: '56px' }} />
                 </IconButton>
               </Box>
-            )
-          )
+            );
+          })
         ) : (
           <Typography sx={{ color: textColor, margin: '0 auto' }}>No file chosen</Typography>
         )}

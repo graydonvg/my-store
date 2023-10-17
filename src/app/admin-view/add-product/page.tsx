@@ -70,15 +70,14 @@ export default function AdminViewAddNewProduct() {
       imagesToUpload.push({ file, uniqueFileName });
     }
 
-    const uploadPromises = imagesToUpload.map((image, index) =>
+    const uploadPromises = imagesToUpload.map((image) =>
       uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         dispatch(
           setFormData({
             field: 'imageData',
-            value: { imageUrl: progress, fileName: image.uniqueFileName },
-            index,
+            value: { uploadProgress: progress, fileName: image.uniqueFileName },
           })
         );
 
@@ -95,16 +94,16 @@ export default function AdminViewAddNewProduct() {
 
     const imageDataArray = await Promise.allSettled(uploadPromises);
 
-    const imageData = imageDataArray.map((result) => {
+    imageDataArray.map((result) => {
       if (result.status === 'fulfilled') {
-        return result.value;
+        return dispatch(setFormData({ field: 'imageData', value: result.value }));
       } else if (result.status === 'rejected') {
         toast.error(`Image upload failed. Reason: ${result.reason}`);
-        return {} as { imageUrl: string; fileName: string };
+        return dispatch(setFormData({ field: 'imageData', value: {} }));
       }
     });
 
-    dispatch(setFormData({ field: 'imageData', value: imageData }));
+    // dispatch(setFormData({ field: 'imageData', value: imageData }));
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
