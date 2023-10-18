@@ -4,8 +4,8 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { AppBar, Box, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
-import LowerNavbar from './lowerNavbar/LowerNavbar
-import UpperNavbar from './upperNavbar/UpperNavbar
+import LowerNavbar from './lowerNavbar/LowerNavbar';
+import UpperNavbar from './upperNavbar/UpperNavbar';
 import { ElevationScroll } from '@/lib/utils';
 
 export default function Navbar() {

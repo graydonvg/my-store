@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
 import AuthStateListener from '@/components/AuthStateListener';
-import ModalComponent from '@/components/ui/Modal/ModalComponent';
+import ModalComponent from '@/components/ui/modal/ModalComponent';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import Navbar from '@/components/navigation/navbar/Navbar';
 import '@fontsource/roboto/300.css';

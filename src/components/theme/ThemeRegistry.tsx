@@ -3,9 +3,9 @@
 import { ReactNode, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import NextAppDirEmotionCacheProvider from './EmotionCache';
 import { grey } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
+import NextAppDirEmotionCacheProvider from './EmotionCache';
 
 const getDesignTokens = (mode: 'light' | 'dark') => ({
   // components: {

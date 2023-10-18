@@ -1,4 +1,4 @@
-import { GetDesignTokensType } from '@/components/Theme/ThemeRegistry';
+import { GetDesignTokensType } from '@/components/theme/ThemeRegistry';
 import { useTheme } from '@emotion/react';
 
 export default function useCustomColorPalette() {

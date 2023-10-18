@@ -32,11 +32,11 @@ export function getEmptyFormFields(formData: {}): string[] {
     const fieldValue = formData[key as keyof typeof formData] as {};
 
     if (
-      fieldValue === undefined || // Check for undefined
-      (typeof fieldValue === 'string' && fieldValue.trim() === '') || // Check for empty string
-      (Array.isArray(fieldValue) && fieldValue.length === 0) || // Check for empty array
-      fieldValue === '' || // Check for empty string ('')
-      fieldValue === null // Check for null
+      fieldValue === undefined ||
+      (typeof fieldValue === 'string' && fieldValue.trim() === '') ||
+      (Array.isArray(fieldValue) && fieldValue.length === 0) ||
+      fieldValue === '' ||
+      fieldValue === null
     ) {
       unfilledFields.push(key);
     }
