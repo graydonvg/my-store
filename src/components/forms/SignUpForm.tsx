@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
-import ModalProgressBar from '../ui/Modal/ModalProgressBar';
+import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';

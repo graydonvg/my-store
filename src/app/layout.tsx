@@ -5,7 +5,7 @@ import { Container } from '@mui/material';
 import AuthStateListener from '@/components/AuthStateListener';
 import ModalComponent from '@/components/ui/Modal/ModalComponent';
 import DrawerComponent from '@/components/ui/DrawerComponent';
-import Navbar from '@/components/Navigation/Navbar/Navbar';
+import Navbar from '@/components/navigation/navbar/Navbar';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

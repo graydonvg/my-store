@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import ModalProgressBar from '../ui/Modal/ModalProgressBar';
+import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
