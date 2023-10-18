@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor } from '@/types';
-import NavDrawerContent from '@/components/Navigation/NavDrawer/NavDrawerContent';
+import NavDrawerContent from '@/components/Navigation/navDrawer/NavDrawerContent';
 
 function renderDrawerContent(drawerContent: 'nav' | 'cart' | null) {
   return drawerContent === 'nav' ? <NavDrawerContent /> : null;

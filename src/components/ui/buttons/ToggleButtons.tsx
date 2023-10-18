@@ -1,8 +1,7 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { Box, TextField, ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
-import { ReactNode } from 'react';
+import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
@@ -13,10 +12,9 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
-  const borderColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
-  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
-  const labelColorHover = mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
+  const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
+  const borderColorHover = mode === 'dark' ? 'white' : 'black';
+  const labelColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
 
   return (
     <ToggleButtonGroup
@@ -43,7 +41,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 borderRadius: '4px !important',
                 '&:hover': {
                   backgroundColor: 'transparent',
-                  color: labelColorHover,
+                  color: labelColor,
                   border: `1px solid ${borderColorHover} !important`,
                 },
               },
@@ -52,7 +50,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 backgroundColor: color.grey.dark,
                 borderColor: `${color.grey.dark} !important`,
                 '&:hover': {
-                  color: 'rgba(255, 255, 255, 1)',
+                  color: color.grey.light,
                   backgroundColor: color.grey.dark,
                   border: `1px solid ${color.grey.dark} !important`,
                   opacity: '95%',

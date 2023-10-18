@@ -9,9 +9,10 @@ import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDo
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import CustomButton from '../ui/Buttons/CustomButton';
-import CustomTextField from '../ui/InputFields/CustomTextField';
+import CustomButton from '../ui/buttons/CustomButton';
+import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { toast } from 'react-toastify';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -43,7 +44,7 @@ export default function SignInForm() {
       setFormData(defaultFormData);
       dispatch(setIsModalOpen(false));
     } catch (error) {
-      console.error(error);
+      toast.error('Failed to sign in.');
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +68,7 @@ export default function SignInForm() {
       );
       dispatch(setIsModalOpen(false));
     } catch (error) {
-      console.error(error);
+      toast.error('Failed to sign in.');
     } finally {
       setIsLoading(false);
     }

@@ -127,7 +127,6 @@ export async function deleteImageFromStorage(fileName: string) {
 
   try {
     await deleteObject(imageRef);
-    return 'success';
   } catch (error) {
     throw error;
   }

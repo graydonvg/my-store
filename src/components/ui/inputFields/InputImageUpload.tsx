@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { CloudUpload, DeleteForever } from '@mui/icons-material';
-import CustomButton from '../Buttons/CustomButton';
+import CustomButton from '../buttons/CustomButton';
 import { Box, IconButton, Input, InputProps, Typography } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import Image from 'next/image';
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
 import { Spinner } from '../Spinner';
+import { StorageError, StorageErrorCode } from 'firebase/storage';
 
 type InputImageUploadProps = InputProps & {
   isLoading: boolean;
@@ -22,17 +23,16 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
   const theme = useTheme();
   const mode = theme.palette.mode;
   const labelColor = mode === 'dark' ? color.grey.dark : color.grey.light;
-  const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
-  const borderColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+  const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
+  const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
 
   async function handleDeleteImage(fileName: string) {
     try {
-      const result = await deleteImageFromStorage(fileName);
-      if (result === 'success') {
-        dispatch(deleteImage({ fileName }));
-      }
+      await deleteImageFromStorage(fileName);
     } catch (error) {
-      toast.error(`${error}`);
+      toast.error('Error deleting image from storage.');
+    } finally {
+      dispatch(deleteImage({ fileName }));
     }
   }
 
@@ -95,7 +95,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
                     backgroundColor: 'transparent',
                     '&:hover': {
                       color: color.grey.light,
-                      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                      backgroundColor: color.black.opacity.strong,
                     },
                   }}>
                   <DeleteForever sx={{ fontSize: '56px' }} />

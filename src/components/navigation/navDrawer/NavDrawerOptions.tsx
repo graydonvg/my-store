@@ -1,7 +1,6 @@
 'use client';
 
 import { List, Box, useTheme, Button } from '@mui/material';
-import DrawerNavOption from './NavDrawerOption';
 import { signOutUser } from '@/lib/firebase';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -10,6 +9,7 @@ import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { navOptions, adminNavOptions } from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import NavDrawerOption from './NavDrawerOption';
 
 const drawerWidth = '100vw';
 
@@ -19,7 +19,7 @@ function renderNavOptions(
   onClick: () => void
 ) {
   return options.map((option) => (
-    <DrawerNavOption
+    <NavDrawerOption
       onClick={onClick}
       key={option.id}
       label={option.label}
@@ -64,7 +64,7 @@ export default function NavDraweOptions() {
             : renderNavOptions(navOptions, bodyTextColor, handleCloseDrawer)}
           {currentUser && (
             <>
-              <DrawerNavOption
+              <NavDrawerOption
                 onClick={handleCloseDrawer}
                 key={'myAccount'}
                 label={'My Account'}
@@ -73,7 +73,7 @@ export default function NavDraweOptions() {
                 bodyTextColor={bodyTextColor}
               />
               {currentUser.isAdmin && (
-                <DrawerNavOption
+                <NavDrawerOption
                   onClick={handleCloseDrawer}
                   key={'adminView'}
                   label={isAdminView ? 'Client View' : 'Admin View'}
@@ -82,7 +82,7 @@ export default function NavDraweOptions() {
                   bodyTextColor={bodyTextColor}
                 />
               )}
-              <DrawerNavOption
+              <NavDrawerOption
                 onClick={handleSignOut}
                 key={'signOut'}
                 label={'Sign Out'}

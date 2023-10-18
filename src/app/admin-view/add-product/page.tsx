@@ -6,13 +6,13 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { addProductToDatabase, deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
 import { AddNewProductFormDataType } from '@/types';
-import InputImageUpload from '@/components/ui/InputFields/InputImageUpload';
-import ToggleButtons from '@/components/ui/Buttons/ToggleButtons';
-import SelectField from '@/components/ui/InputFields/SelectField';
-import NumbertField from '@/components/ui/InputFields/NumberField';
-import PercentageField from '@/components/ui/InputFields/PercentageField';
-import CustomTextField from '@/components/ui/InputFields/CustomTextField';
-import CustomButton from '@/components/ui/Buttons/CustomButton';
+import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
+import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
+import SelectField from '@/components/ui/inputFields/SelectField';
+import NumbertField from '@/components/ui/inputFields/NumberField';
+import PercentageField from '@/components/ui/inputFields/PercentageField';
+import CustomTextField from '@/components/ui/inputFields/CustomTextField';
+import CustomButton from '@/components/ui/buttons/CustomButton';
 import { Spinner } from '@/components/ui/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
@@ -96,7 +96,7 @@ export default function AdminViewAddNewProduct() {
       if (result.status === 'fulfilled') {
         return dispatch(setFormData({ field: 'imageData', value: result.value }));
       } else if (result.status === 'rejected') {
-        return toast.error(`Image upload failed. Reason: ${result.reason}`);
+        return toast.error('Image upload failed.');
       }
     });
 
@@ -129,11 +129,11 @@ export default function AdminViewAddNewProduct() {
 
     const success = promiseResults.every((result) => result.status === 'fulfilled');
 
-    if (success) {
-      dispatch(resetFormData());
-    } else {
-      toast.error(`Failed to clear all images. Please try again later`);
+    if (!success) {
+      toast.error('Error clearing all images from storage.');
     }
+
+    dispatch(resetFormData());
     setIsClearingAllFields(false);
   }
 
@@ -146,16 +146,10 @@ export default function AdminViewAddNewProduct() {
       const response = await addProductToDatabase(formData);
       if (response === 'success') {
         dispatch(resetFormData());
-        setIsLoading(false);
-        toast.success('Product added successfully', {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.success('Successfully added product.');
       }
     } catch (error) {
-      console.error(error);
-      toast.error(`${error}`, {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.error('Failed to add product.');
     } finally {
       setIsLoading(false);
     }

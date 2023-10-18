@@ -8,9 +8,10 @@ import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/fi
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
-import CustomButton from '../ui/Buttons/CustomButton';
-import CustomTextField from '../ui/InputFields/CustomTextField';
+import CustomButton from '../ui/buttons/CustomButton';
+import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { toast } from 'react-toastify';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -48,7 +49,7 @@ export default function SignUpForm() {
 
     if (formData.password !== formData.confirmPassword) {
       setIsLoading(false);
-      console.error('Passwords do not match!');
+      toast.error('Passwords do not match.');
       return;
     }
 
@@ -69,7 +70,7 @@ export default function SignUpForm() {
       setFormData(defaultFormData);
       dispatch(setIsModalOpen(false));
     } catch (error) {
-      console.error(error);
+      toast.error('Failed to create account.');
     } finally {
       setIsLoading(false);
     }

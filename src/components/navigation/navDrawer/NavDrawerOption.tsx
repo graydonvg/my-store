@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 
-type NavDrawerNavOptionProps = {
+type NavDrawerOptionProps = {
   onClick?: () => void;
   path?: string;
   label: string;
@@ -20,13 +20,7 @@ function renderIcon(label: string, bodyTextColor: string) {
   }
 }
 
-export default function NavDrawerNavOption({
-  onClick,
-  path,
-  label,
-  bodyTextColor,
-  drawerWidth,
-}: NavDrawerNavOptionProps) {
+export default function NavDrawerOption({ onClick, path, label, bodyTextColor, drawerWidth }: NavDrawerOptionProps) {
   return (
     <>
       <ListItem

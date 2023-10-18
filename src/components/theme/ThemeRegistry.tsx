@@ -40,6 +40,19 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               dark: '#1976d2',
               light: '#42a5f5',
             },
+            black: {
+              opacity: {
+                lighter: 'rgba(0, 0, 0, 0.26)',
+                light: 'rgba(0, 0, 0, 0.3)',
+                strong: 'rgba(0, 0, 0, 0.6)',
+              },
+            },
+            white: {
+              opacity: {
+                light: 'rgba(255, 255, 255, 0.3)',
+                strong: 'rgba(255, 255, 255, 0.7)',
+              },
+            },
           },
         }
       : {
@@ -57,6 +70,19 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             blue: {
               dark: '#1976d2',
               light: '#42a5f5',
+            },
+            black: {
+              opacity: {
+                lighter: 'rgba(0, 0, 0, 0.26)',
+                light: 'rgba(0, 0, 0, 0.3)',
+                strong: 'rgba(0, 0, 0, 0.6)',
+              },
+            },
+            white: {
+              opacity: {
+                light: 'rgba(255, 255, 255, 0.3)',
+                strong: 'rgba(255, 255, 255, 0.7)',
+              },
             },
           },
         }),
