@@ -7,7 +7,7 @@ type FormTitleProps = {
 export default function FormTitle({ text }: FormTitleProps) {
   return (
     <Typography
-      component="h2"
+      component="h1"
       variant="h4">
       {text}
     </Typography>

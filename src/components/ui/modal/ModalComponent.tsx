@@ -14,7 +14,7 @@ const style = {
   translate: '-50% -50%',
   width: { xs: 300, sm: 400 },
   boxShadow: 24,
-  p: 4,
+  padding: 4,
 };
 
 function renderModalContent(modalContent: 'signIn' | 'signUp' | null) {

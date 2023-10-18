@@ -45,9 +45,9 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
           flexWrap: 'wrap',
           gap: 2,
           border: `1px solid ${borderColor}`,
-          borderRadius: '4px',
+          borderRadius: 1,
           minHeight: '232px',
-          padding: '16px',
+          padding: 2,
         }}>
         {formData.imageData && formData.imageData.length > 0 ? (
           formData.imageData.map((data, index) => {
@@ -60,7 +60,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
                   height: '200px',
                   width: '133px',
                   border: `1px solid ${borderColor}`,
-                  borderRadius: '4px',
+                  borderRadius: 1,
                 }}>
                 <CircularProgressWithLabel value={data.uploadProgress} />
               </Box>
@@ -68,15 +68,15 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
               <Box
                 key={index}
                 sx={{
+                  position: 'relative',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  position: 'relative',
                   height: '200px',
                   width: '133px',
                 }}>
                 <Image
-                  style={{ objectFit: 'cover', borderRadius: '4px' }}
+                  style={{ objectFit: 'cover', borderRadius: 1 }}
                   fill
                   src={data.imageUrl as string}
                   alt={`Image of ${formData.name}`}
@@ -91,7 +91,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
                     color: 'transparent',
                     cursor: 'pointer',
                     padding: 0,
-                    borderRadius: '4px',
+                    borderRadius: 1,
                     backgroundColor: 'transparent',
                     '&:hover': {
                       color: color.grey.light,

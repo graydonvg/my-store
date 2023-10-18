@@ -14,6 +14,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.dummyjson.com',
       },
+      {
+        //delete this. demo
+        protocol: 'https',
+        hostname: 'www.apetogentleman.com',
+      },
     ],
   },
 };

@@ -17,7 +17,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
-import { DeleteForever } from '@mui/icons-material';
+import { Add, DeleteForever } from '@mui/icons-material';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -99,8 +99,6 @@ export default function AdminViewAddNewProduct() {
         return toast.error('Image upload failed.');
       }
     });
-
-    // dispatch(setFormData({ field: 'imageData', value: imageData }));
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
@@ -223,9 +221,10 @@ export default function AdminViewAddNewProduct() {
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
         styles={{
-          color: color.grey.light,
-          backgroundColor: color.grey.dark,
-          '&:hover': { backgroundColor: color.grey.medium },
+          backgroundColor: color.red.dark,
+          '&:hover': {
+            backgroundColor: color.red.light,
+          },
         }}
       />
       <CustomButton
@@ -237,7 +236,7 @@ export default function AdminViewAddNewProduct() {
         }
         label={isLoading ? 'loading...' : 'add product'}
         fullWidth
-        startIcon={isLoading ? <Spinner size={20} /> : null}
+        startIcon={isLoading ? <Spinner size={20} /> : <Add />}
         styles={{
           backgroundColor: color.blue.dark,
           '&:hover': { backgroundColor: color.blue.light },

@@ -24,7 +24,6 @@ export default function CustomButton({
 }: CustomButtonProps) {
   return (
     <Button
-      disableElevation
       onClick={onClick}
       disabled={disabled}
       component={component ?? 'button'}

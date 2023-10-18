@@ -18,7 +18,7 @@ export default function LowerNavbar() {
       position="sticky"
       sx={{ backgroundColor }}>
       <Container maxWidth="lg">
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 56 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
           <NavbarTitleAndLogo
             variant="h6"
             display="flex"
