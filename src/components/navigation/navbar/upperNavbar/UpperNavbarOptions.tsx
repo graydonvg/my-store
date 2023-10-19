@@ -76,7 +76,7 @@ export default function UpperNavbarOptions() {
       <Box
         sx={{
           display: { xs: 'block', md: 'none' },
-          minWidth: { xs: '52px', sm: '124px' },
+          minWidth: { xs: '52px', md: '124px' },
         }}>
         <Menu
           sx={{

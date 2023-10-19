@@ -14,19 +14,21 @@ export default function ProductCard() {
   return (
     <Grid
       item
-      xs={3}>
+      xs={6}
+      md={4}
+      lg={3}
+      xl={6}>
       <Paper
-        elevation={0}
-        sx={{ borderRadius: 1 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        elevation={1}
+        sx={{ borderRadius: 1, width: 'auto' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1, sm: 2 } }}>
           <Box
             sx={{
               position: 'relative',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '200px',
-              width: '300px',
+              aspectRatio: 3 / 2,
             }}>
             <Image
               style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
@@ -40,33 +42,55 @@ export default function ProductCard() {
             sx={{
               position: 'absolute',
               alignSelf: 'flex-end',
+              display: 'flex',
               borderRadius: 1,
-              marginTop: 1,
-              marginRight: 1,
-              paddingX: 1,
-              paddingy: 0.5,
+              marginTop: { xs: 0.5, sm: 1 },
+              marginRight: { xs: 0.5, sm: 1 },
+              paddingX: { xs: 0.5, sm: 1 },
+              paddingY: { xs: 0.25, sm: 0.5 },
               backgroundColor: color.blue.dark,
             }}>
             <Typography
               component="span"
-              variant="subtitle2"
+              variant="caption"
               sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
               sale
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingLeft: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 0, sm: 1 }, paddingLeft: 2 }}>
             <Typography
               component="h3"
               variant="body1">
               T-Shirt
             </Typography>
-            <Typography
-              component="span"
-              variant="h5">
-              R189
-            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                gap: { xs: 0, sm: 1 },
+              }}>
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{ textDecoration: 'line-through', opacity: '70%' }}>
+                R189
+              </Typography>
+              <Typography
+                component="span"
+                variant="h5">
+                R160
+              </Typography>
+            </Box>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 1, paddingTop: 0 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: { xs: 1, sm: 2 },
+              paddingX: { xs: 1, sm: 2 },
+              paddingBottom: { xs: 1, sm: 2 },
+            }}>
             <CustomButton
               fullWidth
               label="delete"

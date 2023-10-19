@@ -1,3 +1,5 @@
+'use client';
+
 import { Grid } from '@mui/material';
 import ProductCard from './ProductCard';
 
@@ -7,7 +9,12 @@ export default function Products() {
   return (
     <Grid
       container
-      spacing={8}>
+      spacing={2}>
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
       <ProductCard />
     </Grid>
   );

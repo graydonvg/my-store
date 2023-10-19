@@ -32,6 +32,7 @@ export default function CustomButton({
       variant="contained"
       startIcon={startIcon}
       sx={{
+        color: 'white',
         height: '48px',
         ...styles,
       }}>

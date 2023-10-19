@@ -12,6 +12,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
+  const backgroundColor = mode === 'dark' ? color.blue.light : color.grey.dark;
   const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
   const borderColorHover = mode === 'dark' ? 'white' : 'black';
   const labelColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
@@ -47,12 +48,12 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               },
               '&.MuiToggleButton-root.Mui-selected': {
                 color: color.grey.light,
-                backgroundColor: color.grey.dark,
+                backgroundColor: backgroundColor,
                 borderColor: `${color.grey.dark} !important`,
                 '&:hover': {
                   color: color.grey.light,
-                  backgroundColor: color.grey.dark,
-                  border: `1px solid ${color.grey.dark} !important`,
+                  backgroundColor: backgroundColor,
+                  border: `1px solid black !important`,
                   opacity: '95%',
                 },
               },

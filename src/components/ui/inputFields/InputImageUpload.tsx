@@ -110,7 +110,6 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
       <CustomButton
         disabled={isLoading}
         styles={{
-          color: labelColor,
           backgroundColor: color.blue.dark,
           '&:hover': { backgroundColor: color.blue.light },
         }}
@@ -135,7 +134,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
             />
           </>
         }
-        startIcon={isLoading ? <Spinner size={20} /> : <CloudUpload sx={{ color: labelColor }} />}
+        startIcon={isLoading ? <Spinner size={20} /> : <CloudUpload />}
         fullWidth={true}
         component="label"
       />
