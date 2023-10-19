@@ -6,12 +6,12 @@ import AuthStateListener from '@/components/AuthStateListener';
 import ModalComponent from '@/components/ui/modal/ModalComponent';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import Navbar from '@/components/navigation/navbar/Navbar';
+import Toast from '@/components/ui/Toast';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
-import Toast from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -25,7 +25,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           <Navbar />
           <main>
-            <Container maxWidth="lg">{children}</Container>
+            <Container
+              sx={{ paddingX: 1 }}
+              disableGutters
+              maxWidth="lg">
+              {children}
+            </Container>
           </main>
           <DrawerComponent />
           <ModalComponent />

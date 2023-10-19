@@ -9,7 +9,7 @@ export default function Products() {
   return (
     <Grid
       container
-      spacing={2}>
+      spacing={1}>
       <ProductCard />
       <ProductCard />
       <ProductCard />

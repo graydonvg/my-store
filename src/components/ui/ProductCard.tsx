@@ -6,7 +6,7 @@ import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
-import { green } from '@mui/material/colors';
+import { green, orange } from '@mui/material/colors';
 
 type ProductCardProps = {};
 
@@ -47,18 +47,42 @@ export default function ProductCard() {
               position: 'absolute',
               alignSelf: 'flex-end',
               display: 'flex',
-              borderRadius: 1,
-              marginTop: 0.5,
-              marginRight: 0.5,
-              paddingX: { xs: 0.5, sm: 1 },
-              backgroundColor: green[700],
+              flexDirection: 'column',
+              alignItems: 'flex-end',
             }}>
-            <Typography
-              component="span"
-              variant="caption"
-              sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
-              sale
-            </Typography>
+            <Box
+              sx={{
+                width: 'fit-content',
+                display: 'flex',
+                borderRadius: 1,
+                marginTop: 0.5,
+                marginRight: 0.5,
+                paddingX: 0.5,
+                backgroundColor: green[700],
+              }}>
+              <Typography
+                component="span"
+                variant="caption"
+                sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
+                sale
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                borderRadius: 1,
+                marginTop: 0.5,
+                marginRight: 0.5,
+                paddingX: 0.5,
+                backgroundColor: orange[700],
+              }}>
+              <Typography
+                component="span"
+                variant="caption"
+                sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
+                low stock
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 0, sm: 1 }, paddingLeft: 2 }}>
             <Typography
@@ -91,7 +115,6 @@ export default function ProductCard() {
               flexDirection: 'column',
               gap: { xs: 1, sm: 2 },
               paddingX: { xs: 1, sm: 2 },
-              paddingBottom: { xs: 1, sm: 2 },
             }}>
             {isAdminView ? (
               <>
@@ -117,18 +140,7 @@ export default function ProductCard() {
                   }}
                 />
               </>
-            ) : (
-              <CustomButton
-                fullWidth
-                label="add to cart"
-                styles={{
-                  backgroundColor: color.blue.dark,
-                  '&:hover': {
-                    backgroundColor: color.blue.light,
-                  },
-                }}
-              />
-            )}
+            ) : null}
           </Box>
         </Box>
       </Paper>
