@@ -1,7 +1,7 @@
 'use client';
 
 import { Grid } from '@mui/material';
-import ProductCard from './ProductCard';
+import ProductCard from './ui/ProductCard';
 
 type ProductsProps = {};
 

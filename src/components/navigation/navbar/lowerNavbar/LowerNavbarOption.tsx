@@ -37,6 +37,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const labelTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
+  const labelTextHoverColor = mode === 'light' ? color.grey.dark : 'white';
   const menuOffsetBoxBackgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
 
   return (
@@ -56,9 +57,9 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
                 textTransform: 'none',
                 color: labelTextColor,
                 '&:hover': {
-                  color: color.grey.dark,
+                  color: labelTextHoverColor,
                   textDecoration: 'underline',
-                  textDecorationColor: color.grey.dark,
+                  textDecorationColor: labelTextHoverColor,
                   textDecorationThickness: 1,
                   textUnderlineOffset: 6,
                 },

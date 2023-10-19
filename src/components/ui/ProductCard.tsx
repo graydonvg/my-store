@@ -2,22 +2,26 @@
 
 import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import CustomButton from './ui/buttons/CustomButton';
+import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
+import { usePathname } from 'next/navigation';
+import { green } from '@mui/material/colors';
 
 type ProductCardProps = {};
 
 export default function ProductCard() {
   const color = useCustomColorPalette();
+  const pathname = usePathname();
+
+  const isAdminView = pathname.includes('admin-view');
 
   return (
     <Grid
       item
       xs={6}
       md={4}
-      lg={3}
-      xl={6}>
+      lg={3}>
       <Paper
         elevation={1}
         sx={{ borderRadius: 1, width: 'auto' }}>
@@ -28,7 +32,7 @@ export default function ProductCard() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              aspectRatio: 3 / 2,
+              aspectRatio: 1 / 1,
             }}>
             <Image
               style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
@@ -44,11 +48,10 @@ export default function ProductCard() {
               alignSelf: 'flex-end',
               display: 'flex',
               borderRadius: 1,
-              marginTop: { xs: 0.5, sm: 1 },
-              marginRight: { xs: 0.5, sm: 1 },
+              marginTop: 0.5,
+              marginRight: 0.5,
               paddingX: { xs: 0.5, sm: 1 },
-              paddingY: { xs: 0.25, sm: 0.5 },
-              backgroundColor: color.blue.dark,
+              backgroundColor: green[700],
             }}>
             <Typography
               component="span"
@@ -66,20 +69,19 @@ export default function ProductCard() {
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'flex-start', sm: 'center' },
-                gap: { xs: 0, sm: 1 },
+                alignItems: 'flex-end',
+                gap: 1,
               }}>
-              <Typography
-                component="span"
-                variant="body1"
-                sx={{ textDecoration: 'line-through', opacity: '70%' }}>
-                R189
-              </Typography>
               <Typography
                 component="span"
                 variant="h5">
                 R160
+              </Typography>
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ textDecoration: 'line-through', opacity: '70%' }}>
+                R189
               </Typography>
             </Box>
           </Box>
@@ -91,27 +93,42 @@ export default function ProductCard() {
               paddingX: { xs: 1, sm: 2 },
               paddingBottom: { xs: 1, sm: 2 },
             }}>
-            <CustomButton
-              fullWidth
-              label="delete"
-              startIcon={<DeleteForever />}
-              styles={{
-                backgroundColor: color.red.dark,
-                '&:hover': {
-                  backgroundColor: color.red.light,
-                },
-              }}
-            />
-            <CustomButton
-              fullWidth
-              label="update"
-              styles={{
-                backgroundColor: color.blue.dark,
-                '&:hover': {
-                  backgroundColor: color.blue.light,
-                },
-              }}
-            />
+            {isAdminView ? (
+              <>
+                <CustomButton
+                  fullWidth
+                  label="delete"
+                  startIcon={<DeleteForever />}
+                  styles={{
+                    backgroundColor: color.red.dark,
+                    '&:hover': {
+                      backgroundColor: color.red.light,
+                    },
+                  }}
+                />
+                <CustomButton
+                  fullWidth
+                  label="update"
+                  styles={{
+                    backgroundColor: color.blue.dark,
+                    '&:hover': {
+                      backgroundColor: color.blue.light,
+                    },
+                  }}
+                />
+              </>
+            ) : (
+              <CustomButton
+                fullWidth
+                label="add to cart"
+                styles={{
+                  backgroundColor: color.blue.dark,
+                  '&:hover': {
+                    backgroundColor: color.blue.light,
+                  },
+                }}
+              />
+            )}
           </Box>
         </Box>
       </Paper>
