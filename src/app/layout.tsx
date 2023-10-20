@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Navbar />
           <main>
             <Container
-              sx={{ paddingX: 1 }}
+              sx={{ paddingX: 1, paddingY: 2 }}
               disableGutters
               maxWidth="lg">
               {children}

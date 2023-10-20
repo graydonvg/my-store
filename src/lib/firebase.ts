@@ -1,4 +1,4 @@
-import { AddNewProductFormDataType } from '@/types';
+import { AddNewProductFormDataType, ProductDataType } from '@/types';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -11,7 +11,17 @@ import {
   User,
   signOut,
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  collection,
+  query,
+  getDocs,
+} from 'firebase/firestore/lite';
 import {
   StorageObserver,
   UploadTaskSnapshot,
@@ -137,17 +147,16 @@ export async function addProductToDatabase(productData: AddNewProductFormDataTyp
 
   const productDocRef = doc(db, 'product-categories', productData.category);
   const productDoc = await getDoc(productDocRef);
-  const createdAt = new Date();
 
   if (!productDoc.exists()) {
     try {
       await setDoc(productDocRef, {
         products: [
           {
-            createdAt,
             ...productData,
           },
         ],
+        title: productData.category,
       });
       return 'success';
     } catch (error) {
@@ -157,7 +166,6 @@ export async function addProductToDatabase(productData: AddNewProductFormDataTyp
     try {
       await updateDoc(productDocRef, {
         products: arrayUnion({
-          createdAt,
           ...productData,
         }),
       });
@@ -165,5 +173,19 @@ export async function addProductToDatabase(productData: AddNewProductFormDataTyp
     } catch (error) {
       throw error;
     }
+  }
+}
+
+export async function getProductsFromDatabase() {
+  const collectionRef = collection(db, 'product-categories');
+  const q = query(collectionRef);
+
+  try {
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(
+      (docSnapshot) => docSnapshot.data() as { title: string; products: ProductDataType[] }
+    );
+  } catch (error) {
+    throw error;
   }
 }

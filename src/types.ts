@@ -30,3 +30,15 @@ export type AddNewProductFormDataType = {
   onSale: string | null;
   salePercentage: number | '';
 };
+
+export type ProductDataType = {
+  imageData: { imageUrl: string; fileName: string }[];
+  sizes: string[];
+  category: string;
+  name: string;
+  description: string;
+  deliveryInfo: string;
+  price: number | '';
+  onSale: string | null;
+  salePercentage: number | '';
+};

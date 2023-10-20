@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -38,6 +39,7 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
+  const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { formData } = useAppSelector((state) => state.addNewProductFormData);
   const dispatch = useAppDispatch();
@@ -150,6 +152,8 @@ export default function AdminViewAddNewProduct() {
       toast.error('Failed to add product.');
     } finally {
       setIsLoading(false);
+      router.refresh();
+      router.push('/admin-view');
     }
   }
 
@@ -157,7 +161,7 @@ export default function AdminViewAddNewProduct() {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: 'flex', flexDirection: 'column', rowGap: 4, marginTop: 4, marginBottom: { xs: 4, md: 'none' } }}>
+      sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <InputImageUpload
         onChange={handleImageUpload}
         isLoading={isLoading || uploadInProgress}
@@ -216,7 +220,7 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={emptyFormFields.length === numberOfFormFields}
+        disabled={isClearingAllFields || emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}

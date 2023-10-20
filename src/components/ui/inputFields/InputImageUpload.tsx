@@ -57,8 +57,8 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
                 sx={{
                   display: 'grid',
                   placeItems: 'center',
-                  height: '200px',
-                  width: '133px',
+                  height: '208px',
+                  aspectRatio: 1 / 1,
                   border: `1px solid ${borderColor}`,
                   borderRadius: 1,
                 }}>
@@ -72,12 +72,13 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: '200px',
-                  width: '133px',
+                  height: '208px',
+                  aspectRatio: 1 / 1,
                 }}>
                 <Image
-                  style={{ objectFit: 'cover', borderRadius: 1 }}
+                  style={{ objectFit: 'cover', borderRadius: '4px' }}
                   fill
+                  sizes="208px"
                   src={data.imageUrl as string}
                   alt={`Image of ${formData.name}`}
                   priority
