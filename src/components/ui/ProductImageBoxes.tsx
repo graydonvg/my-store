@@ -14,6 +14,14 @@ import { useState } from 'react';
 
 type ProductImageBoxesProps = {};
 
+function getImageData(data: { uploadProgress: number; fileName: string } | { imageUrl: string; fileName: string }) {
+  if ('uploadProgress' in data) {
+    return data.uploadProgress;
+  } else if ('imageUrl' in data) {
+    return data.imageUrl;
+  }
+}
+
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
   borderColor: string,
@@ -42,14 +50,14 @@ function renderSmallImageBox(
       }}>
       {formData.imageData[imageIndex] ? (
         'uploadProgress' in formData.imageData[imageIndex] ? (
-          <CircularProgressWithLabel value={formData.imageData[imageIndex].uploadProgress} />
+          <CircularProgressWithLabel value={getImageData(formData.imageData[imageIndex]) as number} />
         ) : (
           <>
             <Image
               style={{ objectFit: 'cover', borderRadius: '4px' }}
               fill
               sizes="(min-width: 600px) 78px, (min-width: 440px) 72px, calc(19.17vw - 9px)"
-              src={formData.imageData[imageIndex].imageUrl}
+              src={getImageData(formData.imageData[imageIndex]) as string}
               alt={`Image of ${formData.name}`}
               priority
             />
@@ -135,18 +143,16 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
           }}>
           {formData.imageData[selectedImageIndex] ? (
             'uploadProgress' in formData.imageData[selectedImageIndex] ? (
-              <CircularProgressWithLabel value={formData.imageData[selectedImageIndex].uploadProgress} />
+              <CircularProgressWithLabel value={getImageData(formData.imageData[selectedImageIndex]) as number} />
             ) : (
-              <>
-                <Image
-                  style={{ objectFit: 'cover', borderRadius: '4px' }}
-                  fill
-                  sizes="(min-width: 460px) 398px, calc(82.86vw + 33px)"
-                  src={formData.imageData[selectedImageIndex].imageUrl}
-                  alt={`Image of ${formData.name}`}
-                  priority
-                />
-              </>
+              <Image
+                style={{ objectFit: 'cover', borderRadius: '4px' }}
+                fill
+                sizes="(min-width: 460px) 398px, calc(82.86vw + 33px)"
+                src={getImageData(formData.imageData[selectedImageIndex]) as string}
+                alt={`Image of ${formData.name}`}
+                priority
+              />
             )
           ) : (
             <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
