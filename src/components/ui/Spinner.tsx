@@ -2,7 +2,11 @@ import CircularProgress, { CircularProgressProps } from '@mui/material/CircularP
 import { useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-export function Spinner(props: CircularProgressProps) {
+type SpinnerProps = CircularProgressProps & {
+  providedColor?: string;
+};
+
+export function Spinner({ providedColor, ...props }: SpinnerProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -13,7 +17,7 @@ export function Spinner(props: CircularProgressProps) {
       variant="indeterminate"
       sx={{
         '&.MuiCircularProgress-root': {
-          color: spinnerColor,
+          color: providedColor ?? spinnerColor,
         },
       }}
       {...props}

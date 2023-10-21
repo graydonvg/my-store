@@ -1,18 +1,16 @@
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { DeleteForever, ZoomOutMap } from '@mui/icons-material';
+import { DeleteForever } from '@mui/icons-material';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { CircularProgressWithLabel } from './CircularProgressWithLabel';
 import { AddNewProductFormDataType } from '@/types';
-import { GetDesignTokensType } from '../theme/ThemeRegistry';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import { deleteImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { useState } from 'react';
-
-type ProductImageBoxesProps = {};
+import { Spinner } from './Spinner';
 
 function getImageData(data: { uploadProgress: number; fileName: string } | { imageUrl: string; fileName: string }) {
   if ('uploadProgress' in data) {
@@ -29,6 +27,7 @@ function renderSmallImageBox(
   imageIndex: number,
   isAdminView: boolean,
   isEditMode: boolean,
+  isDeletingImage: boolean,
   selectImage: () => void,
   deleteImage: () => void
 ) {
@@ -44,9 +43,6 @@ function renderSmallImageBox(
         position: 'relative',
         display: 'grid',
         placeItems: 'center',
-        '&:hover': {
-          cursor: 'pointer',
-        },
       }}>
       {formData.imageData[imageIndex] ? (
         'uploadProgress' in formData.imageData[imageIndex] ? (
@@ -54,7 +50,11 @@ function renderSmallImageBox(
         ) : (
           <>
             <Image
-              style={{ objectFit: 'cover', borderRadius: '4px' }}
+              style={{
+                objectFit: 'cover',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
               fill
               sizes="(min-width: 600px) 78px, (min-width: 440px) 72px, calc(19.17vw - 9px)"
               src={getImageData(formData.imageData[imageIndex]) as string}
@@ -65,6 +65,7 @@ function renderSmallImageBox(
               <>
                 <IconButton
                   onClick={deleteImage}
+                  disabled={isDeletingImage}
                   sx={{
                     position: 'absolute',
                     width: '100%',
@@ -79,7 +80,14 @@ function renderSmallImageBox(
                       backgroundColor: color.black.opacity.strong,
                     },
                   }}>
-                  <DeleteForever sx={{ fontSize: '26px' }} />
+                  {!isDeletingImage ? (
+                    <DeleteForever sx={{ fontSize: '26px' }} />
+                  ) : (
+                    <Spinner
+                      providedColor="white"
+                      size={26}
+                    />
+                  )}
                 </IconButton>
               </>
             ) : null}
@@ -93,7 +101,8 @@ function renderSmallImageBox(
 export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const dispatch = useAppDispatch();
-  const { formData } = useAppSelector((state) => state.addNewProductFormData);
+  const formData = useAppSelector((state) => state.addNewProductFormData.formData);
+  const isDeletingImage = useAppSelector((state) => state.addNewProductFormData.isDeletingImage);
   const pathname = usePathname();
   const color = useCustomColorPalette();
   const theme = useTheme();
@@ -104,12 +113,15 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
   const isAdminView = pathname.includes('admin-view');
 
   async function handleDeleteImage(fileName: string) {
+    dispatch(setIsDeletingImage(true));
     try {
       await deleteImageFromStorage(fileName);
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
+      setSelectedImageIndex(0);
       dispatch(deleteImage({ fileName }));
+      dispatch(setIsDeletingImage(false));
     }
   }
 
@@ -160,7 +172,7 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
               <Typography
                 variant="body2"
                 sx={{ color: textColor }}>
-                {'(Max. 6 images)'}
+                {'(Max. 5 images)'}
               </Typography>
             </Box>
           )}
@@ -183,6 +195,7 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
               index,
               isAdminView,
               isEditMode,
+              isDeletingImage,
               () => handleSelectedImage(index),
               () => handleDeleteImage(formData.imageData[index].fileName)
             )

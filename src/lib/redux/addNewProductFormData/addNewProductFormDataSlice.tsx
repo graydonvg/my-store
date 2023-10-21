@@ -2,6 +2,7 @@ import { AddNewProductFormDataType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
+  isDeletingImage: false,
   formData: {
     imageData: [],
     sizes: [],
@@ -45,6 +46,9 @@ export const addNewProductFormDataSlice = createSlice({
         (data) => data.fileName !== action.payload.fileName
       ) as { imageUrl: string; fileName: string }[];
     },
+    setIsDeletingImage(state, action: PayloadAction<boolean>) {
+      state.isDeletingImage = action.payload;
+    },
     resetFormData(state) {
       state.formData = initialState.formData;
     },
@@ -53,6 +57,6 @@ export const addNewProductFormDataSlice = createSlice({
 
 const { actions, reducer } = addNewProductFormDataSlice;
 
-export const { setFormData, deleteImage, resetFormData } = actions;
+export const { setFormData, deleteImage, setIsDeletingImage, resetFormData } = actions;
 
 export const userReducer = reducer;
