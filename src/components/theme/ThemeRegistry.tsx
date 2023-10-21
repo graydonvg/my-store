@@ -3,7 +3,7 @@
 import { ReactNode, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { grey, red } from '@mui/material/colors';
+import { green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 
@@ -44,6 +44,9 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               dark: red[600],
               light: red[400],
             },
+            green: {
+              dark: green[700],
+            },
             black: {
               opacity: {
                 lighter: 'rgba(0, 0, 0, 0.26)',
@@ -78,6 +81,9 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
             red: {
               dark: red[600],
               light: red[400],
+            },
+            green: {
+              dark: green[700],
             },
             black: {
               opacity: {

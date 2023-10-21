@@ -1,6 +1,6 @@
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { DeleteForever } from '@mui/icons-material';
+import { DeleteForever, ZoomOutMap } from '@mui/icons-material';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -20,6 +20,7 @@ function renderSmallImageBox(
   formData: AddNewProductFormDataType,
   imageIndex: number,
   isAdminView: boolean,
+  isEditMode: boolean,
   selectImage: () => void,
   deleteImage: () => void
 ) {
@@ -52,25 +53,27 @@ function renderSmallImageBox(
               alt={`Image of ${formData.name}`}
               priority
             />
-            {isAdminView ? (
-              <IconButton
-                onClick={deleteImage}
-                sx={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  color: 'transparent',
-                  cursor: 'pointer',
-                  padding: 0,
-                  borderRadius: 1,
-                  backgroundColor: 'transparent',
-                  '&:hover': {
+            {isAdminView && isEditMode ? (
+              <>
+                <IconButton
+                  onClick={deleteImage}
+                  sx={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
                     color: color.grey.light,
-                    backgroundColor: color.black.opacity.strong,
-                  },
-                }}>
-                <DeleteForever sx={{ fontSize: '32px' }} />
-              </IconButton>
+                    cursor: 'pointer',
+                    padding: 0,
+                    borderRadius: 1,
+                    backgroundColor: color.black.opacity.light,
+                    '&:hover': {
+                      color: color.grey.light,
+                      backgroundColor: color.black.opacity.strong,
+                    },
+                  }}>
+                  <DeleteForever sx={{ fontSize: '26px' }} />
+                </IconButton>
+              </>
             ) : null}
           </>
         )
@@ -79,7 +82,7 @@ function renderSmallImageBox(
   );
 }
 
-export default function ProductImageBoxes() {
+export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const dispatch = useAppDispatch();
   const { formData } = useAppSelector((state) => state.addNewProductFormData);
@@ -103,8 +106,6 @@ export default function ProductImageBoxes() {
   }
 
   function handleSelectedImage(index: number) {
-    console.log('click');
-
     setSelectedImageIndex(index);
   }
 
@@ -145,26 +146,6 @@ export default function ProductImageBoxes() {
                   alt={`Image of ${formData.name}`}
                   priority
                 />
-                {/* {isAdminView ? (
-                  <IconButton
-                    onClick={}
-                    sx={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      color: 'transparent',
-                      cursor: 'pointer',
-                      padding: 0,
-                      borderRadius: 1,
-                      backgroundColor: 'transparent',
-                      '&:hover': {
-                        color: color.grey.light,
-                        backgroundColor: color.black.opacity.strong,
-                      },
-                    }}>
-                    <DeleteForever sx={{ fontSize: '56px' }} />
-                  </IconButton>
-                ) : null} */}
               </>
             )
           ) : (
@@ -195,6 +176,7 @@ export default function ProductImageBoxes() {
               formData,
               index,
               isAdminView,
+              isEditMode,
               () => handleSelectedImage(index),
               () => handleDeleteImage(formData.imageData[index].fileName)
             )

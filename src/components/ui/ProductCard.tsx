@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: ProductDataType }) {
                   marginTop: 0.5,
                   marginRight: 0.5,
                   paddingX: 0.5,
-                  backgroundColor: green[700],
+                  backgroundColor: color.green.dark,
                 }}>
                 <Typography
                   component="span"

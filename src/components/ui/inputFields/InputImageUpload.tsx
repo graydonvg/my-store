@@ -1,28 +1,43 @@
-import { useTheme } from '@mui/material/styles';
-import { CloudUpload, DeleteForever } from '@mui/icons-material';
+import { Check, CloudUpload, Edit } from '@mui/icons-material';
 import CustomButton from '../buttons/CustomButton';
-import { Box, IconButton, Input, InputProps, Typography } from '@mui/material';
+import { Input, InputProps } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import Image from 'next/image';
-import { CircularProgressWithLabel } from '../CircularProgressWithLabel';
-import { deleteImageFromStorage } from '@/lib/firebase';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
-import { toast } from 'react-toastify';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { Spinner } from '../Spinner';
-import { StorageError, StorageErrorCode } from 'firebase/storage';
 import ProductImageBoxes from '../ProductImageBoxes';
+import { useState } from 'react';
 
 type InputImageUploadProps = InputProps & {
   isLoading: boolean;
 };
 
 export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
+  const { formData } = useAppSelector((state) => state.addNewProductFormData);
+  const [isEditMode, setIsEditMode] = useState(false);
   const color = useCustomColorPalette();
+
+  function handleToggleEditMode() {
+    setIsEditMode((previousMode) => !previousMode);
+  }
 
   return (
     <>
-      <ProductImageBoxes />
+      <ProductImageBoxes isEditMode={isEditMode} />
+      <CustomButton
+        disabled={formData.imageData.length === 0}
+        onClick={() => handleToggleEditMode()}
+        fullWidth={true}
+        label={isEditMode ? 'save' : 'edit'}
+        styles={{
+          backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
+          '&:hover': {
+            backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
+            filter: 'brightness(1.2)',
+            transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          },
+        }}
+        startIcon={isEditMode ? <Check /> : <Edit />}
+      />
       <CustomButton
         disabled={isLoading}
         styles={{
