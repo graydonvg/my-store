@@ -61,6 +61,8 @@ export default function AdminViewAddNewProduct() {
 
     if (!files) return;
 
+    if (files.length > 5) return toast.error('Max. 5 images allowed');
+
     const imagesToUpload = [];
 
     for (let i = 0; i < files.length; i++) {

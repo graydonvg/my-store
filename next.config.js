@@ -17,7 +17,7 @@ const nextConfig = {
       {
         //delete this. demo
         protocol: 'https',
-        hostname: 'www.apetogentleman.com',
+        hostname: 'i5.walmartimages.com',
       },
     ],
   },
