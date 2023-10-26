@@ -7,6 +7,14 @@ export type DrawerState = {
   right: boolean;
 };
 
+export type SignUpFormDataType = {
+  user_name: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+};
+
 export type CurrentUserType = {
   displayName: string;
   firstName?: string;
@@ -21,18 +29,6 @@ export type UserState = {
 
 export type AddNewProductFormDataType = {
   imageData: { imageUrl: string; fileName: string }[] | { uploadProgress: number; fileName: string }[];
-  sizes: string[];
-  category: string;
-  name: string;
-  description: string;
-  deliveryInfo: string;
-  price: number | '';
-  onSale: string | null;
-  salePercentage: number | '';
-};
-
-export type ProductDataType = {
-  imageData: { imageUrl: string; fileName: string }[];
   sizes: string[];
   category: string;
   name: string;

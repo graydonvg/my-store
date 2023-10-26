@@ -1,10 +1,4 @@
-import Products from '@/components/Products';
-import { getProductsFromDatabase } from '@/lib/firebase';
-import { Typography } from '@mui/material';
-
 export default async function Home() {
-  const categoriesAndProducts = await getProductsFromDatabase();
-
   return (
     <>
       {/* <Typography
@@ -13,7 +7,7 @@ export default async function Home() {
         sx={{ textAlign: 'center', padding: 4 }}>
         My E-commerce Website
       </Typography> */}
-      <Products categoriesAndProducts={categoriesAndProducts} />
+      {/* <Products categoriesAndProducts={categoriesAndProducts} /> */}
     </>
   );
 }

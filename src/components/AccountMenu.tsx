@@ -4,8 +4,7 @@ import { ReactNode } from 'react';
 import { useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
 import { ThemeToggleIcon } from './ui/ThemeToggleIcon';
-import { signOutUser } from '@/lib/firebase';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
 import { usePathname } from 'next/navigation';
@@ -37,9 +36,10 @@ export default function AccountMenu() {
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const currentUser = useAppSelector((state) => state.user.currentUser);
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
+
+  const currentUser = { displayName: '', isAdmin: true };
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
@@ -96,8 +96,8 @@ export default function AccountMenu() {
                 fontSize={iconSize}
                 sx={{ color: iconColor }}
               />,
-              'Sign Out',
-              signOutUser
+              'Sign Out'
+              // signOutUser
             )}
           </HoverDropdownMenu>
         </>

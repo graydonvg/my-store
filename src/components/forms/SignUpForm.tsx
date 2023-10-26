@@ -4,14 +4,13 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
 import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
-import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
+import signUpNewUser from '@/services/sign-up';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -54,23 +53,27 @@ export default function SignUpForm() {
     }
 
     const { email, password } = formData;
-    const displayName = formData.firstName;
+    const user_name = formData.firstName;
     const userData = {
-      displayName,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
+      user_name,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
       email,
-      isAdmin: false,
+      password,
     };
 
     try {
-      await createAuthUserWithEmailAndPassword(email, password);
-      await createUserDocument(userData);
-      dispatch(setCurrentUser(userData));
-      setFormData(defaultFormData);
-      dispatch(setIsModalOpen(false));
+      const response = await signUpNewUser(userData);
+      console.log('comp success', response);
+      if (response.ok) {
+        setFormData(defaultFormData);
+        dispatch(setIsModalOpen(false));
+      } else {
+        toast.error(`Sign up failed. ${response.statusText}.`);
+      }
     } catch (error) {
-      toast.error('Failed to create account.');
+      console.error('comp error', error);
+      toast.error('Sign up failed. Please try again later.');
     } finally {
       setIsLoading(false);
     }

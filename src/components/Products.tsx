@@ -1,14 +1,12 @@
-'use client';
-
 import { Box, Grid, Typography } from '@mui/material';
 import ProductCard from './ui/ProductCard';
-import { ProductDataType } from '@/types';
 import { Fragment } from 'react';
+import { Database } from '@/lib/database.types';
 
 type ProductsProps = {
   categoriesAndProducts: {
     title: string;
-    products: ProductDataType[];
+    products: Database['public']['Tables']['products']['Row'][];
   }[];
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
@@ -50,8 +50,9 @@ function renderComponent(Component: ComponentType, index: number, isBelowMedium:
 }
 
 export default function UpperNavbarOptions() {
+  const currentUser = false;
+
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.user.currentUser);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));

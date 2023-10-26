@@ -5,14 +5,14 @@ import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
-import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -30,6 +30,8 @@ export default function SignInForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 
+  const supabase = createClientComponentClient<Database>();
+
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormData((prevFormValues) => ({ ...prevFormValues, [name]: value }));
@@ -40,7 +42,11 @@ export default function SignInForm() {
     setIsLoading(true);
 
     try {
-      await signInAuthUserWithEmailAndPassword(formData.email, formData.password);
+      await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
       setFormData(defaultFormData);
       dispatch(setIsModalOpen(false));
     } catch (error) {
@@ -54,18 +60,9 @@ export default function SignInForm() {
     setIsLoading(true);
 
     try {
-      const { user } = await signInWithGooglePopup();
-      const { displayName, email } = user;
-      const userDisplayName = displayName?.split(' ')[0];
+      // const { user } = await signInWithGooglePopup();
 
-      await createUserDocument({ displayName: userDisplayName, email });
-      dispatch(
-        setCurrentUser({
-          displayName: userDisplayName ?? '',
-          email: email ?? '',
-          isAdmin: false,
-        })
-      );
+      // await createUserDocument({ displayName: userDisplayName, email });
       dispatch(setIsModalOpen(false));
     } catch (error) {
       toast.error('Failed to sign in.');

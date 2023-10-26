@@ -1,7 +1,6 @@
 'use client';
 
 import { List, Box, useTheme, Button } from '@mui/material';
-import { signOutUser } from '@/lib/firebase';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
@@ -31,7 +30,8 @@ function renderNavOptions(
 }
 
 export default function NavDraweOptions() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const currentUser = { displayName: '', isAdmin: true };
+
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const color = useCustomColorPalette();
@@ -45,7 +45,7 @@ export default function NavDraweOptions() {
   }
 
   function handleSignOut() {
-    signOutUser();
+    // signOutUser();
     dispatch(setIsDrawerOpen({ left: false }));
   }
 
