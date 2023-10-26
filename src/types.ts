@@ -7,13 +7,7 @@ export type DrawerState = {
   right: boolean;
 };
 
-export type SignUpFormDataType = {
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-};
+export type ResponseType = { status: number; statusText: string; userId?: string };
 
 export type CurrentUserType = {
   displayName: string;

@@ -25,7 +25,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  console.log(session);
 
   return (
     <html lang="en">

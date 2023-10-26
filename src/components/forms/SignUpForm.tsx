@@ -10,7 +10,8 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
-import signUpNewUser from '@/services/sign-up';
+import signUpNewUserWithPassword from '@/services/sign-up';
+import updateUser from '@/services/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -54,25 +55,29 @@ export default function SignUpForm() {
 
     const { email, password } = formData;
     const user_name = formData.firstName;
-    const userData = {
-      user_name,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      email,
-      password,
-    };
 
     try {
-      const response = await signUpNewUser(userData);
-      console.log('comp success', response);
-      if (response.ok) {
-        setFormData(defaultFormData);
-        dispatch(setIsModalOpen(false));
+      const signUpResponse = await signUpNewUserWithPassword({ email, password });
+
+      if (signUpResponse.status === 200) {
+        const id = signUpResponse.userId!;
+        const updateResponse = await updateUser({
+          id,
+          user_name,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+        });
+
+        if (updateResponse.status === 200) {
+          setFormData(defaultFormData);
+          dispatch(setIsModalOpen(false));
+        } else {
+          toast.error(`Update user failed. ${updateResponse.statusText}.`);
+        }
       } else {
-        toast.error(`Sign up failed. ${response.statusText}.`);
+        toast.error(`Sign up failed. ${signUpResponse.statusText}.`);
       }
     } catch (error) {
-      console.error('comp error', error);
       toast.error('Sign up failed. Please try again later.');
     } finally {
       setIsLoading(false);
