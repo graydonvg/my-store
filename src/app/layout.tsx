@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
-import ModalComponent from '@/components/ui/modal/ModalComponent';
+import ModalComponent from '@/components/ui/ModalComponent';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import Navbar from '@/components/navigation/navbar/Navbar';
 import Toast from '@/components/ui/Toast';
@@ -14,6 +14,8 @@ import './globals.css';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { Database } from '@/lib/database.types';
+import { CurrentUserType } from '@/types';
+import UserStateSetter from '@/components/UserStateSetter';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -22,9 +24,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const { data } = await supabase.from('users').select('*');
+  const userData = data ? data[0] : ({} as CurrentUserType);
 
   return (
     <html lang="en">
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <DrawerComponent />
           <ModalComponent />
           <Toast />
+          <UserStateSetter userData={userData} />
         </Providers>
       </body>
     </html>

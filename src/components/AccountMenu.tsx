@@ -4,13 +4,15 @@ import { ReactNode } from 'react';
 import { useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
 import { ThemeToggleIcon } from './ui/ThemeToggleIcon';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { toast } from 'react-toastify';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -31,6 +33,8 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
 }
 
 export default function AccountMenu() {
+  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const supabase = createClientComponentClient();
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const color = useCustomColorPalette();
@@ -38,11 +42,18 @@ export default function AccountMenu() {
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-
-  const currentUser = { displayName: '', isAdmin: true };
+  const router = useRouter();
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
+  }
+
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error(`Sign out failed. ${error.message}.`);
+    }
+    router.refresh();
   }
 
   return (
@@ -59,7 +70,7 @@ export default function AccountMenu() {
                   sx={{
                     color: color.grey.light,
                   }}>
-                  {currentUser?.displayName ?? 'User'}
+                  {currentUser?.first_name ?? 'User'}
                 </Typography>
                 <ArrowDropDown sx={{ color: color.blue.dark, marginLeft: 2 }} />
               </>
@@ -71,7 +82,7 @@ export default function AccountMenu() {
               />,
               'My Account'
             )}
-            {currentUser?.isAdmin
+            {currentUser?.is_admin
               ? renderMenuItem(
                   <AdminViewToggleIcon isAdminView={isAdminView} />,
                   isAdminView ? <Link href={'/'}>Client View</Link> : <Link href={'/admin-view'}>Admin View</Link>
@@ -96,8 +107,8 @@ export default function AccountMenu() {
                 fontSize={iconSize}
                 sx={{ color: iconColor }}
               />,
-              'Sign Out'
-              // signOutUser
+              'Sign Out',
+              handleSignOut
             )}
           </HoverDropdownMenu>
         </>

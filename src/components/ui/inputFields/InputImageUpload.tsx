@@ -5,7 +5,7 @@ import CustomButton from '../buttons/CustomButton';
 import { Input, InputProps } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Spinner } from '../Spinner';
+import { Spinner } from '../progress/Spinner';
 import ProductImageBoxes from '../ProductImageBoxes';
 import { useEffect, useState } from 'react';
 

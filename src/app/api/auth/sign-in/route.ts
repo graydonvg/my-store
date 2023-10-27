@@ -4,18 +4,30 @@ import { NextResponse } from 'next/server';
 
 import type { Database } from '@/lib/database.types';
 
+// export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
-  const requestUrl = new URL(request.url);
-  const formData = await request.json();
   const supabase = createRouteHandlerClient<Database>({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const formData = await request.json();
   const { email, password } = formData;
 
-  await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  if (session) return NextResponse.json({ status: 400, statusText: 'You are already signed in' });
 
-  return NextResponse.redirect(requestUrl.origin, {
-    status: 301,
-  });
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return NextResponse.json({ status: error.status, statusText: error.message });
+    }
+
+    return NextResponse.json({ status: 200, statusText: 'Sign in successful' });
+  } catch (error) {
+    return NextResponse.json({ status: 500, statusText: 'An unexpected error occurred' });
+  }
 }

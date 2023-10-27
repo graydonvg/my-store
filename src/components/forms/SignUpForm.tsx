@@ -2,16 +2,16 @@
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
-import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import signUpNewUserWithPassword from '@/services/sign-up';
 import updateUser from '@/services/update-user';
+import { useRouter } from 'next/navigation';
 
 const formFields = [
   { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
@@ -32,6 +32,7 @@ const defaultFormData = {
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -43,9 +44,10 @@ export default function SignUpForm() {
     }));
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
+    dispatch(setShowModalLoadingBar(true));
 
     if (formData.password !== formData.confirmPassword) {
       setIsLoading(false);
@@ -53,19 +55,15 @@ export default function SignUpForm() {
       return;
     }
 
-    const { email, password } = formData;
-    const user_name = formData.firstName;
+    const { email, password, firstName, lastName } = formData;
 
     try {
       const signUpResponse = await signUpNewUserWithPassword({ email, password });
 
       if (signUpResponse.status === 200) {
-        const id = signUpResponse.userId!;
         const updateResponse = await updateUser({
-          id,
-          user_name,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
+          first_name: firstName,
+          last_name: lastName,
         });
 
         if (updateResponse.status === 200) {
@@ -80,7 +78,9 @@ export default function SignUpForm() {
     } catch (error) {
       toast.error('Sign up failed. Please try again later.');
     } finally {
+      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      router.refresh();
     }
   }
 
@@ -96,13 +96,12 @@ export default function SignUpForm() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        gap: 3,
       }}>
-      <ModalProgressBar isLoading={isLoading} />
       <FormTitle text="Sign up" />
       <Box
         component="form"
-        onSubmit={handleSubmit}
-        sx={{ mt: 3 }}>
+        onSubmit={handleSignUp}>
         <Grid
           container
           spacing={2}>
@@ -131,7 +130,12 @@ export default function SignUpForm() {
           label="sign up"
           disabled={isLoading}
           type="submit"
-          styles={{ mt: 3, mb: 2, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
+          styles={{
+            marginTop: 3,
+            marginBottom: 3,
+            backgroundColor: color.blue.dark,
+            '&:hover': { backgroundColor: color.blue.light },
+          }}
           fullWidth={true}
         />
         <Link

@@ -13,7 +13,7 @@ import NumbertField from '@/components/ui/inputFields/NumberField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import CustomButton from '@/components/ui/buttons/CustomButton';
-import { Spinner } from '@/components/ui/Spinner';
+import { Spinner } from '@/components/ui/progress/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { toast } from 'react-toastify';

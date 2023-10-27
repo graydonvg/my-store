@@ -9,12 +9,17 @@ import type { Database } from '@/lib/database.types';
 export async function POST(request: Request) {
   const formData = await request.json();
   const supabase = createRouteHandlerClient<Database>({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) return NextResponse.json({ status: 401, statusText: 'Unauthorized. Please sign in' });
 
   try {
     const { error } = await supabase
       .from('users')
       .update({ ...formData })
-      .eq('id', formData.id);
+      .eq('id', session.user.id);
 
     if (error) {
       return NextResponse.json({ status: error.code, statusText: error.message });
@@ -22,6 +27,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ status: 200, statusText: 'Update user successful' });
   } catch (error) {
-    return NextResponse.json({ status: 500, statusText: 'An unexpected error occurred.' });
+    return NextResponse.json({ status: 500, statusText: 'An unexpected error occurred' });
   }
 }

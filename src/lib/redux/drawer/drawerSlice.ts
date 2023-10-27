@@ -1,5 +1,5 @@
-import { DrawerState } from '@/types';
-import { createSlice } from '@reduxjs/toolkit';
+import { DrawerContentType, DrawerState } from '@/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function handleDrawer(isOpen: Partial<DrawerState>, isDrawerOpen: DrawerState) {
   return { ...isDrawerOpen, ...isOpen };
@@ -24,10 +24,10 @@ export const drawerSlice = createSlice({
   name: 'drawer',
   initialState,
   reducers: {
-    setIsDrawerOpen(state, action) {
+    setIsDrawerOpen(state, action: PayloadAction<Partial<DrawerState>>) {
       state.isDrawerOpen = handleDrawer(action.payload, state.isDrawerOpen);
     },
-    setDrawerContent(state, action) {
+    setDrawerContent(state, action: PayloadAction<DrawerContentType>) {
       state.drawerContent = action.payload;
     },
   },

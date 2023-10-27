@@ -3,16 +3,18 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import ModalProgressBar from '../ui/modal/ModalProgressBar';
+import ModalProgressBar from '../ui/progress/LoadingBar';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/lib/database.types';
+import signInUserWithPassword from '@/services/sing-in';
+import { useRouter } from 'next/navigation';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -25,12 +27,12 @@ const defaultFormData = {
 };
 
 export default function SignInForm() {
+  const supabase = createClientComponentClient();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-
-  const supabase = createClientComponentClient<Database>();
+  const router = useRouter();
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -40,34 +42,51 @@ export default function SignInForm() {
   async function handleSignIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
+    dispatch(setShowModalLoadingBar(true));
 
     try {
-      await supabase.auth.signInWithPassword({
+      const response = await signInUserWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      setFormData(defaultFormData);
-      dispatch(setIsModalOpen(false));
+      if (response.status === 200) {
+        setFormData(defaultFormData);
+        dispatch(setIsModalOpen(false));
+      } else {
+        toast.error(`Sign in failed. ${response.statusText}.`);
+      }
     } catch (error) {
-      toast.error('Failed to sign in.');
+      toast.error('Sign in failed. Please try again later.');
     } finally {
+      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      router.refresh();
     }
   }
 
   async function signInWithGoogleAndCreateUser() {
     setIsLoading(true);
+    dispatch(setShowModalLoadingBar(true));
 
     try {
-      // const { user } = await signInWithGooglePopup();
-
-      // await createUserDocument({ displayName: userDisplayName, email });
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${location.origin}/api/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
       dispatch(setIsModalOpen(false));
     } catch (error) {
       toast.error('Failed to sign in.');
     } finally {
+      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      router.refresh();
     }
   }
 
@@ -83,13 +102,12 @@ export default function SignInForm() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        gap: 1,
       }}>
-      <ModalProgressBar isLoading={isLoading} />
       <FormTitle text="Sign in" />
       <Box
         component="form"
-        onSubmit={handleSignIn}
-        sx={{ mt: 1 }}>
+        onSubmit={handleSignIn}>
         {formFields.map((field) => (
           <CustomTextField
             key={field.name}
@@ -110,7 +128,12 @@ export default function SignInForm() {
           label="sign in"
           disabled={isLoading}
           type="submit"
-          styles={{ mt: 3, mb: 2, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
+          styles={{
+            marginTop: 3,
+            marginBottom: 2,
+            backgroundColor: color.blue.dark,
+            '&:hover': { backgroundColor: color.blue.light },
+          }}
           fullWidth={true}
         />
         <Divider>
@@ -122,10 +145,15 @@ export default function SignInForm() {
         </Divider>
         <CustomButton
           onClick={signInWithGoogleAndCreateUser}
-          label="sign with google"
+          label="sign in with google"
           disabled={isLoading}
           type="button"
-          styles={{ mt: 2, mb: 3, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
+          styles={{
+            marginTop: 2,
+            marginBottom: 3,
+            backgroundColor: color.blue.dark,
+            '&:hover': { backgroundColor: color.blue.light },
+          }}
           fullWidth={true}
           startIcon={<GoogleIcon />}
         />

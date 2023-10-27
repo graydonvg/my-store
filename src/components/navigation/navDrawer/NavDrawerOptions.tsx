@@ -3,12 +3,14 @@
 import { List, Box, useTheme, Button } from '@mui/material';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import { navOptions, adminNavOptions } from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
+import { toast } from 'react-toastify';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const drawerWidth = '100vw';
 
@@ -30,8 +32,7 @@ function renderNavOptions(
 }
 
 export default function NavDraweOptions() {
-  const currentUser = { displayName: '', isAdmin: true };
-
+  const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const color = useCustomColorPalette();
@@ -39,13 +40,19 @@ export default function NavDraweOptions() {
   const bodyTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   function handleCloseDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));
   }
 
-  function handleSignOut() {
-    // signOutUser();
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error(`Sign out failed. ${error.message}.`);
+    }
+    router.refresh();
     dispatch(setIsDrawerOpen({ left: false }));
   }
 
@@ -59,7 +66,7 @@ export default function NavDraweOptions() {
         <List
           disablePadding
           sx={{ width: drawerWidth }}>
-          {currentUser?.isAdmin && isAdminView
+          {currentUser?.is_admin && isAdminView
             ? renderNavOptions(adminNavOptions, bodyTextColor, handleCloseDrawer)
             : renderNavOptions(navOptions, bodyTextColor, handleCloseDrawer)}
           {currentUser && (
@@ -72,7 +79,7 @@ export default function NavDraweOptions() {
                 drawerWidth={drawerWidth}
                 bodyTextColor={bodyTextColor}
               />
-              {currentUser.isAdmin && (
+              {currentUser.is_admin && (
                 <NavDrawerOption
                   onClick={handleCloseDrawer}
                   key={'adminView'}

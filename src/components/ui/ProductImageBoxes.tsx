@@ -10,7 +10,7 @@ import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
 import { useState } from 'react';
-import { Spinner } from './Spinner';
+import { Spinner } from './progress/Spinner';
 
 function getImageData(data: { uploadProgress: number; fileName: string } | { imageUrl: string; fileName: string }) {
   if ('uploadProgress' in data) {

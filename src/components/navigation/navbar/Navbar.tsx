@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import LowerNavbar from '../../navigation/navbar/lowerNavbar/LowerNavbar';
 import UpperNavbar from '../../navigation/navbar/upperNavbar/UpperNavbar';
 import { ElevationScroll } from '@/lib/utils';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 export default function Navbar() {
   const dispatch = useAppDispatch();

@@ -1,3 +1,5 @@
+import { Database } from './lib/database.types';
+
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type DrawerState = {
@@ -7,15 +9,13 @@ export type DrawerState = {
   right: boolean;
 };
 
-export type ResponseType = { status: number; statusText: string; userId?: string };
+export type DrawerContentType = 'nav' | 'cart' | null;
 
-export type CurrentUserType = {
-  displayName: string;
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  isAdmin: boolean;
-} | null;
+export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
+
+export type ResponseType = { status: number; statusText: string };
+
+export type CurrentUserType = Database['public']['Tables']['users']['Row'];
 
 export type UserState = {
   currentUser: CurrentUserType | null;
