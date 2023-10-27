@@ -11,7 +11,7 @@ const initialState: ModalState = {
 };
 
 export const modalSlice = createSlice({
-  name: 'drawer',
+  name: 'modal',
   initialState,
   reducers: {
     setIsModalOpen(state, action) {
