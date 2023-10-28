@@ -7,14 +7,14 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
 import { green } from '@mui/material/colors';
-import { ProductDataType } from '@/types';
+import { Database } from '@/lib/database.types';
 
-export default function ProductCard({ product }: { product: ProductDataType }) {
+export default function ProductCard({ product }: { product: Database['public']['Tables']['products']['Row'] }) {
   const color = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const isOnSale = product.onSale == 'Yes';
-  const salePrice = (product.price as number) * ((product.salePercentage as number) / 100);
+  const isOnSale = product.on_sale == 'Yes';
+  const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
 
   function formatCurrency(price: number) {
     const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -52,14 +52,14 @@ export default function ProductCard({ product }: { product: ProductDataType }) {
               // maxHeight: '208px',
               aspectRatio: 1 / 1,
             }}>
-            <Image
+            {/* <Image
               style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
               fill
               sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
               src={product.imageData[0].imageUrl}
               alt="mens t-shirt"
               priority
-            />
+            /> */}
           </Box>
           <Box
             sx={{

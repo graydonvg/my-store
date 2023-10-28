@@ -8,7 +8,6 @@ import SignUpForm from '@/components/forms/SignUpForm';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import LoadingBar from './progress/LoadingBar';
 import UpdateUserData from '../forms/UpdateUserData';
-import { ModalContentType } from '@/types';
 
 const style = {
   position: 'absolute',
@@ -19,16 +18,6 @@ const style = {
   boxShadow: 24,
   borderRadius: '4px',
 };
-
-function renderModalContent(modalContent: ModalContentType) {
-  return modalContent === 'signIn' ? (
-    <SignInForm />
-  ) : modalContent === 'signUp' ? (
-    <SignUpForm />
-  ) : modalContent === 'updateUserData' ? (
-    <UpdateUserData />
-  ) : null;
-}
 
 export default function ModalComponent() {
   const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
@@ -57,7 +46,11 @@ export default function ModalComponent() {
             isLoading={showModalLoadingBar}
             style={{ borderTopRightRadius: '4px', borderTopLeftRadius: '4px' }}
           />
-          <Box sx={{ padding: 4 }}>{renderModalContent(modalContent)}</Box>
+          <Box sx={{ padding: 4 }}>
+            {modalContent === 'signIn' && <SignInForm />}
+            {modalContent === 'signUp' && <SignUpForm />}
+            {modalContent === 'updateUserData' && <UpdateUserData />}
+          </Box>
         </Box>
       </Grow>
     </Modal>

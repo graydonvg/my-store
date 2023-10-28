@@ -1,4 +1,5 @@
 import { Database } from './lib/database.types';
+import { categories } from './lib/utils';
 
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
@@ -13,22 +14,23 @@ export type DrawerContentType = 'nav' | 'cart' | null;
 
 export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
 
-export type ResponseType = { status: number; statusText: string };
+export type CustomResponseType = { statusCode?: number | string; message: string };
 
 export type CurrentUserType = Database['public']['Tables']['users']['Row'];
 
-export type UserState = {
-  currentUser: CurrentUserType | null;
+export type ProductType = Database['public']['Tables']['products']['Row'] & {
+  product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'file_name' | 'image_url'>[];
 };
 
-export type AddNewProductFormDataType = {
-  imageData: { imageUrl: string; fileName: string }[] | { uploadProgress: number; fileName: string }[];
-  sizes: string[];
+export type AddProductStoreType = {
   category: string;
-  name: string;
+  delivery_info: string;
   description: string;
-  deliveryInfo: string;
-  price: number | '';
-  onSale: string | null;
-  salePercentage: number | '';
+  name: string;
+  on_sale: string;
+  price: '' | number;
+  sale_percentage: '' | number;
+  sizes: string[];
 };
+
+export type AddProductDbType = Omit<Omit<Database['public']['Tables']['products']['Row'], 'created_at'>, 'product_id'>;

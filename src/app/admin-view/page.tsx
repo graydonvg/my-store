@@ -1,7 +1,13 @@
 import Products from '@/components/Products';
+import { Database } from '@/lib/database.types';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 type AdminViewProps = {};
 
 export default async function AdminView() {
-  // return <Products categoriesAndProducts={categoriesAndProducts} />;
+  const supabase = createServerComponentClient<Database>({ cookies });
+  // const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
+  const { data: products } = await supabase.from('products').select('*');
+  return <Products products={products ?? []} />;
 }

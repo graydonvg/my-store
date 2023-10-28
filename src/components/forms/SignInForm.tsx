@@ -3,7 +3,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import ModalProgressBar from '../ui/progress/LoadingBar';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
@@ -12,8 +11,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/lib/database.types';
-import signInUserWithPassword from '@/services/sing-in';
+import signInWithPassword from '@/services/sing-in';
 import { useRouter } from 'next/navigation';
 
 const formFields = [
@@ -39,22 +37,22 @@ export default function SignInForm() {
     setFormData((prevFormValues) => ({ ...prevFormValues, [name]: value }));
   }
 
-  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
+  async function handleSignInWithPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
     dispatch(setShowModalLoadingBar(true));
 
     try {
-      const response = await signInUserWithPassword({
+      const response = await signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (response.status === 200) {
+      if (response.statusCode === 200) {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
       } else {
-        toast.error(`Sign in failed. ${response.statusText}.`);
+        toast.error(`Sign in failed. ${response.message}.`);
       }
     } catch (error) {
       toast.error('Sign in failed. Please try again later.');
@@ -65,7 +63,7 @@ export default function SignInForm() {
     }
   }
 
-  async function signInWithGoogleAndCreateUser() {
+  async function handleSignInWithGoogle() {
     setIsLoading(true);
     dispatch(setShowModalLoadingBar(true));
 
@@ -90,7 +88,7 @@ export default function SignInForm() {
     }
   }
 
-  function openSignUpModal() {
+  function handleOpenSignUpModal() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signUp')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
@@ -107,7 +105,7 @@ export default function SignInForm() {
       <FormTitle text="Sign in" />
       <Box
         component="form"
-        onSubmit={handleSignIn}>
+        onSubmit={handleSignInWithPassword}>
         {formFields.map((field) => (
           <CustomTextField
             key={field.name}
@@ -144,7 +142,7 @@ export default function SignInForm() {
           </Typography>
         </Divider>
         <CustomButton
-          onClick={signInWithGoogleAndCreateUser}
+          onClick={handleSignInWithGoogle}
           label="sign in with google"
           disabled={isLoading}
           type="button"
@@ -158,7 +156,7 @@ export default function SignInForm() {
           startIcon={<GoogleIcon />}
         />
         <Link
-          onClick={openSignUpModal}
+          onClick={handleOpenSignUpModal}
           sx={{ cursor: 'pointer' }}
           component="p"
           variant="body2">

@@ -2,43 +2,43 @@ import { Box, Grid, Typography } from '@mui/material';
 import ProductCard from './ui/ProductCard';
 import { Fragment } from 'react';
 import { Database } from '@/lib/database.types';
+import { categories } from '@/lib/utils';
 
-type ProductsProps = {
-  categoriesAndProducts: {
-    title: string;
-    products: Database['public']['Tables']['products']['Row'][];
-  }[];
+type Props = {
+  products: Database['public']['Tables']['products']['Row'][];
 };
 
-export default function Products({ categoriesAndProducts }: ProductsProps) {
+export default function Products({ products }: Props) {
   return (
     <Grid
       container
       spacing={4}>
-      {categoriesAndProducts?.map((category) => {
+      {categories?.map((category) => {
         return (
           <Grid
             xs={12}
             item
-            key={category.title}>
+            key={category}>
             <Typography
               sx={{ textAlign: 'center', paddingBottom: 2 }}
               component="h2"
               variant="h5">
-              {category.title}
+              {category}
             </Typography>
             <Grid
               container
               spacing={1}>
-              {category.products
+              {products
                 .slice()
                 .reverse()
-                .map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    product={product}
-                  />
-                ))}
+                .map((product, index) => {
+                  return product.category === category ? (
+                    <ProductCard
+                      key={index}
+                      product={product}
+                    />
+                  ) : null;
+                })}
             </Grid>
           </Grid>
         );

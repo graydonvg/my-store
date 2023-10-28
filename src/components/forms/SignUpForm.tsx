@@ -60,20 +60,20 @@ export default function SignUpForm() {
     try {
       const signUpResponse = await signUpNewUserWithPassword({ email, password });
 
-      if (signUpResponse.status === 200) {
+      if (signUpResponse.statusCode === 200) {
         const updateResponse = await updateUser({
           first_name: firstName,
           last_name: lastName,
         });
 
-        if (updateResponse.status === 200) {
+        if (updateResponse.statusCode === 200) {
           setFormData(defaultFormData);
           dispatch(setIsModalOpen(false));
         } else {
-          toast.error(`Update user failed. ${updateResponse.statusText}.`);
+          toast.error(`Update user failed. ${updateResponse.message}.`);
         }
       } else {
-        toast.error(`Sign up failed. ${signUpResponse.statusText}.`);
+        toast.error(`Sign up failed. ${signUpResponse.message}.`);
       }
     } catch (error) {
       toast.error('Sign up failed. Please try again later.');
@@ -81,10 +81,11 @@ export default function SignUpForm() {
       dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
       router.refresh();
+      toast.info(`Welcome, ${firstName}!`);
     }
   }
 
-  function openSignInModal() {
+  function handleOpenSignInModal() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signIn')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
@@ -139,7 +140,7 @@ export default function SignUpForm() {
           fullWidth={true}
         />
         <Link
-          onClick={openSignInModal}
+          onClick={handleOpenSignInModal}
           sx={{ cursor: 'pointer' }}
           component="p"
           variant="body2">

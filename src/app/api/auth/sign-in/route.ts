@@ -3,10 +3,9 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import type { Database } from '@/lib/database.types';
+import { CustomResponseType } from '@/types';
 
-// export const dynamic = 'force-dynamic';
-
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const {
     data: { session },
@@ -14,7 +13,7 @@ export async function POST(request: Request) {
   const formData = await request.json();
   const { email, password } = formData;
 
-  if (session) return NextResponse.json({ status: 400, statusText: 'You are already signed in' });
+  if (session) return NextResponse.json({ statusCode: 400, message: 'You are already signed in' });
 
   try {
     const { error } = await supabase.auth.signInWithPassword({
@@ -23,11 +22,11 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ status: error.status, statusText: error.message });
+      return NextResponse.json({ statusCode: error.status, message: error.message });
     }
 
-    return NextResponse.json({ status: 200, statusText: 'Sign in successful' });
+    return NextResponse.json({ statusCode: 200, message: 'Sign in successful' });
   } catch (error) {
-    return NextResponse.json({ status: 500, statusText: 'An unexpected error occurred' });
+    return NextResponse.json({ statusCode: 500, message: 'An unexpected error occurred' });
   }
 }

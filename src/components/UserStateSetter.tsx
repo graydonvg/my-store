@@ -7,11 +7,11 @@ import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { getEmptyFormFields } from '@/lib/utils';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 
-type UserStateSetterProps = {
+type Props = {
   userData: CurrentUserType;
 };
 
-export default function UserStateSetter({ userData }: UserStateSetterProps) {
+export default function UserStateSetter({ userData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

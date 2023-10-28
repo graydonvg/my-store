@@ -5,11 +5,11 @@ import { AdminPanelSettings, Store } from '@mui/icons-material';
 
 const iconSize = 'small';
 
-type AdminViewToggleIconProps = {
+type Props = {
   isAdminView: boolean;
 };
 
-export function AdminViewToggleIcon({ isAdminView }: AdminViewToggleIconProps) {
+export function AdminViewToggleIcon({ isAdminView }: Props) {
   const color = useCustomColorPalette();
   const iconColor = color.grey.light;
   return (

@@ -3,9 +3,8 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import { addProductToDatabase, deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
-import { generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
-import { AddNewProductFormDataType } from '@/types';
+import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
+import { AddProductStoreType, AddProductDbType } from '@/types';
 import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -15,10 +14,11 @@ import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import CustomButton from '@/components/ui/buttons/CustomButton';
 import { Spinner } from '@/components/ui/progress/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { resetFormData, setFormData } from '@/lib/redux/addProduct/addProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import addProduct from '@/services/add-product';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -29,19 +29,19 @@ const toggleButtonOptions = [
 ];
 
 const formFields = [
-  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
+  { label: 'Category', name: 'category', type: 'select', options: categories },
   { label: 'Name', name: 'name' },
   { label: 'Description', name: 'description', multiline: true },
-  { label: 'Delivery info', name: 'deliveryInfo', multiline: true },
+  { label: 'Delivery info', name: 'delivery_info', multiline: true },
   { label: 'Price', name: 'price', type: 'number' },
-  { label: 'On sale', name: 'onSale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale % (0 - 100)', name: 'salePercentage', type: 'percentage' },
+  { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
+  { label: 'Sale % (0 - 100)', name: 'sale_percentage', type: 'percentage' },
 ];
 
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
-  const { formData } = useAppSelector((state) => state.addNewProductFormData);
+  const { formData } = useAppSelector((state) => state.addProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -49,95 +49,91 @@ export default function AdminViewAddNewProduct() {
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
-  const isOnSale = formData['onSale'] === 'Yes';
+  const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
-  const uploadInProgress = formData.imageData.some((data) => data.hasOwnProperty('uploadProgress'));
+  // const uploadInProgress = formData.imageData.some((data) => data.hasOwnProperty('uploadProgress'));
 
-  if (!currentUser || currentUser?.isAdmin === false) return <p>Not authorized</p>;
+  console.log(formData);
 
-  async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
+  if (!currentUser || currentUser?.is_admin === false) return <p>Not authorized</p>;
 
-    if (!files) return;
+  // async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
+  //   const files = event.target.files;
 
-    if (files.length > 5) return toast.error('Max. 5 images allowed');
+  //   if (!files) return;
 
-    const imagesToUpload = [];
+  //   if (files.length > 5) return toast.error('Max. 5 images allowed');
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const uniqueFileName = generateUniqueFileName(file.name);
+  //   const imagesToUpload = [];
 
-      imagesToUpload.push({ file, uniqueFileName });
-    }
+  //   for (let i = 0; i < files.length; i++) {
+  //     const file = files[i];
+  //     const uniqueFileName = generateUniqueFileName(file.name);
 
-    const uploadPromises = imagesToUpload.map((image) =>
-      uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //     imagesToUpload.push({ file, uniqueFileName });
+  //   }
 
-        dispatch(
-          setFormData({
-            field: 'imageData',
-            value: { uploadProgress: progress, fileName: image.uniqueFileName },
-          })
-        );
+  //   const uploadPromises = imagesToUpload.map((image) =>
+  //     uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
+  //       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        switch (snapshot.state) {
-          case 'paused':
-            // console.log('Upload is paused');
-            break;
-          case 'running':
-            // console.log('Upload is running');
-            break;
-        }
-      })
-    );
+  //       dispatch(
+  //         setFormData({
+  //           field: 'imageData',
+  //           value: { uploadProgress: progress, fileName: image.uniqueFileName },
+  //         })
+  //       );
 
-    const imageDataArray = await Promise.allSettled(uploadPromises);
+  //       switch (snapshot.state) {
+  //         case 'paused':
+  //           // console.log('Upload is paused');
+  //           break;
+  //         case 'running':
+  //           // console.log('Upload is running');
+  //           break;
+  //       }
+  //     })
+  //   );
 
-    imageDataArray.map((result) => {
-      if (result.status === 'fulfilled') {
-        return dispatch(setFormData({ field: 'imageData', value: result.value }));
-      } else if (result.status === 'rejected') {
-        return toast.error('Image upload failed.');
-      }
-    });
-  }
+  //   const imageDataArray = await Promise.allSettled(uploadPromises);
+
+  //   imageDataArray.map((result) => {
+  //     if (result.status === 'fulfilled') {
+  //       return dispatch(setFormData({ field: 'imageData', value: result.value }));
+  //     } else if (result.status === 'rejected') {
+  //       return toast.error('Image upload failed.');
+  //     }
+  //   });
+  // }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    if (formData.sizes.includes(selectedSize)) {
-      const filteredSizes = formData.sizes.filter((size) => size !== selectedSize);
-      dispatch(setFormData({ field: 'sizes', value: filteredSizes }));
-    } else {
-      dispatch(setFormData({ field: 'sizes', value: [...formData.sizes, selectedSize] }));
-    }
+    dispatch(setFormData({ field: 'sizes', value: selectedSize }));
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-
-    dispatch(setFormData({ field: name as keyof AddNewProductFormDataType, value }));
+    dispatch(setFormData({ field: name as keyof AddProductStoreType, value }));
   }
 
-  async function handleClearAllFormFields() {
-    setIsClearingAllFields(true);
+  // async function handleClearAllFormFields() {
+  //   setIsClearingAllFields(true);
 
-    const imagesToDelete = formData.imageData.map((data) => data.fileName);
+  //   const imagesToDelete = formData.imageData.map((data) => data.fileName);
 
-    const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+  //   const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
 
-    const promiseResults = await Promise.allSettled(deletePromises);
+  //   const promiseResults = await Promise.allSettled(deletePromises);
 
-    const success = promiseResults.every((result) => result.status === 'fulfilled');
+  //   const success = promiseResults.every((result) => result.status === 'fulfilled');
 
-    if (!success) {
-      toast.error('Error clearing all images from storage.');
-    }
+  //   if (!success) {
+  //     toast.error('Error clearing all images from storage.');
+  //   }
 
-    dispatch(resetFormData());
-    setIsClearingAllFields(false);
-  }
+  //   dispatch(resetFormData());
+  //   setIsClearingAllFields(false);
+  // }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -145,13 +141,16 @@ export default function AdminViewAddNewProduct() {
     setIsLoading(true);
 
     try {
-      const response = await addProductToDatabase(formData);
-      if (response === 'success') {
+      const updatedFormData = formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
+      const response = await addProduct(updatedFormData as AddProductDbType);
+      if (response.statusCode === 200) {
         dispatch(resetFormData());
         toast.success('Successfully added product.');
+      } else {
+        toast.error(`Failed to add product. ${response.message}.`);
       }
     } catch (error) {
-      toast.error('Failed to add product.');
+      toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsLoading(false);
       router.refresh();
@@ -164,10 +163,10 @@ export default function AdminViewAddNewProduct() {
       component="form"
       onSubmit={handleSubmit}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
-      <InputImageUpload
-        onChange={handleImageUpload}
+      {/* <InputImageUpload
+        // onChange={handleImageUpload}
         isLoading={isLoading || uploadInProgress}
-      />
+      /> */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes</Typography>
         <ToggleButtons
@@ -205,7 +204,7 @@ export default function AdminViewAddNewProduct() {
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
-            disabled={(!isOnSale && field.name === 'salePercentage') || isLoading || isClearingAllFields}
+            disabled={(!isOnSale && field.name === 'sale_percentage') || isLoading || isClearingAllFields}
           />
         ) : (
           <CustomTextField
@@ -221,7 +220,7 @@ export default function AdminViewAddNewProduct() {
       })}
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
-        onClick={handleClearAllFormFields}
+        // onClick={handleClearAllFormFields}
         disabled={isClearingAllFields || emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
@@ -235,11 +234,11 @@ export default function AdminViewAddNewProduct() {
       />
       <CustomButton
         type="submit"
-        disabled={
-          uploadInProgress || isLoading || isClearingAllFields || isOnSale
-            ? emptyFormFields.length > 0
-            : emptyFormFields.length > 1
-        }
+        // disabled={
+        //   uploadInProgress || isLoading || isClearingAllFields || isOnSale
+        //     ? emptyFormFields.length > 0
+        //     : emptyFormFields.length > 1
+        // }
         label={isLoading ? 'loading...' : 'add product'}
         fullWidth
         startIcon={isLoading ? <Spinner size={20} /> : <Add />}

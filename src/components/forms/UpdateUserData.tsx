@@ -45,11 +45,11 @@ export default function UpdateUserData() {
         last_name: formData.lastName,
       });
 
-      if (response.status === 200) {
+      if (response.statusCode === 200) {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
       } else {
-        toast.error(`Update user failed. ${response.statusText}.`);
+        toast.error(`Update user failed. ${response.message}.`);
       }
     } catch (error) {
       toast.error('Update user failed. Please try again later.');

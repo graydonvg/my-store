@@ -55,6 +55,8 @@ export function getNumberOfFormFields(formData: {}): number {
   return formFieldsArray.length;
 }
 
+export const categories = ['Men', 'Women', 'kids'];
+
 export const navOptions = [
   {
     id: 'home',

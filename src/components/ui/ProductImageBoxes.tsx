@@ -8,7 +8,7 @@ import { CircularProgressWithLabel } from './CircularProgressWithLabel';
 import { AddNewProductFormDataType } from '@/types';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';
 

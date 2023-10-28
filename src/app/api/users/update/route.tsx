@@ -3,30 +3,29 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import type { Database } from '@/lib/database.types';
+import { CustomResponseType } from '@/types';
 
-// export const dynamic = 'force-dynamic';
-
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const formData = await request.json();
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) return NextResponse.json({ status: 401, statusText: 'Unauthorized. Please sign in' });
+  if (!session) return NextResponse.json({ statusCode: 401, message: 'Unauthorized. Please sign in' });
 
   try {
     const { error } = await supabase
       .from('users')
       .update({ ...formData })
-      .eq('id', session.user.id);
+      .eq('user_id', session.user.id);
 
     if (error) {
-      return NextResponse.json({ status: error.code, statusText: error.message });
+      return NextResponse.json({ statusCode: error.code, message: error.message });
     }
 
-    return NextResponse.json({ status: 200, statusText: 'Update user successful' });
+    return NextResponse.json({ statusCode: 200, message: 'Update user successful' });
   } catch (error) {
-    return NextResponse.json({ status: 500, statusText: 'An unexpected error occurred' });
+    return NextResponse.json({ statusCode: 500, message: 'An unexpected error occurred' });
   }
 }

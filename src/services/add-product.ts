@@ -1,7 +1,7 @@
-import { CustomResponseType } from '@/types';
+import { AddProductDbType, CustomResponseType } from '@/types';
 
-export default async function signInWithPassword(formData: { email: string; password: string }) {
-  const response = await fetch('/api/auth/sign-in', {
+export default async function addProduct(formData: AddProductDbType) {
+  const response = await fetch('/api/products/add', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
