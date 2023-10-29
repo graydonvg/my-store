@@ -1,4 +1,4 @@
-import { AddProductStoreType } from '@/types';
+import { AddNewProductStoreType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -12,25 +12,22 @@ const initialState = {
     price: '',
     sale_percentage: '',
     sizes: [],
-  } as AddProductStoreType,
+  } as AddNewProductStoreType,
 };
 
-export const addProductSlice = createSlice({
-  name: 'addProduct',
+export const addNewProductSlice = createSlice({
+  name: 'addNewProduct',
   initialState,
   reducers: {
     setFormData(
       state,
       action: PayloadAction<{
-        field: keyof AddProductStoreType;
+        field: keyof AddNewProductStoreType;
         value: any;
       }>
     ) {
       const { field, value } = action.payload;
-      if (field === 'price' || field === 'sale_percentage') {
-        const number = Number(value);
-        state.formData = { ...state.formData, [field]: number };
-      } else if (field === 'sizes') {
+      if (field === 'sizes') {
         if (state.formData.sizes.includes(value)) {
           const filteredSizes = state.formData.sizes.filter((size) => size !== value);
           state.formData.sizes = filteredSizes;
@@ -55,7 +52,7 @@ export const addProductSlice = createSlice({
   },
 });
 
-const { actions, reducer } = addProductSlice;
+const { actions, reducer } = addNewProductSlice;
 
 export const { setFormData, setIsDeletingImage, resetFormData } = actions;
 

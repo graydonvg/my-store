@@ -1,6 +1,6 @@
-import { AddProductDbType, CustomResponseType } from '@/types';
+import { AddNewProductDbType, CustomResponseType } from '@/types';
 
-export default async function addProduct(formData: AddProductDbType) {
+export default async function addNewProduct(formData: AddNewProductDbType) {
   const response = await fetch('/api/products/add', {
     method: 'POST',
     headers: {

@@ -6,8 +6,8 @@ import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
-import { green } from '@mui/material/colors';
 import { Database } from '@/lib/database.types';
+import { formatCurrency } from '@/lib/utils';
 
 export default function ProductCard({ product }: { product: Database['public']['Tables']['products']['Row'] }) {
   const color = useCustomColorPalette();
@@ -15,15 +15,6 @@ export default function ProductCard({ product }: { product: Database['public']['
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale == 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
-
-  function formatCurrency(price: number) {
-    const currencyFormatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'ZAR',
-    });
-    const formattedCurrency = currencyFormatter.format(price);
-    return formattedCurrency.replace('ZAR', 'R');
-  }
 
   return (
     <Grid
@@ -134,14 +125,14 @@ export default function ProductCard({ product }: { product: Database['public']['
                   component="span"
                   variant="body1"
                   sx={{ textDecoration: 'line-through', opacity: '70%' }}>
-                  {formatCurrency(product.price as number)}
+                  {formatCurrency(product.price)}
                 </Typography>
               </Box>
             ) : (
               <Typography
                 component="span"
                 variant="h5">
-                {formatCurrency(product.price as number)}
+                {formatCurrency(product.price)}
               </Typography>
             )}
           </Box>

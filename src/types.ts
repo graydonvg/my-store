@@ -22,7 +22,7 @@ export type ProductType = Database['public']['Tables']['products']['Row'] & {
   product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'file_name' | 'image_url'>[];
 };
 
-export type AddProductStoreType = {
+export type AddNewProductStoreType = {
   category: string;
   delivery_info: string;
   description: string;
@@ -33,4 +33,7 @@ export type AddProductStoreType = {
   sizes: string[];
 };
 
-export type AddProductDbType = Omit<Omit<Database['public']['Tables']['products']['Row'], 'created_at'>, 'product_id'>;
+export type AddNewProductDbType = Omit<
+  Omit<Database['public']['Tables']['products']['Row'], 'created_at'>,
+  'product_id'
+>;

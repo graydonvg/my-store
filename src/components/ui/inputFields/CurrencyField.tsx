@@ -6,7 +6,7 @@ type NumbertFieldFieldProps = TextFieldProps & {
   styles?: {};
 };
 
-export default function NumbertField({ borderColor, styles, ...props }: NumbertFieldFieldProps) {
+export default function CurrencyField({ borderColor, styles, ...props }: NumbertFieldFieldProps) {
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -34,7 +34,8 @@ export default function NumbertField({ borderColor, styles, ...props }: NumbertF
       }}
       InputProps={{
         inputProps: {
-          min: 0,
+          pattern: '^\\d+(\\.\\d{2})?$',
+          placeholder: '0.00',
         },
       }}
       {...props}

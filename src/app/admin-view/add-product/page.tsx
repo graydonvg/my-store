@@ -4,21 +4,21 @@ import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
-import { AddProductStoreType, AddProductDbType } from '@/types';
+import { AddNewProductDbType, AddNewProductStoreType } from '@/types';
 import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
-import NumbertField from '@/components/ui/inputFields/NumberField';
+import CurrencyField from '@/components/ui/inputFields/CurrencyField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import CustomButton from '@/components/ui/buttons/CustomButton';
 import { Spinner } from '@/components/ui/progress/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetFormData, setFormData } from '@/lib/redux/addProduct/addProductSlice';
+import { resetFormData, setFormData } from '@/lib/redux/addNewProduct/addNewProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import addProduct from '@/services/add-product';
+import addNewProduct from '@/services/add-product';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -33,28 +33,26 @@ const formFields = [
   { label: 'Name', name: 'name' },
   { label: 'Description', name: 'description', multiline: true },
   { label: 'Delivery info', name: 'delivery_info', multiline: true },
-  { label: 'Price', name: 'price', type: 'number' },
+  { label: 'Price', name: 'price', type: 'currency' },
   { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale % (0 - 100)', name: 'sale_percentage', type: 'percentage' },
+  { label: 'Sale %', name: 'sale_percentage', type: 'percentage' },
 ];
 
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
-  const { formData } = useAppSelector((state) => state.addProduct);
+  const { formData } = useAppSelector((state) => state.addNewProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
   const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
   // const uploadInProgress = formData.imageData.some((data) => data.hasOwnProperty('uploadProgress'));
-
-  console.log(formData);
 
   if (!currentUser || currentUser?.is_admin === false) return <p>Not authorized</p>;
 
@@ -113,7 +111,7 @@ export default function AdminViewAddNewProduct() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setFormData({ field: name as keyof AddProductStoreType, value }));
+    dispatch(setFormData({ field: name as keyof AddNewProductStoreType, value }));
   }
 
   // async function handleClearAllFormFields() {
@@ -141,11 +139,13 @@ export default function AdminViewAddNewProduct() {
     setIsLoading(true);
 
     try {
-      const updatedFormData = formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
-      const response = await addProduct(updatedFormData as AddProductDbType);
+      const correctedFormData = formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
+      const response = await addNewProduct(correctedFormData as AddNewProductDbType);
       if (response.statusCode === 200) {
         dispatch(resetFormData());
         toast.success('Successfully added product.');
+        router.refresh();
+        router.push('/admin-view');
       } else {
         toast.error(`Failed to add product. ${response.message}.`);
       }
@@ -153,8 +153,6 @@ export default function AdminViewAddNewProduct() {
       toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsLoading(false);
-      router.refresh();
-      router.push('/admin-view');
     }
   }
 
@@ -168,7 +166,7 @@ export default function AdminViewAddNewProduct() {
         isLoading={isLoading || uploadInProgress}
       /> */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography sx={{ color: textColor }}>Available Sizes</Typography>
+        <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
           selection={formData.sizes}
@@ -187,15 +185,17 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             options={field.options ?? []}
             disabled={isLoading || isClearingAllFields}
+            required
           />
-        ) : field.type === 'number' ? (
-          <NumbertField
+        ) : field.type === 'currency' ? (
+          <CurrencyField
             key={field.name}
             label={field.label}
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
             disabled={isLoading || isClearingAllFields}
+            required
           />
         ) : field.type === 'percentage' ? (
           <PercentageField
@@ -205,6 +205,7 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
             disabled={(!isOnSale && field.name === 'sale_percentage') || isLoading || isClearingAllFields}
+            required
           />
         ) : (
           <CustomTextField
@@ -215,6 +216,7 @@ export default function AdminViewAddNewProduct() {
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
             disabled={isLoading || isClearingAllFields}
+            required
           />
         );
       })}
