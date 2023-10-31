@@ -14,17 +14,17 @@ type InputImageUploadProps = InputProps & {
 };
 
 export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
-  const formData = useAppSelector((state) => state.addNewProductFormData.formData);
-  const isDeletingImage = useAppSelector((state) => state.addNewProductFormData.isDeletingImage);
+  const { imageUploadProgress, imageData } = useAppSelector((state) => state.addNewProduct);
+  const isDeletingImage = useAppSelector((state) => state.addNewProduct.isDeletingImage);
   const [isEditMode, setIsEditMode] = useState(false);
   const color = useCustomColorPalette();
-  const containsUploadProgress = formData.imageData.some((obj) => 'uploadProgress' in obj);
+  const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   useEffect(() => {
-    if (formData.imageData.length === 0) {
+    if (imageData.length === 0) {
       setIsEditMode(false);
     }
-  }, [formData.imageData]);
+  }, [imageData]);
 
   function handleToggleEditMode() {
     setIsEditMode((previousMode) => !previousMode);
@@ -34,7 +34,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
     <>
       <ProductImageBoxes isEditMode={isEditMode} />
       <CustomButton
-        disabled={isDeletingImage || containsUploadProgress || formData.imageData.length === 0}
+        disabled={isDeletingImage || uploadInProgress || imageData.length === 0}
         onClick={() => handleToggleEditMode()}
         fullWidth={true}
         label={isEditMode ? 'done' : 'edit'}

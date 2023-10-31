@@ -27,10 +27,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: user } = await supabase.from('users').select('*');
   // const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
-  const { data: products } = await supabase.from('products').select('*');
+  // const { data: products } = await supabase.from('products').select('*');
   const userData = user ? user[0] : ({} as CurrentUserType);
-
-  console.log('products', products);
 
   return (
     <html lang="en">

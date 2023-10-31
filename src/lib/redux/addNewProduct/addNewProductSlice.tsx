@@ -1,8 +1,17 @@
-import { AddNewProductStoreType } from '@/types';
+import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type State = {
+  isDeletingImage: boolean;
+  imageUploadProgress: ImageUploadProgressType[];
+  imageData: AddNewProductImageDataType[];
+  formData: AddNewProductStoreType;
+};
+
+const initialState: State = {
   isDeletingImage: false,
+  imageUploadProgress: [],
+  imageData: [],
   formData: {
     category: '',
     delivery_info: '',
@@ -12,7 +21,7 @@ const initialState = {
     price: '',
     sale_percentage: '',
     sizes: [],
-  } as AddNewProductStoreType,
+  },
 };
 
 export const addNewProductSlice = createSlice({
@@ -23,28 +32,53 @@ export const addNewProductSlice = createSlice({
       state,
       action: PayloadAction<{
         field: keyof AddNewProductStoreType;
-        value: any;
+        value: AddNewProductStoreType[keyof AddNewProductStoreType];
       }>
     ) {
       const { field, value } = action.payload;
       if (field === 'sizes') {
-        if (state.formData.sizes.includes(value)) {
+        if (state.formData.sizes.includes(value as string)) {
           const filteredSizes = state.formData.sizes.filter((size) => size !== value);
           state.formData.sizes = filteredSizes;
         } else {
-          state.formData.sizes = [...state.formData.sizes, value];
+          state.formData.sizes = [...state.formData.sizes, value as string];
         }
       } else {
         state.formData = { ...state.formData, [field]: value };
       }
     },
-    // deleteImage(state, action: PayloadAction<{ fileName: string }>) {
-    //   state.formData.imageData = state.formData.imageData.filter(
-    //     (data) => data.fileName !== action.payload.fileName
-    //   ) as { imageUrl: string; fileName: string }[];
-    // },
+    setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
+      const existingIndex = state.imageUploadProgress.findIndex(
+        (upload) => upload.fileName === action.payload.fileName
+      );
+
+      if (existingIndex !== -1) {
+        state.imageUploadProgress[existingIndex] = action.payload;
+      } else {
+        state.imageUploadProgress.push(action.payload);
+      }
+    },
+    setImageData(state, action: PayloadAction<AddNewProductImageDataType>) {
+      const existingIndex = state.imageData.findIndex((image) => image.fileName === action.payload.fileName);
+
+      if (existingIndex !== -1) {
+        state.imageData[existingIndex] = action.payload;
+      } else {
+        state.imageData.push(action.payload);
+      }
+    },
+    deleteImage(state, action: PayloadAction<{ fileName: string }>) {
+      state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
+      state.imageUploadProgress = state.imageUploadProgress.filter(
+        (upload) => upload.fileName !== action.payload.fileName
+      );
+    },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
+    },
+    resetImageData(state) {
+      state.imageData = initialState.imageData;
+      state.imageUploadProgress = initialState.imageUploadProgress;
     },
     resetFormData(state) {
       state.formData = initialState.formData;
@@ -54,6 +88,14 @@ export const addNewProductSlice = createSlice({
 
 const { actions, reducer } = addNewProductSlice;
 
-export const { setFormData, setIsDeletingImage, resetFormData } = actions;
+export const {
+  setFormData,
+  setImageUploadProgress,
+  setImageData,
+  deleteImage,
+  setIsDeletingImage,
+  resetImageData,
+  resetFormData,
+} = actions;
 
 export const userReducer = reducer;
