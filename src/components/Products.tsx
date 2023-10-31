@@ -1,11 +1,10 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import ProductCard from './ui/ProductCard';
-import { Fragment } from 'react';
-import { Database } from '@/lib/database.types';
 import { categories } from '@/lib/utils';
+import { ProductType } from '@/types';
 
 type Props = {
-  products: Database['public']['Tables']['products']['Row'][];
+  products: ProductType[];
 };
 
 export default function Products({ products }: Props) {
@@ -33,10 +32,15 @@ export default function Products({ products }: Props) {
                 .reverse()
                 .map((product, index) => {
                   return product.category === category ? (
-                    <ProductCard
+                    <Grid
                       key={index}
-                      product={product}
-                    />
+                      item
+                      xs={6}
+                      md={4}
+                      lg={3}
+                      xl={2}>
+                      <ProductCard product={product} />
+                    </Grid>
                   ) : null;
                 })}
             </Grid>

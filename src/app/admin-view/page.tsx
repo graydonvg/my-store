@@ -7,7 +7,7 @@ type AdminViewProps = {};
 
 export default async function AdminView() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  // const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
-  const { data: products } = await supabase.from('products').select('*');
+  const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
+
   return <Products products={products ?? []} />;
 }

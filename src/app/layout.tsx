@@ -16,7 +16,8 @@ import { cookies } from 'next/headers';
 import { Database } from '@/lib/database.types';
 import { CurrentUserType } from '@/types';
 import UserStateSetter from '@/components/UserStateSetter';
-// import ProductStateSetter from '@/components/ProductStateSetter';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -26,8 +27,6 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: user } = await supabase.from('users').select('*');
-  // const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
-  // const { data: products } = await supabase.from('products').select('*');
   const userData = user ? user[0] : ({} as CurrentUserType);
 
   return (
@@ -47,7 +46,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <ModalComponent />
           <Toast />
           <UserStateSetter userData={userData} />
-          {/* <ProductStateSetter products={products!} /> */}
         </Providers>
       </body>
     </html>

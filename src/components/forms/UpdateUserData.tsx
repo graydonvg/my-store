@@ -10,19 +10,21 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import updateUser from '@/services/update-user';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
+  { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'last_name', autoComplete: 'family-name' },
 ];
 
 const defaultFormData = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
 };
 
 export default function UpdateUserData() {
+  const supabase = createClientComponentClient<Database>();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,17 +41,23 @@ export default function UpdateUserData() {
     setIsLoading(true);
     dispatch(setShowModalLoadingBar(true));
 
-    try {
-      const response = await updateUser({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-      });
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-      if (response.statusCode === 200) {
+    const { first_name, last_name } = formData;
+
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({ first_name, last_name })
+        .eq('user_id', session?.user.id ?? '');
+
+      if (error) {
+        toast.error(`Update user failed. ${error.message}.`);
+      } else {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
-      } else {
-        toast.error(`Update user failed. ${response.message}.`);
       }
     } catch (error) {
       toast.error('Update user failed. Please try again later.');

@@ -49,7 +49,7 @@ function renderSmallImageBox(
               }}
               fill
               sizes="(min-width: 600px) 78px, (min-width: 440px) 72px, calc(19.17vw - 9px)"
-              src={imageData[imageIndex].url}
+              src={imageData[imageIndex].image_url}
               alt={`Image of ${formData.name}`}
               priority
             />
@@ -107,15 +107,15 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
 
   const isAdminView = pathname.includes('admin-view');
 
-  async function handleDeleteImage(fileName: string) {
+  async function handleDeleteImage(file_name: string) {
     dispatch(setIsDeletingImage(true));
     try {
-      await deleteImageFromStorage(fileName);
+      await deleteImageFromStorage(file_name);
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
       setSelectedImageIndex(0);
-      dispatch(deleteImage({ fileName }));
+      dispatch(deleteImage({ file_name }));
       dispatch(setIsDeletingImage(false));
     }
   }
@@ -154,7 +154,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
                 style={{ objectFit: 'cover', borderRadius: '4px' }}
                 fill
                 sizes="(min-width: 460px) 398px, calc(82.86vw + 33px)"
-                src={imageData[selectedImageIndex].url}
+                src={imageData[selectedImageIndex].image_url}
                 alt={`Image of ${formData.name}`}
                 priority
               />
@@ -194,7 +194,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
               isEditMode,
               isDeletingImage,
               () => handleSelectedImage(index),
-              () => handleDeleteImage(imageData[index].fileName)
+              () => handleDeleteImage(imageData[index].file_name)
             )
           )}
         </Box>

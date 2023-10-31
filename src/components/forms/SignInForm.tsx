@@ -11,8 +11,8 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import signInWithPassword from '@/services/sing-in';
 import { useRouter } from 'next/navigation';
+import { Database } from '@/lib/database.types';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -25,7 +25,7 @@ const defaultFormData = {
 };
 
 export default function SignInForm() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,16 +43,16 @@ export default function SignInForm() {
     dispatch(setShowModalLoadingBar(true));
 
     try {
-      const response = await signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (response.statusCode === 200) {
+      if (error) {
+        toast.error(`Sign in failed. ${error.message}.`);
+      } else {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
-      } else {
-        toast.error(`Sign in failed. ${response.message}.`);
       }
     } catch (error) {
       toast.error('Sign in failed. Please try again later.');

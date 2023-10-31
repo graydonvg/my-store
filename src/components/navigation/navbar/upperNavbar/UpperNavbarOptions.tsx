@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { ModalContentType } from '@/types';
 import { useRouter } from 'next/navigation';
+import { Database } from '@/lib/database.types';
 
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
@@ -50,8 +51,6 @@ export default function UpperNavbarOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
-  const supabase = createClientComponentClient();
-  const router = useRouter();
 
   function handleToggleTheme() {
     dispatch(toggleTheme());

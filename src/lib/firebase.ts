@@ -23,17 +23,17 @@ const storage = getStorage(app, 'gs://my-shop-7cfcc.appspot.com/');
 
 export async function uploadImageToStorage(
   file: Blob | Uint8Array | ArrayBuffer,
-  fileName: string,
+  file_name: string,
   observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
-): Promise<{ url: string; fileName: string }> {
-  const imageRef = ref(storage, `product-images/${fileName}`);
+): Promise<{ image_url: string; file_name: string }> {
+  const imageRef = ref(storage, `product-images/${file_name}`);
   const uploadImage = uploadBytesResumable(imageRef, file);
 
   return await new Promise((resolve, reject) => {
     uploadImage.on('state_changed', observer, reject, async () => {
       try {
         const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
-        resolve({ url: downloadURL, fileName });
+        resolve({ image_url: downloadURL, file_name });
       } catch (error) {
         reject(error);
       }

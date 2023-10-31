@@ -24,8 +24,9 @@ import {
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import addNewProduct from '@/services/add-product';
 import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -46,6 +47,7 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
+  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addNewProduct);
@@ -59,10 +61,7 @@ export default function AdminViewAddNewProduct() {
   const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
-  const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-
-  console.log('upload', imageUploadProgress);
-  console.log('data', imageData);
+  const uploadInProgress = imageData.length < imageUploadProgress.length;
 
   if (!currentUser || currentUser?.is_admin === false) return <p>Not authorized</p>;
 
@@ -86,7 +85,7 @@ export default function AdminViewAddNewProduct() {
       uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        dispatch(setImageUploadProgress({ fileName: image.uniqueFileName, progress }));
+        dispatch(setImageUploadProgress({ file_name: image.uniqueFileName, progress }));
 
         switch (snapshot.state) {
           case 'paused':
@@ -103,8 +102,8 @@ export default function AdminViewAddNewProduct() {
 
     imageDataArray.map((result) => {
       if (result.status === 'fulfilled') {
-        const { fileName, url } = result.value;
-        return dispatch(setImageData({ fileName, url }));
+        const { file_name, image_url } = result.value;
+        return dispatch(setImageData({ file_name, image_url }));
       } else if (result.status === 'rejected') {
         return toast.error('Image upload failed.');
       }
@@ -123,7 +122,7 @@ export default function AdminViewAddNewProduct() {
   async function handleClearAllFormFields() {
     setIsClearingAllFields(true);
 
-    const imagesToDelete = imageData.map((data) => data.fileName);
+    const imagesToDelete = imageData.map((data) => data.file_name);
 
     const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
 
@@ -140,23 +139,56 @@ export default function AdminViewAddNewProduct() {
     setIsClearingAllFields(false);
   }
 
+  async function addImageData(product_id: string) {
+    try {
+      const imageDataPromises = imageData.map((image) =>
+        supabase
+          .from('product_image_data')
+          .insert([{ product_id, file_name: image.file_name, image_url: image.image_url }])
+      );
+
+      const [{ data, error }] = await Promise.all(imageDataPromises);
+
+      return { data, error };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     setIsLoading(true);
 
+    let product_id = '';
+
     try {
-      const correctedFormData = formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
-      const response = await addNewProduct(correctedFormData as AddNewProductDbType);
-      if (response.statusCode === 200) {
-        dispatch(resetFormData());
-        toast.success('Successfully added product.');
-        router.refresh();
-        router.push('/admin-view');
+      const correctedFormDataForDb =
+        formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
+
+      const { data: productData, error: productsError } = await supabase
+        .from('products')
+        .insert([correctedFormDataForDb as AddNewProductDbType])
+        .select('product_id');
+
+      if (productData) {
+        product_id = productData[0].product_id;
+        const { error } = await addImageData(product_id);
+
+        if (error) {
+          await supabase.from('products').delete().eq('product_id', product_id);
+          toast.error(`Failed to add product. ${error.message}.`);
+        } else {
+          dispatch(resetFormData());
+          dispatch(resetImageData());
+          toast.success('Successfully added product.');
+          router.refresh();
+          router.push('/admin-view');
+        }
       } else {
-        toast.error(`Failed to add product. ${response.message}.`);
+        toast.error(`Failed to add product. ${productsError.message}.`);
       }
     } catch (error) {
+      await supabase.from('products').delete().eq('product_id', product_id);
       toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsLoading(false);
@@ -244,9 +276,9 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         type="submit"
         disabled={
-          uploadInProgress || isLoading || isClearingAllFields || isOnSale
+          (uploadInProgress || isLoading || isClearingAllFields || isOnSale
             ? emptyFormFields.length > 0
-            : emptyFormFields.length > 1
+            : emptyFormFields.length > 1) || imageData.length === 0
         }
         label={isLoading ? 'loading...' : 'add product'}
         fullWidth

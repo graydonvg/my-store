@@ -9,27 +9,28 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
-import signUpNewUserWithPassword from '@/services/sign-up';
-import updateUser from '@/services/update-user';
 import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
+  { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'last_name', autoComplete: 'family-name' },
   { label: 'Email Address', name: 'email', autoComplete: 'email' },
   { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
-  { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
+  { label: 'Confirm Password', name: 'confirm_password', type: 'password', autoComplete: 'new-password' },
 ];
 
 const defaultFormData = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
-  confirmPassword: '',
+  confirm_password: '',
 };
 
 export default function SignUpForm() {
+  const supabase = createClientComponentClient<Database>();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const router = useRouter();
@@ -49,31 +50,34 @@ export default function SignUpForm() {
     setIsLoading(true);
     dispatch(setShowModalLoadingBar(true));
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirm_password) {
       setIsLoading(false);
-      toast.error('Passwords do not match.');
-      return;
+      return toast.error('Passwords do not match.');
     }
 
-    const { email, password, firstName, lastName } = formData;
+    const { email, password, first_name, last_name } = formData;
 
     try {
-      const signUpResponse = await signUpNewUserWithPassword({ email, password });
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-      if (signUpResponse.statusCode === 200) {
-        const updateResponse = await updateUser({
-          first_name: firstName,
-          last_name: lastName,
-        });
+      if (signUpData) {
+        const user_id = signUpData.user?.id ?? '';
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ first_name, last_name })
+          .eq('user_id', user_id);
 
-        if (updateResponse.statusCode === 200) {
+        if (updateError) {
+          toast.error(`Update user failed. ${updateError.message}.`);
+        } else {
           setFormData(defaultFormData);
           dispatch(setIsModalOpen(false));
-        } else {
-          toast.error(`Update user failed. ${updateResponse.message}.`);
         }
-      } else {
-        toast.error(`Sign up failed. ${signUpResponse.message}.`);
+      } else if (signUpError) {
+        toast.error(`Sign up failed. ${signUpError.message}.`);
       }
     } catch (error) {
       toast.error('Sign up failed. Please try again later.');
@@ -81,7 +85,7 @@ export default function SignUpForm() {
       dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
       router.refresh();
-      toast.info(`Welcome, ${firstName}!`);
+      toast.info(`Welcome, ${first_name}!`);
     }
   }
 
@@ -110,7 +114,7 @@ export default function SignUpForm() {
             <Grid
               item
               xs={12}
-              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
+              sm={field.name === 'first_name' || field.name === 'last_name' ? 6 : false}
               key={field.name}>
               <CustomTextField
                 required={true}

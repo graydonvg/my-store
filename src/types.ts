@@ -39,11 +39,11 @@ export type AddNewProductDbType = Omit<
 >;
 
 export type AddNewProductImageDataType = {
-  url: string;
-  fileName: string;
+  image_url: string;
+  file_name: string;
 };
 
 export type ImageUploadProgressType = {
-  fileName: string;
+  file_name: string;
   progress: number;
 };

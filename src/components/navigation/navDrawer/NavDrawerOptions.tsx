@@ -11,6 +11,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const drawerWidth = '100vw';
 
@@ -41,7 +42,7 @@ export default function NavDraweOptions() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
 
   function handleCloseDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));

@@ -49,7 +49,7 @@ export const addNewProductSlice = createSlice({
     },
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
       const existingIndex = state.imageUploadProgress.findIndex(
-        (upload) => upload.fileName === action.payload.fileName
+        (upload) => upload.file_name === action.payload.file_name
       );
 
       if (existingIndex !== -1) {
@@ -59,7 +59,7 @@ export const addNewProductSlice = createSlice({
       }
     },
     setImageData(state, action: PayloadAction<AddNewProductImageDataType>) {
-      const existingIndex = state.imageData.findIndex((image) => image.fileName === action.payload.fileName);
+      const existingIndex = state.imageData.findIndex((image) => image.file_name === action.payload.file_name);
 
       if (existingIndex !== -1) {
         state.imageData[existingIndex] = action.payload;
@@ -67,10 +67,10 @@ export const addNewProductSlice = createSlice({
         state.imageData.push(action.payload);
       }
     },
-    deleteImage(state, action: PayloadAction<{ fileName: string }>) {
-      state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
+    deleteImage(state, action: PayloadAction<{ file_name: string }>) {
+      state.imageData = state.imageData.filter((image) => image.file_name !== action.payload.file_name);
       state.imageUploadProgress = state.imageUploadProgress.filter(
-        (upload) => upload.fileName !== action.payload.fileName
+        (upload) => upload.file_name !== action.payload.file_name
       );
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
