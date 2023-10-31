@@ -2,36 +2,38 @@
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
-import ModalProgressBar from '../ui/modal/ModalProgressBar';
 import FormTitle from './FormTitle';
-import { createAuthUserWithEmailAndPassword, createUserDocument } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
+  { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'last_name', autoComplete: 'family-name' },
   { label: 'Email Address', name: 'email', autoComplete: 'email' },
   { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
-  { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
+  { label: 'Confirm Password', name: 'confirm_password', type: 'password', autoComplete: 'new-password' },
 ];
 
 const defaultFormData = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
-  confirmPassword: '',
+  confirm_password: '',
 };
 
 export default function SignUpForm() {
+  const supabase = createClientComponentClient<Database>();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -43,40 +45,51 @@ export default function SignUpForm() {
     }));
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
+    dispatch(setShowModalLoadingBar(true));
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirm_password) {
       setIsLoading(false);
-      toast.error('Passwords do not match.');
-      return;
+      return toast.error('Passwords do not match.');
     }
 
-    const { email, password } = formData;
-    const displayName = formData.firstName;
-    const userData = {
-      displayName,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email,
-      isAdmin: false,
-    };
+    const { email, password, first_name, last_name } = formData;
 
     try {
-      await createAuthUserWithEmailAndPassword(email, password);
-      await createUserDocument(userData);
-      dispatch(setCurrentUser(userData));
-      setFormData(defaultFormData);
-      dispatch(setIsModalOpen(false));
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signUpData) {
+        const user_id = signUpData.user?.id ?? '';
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ first_name, last_name })
+          .eq('user_id', user_id);
+
+        if (updateError) {
+          toast.error(`Update user failed. ${updateError.message}.`);
+        } else {
+          setFormData(defaultFormData);
+          dispatch(setIsModalOpen(false));
+        }
+      } else if (signUpError) {
+        toast.error(`Sign up failed. ${signUpError.message}.`);
+      }
     } catch (error) {
-      toast.error('Failed to create account.');
+      toast.error('Sign up failed. Please try again later.');
     } finally {
+      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      router.refresh();
+      toast.info(`Welcome, ${first_name}!`);
     }
   }
 
-  function openSignInModal() {
+  function handleOpenSignInModal() {
     dispatch(setIsModalOpen(false));
     setTimeout(() => dispatch(setModalContent('signIn')), 300);
     setTimeout(() => dispatch(setIsModalOpen(true)), 500);
@@ -88,13 +101,12 @@ export default function SignUpForm() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        gap: 3,
       }}>
-      <ModalProgressBar isLoading={isLoading} />
       <FormTitle text="Sign up" />
       <Box
         component="form"
-        onSubmit={handleSubmit}
-        sx={{ mt: 3 }}>
+        onSubmit={handleSignUp}>
         <Grid
           container
           spacing={2}>
@@ -102,7 +114,7 @@ export default function SignUpForm() {
             <Grid
               item
               xs={12}
-              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
+              sm={field.name === 'first_name' || field.name === 'last_name' ? 6 : false}
               key={field.name}>
               <CustomTextField
                 required={true}
@@ -123,11 +135,16 @@ export default function SignUpForm() {
           label="sign up"
           disabled={isLoading}
           type="submit"
-          styles={{ mt: 3, mb: 2, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
+          styles={{
+            marginTop: 3,
+            marginBottom: 3,
+            backgroundColor: color.blue.dark,
+            '&:hover': { backgroundColor: color.blue.light },
+          }}
           fullWidth={true}
         />
         <Link
-          onClick={openSignInModal}
+          onClick={handleOpenSignInModal}
           sx={{ cursor: 'pointer' }}
           component="p"
           variant="body2">

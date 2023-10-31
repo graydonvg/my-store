@@ -4,26 +4,20 @@ import { DeleteForever } from '@mui/icons-material';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { CircularProgressWithLabel } from './CircularProgressWithLabel';
-import { AddNewProductFormDataType } from '@/types';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProduct/addNewProductSlice';
 import { useState } from 'react';
-import { Spinner } from './Spinner';
-
-function getImageData(data: { uploadProgress: number; fileName: string } | { imageUrl: string; fileName: string }) {
-  if ('uploadProgress' in data) {
-    return data.uploadProgress;
-  } else if ('imageUrl' in data) {
-    return data.imageUrl;
-  }
-}
+import { Spinner } from './progress/Spinner';
+import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
+import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType } from '@/types';
 
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
   borderColor: string,
-  formData: AddNewProductFormDataType,
+  formData: AddNewProductStoreType,
+  imageData: AddNewProductImageDataType[],
+  imageUploadProgress: ImageUploadProgressType[],
   imageIndex: number,
   isAdminView: boolean,
   isEditMode: boolean,
@@ -44,10 +38,8 @@ function renderSmallImageBox(
         display: 'grid',
         placeItems: 'center',
       }}>
-      {formData.imageData[imageIndex] ? (
-        'uploadProgress' in formData.imageData[imageIndex] ? (
-          <CircularProgressWithLabel value={getImageData(formData.imageData[imageIndex]) as number} />
-        ) : (
+      {imageUploadProgress[imageIndex] ? (
+        imageData[imageIndex] ? (
           <>
             <Image
               style={{
@@ -57,7 +49,7 @@ function renderSmallImageBox(
               }}
               fill
               sizes="(min-width: 600px) 78px, (min-width: 440px) 72px, calc(19.17vw - 9px)"
-              src={getImageData(formData.imageData[imageIndex]) as string}
+              src={imageData[imageIndex].image_url}
               alt={`Image of ${formData.name}`}
               priority
             />
@@ -92,17 +84,20 @@ function renderSmallImageBox(
               </>
             ) : null}
           </>
+        ) : (
+          <CircularProgressWithLabel value={imageUploadProgress[imageIndex].progress} />
         )
       ) : null}
     </Box>
   );
 }
 
-export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean }) {
+type Props = { isEditMode: boolean };
+
+export default function ProductImageBoxes({ isEditMode }: Props) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const dispatch = useAppDispatch();
-  const formData = useAppSelector((state) => state.addNewProductFormData.formData);
-  const isDeletingImage = useAppSelector((state) => state.addNewProductFormData.isDeletingImage);
+  const { imageUploadProgress, imageData, formData, isDeletingImage } = useAppSelector((state) => state.addNewProduct);
   const pathname = usePathname();
   const color = useCustomColorPalette();
   const theme = useTheme();
@@ -112,15 +107,15 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
 
   const isAdminView = pathname.includes('admin-view');
 
-  async function handleDeleteImage(fileName: string) {
+  async function handleDeleteImage(file_name: string) {
     dispatch(setIsDeletingImage(true));
     try {
-      await deleteImageFromStorage(fileName);
+      await deleteImageFromStorage(file_name);
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
       setSelectedImageIndex(0);
-      dispatch(deleteImage({ fileName }));
+      dispatch(deleteImage({ file_name }));
       dispatch(setIsDeletingImage(false));
     }
   }
@@ -153,18 +148,18 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
             display: 'grid',
             placeItems: 'center',
           }}>
-          {formData.imageData[selectedImageIndex] ? (
-            'uploadProgress' in formData.imageData[selectedImageIndex] ? (
-              <CircularProgressWithLabel value={getImageData(formData.imageData[selectedImageIndex]) as number} />
-            ) : (
+          {imageUploadProgress[selectedImageIndex] ? (
+            imageData[selectedImageIndex] ? (
               <Image
                 style={{ objectFit: 'cover', borderRadius: '4px' }}
                 fill
                 sizes="(min-width: 460px) 398px, calc(82.86vw + 33px)"
-                src={getImageData(formData.imageData[selectedImageIndex]) as string}
+                src={imageData[selectedImageIndex].image_url}
                 alt={`Image of ${formData.name}`}
                 priority
               />
+            ) : (
+              <CircularProgressWithLabel value={imageUploadProgress[selectedImageIndex].progress} />
             )
           ) : (
             <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -192,12 +187,14 @@ export default function ProductImageBoxes({ isEditMode }: { isEditMode: boolean 
               color,
               borderColor,
               formData,
+              imageData,
+              imageUploadProgress,
               index,
               isAdminView,
               isEditMode,
               isDeletingImage,
               () => handleSelectedImage(index),
-              () => handleDeleteImage(formData.imageData[index].fileName)
+              () => handleDeleteImage(imageData[index].file_name)
             )
           )}
         </Box>

@@ -1,46 +1,48 @@
-'use client';
-
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import ProductCard from './ui/ProductCard';
-import { ProductDataType } from '@/types';
-import { Fragment } from 'react';
+import { categories } from '@/lib/utils';
+import { ProductType } from '@/types';
 
-type ProductsProps = {
-  categoriesAndProducts: {
-    title: string;
-    products: ProductDataType[];
-  }[];
+type Props = {
+  products: ProductType[];
 };
 
-export default function Products({ categoriesAndProducts }: ProductsProps) {
+export default function Products({ products }: Props) {
   return (
     <Grid
       container
       spacing={4}>
-      {categoriesAndProducts?.map((category) => {
+      {categories?.map((category) => {
         return (
           <Grid
             xs={12}
             item
-            key={category.title}>
+            key={category}>
             <Typography
               sx={{ textAlign: 'center', paddingBottom: 2 }}
               component="h2"
               variant="h5">
-              {category.title}
+              {category}
             </Typography>
             <Grid
               container
               spacing={1}>
-              {category.products
+              {products
                 .slice()
                 .reverse()
-                .map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    product={product}
-                  />
-                ))}
+                .map((product, index) => {
+                  return product.category === category ? (
+                    <Grid
+                      key={index}
+                      item
+                      xs={6}
+                      md={4}
+                      lg={3}
+                      xl={2}>
+                      <ProductCard product={product} />
+                    </Grid>
+                  ) : null;
+                })}
             </Grid>
           </Grid>
         );

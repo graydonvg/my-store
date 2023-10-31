@@ -1,9 +1,11 @@
 import Products from '@/components/Products';
-import { getProductsFromDatabase } from '@/lib/firebase';
-import { Typography } from '@mui/material';
+import { Database } from '@/lib/database.types';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export default async function Home() {
-  const categoriesAndProducts = await getProductsFromDatabase();
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
 
   return (
     <>
@@ -13,7 +15,7 @@ export default async function Home() {
         sx={{ textAlign: 'center', padding: 4 }}>
         My E-commerce Website
       </Typography> */}
-      <Products categoriesAndProducts={categoriesAndProducts} />
+      <Products products={products ?? []} />
     </>
   );
 }

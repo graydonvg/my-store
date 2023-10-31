@@ -1,26 +1,20 @@
-// import { getProductsFromDatabase } from '@/lib/firebase';
-// import { ProductDataType } from '@/types';
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType, ProductType } from '@/types';
+// import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 // export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+//   const supabase = createClientComponentClient();
 //   try {
-//     const productsArray = await getProductsFromDatabase();
-//     console.log(productsArray);
-
-//     return productsArray;
+//     const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
+//     return products;
 //   } catch (error) {
-//     return [] as ProductDataType[];
+//     // console.log('Error fetching products.', error);
+//     return [] as ProductType[];
 //   }
 // });
 
-// export type ProductsState = {
-//   products: ProductDataType[];
-//   isLoading: boolean;
-// };
-
-// export const initialState: ProductsState = {
-//   products: [],
-//   isLoading: false,
+// const initialState = {
+// 	isLoading: false
 // };
 
 // export const productsSlice = createSlice({
@@ -28,19 +22,21 @@
 //   initialState,
 //   reducers: {},
 //   extraReducers: (builder) => {
-//     builder.addCase(fetchProducts.pending, (state) => {
+//     builder.addCase(fetchCategories.pending, (state) => {
 //       state.isLoading = true;
 //     });
-//     builder.addCase(fetchProducts.fulfilled, (state, action) => {
+//     builder.addCase(fetchCategories.fulfilled, (state, action) => {
 //       state.isLoading = false;
-//       state.products = action.payload;
+//       state.categories = action.payload;
 //     });
-//     builder.addCase(fetchProducts.rejected, (state) => {
+//     builder.addCase(fetchCategories.rejected, (state) => {
 //       state.isLoading = false;
 //     });
 //   },
 // });
 
-// const { reducer } = productsSlice;
+// const { actions, reducer } = productsSlice;
 
-// export const productsReducer = reducer;
+// export const { setFormData, setImageUploadProgress } = actions;
+
+// export const userReducer = reducer;

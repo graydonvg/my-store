@@ -3,22 +3,30 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import { addProductToDatabase, deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
-import { generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
-import { AddNewProductFormDataType } from '@/types';
+import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
+import { AddNewProductDbType, AddNewProductStoreType } from '@/types';
 import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
-import NumbertField from '@/components/ui/inputFields/NumberField';
+import CurrencyField from '@/components/ui/inputFields/CurrencyField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import CustomButton from '@/components/ui/buttons/CustomButton';
-import { Spinner } from '@/components/ui/Spinner';
+import { Spinner } from '@/components/ui/progress/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetFormData, setFormData } from '@/lib/redux/addNewProductFormData/addNewProductFormDataSlice';
+import {
+  resetFormData,
+  resetImageData,
+  setFormData,
+  setImageData,
+  setImageUploadProgress,
+} from '@/lib/redux/addNewProduct/addNewProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/database.types';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -29,32 +37,33 @@ const toggleButtonOptions = [
 ];
 
 const formFields = [
-  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
+  { label: 'Category', name: 'category', type: 'select', options: categories },
   { label: 'Name', name: 'name' },
   { label: 'Description', name: 'description', multiline: true },
-  { label: 'Delivery info', name: 'deliveryInfo', multiline: true },
-  { label: 'Price', name: 'price', type: 'number' },
-  { label: 'On sale', name: 'onSale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale % (0 - 100)', name: 'salePercentage', type: 'percentage' },
+  { label: 'Delivery info', name: 'delivery_info', multiline: true },
+  { label: 'Price', name: 'price', type: 'currency' },
+  { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
+  { label: 'Sale %', name: 'sale_percentage', type: 'percentage' },
 ];
 
 export default function AdminViewAddNewProduct() {
+  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
-  const { formData } = useAppSelector((state) => state.addNewProductFormData);
+  const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addNewProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
-  const isOnSale = formData['onSale'] === 'Yes';
+  const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
+  const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
-  const uploadInProgress = formData.imageData.some((data) => data.hasOwnProperty('uploadProgress'));
+  const uploadInProgress = imageData.length < imageUploadProgress.length;
 
-  if (!currentUser || currentUser?.isAdmin === false) return <p>Not authorized</p>;
+  if (!currentUser || currentUser?.is_admin === false) return <p>Not authorized</p>;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -76,12 +85,7 @@ export default function AdminViewAddNewProduct() {
       uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        dispatch(
-          setFormData({
-            field: 'imageData',
-            value: { uploadProgress: progress, fileName: image.uniqueFileName },
-          })
-        );
+        dispatch(setImageUploadProgress({ file_name: image.uniqueFileName, progress }));
 
         switch (snapshot.state) {
           case 'paused':
@@ -98,7 +102,8 @@ export default function AdminViewAddNewProduct() {
 
     imageDataArray.map((result) => {
       if (result.status === 'fulfilled') {
-        return dispatch(setFormData({ field: 'imageData', value: result.value }));
+        const { file_name, image_url } = result.value;
+        return dispatch(setImageData({ file_name, image_url }));
       } else if (result.status === 'rejected') {
         return toast.error('Image upload failed.');
       }
@@ -106,24 +111,18 @@ export default function AdminViewAddNewProduct() {
   }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    if (formData.sizes.includes(selectedSize)) {
-      const filteredSizes = formData.sizes.filter((size) => size !== selectedSize);
-      dispatch(setFormData({ field: 'sizes', value: filteredSizes }));
-    } else {
-      dispatch(setFormData({ field: 'sizes', value: [...formData.sizes, selectedSize] }));
-    }
+    dispatch(setFormData({ field: 'sizes', value: selectedSize }));
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-
-    dispatch(setFormData({ field: name as keyof AddNewProductFormDataType, value }));
+    dispatch(setFormData({ field: name as keyof AddNewProductStoreType, value }));
   }
 
   async function handleClearAllFormFields() {
     setIsClearingAllFields(true);
 
-    const imagesToDelete = formData.imageData.map((data) => data.fileName);
+    const imagesToDelete = imageData.map((data) => data.file_name);
 
     const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
 
@@ -136,40 +135,77 @@ export default function AdminViewAddNewProduct() {
     }
 
     dispatch(resetFormData());
+    dispatch(resetImageData());
     setIsClearingAllFields(false);
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function addImageData(product_id: string) {
+    try {
+      const imageDataPromises = imageData.map((image) =>
+        supabase
+          .from('product_image_data')
+          .insert([{ product_id, file_name: image.file_name, image_url: image.image_url }])
+      );
 
+      const [{ data, error }] = await Promise.all(imageDataPromises);
+
+      return { data, error };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setIsLoading(true);
 
+    let product_id = '';
+
     try {
-      const response = await addProductToDatabase(formData);
-      if (response === 'success') {
-        dispatch(resetFormData());
-        toast.success('Successfully added product.');
+      const correctedFormDataForDb =
+        formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
+
+      const { data: productData, error: productsError } = await supabase
+        .from('products')
+        .insert([correctedFormDataForDb as AddNewProductDbType])
+        .select('product_id');
+
+      if (productData) {
+        product_id = productData[0].product_id;
+        const { error } = await addImageData(product_id);
+
+        if (error) {
+          await supabase.from('products').delete().eq('product_id', product_id);
+          toast.error(`Failed to add product. ${error.message}.`);
+        } else {
+          dispatch(resetFormData());
+          dispatch(resetImageData());
+          toast.success('Successfully added product.');
+          router.refresh();
+          router.push('/admin-view');
+        }
+      } else {
+        toast.error(`Failed to add product. ${productsError.message}.`);
       }
     } catch (error) {
-      toast.error('Failed to add product.');
+      await supabase.from('products').delete().eq('product_id', product_id);
+      toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsLoading(false);
-      router.refresh();
-      router.push('/admin-view');
     }
   }
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <InputImageUpload
         onChange={handleImageUpload}
         isLoading={isLoading || uploadInProgress}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography sx={{ color: textColor }}>Available Sizes</Typography>
+        <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
           selection={formData.sizes}
@@ -188,15 +224,17 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             options={field.options ?? []}
             disabled={isLoading || isClearingAllFields}
+            required
           />
-        ) : field.type === 'number' ? (
-          <NumbertField
+        ) : field.type === 'currency' ? (
+          <CurrencyField
             key={field.name}
             label={field.label}
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
             disabled={isLoading || isClearingAllFields}
+            required
           />
         ) : field.type === 'percentage' ? (
           <PercentageField
@@ -205,7 +243,8 @@ export default function AdminViewAddNewProduct() {
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
-            disabled={(!isOnSale && field.name === 'salePercentage') || isLoading || isClearingAllFields}
+            disabled={(!isOnSale && field.name === 'sale_percentage') || isLoading || isClearingAllFields}
+            required
           />
         ) : (
           <CustomTextField
@@ -216,13 +255,14 @@ export default function AdminViewAddNewProduct() {
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
             disabled={isLoading || isClearingAllFields}
+            required
           />
         );
       })}
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={isClearingAllFields || emptyFormFields.length === numberOfFormFields}
+        disabled={isClearingAllFields || (emptyFormFields.length === numberOfFormFields && imageData.length === 0)}
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
@@ -236,9 +276,9 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         type="submit"
         disabled={
-          uploadInProgress || isLoading || isClearingAllFields || isOnSale
+          (uploadInProgress || isLoading || isClearingAllFields || isOnSale
             ? emptyFormFields.length > 0
-            : emptyFormFields.length > 1
+            : emptyFormFields.length > 1) || imageData.length === 0
         }
         label={isLoading ? 'loading...' : 'add product'}
         fullWidth

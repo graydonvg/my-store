@@ -6,6 +6,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function UpperNavbar() {
   const color = useCustomColorPalette();
+
   return (
     <Box
       id="upper-nav"

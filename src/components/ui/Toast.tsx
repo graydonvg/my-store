@@ -9,7 +9,7 @@ export default function Toast() {
       position="bottom-left"
       autoClose={4000}
       hideProgressBar={false}
-      newestOnTop={false}
+      newestOnTop={true}
       closeOnClick
       pauseOnFocusLoss
       draggable

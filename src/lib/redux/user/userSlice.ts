@@ -1,5 +1,9 @@
-import { CurrentUserType, UserState } from '@/types';
+import { CurrentUserType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
+export type UserState = {
+  currentUser: CurrentUserType | null;
+};
 
 const initialState: UserState = {
   currentUser: null,
