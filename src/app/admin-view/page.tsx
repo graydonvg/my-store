@@ -1,11 +1,17 @@
 import Products from '@/components/Products';
-import serverClient from '@/lib/supabase-server';
-
-type AdminViewProps = {};
+import RevalidateButton from '@/components/RevalidateButton';
+import { Box } from '@mui/material';
 
 export default async function AdminView() {
-  const supabase = await serverClient();
-  const { data: products } = await supabase.from('products').select('*, product_image_data(file_name, image_url)');
+  const response = await fetch('http://localhost:3000/api/products/get', {
+    cache: 'force-cache',
+  });
+  const products = await response.json();
 
-  return <Products products={products ?? []} />;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <RevalidateButton />
+      <Products products={products ?? []} />;
+    </Box>
+  );
 }

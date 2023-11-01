@@ -180,7 +180,6 @@ export default function AdminViewAddNewProduct() {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully added product.');
-          router.refresh();
           router.push('/admin-view');
         }
       } else {
