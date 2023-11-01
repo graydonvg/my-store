@@ -10,8 +10,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/lib/database.types';
+import browserClient from '@/lib/supabase-browser';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -30,7 +29,7 @@ const defaultFormData = {
 };
 
 export default function SignUpForm() {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = browserClient();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const router = useRouter();

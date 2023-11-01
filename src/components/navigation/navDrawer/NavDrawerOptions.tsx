@@ -10,8 +10,7 @@ import { navOptions, adminNavOptions } from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/lib/database.types';
+import browserClient from '@/lib/supabase-browser';
 
 const drawerWidth = '100vw';
 
@@ -33,6 +32,7 @@ function renderNavOptions(
 }
 
 export default function NavDraweOptions() {
+  const supabase = browserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -42,7 +42,6 @@ export default function NavDraweOptions() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
 
   function handleCloseDrawer() {
     dispatch(setIsDrawerOpen({ left: false }));

@@ -11,9 +11,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast } from 'react-toastify';
-import { Database } from '@/lib/database.types';
+import browserClient from '@/lib/supabase-browser';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -34,8 +33,8 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
 }
 
 export default function AccountMenu() {
+  const supabase = browserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
-  const supabase = createClientComponentClient<Database>();
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const color = useCustomColorPalette();

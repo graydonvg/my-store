@@ -10,9 +10,8 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { Database } from '@/lib/database.types';
+import browserClient from '@/lib/supabase-browser';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -25,7 +24,7 @@ const defaultFormData = {
 };
 
 export default function SignInForm() {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = browserClient();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const [isLoading, setIsLoading] = useState<boolean>(false);

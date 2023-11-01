@@ -1,6 +1,5 @@
 // import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType, ProductType } from '@/types';
 // import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 // export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
 //   const supabase = createClientComponentClient();

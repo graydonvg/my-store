@@ -11,12 +11,8 @@ import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
 import { setDrawerContent, setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import { Menu } from '@mui/icons-material';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { toast } from 'react-toastify';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { ModalContentType } from '@/types';
-import { useRouter } from 'next/navigation';
-import { Database } from '@/lib/database.types';
 
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (

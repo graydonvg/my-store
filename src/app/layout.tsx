@@ -11,13 +11,9 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { Database } from '@/lib/database.types';
 import { CurrentUserType } from '@/types';
 import UserStateSetter from '@/components/UserStateSetter';
-
-export const dynamic = 'force-dynamic';
+import serverClient from '@/lib/supabase-server';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -25,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = await serverClient();
   const { data: user } = await supabase.from('users').select('*');
   const userData = user ? user[0] : ({} as CurrentUserType);
 

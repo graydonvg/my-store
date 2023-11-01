@@ -25,8 +25,7 @@ import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/lib/database.types';
+import browserClient from '@/lib/supabase-browser';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -47,7 +46,7 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = browserClient();
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addNewProduct);
