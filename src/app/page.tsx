@@ -4,6 +4,8 @@ import { Typography } from '@mui/material';
 
 export default async function Home() {
   const url = getURL('/api/products/get');
+  console.log(url);
+
   const response = await fetch(url, {
     cache: 'force-cache',
   });
