@@ -3,6 +3,51 @@ import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+export const categories = ['Men', 'Women', 'kids'];
+
+export const navOptions = [
+  {
+    id: 'home',
+    label: 'Home',
+    path: '/',
+  },
+  {
+    id: 'listing',
+    label: 'All Products',
+    path: '/product/listing/all-products',
+  },
+  {
+    id: 'listingMen',
+    label: 'Men',
+    path: '/product/listing/men',
+  },
+  {
+    id: 'listingWomen',
+    label: 'Women',
+    path: '/product/listing/women',
+  },
+  {
+    id: 'listingKids',
+    label: 'kids',
+    path: '/product/listing/kids',
+  },
+];
+
+export const adminNavOptions = [
+  {
+    id: 'adminListing',
+    label: 'Manage All Products',
+    path: '/admin-view/all-products',
+  },
+  {
+    id: 'adminNewProduct',
+    label: 'Add New Product',
+    path: '/admin-view/add-product',
+  },
+];
+
+export type NavOptionsType = (typeof navOptions)[0];
+
 export function ElevationScroll({ children }: { children: ReactElement<any, string | JSXElementConstructor<any>> }) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -64,47 +109,12 @@ export function formatCurrency(price: number) {
   return formattedCurrency.replace('ZAR', 'R');
 }
 
-export const categories = ['Men', 'Women', 'kids'];
-
-export const navOptions = [
-  {
-    id: 'home',
-    label: 'Home',
-    path: '/',
-  },
-  {
-    id: 'listing',
-    label: 'All Products',
-    path: '/product/listing/all-products',
-  },
-  {
-    id: 'listingMen',
-    label: 'Men',
-    path: '/product/listing/men',
-  },
-  {
-    id: 'listingWomen',
-    label: 'Women',
-    path: '/product/listing/women',
-  },
-  {
-    id: 'listingKids',
-    label: 'kids',
-    path: '/product/listing/kids',
-  },
-];
-
-export const adminNavOptions = [
-  {
-    id: 'adminListing',
-    label: 'Manage All Products',
-    path: '/admin-view/all-products',
-  },
-  {
-    id: 'adminNewProduct',
-    label: 'Add New Product',
-    path: '/admin-view/add-product',
-  },
-];
-
-export type NavOptionsType = (typeof navOptions)[0];
+export default function getURL(path: string) {
+  const IS_SERVER = typeof window === 'undefined';
+  const siteUrl =
+    process.env.NODE_ENV === 'development'
+      ? process.env.NEXT_PUBLIC_SITE_URL_DEVELOPMENT
+      : process.env.NEXT_PUBLIC_SITE_URL;
+  const baseURL = IS_SERVER ? siteUrl : window.location.origin;
+  return new URL(path, baseURL).toString();
+}

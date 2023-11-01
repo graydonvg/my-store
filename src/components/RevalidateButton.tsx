@@ -4,6 +4,7 @@ import CustomButton from '@/components/ui/buttons/CustomButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import getURL from '@/lib/utils';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +13,9 @@ export default function RevalidateButton() {
   async function handleRevalidate() {
     setIsLoading(true);
     try {
+      const url = getURL('/api/revalidate');
       const response = await fetch(
-        `${location.origin}/api/revalidate?path=/&secret=${process.env.NEXT_PUBLIC_ON_DEMAND_REVALIDATION_SECRET_TOKEN}`
+        `${url}?path=/&secret=${process.env.NEXT_PUBLIC_ON_DEMAND_REVALIDATION_SECRET_TOKEN}`
       );
 
       const data = await response.json();
