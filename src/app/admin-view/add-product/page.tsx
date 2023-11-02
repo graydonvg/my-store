@@ -23,7 +23,7 @@ import {
 } from '@/lib/redux/addNewProduct/addNewProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
 import browserClient from '@/lib/supabase-browser';
 
@@ -62,7 +62,7 @@ export default function AdminViewAddNewProduct() {
   const numberOfFormFields = getNumberOfFormFields(formData);
   const uploadInProgress = imageData.length < imageUploadProgress.length;
 
-  if (!currentUser || currentUser?.is_admin === false) return <p>Not authorized</p>;
+  if (!currentUser || currentUser?.is_admin === false) notFound();
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -140,13 +140,10 @@ export default function AdminViewAddNewProduct() {
 
   async function addImageData(product_id: string) {
     try {
-      const imageDataPromises = imageData.map((image) =>
-        supabase
-          .from('product_image_data')
-          .insert([{ product_id, file_name: image.file_name, image_url: image.image_url }])
-      );
-
-      const [{ data, error }] = await Promise.all(imageDataPromises);
+      const dataToInsert = imageData.map((data) => {
+        return { ...data, product_id };
+      });
+      const { data, error } = await supabase.from('product_image_data').insert(dataToInsert);
 
       return { data, error };
     } catch (error) {
@@ -161,12 +158,9 @@ export default function AdminViewAddNewProduct() {
     let product_id = '';
 
     try {
-      const correctedFormDataForDb =
-        formData.sale_percentage === '' ? { ...formData, sale_percentage: null } : formData;
-
       const { data: productData, error: productsError } = await supabase
         .from('products')
-        .insert([correctedFormDataForDb as AddNewProductDbType])
+        .insert([formData as AddNewProductDbType])
         .select('product_id');
 
       if (productData) {
@@ -264,12 +258,7 @@ export default function AdminViewAddNewProduct() {
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
-        styles={{
-          backgroundColor: color.red.dark,
-          '&:hover': {
-            backgroundColor: color.red.light,
-          },
-        }}
+        backgroundColor="red"
       />
       <CustomButton
         type="submit"
@@ -281,10 +270,7 @@ export default function AdminViewAddNewProduct() {
         label={isLoading ? 'loading...' : 'add product'}
         fullWidth
         startIcon={isLoading ? <Spinner size={20} /> : <Add />}
-        styles={{
-          backgroundColor: color.blue.dark,
-          '&:hover': { backgroundColor: color.blue.light },
-        }}
+        backgroundColor="blue"
       />
     </Box>
   );

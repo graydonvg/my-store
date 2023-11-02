@@ -40,22 +40,29 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 color: labelColor,
                 border: `1px solid ${borderColor} !important`,
                 borderRadius: '4px !important',
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: labelColor,
-                  border: `1px solid ${borderColorHover} !important`,
+                '@media (hover: hover)': {
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    color: labelColor,
+                    border: `1px solid ${borderColorHover} !important`,
+                  },
                 },
               },
               '&.MuiToggleButton-root.Mui-selected': {
                 color: color.grey.light,
-                backgroundColor: color.blue.light,
                 borderColor: `${selectedBorderColor} !important`,
+                backgroundColor: color.blue.light,
                 '&:hover': {
-                  color: color.grey.light,
                   backgroundColor: color.blue.light,
-                  border: `1px solid ${selectedBorderColor} !important`,
-                  filter: 'brightness(1.1)',
-                  transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                },
+                '@media (hover: hover)': {
+                  '&:hover': {
+                    color: color.grey.light,
+                    backgroundColor: color.blue.light,
+                    border: `1px solid ${selectedBorderColor} !important`,
+                    filter: 'brightness(1.1)',
+                    transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                  },
                 },
               },
             }}

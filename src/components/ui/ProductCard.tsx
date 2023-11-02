@@ -149,22 +149,12 @@ export default function ProductCard({ product }: Props) {
               fullWidth
               label="delete"
               startIcon={<DeleteForever />}
-              styles={{
-                backgroundColor: color.red.dark,
-                '&:hover': {
-                  backgroundColor: color.red.light,
-                },
-              }}
+              backgroundColor="red"
             />
             <CustomButton
               fullWidth
               label="update"
-              styles={{
-                backgroundColor: color.blue.dark,
-                '&:hover': {
-                  backgroundColor: color.blue.light,
-                },
-              }}
+              backgroundColor="blue"
             />
           </Box>
         ) : null}

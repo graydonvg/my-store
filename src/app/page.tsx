@@ -1,16 +1,9 @@
 import Products from '@/components/Products';
-import getURL from '@/lib/utils';
+import getProducts from '@/services/get-products';
 import { Typography } from '@mui/material';
 
 export default async function Home() {
-  const url = getURL('/api/products/get');
-  console.log(url);
-
-  const response = await fetch(url, {
-    cache: 'force-cache',
-  });
-
-  const products = await response.json();
+  const products = await getProducts();
 
   return (
     <>

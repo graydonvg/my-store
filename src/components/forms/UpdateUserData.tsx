@@ -103,8 +103,9 @@ export default function UpdateUserData() {
           label="submit"
           disabled={isLoading}
           type="submit"
-          styles={{ marginTop: 3, backgroundColor: color.blue.dark, '&:hover': { backgroundColor: color.blue.light } }}
+          styles={{ marginTop: 3 }}
           fullWidth={true}
+          backgroundColor="blue"
         />
       </Box>
     </Box>

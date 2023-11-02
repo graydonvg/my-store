@@ -128,10 +128,9 @@ export default function SignInForm() {
           styles={{
             marginTop: 3,
             marginBottom: 2,
-            backgroundColor: color.blue.dark,
-            '&:hover': { backgroundColor: color.blue.light },
           }}
           fullWidth={true}
+          backgroundColor="blue"
         />
         <Divider>
           <Typography
@@ -148,11 +147,10 @@ export default function SignInForm() {
           styles={{
             marginTop: 2,
             marginBottom: 3,
-            backgroundColor: color.blue.dark,
-            '&:hover': { backgroundColor: color.blue.light },
           }}
           fullWidth={true}
           startIcon={<GoogleIcon />}
+          backgroundColor="blue"
         />
         <Link
           onClick={handleOpenSignUpModal}

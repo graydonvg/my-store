@@ -1,0 +1,11 @@
+import getURL from '@/lib/utils';
+
+export default async function getProducts() {
+  const url = getURL('/api/products/get');
+  const response = await fetch(url, {
+    cache: 'force-cache',
+  });
+  const products = await response.json();
+
+  return products;
+}

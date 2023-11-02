@@ -44,6 +44,9 @@ export const addNewProductSlice = createSlice({
           state.formData.sizes = [...state.formData.sizes, value as string];
         }
       } else {
+        if (field === 'on_sale' && value === 'No') {
+          state.formData = { ...state.formData, sale_percentage: 0 };
+        }
         state.formData = { ...state.formData, [field]: value };
       }
     },

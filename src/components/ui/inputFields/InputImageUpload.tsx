@@ -42,8 +42,13 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
           backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
           '&:hover': {
             backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
-            filter: 'brightness(1.2)',
-            transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          },
+          '@media (hover: hover)': {
+            '&:hover': {
+              backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
+              filter: 'brightness(1.2)',
+              transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+            },
           },
         }}
         startIcon={
@@ -63,10 +68,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
       />
       <CustomButton
         disabled={isLoading}
-        styles={{
-          backgroundColor: color.blue.dark,
-          '&:hover': { backgroundColor: color.blue.light },
-        }}
+        backgroundColor="blue"
         label={
           <>
             {isLoading ? 'uploading...' : 'upload images'}

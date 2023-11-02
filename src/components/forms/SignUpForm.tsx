@@ -74,6 +74,8 @@ export default function SignUpForm() {
         } else {
           setFormData(defaultFormData);
           dispatch(setIsModalOpen(false));
+          router.refresh();
+          toast.info(`Welcome, ${first_name}!`);
         }
       } else if (signUpError) {
         toast.error(`Sign up failed. ${signUpError.message}.`);
@@ -83,8 +85,6 @@ export default function SignUpForm() {
     } finally {
       dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
-      router.refresh();
-      toast.info(`Welcome, ${first_name}!`);
     }
   }
 
@@ -125,7 +125,7 @@ export default function SignUpForm() {
                 autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
-                autoFocus={field.name === 'firstName'}
+                autoFocus={field.name === 'first_name'}
               />
             </Grid>
           ))}
@@ -137,10 +137,9 @@ export default function SignUpForm() {
           styles={{
             marginTop: 3,
             marginBottom: 3,
-            backgroundColor: color.blue.dark,
-            '&:hover': { backgroundColor: color.blue.light },
           }}
           fullWidth={true}
+          backgroundColor="blue"
         />
         <Link
           onClick={handleOpenSignInModal}

@@ -5,9 +5,12 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import getURL from '@/lib/utils';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { Spinner } from './ui/progress/Spinner';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
+  const color = useCustomColorPalette();
   const router = useRouter();
 
   async function handleRevalidate() {
@@ -38,13 +41,9 @@ export default function RevalidateButton() {
       disabled={isLoading}
       onClick={handleRevalidate}
       fullWidth
-      label="revalidate"
-      styles={{
-        backgroundColor: 'custom.blue.dark',
-        '&:hover': {
-          backgroundColor: 'custom.blue.light',
-        },
-      }}
+      label={isLoading ? 'revalidating...' : 'revalidate'}
+      startIcon={isLoading ? <Spinner size={20} /> : null}
+      backgroundColor="blue"
     />
   );
 }
