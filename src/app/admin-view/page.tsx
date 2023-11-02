@@ -1,7 +1,7 @@
 import Products from '@/components/Products';
 import RevalidateButton from '@/components/RevalidateButton';
 import serverClient from '@/lib/supabase-server';
-import getProducts from '@/services/get-products';
+import getAllProducts from '@/services/get-products';
 import { Box } from '@mui/material';
 import { notFound } from 'next/navigation';
 
@@ -14,12 +14,12 @@ export default async function AdminView() {
 
   if (!session || !user || user[0].is_admin === false) notFound();
 
-  const products = await getProducts();
+  const products = await getAllProducts();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <RevalidateButton />
-      <Products products={products ?? []} />
+      <Products products={products} />
     </Box>
   );
 }

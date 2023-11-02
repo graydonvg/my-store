@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import getURL from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { Spinner } from './ui/progress/Spinner';
+import revalidate from '@/services/revalidate';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,12 +17,7 @@ export default function RevalidateButton() {
   async function handleRevalidate() {
     setIsLoading(true);
     try {
-      const url = getURL('/api/revalidate');
-      const response = await fetch(
-        `${url}?path=/&secret=${process.env.NEXT_PUBLIC_ON_DEMAND_REVALIDATION_SECRET_TOKEN}`
-      );
-
-      const data = await response.json();
+      const data = await revalidate('/api/revalidate');
 
       if (data.success === true) {
         toast.success(data.message);

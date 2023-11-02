@@ -8,6 +8,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
 import { ProductType } from '@/types';
+import Link from 'next/link';
 
 type Props = {
   product: ProductType;
@@ -151,11 +152,13 @@ export default function ProductCard({ product }: Props) {
               startIcon={<DeleteForever />}
               backgroundColor="red"
             />
-            <CustomButton
-              fullWidth
-              label="update"
-              backgroundColor="blue"
-            />
+            <Link href={`/admin-view/update-product/${product.product_id}`}>
+              <CustomButton
+                fullWidth
+                label="update"
+                backgroundColor="blue"
+              />
+            </Link>
           </Box>
         ) : null}
       </Box>

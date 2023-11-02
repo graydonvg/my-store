@@ -7,7 +7,6 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import browserClient from '@/lib/supabase-browser';
@@ -31,7 +30,6 @@ const defaultFormData = {
 export default function SignUpForm() {
   const supabase = browserClient();
   const dispatch = useAppDispatch();
-  const color = useCustomColorPalette();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
