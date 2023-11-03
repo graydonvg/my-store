@@ -4,7 +4,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
-import { AddProductDbType, AddProductStoreType } from '@/types';
+import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
 import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -26,6 +26,10 @@ import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { uploadImageToStorage } from '@/lib/firebase';
 import browserClient from '@/lib/supabase-browser';
+import addProduct from '@/services/add-product';
+import addProductImageData from '@/services/add-product-image-data';
+import deleteProduct from '@/services/delete-product';
+import updateProduct from '@/services/update-product';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -46,7 +50,6 @@ const formFields = [
 ];
 
 export default function AdminViewAddNewProduct() {
-  const supabase = browserClient();
   const router = useRouter();
   const { formData, imageData, imageUploadProgress, productToUpdateId } = useAppSelector((state) => state.addProduct);
   const dispatch = useAppDispatch();
@@ -135,14 +138,14 @@ export default function AdminViewAddNewProduct() {
     setIsClearingAllFields(false);
   }
 
-  async function addImageData(product_id: string) {
+  async function handleAddImageData(product_id: string) {
     try {
       const dataToInsert = imageData.map((data) => {
         return { ...data, product_id };
       });
-      const { data, error } = await supabase.from('product_image_data').insert(dataToInsert);
+      const { success, message } = await addProductImageData(dataToInsert);
 
-      return { data, error };
+      return { success, message };
     } catch (error) {
       throw error;
     }
@@ -155,39 +158,72 @@ export default function AdminViewAddNewProduct() {
     let product_id = '';
 
     try {
-      const { data: productData, error: productsError } = await supabase
-        .from('products')
-        .insert([formData as AddProductDbType])
-        .select('product_id');
+      const {
+        success: addProductSuccess,
+        message: addProductMessage,
+        data: productData,
+      } = await addProduct(formData as AddProductDbType);
 
-      if (productData) {
-        product_id = productData[0].product_id;
-        const { error } = await addImageData(product_id);
+      if (addProductSuccess === true && productData) {
+        product_id = productData.product_id;
 
-        if (error) {
-          await supabase.from('products').delete().eq('product_id', product_id);
-          toast.error(`Failed to add product. ${error.message}.`);
-        } else {
+        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+          productData.product_id
+        );
+
+        if (addImageDataSuccess === true) {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully added product.');
           router.push('/admin-view');
+        } else {
+          const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+          if (deleteProductSuccess === false) {
+            toast.error(deleteProductMessage);
+          }
+          toast.error(addImageDataMessage);
         }
       } else {
-        toast.error(`Failed to add product. ${productsError.message}.`);
+        toast.error(addProductMessage);
       }
     } catch (error) {
-      await supabase.from('products').delete().eq('product_id', product_id);
+      const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+      if (deleteProductSuccess === false) {
+        toast.error(deleteProductMessage);
+      }
       toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsLoading(false);
     }
   }
 
+  async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { success, message } = await updateProduct({
+        ...formData,
+        product_id: productToUpdateId!,
+      } as UpdateProductType);
+
+      if (success === true) {
+        dispatch(resetFormData());
+        dispatch(resetImageData());
+        toast.success('Successfully updated product.');
+        router.push('/admin-view');
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to update product. Please try again later.');
+    }
+  }
+
   return (
     <Box
       component="form"
-      onSubmit={handleAddProduct}
+      onSubmit={productToUpdateId ? handleUpdateProduct : handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <InputImageUpload
         onChange={handleImageUpload}

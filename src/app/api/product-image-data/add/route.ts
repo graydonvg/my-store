@@ -1,25 +1,20 @@
 import { NextResponse } from 'next/server';
 
 import { serverClientForRoute } from '@/lib/supabase-route';
-import { CustomResponseType } from '@/types';
+import { AddProductImageDataDbType, CustomResponseType } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await serverClientForRoute();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const formData = await request.json();
-
-  if (!session) return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+  const imageData: AddProductImageDataDbType[] = await request.json();
 
   try {
-    const { error } = await supabase.from('users').update(formData).eq('user_id', session.user.id);
+    const { error } = await supabase.from('product_image_data').insert(imageData);
 
     if (error) {
       return NextResponse.json({ success: false, message: error.message });
     }
 
-    return NextResponse.json({ success: true, message: 'User info updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Product image data added successfully.' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
   }

@@ -10,13 +10,13 @@ import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProdu
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
-import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
   borderColor: string,
   formData: AddProductStoreType,
-  imageData: AddProductImageDataType[],
+  imageData: AddProductImageDataStoreType[],
   imageUploadProgress: AddProductImageUploadProgressType[],
   imageIndex: number,
   isAdminView: boolean,
