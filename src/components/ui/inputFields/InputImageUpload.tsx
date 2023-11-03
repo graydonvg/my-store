@@ -1,21 +1,26 @@
 'use client';
 
-import { Check, CloudUpload, Edit } from '@mui/icons-material';
+import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
 import CustomButton from '../buttons/CustomButton';
 import { Input, InputProps } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Spinner } from '../progress/Spinner';
 import ProductImageBoxes from '../ProductImageBoxes';
 import { useEffect, useState } from 'react';
+import { deleteImageFromStorage } from '@/lib/firebase';
+import { toast } from 'react-toastify';
+import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 
 type InputImageUploadProps = InputProps & {
   isLoading: boolean;
 };
 
 export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
+  const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData, isDeletingImage } = useAppSelector((state) => state.addProduct);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const color = useCustomColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
@@ -29,9 +34,37 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
     setIsEditMode((previousMode) => !previousMode);
   }
 
+  async function handleDeleteAllImages() {
+    setIsDeletingAllImages(true);
+
+    const imagesToDelete = imageData.map((data) => data.file_name);
+
+    const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+
+    const promiseResults = await Promise.allSettled(deletePromises);
+
+    const success = promiseResults.every((result) => result.status === 'fulfilled');
+
+    if (!success) {
+      toast.error('Error clearing all images from storage.');
+    }
+
+    dispatch(resetImageData());
+
+    setIsDeletingAllImages(false);
+  }
+
   return (
     <>
       <ProductImageBoxes isEditMode={isEditMode} />
+      <CustomButton
+        onClick={handleDeleteAllImages}
+        fullWidth
+        label="delete all"
+        backgroundColor="red"
+        disabled={isDeletingAllImages || !isEditMode}
+        startIcon={isDeletingAllImages ? <Spinner size={20} /> : <DeleteForever />}
+      />
       <CustomButton
         disabled={isDeletingImage || uploadInProgress || imageData.length === 0}
         onClick={() => handleToggleEditMode()}
