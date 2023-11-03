@@ -1,7 +1,8 @@
 import { serverClientForRoute } from '@/lib/supabase-route';
+import { CustomResponseType } from '@/types';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse<CustomResponseType>> {
   const supabase = await serverClientForRoute();
 
   try {
@@ -10,11 +11,11 @@ export async function GET() {
       .select('*, product_image_data(file_name, image_url)');
 
     if (error) {
-      return NextResponse.json({ code: error.code, message: error.message });
+      return NextResponse.json({ success: false, message: error.message });
     }
 
-    return NextResponse.json(products);
+    return NextResponse.json({ success: true, message: '', data: products });
   } catch (error) {
-    return NextResponse.json({ code: 500, message: 'An unexpect error occured' });
+    return NextResponse.json({ success: false, message: 'An unexpect error occured' });
   }
 }

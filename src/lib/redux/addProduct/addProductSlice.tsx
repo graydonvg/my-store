@@ -1,11 +1,11 @@
-import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType } from '@/types';
+import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
   isDeletingImage: boolean;
-  imageUploadProgress: ImageUploadProgressType[];
-  imageData: AddNewProductImageDataType[];
-  formData: AddNewProductStoreType;
+  imageUploadProgress: AddProductImageUploadProgressType[];
+  imageData: AddProductImageDataType[];
+  formData: AddProductStoreType;
 };
 
 const initialState: State = {
@@ -24,15 +24,15 @@ const initialState: State = {
   },
 };
 
-export const addNewProductSlice = createSlice({
-  name: 'addNewProduct',
+export const addProductSlice = createSlice({
+  name: 'addProduct',
   initialState,
   reducers: {
     setFormData(
       state,
       action: PayloadAction<{
-        field: keyof AddNewProductStoreType;
-        value: AddNewProductStoreType[keyof AddNewProductStoreType];
+        field: keyof AddProductStoreType;
+        value: AddProductStoreType[keyof AddProductStoreType];
       }>
     ) {
       const { field, value } = action.payload;
@@ -50,7 +50,7 @@ export const addNewProductSlice = createSlice({
         state.formData = { ...state.formData, [field]: value };
       }
     },
-    setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
+    setImageUploadProgress(state, action: PayloadAction<AddProductImageUploadProgressType>) {
       const existingIndex = state.imageUploadProgress.findIndex(
         (upload) => upload.file_name === action.payload.file_name
       );
@@ -61,7 +61,7 @@ export const addNewProductSlice = createSlice({
         state.imageUploadProgress.push(action.payload);
       }
     },
-    setImageData(state, action: PayloadAction<AddNewProductImageDataType>) {
+    setImageData(state, action: PayloadAction<AddProductImageDataType>) {
       const existingIndex = state.imageData.findIndex((image) => image.file_name === action.payload.file_name);
 
       if (existingIndex !== -1) {
@@ -89,7 +89,7 @@ export const addNewProductSlice = createSlice({
   },
 });
 
-const { actions, reducer } = addNewProductSlice;
+const { actions, reducer } = addProductSlice;
 
 export const {
   setFormData,

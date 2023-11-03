@@ -11,6 +11,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import browserClient from '@/lib/supabase-browser';
+import signInWithPassword from '@/services/sign-in';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -40,23 +41,20 @@ export default function SignInForm() {
     dispatch(setShowModalLoadingBar(true));
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
+      const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
-      if (error) {
-        toast.error(`Sign in failed. ${error.message}.`);
-      } else {
+      if (success === true) {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
+        router.refresh();
+      } else {
+        toast.error(message);
       }
     } catch (error) {
-      toast.error('Sign in failed. Please try again later.');
+      toast.error(`Sign in failed. Please try again later.`);
     } finally {
       dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
-      router.refresh();
     }
   }
 

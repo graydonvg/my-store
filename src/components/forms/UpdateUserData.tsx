@@ -9,7 +9,7 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import browserClient from '@/lib/supabase-browser';
+import updateUser from '@/services/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -22,7 +22,6 @@ const defaultFormData = {
 };
 
 export default function UpdateUserData() {
-  const supabase = browserClient();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
@@ -38,30 +37,23 @@ export default function UpdateUserData() {
     setIsLoading(true);
     dispatch(setShowModalLoadingBar(true));
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
     const { first_name, last_name } = formData;
 
     try {
-      const { error } = await supabase
-        .from('users')
-        .update({ first_name, last_name })
-        .eq('user_id', session?.user.id ?? '');
+      const { success, message } = await updateUser({ first_name, last_name });
 
-      if (error) {
-        toast.error(`Update user failed. ${error.message}.`);
-      } else {
+      if (success) {
         setFormData(defaultFormData);
         dispatch(setIsModalOpen(false));
+        router.refresh();
+      } else {
+        toast.error(message);
       }
     } catch (error) {
       toast.error('Update user failed. Please try again later.');
     } finally {
       dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
-      router.refresh();
     }
   }
 

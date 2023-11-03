@@ -10,6 +10,8 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import browserClient from '@/lib/supabase-browser';
+import signUpNewUser from '@/services/sign-up';
+import updateUser from '@/services/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -55,28 +57,24 @@ export default function SignUpForm() {
     const { email, password, first_name, last_name } = formData;
 
     try {
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      const { success: signUpSuccess, message: signUpMessage } = await signUpNewUser({
         email,
         password,
       });
 
-      if (signUpData) {
-        const user_id = signUpData.user?.id ?? '';
-        const { error: updateError } = await supabase
-          .from('users')
-          .update({ first_name, last_name })
-          .eq('user_id', user_id);
+      if (signUpSuccess === true) {
+        const { success: updateSuccess, message: updateMessage } = await updateUser({ first_name, last_name });
 
-        if (updateError) {
-          toast.error(`Update user failed. ${updateError.message}.`);
-        } else {
+        if (updateSuccess === true) {
           setFormData(defaultFormData);
           dispatch(setIsModalOpen(false));
           router.refresh();
           toast.info(`Welcome, ${first_name}!`);
+        } else {
+          toast.error(updateMessage);
         }
-      } else if (signUpError) {
-        toast.error(`Sign up failed. ${signUpError.message}.`);
+      } else {
+        toast.error(signUpMessage);
       }
     } catch (error) {
       toast.error('Sign up failed. Please try again later.');

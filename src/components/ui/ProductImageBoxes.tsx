@@ -6,18 +6,18 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/addNewProduct/addNewProductSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
-import { AddNewProductImageDataType, AddNewProductStoreType, ImageUploadProgressType } from '@/types';
+import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
   borderColor: string,
-  formData: AddNewProductStoreType,
-  imageData: AddNewProductImageDataType[],
-  imageUploadProgress: ImageUploadProgressType[],
+  formData: AddProductStoreType,
+  imageData: AddProductImageDataType[],
+  imageUploadProgress: AddProductImageUploadProgressType[],
   imageIndex: number,
   isAdminView: boolean,
   isEditMode: boolean,
@@ -97,7 +97,7 @@ type Props = { isEditMode: boolean };
 export default function ProductImageBoxes({ isEditMode }: Props) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, formData, isDeletingImage } = useAppSelector((state) => state.addNewProduct);
+  const { imageUploadProgress, imageData, formData, isDeletingImage } = useAppSelector((state) => state.addProduct);
   const pathname = usePathname();
   const color = useCustomColorPalette();
   const theme = useTheme();

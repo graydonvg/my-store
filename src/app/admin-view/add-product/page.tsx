@@ -4,7 +4,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
-import { AddNewProductDbType, AddNewProductStoreType } from '@/types';
+import { AddProductDbType, AddProductStoreType } from '@/types';
 import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -20,7 +20,7 @@ import {
   setFormData,
   setImageData,
   setImageUploadProgress,
-} from '@/lib/redux/addNewProduct/addNewProductSlice';
+} from '@/lib/redux/addProduct/addProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { notFound, useRouter } from 'next/navigation';
@@ -49,7 +49,7 @@ export default function AdminViewAddNewProduct() {
   const supabase = browserClient();
   const router = useRouter();
   // const currentUser = useAppSelector((state) => state.user.currentUser);
-  const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addNewProduct);
+  const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -115,7 +115,7 @@ export default function AdminViewAddNewProduct() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setFormData({ field: name as keyof AddNewProductStoreType, value }));
+    dispatch(setFormData({ field: name as keyof AddProductStoreType, value }));
   }
 
   async function handleClearAllFormFields() {
@@ -160,7 +160,7 @@ export default function AdminViewAddNewProduct() {
     try {
       const { data: productData, error: productsError } = await supabase
         .from('products')
-        .insert([formData as AddNewProductDbType])
+        .insert([formData as AddProductDbType])
         .select('product_id');
 
       if (productData) {

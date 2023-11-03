@@ -1,4 +1,4 @@
-import { Database } from './lib/database.types';
+import { Database, Json } from './lib/database.types';
 
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
@@ -13,7 +13,7 @@ export type DrawerContentType = 'nav' | 'cart' | null;
 
 export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
 
-export type CustomResponseType = { success: boolean; message: string };
+export type CustomResponseType = { success: boolean; message: string; data?: any };
 
 export type CurrentUserType = Database['public']['Tables']['users']['Row'];
 
@@ -21,7 +21,7 @@ export type ProductType = Database['public']['Tables']['products']['Row'] & {
   product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'file_name' | 'image_url'>[];
 };
 
-export type AddNewProductStoreType = {
+export type AddProductStoreType = {
   category: string;
   delivery_info: string;
   description: string;
@@ -32,17 +32,14 @@ export type AddNewProductStoreType = {
   sizes: string[];
 };
 
-export type AddNewProductDbType = Omit<
-  Omit<Database['public']['Tables']['products']['Row'], 'created_at'>,
-  'product_id'
->;
+export type AddProductDbType = Omit<Omit<Database['public']['Tables']['products']['Row'], 'created_at'>, 'product_id'>;
 
-export type AddNewProductImageDataType = {
+export type AddProductImageDataType = {
   image_url: string;
   file_name: string;
 };
 
-export type ImageUploadProgressType = {
+export type AddProductImageUploadProgressType = {
   file_name: string;
   progress: number;
 };
