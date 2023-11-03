@@ -17,11 +17,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.dummyjson.com',
       },
-      {
-        //delete this. demo
-        protocol: 'https',
-        hostname: 'i5.walmartimages.com',
-      },
     ],
   },
 };
