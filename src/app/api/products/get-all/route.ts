@@ -1,8 +1,8 @@
 import { serverClientForRoute } from '@/lib/supabase-route';
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, ProductType } from '@/types';
 import { NextResponse } from 'next/server';
 
-export async function GET(): Promise<NextResponse<CustomResponseType>> {
+export async function GET(): Promise<NextResponse<CustomResponseType<ProductType[]>>> {
   const supabase = await serverClientForRoute();
 
   try {
