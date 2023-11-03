@@ -120,29 +120,21 @@ export default function AdminViewAddNewProduct() {
 
   async function handleClearAllFormFields() {
     setIsClearingAllFields(true);
-
-    // const imagesToDelete = imageData.map((data) => data.file_name);
-
-    // const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
-
-    // const promiseResults = await Promise.allSettled(deletePromises);
-
-    // const success = promiseResults.every((result) => result.status === 'fulfilled');
-
-    // if (!success) {
-    //   toast.error('Error clearing all images from storage.');
-    // }
-
     dispatch(resetFormData());
-    // dispatch(resetImageData());
     setIsClearingAllFields(false);
   }
 
   async function handleAddImageData(product_id: string) {
     try {
-      const dataToInsert = imageData.map((data) => {
-        return { ...data, product_id };
+      const newData = imageData.filter((data) => !data.product_image_id);
+      const dataToInsert = newData.map((data) => {
+        const { product_image_id, ...restOfData } = data;
+        return { ...restOfData, product_id };
       });
+
+      if (dataToInsert.length === 0) {
+        return { success: true, message: 'No new images added' };
+      }
       const { success, message } = await addProductImageData(dataToInsert);
 
       return { success, message };
@@ -202,21 +194,31 @@ export default function AdminViewAddNewProduct() {
     setIsLoading(true);
 
     try {
-      const { success, message } = await updateProduct({
+      const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
         ...formData,
         product_id: productToUpdateId!,
       } as UpdateProductType);
 
-      if (success === true) {
-        dispatch(resetFormData());
-        dispatch(resetImageData());
-        toast.success('Successfully updated product.');
-        router.push('/admin-view');
+      if (updateProductSuccess === true) {
+        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+          productToUpdateId!
+        );
+
+        if (addImageDataSuccess === true) {
+          dispatch(resetFormData());
+          dispatch(resetImageData());
+          toast.success('Successfully updated product.');
+          router.push('/admin-view');
+        } else {
+          toast.error(addImageDataMessage);
+        }
       } else {
-        toast.error(message);
+        toast.error(updateProductMessage);
       }
     } catch (error) {
       toast.error('Failed to update product. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   }
 
