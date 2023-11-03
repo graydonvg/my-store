@@ -48,7 +48,7 @@ const formFields = [
 export default function AdminViewAddNewProduct() {
   const supabase = browserClient();
   const router = useRouter();
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  // const currentUser = useAppSelector((state) => state.user.currentUser);
   const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addNewProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +62,7 @@ export default function AdminViewAddNewProduct() {
   const numberOfFormFields = getNumberOfFormFields(formData);
   const uploadInProgress = imageData.length < imageUploadProgress.length;
 
-  if (!currentUser || currentUser?.is_admin === false) notFound();
+  // if (!currentUser || currentUser?.is_admin === false) notFound();
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
