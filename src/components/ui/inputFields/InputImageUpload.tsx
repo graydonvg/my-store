@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
+import deleteProductImageData from '@/services/delete-product-image-data';
 
 type InputImageUploadProps = InputProps & {
   isLoading: boolean;
@@ -18,7 +19,9 @@ type InputImageUploadProps = InputProps & {
 
 export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, isDeletingImage } = useAppSelector((state) => state.addProduct);
+  const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId } = useAppSelector(
+    (state) => state.addProduct
+  );
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const color = useCustomColorPalette();
@@ -37,20 +40,37 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
   async function handleDeleteAllImages() {
     setIsDeletingAllImages(true);
 
-    const imagesToDelete = imageData.map((data) => data.file_name);
+    const storageImagesToDelete = imageData.map((data) => data.file_name);
 
-    const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+    const storageDeletePromises = storageImagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
 
-    const promiseResults = await Promise.allSettled(deletePromises);
+    const storageDeleteResults = await Promise.allSettled(storageDeletePromises);
 
-    const success = promiseResults.every((result) => result.status === 'fulfilled');
+    const storageDeleteSuccess = storageDeleteResults.every((result) => result.status === 'fulfilled');
 
-    if (!success) {
-      toast.error('Error clearing all images from storage.');
+    if (!storageDeleteSuccess) {
+      toast.error('Error deleting all images from storage.');
+    }
+
+    if (productToUpdateId) {
+      const productImageDataToDelete = imageData.map((data) => data.product_image_id);
+
+      const productImageDataDeletePromises = productImageDataToDelete.map((product_image_id) =>
+        deleteProductImageData(product_image_id!)
+      );
+
+      const productImageDataDeleteResults = await Promise.allSettled(productImageDataDeletePromises);
+
+      const productImageDataDeleteSuccess = productImageDataDeleteResults.every(
+        (result) => result.status === 'fulfilled'
+      );
+
+      if (!productImageDataDeleteSuccess) {
+        toast.error('Error deleting all image data from database.');
+      }
     }
 
     dispatch(resetImageData());
-
     setIsDeletingAllImages(false);
   }
 
@@ -94,7 +114,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
         }
       />
       <CustomButton
-        disabled={isLoading}
+        disabled={isLoading || isEditMode}
         styles={{
           backgroundColor: color.blue.dark,
           '&:hover': { backgroundColor: color.blue.light },
