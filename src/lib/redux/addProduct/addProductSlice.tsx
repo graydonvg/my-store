@@ -1,4 +1,4 @@
-import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType, ProductType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
@@ -6,6 +6,7 @@ type State = {
   imageUploadProgress: AddProductImageUploadProgressType[];
   imageData: AddProductImageDataType[];
   formData: AddProductStoreType;
+  productToUpdateId: string | null;
 };
 
 const initialState: State = {
@@ -22,6 +23,7 @@ const initialState: State = {
     sale_percentage: '',
     sizes: [],
   },
+  productToUpdateId: null,
 };
 
 export const addProductSlice = createSlice({
@@ -79,12 +81,18 @@ export const addProductSlice = createSlice({
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
+    setProductToUpdateId(state, action: PayloadAction<string>) {
+      state.productToUpdateId = action.payload;
+    },
     resetImageData(state) {
       state.imageData = initialState.imageData;
       state.imageUploadProgress = initialState.imageUploadProgress;
     },
     resetFormData(state) {
       state.formData = initialState.formData;
+    },
+    resetProductToUpdateId(state) {
+      state.productToUpdateId = null;
     },
   },
 });
@@ -99,6 +107,8 @@ export const {
   setIsDeletingImage,
   resetImageData,
   resetFormData,
+  setProductToUpdateId,
+  resetProductToUpdateId,
 } = actions;
 
 export const userReducer = reducer;

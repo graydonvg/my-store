@@ -38,7 +38,7 @@ function renderSmallImageBox(
         display: 'grid',
         placeItems: 'center',
       }}>
-      {imageUploadProgress[imageIndex] ? (
+      {imageUploadProgress[imageIndex] || imageData[imageIndex] ? (
         imageData[imageIndex] ? (
           <>
             <Image
@@ -148,7 +148,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
             display: 'grid',
             placeItems: 'center',
           }}>
-          {imageUploadProgress[selectedImageIndex] ? (
+          {imageUploadProgress[selectedImageIndex] || imageData[selectedImageIndex] ? (
             imageData[selectedImageIndex] ? (
               <Image
                 style={{ objectFit: 'cover', borderRadius: '4px' }}
