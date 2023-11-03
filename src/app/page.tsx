@@ -1,5 +1,6 @@
 import Products from '@/components/Products';
 import getAllProducts from '@/services/get-products';
+import { ProductType } from '@/types';
 import { Typography } from '@mui/material';
 
 export default async function Home() {
@@ -13,7 +14,7 @@ export default async function Home() {
         sx={{ textAlign: 'center', padding: 4 }}>
         My E-commerce Website
       </Typography>
-      <Products products={products} />
+      <Products products={products ?? ([] as ProductType[])} />
     </>
   );
 }

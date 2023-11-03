@@ -13,7 +13,7 @@ export type DrawerContentType = 'nav' | 'cart' | null;
 
 export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
 
-export type CustomResponseType = { success: boolean; message: string; data?: any };
+export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
 export type CurrentUserType = Database['public']['Tables']['users']['Row'];
 
