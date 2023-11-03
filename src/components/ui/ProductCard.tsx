@@ -152,13 +152,11 @@ export default function ProductCard({ product }: Props) {
               startIcon={<DeleteForever />}
               backgroundColor="red"
             />
-            <Link href={`/admin-view/update-product/${product.product_id}`}>
-              <CustomButton
-                fullWidth
-                label="update"
-                backgroundColor="blue"
-              />
-            </Link>
+            <CustomButton
+              fullWidth
+              label="update"
+              backgroundColor="blue"
+            />
           </Box>
         ) : null}
       </Box>
