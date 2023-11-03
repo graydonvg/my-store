@@ -2,6 +2,7 @@ import Products from '@/components/Products';
 import RevalidateButton from '@/components/RevalidateButton';
 import serverClient from '@/lib/supabase-server';
 import getAllProducts from '@/services/get-products';
+import { ProductType } from '@/types';
 import { Box } from '@mui/material';
 import { notFound } from 'next/navigation';
 
@@ -19,7 +20,7 @@ export default async function AdminView() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <RevalidateButton />
-      <Products products={products} />
+      <Products products={products ?? ([] as ProductType[])} />
     </Box>
   );
 }
