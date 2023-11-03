@@ -5,10 +5,19 @@ import Image from 'next/image';
 import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
-import { ProductType } from '@/types';
+import { AddProductStoreType, ProductType } from '@/types';
 import Link from 'next/link';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import {
+  resetFormData,
+  resetImageData,
+  resetProductToUpdateId,
+  setFormData,
+  setImageData,
+  setProductToUpdateId,
+} from '@/lib/redux/addProduct/addProductSlice';
 
 type Props = {
   product: ProductType;
@@ -17,9 +26,37 @@ type Props = {
 export default function ProductCard({ product }: Props) {
   const color = useCustomColorPalette();
   const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale == 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
+
+  function handleSetProductData() {
+    dispatch(resetImageData());
+    dispatch(resetFormData());
+    dispatch(resetProductToUpdateId());
+
+    const { product_id, product_image_data, ...restOfProductData } = product;
+
+    for (const key in restOfProductData) {
+      if (key === 'sizes') {
+        restOfProductData['sizes'].map((size) => dispatch(setFormData({ field: 'sizes', value: size })));
+      } else {
+        dispatch(
+          setFormData({
+            field: key as keyof AddProductStoreType,
+            value: restOfProductData[key as keyof AddProductStoreType],
+          })
+        );
+      }
+    }
+    product_image_data.map((data) => dispatch(setImageData(data)));
+
+    dispatch(setProductToUpdateId(product_id));
+
+    router.push('/admin-view/add-product');
+  }
 
   return (
     <Paper
@@ -153,6 +190,7 @@ export default function ProductCard({ product }: Props) {
               backgroundColor="red"
             />
             <CustomButton
+              onClick={handleSetProductData}
               fullWidth
               label="update"
               backgroundColor="blue"

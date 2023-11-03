@@ -4,6 +4,8 @@ import { Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/material
 import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
 import Link from 'next/link';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
+import { resetFormData, resetImageData, resetProductToUpdateId } from '@/lib/redux/addProduct/addProductSlice';
+import { useAppDispatch } from '@/lib/redux/hooks';
 
 type LowerNavbarOptionProps = {
   path: string;
@@ -35,10 +37,19 @@ const lowerNavbarMenuOptions = ['T-Shirts', 'Pants', 'Shoes', 'Hats', 'Socks'];
 export default function LowerNavbarOption({ path, label, isLastNavOption }: LowerNavbarOptionProps) {
   const theme = useTheme();
   const color = useCustomColorPalette();
+  const dispatch = useAppDispatch();
   const mode = theme.palette.mode;
   const labelTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
   const labelTextHoverColor = mode === 'light' ? color.grey.dark : 'white';
   const menuOffsetBoxBackgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
+
+  function handleClearProductData() {
+    if (path === '/admin-view/add-product') {
+      dispatch(resetImageData());
+      dispatch(resetFormData());
+      dispatch(resetProductToUpdateId());
+    }
+  }
 
   return (
     <>
@@ -64,7 +75,11 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
                   textUnderlineOffset: 6,
                 },
               }}>
-              <Link href={path}>{label}</Link>
+              <Link
+                onClick={handleClearProductData}
+                href={path}>
+                {label}
+              </Link>
             </Typography>
           }>
           {lowerNavbarMenuOptions.map((option, index) => renderMenuItem(option, index, color))}

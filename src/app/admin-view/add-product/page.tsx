@@ -23,8 +23,8 @@ import {
 } from '@/lib/redux/addProduct/addProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
-import { notFound, useRouter } from 'next/navigation';
-import { deleteImageFromStorage, uploadImageToStorage } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
+import { uploadImageToStorage } from '@/lib/firebase';
 import browserClient from '@/lib/supabase-browser';
 
 const toggleButtonOptions = [
@@ -48,7 +48,7 @@ const formFields = [
 export default function AdminViewAddNewProduct() {
   const supabase = browserClient();
   const router = useRouter();
-  const { formData, imageData, imageUploadProgress } = useAppSelector((state) => state.addProduct);
+  const { formData, imageData, imageUploadProgress, productToUpdateId } = useAppSelector((state) => state.addProduct);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -118,20 +118,20 @@ export default function AdminViewAddNewProduct() {
   async function handleClearAllFormFields() {
     setIsClearingAllFields(true);
 
-    const imagesToDelete = imageData.map((data) => data.file_name);
+    // const imagesToDelete = imageData.map((data) => data.file_name);
 
-    const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+    // const deletePromises = imagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
 
-    const promiseResults = await Promise.allSettled(deletePromises);
+    // const promiseResults = await Promise.allSettled(deletePromises);
 
-    const success = promiseResults.every((result) => result.status === 'fulfilled');
+    // const success = promiseResults.every((result) => result.status === 'fulfilled');
 
-    if (!success) {
-      toast.error('Error clearing all images from storage.');
-    }
+    // if (!success) {
+    //   toast.error('Error clearing all images from storage.');
+    // }
 
     dispatch(resetFormData());
-    dispatch(resetImageData());
+    // dispatch(resetImageData());
     setIsClearingAllFields(false);
   }
 
@@ -251,7 +251,7 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={isClearingAllFields || (emptyFormFields.length === numberOfFormFields && imageData.length === 0)}
+        disabled={isClearingAllFields || emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
@@ -264,7 +264,7 @@ export default function AdminViewAddNewProduct() {
             ? emptyFormFields.length > 0
             : emptyFormFields.length > 1) || imageData.length === 0
         }
-        label={isLoading ? 'loading...' : 'add product'}
+        label={isLoading ? 'loading...' : productToUpdateId ? 'update product' : 'add product'}
         fullWidth
         startIcon={isLoading ? <Spinner size={20} /> : <Add />}
         backgroundColor="blue"
