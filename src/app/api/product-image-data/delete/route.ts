@@ -5,21 +5,16 @@ import { CustomResponseType } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await serverClientForRoute();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const formData = await request.json();
-
-  if (!session) return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+  const product_image_id: string = await request.json();
 
   try {
-    const { error } = await supabase.from('users').update(formData).eq('user_id', session.user.id);
+    const { error } = await supabase.from('product_image_data').delete().eq('product_image_id', product_image_id);
 
     if (error) {
       return NextResponse.json({ success: false, message: error.message });
     }
 
-    return NextResponse.json({ success: true, message: 'User info updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Product image data deleted successfully.' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
   }

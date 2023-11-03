@@ -10,13 +10,14 @@ import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProdu
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
-import { AddProductImageDataType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import deleteProductImageData from '@/services/delete-product-image-data';
 
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
   borderColor: string,
   formData: AddProductStoreType,
-  imageData: AddProductImageDataType[],
+  imageData: AddProductImageDataStoreType[],
   imageUploadProgress: AddProductImageUploadProgressType[],
   imageIndex: number,
   isAdminView: boolean,
@@ -38,7 +39,7 @@ function renderSmallImageBox(
         display: 'grid',
         placeItems: 'center',
       }}>
-      {imageUploadProgress[imageIndex] ? (
+      {imageUploadProgress[imageIndex] || imageData[imageIndex] ? (
         imageData[imageIndex] ? (
           <>
             <Image
@@ -97,7 +98,9 @@ type Props = { isEditMode: boolean };
 export default function ProductImageBoxes({ isEditMode }: Props) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, formData, isDeletingImage } = useAppSelector((state) => state.addProduct);
+  const { imageUploadProgress, imageData, formData, isDeletingImage, productToUpdateId } = useAppSelector(
+    (state) => state.addProduct
+  );
   const pathname = usePathname();
   const color = useCustomColorPalette();
   const theme = useTheme();
@@ -107,10 +110,16 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
 
   const isAdminView = pathname.includes('admin-view');
 
-  async function handleDeleteImage(file_name: string) {
+  async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
     try {
       await deleteImageFromStorage(file_name);
+      if (productToUpdateId) {
+        const { success, message } = await deleteProductImageData(product_image_id);
+        if (success === false) {
+          toast.error(message);
+        }
+      }
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
@@ -148,7 +157,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
             display: 'grid',
             placeItems: 'center',
           }}>
-          {imageUploadProgress[selectedImageIndex] ? (
+          {imageUploadProgress[selectedImageIndex] || imageData[selectedImageIndex] ? (
             imageData[selectedImageIndex] ? (
               <Image
                 style={{ objectFit: 'cover', borderRadius: '4px' }}
@@ -194,7 +203,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
               isEditMode,
               isDeletingImage,
               () => handleSelectedImage(index),
-              () => handleDeleteImage(imageData[index].file_name)
+              () => handleDeleteImage(imageData[index].file_name, imageData[index].product_image_id!)
             )
           )}
         </Box>

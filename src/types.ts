@@ -18,7 +18,10 @@ export type CustomResponseType<T = undefined> = { success: boolean; message: str
 export type CurrentUserType = Database['public']['Tables']['users']['Row'];
 
 export type ProductType = Database['public']['Tables']['products']['Row'] & {
-  product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'file_name' | 'image_url'>[];
+  product_image_data: Pick<
+    Database['public']['Tables']['product_image_data']['Row'],
+    'file_name' | 'image_url' | 'product_image_id'
+  >[];
 };
 
 export type AddProductStoreType = {
@@ -34,9 +37,18 @@ export type AddProductStoreType = {
 
 export type AddProductDbType = Omit<Omit<Database['public']['Tables']['products']['Row'], 'created_at'>, 'product_id'>;
 
-export type AddProductImageDataType = {
+export type UpdateProductType = Omit<Database['public']['Tables']['products']['Row'], 'created_at'>;
+
+export type AddProductImageDataStoreType = {
   image_url: string;
   file_name: string;
+  product_image_id?: string;
+};
+
+export type AddProductImageDataDbType = {
+  image_url: string;
+  file_name: string;
+  product_id: string;
 };
 
 export type AddProductImageUploadProgressType = {
