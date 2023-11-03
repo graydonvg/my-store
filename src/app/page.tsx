@@ -3,7 +3,7 @@ import getAllProducts from '@/services/get-products';
 import { Typography } from '@mui/material';
 
 export default async function Home() {
-  const products = await getAllProducts();
+  const { data: products } = await getAllProducts();
 
   return (
     <>

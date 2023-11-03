@@ -6,7 +6,7 @@ export default async function getAllProducts(): Promise<CustomResponseType> {
   const response = await fetch(url, {
     cache: 'force-cache',
   });
-  const { data } = (await response.json()) as CustomResponseType;
+  const data = await response.json();
 
   return data;
 }

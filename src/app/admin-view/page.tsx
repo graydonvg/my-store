@@ -14,7 +14,7 @@ export default async function AdminView() {
 
   if (!session || !user || user[0].is_admin === false) notFound();
 
-  const products = await getAllProducts();
+  const { data: products } = await getAllProducts();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
