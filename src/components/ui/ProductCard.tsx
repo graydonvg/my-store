@@ -32,7 +32,7 @@ export default function ProductCard({ product }: Props) {
   const isOnSale = product.on_sale == 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
 
-  function handleSetProductData() {
+  function handleSetAddProductStoreData() {
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
@@ -190,7 +190,7 @@ export default function ProductCard({ product }: Props) {
               backgroundColor="red"
             />
             <CustomButton
-              onClick={handleSetProductData}
+              onClick={handleSetAddProductStoreData}
               fullWidth
               label="update"
               backgroundColor="blue"

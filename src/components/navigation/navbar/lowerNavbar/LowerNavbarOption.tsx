@@ -43,7 +43,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   const labelTextHoverColor = mode === 'light' ? color.grey.dark : 'white';
   const menuOffsetBoxBackgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
 
-  function handleClearProductData() {
+  function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
       dispatch(resetImageData());
       dispatch(resetFormData());
@@ -76,7 +76,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
                 },
               }}>
               <Link
-                onClick={handleClearProductData}
+                onClick={handleClearAddProductStoreData}
                 href={path}>
                 {label}
               </Link>
