@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
 import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
@@ -107,8 +107,13 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
   const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
-
   const isAdminView = pathname.includes('admin-view');
+
+  useEffect(() => {
+    if (imageData.length === 0) {
+      setSelectedImageIndex(0);
+    }
+  }, [imageData]);
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
