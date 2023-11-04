@@ -6,7 +6,7 @@ import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
-import { formatCurrency } from '@/lib/utils';
+import { deleteAllProductImages, formatCurrency } from '@/lib/utils';
 import { AddProductStoreType, ProductType } from '@/types';
 import Link from 'next/link';
 import { useAppDispatch } from '@/lib/redux/hooks';
@@ -18,6 +18,10 @@ import {
   setImageData,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
+import deleteProduct from '@/services/delete-product';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { Spinner } from './progress/Spinner';
 
 type Props = {
   product: ProductType;
@@ -31,13 +35,13 @@ export default function ProductCard({ product }: Props) {
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale == 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
+  const { product_id, product_image_data, ...restOfProductData } = product;
+  const [isDeletingProduct, setIsDeletingProduct] = useState(false);
 
   function handleSetProductData() {
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
-
-    const { product_id, product_image_data, ...restOfProductData } = product;
 
     for (const key in restOfProductData) {
       if (key === 'sizes') {
@@ -56,6 +60,29 @@ export default function ProductCard({ product }: Props) {
     dispatch(setProductToUpdateId(product_id));
 
     router.push('/admin-view/add-product');
+  }
+
+  async function handleDeleteProduct() {
+    setIsDeletingProduct(true);
+
+    try {
+      const deleteImagesPromise = deleteAllProductImages(product_image_data);
+      const deleteProductPromise = deleteProduct(product_id);
+      const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
+      const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
+      const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
+      if (deleteImagesSuccess === true && deleteProductSuccess === true) {
+        toast.success('Product deleted successfully.');
+      } else if (deleteImagesSuccess === false) {
+        toast.error(deleteImagesMessage);
+      } else if (deleteProductSuccess === false) {
+        toast.error(deleteProductMessage);
+      }
+    } catch (error) {
+      toast.error('An unexpected error occured.');
+    } finally {
+      setIsDeletingProduct(false);
+    }
   }
 
   return (
@@ -184,9 +211,11 @@ export default function ProductCard({ product }: Props) {
               paddingX: { xs: 1, sm: 2 },
             }}>
             <CustomButton
+              disabled={isDeletingProduct}
+              onClick={handleDeleteProduct}
               fullWidth
               label="delete"
-              startIcon={<DeleteForever />}
+              startIcon={isDeletingProduct ? <Spinner size={20} /> : <DeleteForever />}
               backgroundColor="red"
             />
             <CustomButton

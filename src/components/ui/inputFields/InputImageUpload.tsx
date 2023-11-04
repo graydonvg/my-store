@@ -12,6 +12,7 @@ import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import deleteProductImageData from '@/services/delete-product-image-data';
+import { deleteAllProductImages } from '@/lib/utils';
 
 type InputImageUploadProps = InputProps & {
   isLoading: boolean;
@@ -40,35 +41,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
   async function handleDeleteAllImages() {
     setIsDeletingAllImages(true);
 
-    const storageImagesToDelete = imageData.map((data) => data.file_name);
-
-    const storageDeletePromises = storageImagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
-
-    const storageDeleteResults = await Promise.allSettled(storageDeletePromises);
-
-    const storageDeleteSuccess = storageDeleteResults.every((result) => result.status === 'fulfilled');
-
-    if (!storageDeleteSuccess) {
-      toast.error('Error deleting all images from storage.');
-    }
-
-    if (productToUpdateId) {
-      const productImageDataToDelete = imageData.map((data) => data.product_image_id);
-
-      const productImageDataDeletePromises = productImageDataToDelete.map((product_image_id) =>
-        deleteProductImageData(product_image_id!)
-      );
-
-      const productImageDataDeleteResults = await Promise.allSettled(productImageDataDeletePromises);
-
-      const productImageDataDeleteSuccess = productImageDataDeleteResults.every(
-        (result) => result.status === 'fulfilled'
-      );
-
-      if (!productImageDataDeleteSuccess) {
-        toast.error('Error deleting all image data from database.');
-      }
-    }
+    await deleteAllProductImages(imageData, productToUpdateId);
 
     dispatch(resetImageData());
     setIsDeletingAllImages(false);
