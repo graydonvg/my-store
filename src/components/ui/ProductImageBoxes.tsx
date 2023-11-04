@@ -115,8 +115,6 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
     }
   }, [imageData]);
 
-  console.log(imageData);
-
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
     setSelectedImageIndex(0);
