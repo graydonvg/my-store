@@ -137,7 +137,9 @@ export async function deleteAllProductImages(
   try {
     const storageImagesToDelete = imageData.map((data) => data.file_name);
 
-    const storageDeletePromises = storageImagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+    const storageDeletePromises = storageImagesToDelete.map(
+      (file_name) => file_name.length > 0 && deleteImageFromStorage(file_name)
+    );
 
     const storageDeleteResults = await Promise.allSettled(storageDeletePromises);
 
@@ -151,10 +153,8 @@ export async function deleteAllProductImages(
       );
 
       const dbDataDeleteResults = await Promise.allSettled(dbDataDeletePromises);
-      console.log(dbDataDeleteResults);
 
       dbDataDeleteSuccess = dbDataDeleteResults.every((result) => result.status === 'fulfilled');
-      console.log(dbDataDeleteSuccess);
     }
 
     if (!storageDeleteSuccess && !dbDataDeleteSuccess) {

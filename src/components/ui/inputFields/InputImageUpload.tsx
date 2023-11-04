@@ -8,10 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Spinner } from '../progress/Spinner';
 import ProductImageBoxes from '../ProductImageBoxes';
 import { useEffect, useState } from 'react';
-import { deleteImageFromStorage } from '@/lib/firebase';
-import { toast } from 'react-toastify';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
-import deleteProductImageData from '@/services/delete-product-image-data';
 import { deleteAllProductImages } from '@/lib/utils';
 
 type InputImageUploadProps = InputProps & {

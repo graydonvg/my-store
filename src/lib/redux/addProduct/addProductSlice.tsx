@@ -69,13 +69,13 @@ export const addProductSlice = createSlice({
       }
     },
     setImageData(state, action: PayloadAction<AddProductImageDataStoreType>) {
-      const existingIndex = state.imageData.findIndex((image) => image.file_name === action.payload.file_name);
+      const data = [...state.imageData, action.payload];
+      const sortedData = data
+        .slice()
+        .sort((a, b) => a.index - b.index)
+        .map((object) => object);
 
-      if (existingIndex !== -1) {
-        state.imageData[existingIndex] = action.payload;
-      } else {
-        state.imageData.push(action.payload);
-      }
+      state.imageData = sortedData;
     },
     deleteImage(state, action: PayloadAction<{ file_name: string }>) {
       state.imageData = state.imageData.filter((image) => image.file_name !== action.payload.file_name);

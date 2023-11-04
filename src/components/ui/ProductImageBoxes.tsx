@@ -115,11 +115,16 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
     }
   }, [imageData]);
 
+  console.log(imageData);
+
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
+    setSelectedImageIndex(0);
     try {
-      await deleteImageFromStorage(file_name);
-      if (productToUpdateId) {
+      if (file_name.length > 0) {
+        await deleteImageFromStorage(file_name);
+      }
+      if (productToUpdateId && product_image_id) {
         const { success, message } = await deleteProductImageData(product_image_id);
         if (success === false) {
           toast.error(message);
@@ -128,15 +133,17 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
-      setSelectedImageIndex(0);
       dispatch(deleteImage({ file_name }));
       dispatch(setIsDeletingImage(false));
     }
   }
 
   function handleSelectedImage(index: number) {
+    if (index > imageData.length - 1) return;
     setSelectedImageIndex(index);
   }
+
+  console.log(imageData);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>

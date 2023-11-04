@@ -16,6 +16,7 @@ import {
   resetProductToUpdateId,
   setFormData,
   setImageData,
+  setImageUploadProgress,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
 import deleteProduct from '@/services/delete-product';
@@ -37,11 +38,13 @@ export default function ProductCard({ product }: Props) {
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
+  const imageUrl = product_image_data.filter((data) => data.index === 0)[0].image_url;
 
   function handleSetAddProductStoreData() {
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
+    product_image_data.map((data) => dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 })));
 
     for (const key in restOfProductData) {
       if (key === 'sizes') {
@@ -110,7 +113,7 @@ export default function ProductCard({ product }: Props) {
             style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
             fill
             sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
-            src={product.product_image_data[0].image_url}
+            src={imageUrl}
             alt="mens t-shirt"
             priority
           />

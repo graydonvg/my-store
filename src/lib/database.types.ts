@@ -8,6 +8,7 @@ export interface Database {
           created_at: string;
           file_name: string;
           image_url: string;
+          index: number;
           product_id: string;
           product_image_id: string;
         };
@@ -15,6 +16,7 @@ export interface Database {
           created_at?: string;
           file_name: string;
           image_url: string;
+          index: number;
           product_id: string;
           product_image_id?: string;
         };
@@ -22,6 +24,7 @@ export interface Database {
           created_at?: string;
           file_name?: string;
           image_url?: string;
+          index?: number;
           product_id?: string;
           product_image_id?: string;
         };

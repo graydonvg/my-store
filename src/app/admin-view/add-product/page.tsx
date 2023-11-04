@@ -69,7 +69,7 @@ export default function AdminViewAddNewProduct() {
 
     if (!files) return;
 
-    if (files.length > 5) return toast.error('Max. 5 images allowed');
+    if (files.length + imageData.length > 5) return toast.error('Max. 5 images allowed');
 
     const imagesToUpload = [];
 
@@ -99,12 +99,14 @@ export default function AdminViewAddNewProduct() {
 
     const imageDataArray = await Promise.allSettled(uploadPromises);
 
-    imageDataArray.map((result) => {
+    imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { file_name, image_url } = result.value;
-        return dispatch(setImageData({ file_name, image_url }));
+
+        return dispatch(setImageData({ file_name, image_url, index: index + imageData.length }));
       } else if (result.status === 'rejected') {
-        return toast.error('Image upload failed.');
+        toast.error('Image upload failed.');
+        return dispatch(setImageData({ file_name: '', image_url: '', index: index + imageData.length }));
       }
     });
   }

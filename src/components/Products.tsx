@@ -27,22 +27,19 @@ export default function Products({ products }: Props) {
             <Grid
               container
               spacing={1}>
-              {products
-                .slice()
-                .reverse()
-                .map((product, index) => {
-                  return product.category === category ? (
-                    <Grid
-                      key={index}
-                      item
-                      xs={6}
-                      md={4}
-                      lg={3}
-                      xl={2}>
-                      <ProductCard product={product} />
-                    </Grid>
-                  ) : null;
-                })}
+              {products.map((product, index) => {
+                return product.category === category ? (
+                  <Grid
+                    key={index}
+                    item
+                    xs={6}
+                    md={4}
+                    lg={3}
+                    xl={2}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ) : null;
+              })}
             </Grid>
           </Grid>
         );
