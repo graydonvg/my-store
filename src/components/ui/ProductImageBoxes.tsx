@@ -12,6 +12,7 @@ import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
 import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 import deleteProductImageData from '@/services/delete-product-image-data';
+import NumberField from './inputFields/NumberField';
 
 function renderSmallImageBox(
   color: CustomColorPaletteReturnType,
@@ -38,6 +39,7 @@ function renderSmallImageBox(
         position: 'relative',
         display: 'grid',
         placeItems: 'center',
+        order: 2,
       }}>
       {imageUploadProgress[imageIndex] || imageData[imageIndex] ? (
         imageData[imageIndex] ? (
