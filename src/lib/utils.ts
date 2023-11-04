@@ -1,7 +1,11 @@
+import { AddProductImageDataStoreType, CustomResponseType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
+import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
+import { deleteImageFromStorage } from './firebase';
+import deleteProductImageData from '@/services/delete-product-image-data';
 
 export const categories = ['Men', 'Women', 'kids'];
 
@@ -122,4 +126,47 @@ export default function getURL(path: string) {
       : process.env.NEXT_PUBLIC_SITE_URL_PRODUCTION;
   const baseURL = IS_SERVER ? siteUrl : window.location.origin;
   return new URL(path, baseURL).toString();
+}
+
+export async function deleteAllProductImages(
+  imageData: AddProductImageDataStoreType[],
+  productId?: string | null
+): Promise<CustomResponseType> {
+  let dbDataDeleteSuccess = true;
+
+  try {
+    const storageImagesToDelete = imageData.map((data) => data.file_name);
+
+    const storageDeletePromises = storageImagesToDelete.map((fileName) => deleteImageFromStorage(fileName));
+
+    const storageDeleteResults = await Promise.allSettled(storageDeletePromises);
+
+    const storageDeleteSuccess = storageDeleteResults.every((result) => result.status === 'fulfilled');
+
+    if (productId) {
+      const productImageDataToDelete = imageData.map((data) => data.product_image_id);
+
+      const dbDataDeletePromises = productImageDataToDelete.map((product_image_id) =>
+        deleteProductImageData(product_image_id!)
+      );
+
+      const dbDataDeleteResults = await Promise.allSettled(dbDataDeletePromises);
+      console.log(dbDataDeleteResults);
+
+      dbDataDeleteSuccess = dbDataDeleteResults.every((result) => result.status === 'fulfilled');
+      console.log(dbDataDeleteSuccess);
+    }
+
+    if (!storageDeleteSuccess && !dbDataDeleteSuccess) {
+      return { success: false, message: 'Failed to delete all images. Storage and database error.' };
+    } else if (!storageDeleteSuccess) {
+      return { success: false, message: 'Failed to delete all images. Storage  error.' };
+    } else if (!dbDataDeleteSuccess) {
+      return { success: false, message: 'Failed to delete all images. Database  error.' };
+    } else {
+      return { success: true, message: 'Successfully deleted all images.' };
+    }
+  } catch (error) {
+    throw error;
+  }
 }
