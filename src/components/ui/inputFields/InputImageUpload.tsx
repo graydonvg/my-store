@@ -14,8 +14,7 @@ type InputImageUploadProps = InputProps & {
 };
 
 export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
-  const { imageUploadProgress, imageData } = useAppSelector((state) => state.addNewProduct);
-  const isDeletingImage = useAppSelector((state) => state.addNewProduct.isDeletingImage);
+  const { imageUploadProgress, imageData, isDeletingImage } = useAppSelector((state) => state.addProduct);
   const [isEditMode, setIsEditMode] = useState(false);
   const color = useCustomColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
