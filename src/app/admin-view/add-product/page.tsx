@@ -209,7 +209,7 @@ export default function AdminViewAddNewProduct() {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully updated product.');
-          router.push('/admin-view');
+          router.push('/admin-view/all-products');
         } else {
           toast.error(addImageDataMessage);
         }
