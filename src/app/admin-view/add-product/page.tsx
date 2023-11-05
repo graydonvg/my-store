@@ -5,7 +5,6 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
 import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
-import InputImageUpload from '@/components/ui/inputFields/InputImageUpload';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
 import CurrencyField from '@/components/ui/inputFields/CurrencyField';
@@ -25,11 +24,11 @@ import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { uploadImageToStorage } from '@/lib/firebase';
-import browserClient from '@/lib/supabase-browser';
 import addProduct from '@/services/add-product';
 import addProductImageData from '@/services/add-product-image-data';
 import deleteProduct from '@/services/delete-product';
 import updateProduct from '@/services/update-product';
+import ProductImages from '@/components/ui/ProductImages';
 
 const toggleButtonOptions = [
   { label: 'XS', value: 'extra-small' },
@@ -169,7 +168,7 @@ export default function AdminViewAddNewProduct() {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully added product.');
-          router.push('/admin-view');
+          router.push('/admin-view/all-products');
         } else {
           const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
           if (deleteProductSuccess === false) {
@@ -229,7 +228,7 @@ export default function AdminViewAddNewProduct() {
       component="form"
       onSubmit={productToUpdateId ? handleUpdateProduct : handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
-      <InputImageUpload
+      <ProductImages
         onChange={handleImageUpload}
         isLoading={isLoading || uploadInProgress}
       />

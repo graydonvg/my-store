@@ -1,21 +1,22 @@
 'use client';
 
 import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
-import CustomButton from '../buttons/CustomButton';
-import { Input, InputProps } from '@mui/material';
+import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Spinner } from '../progress/Spinner';
-import ProductImageBoxes from '../ProductImageBoxes';
+import { Spinner } from './progress/Spinner';
+import ProductImageBoxes from './ProductImageBoxes';
 import { useEffect, useState } from 'react';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
+import ImageInput from './inputFields/ImageInput';
+import { InputProps } from '@mui/material';
 
-type InputImageUploadProps = InputProps & {
+type Props = InputProps & {
   isLoading: boolean;
 };
 
-export default function InputImageUpload({ isLoading, ...inputProps }: InputImageUploadProps) {
+export default function ProductImages({ isLoading, ...inputProps }: Props) {
   const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId } = useAppSelector(
     (state) => state.addProduct
@@ -92,22 +93,7 @@ export default function InputImageUpload({ isLoading, ...inputProps }: InputImag
         label={
           <>
             {isLoading ? 'uploading...' : 'upload images'}
-            <Input
-              inputProps={{ accept: 'image/*', multiple: true }}
-              type="file"
-              sx={{
-                clip: 'rect(0 0 0 0)',
-                clipPath: 'inset(50%)',
-                height: 1,
-                overflow: 'hidden',
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                whiteSpace: 'nowrap',
-                width: 1,
-              }}
-              {...inputProps}
-            />
+            <ImageInput {...inputProps} />
           </>
         }
         startIcon={isLoading ? <Spinner size={20} /> : <CloudUpload />}

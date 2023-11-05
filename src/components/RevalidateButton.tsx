@@ -4,14 +4,11 @@ import CustomButton from '@/components/ui/buttons/CustomButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import getURL from '@/lib/utils';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { Spinner } from './ui/progress/Spinner';
 import revalidate from '@/services/revalidate';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
-  const color = useCustomColorPalette();
   const router = useRouter();
 
   async function handleRevalidate() {

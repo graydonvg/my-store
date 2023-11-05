@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const { error } = await supabase.from('products').update(formData).eq('product_id', formData.product_id);
 
     if (error) {
-      return NextResponse.json({ success: false, message: error.message });
+      return NextResponse.json({ success: false, message: `Failed to update product. ${error.message}.` });
     }
 
     return NextResponse.json({ success: true, message: 'Product updated successfully.' });

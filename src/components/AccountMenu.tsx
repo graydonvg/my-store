@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
-import browserClient from '@/lib/supabase-browser';
+import signOut from '@/services/sign-out';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -33,7 +33,6 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
 }
 
 export default function AccountMenu() {
-  const supabase = browserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -49,9 +48,9 @@ export default function AccountMenu() {
   }
 
   async function handleSignOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error(`Sign out failed. ${error.message}.`);
+    const { success, message } = await signOut();
+    if (success === false) {
+      toast.error(message);
     }
     router.refresh();
   }

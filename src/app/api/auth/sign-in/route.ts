@@ -20,7 +20,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     });
 
     if (error) {
-      return NextResponse.json({ success: false, message: `Sign in failed. ${error.message}` });
+      return NextResponse.json({ success: false, message: `Sign in failed. ${error.message}.` });
     }
 
     return NextResponse.json({ success: true, message: 'Sign in successful.' });

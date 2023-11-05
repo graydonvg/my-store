@@ -11,7 +11,10 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const { error } = await supabase.from('product_image_data').delete().eq('product_image_id', product_image_id);
 
     if (error) {
-      return NextResponse.json({ success: false, message: error.message });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to delete image data from database. ${error.message}.`,
+      });
     }
 
     return NextResponse.json({ success: true, message: 'Product image data deleted successfully.' });
