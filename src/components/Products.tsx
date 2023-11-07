@@ -9,40 +9,41 @@ type Props = {
 
 export default function Products({ products }: Props) {
   return (
-    // <Grid
-    //   container
-    //   spacing={4}>
-    //   {categories?.map((category) => {
-    //     return (
-    //       <Grid
-    //         xs={12}
-    //         item
-    //         key={category}>
-    //         <Typography
-    //           sx={{ textAlign: 'center', paddingBottom: 2 }}
-    //           component="h2"
-    //           variant="h5">
-    //           {category}
-    //         </Typography>
     <Grid
       container
-      spacing={{ xs: 0.3, md: 2 }}>
-      {products.map((product, index) => (
-        // return product.category === category ? (
-        <Grid
-          key={index}
-          item
-          xs={6}
-          md={4}
-          lg={3}
-          xl={2}>
-          <ProductCard product={product} />
-        </Grid>
-      ))}
+      spacing={4}>
+      {categories?.map((category) => {
+        return (
+          <Grid
+            xs={12}
+            item
+            key={category}>
+            <Typography
+              sx={{ textAlign: 'center', paddingBottom: 2 }}
+              component="h2"
+              variant="h5">
+              {category}
+            </Typography>
+            <Grid
+              container
+              spacing={1}>
+              {products.map((product, index) => {
+                return product.category === category ? (
+                  <Grid
+                    key={index}
+                    item
+                    xs={6}
+                    md={4}
+                    lg={3}
+                    xl={2}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ) : null;
+              })}
+            </Grid>
+          </Grid>
+        );
+      })}
     </Grid>
-    //       </Grid>
-    //     );
-    //   })}
-    // </Grid>
   );
 }
