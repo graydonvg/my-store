@@ -4,16 +4,17 @@ import { CustomResponseType } from '@/types';
 import { serverClientForRoute } from '@/lib/supabase-route';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const formData = await request.json();
-  const { email, password } = formData;
-
-  if (session) return NextResponse.json({ success: false, message: 'Sign in failed. A user session already exists.' });
-
   try {
+    const supabase = await serverClientForRoute();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const formData = await request.json();
+    const { email, password } = formData;
+
+    if (session)
+      return NextResponse.json({ success: false, message: 'Sign in failed. A user session already exists.' });
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,

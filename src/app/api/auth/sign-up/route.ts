@@ -4,20 +4,20 @@ import { CustomResponseType } from '@/types';
 import { serverClientForRoute } from '@/lib/supabase-route';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const formData: { email: string; password: string } = await request.json();
-  const { email, password } = formData;
-
-  if (session)
-    return NextResponse.json({
-      success: false,
-      message: 'Sign up failed. Please sign out before creating a new account.',
-    });
-
   try {
+    const supabase = await serverClientForRoute();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const formData: { email: string; password: string } = await request.json();
+    const { email, password } = formData;
+
+    if (session)
+      return NextResponse.json({
+        success: false,
+        message: 'Sign up failed. Please sign out before creating a new account.',
+      });
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
