@@ -48,11 +48,15 @@ export default function AccountMenu() {
   }
 
   async function handleSignOut() {
-    const { success, message } = await signOut();
-    if (success === false) {
-      toast.error(message);
+    try {
+      const { success, message } = await signOut();
+      if (success === false) {
+        toast.error(message);
+      }
+      router.refresh();
+    } catch (error) {
+      throw error;
     }
-    router.refresh();
   }
 
   return (
