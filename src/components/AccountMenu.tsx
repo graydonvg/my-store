@@ -55,7 +55,7 @@ export default function AccountMenu() {
       }
       router.refresh();
     } catch (error) {
-      throw error;
+      toast.error(`Sign out failed. Please try again later.`);
     }
   }
 
