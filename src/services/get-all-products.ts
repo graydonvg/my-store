@@ -12,6 +12,6 @@ export default async function getAllProducts(): Promise<CustomResponseType<Produ
 
     return data;
   } catch (error) {
-    throw new Error(`@services/get-products. ${error}`);
+    throw new Error(`@services/get-all-products. ${error}`);
   }
 }

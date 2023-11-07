@@ -20,8 +20,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<CustomResp
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to fetch products. ${error.message}.` });
     }
-    console.log('products', products);
-    console.log('error', error);
 
     return NextResponse.json({ success: true, message: '', data: products });
   } catch (error) {
