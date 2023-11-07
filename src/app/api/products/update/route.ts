@@ -4,10 +4,10 @@ import { serverClientForRoute } from '@/lib/supabase-route';
 import { CustomResponseType, UpdateProductType } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
-  const formData: UpdateProductType = await request.json();
-
   try {
+    const supabase = await serverClientForRoute();
+    const formData: UpdateProductType = await request.json();
+
     const { error } = await supabase.from('products').update(formData).eq('product_id', formData.product_id);
 
     if (error) {

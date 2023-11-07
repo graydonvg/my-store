@@ -4,10 +4,10 @@ import { serverClientForRoute } from '@/lib/supabase-route';
 import { AddProductImageDataDbType, CustomResponseType } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
-  const imageData: AddProductImageDataDbType[] = await request.json();
-
   try {
+    const supabase = await serverClientForRoute();
+    const imageData: AddProductImageDataDbType[] = await request.json();
+
     const { error } = await supabase.from('product_image_data').insert(imageData);
 
     if (error) {
