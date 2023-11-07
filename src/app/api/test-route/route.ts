@@ -1,10 +1,10 @@
-import serverClient from '@/lib/supabase-server';
+import { serverClientForRoute } from '@/lib/supabase-route';
 import { CustomResponseType, ProductType } from '@/types';
 import { NextResponse } from 'next/server';
 
 export async function GET(): Promise<NextResponse<CustomResponseType<ProductType[]>>> {
   try {
-    const supabase = await serverClient();
+    const supabase = await serverClientForRoute();
 
     const { data: products, error } = await supabase
       .from('products')

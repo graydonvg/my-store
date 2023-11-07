@@ -4,13 +4,7 @@ import { ProductType } from '@/types';
 import { Typography } from '@mui/material';
 
 export default async function Home() {
-  // const { data: products } = await getAllProducts();
-  const res = await fetch('https://my-store-henna.vercel.app/api/products/get-all', {
-    method: 'GET',
-  });
-  const { data: products } = await res.json();
-
-  // console.log(products);
+  const { data: products } = await getAllProducts();
 
   return (
     <>
