@@ -1,22 +1,21 @@
-import { serverClientForRoute } from '@/lib/supabase-route';
-import { CustomResponseType, ProductType } from '@/types';
 import { NextResponse } from 'next/server';
 
-export async function GET(): Promise<NextResponse<CustomResponseType<ProductType[]>>> {
-  try {
-    const supabase = await serverClientForRoute();
+import { serverClientForRoute } from '@/lib/supabase-route';
+import { CustomResponseType } from '@/types';
 
-    const { data: products, error } = await supabase
-      .from('products')
-      .select('*, product_image_data(file_name, image_url, product_image_id, index)')
-      .order('created_at', { ascending: false });
+export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+  const supabase = await serverClientForRoute();
+  const product_id: string = await request.json();
+
+  try {
+    const { error } = await supabase.from('products').delete().eq('product_id', product_id);
 
     if (error) {
-      return NextResponse.json({ success: false, message: `Failed to fetch products. ${error.message}.` });
+      return NextResponse.json({ success: false, message: `Failed to delete product. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: '', data: products });
+    return NextResponse.json({ success: true, message: 'Product deleted successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'An unexpect error occured' });
+    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
   }
 }

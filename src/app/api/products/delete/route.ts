@@ -4,10 +4,10 @@ import { serverClientForRoute } from '@/lib/supabase-route';
 import { CustomResponseType } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  try {
-    const supabase = await serverClientForRoute();
-    const product_id: string = await request.json();
+  const supabase = await serverClientForRoute();
+  const product_id: string = await request.json();
 
+  try {
     const { error } = await supabase.from('products').delete().eq('product_id', product_id);
 
     if (error) {
