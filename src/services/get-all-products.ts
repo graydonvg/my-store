@@ -2,7 +2,7 @@ import getURL from '@/lib/utils';
 import { CustomResponseType, ProductType } from '@/types';
 
 export default async function getAllProducts(): Promise<CustomResponseType<ProductType[]>> {
-  const url = getURL('/api/products/get-all');
+  const url = getURL('/api/test-route');
 
   try {
     const response = await fetch(url, {
