@@ -7,7 +7,6 @@ export default async function Home() {
   // const { data: products } = await getAllProducts();
   const res = await fetch('https://my-store-henna.vercel.app/api/products/get-all', {
     method: 'GET',
-    cache: 'no-store',
   });
   const { data: products } = await res.json();
 
