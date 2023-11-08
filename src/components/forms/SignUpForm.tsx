@@ -10,8 +10,8 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import browserClient from '@/lib/supabase-browser';
-import signUpNewUser from '@/services/sign-up';
-import updateUser from '@/services/update-user';
+import signUpNewUser from '@/services/auth/sign-up';
+import updateUser from '@/services/users/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },

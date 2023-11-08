@@ -5,7 +5,7 @@ import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
-import deleteProductImageData from '@/services/delete-product-image-data';
+import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 
 export const categories = ['Men', 'Women', 'kids'];
 

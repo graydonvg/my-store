@@ -11,7 +11,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import browserClient from '@/lib/supabase-browser';
-import signInWithPassword from '@/services/sign-in';
+import signInWithPassword from '@/services/auth/sign-in';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },

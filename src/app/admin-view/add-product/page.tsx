@@ -24,10 +24,10 @@ import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { uploadImageToStorage } from '@/lib/firebase';
-import addProduct from '@/services/add-product';
-import addProductImageData from '@/services/add-product-image-data';
-import deleteProduct from '@/services/delete-product';
-import updateProduct from '@/services/update-product';
+import addProduct from '@/services/products/add-product';
+import addProductImageData from '@/services/product-image-data/add-product-image-data';
+import deleteProduct from '@/services/products/delete-product';
+import updateProduct from '@/services/products/update-product';
 import ProductImages from '@/components/ui/ProductImages';
 
 const toggleButtonOptions = [

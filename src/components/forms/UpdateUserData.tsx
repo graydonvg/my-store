@@ -9,7 +9,7 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import updateUser from '@/services/update-user';
+import updateUser from '@/services/users/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },

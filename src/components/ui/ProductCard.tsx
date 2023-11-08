@@ -19,7 +19,7 @@ import {
   setImageUploadProgress,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
-import deleteProduct from '@/services/delete-product';
+import deleteProduct from '@/services/products/delete-product';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';

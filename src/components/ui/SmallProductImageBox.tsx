@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
 import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
-import deleteProductImageData from '@/services/delete-product-image-data';
+import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 
 type Props = { imageIndex: number; borderColor: string; isEditMode: boolean; selectImage: () => void };
 

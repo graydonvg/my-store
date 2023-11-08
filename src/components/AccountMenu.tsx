@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
-import signOut from '@/services/sign-out';
+import signOut from '@/services/auth/sign-out';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
