@@ -1,6 +1,6 @@
 'use client';
 
-import { Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/material';
+import { Box, Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/material';
 import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
 import Link from 'next/link';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
@@ -56,7 +56,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
       <ListItem
         disablePadding
         disableGutters>
-        <HoverDropdownMenu
+        {/* <HoverDropdownMenu
           menuOffsetBoxHeight={'8px'}
           menuOffsetBoxBackgroundColor={menuOffsetBoxBackgroundColor}
           menuAnchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -83,7 +83,28 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
             </Typography>
           }>
           {lowerNavbarMenuOptions.map((option, index) => renderMenuItem(option, index, color))}
-        </HoverDropdownMenu>
+        </HoverDropdownMenu> */}
+        <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
+          <Typography
+            component="span"
+            sx={{
+              textTransform: 'none',
+              color: labelTextColor,
+              '&:hover': {
+                color: labelTextHoverColor,
+                textDecoration: 'underline',
+                textDecorationColor: labelTextHoverColor,
+                textDecorationThickness: 1,
+                textUnderlineOffset: 6,
+              },
+            }}>
+            <Link
+              onClick={handleClearAddProductStoreData}
+              href={path}>
+              {label}
+            </Link>
+          </Typography>
+        </Box>
       </ListItem>
       {!isLastNavOption ? (
         <Divider
