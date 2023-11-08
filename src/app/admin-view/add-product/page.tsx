@@ -1,9 +1,15 @@
 'use client';
 
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import { categories, generateUniqueFileName, getEmptyFormFields, getNumberOfFormFields } from '@/lib/utils';
+import {
+  categories,
+  generateUniqueFileName,
+  getEmptyFormFields,
+  getNumberOfFormFields,
+  toggleButtonSizeOptions,
+} from '@/lib/utils';
 import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -29,14 +35,6 @@ import addProductImageData from '@/services/product-image-data/add-product-image
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ProductImages from '@/components/ui/ProductImages';
-
-const toggleButtonOptions = [
-  { label: 'XS', value: 'extra-small' },
-  { label: 'S', value: 'small' },
-  { label: 'M', value: 'medium' },
-  { label: 'L', value: 'large' },
-  { label: 'XL', value: 'extra-large' },
-];
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -228,17 +226,23 @@ export default function AdminViewAddNewProduct() {
       component="form"
       onSubmit={productToUpdateId ? handleUpdateProduct : handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
-      <ProductImages
-        onChange={handleImageUpload}
-        isLoading={isLoading || uploadInProgress}
-      />
+      <Grid container>
+        <Grid
+          item
+          xs={12}>
+          <ProductImages
+            onChange={handleImageUpload}
+            isLoading={isLoading || uploadInProgress}
+          />
+        </Grid>
+      </Grid>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
           selection={formData.sizes}
           onChange={handleSelectSize}
-          buttons={toggleButtonOptions}
+          buttons={toggleButtonSizeOptions}
           disabled={isLoading || isClearingAllFields}
         />
       </Box>

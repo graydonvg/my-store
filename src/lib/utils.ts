@@ -55,6 +55,14 @@ export const adminNavOptions = [
   },
 ];
 
+export const toggleButtonSizeOptions = [
+  { label: 'XS', value: 'extra-small' },
+  { label: 'S', value: 'small' },
+  { label: 'M', value: 'medium' },
+  { label: 'L', value: 'large' },
+  { label: 'XL', value: 'extra-large' },
+];
+
 export type NavOptionsType = (typeof navOptions)[0];
 
 export function ElevationScroll({ children }: { children: ReactElement<any, string | JSXElementConstructor<any>> }) {

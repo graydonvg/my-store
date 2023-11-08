@@ -6,9 +6,9 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
 
-type Props = { selectedImageIndex: number };
+type Props = { selectedImageIndex: number; borderColor: string };
 
-export default function LargeProductImageBox({ selectedImageIndex }: Props) {
+export default function LargeProductImageBox({ selectedImageIndex, borderColor }: Props) {
   const { imageUploadProgress, imageData, formData } = useAppSelector((state) => state.addProduct);
   const color = useCustomColorPalette();
   const theme = useTheme();
@@ -16,7 +16,15 @@ export default function LargeProductImageBox({ selectedImageIndex }: Props) {
   const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
 
   return (
-    <>
+    <Box
+      sx={{
+        aspectRatio: 6 / 8,
+        border: `1px solid ${borderColor}`,
+        position: 'relative',
+        borderRadius: 1,
+        display: 'grid',
+        placeItems: 'center',
+      }}>
       {imageUploadProgress[selectedImageIndex] || imageData[selectedImageIndex] ? (
         imageData[selectedImageIndex] ? (
           <Image
@@ -40,6 +48,6 @@ export default function LargeProductImageBox({ selectedImageIndex }: Props) {
           </Typography>
         </Box>
       )}
-    </>
+    </Box>
   );
 }
