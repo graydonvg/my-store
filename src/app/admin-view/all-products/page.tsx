@@ -2,6 +2,7 @@ import Products from '@/components/Products';
 import RevalidateButton from '@/components/RevalidateButton';
 import serverClient from '@/lib/supabase-server';
 import getAllProducts from '@/services/products/get-all-products';
+import getUser from '@/services/users/get-user';
 // import revalidate from '@/services/revalidate';
 import { ProductType } from '@/types';
 import { Box } from '@mui/material';
@@ -12,9 +13,9 @@ export default async function AdminViewAllProducts() {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  const { data: user } = await supabase.from('users').select('*');
+  const { data: user } = await getUser();
 
-  if (!session || !user || user[0].is_admin === false) notFound();
+  if (!session || !user || user.is_admin === false) notFound();
 
   // await revalidate('/api/revalidate');
 

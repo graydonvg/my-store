@@ -48,11 +48,17 @@ export default function AccountMenu() {
   }
 
   async function handleSignOut() {
-    const { success, message } = await signOut();
-    if (success === false) {
-      toast.error(message);
+    try {
+      const { success, message } = await signOut();
+      if (success === false) {
+        toast.error(message);
+      } else {
+        toast.success(message);
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error('Sign out failed. An unexpected error occured.');
     }
-    router.refresh();
   }
 
   return (
