@@ -16,6 +16,6 @@ export async function GET(): Promise<NextResponse<CustomResponseType<ProductType
 
     return NextResponse.json({ success: true, message: '', data: products });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'An unexpect error occured' });
+    return NextResponse.json({ success: false, message: 'An unexpect error occured.' });
   }
 }
