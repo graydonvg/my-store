@@ -1,7 +1,6 @@
 import ProductDetails from '@/components/ui/ProductDetails';
 import serverClient from '@/lib/supabase-server';
 import getAllProducts from '@/services/products/get-all-products';
-import getProductById from '@/services/products/get-product-by-id';
 import { ProductType } from '@/types';
 
 type Params = {
