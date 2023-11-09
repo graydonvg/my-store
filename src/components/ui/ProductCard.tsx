@@ -22,7 +22,6 @@ import deleteProduct from '@/services/products/delete-product';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Spinner } from './progress/Spinner';
-import Link from 'next/link';
 
 type Props = {
   product: ProductType;
