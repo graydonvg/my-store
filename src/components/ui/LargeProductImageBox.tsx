@@ -17,6 +17,7 @@ export default function LargeProductImageBox({ selectedImageIndex, borderColor }
 
   return (
     <Box
+      id="large-product-image-box"
       sx={{
         aspectRatio: 6 / 8,
         border: `1px solid ${borderColor}`,

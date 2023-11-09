@@ -48,6 +48,7 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
 
   return (
     <Box
+      id="small-product-image-box"
       key={imageIndex}
       onClick={selectImage}
       sx={{
