@@ -1,9 +1,4 @@
-import {
-  AddProductImageDataStoreType,
-  AddProductStoreType,
-  AddProductImageUploadProgressType,
-  ProductType,
-} from '@/types';
+import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {

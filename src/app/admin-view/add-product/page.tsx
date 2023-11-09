@@ -99,7 +99,6 @@ export default function AdminViewAddNewProduct() {
     imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { file_name, image_url } = result.value;
-
         return dispatch(setImageData({ file_name, image_url, index: index + imageData.length }));
       } else if (result.status === 'rejected') {
         toast.error('Image upload failed.');
