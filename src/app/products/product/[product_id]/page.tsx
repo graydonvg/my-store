@@ -3,6 +3,8 @@ import getAllProducts from '@/services/products/get-all-products';
 import getProductById from '@/services/products/get-product-by-id';
 import { ProductType } from '@/types';
 
+export const dynamic = 'force-static';
+
 type Params = {
   params: { product_id: string };
 };
