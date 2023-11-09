@@ -127,7 +127,7 @@ export default function ProductCard({ product }: Props) {
             <Image
               style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
               fill
-              sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
+              sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
               src={imageUrl}
               alt="mens t-shirt"
               priority

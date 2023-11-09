@@ -33,8 +33,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
   return (
     <Grid
       container
-      spacing={1}
-      sx={{ maxWidth: isAdminView ? '400px' : null }}>
+      spacing={1}>
       <Grid
         item
         xs={12}
@@ -44,7 +43,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'row', sm: 'column' },
-            gap: { xs: 1, sm: `10.75px` },
+            gap: { xs: 1, sm: `10.7px` },
           }}>
           {Array.from(Array(5)).map((_, index) => (
             <SmallProductImageBox

@@ -24,7 +24,12 @@ export default function ProductDetails({ product }: Props) {
       <Grid
         item
         xs={12}
-        sm={6}>
+        sm={6}
+        sx={{
+          '&.MuiGrid-root': {
+            paddingTop: { xs: 2, sm: 4 },
+          },
+        }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 4 } }}>
           <Typography
             component="h1"
