@@ -1,6 +1,5 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import ProductCard from './ui/ProductCard';
-import { categories } from '@/lib/utils';
 import { ProductType } from '@/types';
 
 type Props = {
@@ -11,7 +10,7 @@ export default function Products({ products }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 0.3, md: 2 }}>
+      spacing={{ xs: 0.3, sm: 2 }}>
       {products.map((product, index) => (
         <Grid
           key={index}

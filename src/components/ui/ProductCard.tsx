@@ -87,6 +87,15 @@ export default function ProductCard({ product }: Props) {
     }
   }
 
+  function handleGoToProductPage() {
+    dispatch(resetImageData());
+    product.product_image_data.map((data) =>
+      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }))
+    );
+    product.product_image_data.map((data) => dispatch(setImageData(data)));
+    router.push(`/products/product/${product.product_id}`);
+  }
+
   return (
     <Paper
       elevation={1}
@@ -98,60 +107,61 @@ export default function ProductCard({ product }: Props) {
           gap: { xs: 1, sm: 2 },
           height: 1,
         }}>
-        <Link href={`/products/product/${product.product_id}`}>
+        <Box
+          onClick={handleGoToProductPage}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: { xs: 1, sm: 2 },
+            paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
+            cursor: 'pointer',
+          }}>
           <Box
             sx={{
+              position: 'relative',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              // maxHeight: '208px',
+              aspectRatio: 6 / 8,
+            }}>
+            <Image
+              style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
+              fill
+              sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
+              src={imageUrl}
+              alt="mens t-shirt"
+              priority
+            />
+          </Box>
+          <Box
+            sx={{
+              position: 'absolute',
+              alignSelf: 'flex-end',
               display: 'flex',
               flexDirection: 'column',
-              gap: { xs: 1, sm: 2 },
-              paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
+              alignItems: 'flex-end',
             }}>
-            <Box
-              sx={{
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                // maxHeight: '208px',
-                aspectRatio: 6 / 8,
-              }}>
-              <Image
-                style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
-                fill
-                sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
-                src={imageUrl}
-                alt="mens t-shirt"
-                priority
-              />
-            </Box>
-            <Box
-              sx={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-              }}>
-              {isOnSale ? (
-                <Box
-                  sx={{
-                    width: 'fit-content',
-                    display: 'flex',
-                    borderRadius: 1,
-                    marginTop: 0.5,
-                    marginRight: 0.5,
-                    paddingX: 0.5,
-                    backgroundColor: color.green.dark,
-                  }}>
-                  <Typography
-                    component="span"
-                    variant="caption"
-                    sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
-                    sale
-                  </Typography>
-                </Box>
-              ) : null}
-              {/* <Box
+            {isOnSale ? (
+              <Box
+                sx={{
+                  width: 'fit-content',
+                  display: 'flex',
+                  borderRadius: 1,
+                  marginTop: 0.5,
+                  marginRight: 0.5,
+                  paddingX: 0.5,
+                  backgroundColor: color.green.dark,
+                }}>
+                <Typography
+                  component="span"
+                  variant="caption"
+                  sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
+                  sale
+                </Typography>
+              </Box>
+            ) : null}
+            {/* <Box
               sx={{
                 display: 'flex',
                 borderRadius: 1,
@@ -167,49 +177,48 @@ export default function ProductCard({ product }: Props) {
                 low stock
               </Typography>
             </Box> */}
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-                paddingX: { xs: 1, sm: 2 },
-              }}>
-              <Typography
-                component="h3"
-                variant="h6">
-                {product.name}
-              </Typography>
-              {isOnSale ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    flexWrap: 'wrap',
-                  }}>
-                  <Typography
-                    sx={{ paddingRight: 1 }}
-                    component="span"
-                    variant="h5">
-                    {formatCurrency(salePrice)}
-                  </Typography>
-                  <Typography
-                    component="span"
-                    variant="body1"
-                    sx={{ textDecoration: 'line-through', opacity: '70%' }}>
-                    {formatCurrency(product.price)}
-                  </Typography>
-                </Box>
-              ) : (
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              paddingX: { xs: 1, sm: 2 },
+            }}>
+            <Typography
+              component="h3"
+              variant="h6">
+              {product.name}
+            </Typography>
+            {isOnSale ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  flexWrap: 'wrap',
+                }}>
                 <Typography
+                  sx={{ paddingRight: 1 }}
                   component="span"
                   variant="h5">
+                  {formatCurrency(salePrice)}
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="body1"
+                  sx={{ textDecoration: 'line-through', opacity: '70%' }}>
                   {formatCurrency(product.price)}
                 </Typography>
-              )}
-            </Box>
+              </Box>
+            ) : (
+              <Typography
+                component="span"
+                variant="h5">
+                {formatCurrency(product.price)}
+              </Typography>
+            )}
           </Box>
-        </Link>
+        </Box>
         {isAdminView ? (
           <Box
             sx={{

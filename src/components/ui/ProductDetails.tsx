@@ -5,25 +5,12 @@ import { Box, Grid, Typography } from '@mui/material';
 import ProductImageBoxes from './ProductImageBoxes';
 import ToggleButtons from './buttons/ToggleButtons';
 import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { useEffect } from 'react';
-import { resetImageData, setImageData, setImageUploadProgress } from '@/lib/redux/addProduct/addProductSlice';
 import CustomButton from './buttons/CustomButton';
 import { AddShoppingCart } from '@mui/icons-material';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(resetImageData());
-    product.product_image_data.map((data) =>
-      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }))
-    );
-    product.product_image_data.map((data) => dispatch(setImageData(data)));
-  }, [product, dispatch]);
-
   return (
     <Grid
       container
