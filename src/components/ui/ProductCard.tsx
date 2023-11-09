@@ -88,16 +88,6 @@ export default function ProductCard({ product }: Props) {
       setIsDeletingProduct(false);
     }
   }
-
-  // function handleGoToProductPage() {
-  //   dispatch(resetImageData());
-  //   product.product_image_data.map((data) =>
-  //     dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }))
-  //   );
-  //   product.product_image_data.map((data) => dispatch(setImageData(data)));
-  //   router.push(`/products/product/${product.product_id}`);
-  // }
-
   return (
     <Paper
       elevation={1}
@@ -111,13 +101,11 @@ export default function ProductCard({ product }: Props) {
         }}>
         <Link href={`/products/product/${product.product_id}`}>
           <Box
-            // onClick={handleGoToProductPage}
             sx={{
               display: 'flex',
               flexDirection: 'column',
               gap: { xs: 1, sm: 2 },
               paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
-              // cursor: 'pointer',
             }}>
             <Box
               sx={{
@@ -125,13 +113,12 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                // maxHeight: '208px',
-                aspectRatio: 6 / 8,
+                aspectRatio: 3 / 4,
               }}>
               <Image
                 style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
                 fill
-                sizes="(min-width: 1200px) 286px, (min-width: 900px) 33.21vw, calc(50vw - 20px)"
+                sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
                 src={imageUrl}
                 alt="mens t-shirt"
                 priority

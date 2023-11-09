@@ -17,9 +17,8 @@ export default function LargeProductImageBox({ selectedImageIndex, borderColor }
 
   return (
     <Box
-      id="large-product-image-box"
       sx={{
-        aspectRatio: 6 / 8,
+        aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
         border: `1px solid ${borderColor}`,
         position: 'relative',
         borderRadius: 1,
@@ -31,7 +30,7 @@ export default function LargeProductImageBox({ selectedImageIndex, borderColor }
           <Image
             style={{ objectFit: 'cover', borderRadius: '4px' }}
             fill
-            sizes="(min-width: 460px) 398px, calc(82.86vw + 33px)"
+            sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
             src={imageData[selectedImageIndex].image_url}
             alt={`Image of ${formData.name}`}
             priority

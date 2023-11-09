@@ -48,11 +48,10 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
 
   return (
     <Box
-      id="small-product-image-box"
       key={imageIndex}
       onClick={selectImage}
       sx={{
-        aspectRatio: 6 / 8,
+        aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
         border: `1px solid ${boxBorderColor}`,
         borderRadius: 1,
         position: 'relative',
@@ -71,7 +70,7 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
                 cursor: 'pointer',
               }}
               fill
-              sizes="(min-width: 600px) 78px, (min-width: 440px) 72px, calc(19.17vw - 9px)"
+              sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px)"
               src={imageData[imageIndex].image_url}
               alt={`Image of ${formData.name}`}
               priority
