@@ -88,7 +88,6 @@ export default function ProductCard({ product }: Props) {
       setIsDeletingProduct(false);
     }
   }
-
   return (
     <Paper
       elevation={1}
