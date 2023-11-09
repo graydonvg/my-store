@@ -13,16 +13,17 @@ import { Spinner } from './progress/Spinner';
 import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 
-type Props = { imageIndex: number; borderColor: string; isEditMode: boolean; selectImage: () => void };
+type Props = { imageIndex: number; borderColor: string; isEditMode?: boolean; selectImage: () => void };
 
 export default function SmallProductImageBox({ imageIndex, borderColor, isEditMode, selectImage }: Props) {
-  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
+  const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const { imageUploadProgress, imageData, formData, isDeletingImage, productToUpdateId } = useAppSelector(
     (state) => state.addProduct
   );
+  const boxBorderColor = isAdminView ? borderColor : imageData[imageIndex] ? borderColor : 'transparent';
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
@@ -47,17 +48,18 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
 
   return (
     <Box
+      id="small-product-image-box"
       key={imageIndex}
       onClick={selectImage}
       sx={{
-        flexGrow: 1,
-        aspectRatio: 1 / 1,
-        border: `1px solid ${borderColor}`,
+        aspectRatio: 6 / 8,
+        border: `1px solid ${boxBorderColor}`,
         borderRadius: 1,
         position: 'relative',
-        display: 'grid',
-        placeItems: 'center',
-        order: 2,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexGrow: 1,
       }}>
       {imageUploadProgress[imageIndex] || imageData[imageIndex] ? (
         imageData[imageIndex] ? (

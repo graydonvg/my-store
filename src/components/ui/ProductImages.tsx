@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
 import ImageInput from './inputFields/ImageInput';
-import { InputProps } from '@mui/material';
+import { Box, InputProps } from '@mui/material';
 
 type Props = InputProps & {
   isLoading: boolean;
@@ -46,7 +46,7 @@ export default function ProductImages({ isLoading, ...inputProps }: Props) {
   }
 
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
       <ProductImageBoxes isEditMode={isEditMode} />
       <CustomButton
         onClick={handleDeleteAllImages}
@@ -100,6 +100,6 @@ export default function ProductImages({ isLoading, ...inputProps }: Props) {
         fullWidth={true}
         component="label"
       />
-    </>
+    </Box>
   );
 }
