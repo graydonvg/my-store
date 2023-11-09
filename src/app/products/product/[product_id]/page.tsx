@@ -3,6 +3,8 @@ import serverClient from '@/lib/supabase-server';
 import getAllProducts from '@/services/products/get-all-products';
 import { ProductType } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 type Params = {
   params: { product_id: string };
 };
