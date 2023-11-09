@@ -18,9 +18,6 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
   const boxBorderColor = isAdminView ? borderColor : 'transparent';
-  const largeProductImageBoxHeight = document.getElementById('large-product-image-box')?.offsetHeight;
-  const smallProductImageBoxHeight = document.getElementById('small-product-image-box')?.offsetHeight;
-  const boxGap = (largeProductImageBoxHeight! - smallProductImageBoxHeight! * 5) / 4;
 
   useEffect(() => {
     if (imageData.length === 0) {
@@ -36,7 +33,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 1, sm: 2 }}
+      spacing={1}
       sx={{ maxWidth: isAdminView ? '400px' : null }}>
       <Grid
         item
@@ -47,7 +44,7 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'row', sm: 'column' },
-            gap: { xs: 1, sm: `${boxGap}px` },
+            gap: { xs: 1, sm: `10.75px` },
           }}>
           {Array.from(Array(5)).map((_, index) => (
             <SmallProductImageBox
