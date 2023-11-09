@@ -7,7 +7,7 @@ export default async function getProductById(product_id: string): Promise<Custom
   try {
     const response = await fetch(url, {
       method: 'GET',
-      cache: 'force-cache',
+      cache: 'no-store',
     });
     const data = await response.json();
 

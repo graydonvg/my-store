@@ -21,9 +21,6 @@ export default function ProductImageBoxes({ isEditMode }: Props) {
   const largeProductImageBoxHeight = document.getElementById('large-product-image-box')?.offsetHeight;
   const smallProductImageBoxHeight = document.getElementById('small-product-image-box')?.offsetHeight;
   const boxGap = (largeProductImageBoxHeight! - smallProductImageBoxHeight! * 5) / 4;
-  console.log(boxGap);
-  console.log(largeProductImageBoxHeight);
-  console.log(smallProductImageBoxHeight);
 
   useEffect(() => {
     if (imageData.length === 0) {
