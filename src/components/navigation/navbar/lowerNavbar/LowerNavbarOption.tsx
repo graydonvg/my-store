@@ -5,7 +5,7 @@ import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
 import Link from 'next/link';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 import { resetFormData, resetImageData, resetProductToUpdateId } from '@/lib/redux/addProduct/addProductSlice';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type LowerNavbarOptionProps = {
   path: string;
@@ -38,6 +38,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   const theme = useTheme();
   const color = useCustomColorPalette();
   const dispatch = useAppDispatch();
+  const { productToUpdateId } = useAppSelector((state) => state.addProduct);
   const mode = theme.palette.mode;
   const labelTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
   const labelTextHoverColor = mode === 'light' ? color.grey.dark : 'white';
@@ -45,9 +46,11 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
-      dispatch(resetImageData());
-      dispatch(resetFormData());
-      dispatch(resetProductToUpdateId());
+      if (productToUpdateId && productToUpdateId?.length > 0) {
+        dispatch(resetImageData());
+        dispatch(resetFormData());
+        dispatch(resetProductToUpdateId());
+      }
     }
   }
 

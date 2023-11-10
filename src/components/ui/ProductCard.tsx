@@ -8,7 +8,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { deleteAllProductImages, formatCurrency } from '@/lib/utils';
 import { AddProductStoreType, ProductType } from '@/types';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   resetFormData,
   resetImageData,
@@ -32,15 +32,23 @@ export default function ProductCard({ product }: Props) {
   const color = useCustomColorPalette();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { imageData, productToUpdateId } = useAppSelector((state) => state.addProduct);
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale == 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const imageUrl = product_image_data.filter((data) => data.index === 0)[0].image_url;
 
-  function handleSetAddProductStoreData() {
+  async function handleSetAddProductStoreData() {
+    setIsLoading(true);
+
+    if (imageData && !productToUpdateId) {
+      await deleteAllProductImages(imageData);
+    }
+
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
@@ -62,7 +70,7 @@ export default function ProductCard({ product }: Props) {
         );
       }
     }
-
+    setIsLoading(false);
     router.push('/admin-view/add-product');
   }
 
@@ -233,6 +241,7 @@ export default function ProductCard({ product }: Props) {
               onClick={handleSetAddProductStoreData}
               fullWidth
               label="update"
+              startIcon={isLoading && <Spinner size={20} />}
               backgroundColor="blue"
             />
           </Box>
