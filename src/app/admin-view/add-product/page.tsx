@@ -34,7 +34,7 @@ import addProduct from '@/services/products/add-product';
 import addProductImageData from '@/services/product-image-data/add-product-image-data';
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
-import ProductImages from '@/components/ui/productImages/ProductImages';
+import ManageProductImages from '@/components/ManageProductImages';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -229,7 +229,7 @@ export default function AdminViewAddNewProduct() {
         <Grid
           item
           xs={12}>
-          <ProductImages
+          <ManageProductImages
             onChange={handleImageUpload}
             isLoading={isLoading || uploadInProgress}
           />

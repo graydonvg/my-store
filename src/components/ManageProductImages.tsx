@@ -3,20 +3,20 @@
 import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import ProductImageBoxes from './ProductImageBoxes';
+import ProductImageBoxes from './ui/productImages/ProductImageBoxes';
 import { useEffect, useState } from 'react';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
 import { Box, InputProps } from '@mui/material';
-import CustomButton from '../buttons/CustomButton';
-import { Spinner } from '../progress/Spinner';
-import ImageInput from '../inputFields/ImageInput';
+import CustomButton from './ui/buttons/CustomButton';
+import { Spinner } from './ui/progress/Spinner';
+import ImageInput from './ui/inputFields/ImageInput';
 
 type Props = InputProps & {
   isLoading: boolean;
 };
 
-export default function ProductImages({ isLoading, ...inputProps }: Props) {
+export default function ManageProductImages({ isLoading, ...inputProps }: Props) {
   const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId } = useAppSelector(
     (state) => state.addProduct

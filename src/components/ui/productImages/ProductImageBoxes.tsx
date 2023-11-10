@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import SmallProductImageBox from './SmallProductImageBox';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
-import { ProductImageDataDbType, ProductType } from '@/types';
+import { ProductType } from '@/types';
 
 type Props = { isEditMode?: boolean; product?: ProductType };
 
