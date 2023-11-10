@@ -21,10 +21,10 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   useEffect(() => {
-    if (imageData.length === 0) {
+    if (isAdminView && imageData.length === 0) {
       setSelectedImageIndex(0);
     }
-  }, [imageData]);
+  }, [isAdminView, imageData]);
 
   function handleSelectedImage(index: number) {
     if (isAdminView && index > imageData.length - 1) return;
