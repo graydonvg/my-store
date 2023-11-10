@@ -72,6 +72,7 @@ export default function SmallProductImageBox({
         justifyContent: 'center',
         alignItems: 'center',
         flexGrow: 1,
+        width: 1,
       }}>
       {imageUploadProgress[imageIndex] || productImageData ? (
         productImageData ? (

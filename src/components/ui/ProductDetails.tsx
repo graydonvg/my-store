@@ -9,7 +9,7 @@ import { AddShoppingCart } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetImageData, setImageData, setImageUploadProgress } from '@/lib/redux/addProduct/addProductSlice';
-import ProductImageBoxes from './productImages/ProductImageBoxes';
+import ProductImageBoxes from './productImageBoxes/ProductImageBoxes';
 
 type Props = { product: ProductType };
 
