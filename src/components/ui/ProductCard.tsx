@@ -143,19 +143,24 @@ export default function ProductCard({ product }: Props) {
               {isOnSale ? (
                 <Box
                   sx={{
-                    width: 'fit-content',
                     display: 'flex',
+                    flexDirection: 'column',
                     borderRadius: 1,
                     marginTop: 0.5,
                     marginRight: 0.5,
                     paddingX: 0.5,
-                    backgroundColor: color.green.dark,
+                    backgroundColor: color.blue.dark,
+                    width: 'min-content',
                   }}>
                   <Typography
                     component="span"
                     variant="caption"
-                    sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
-                    sale
+                    sx={{
+                      textAlign: 'center',
+                      color: color.grey.light,
+                      textTransform: 'uppercase',
+                    }}>
+                    {`${product.sale_percentage}% off`}
                   </Typography>
                 </Box>
               ) : null}
