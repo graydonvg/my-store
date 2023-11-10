@@ -1,9 +1,14 @@
-import { ProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import { ProductImageDataStoreType, AddProductStoreType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
+export type ImageUploadProgressType = {
+  file_name: string;
+  progress: number;
+};
 
 type State = {
   isDeletingImage: boolean;
-  imageUploadProgress: AddProductImageUploadProgressType[];
+  imageUploadProgress: ImageUploadProgressType[];
   imageData: ProductImageDataStoreType[];
   formData: AddProductStoreType;
   productToUpdateId: string | null;
@@ -52,7 +57,7 @@ export const addProductSlice = createSlice({
         state.formData = { ...state.formData, [field]: value };
       }
     },
-    setImageUploadProgress(state, action: PayloadAction<AddProductImageUploadProgressType>) {
+    setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
       const existingIndex = state.imageUploadProgress.findIndex(
         (upload) => upload.file_name === action.payload.file_name
       );

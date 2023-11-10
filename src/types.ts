@@ -39,19 +39,14 @@ export type AddProductDbType = Omit<Omit<Database['public']['Tables']['products'
 
 export type UpdateProductType = Omit<Database['public']['Tables']['products']['Row'], 'created_at'>;
 
-export type AddProductImageDataStoreType = {
+export type ProductImageDataStoreType = {
   image_url: string;
   file_name: string;
   product_image_id?: string;
   index: number;
 };
 
-export type AddProductImageDataDbType = Omit<
+export type ProductImageDataDbType = Omit<
   Omit<Database['public']['Tables']['product_image_data']['Row'], 'created_at'>,
   'product_image_id'
 >;
-
-export type AddProductImageUploadProgressType = {
-  file_name: string;
-  progress: number;
-};
