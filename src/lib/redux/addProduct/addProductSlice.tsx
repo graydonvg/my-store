@@ -1,7 +1,7 @@
 import { ProductImageDataStoreType, AddProductStoreType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type ImageUploadProgressType = {
+type ImageUploadProgressType = {
   file_name: string;
   progress: number;
 };

@@ -1,9 +1,17 @@
-import { DrawerContentType, DrawerState } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function handleDrawer(isOpen: Partial<DrawerState>, isDrawerOpen: DrawerState) {
   return { ...isDrawerOpen, ...isOpen };
 }
+
+type DrawerContentType = 'nav' | 'cart' | null;
+
+type DrawerState = {
+  top: boolean;
+  left: boolean;
+  bottom: boolean;
+  right: boolean;
+};
 
 type InitialStateType = {
   isDrawerOpen: DrawerState;

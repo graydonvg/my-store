@@ -4,12 +4,13 @@ import { Fragment } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
 import Drawer from '@mui/material/Drawer';
-import { DrawerAnchor } from '@/types';
 import NavDrawerContent from '@/components/navigation/navDrawer/NavDrawerContent';
 
 function renderDrawerContent(drawerContent: 'nav' | 'cart' | null) {
   return drawerContent === 'nav' ? <NavDrawerContent /> : null;
 }
+
+type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export default function DrawerComponent() {
   const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
