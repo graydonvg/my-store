@@ -27,7 +27,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   }, [imageData]);
 
   function handleSelectedImage(index: number) {
-    if (index > imageData.length - 1) return;
+    if (isAdminView && index > imageData.length - 1) return;
     setSelectedImageIndex(index);
   }
 
