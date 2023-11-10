@@ -16,9 +16,9 @@ import { ProductImageDataStoreType } from '@/types';
 
 type Props = {
   productName: string;
-  productImageData: ProductImageDataStoreType;
+  productImageData: ProductImageDataStoreType | null;
   imageIndex: number;
-  borderColor: string;
+  borderColor?: string;
   isEditMode?: boolean;
   selectImage: () => void;
 };

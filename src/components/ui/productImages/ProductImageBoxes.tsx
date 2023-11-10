@@ -31,10 +31,31 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
     setSelectedImageIndex(index);
   }
 
+  function getImageBoxes() {
+    const imageBoxes = [];
+
+    for (let index = 0; index < 5; index++) {
+      const data = product?.product_image_data?.find((item) => item.index === index);
+
+      imageBoxes.push(
+        <SmallProductImageBox
+          key={index}
+          productName={product?.name ?? ''}
+          productImageData={data || null}
+          imageIndex={index}
+          borderColor={boxBorderColor}
+          isEditMode={isEditMode}
+          selectImage={() => handleSelectedImage(index)}
+        />
+      );
+    }
+    return imageBoxes;
+  }
+
   return (
     <Grid
       container
-      spacing={1}
+      spacing={{ xs: '0.3px', sm: 1 }}
       sx={{ maxWidth: isAdminView ? '500px' : null }}>
       <Grid
         item
@@ -45,7 +66,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'row', sm: 'column' },
-            gap: { xs: 1, sm: `10.7px` },
+            gap: { xs: '0.3px', sm: `10.7px` },
           }}>
           {isAdminView
             ? Array.from(Array(5)).map((_, index) => (
@@ -59,17 +80,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
                   selectImage={() => handleSelectedImage(index)}
                 />
               ))
-            : product?.product_image_data?.map((data) => (
-                <SmallProductImageBox
-                  key={data.index}
-                  productName={product.name}
-                  productImageData={data}
-                  imageIndex={data.index}
-                  borderColor={boxBorderColor}
-                  isEditMode={isEditMode}
-                  selectImage={() => handleSelectedImage(data.index)}
-                />
-              ))}
+            : getImageBoxes()}
         </Box>
       </Grid>
       <Grid
