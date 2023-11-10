@@ -33,7 +33,7 @@ export default function ProductDetails({ product }: Props) {
       currentUrl.searchParams.delete('size');
     }
 
-    router.push(currentUrl.toString(), {
+    router.replace(currentUrl.toString(), {
       scroll: false,
     });
   }
