@@ -35,8 +35,8 @@ export default function ProductCard({ product }: Props) {
   const { imageData, productToUpdateId } = useAppSelector((state) => state.addProduct);
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const isOnSale = product.on_sale == 'Yes';
-  const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
+  const isOnSale = product.on_sale === 'Yes';
+  const sale_price = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -199,7 +199,7 @@ export default function ProductCard({ product }: Props) {
                     sx={{ paddingRight: 1 }}
                     component="span"
                     variant="h5">
-                    {formatCurrency(salePrice)}
+                    {formatCurrency(sale_price)}
                   </Typography>
                   <Typography
                     component="span"

@@ -9,6 +9,7 @@ import { AddShoppingCart } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 type Props = { product: ProductType };
 
@@ -16,6 +17,8 @@ export default function ProductDetails({ product }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const size = searchParams.get('size');
+  const isOnSale = product.on_sale === 'Yes';
+  const sale_price = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
 
   function getToggleButtonOptions() {
     return product.sizes.map((size) => toggleButtonSizeOptions.filter((option) => option.value === size)[0]);
@@ -32,6 +35,18 @@ export default function ProductDetails({ product }: Props) {
 
     router.push(currentUrl.toString(), {
       scroll: false,
+    });
+  }
+
+  function handleAddToCart() {
+    if (!size) return toast.warning('Please select a size.');
+    console.log({
+      product_id: product.product_id,
+      name: product.name,
+      image_url: product.product_image_data[0].image_url,
+      price: product.price,
+      sale_price,
+      size,
     });
   }
 
@@ -58,15 +73,38 @@ export default function ProductDetails({ product }: Props) {
           <Typography
             component="h1"
             variant="h4"
-            fontWeight={600}>
+            fontWeight={500}>
             {product.name}
           </Typography>
-          <Typography
-            component="span"
-            variant="h5"
-            fontWeight={600}>
-            {formatCurrency(product.price)}
-          </Typography>
+          {isOnSale ? (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-end',
+                flexWrap: 'wrap',
+              }}>
+              <Typography
+                sx={{ paddingRight: 1 }}
+                component="span"
+                variant="h5"
+                fontWeight={600}>
+                {formatCurrency(sale_price)}
+              </Typography>
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{ textDecoration: 'line-through', opacity: '70%' }}>
+                {formatCurrency(product.price)}
+              </Typography>
+            </Box>
+          ) : (
+            <Typography
+              component="span"
+              variant="h5"
+              fontWeight={600}>
+              {formatCurrency(product.price)}
+            </Typography>
+          )}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography
               component="p"
@@ -81,6 +119,7 @@ export default function ProductDetails({ product }: Props) {
             />
           </Box>
           <CustomButton
+            onClick={handleAddToCart}
             fullWidth
             label="add to cart"
             backgroundColor="blue"
