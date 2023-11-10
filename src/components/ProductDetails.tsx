@@ -7,10 +7,32 @@ import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import CustomButton from './ui/buttons/CustomButton';
 import { AddShoppingCart } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
+import { MouseEvent } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const size = searchParams.get('size');
+
+  function getToggleButtonOptions() {
+    return product.sizes.map((size) => toggleButtonSizeOptions.filter((option) => option.value === size)[0]);
+  }
+
+  function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+    const currentUrl = new URL(window.location.href);
+
+    if (size !== selectedSize) {
+      currentUrl.searchParams.set('size', selectedSize);
+    } else {
+      currentUrl.searchParams.delete('size');
+    }
+
+    router.push(currentUrl.toString());
+  }
+
   return (
     <Grid
       container
@@ -51,8 +73,9 @@ export default function ProductDetails({ product }: Props) {
               Select A Size
             </Typography>
             <ToggleButtons
-              buttons={toggleButtonSizeOptions}
-              selection={['small']}
+              onChange={handleSelectSize}
+              buttons={getToggleButtonOptions()}
+              selection={size ? [size] : []}
             />
           </Box>
           <CustomButton
