@@ -30,7 +30,9 @@ export default function ProductDetails({ product }: Props) {
       currentUrl.searchParams.delete('size');
     }
 
-    router.push(currentUrl.toString());
+    router.push(currentUrl.toString(), {
+      scroll: false,
+    });
   }
 
   return (
