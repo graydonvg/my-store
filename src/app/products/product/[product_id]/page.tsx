@@ -1,4 +1,4 @@
-import ProductDetails from '@/components/ui/ProductDetails';
+import ProductDetails from '@/components/ProductDetails';
 import getAllProducts from '@/services/products/get-all-products';
 import getProductById from '@/services/products/get-product-by-id';
 import { ProductType } from '@/types';

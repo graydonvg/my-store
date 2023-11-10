@@ -2,28 +2,15 @@
 
 import { ProductType } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
-import ToggleButtons from './buttons/ToggleButtons';
+import ToggleButtons from './ui/buttons/ToggleButtons';
 import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
-import CustomButton from './buttons/CustomButton';
+import CustomButton from './ui/buttons/CustomButton';
 import { AddShoppingCart } from '@mui/icons-material';
-import { useEffect } from 'react';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { resetImageData, setImageData, setImageUploadProgress } from '@/lib/redux/addProduct/addProductSlice';
-import ProductImageBoxes from './productImageBoxes/ProductImageBoxes';
+import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(resetImageData());
-  //   product.product_image_data.map((data) => {
-  //     dispatch(setImageData(data));
-  //     dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
-  //   });
-  // }, [dispatch, product]);
-
   return (
     <Grid
       container
@@ -79,12 +66,12 @@ export default function ProductDetails({ product }: Props) {
               component="h2"
               variant="body1"
               fontWeight={500}>
-              Shipping
+              Description
             </Typography>
             <Typography
               component="p"
               variant="body1">
-              {product.delivery_info}
+              {product.description}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -92,12 +79,12 @@ export default function ProductDetails({ product }: Props) {
               component="h2"
               variant="body1"
               fontWeight={500}>
-              Description
+              Shipping
             </Typography>
             <Typography
               component="p"
               variant="body1">
-              {product.description}
+              {product.delivery_info}
             </Typography>
           </Box>
         </Box>
