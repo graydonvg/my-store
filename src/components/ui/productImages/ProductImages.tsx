@@ -1,16 +1,16 @@
 'use client';
 
 import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
-import CustomButton from './buttons/CustomButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Spinner } from './progress/Spinner';
 import ProductImageBoxes from './ProductImageBoxes';
 import { useEffect, useState } from 'react';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
-import ImageInput from './inputFields/ImageInput';
 import { Box, InputProps } from '@mui/material';
+import CustomButton from '../buttons/CustomButton';
+import { Spinner } from '../progress/Spinner';
+import ImageInput from '../inputFields/ImageInput';
 
 type Props = InputProps & {
   isLoading: boolean;

@@ -1,10 +1,10 @@
-import { AddProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
+import { ProductImageDataStoreType, AddProductStoreType, AddProductImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
   isDeletingImage: boolean;
   imageUploadProgress: AddProductImageUploadProgressType[];
-  imageData: AddProductImageDataStoreType[];
+  imageData: ProductImageDataStoreType[];
   formData: AddProductStoreType;
   productToUpdateId: string | null;
 };
@@ -63,7 +63,7 @@ export const addProductSlice = createSlice({
         state.imageUploadProgress.push(action.payload);
       }
     },
-    setImageData(state, action: PayloadAction<AddProductImageDataStoreType>) {
+    setImageData(state, action: PayloadAction<ProductImageDataStoreType>) {
       const data = [...state.imageData, action.payload];
       const sortedData = data
         .slice()

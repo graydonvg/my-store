@@ -1,4 +1,4 @@
-import { AddProductImageDataStoreType, CustomResponseType } from '@/types';
+import { ProductImageDataStoreType, CustomResponseType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
@@ -137,7 +137,7 @@ export default function getURL(path: string) {
 }
 
 export async function deleteAllProductImages(
-  imageData: AddProductImageDataStoreType[],
+  imageData: ProductImageDataStoreType[],
   productId?: string | null
 ): Promise<CustomResponseType> {
   let dbDataDeleteSuccess = true;

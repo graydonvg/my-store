@@ -34,7 +34,7 @@ import addProduct from '@/services/products/add-product';
 import addProductImageData from '@/services/product-image-data/add-product-image-data';
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
-import ProductImages from '@/components/ui/ProductImages';
+import ProductImages from '@/components/ui/productImages/ProductImages';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
