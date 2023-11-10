@@ -2,7 +2,6 @@
 
 import { ProductType } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
-import ProductImageBoxes from './ProductImageBoxes';
 import ToggleButtons from './buttons/ToggleButtons';
 import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import CustomButton from './buttons/CustomButton';
@@ -10,19 +9,20 @@ import { AddShoppingCart } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetImageData, setImageData, setImageUploadProgress } from '@/lib/redux/addProduct/addProductSlice';
+import ProductImageBoxes from './productImages/ProductImageBoxes';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(resetImageData());
-    product.product_image_data.map((data) => {
-      dispatch(setImageData(data));
-      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
-    });
-  }, [dispatch, product]);
+  // useEffect(() => {
+  //   dispatch(resetImageData());
+  //   product.product_image_data.map((data) => {
+  //     dispatch(setImageData(data));
+  //     dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
+  //   });
+  // }, [dispatch, product]);
 
   return (
     <Grid
@@ -32,7 +32,7 @@ export default function ProductDetails({ product }: Props) {
         item
         xs={12}
         sm={6}>
-        <ProductImageBoxes />
+        <ProductImageBoxes product={product} />
       </Grid>
       <Grid
         item

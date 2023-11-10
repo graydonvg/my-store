@@ -9,21 +9,34 @@ import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
-import { Spinner } from './progress/Spinner';
-import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
+import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
+import { Spinner } from '../progress/Spinner';
+import { ProductImageDataStoreType } from '@/types';
 
-type Props = { imageIndex: number; borderColor: string; isEditMode?: boolean; selectImage: () => void };
+type Props = {
+  productName: string;
+  productImageData: ProductImageDataStoreType;
+  imageIndex: number;
+  borderColor: string;
+  isEditMode?: boolean;
+  selectImage: () => void;
+};
 
-export default function SmallProductImageBox({ imageIndex, borderColor, isEditMode, selectImage }: Props) {
+export default function SmallProductImageBox({
+  productName,
+  productImageData,
+  imageIndex,
+  borderColor,
+  isEditMode,
+  selectImage,
+}: Props) {
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const { imageUploadProgress, imageData, formData, isDeletingImage, productToUpdateId } = useAppSelector(
-    (state) => state.addProduct
-  );
-  const boxBorderColor = isAdminView ? borderColor : imageData[imageIndex] ? borderColor : 'transparent';
+  const { imageUploadProgress, isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
+  const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
@@ -60,8 +73,8 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
         alignItems: 'center',
         flexGrow: 1,
       }}>
-      {imageUploadProgress[imageIndex] || imageData[imageIndex] ? (
-        imageData[imageIndex] ? (
+      {imageUploadProgress[imageIndex] || productImageData ? (
+        productImageData ? (
           <>
             <Image
               style={{
@@ -71,16 +84,14 @@ export default function SmallProductImageBox({ imageIndex, borderColor, isEditMo
               }}
               fill
               sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px)"
-              src={imageData[imageIndex].image_url}
-              alt={`Image of ${formData.name}`}
+              src={productImageData.image_url}
+              alt={`Image of ${productName}`}
               priority
             />
             {isAdminView && isEditMode ? (
               <>
                 <IconButton
-                  onClick={() =>
-                    handleDeleteImage(imageData[imageIndex].file_name, imageData[imageIndex].product_image_id!)
-                  }
+                  onClick={() => handleDeleteImage(productImageData.file_name, productImageData.product_image_id ?? '')}
                   disabled={isDeletingImage}
                   sx={{
                     position: 'absolute',

@@ -4,35 +4,50 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { CircularProgressWithLabel } from './progress/CircularProgressWithLabel';
+import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
+import { ProductImageDataDbType, ProductImageDataStoreType } from '@/types';
+import { usePathname } from 'next/navigation';
 
-type Props = { selectedImageIndex: number; borderColor: string };
+type Props = {
+  selectedImageIndex: number;
+  borderColor: string;
+  productImageData?: ProductImageDataDbType | ProductImageDataStoreType;
+  productName: string;
+};
 
-export default function LargeProductImageBox({ selectedImageIndex, borderColor }: Props) {
-  const { imageUploadProgress, imageData, formData } = useAppSelector((state) => state.addProduct);
+export default function LargeProductImageBox({
+  selectedImageIndex,
+  borderColor,
+  productImageData,
+  productName,
+}: Props) {
+  const { imageUploadProgress } = useAppSelector((state) => state.addProduct);
   const color = useCustomColorPalette();
   const theme = useTheme();
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('admin-view');
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
+  const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   return (
     <Box
       sx={{
         aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
-        border: `1px solid ${borderColor}`,
+        border: `1px solid ${boxBorderColor}`,
         position: 'relative',
         borderRadius: 1,
         display: 'grid',
         placeItems: 'center',
       }}>
-      {imageUploadProgress[selectedImageIndex] || imageData[selectedImageIndex] ? (
-        imageData[selectedImageIndex] ? (
+      {imageUploadProgress[selectedImageIndex] || productImageData ? (
+        productImageData ? (
           <Image
             style={{ objectFit: 'cover', borderRadius: '4px' }}
             fill
             sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
-            src={imageData[selectedImageIndex].image_url}
-            alt={`Image of ${formData.name}`}
+            src={productImageData.image_url}
+            alt={`Image of ${productName}`}
             priority
           />
         ) : (
