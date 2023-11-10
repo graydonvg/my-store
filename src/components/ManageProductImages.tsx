@@ -3,7 +3,7 @@
 import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import ProductImageBoxes from './ui/productImages/ProductImageBoxes';
+import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { useEffect, useState } from 'react';
 import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
