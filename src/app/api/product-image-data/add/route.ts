@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { serverClientForRoute } from '@/lib/supabase-route';
 import { ProductImageDataDbType, CustomResponseType } from '@/types';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
+  const supabase = await createSupabaseServerClient();
   const imageData: ProductImageDataDbType[] = await request.json();
 
   try {

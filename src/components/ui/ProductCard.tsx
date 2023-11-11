@@ -42,7 +42,7 @@ export default function ProductCard({ product }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const imageUrl = product_image_data.filter((data) => data.index === 0)[0].image_url;
 
-  async function handleSetAddProductStoreData() {
+  async function handleGoToUpdate() {
     setIsLoading(true);
 
     if (imageData && !productToUpdateId) {
@@ -70,6 +70,7 @@ export default function ProductCard({ product }: Props) {
         );
       }
     }
+
     setIsLoading(false);
     router.push('/admin-view/add-product');
   }
@@ -243,7 +244,7 @@ export default function ProductCard({ product }: Props) {
               backgroundColor="red"
             />
             <CustomButton
-              onClick={handleSetAddProductStoreData}
+              onClick={handleGoToUpdate}
               fullWidth
               label="update"
               startIcon={isLoading && <Spinner size={20} />}

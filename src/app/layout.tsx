@@ -13,7 +13,7 @@ import '@fontsource/roboto/700.css';
 import './globals.css';
 import { CurrentUserType } from '@/types';
 import UserStateSetter from '@/components/UserStateSetter';
-import serverClient from '@/lib/supabase-server';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const supabase = await serverClient();
+  const supabase = await createSupabaseServerClient();
   const { data: user } = await supabase.from('users').select('*');
   const userData = user ? user[0] : ({} as CurrentUserType);
 

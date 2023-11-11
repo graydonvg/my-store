@@ -10,7 +10,7 @@ import { navOptions, adminNavOptions } from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
-import browserClient from '@/lib/supabase-browser';
+import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 
 const drawerWidth = '100vw';
 
@@ -32,7 +32,7 @@ function renderNavOptions(
 }
 
 export default function NavDraweOptions() {
-  const supabase = browserClient();
+  const supabase = createSupabaseBrowserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();

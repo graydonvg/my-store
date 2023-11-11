@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
-import { serverClientForRoute } from '@/lib/supabase-route';
+import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-server-auth';
 
 export async function GET(): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
+  const supabase = await createSupabaseServerClientForAuth();
   const {
     data: { session },
   } = await supabase.auth.getSession();

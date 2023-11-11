@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { serverClientForRoute } from '@/lib/supabase-route';
-import { AddProductDbType, CustomResponseType, UpdateProductType } from '@/types';
+import { AddProductDbType, CustomResponseType } from '@/types';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<
   NextResponse<
@@ -10,7 +10,7 @@ export async function POST(request: Request): Promise<
     }>
   >
 > {
-  const supabase = await serverClientForRoute();
+  const supabase = await createSupabaseServerClient();
   const formData: AddProductDbType = await request.json();
 
   try {

@@ -10,7 +10,7 @@ import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import browserClient from '@/lib/supabase-browser';
+import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
 
 const formFields = [
@@ -24,7 +24,7 @@ const defaultFormData = {
 };
 
 export default function SignInForm() {
-  const supabase = browserClient();
+  const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { serverClientForRoute } from '@/lib/supabase-route';
 import { CustomResponseType } from '@/types';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await serverClientForRoute();
+  const supabase = await createSupabaseServerClient();
   const product_id: string = await request.json();
 
   try {
