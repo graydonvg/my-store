@@ -24,7 +24,6 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
         display: 'flex',
         gap: 1,
         flexWrap: 'wrap',
-        width: 'fit-content',
       }}
       value={selection}
       exclusive
@@ -35,7 +34,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
             key={button.value}
             sx={{
               height: '48px',
-              width: '88px',
+              aspectRatio: 3 / 2,
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: labelColor,
                 border: `1px solid ${borderColor} !important`,

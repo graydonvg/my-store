@@ -102,7 +102,7 @@ export default function SmallProductImageBox({
                     width: '100%',
                     height: '100%',
                     color: color.grey.light,
-                    cursor: 'pointer',
+                    // cursor: 'pointer',
                     padding: 0,
                     borderRadius: 1,
                     backgroundColor: color.black.opacity.light,
