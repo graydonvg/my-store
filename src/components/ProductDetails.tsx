@@ -18,7 +18,6 @@ import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
-  const [itemQuantity, setItemQuantity] = useState(1);
   const color = useCustomColorPalette();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -26,6 +25,9 @@ export default function ProductDetails({ product }: Props) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const { currentUser } = useAppSelector((state) => state.user);
   const size = searchParams.get('size');
+  const quantity = Number(searchParams.get('quantity'));
+  const initialQuantity = quantity !== 0 ? quantity : 1;
+  const [itemQuantity, setItemQuantity] = useState(initialQuantity);
   const [itemSize, setItemSize] = useState<string | null>(size);
   const isOnSale = product.on_sale === 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
@@ -43,6 +45,7 @@ export default function ProductDetails({ product }: Props) {
       currentUrl.searchParams.set('size', selectedSize);
     } else {
       currentUrl.searchParams.delete('size');
+      currentUrl.searchParams.delete('quantity');
     }
 
     router.replace(currentUrl.toString(), {
@@ -60,10 +63,10 @@ export default function ProductDetails({ product }: Props) {
   }
 
   function handleAddToCart() {
-    // if (!currentUser) {
-    //   handleOpenSignInModal();
-    //   return;
-    // }
+    if (!currentUser) {
+      handleOpenSignInModal();
+      return;
+    }
 
     if (!itemSize) {
       handleSelectSizeToast();
@@ -86,10 +89,10 @@ export default function ProductDetails({ product }: Props) {
   }
 
   function handleAddToWishlist() {
-    // if (!currentUser) {
-    //   handleOpenSignInModal();
-    //   return;
-    // }
+    if (!currentUser) {
+      handleOpenSignInModal();
+      return;
+    }
 
     if (!itemSize) {
       handleSelectSizeToast();
@@ -103,9 +106,6 @@ export default function ProductDetails({ product }: Props) {
     //     imageUrl: product.product_image_data[0].image_url,
     //     price: product.price,
     //     salePrice: salePrice,
-    //     quantity: 1,
-    //     priceByQuantity: product.price,
-    //     salePriceByQuantity: salePrice,
     //     size,
     //   })
     // );
@@ -113,10 +113,32 @@ export default function ProductDetails({ product }: Props) {
 
   function handleIncrementItemQuantity() {
     setItemQuantity((prevQuantity) => prevQuantity + 1);
+
+    const currentUrl = new URL(window.location.href);
+
+    const updatedQuantity = initialQuantity + 1;
+
+    currentUrl.searchParams.set('quantity', updatedQuantity.toString());
+
+    router.replace(currentUrl.toString(), {
+      scroll: false,
+    });
   }
 
   function handleDecrementItemQuantity() {
     setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
+
+    const currentUrl = new URL(window.location.href);
+
+    const updatedQuantity = initialQuantity - 1;
+
+    if (updatedQuantity !== 0) {
+      currentUrl.searchParams.set('quantity', updatedQuantity.toString());
+    }
+
+    router.replace(currentUrl.toString(), {
+      scroll: false,
+    });
   }
 
   console.log(cartItems);
@@ -213,62 +235,71 @@ export default function ProductDetails({ product }: Props) {
               selection={itemSize ? [itemSize] : []}
             />
           </Box>
-          <Divider />
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              paddingBottom: 4,
-            }}>
-            <Typography
-              component="p"
-              variant="body1"
-              fontWeight={500}
-              sx={{ textTransform: 'uppercase' }}>
-              Quantity
-            </Typography>
-            <Box
-              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '320px', flexShrink: 1 }}>
-              <IconButton
-                onClick={handleDecrementItemQuantity}
+          {itemSize ? (
+            <>
+              <Divider />
+              <Box
                 sx={{
-                  color: 'black',
-                  height: '56px',
-                  aspectRatio: 3 / 2,
-                  borderRadius: 0,
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
+                  display: 'flex',
+                  alignItems: 'center',
                 }}>
-                <Remove />
-              </IconButton>
-              <Typography
-                component="span"
-                variant="h5"
-                sx={{ width: '4ch', textAlign: 'center' }}>
-                {itemQuantity}
-              </Typography>
-              <IconButton
-                onClick={handleIncrementItemQuantity}
-                sx={{
-                  color: 'black',
-                  height: '56px',
-                  aspectRatio: 3 / 2,
-                  borderRadius: 0,
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
-                }}>
-                <Add />
-              </IconButton>
-            </Box>
-          </Box>
+                <Typography
+                  component="p"
+                  variant="body1"
+                  fontWeight={500}
+                  sx={{ textTransform: 'uppercase' }}>
+                  Quantity
+                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '320px',
+                    flexShrink: 1,
+                  }}>
+                  <IconButton
+                    onClick={handleDecrementItemQuantity}
+                    sx={{
+                      color: 'black',
+                      height: '56px',
+                      aspectRatio: 3 / 2,
+                      borderRadius: 0,
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}>
+                    <Remove />
+                  </IconButton>
+                  <Typography
+                    component="span"
+                    variant="h5"
+                    sx={{ width: '4ch', textAlign: 'center' }}>
+                    {itemQuantity}
+                  </Typography>
+                  <IconButton
+                    onClick={handleIncrementItemQuantity}
+                    sx={{
+                      color: 'black',
+                      height: '56px',
+                      aspectRatio: 3 / 2,
+                      borderRadius: 0,
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}>
+                    <Add />
+                  </IconButton>
+                </Box>
+              </Box>
+            </>
+          ) : null}
           <Box
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               gap: 2,
-              paddingBottom: 4,
+              paddingY: 4,
             }}>
             <CustomButton
               onClick={handleAddToCart}

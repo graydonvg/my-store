@@ -40,15 +40,6 @@ export type ProductImageDataDbType = Omit<
   'product_image_id'
 >;
 
-// export type CartItemType = {
-//   product_id: string;
-//   name: string;
-//   image_url: string;
-//   price: number;
-//   sale_price: number;
-//   size: string;
-// };
-
 export type CartItemType = {
   productId: string;
   name: string;
