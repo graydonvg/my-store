@@ -18,6 +18,7 @@ type Props = {
   productName: string;
   productImageData: ProductImageDataStoreType | null;
   imageIndex: number;
+  selectedImageIndex: number;
   borderColor?: string;
   isEditMode?: boolean;
   selectImage: () => void;
@@ -27,6 +28,7 @@ export default function SmallProductImageBox({
   productName,
   productImageData,
   imageIndex,
+  selectedImageIndex,
   borderColor,
   isEditMode,
   selectImage,
@@ -73,6 +75,7 @@ export default function SmallProductImageBox({
         alignItems: 'center',
         flexGrow: 1,
         width: 1,
+        opacity: imageIndex !== selectedImageIndex ? '50%' : null,
       }}>
       {imageUploadProgress[imageIndex] || productImageData ? (
         productImageData ? (
