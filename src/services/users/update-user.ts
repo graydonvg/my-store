@@ -1,4 +1,4 @@
-import { Database } from '@/lib/database.types';
+import { Database } from '@/lib/supabase/database.types';
 import { CustomResponseType } from '@/types';
 
 type formDataType = Pick<Database['public']['Tables']['users']['Row'], 'first_name' | 'last_name'>;

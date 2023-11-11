@@ -1,4 +1,4 @@
-import { Database } from './lib/database.types';
+import { Database } from './lib/supabase/database.types';
 
 export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
 
@@ -39,3 +39,12 @@ export type ProductImageDataDbType = Omit<
   Omit<Database['public']['Tables']['product_image_data']['Row'], 'created_at'>,
   'product_image_id'
 >;
+
+export type CartItemType = {
+  product_id: string;
+  name: string;
+  image_url: string;
+  price: number;
+  sale_price: number;
+  size: string;
+};
