@@ -45,7 +45,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               light: red[400],
             },
             green: {
-              medium: green['A700'],
+              dark: green[700],
             },
             black: {
               opacity: {
@@ -83,7 +83,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               light: red[400],
             },
             green: {
-              medium: green['A400'],
+              dark: green[700],
             },
             black: {
               opacity: {
