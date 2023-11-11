@@ -4,6 +4,7 @@ import { themeSlice } from './theme/themeSlice';
 import { modalSlice } from './modal/modalSlice';
 import { addProductSlice } from './addProduct/addProductSlice';
 import { userSlice } from './user/userSlice';
+import { cartSlice } from './cart/cartSlice';
 
 export const rootReducer = combineReducers({
   addProduct: addProductSlice.reducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   theme: themeSlice.reducer,
   modal: modalSlice.reducer,
   user: userSlice.reducer,
+  cart: cartSlice.reducer,
 });

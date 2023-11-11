@@ -1,8 +1,8 @@
 import { CartItemType } from '@/types';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function checkIfItemExists(itemToCheck: CartItemType, cartItems: CartItemType[]) {
-  return cartItems.find((cartItem) => cartItem.id === itemToCheck.id);
+  return cartItems.find((cartItem) => cartItem.productId === itemToCheck.productId);
 }
 
 function addCartItem(itemToAdd: CartItemType, cartItems: CartItemType[]): CartItemType[] {
@@ -10,31 +10,49 @@ function addCartItem(itemToAdd: CartItemType, cartItems: CartItemType[]): CartIt
 
   if (itemExists) {
     return cartItems.map((cartItem) =>
-      cartItem.id === itemToAdd.id
-        ? { ...cartItem, quantity: cartItem.quantity + 1, priceByQuantity: (cartItem.quantity + 1) * cartItem.price }
+      cartItem.productId === itemToAdd.productId
+        ? {
+            ...cartItem,
+            quantity: cartItem.quantity + itemToAdd.quantity,
+            priceByQuantity: (cartItem.quantity + 1) * cartItem.price,
+            salePriceByQuantity: (cartItem.quantity + 1) * cartItem.salePrice,
+          }
         : cartItem
     );
   }
 
-  return [...cartItems, { ...itemToAdd, quantity: 1, priceByQuantity: itemToAdd.price }];
+  return [
+    ...cartItems,
+    {
+      ...itemToAdd,
+      quantity: itemToAdd.quantity,
+      priceByQuantity: itemToAdd.price * itemToAdd.quantity,
+      salePriceByQuantity: itemToAdd.salePrice * itemToAdd.quantity,
+    },
+  ];
 }
 
 function removeCartItem(itemToRemove: CartItemType, cartItems: CartItemType[]): CartItemType[] {
   const itemExists = checkIfItemExists(itemToRemove, cartItems);
 
   if (itemExists && itemExists.quantity === 1) {
-    return cartItems.filter((item) => !(item.id === itemToRemove.id));
+    return cartItems.filter((item) => !(item.productId === itemToRemove.productId));
   }
 
   return cartItems.map((cartItem) =>
-    cartItem.id === itemToRemove.id
-      ? { ...cartItem, quantity: cartItem.quantity - 1, priceByQuantity: (cartItem.quantity - 1) * cartItem.price }
+    cartItem.productId === itemToRemove.productId
+      ? {
+          ...cartItem,
+          quantity: cartItem.quantity - 1,
+          price_by_quantity: (cartItem.quantity - 1) * cartItem.price,
+          sale_price_by_quantity: (cartItem.quantity - 1) * cartItem.salePrice,
+        }
       : cartItem
   );
 }
 
 function clearCartItem(itemToClear: CartItemType, cartItems: CartItemType[]) {
-  return cartItems.filter((item) => !(item.id === itemToClear.id));
+  return cartItems.filter((item) => !(item.productId === itemToClear.productId));
 }
 
 type CartState = {
@@ -54,7 +72,7 @@ export const cartSlice = createSlice({
     setIsCartOpen(state, action) {
       state.isCartOpen = action.payload;
     },
-    addItemToCart(state, action) {
+    addItemToCart(state, action: PayloadAction<CartItemType>) {
       state.cartItems = addCartItem(action.payload, state.cartItems);
     },
     removeItemFromCart(state, action) {
