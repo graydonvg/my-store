@@ -46,6 +46,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
           borderColor={boxBorderColor}
           isEditMode={isEditMode}
           selectImage={() => handleSelectedImage(index)}
+          selectedImageIndex={selectedImageIndex}
         />
       );
     }
@@ -78,6 +79,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
                   borderColor={boxBorderColor}
                   isEditMode={isEditMode}
                   selectImage={() => handleSelectedImage(index)}
+                  selectedImageIndex={selectedImageIndex}
                 />
               ))
             : getImageBoxes()}
