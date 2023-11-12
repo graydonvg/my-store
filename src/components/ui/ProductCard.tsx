@@ -236,14 +236,30 @@ export default function ProductCard({ product }: Props) {
               onClick={handleDeleteProduct}
               fullWidth
               label="delete"
-              startIcon={isDeletingProduct ? <Spinner size={20} /> : <DeleteForever />}
+              startIcon={
+                isDeletingProduct ? (
+                  <Spinner
+                    size={20}
+                    providedColor="white"
+                  />
+                ) : (
+                  <DeleteForever />
+                )
+              }
               backgroundColor="red"
             />
             <CustomButton
               onClick={handleGoToUpdate}
               fullWidth
               label="update"
-              startIcon={isLoading && <Spinner size={20} />}
+              startIcon={
+                isLoading && (
+                  <Spinner
+                    size={20}
+                    providedColor="white"
+                  />
+                )
+              }
               backgroundColor="blue"
             />
           </Box>

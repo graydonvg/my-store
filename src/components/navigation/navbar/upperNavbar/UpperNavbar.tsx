@@ -17,7 +17,7 @@ export default function UpperNavbar() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: { xs: 'space-between', md: 'flex-end' },
-            height: { xs: '56px', md: '40px' },
+            height: { xs: '64px', md: '40px' },
           }}>
           <UpperNavbarOptions />
         </Box>
