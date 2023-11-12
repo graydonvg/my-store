@@ -75,7 +75,7 @@ export default function SmallProductImageBox({
         alignItems: 'center',
         flexGrow: 1,
         width: 1,
-        opacity: imageIndex !== selectedImageIndex ? '50%' : null,
+        opacity: productImageData && imageIndex !== selectedImageIndex ? '50%' : null,
       }}>
       {imageUploadProgress[imageIndex] || productImageData ? (
         productImageData ? (
@@ -102,7 +102,6 @@ export default function SmallProductImageBox({
                     width: '100%',
                     height: '100%',
                     color: color.grey.light,
-                    // cursor: 'pointer',
                     padding: 0,
                     borderRadius: 1,
                     backgroundColor: color.black.opacity.light,

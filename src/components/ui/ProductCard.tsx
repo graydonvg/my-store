@@ -15,7 +15,6 @@ import {
   resetProductToUpdateId,
   setFormData,
   setImageData,
-  setImageUploadProgress,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
 import deleteProduct from '@/services/products/delete-product';
@@ -52,10 +51,7 @@ export default function ProductCard({ product }: Props) {
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
-    product.product_image_data.map((data) => {
-      dispatch(setImageData(data));
-      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
-    });
+    product.product_image_data.map((data) => dispatch(setImageData(data)));
     dispatch(setProductToUpdateId(product_id));
 
     for (const key in restOfProductData) {
