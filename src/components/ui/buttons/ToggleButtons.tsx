@@ -33,7 +33,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
           <ToggleButton
             key={button.value}
             sx={{
-              height: '48px',
+              height: '56px',
               aspectRatio: 3 / 2,
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: labelColor,
@@ -48,7 +48,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 },
               },
               '&.MuiToggleButton-root.Mui-selected': {
-                color: color.grey.light,
+                color: 'white',
                 borderColor: `${selectedBorderColor} !important`,
                 backgroundColor: color.blue.light,
                 '&:hover': {
@@ -56,7 +56,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: color.grey.light,
+                    color: 'white',
                     backgroundColor: color.blue.light,
                     border: `1px solid ${selectedBorderColor} !important`,
                     filter: 'brightness(1.1)',

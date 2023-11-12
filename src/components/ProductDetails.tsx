@@ -146,7 +146,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
-      spacing={4}>
+      spacing={{ xs: 0, md: 4 }}>
       <Grid
         item
         xs={12}
@@ -160,6 +160,8 @@ export default function ProductDetails({ product }: Props) {
         sx={{
           '&.MuiGrid-root': {
             paddingTop: { xs: 2, sm: 4 },
+            paddingX: { xs: 1, md: 4 },
+            paddingRight: { md: 0 },
           },
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1 }}>
@@ -168,7 +170,7 @@ export default function ProductDetails({ product }: Props) {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              paddingBottom: { xs: 1, sm: 2 },
+              paddingBottom: 2,
             }}>
             <Typography
               component="h1"
@@ -179,11 +181,12 @@ export default function ProductDetails({ product }: Props) {
             <Box
               sx={{
                 display: 'flex',
-                alignItems: 'flex-end',
+                alignItems: { sm: 'flex-end' },
                 flexWrap: 'wrap',
+                flexDirection: { xs: 'column', sm: 'row' },
               }}>
               <Typography
-                sx={{ paddingRight: 3 }}
+                sx={{ paddingRight: 2 }}
                 component="span"
                 variant="h4"
                 fontWeight={500}>
@@ -199,15 +202,14 @@ export default function ProductDetails({ product }: Props) {
                   <Typography
                     component="span"
                     variant="h5"
-                    sx={{ textDecoration: 'line-through', opacity: '70%', paddingRight: 1 }}
-                    fontWeight={500}>
+                    sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
+                    fontWeight={400}>
                     {formatCurrency(product.price)}
                   </Typography>
                   <Typography
                     component="span"
                     variant="h5"
-                    sx={{ color: color.blue.light, fontFamily: 'serif' }}
-                    fontWeight={500}>
+                    sx={{ color: color.blue.light, fontFamily: 'serif' }}>
                     {`-${product.sale_percentage}%`}
                   </Typography>
                 </Box>
@@ -261,7 +263,7 @@ export default function ProductDetails({ product }: Props) {
                   <IconButton
                     onClick={handleDecrementItemQuantity}
                     sx={{
-                      color: 'black',
+                      color: 'inherit',
                       height: '56px',
                       aspectRatio: 3 / 2,
                       borderRadius: 0,
@@ -280,7 +282,7 @@ export default function ProductDetails({ product }: Props) {
                   <IconButton
                     onClick={handleIncrementItemQuantity}
                     sx={{
-                      color: 'black',
+                      color: 'inherit',
                       height: '56px',
                       aspectRatio: 3 / 2,
                       borderRadius: 0,

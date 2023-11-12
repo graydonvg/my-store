@@ -36,14 +36,16 @@ export default function NavDrawerOption({ onClick, path, label, bodyTextColor, d
   return (
     <>
       <ListItem
+        sx={{ height: '56px' }}
         disablePadding
         onClick={onClick}>
         {path ? (
           <Link
+            style={{ height: '100%' }}
             onClick={handleClearAddProductStoreData}
             tabIndex={-1}
             href={path}>
-            <ListItemButton sx={{ width: drawerWidth }}>
+            <ListItemButton sx={{ width: drawerWidth, height: '100%' }}>
               <ListItemText
                 primary={label}
                 sx={{ color: bodyTextColor }}
@@ -52,7 +54,7 @@ export default function NavDrawerOption({ onClick, path, label, bodyTextColor, d
             </ListItemButton>
           </Link>
         ) : (
-          <ListItemButton sx={{ width: drawerWidth }}>
+          <ListItemButton sx={{ width: drawerWidth, height: '100%' }}>
             <ListItemText
               primary={label}
               sx={{ color: bodyTextColor }}
