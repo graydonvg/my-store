@@ -51,6 +51,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               opacity: {
                 lighter: 'rgba(0, 0, 0, 0.26)',
                 light: 'rgba(0, 0, 0, 0.3)',
+                medium: 'rgba(0, 0, 0, 0.5)',
                 strong: 'rgba(0, 0, 0, 0.6)',
               },
             },
@@ -89,6 +90,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
               opacity: {
                 lighter: 'rgba(0, 0, 0, 0.26)',
                 light: 'rgba(0, 0, 0, 0.3)',
+                medium: 'rgba(0, 0, 0, 0.5)',
                 strong: 'rgba(0, 0, 0, 0.6)',
               },
             },
