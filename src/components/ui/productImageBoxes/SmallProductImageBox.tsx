@@ -75,7 +75,7 @@ export default function SmallProductImageBox({
         alignItems: 'center',
         flexGrow: 1,
         width: 1,
-        opacity: productImageData && imageIndex !== selectedImageIndex ? '50%' : null,
+        opacity: productImageData && !isEditMode ? (imageIndex !== selectedImageIndex ? '50%' : null) : null,
       }}>
       {imageUploadProgress[imageIndex] || productImageData ? (
         productImageData ? (
@@ -101,13 +101,12 @@ export default function SmallProductImageBox({
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
-                    color: color.grey.light,
+                    color: 'white',
                     padding: 0,
                     borderRadius: 1,
-                    backgroundColor: color.black.opacity.light,
+                    backgroundColor: color.black.opacity.medium,
                     '&:hover': {
-                      color: color.grey.light,
-                      backgroundColor: color.black.opacity.strong,
+                      backgroundColor: 'unset',
                     },
                   }}>
                   {!isDeletingImage ? (
