@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
 import ModalComponent from '@/components/ui/ModalComponent';
-import DrawerComponent from '@/components/ui/DrawerComponent';
 import Navbar from '@/components/navigation/navbar/Navbar';
 import Toast from '@/components/ui/Toast';
 import '@fontsource/roboto/300.css';
@@ -32,13 +31,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Navbar />
           <main>
             <Container
-              sx={{ paddingX: { xs: 0.3, md: 2 }, paddingTop: { xs: 0.3, md: 2 }, paddingBottom: 2 }}
+              sx={{ paddingX: { xs: 0.3, sm: 2 }, paddingTop: { xs: 0.3, sm: 2 }, paddingBottom: 2 }}
               disableGutters
               maxWidth="lg">
               {children}
             </Container>
           </main>
-          <DrawerComponent />
           <ModalComponent />
           <Toast />
           <UserStateSetter userData={userData} />

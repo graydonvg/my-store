@@ -39,7 +39,8 @@ export default function ModalComponent() {
       open={isModalOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description">
+      aria-describedby="modal-modal-description"
+      disableScrollLock={true}>
       <Grow in={isModalOpen}>
         <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
           <LoadingBar

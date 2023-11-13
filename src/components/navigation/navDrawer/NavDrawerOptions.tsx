@@ -1,7 +1,7 @@
 'use client';
 
 import { List, Box, useTheme, Button } from '@mui/material';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { setIsDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';

@@ -1,49 +1,56 @@
 'use client';
 
-import { Fragment } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { Fragment, KeyboardEvent, ReactNode } from 'react';
 import Drawer from '@mui/material/Drawer';
-import NavDrawerContent from '@/components/navigation/navDrawer/NavDrawerContent';
+import { DrawerAnchor, DrawerState } from '@/types';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
-function renderDrawerContent(drawerContent: 'nav' | 'cart' | null) {
-  return drawerContent === 'nav' ? <NavDrawerContent /> : null;
-}
+type Props = {
+  isOpen: DrawerState;
+  zIndex: (theme: any) => number;
+  children: ReactNode;
+};
 
-type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
-
-export default function DrawerComponent() {
-  const isDrawerOpen = useAppSelector((state) => state.drawer.isDrawerOpen);
-  const drawerContent = useAppSelector((state) => state.drawer.drawerContent);
+export default function DrawerComponent({ isOpen, zIndex, children }: Props) {
   const dispatch = useAppDispatch();
+  const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
+  const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
 
-  const handleToggleDrawer =
-    (anchor: DrawerAnchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
-      }
-      dispatch(setIsDrawerOpen({ [anchor]: open }));
-    };
+  const handleCloseNavDrawer = (anchor: DrawerAnchor, open: boolean) => (event: KeyboardEvent | MouseEvent) => {
+    if (
+      event.type === 'keydown' &&
+      ((event as KeyboardEvent).key === 'Tab' || (event as KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
 
+    if (isNavDrawerOpen.left) {
+      dispatch(setIsNavDrawerOpen({ [anchor]: open }));
+    }
+
+    if (isCartOpen.right) {
+      dispatch(setIsCartOpen({ [anchor]: open }));
+    }
+  };
   return (
     <>
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <Fragment key={anchor}>
           <Drawer
+            sx={{ zIndex }}
+            ModalProps={{ disableScrollLock: true }}
             PaperProps={{
               elevation: 0,
               sx: {
                 backgroundColor: 'background.default',
               },
             }}
-            hideBackdrop={true}
             anchor={anchor}
-            open={isDrawerOpen[anchor]}
-            onClose={handleToggleDrawer(anchor, false)}>
-            {renderDrawerContent(drawerContent)}
+            open={isOpen ? isOpen[anchor] : false}
+            onClose={handleCloseNavDrawer(anchor, false)}>
+            {children}
           </Drawer>
         </Fragment>
       ))}

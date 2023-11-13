@@ -14,6 +14,7 @@ export default function LowerNavbar() {
 
   return (
     <Box
+      id="lower-nav"
       component="div"
       position="sticky"
       sx={{ backgroundColor }}>

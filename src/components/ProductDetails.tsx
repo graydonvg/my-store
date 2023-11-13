@@ -22,7 +22,6 @@ export default function ProductDetails({ product }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector((state) => state.cart);
   const { currentUser } = useAppSelector((state) => state.user);
   const size = searchParams.get('size');
   const quantity = Number(searchParams.get('quantity'));
@@ -140,8 +139,6 @@ export default function ProductDetails({ product }: Props) {
       scroll: false,
     });
   }
-
-  console.log(cartItems);
 
   return (
     <Grid
