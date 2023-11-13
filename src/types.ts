@@ -1,5 +1,14 @@
 import { Database } from './lib/supabase/database.types';
 
+export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
+
+export type DrawerState = {
+  top: boolean;
+  left: boolean;
+  bottom: boolean;
+  right: boolean;
+};
+
 export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
 
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };

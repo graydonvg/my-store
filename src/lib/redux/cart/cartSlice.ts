@@ -56,12 +56,22 @@ function clearCartItem(itemToClear: CartItemType, cartItems: CartItemType[]) {
 }
 
 type CartState = {
-  isCartOpen: boolean;
+  isCartOpen: {
+    top: boolean;
+    left: boolean;
+    bottom: boolean;
+    right: boolean;
+  };
   cartItems: CartItemType[];
 };
 
 export const CART_INITIAL_STATE: CartState = {
-  isCartOpen: false,
+  isCartOpen: {
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  },
   cartItems: [],
 };
 

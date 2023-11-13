@@ -1,7 +1,7 @@
 'use client';
 
 import { List, Box, useTheme, Button } from '@mui/material';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
@@ -44,7 +44,7 @@ export default function NavDraweOptions() {
   const router = useRouter();
 
   function handleCloseDrawer() {
-    dispatch(setIsDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen({ left: false }));
   }
 
   async function handleSignOut() {
@@ -53,7 +53,7 @@ export default function NavDraweOptions() {
       toast.error(`Sign out failed. ${error.message}.`);
     }
     router.refresh();
-    dispatch(setIsDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen({ left: false }));
   }
 
   function handleToggleTheme() {

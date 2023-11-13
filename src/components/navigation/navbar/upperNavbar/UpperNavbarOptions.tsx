@@ -8,11 +8,13 @@ import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import { Fragment } from 'react';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
-import { setDrawerContent, setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Menu } from '@mui/icons-material';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
 import { ModalContentType } from '@/types';
+import DrawerComponent from '@/components/ui/DrawerComponent';
+import NavDrawerContent from '../../navDrawer/NavDrawerContent';
 
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
@@ -45,6 +47,8 @@ function renderDivider() {
 
 export default function UpperNavbarOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
+  const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
+  const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
 
@@ -58,8 +62,7 @@ export default function UpperNavbarOptions() {
   }
 
   function handleOpenNavDrawer() {
-    dispatch(setDrawerContent('nav'));
-    dispatch(setIsDrawerOpen({ left: true }));
+    dispatch(setIsNavDrawerOpen({ left: true }));
   }
 
   return (
@@ -77,6 +80,11 @@ export default function UpperNavbarOptions() {
           aria-label="open navigation drawer"
           onClick={handleOpenNavDrawer}
         />
+        <DrawerComponent
+          isOpen={isNavDrawerOpen}
+          zIndex={(theme) => theme.zIndex.AppBar + 1}>
+          <NavDrawerContent />
+        </DrawerComponent>
       </Box>
       <NavbarTitleAndLogo
         variant="h5"
@@ -87,19 +95,21 @@ export default function UpperNavbarOptions() {
         component="nav"
         sx={{ height: 1 }}>
         {currentUser ? (
-          <List
-            sx={{ display: 'flex', height: '100%' }}
-            disablePadding>
-            {[ShoppingCartButton, AccountMenu].map((Component, index) => (
-              <Fragment key={index}>
-                {index === 0 && renderDivider()}
-                <ListItem disablePadding>
-                  <Component />
-                </ListItem>
-                {renderDivider()}
-              </Fragment>
-            ))}
-          </List>
+          <>
+            <List
+              sx={{ display: 'flex', height: '100%' }}
+              disablePadding>
+              {[ShoppingCartButton, AccountMenu].map((Component, index) => (
+                <Fragment key={index}>
+                  {index === 0 && renderDivider()}
+                  <ListItem disablePadding>
+                    <Component />
+                  </ListItem>
+                  {renderDivider()}
+                </Fragment>
+              ))}
+            </List>
+          </>
         ) : (
           <List
             sx={{ display: 'flex', gap: 2, height: '100%' }}

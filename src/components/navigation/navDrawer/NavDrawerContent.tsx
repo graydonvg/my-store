@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Typography, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NavDraweOptions from './NavDrawerOptions';
@@ -13,7 +13,7 @@ export default function NavDrawerContent() {
   const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
 
   function handleCloseNavDrawer() {
-    dispatch(setIsDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen({ left: false }));
   }
 
   return (

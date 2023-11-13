@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsDrawerOpen } from '@/lib/redux/drawer/drawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { AppBar, Box, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
 import LowerNavbar from '../../navigation/navbar/lowerNavbar/LowerNavbar';
@@ -14,12 +14,13 @@ export default function Navbar() {
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
-    isBelowMedium ? dispatch(setIsDrawerOpen({ left: false })) : null;
+    isBelowMedium ? dispatch(setIsNavDrawerOpen({ left: false })) : null;
   }, [isBelowMedium, dispatch]);
 
   return (
     <ElevationScroll>
       <AppBar
+        id="navbar"
         color="transparent"
         elevation={0}
         position="sticky">
