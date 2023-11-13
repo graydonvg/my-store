@@ -21,36 +21,18 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   useEffect(() => {
-    if (isAdminView && imageData.length === 0) {
+    if ((isAdminView && imageData.length === 0) || product?.product_image_data.length === 0) {
       setSelectedImageIndex(0);
     }
-  }, [isAdminView, imageData]);
+  }, [isAdminView, imageData, product]);
 
   function handleSelectedImage(index: number) {
-    if (isAdminView && index > imageData.length - 1) return;
+    if (
+      (isAdminView && index > imageData.length - 1) ||
+      (product?.product_image_data && index > product?.product_image_data.length - 1)
+    )
+      return;
     setSelectedImageIndex(index);
-  }
-
-  function getImageBoxes() {
-    const imageBoxes = [];
-
-    for (let index = 0; index < 5; index++) {
-      const data = product?.product_image_data?.find((item) => item.index === index);
-
-      imageBoxes.push(
-        <SmallProductImageBox
-          key={index}
-          productName={product?.name ?? ''}
-          productImageData={data || null}
-          imageIndex={index}
-          borderColor={boxBorderColor}
-          isEditMode={isEditMode}
-          selectImage={() => handleSelectedImage(index)}
-          selectedImageIndex={selectedImageIndex}
-        />
-      );
-    }
-    return imageBoxes;
   }
 
   return (
@@ -82,7 +64,20 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
                   selectedImageIndex={selectedImageIndex}
                 />
               ))
-            : getImageBoxes()}
+            : product?.product_image_data
+                ?.sort((imageA, imageB) => imageA.index - imageB.index)
+                .map((data) => (
+                  <SmallProductImageBox
+                    key={data.index}
+                    productName={product?.name ?? ''}
+                    productImageData={data || null}
+                    imageIndex={data.index}
+                    borderColor={boxBorderColor}
+                    isEditMode={isEditMode}
+                    selectImage={() => handleSelectedImage(data.index)}
+                    selectedImageIndex={selectedImageIndex}
+                  />
+                ))}
         </Box>
       </Grid>
       <Grid

@@ -121,9 +121,9 @@ export default function SmallProductImageBox({
               </>
             ) : null}
           </>
-        ) : (
+        ) : isAdminView ? (
           <CircularProgressWithLabel value={imageUploadProgress[imageIndex].progress} />
-        )
+        ) : null
       ) : null}
     </Box>
   );

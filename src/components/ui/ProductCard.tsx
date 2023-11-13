@@ -15,6 +15,7 @@ import {
   resetProductToUpdateId,
   setFormData,
   setImageData,
+  setImageUploadProgress,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
 import deleteProduct from '@/services/products/delete-product';
@@ -41,7 +42,7 @@ export default function ProductCard({ product }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const imageUrl = product_image_data.filter((data) => data.index === 0)[0].image_url;
 
-  async function handleGoToUpdate() {
+  async function handlePrepareProductForUpdate() {
     setIsLoading(true);
 
     if (imageData && !productToUpdateId) {
@@ -51,7 +52,10 @@ export default function ProductCard({ product }: Props) {
     dispatch(resetImageData());
     dispatch(resetFormData());
     dispatch(resetProductToUpdateId());
-    product.product_image_data.map((data) => dispatch(setImageData(data)));
+    product.product_image_data.map((data) => {
+      dispatch(setImageData(data));
+      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
+    });
     dispatch(setProductToUpdateId(product_id));
 
     for (const key in restOfProductData) {
@@ -249,7 +253,7 @@ export default function ProductCard({ product }: Props) {
               backgroundColor="red"
             />
             <CustomButton
-              onClick={handleGoToUpdate}
+              onClick={handlePrepareProductForUpdate}
               fullWidth
               label="update"
               startIcon={

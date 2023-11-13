@@ -35,6 +35,7 @@ import addProductImageData from '@/services/product-image-data/add-product-image
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
+import updateProductImageData from '@/services/product-image-data/update-product-image-data';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -133,7 +134,28 @@ export default function AdminViewAddNewProduct() {
       if (dataToInsert.length === 0) {
         return { success: true, message: 'No new images added' };
       }
+
       const { success, message } = await addProductImageData(dataToInsert);
+
+      return { success, message };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function handleUpdateImageData() {
+    try {
+      const imagesWithNewIndexes = imageData.filter((data, index) => data.index !== index);
+
+      const dataToUpdate = imagesWithNewIndexes.map((data, index) => {
+        return { ...data, index };
+      });
+
+      if (dataToUpdate.length === 0) {
+        return { success: true, message: 'Image data is up to date.' };
+      }
+
+      const { success, message } = await updateProductImageData(dataToUpdate);
 
       return { success, message };
     } catch (error) {
@@ -198,9 +220,7 @@ export default function AdminViewAddNewProduct() {
       } as UpdateProductType);
 
       if (updateProductSuccess === true) {
-        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productToUpdateId!
-        );
+        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleUpdateImageData();
 
         if (addImageDataSuccess === true) {
           dispatch(resetFormData());

@@ -14,6 +14,6 @@ export default async function addProductImageData(imageData: ProductImageDataDbT
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-user. ${error}`);
+    throw new Error(`@services/add-product-image-data. ${error}`);
   }
 }

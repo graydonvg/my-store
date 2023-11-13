@@ -14,6 +14,6 @@ export default async function deleteProductImageData(product_image_id: string): 
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-user. ${error}`);
+    throw new Error(`@services/delete-product-image-data. ${error}`);
   }
 }
