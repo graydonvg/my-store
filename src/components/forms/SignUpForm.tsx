@@ -4,14 +4,15 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setModalContent, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import { setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
+import { useRouter, useSearchParams } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import updateUser from '@/services/users/update-user';
+import useCloseModal from '@/hooks/useCloseModal';
+import useOpenModal from '@/hooks/useOpenModal';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -30,11 +31,12 @@ const defaultFormData = {
 };
 
 export default function SignUpForm() {
-  const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
+  const handleCloseModal = useCloseModal();
+  const handleOpenModal = useOpenModal();
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -67,7 +69,7 @@ export default function SignUpForm() {
 
         if (updateSuccess === true) {
           setFormData(defaultFormData);
-          dispatch(setIsModalOpen(false));
+          handleCloseModal();
           router.refresh();
           toast.info(`Welcome, ${first_name}!`);
         } else {
@@ -85,9 +87,8 @@ export default function SignUpForm() {
   }
 
   function handleOpenSignInModal() {
-    dispatch(setIsModalOpen(false));
-    setTimeout(() => dispatch(setModalContent('signIn')), 300);
-    setTimeout(() => dispatch(setIsModalOpen(true)), 500);
+    handleCloseModal();
+    setTimeout(() => handleOpenModal('sign-in'), 300);
   }
 
   return (

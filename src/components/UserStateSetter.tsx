@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { CurrentUserType } from '@/types';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { getEmptyFormFields } from '@/lib/utils';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import useOpenModal from '@/hooks/useOpenModal';
 
 type Props = {
   userData: CurrentUserType;
@@ -13,17 +13,17 @@ type Props = {
 
 export default function UserStateSetter({ userData }: Props) {
   const dispatch = useAppDispatch();
+  const handleOpenModal = useOpenModal();
 
   useEffect(() => {
     const emptyFields = getEmptyFormFields(userData);
 
     if (emptyFields.length > 0) {
-      dispatch(setModalContent('updateUserData'));
-      dispatch(setIsModalOpen(true));
+      handleOpenModal('update');
     }
 
     dispatch(setCurrentUser(userData));
-  }, [userData, dispatch]);
+  }, [userData, dispatch, handleOpenModal]);
 
   return null;
 }

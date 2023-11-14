@@ -1,15 +1,16 @@
-import { ModalContentType } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type ModalState = {
-  isModalOpen: boolean;
-  modalContent: ModalContentType;
+  isSignInModalOpen: boolean;
+  isSignUpModalOpen: boolean;
+  isUpdateModalOpen: boolean;
   showModalLoadingBar: boolean;
 };
 
 const initialState: ModalState = {
-  isModalOpen: false,
-  modalContent: null,
+  isSignInModalOpen: false,
+  isSignUpModalOpen: false,
+  isUpdateModalOpen: false,
   showModalLoadingBar: false,
 };
 
@@ -17,11 +18,14 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    setIsModalOpen(state, action: PayloadAction<boolean>) {
-      state.isModalOpen = action.payload;
+    isSignInModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSignInModalOpen = action.payload;
     },
-    setModalContent(state, action: PayloadAction<ModalContentType>) {
-      state.modalContent = action.payload;
+    isSignUpModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSignUpModalOpen = action.payload;
+    },
+    isUpdateModalOpen(state, action: PayloadAction<boolean>) {
+      state.isUpdateModalOpen = action.payload;
     },
     setShowModalLoadingBar(state, action: PayloadAction<boolean>) {
       state.showModalLoadingBar = action.payload;
@@ -31,6 +35,6 @@ export const modalSlice = createSlice({
 
 const { actions, reducer } = modalSlice;
 
-export const { setIsModalOpen, setModalContent, setShowModalLoadingBar } = actions;
+export const { isSignInModalOpen, isSignUpModalOpen, isUpdateModalOpen, setShowModalLoadingBar } = actions;
 
 export const userReducer = reducer;

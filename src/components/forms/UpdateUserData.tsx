@@ -4,12 +4,13 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import { setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import updateUser from '@/services/users/update-user';
+import useCloseModal from '@/hooks/useCloseModal';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -26,6 +27,7 @@ export default function UpdateUserData() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
   const router = useRouter();
+  const handleCloseModal = useCloseModal();
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -44,7 +46,7 @@ export default function UpdateUserData() {
 
       if (success) {
         setFormData(defaultFormData);
-        dispatch(setIsModalOpen(false));
+        handleCloseModal();
         router.refresh();
       } else {
         toast.error(message);

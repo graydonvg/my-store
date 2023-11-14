@@ -27,7 +27,6 @@ export default function NavDrawerContent() {
           flexShrink: 0,
           height: upperNavbarHeight,
           paddingX: 2,
-          // position: 'sticky',
         }}>
         <Typography
           color={color.grey.light}

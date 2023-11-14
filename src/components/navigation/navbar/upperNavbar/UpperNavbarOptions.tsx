@@ -11,10 +11,13 @@ import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Menu } from '@mui/icons-material';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
-import { ModalContentType } from '@/types';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import NavDrawerContent from '../../navDrawer/NavDrawerContent';
+import { useSearchParams } from 'next/navigation';
+import ModalComponent from '@/components/ui/ModalComponent';
+import SignInForm from '@/components/forms/SignInForm';
+import SignUpForm from '@/components/forms/SignUpForm';
+import useOpenModal from '@/hooks/useOpenModal';
 
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
@@ -51,14 +54,12 @@ export default function UpperNavbarOptions() {
   const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
+  const searchParams = useSearchParams();
+  const modal = searchParams.get('modal');
+  const handleOpenModal = useOpenModal();
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
-  }
-
-  function handleModal(content: ModalContentType) {
-    dispatch(setModalContent(content));
-    dispatch(setIsModalOpen(true));
   }
 
   function handleOpenNavDrawer() {
@@ -82,7 +83,7 @@ export default function UpperNavbarOptions() {
         />
         <DrawerComponent
           isOpen={isNavDrawerOpen}
-          zIndex={(theme) => theme.zIndex.AppBar + 1}>
+          zIndex={(theme) => theme.zIndex.appBar + 1}>
           <NavDrawerContent />
         </DrawerComponent>
       </Box>
@@ -128,13 +129,19 @@ export default function UpperNavbarOptions() {
               </IconButton>
             </ListItem>
             {renderDivider()}
-            <ListItem disablePadding>{renderButton('Sign in', color, () => handleModal('signIn'))}</ListItem>
+            <ListItem disablePadding>{renderButton('Sign in', color, () => handleOpenModal('sign-in'))}</ListItem>
+            <ModalComponent isOpen={modal === 'sign-in'}>
+              <SignInForm />
+            </ModalComponent>
             {renderDivider()}
             <ListItem
               disablePadding
               sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {renderButton('Sign Up', color, () => handleModal('signUp'))}
+              {renderButton('Sign Up', color, () => handleOpenModal('sign-up'))}
             </ListItem>
+            <ModalComponent isOpen={modal === 'sign-up'}>
+              <SignUpForm />
+            </ModalComponent>
             {renderDivider()}
           </List>
         )}

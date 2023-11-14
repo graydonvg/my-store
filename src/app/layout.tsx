@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
-import ModalComponent from '@/components/ui/ModalComponent';
 import Navbar from '@/components/navigation/navbar/Navbar';
 import Toast from '@/components/ui/Toast';
 import '@fontsource/roboto/300.css';
@@ -37,7 +36,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               {children}
             </Container>
           </main>
-          <ModalComponent />
           <Toast />
           <UserStateSetter userData={userData} />
         </Providers>
