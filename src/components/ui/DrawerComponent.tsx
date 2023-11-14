@@ -40,7 +40,6 @@ export default function DrawerComponent({ isOpen, zIndex, children }: Props) {
         <Fragment key={anchor}>
           <Drawer
             sx={{ zIndex }}
-            ModalProps={{ disableScrollLock: true }}
             PaperProps={{
               elevation: 0,
               sx: {

@@ -15,6 +15,7 @@ export default function ShoppingCartButton() {
     ? document.getElementById('upper-nav')?.offsetHeight
     : document.getElementById('navbar')?.offsetHeight;
   const cartCount = cartItems.reduce((totalCount, item) => totalCount + item.quantity, 0);
+  isCartOpen.right ? document.body.classList.add('drawer-open') : document.body.classList.remove('drawer-open');
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));

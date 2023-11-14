@@ -27,6 +27,7 @@ export default function NavDrawerContent() {
           flexShrink: 0,
           height: upperNavbarHeight,
           paddingX: 2,
+          // position: 'sticky',
         }}>
         <Typography
           color={color.grey.light}
@@ -45,7 +46,9 @@ export default function NavDrawerContent() {
           onClick={handleCloseNavDrawer}
         />
       </Box>
-      <NavDraweOptions />
+      <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'scroll', width: 1 }}>
+        <NavDraweOptions />
+      </Box>
     </>
   );
 }
