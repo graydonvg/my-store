@@ -45,8 +45,8 @@ export default function UpdateUserData() {
       const { success, message } = await updateUser({ first_name, last_name });
 
       if (success) {
-        setFormData(defaultFormData);
         handleCloseModal();
+        setFormData(defaultFormData);
         router.refresh();
       } else {
         toast.error(message);
@@ -54,8 +54,8 @@ export default function UpdateUserData() {
     } catch (error) {
       toast.error('Update user failed. Please try again later.');
     } finally {
-      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      dispatch(setShowModalLoadingBar(false));
     }
   }
 

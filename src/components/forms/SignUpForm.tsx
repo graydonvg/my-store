@@ -68,8 +68,8 @@ export default function SignUpForm() {
         const { success: updateSuccess, message: updateMessage } = await updateUser({ first_name, last_name });
 
         if (updateSuccess === true) {
-          setFormData(defaultFormData);
           handleCloseModal();
+          setFormData(defaultFormData);
           router.refresh();
           toast.info(`Welcome, ${first_name}!`);
         } else {
@@ -81,14 +81,13 @@ export default function SignUpForm() {
     } catch (error) {
       toast.error('Sign up failed. Please try again later.');
     } finally {
-      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      dispatch(setShowModalLoadingBar(false));
     }
   }
 
   function handleOpenSignInModal() {
-    handleCloseModal();
-    setTimeout(() => handleOpenModal('sign-in'), 300);
+    handleOpenModal('sign-in');
   }
 
   return (
