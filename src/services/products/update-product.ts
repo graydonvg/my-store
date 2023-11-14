@@ -2,7 +2,7 @@ import { CustomResponseType, UpdateProductType } from '@/types';
 
 export default async function updateProduct(formData: UpdateProductType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/products/update', {
+    const response = await fetch('/api/admin/products/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

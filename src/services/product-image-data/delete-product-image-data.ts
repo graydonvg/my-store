@@ -2,7 +2,7 @@ import { CustomResponseType } from '@/types';
 
 export default async function deleteProductImageData(product_image_id: string): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/product-image-data/delete', {
+    const response = await fetch('/api/admin/product-image-data/delete', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

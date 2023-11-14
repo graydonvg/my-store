@@ -28,7 +28,7 @@ export default function LargeProductImageBox({
   const isAdminView = pathname.includes('admin-view');
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
-  const boxBorderColor = isAdminView ? borderColor : 'transparent';
+  const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
 
   return (
     <Box

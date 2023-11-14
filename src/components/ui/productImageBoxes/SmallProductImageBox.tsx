@@ -38,7 +38,7 @@ export default function SmallProductImageBox({
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const { imageUploadProgress, isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
-  const boxBorderColor = isAdminView ? borderColor : 'transparent';
+  const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));

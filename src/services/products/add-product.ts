@@ -6,7 +6,7 @@ export default async function addProduct(formData: AddProductDbType): Promise<
   }>
 > {
   try {
-    const response = await fetch('/api/products/add', {
+    const response = await fetch('/api/admin/products/add', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
