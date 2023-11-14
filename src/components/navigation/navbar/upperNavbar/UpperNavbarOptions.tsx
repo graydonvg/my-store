@@ -59,7 +59,6 @@ export default function UpperNavbarOptions() {
   function handleModal(content: ModalContentType) {
     dispatch(setModalContent(content));
     dispatch(setIsModalOpen(true));
-    document.body.classList.add('modal-open');
   }
 
   function handleOpenNavDrawer() {

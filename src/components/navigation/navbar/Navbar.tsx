@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { AppBar, Box, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
@@ -12,6 +12,10 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
+  const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
+  const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
+  isModalOpen ? document.body.classList.add('modal-open') : document.body.classList.remove('modal-open');
+  isCartOpen.right ? document.body.classList.add('drawer-open') : document.body.classList.remove('drawer-open');
 
   useEffect(() => {
     isBelowMedium ? dispatch(setIsNavDrawerOpen({ left: false })) : null;

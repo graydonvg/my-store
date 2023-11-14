@@ -31,7 +31,6 @@ export default function ModalComponent() {
 
   function handleClose() {
     dispatch(setIsModalOpen(false));
-    document.body.classList.remove('modal-open');
   }
 
   return (
