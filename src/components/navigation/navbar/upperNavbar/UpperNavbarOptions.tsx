@@ -22,8 +22,11 @@ import useOpenModal from '@/hooks/useOpenModal';
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
     <Typography
+      component="button"
       variant="button"
       sx={{
+        height: 1,
+        paddingX: { xs: 0, md: 2 },
         color: color.grey.light,
         cursor: 'pointer',
         whiteSpace: 'nowrap',
@@ -71,7 +74,7 @@ export default function UpperNavbarOptions() {
       <Box
         sx={{
           display: { xs: 'block', md: 'none' },
-          minWidth: { xs: '52px', sm: '124px' },
+          // minWidth: { xs: '52px', sm: '124px' },
         }}>
         <Menu
           sx={{
@@ -113,11 +116,11 @@ export default function UpperNavbarOptions() {
           </>
         ) : (
           <List
-            sx={{ display: 'flex', gap: 2, height: '100%' }}
+            sx={{ display: 'flex', height: '100%' }}
             disablePadding>
             <ListItem
               disablePadding
-              sx={{ display: { xs: 'none', md: 'flex' } }}>
+              sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
               <IconButton
                 disableRipple
                 onClick={handleToggleTheme}
