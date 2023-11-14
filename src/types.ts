@@ -9,8 +9,6 @@ export type DrawerState = {
   right: boolean;
 };
 
-export type ModalContentType = 'signIn' | 'signUp' | 'updateUserData' | null;
-
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
 export type CurrentUserType = Database['public']['Tables']['users']['Row'];

@@ -1,13 +1,11 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsModalOpen } from '@/lib/redux/modal/modalSlice';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Modal, Grow, useTheme } from '@mui/material';
-import SignInForm from '@/components/forms/SignInForm';
-import SignUpForm from '@/components/forms/SignUpForm';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import LoadingBar from './progress/LoadingBar';
-import UpdateUserData from '../forms/UpdateUserData';
+import { ReactNode } from 'react';
+import useCloseModal from '@/hooks/useCloseModal';
 
 const style = {
   position: 'absolute',
@@ -19,38 +17,33 @@ const style = {
   borderRadius: '4px',
 };
 
-export default function ModalComponent() {
-  const isModalOpen = useAppSelector((state) => state.modal.isModalOpen);
-  const modalContent = useAppSelector((state) => state.modal.modalContent);
+type Props = {
+  isOpen: boolean;
+  children: ReactNode;
+};
+
+export default function ModalComponent({ isOpen, children }: Props) {
   const showModalLoadingBar = useAppSelector((state) => state.modal.showModalLoadingBar);
-  const dispatch = useAppDispatch();
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const modalBackgroundColor = mode === 'light' ? color.grey.light : color.grey.dark;
-
-  function handleClose() {
-    dispatch(setIsModalOpen(false));
-  }
+  const handleCloseModal = useCloseModal();
 
   return (
     <Modal
       closeAfterTransition
-      open={isModalOpen}
-      onClose={handleClose}
+      open={isOpen}
+      onClose={handleCloseModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description">
-      <Grow in={isModalOpen}>
+      <Grow in={isOpen}>
         <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
           <LoadingBar
             isLoading={showModalLoadingBar}
             style={{ borderTopRightRadius: '4px', borderTopLeftRadius: '4px' }}
           />
-          <Box sx={{ padding: 4 }}>
-            {modalContent === 'signIn' && <SignInForm />}
-            {modalContent === 'signUp' && <SignUpForm />}
-            {modalContent === 'updateUserData' && <UpdateUserData />}
-          </Box>
+          <Box sx={{ padding: 4 }}>{children}</Box>
         </Box>
       </Grow>
     </Modal>

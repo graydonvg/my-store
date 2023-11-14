@@ -13,11 +13,12 @@ import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { addItemToCart } from '@/lib/redux/cart/cartSlice';
-import { setIsModalOpen, setModalContent } from '@/lib/redux/modal/modalSlice';
+import useOpenModal from '@/hooks/useOpenModal';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
+  const handleOpenModal = useOpenModal();
   const color = useCustomColorPalette();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -53,8 +54,7 @@ export default function ProductDetails({ product }: Props) {
   }
 
   function handleOpenSignInModal() {
-    dispatch(setModalContent('signIn'));
-    dispatch(setIsModalOpen(true));
+    handleOpenModal('sign-in');
   }
 
   function handleSelectSizeToast() {
