@@ -2,7 +2,6 @@ import { ProductImageDataStoreType, CustomResponseType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
-import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
