@@ -60,7 +60,7 @@ export default function AdminViewAddNewProduct() {
   const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
-  const uploadInProgress = imageData.length < imageUploadProgress.length;
+  const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -220,15 +220,21 @@ export default function AdminViewAddNewProduct() {
       } as UpdateProductType);
 
       if (updateProductSuccess === true) {
-        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleUpdateImageData();
+        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+          productToUpdateId!
+        );
 
-        if (addImageDataSuccess === true) {
+        const { success: updateImageDataSuccess, message: updateImageDataMessage } = await handleUpdateImageData();
+
+        if (addImageDataSuccess === true && updateImageDataSuccess == true) {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully updated product.');
           router.push('/admin-view/all-products');
-        } else {
+        } else if (addImageDataSuccess === false) {
           toast.error(addImageDataMessage);
+        } else if (updateImageDataSuccess == true) {
+          toast.error(updateImageDataMessage);
         }
       } else {
         toast.error(updateProductMessage);
@@ -313,7 +319,7 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         label={isClearingAllFields ? 'clearing...' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={isClearingAllFields || emptyFormFields.length === numberOfFormFields}
+        disabled={uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
         startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
@@ -322,9 +328,11 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         type="submit"
         disabled={
-          (uploadInProgress || isLoading || isClearingAllFields || isOnSale
-            ? emptyFormFields.length > 0
-            : emptyFormFields.length > 1) || imageData.length === 0
+          uploadInProgress ||
+          isLoading ||
+          isClearingAllFields ||
+          (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
+          imageData.length === 0
         }
         label={isLoading ? 'loading...' : productToUpdateId ? 'update product' : 'add product'}
         fullWidth
