@@ -43,13 +43,13 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
       <Grid
         item
         xs={12}
-        md={2}
-        sx={{ order: { xs: 2, md: 1 } }}>
+        sm={2}
+        sx={{ order: { xs: 2, sm: 1 } }}>
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'row', md: 'column' },
-            gap: { xs: 1, md: `10.7px` },
+            flexDirection: { xs: 'row', sm: 'column' },
+            gap: { xs: 1, sm: `10.7px` },
           }}>
           {isAdminView
             ? Array.from(Array(5)).map((_, index) => (
@@ -83,8 +83,8 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
       <Grid
         item
         xs={12}
-        md={10}
-        sx={{ order: { xs: 1, md: 2 } }}>
+        sm={10}
+        sx={{ order: { xs: 1, sm: 2 } }}>
         {isAdminView && imageData.length > 0 ? (
           <LargeProductImageBox
             productName={formData.name}

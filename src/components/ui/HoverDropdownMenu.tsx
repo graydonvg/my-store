@@ -25,6 +25,7 @@ export default function HoverDropdownMenu({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
+  open ? document.body.classList.add('menu-open') : document.body.classList.remove('menu-open');
 
   function handleMenuOpen(event: React.MouseEvent<HTMLDivElement>) {
     !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);

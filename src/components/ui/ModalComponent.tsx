@@ -31,6 +31,7 @@ export default function ModalComponent() {
 
   function handleClose() {
     dispatch(setIsModalOpen(false));
+    document.body.classList.remove('modal-open');
   }
 
   return (
@@ -39,8 +40,7 @@ export default function ModalComponent() {
       open={isModalOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableScrollLock={true}>
+      aria-describedby="modal-modal-description">
       <Grow in={isModalOpen}>
         <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
           <LoadingBar

@@ -7,3 +7,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.menu-open {
+  overflow-y: unset !important;
+  padding-right: unset !important;
+}
+
+.modal-open,
+.drawer-open {
+  overflow-y: hidden !important;
+}
