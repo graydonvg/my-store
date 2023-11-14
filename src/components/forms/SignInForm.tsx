@@ -9,10 +9,9 @@ import { setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
-import ModalComponent from '../ui/ModalComponent';
 import useCloseModal from '@/hooks/useCloseModal';
 import useOpenModal from '@/hooks/useOpenModal';
 
@@ -34,8 +33,6 @@ export default function SignInForm() {
   const router = useRouter();
   const handleCloseModal = useCloseModal();
   const handleOpenModal = useOpenModal();
-  const searchParams = useSearchParams();
-  const modal = searchParams.get('modal');
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -51,8 +48,8 @@ export default function SignInForm() {
       const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
       if (success === true) {
-        setFormData(defaultFormData);
         handleCloseModal();
+        setFormData(defaultFormData);
         router.refresh();
       } else {
         toast.error(message);
@@ -60,8 +57,8 @@ export default function SignInForm() {
     } catch (error) {
       toast.error(`Sign in failed. Please try again later.`);
     } finally {
-      dispatch(setShowModalLoadingBar(false));
       setIsLoading(false);
+      dispatch(setShowModalLoadingBar(false));
     }
   }
 
@@ -91,8 +88,7 @@ export default function SignInForm() {
   }
 
   function handleOpenSignUpModal() {
-    handleCloseModal();
-    setTimeout(() => handleOpenModal('sign-up'), 300);
+    handleOpenModal('sign-up');
   }
 
   return (
