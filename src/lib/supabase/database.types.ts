@@ -3,6 +3,48 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      cart: {
+        Row: {
+          cart_item_id: string;
+          created_at: string;
+          product_id: string;
+          quantity: number;
+          size: string;
+          user_id: string;
+        };
+        Insert: {
+          cart_item_id?: string;
+          created_at?: string;
+          product_id: string;
+          quantity: number;
+          size: string;
+          user_id: string;
+        };
+        Update: {
+          cart_item_id?: string;
+          created_at?: string;
+          product_id?: string;
+          quantity?: number;
+          size?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cart_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['product_id'];
+          },
+          {
+            foreignKeyName: 'cart_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
       product_image_data: {
         Row: {
           created_at: string;

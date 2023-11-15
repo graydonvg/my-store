@@ -19,6 +19,9 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
 
     return NextResponse.json({ success: true, message: 'Product image data deleted successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to delete image data from database. An unexpect error occured.',
+    });
   }
 }

@@ -16,6 +16,6 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
 
     return NextResponse.json({ success: true, message: 'Product deleted successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to delete product. An unexpect error occured.' });
   }
 }

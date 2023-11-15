@@ -47,14 +47,22 @@ export type ProductImageDataDbType = Omit<
   'product_image_id'
 >;
 
-export type CartItemType = {
-  productId: string;
-  name: string;
-  imageUrl: string;
-  price: number;
-  salePrice: number;
-  quantity: number;
-  priceByQuantity?: number;
-  salePriceByQuantity?: number;
-  size: string;
-};
+export type CartItemType =
+  | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'user_id'>, 'product_id'> & {
+      product:
+        | (Pick<
+            Database['public']['Tables']['products']['Row'],
+            'name' | 'on_sale' | 'price' | 'sale_percentage' | 'delivery_info' | 'product_id'
+          > & {
+            product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'image_url'>[];
+          })
+        | null;
+    })
+  | null;
+
+export type AddCartItemDbType = Omit<Omit<Database['public']['Tables']['cart']['Row'], 'created_at'>, 'cart_item_id'>;
+
+export type UpdateCartItemDbType = Pick<
+  Database['public']['Tables']['cart']['Row'],
+  'quantity' | 'cart_item_id' | 'size'
+>;

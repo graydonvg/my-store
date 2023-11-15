@@ -20,6 +20,9 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({ success: true, message: 'Product image data added successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to add image data to database. An unexpect error occured.',
+    });
   }
 }

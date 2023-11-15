@@ -24,6 +24,6 @@ export async function POST(request: Request): Promise<
 
     return NextResponse.json({ success: true, message: 'Product added successfully.', data: product_id });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to add product. An unexpect error occured.' });
   }
 }
