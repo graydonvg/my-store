@@ -12,18 +12,20 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { addItemToCart } from '@/lib/redux/cart/cartSlice';
 import useOpenModal from '@/hooks/useOpenModal';
+import addProductToCart from '@/services/cart/add-product-to-cart';
+import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
+  const supabase = createSupabaseBrowserClient();
   const handleOpenModal = useOpenModal();
   const color = useCustomColorPalette();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const size = searchParams.get('size');
   const quantity = Number(searchParams.get('quantity'));
   const initialQuantity = quantity !== 0 ? quantity : 1;
@@ -61,7 +63,7 @@ export default function ProductDetails({ product }: Props) {
     toast.warning('Please select a size.');
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (!currentUser) {
       handleOpenSignInModal();
       return;
@@ -72,22 +74,44 @@ export default function ProductDetails({ product }: Props) {
       return;
     }
 
-    dispatch(
-      addItemToCart({
-        productId: product.product_id,
-        name: product.name,
-        imageUrl: product.product_image_data[0].image_url,
-        price: product.price,
-        salePrice: salePrice,
-        quantity: itemQuantity,
-        size: itemSize,
-      })
-    );
+    const itemExists = cartItems.find((item) => item?.product?.product_id === product.product_id);
 
-    setItemQuantity(1);
+    try {
+      if (itemExists) {
+        const { error } = await supabase.rpc('update', {
+          item_id: itemExists.cart_item_id,
+          item_quantity: itemQuantity,
+        });
+
+        if (!error) {
+          router.refresh();
+          setItemQuantity(1);
+        } else {
+          toast.error(error.message);
+        }
+      } else {
+        const { success, message } = await addProductToCart({
+          product_id: product.product_id,
+          quantity: itemQuantity,
+          size: itemSize,
+          user_id: currentUser?.user_id,
+        });
+
+        if (success === false) {
+          toast.error(message);
+        } else {
+          router.refresh();
+          setItemQuantity(1);
+        }
+      }
+    } catch (error) {
+      toast.error(`Failed to add product to cart. Please try again later.`);
+    }
   }
 
   function handleAddToWishlist() {
+    // check if item already added!!!
+
     if (!currentUser) {
       handleOpenSignInModal();
       return;
@@ -97,17 +121,6 @@ export default function ProductDetails({ product }: Props) {
       handleSelectSizeToast();
       return;
     }
-
-    // dispatch(
-    //   addItemToCart({
-    //     productId: product.product_id,
-    //     name: product.name,
-    //     imageUrl: product.product_image_data[0].image_url,
-    //     price: product.price,
-    //     salePrice: salePrice,
-    //     size,
-    //   })
-    // );
   }
 
   function handleIncrementItemQuantity() {

@@ -10,7 +10,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   } = await supabase.auth.getSession();
   const formData = await request.json();
 
-  if (!session) return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+  if (!session) return NextResponse.json({ success: false, message: 'Failed to update user. Please try again later.' });
 
   try {
     const { error } = await supabase.from('users').update(formData).eq('user_id', session.user.id);
@@ -21,6 +21,6 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({ success: true, message: 'User updated successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to update user. An unexpect error occured.' });
   }
 }

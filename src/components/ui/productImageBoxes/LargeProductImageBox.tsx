@@ -33,7 +33,8 @@ export default function LargeProductImageBox({
   return (
     <Box
       sx={{
-        aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
+        aspectRatio: 3 / 4,
+        // aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
         border: `1px solid ${boxBorderColor}`,
         position: 'relative',
         borderRadius: 1,

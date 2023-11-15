@@ -129,17 +129,16 @@ export default function ProductCard({ product }: Props) {
                 fill
                 sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
                 src={imageUrl}
-                alt="mens t-shirt"
+                alt={`Image of ${product.name}`}
                 priority
               />
             </Box>
             <Box
               sx={{
                 position: 'absolute',
-                alignSelf: 'flex-end',
+                alignSelf: 'flex-start',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-end',
               }}>
               {isOnSale ? (
                 <Box
@@ -147,8 +146,6 @@ export default function ProductCard({ product }: Props) {
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: 1,
-                    marginTop: 0.5,
-                    marginRight: 0.5,
                     paddingX: 0.5,
                     backgroundColor: color.blue.dark,
                     width: 'min-content',

@@ -20,6 +20,6 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({ success: true, message: 'Product image data updated successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to update image data. An unexpect error occured.' });
   }
 }

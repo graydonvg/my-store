@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, Typography } from '@mui/material';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import ShoppingCartButton from '../../../ui/ShoppingCartButton';
+import Cart from '../../../ui/Cart';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import { Fragment } from 'react';
@@ -103,15 +103,15 @@ export default function UpperNavbarOptions() {
             <List
               sx={{ display: 'flex', height: '100%' }}
               disablePadding>
-              {[ShoppingCartButton, AccountMenu].map((Component, index) => (
-                <Fragment key={index}>
-                  {index === 0 && renderDivider()}
-                  <ListItem disablePadding>
-                    <Component />
-                  </ListItem>
-                  {renderDivider()}
-                </Fragment>
-              ))}
+              {renderDivider()}
+              <ListItem disablePadding>
+                <Cart />
+              </ListItem>
+              {renderDivider()}
+              <ListItem disablePadding>
+                <AccountMenu />
+              </ListItem>
+              {renderDivider()}
             </List>
           </>
         ) : (

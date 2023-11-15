@@ -16,6 +16,6 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({ success: true, message: 'Product updated successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to update product. An unexpect error occured.' });
   }
 }

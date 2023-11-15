@@ -67,7 +67,8 @@ export default function SmallProductImageBox({
       onClick={selectImage}
       sx={{
         maxWidth: { xs: '20%', sm: 'unset' },
-        aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
+        aspectRatio: 3 / 4,
+        // aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
         border: `1px solid ${boxBorderColor}`,
         borderRadius: 1,
         position: 'relative',
