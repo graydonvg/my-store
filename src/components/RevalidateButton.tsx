@@ -4,8 +4,8 @@ import CustomButton from '@/components/ui/buttons/CustomButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { Spinner } from './ui/progress/Spinner';
 import revalidate from '@/services/revalidate';
+import { PulseLoader } from 'react-spinners';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +34,16 @@ export default function RevalidateButton() {
       disabled={isLoading}
       onClick={handleRevalidate}
       fullWidth
-      label={isLoading ? 'revalidating...' : 'revalidate'}
-      startIcon={isLoading ? <Spinner size={20} /> : null}
+      label={isLoading ? '' : 'revalidate'}
+      startIcon={
+        isLoading ? (
+          <PulseLoader
+            color="white"
+            loading={isLoading}
+            size={10}
+          />
+        ) : null
+      }
       backgroundColor="blue"
     />
   );

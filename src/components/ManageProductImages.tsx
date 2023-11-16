@@ -9,8 +9,8 @@ import { resetImageData } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages } from '@/lib/utils';
 import { Box, InputProps } from '@mui/material';
 import CustomButton from './ui/buttons/CustomButton';
-import { Spinner } from './ui/progress/Spinner';
 import ImageInput from './ui/inputFields/ImageInput';
+import { PulseLoader } from 'react-spinners';
 
 type Props = InputProps & {
   isLoading: boolean;
@@ -51,16 +51,26 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
       <CustomButton
         onClick={handleDeleteAllImages}
         fullWidth
-        label="delete all"
+        label={isDeletingAllImages ? '' : 'delete all'}
         backgroundColor="red"
         disabled={isDeletingAllImages || !isEditMode}
-        startIcon={isDeletingAllImages ? <Spinner size={20} /> : <DeleteForever />}
+        startIcon={
+          isDeletingAllImages ? (
+            <PulseLoader
+              color="white"
+              loading={isDeletingAllImages}
+              size={10}
+            />
+          ) : (
+            <DeleteForever />
+          )
+        }
       />
       <CustomButton
         disabled={isDeletingImage || uploadInProgress || imageData.length === 0}
         onClick={() => handleToggleEditMode()}
         fullWidth={true}
-        label={isEditMode ? 'done' : 'edit'}
+        label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
         styles={{
           backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
           '&:hover': {
@@ -69,20 +79,7 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
             transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
           },
         }}
-        startIcon={
-          isEditMode ? (
-            isDeletingImage ? (
-              <Spinner
-                providedColor="white"
-                size={20}
-              />
-            ) : (
-              <Check />
-            )
-          ) : (
-            <Edit />
-          )
-        }
+        startIcon={isEditMode ? <Check /> : <Edit />}
       />
       <CustomButton
         disabled={isLoading || isEditMode}
@@ -92,11 +89,21 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
         }}
         label={
           <>
-            {isLoading ? 'uploading...' : 'upload images'}
+            {isLoading ? '' : 'upload images'}
             <ImageInput {...inputProps} />
           </>
         }
-        startIcon={isLoading ? <Spinner size={20} /> : <CloudUpload />}
+        startIcon={
+          isLoading ? (
+            <PulseLoader
+              color="white"
+              loading={isLoading}
+              size={10}
+            />
+          ) : (
+            <CloudUpload />
+          )
+        }
         fullWidth={true}
         component="label"
       />

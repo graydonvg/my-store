@@ -17,7 +17,6 @@ import CurrencyField from '@/components/ui/inputFields/CurrencyField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import CustomButton from '@/components/ui/buttons/CustomButton';
-import { Spinner } from '@/components/ui/progress/Spinner';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   resetFormData,
@@ -36,6 +35,7 @@ import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
 import updateProductImageData from '@/services/product-image-data/update-product-image-data';
+import { PulseLoader } from 'react-spinners';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -317,12 +317,22 @@ export default function AdminViewAddNewProduct() {
         );
       })}
       <CustomButton
-        label={isClearingAllFields ? 'clearing...' : 'clear all'}
+        label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
         disabled={uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields}
         fullWidth={true}
         component="button"
-        startIcon={isClearingAllFields ? <Spinner size={20} /> : <DeleteForever />}
+        startIcon={
+          isClearingAllFields ? (
+            <PulseLoader
+              color="white"
+              loading={isClearingAllFields}
+              size={10}
+            />
+          ) : (
+            <DeleteForever />
+          )
+        }
         backgroundColor="red"
       />
       <CustomButton
@@ -334,9 +344,19 @@ export default function AdminViewAddNewProduct() {
           (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0
         }
-        label={isLoading ? 'loading...' : productToUpdateId ? 'update product' : 'add product'}
+        label={isLoading ? '' : productToUpdateId ? 'update product' : 'add product'}
         fullWidth
-        startIcon={isLoading ? <Spinner size={20} /> : <Add />}
+        startIcon={
+          isLoading ? (
+            <PulseLoader
+              color="white"
+              loading={isLoading}
+              size={10}
+            />
+          ) : (
+            <Add />
+          )
+        }
         backgroundColor="blue"
       />
     </Box>

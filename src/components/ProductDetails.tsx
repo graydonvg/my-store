@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInModalOpen } from '@/lib/redux/modal/modalSlice';
-import { Spinner } from './ui/progress/Spinner';
+import { PulseLoader } from 'react-spinners';
 
 type Props = { product: ProductType };
 
@@ -283,13 +283,14 @@ export default function ProductDetails({ product }: Props) {
             <CustomButton
               onClick={handleAddToCart}
               fullWidth
-              label={isAddingToCart ? 'adding...' : 'add to cart'}
+              label={isAddingToCart ? '' : 'add to cart'}
               backgroundColor="blue"
               startIcon={
                 isAddingToCart ? (
-                  <Spinner
-                    size={20}
-                    providedColor="white"
+                  <PulseLoader
+                    color="white"
+                    loading={isAddingToCart}
+                    size={10}
                   />
                 ) : (
                   <AddShoppingCart />
