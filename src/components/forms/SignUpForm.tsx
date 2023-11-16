@@ -135,7 +135,7 @@ export default function SignUpForm() {
             marginTop: 3,
             marginBottom: 3,
           }}
-          fullWidth={true}
+          fullWidth
           backgroundColor="blue"
         />
         <Link

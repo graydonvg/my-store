@@ -1,7 +1,8 @@
 import { GetDesignTokensType } from '@/components/theme/ThemeRegistry';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { Button } from '@mui/material';
+import { Button, ButtonProps, ButtonTypeMap, ExtendButtonBase } from '@mui/material';
 import { ElementType, ReactNode } from 'react';
+import { PulseLoader } from 'react-spinners';
 
 type ButtonBackgroundColorType = 'blue' | 'red';
 
@@ -34,47 +35,46 @@ function getButtonBackgroundColor(option: ButtonBackgroundColorType, color: Cust
   return colorOptions[option];
 }
 
-type CustomButtonProps = {
+type CustomButtonProps = ButtonProps & {
+  isLoading?: boolean;
   label: ReactNode;
   backgroundColor?: ButtonBackgroundColorType;
   startIcon?: ReactNode;
-  component?: ElementType<any>;
-  type?: 'button' | 'submit' | 'reset' | undefined;
-  disabled?: boolean;
   styles?: any;
-  fullWidth: boolean;
-  onClick?: () => void;
 };
 
 export default function CustomButton({
+  isLoading,
   label,
   backgroundColor,
   startIcon,
-  type,
-  disabled,
   styles,
-  fullWidth,
-  component,
-  onClick,
+  ...props
 }: CustomButtonProps) {
   const color = useCustomColorPalette();
-  const buttonBackgroundColor = backgroundColor && !disabled ? getButtonBackgroundColor(backgroundColor, color) : null;
+  const buttonBackgroundColor = backgroundColor && getButtonBackgroundColor(backgroundColor, color);
 
   return (
     <Button
-      onClick={onClick}
-      disabled={disabled}
-      component={component ?? 'button'}
-      type={type}
-      fullWidth={fullWidth}
       variant="contained"
-      startIcon={startIcon}
+      startIcon={
+        isLoading ? (
+          <PulseLoader
+            color="white"
+            loading={isLoading}
+            size={10}
+          />
+        ) : (
+          startIcon
+        )
+      }
       sx={{
         color: 'white',
         height: '48px',
         ...buttonBackgroundColor,
         ...styles,
-      }}>
+      }}
+      {...props}>
       {label}
     </Button>
   );

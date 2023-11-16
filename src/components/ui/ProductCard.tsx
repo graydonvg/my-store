@@ -22,7 +22,6 @@ import deleteProduct from '@/services/products/delete-product';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Link from 'next/link';
-import { PulseLoader } from 'react-spinners';
 
 type Props = {
   product: ProductType;
@@ -237,32 +236,15 @@ export default function ProductCard({ product }: Props) {
               onClick={handleDeleteProduct}
               fullWidth
               label={isDeletingProduct ? '' : 'delete'}
-              startIcon={
-                isDeletingProduct ? (
-                  <PulseLoader
-                    color="white"
-                    loading={isDeletingProduct}
-                    size={10}
-                  />
-                ) : (
-                  <DeleteForever />
-                )
-              }
+              isLoading={isDeletingProduct}
+              startIcon={<DeleteForever />}
               backgroundColor="red"
             />
             <CustomButton
               onClick={handlePrepareProductForUpdate}
               fullWidth
               label={isLoading ? '' : 'update'}
-              startIcon={
-                isLoading && (
-                  <PulseLoader
-                    color="white"
-                    loading={isLoading}
-                    size={10}
-                  />
-                )
-              }
+              isLoading={isLoading}
               backgroundColor="blue"
             />
           </Box>

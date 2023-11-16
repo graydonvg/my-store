@@ -129,7 +129,7 @@ export default function SignInForm() {
             marginTop: 3,
             marginBottom: 2,
           }}
-          fullWidth={true}
+          fullWidth
           backgroundColor="blue"
         />
         <Divider>
@@ -148,7 +148,7 @@ export default function SignInForm() {
             marginTop: 2,
             marginBottom: 3,
           }}
-          fullWidth={true}
+          fullWidth
           startIcon={<GoogleIcon />}
           backgroundColor="blue"
         />

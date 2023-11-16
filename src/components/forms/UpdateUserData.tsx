@@ -94,7 +94,7 @@ export default function UpdateUserData() {
           disabled={isLoading}
           type="submit"
           styles={{ marginTop: 3 }}
-          fullWidth={true}
+          fullWidth
           backgroundColor="blue"
         />
       </Box>

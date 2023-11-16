@@ -10,7 +10,6 @@ import { deleteAllProductImages } from '@/lib/utils';
 import { Box, InputProps } from '@mui/material';
 import CustomButton from './ui/buttons/CustomButton';
 import ImageInput from './ui/inputFields/ImageInput';
-import { PulseLoader } from 'react-spinners';
 
 type Props = InputProps & {
   isLoading: boolean;
@@ -54,22 +53,13 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
         label={isDeletingAllImages ? '' : 'delete all'}
         backgroundColor="red"
         disabled={isDeletingAllImages || !isEditMode}
-        startIcon={
-          isDeletingAllImages ? (
-            <PulseLoader
-              color="white"
-              loading={isDeletingAllImages}
-              size={10}
-            />
-          ) : (
-            <DeleteForever />
-          )
-        }
+        isLoading={isDeletingAllImages}
+        startIcon={<DeleteForever />}
       />
       <CustomButton
         disabled={isDeletingImage || uploadInProgress || imageData.length === 0}
         onClick={() => handleToggleEditMode()}
-        fullWidth={true}
+        fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
         styles={{
           backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
@@ -93,18 +83,9 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
             <ImageInput {...inputProps} />
           </>
         }
-        startIcon={
-          isLoading ? (
-            <PulseLoader
-              color="white"
-              loading={isLoading}
-              size={10}
-            />
-          ) : (
-            <CloudUpload />
-          )
-        }
-        fullWidth={true}
+        isLoading={isLoading}
+        startIcon={<CloudUpload />}
+        fullWidth
         component="label"
       />
     </Box>

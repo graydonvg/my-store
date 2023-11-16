@@ -97,6 +97,7 @@ export default function Cart() {
             flexDirection: 'column',
             gap: 2,
             overflowY: 'scroll',
+            flexGrow: 1,
           }}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (

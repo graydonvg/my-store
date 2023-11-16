@@ -35,7 +35,6 @@ import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
 import updateProductImageData from '@/services/product-image-data/update-product-image-data';
-import { PulseLoader } from 'react-spinners';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -320,19 +319,10 @@ export default function AdminViewAddNewProduct() {
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
         disabled={uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields}
-        fullWidth={true}
+        fullWidth
         component="button"
-        startIcon={
-          isClearingAllFields ? (
-            <PulseLoader
-              color="white"
-              loading={isClearingAllFields}
-              size={10}
-            />
-          ) : (
-            <DeleteForever />
-          )
-        }
+        isLoading={isClearingAllFields}
+        startIcon={<DeleteForever />}
         backgroundColor="red"
       />
       <CustomButton
@@ -346,17 +336,8 @@ export default function AdminViewAddNewProduct() {
         }
         label={isLoading ? '' : productToUpdateId ? 'update product' : 'add product'}
         fullWidth
-        startIcon={
-          isLoading ? (
-            <PulseLoader
-              color="white"
-              loading={isLoading}
-              size={10}
-            />
-          ) : (
-            <Add />
-          )
-        }
+        isLoading={isLoading}
+        startIcon={<Add />}
         backgroundColor="blue"
       />
     </Box>
