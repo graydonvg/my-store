@@ -12,13 +12,17 @@ import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import CustomButton from './buttons/CustomButton';
+import { useEffect, useState } from 'react';
+import { Spinner } from './progress/Spinner';
 
 export default function Cart() {
+  const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
   const router = useRouter();
   const color = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const upperNavbarHeight = isBelowMedium
     ? document.getElementById('upper-nav')?.offsetHeight
@@ -30,6 +34,7 @@ export default function Cart() {
   }
 
   async function handleDeleteCartItem(cartItemId: string) {
+    setCartItemToDelete({ id: cartItemId });
     try {
       const { success, message } = await deleteProductFromCart(cartItemId);
       if (success === false) {
@@ -41,6 +46,10 @@ export default function Cart() {
       toast.error(`Failed to delete product from cart. Please try again later.`);
     }
   }
+
+  useEffect(() => {
+    setCartItemToDelete({ id: '' });
+  }, [cartItems]);
 
   return (
     <>
@@ -77,10 +86,13 @@ export default function Cart() {
         zIndex={(theme) => theme.zIndex.appBar - 1}>
         <Box
           sx={{
-            paddingTop: `${upperNavbarHeight! + 10}px`,
-            paddingX: 2,
-            paddingBottom: 2,
-            backgroundColor: color.grey.dark,
+            paddingTop: `${upperNavbarHeight!}px`,
+          }}
+        />
+        <Box
+          sx={{
+            padding: 2,
+            // backgroundColor: color.grey.dark,
           }}>
           <Typography
             component="h1"
@@ -91,12 +103,12 @@ export default function Cart() {
         <Box
           sx={{
             width: { xs: '85vw', sm: '400px' },
-            paddingTop: 2,
+            // paddingTop: 2,
             paddingX: 2,
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
-            overflowY: 'scroll',
+            overflowY: 'auto',
             flexGrow: 1,
           }}>
           {cartItems.length > 0 ? (
@@ -109,6 +121,7 @@ export default function Cart() {
                   gap: 2,
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
+                  opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
                 }}>
                 <Box
                   sx={{
@@ -141,8 +154,17 @@ export default function Cart() {
                   <Typography>{item?.size}</Typography>
                   <Typography>{item?.quantity}</Typography>
                 </Box>
-                <IconButton onClick={() => handleDeleteCartItem(item?.cart_item_id!)}>
-                  <Close />
+                <IconButton
+                  disabled={cartItemToDelete.id === item?.cart_item_id}
+                  onClick={() => handleDeleteCartItem(item?.cart_item_id!)}>
+                  {cartItemToDelete.id === item?.cart_item_id ? (
+                    <Spinner
+                      size={20}
+                      spinnerColor={mode === 'dark' ? color.grey.light : color.grey.dark}
+                    />
+                  ) : (
+                    <Close sx={{ color: mode === 'dark' ? color.grey.light : color.grey.dark }} />
+                  )}
                 </IconButton>
               </Box>
             ))
@@ -150,11 +172,16 @@ export default function Cart() {
             <Typography>Your cart is empty</Typography>
           )}
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
+          <CustomButton
+            variant="outlined"
+            fullWidth
+            label="go to cart"
+          />
           <CustomButton
             backgroundColor="blue"
             fullWidth
-            label="go to checkout"
+            label="checkout"
           />
         </Box>
       </DrawerComponent>

@@ -52,12 +52,12 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
         fullWidth
         label={isDeletingAllImages ? '' : 'delete all'}
         backgroundColor="red"
-        disabled={isDeletingAllImages || !isEditMode}
+        isDisabled={isDeletingAllImages || !isEditMode}
         isLoading={isDeletingAllImages}
         startIcon={<DeleteForever />}
       />
       <CustomButton
-        disabled={isDeletingImage || uploadInProgress || imageData.length === 0}
+        isDisabled={isDeletingImage || uploadInProgress || imageData.length === 0}
         onClick={() => handleToggleEditMode()}
         fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
@@ -72,7 +72,7 @@ export default function ManageProductImages({ isLoading, ...inputProps }: Props)
         startIcon={isEditMode ? <Check /> : <Edit />}
       />
       <CustomButton
-        disabled={isLoading || isEditMode}
+        isDisabled={isLoading || isEditMode}
         styles={{
           backgroundColor: color.blue.dark,
           '&:hover': { backgroundColor: color.blue.light },

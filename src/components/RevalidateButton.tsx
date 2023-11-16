@@ -30,7 +30,7 @@ export default function RevalidateButton() {
 
   return (
     <CustomButton
-      disabled={isLoading}
+      isDisabled={isLoading}
       onClick={handleRevalidate}
       fullWidth
       label={isLoading ? '' : 'revalidate'}

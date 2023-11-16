@@ -91,7 +91,7 @@ export default function UpdateUserData() {
         ))}
         <CustomButton
           label="submit"
-          disabled={isLoading}
+          isDisabled={isLoading}
           type="submit"
           styles={{ marginTop: 3 }}
           fullWidth

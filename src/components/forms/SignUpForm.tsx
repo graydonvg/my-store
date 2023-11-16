@@ -129,7 +129,7 @@ export default function SignUpForm() {
         </Grid>
         <CustomButton
           label="sign up"
-          disabled={isLoading}
+          isDisabled={isLoading}
           type="submit"
           styles={{
             marginTop: 3,

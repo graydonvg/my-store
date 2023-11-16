@@ -7,7 +7,7 @@ import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import CustomButton from './ui/buttons/CustomButton';
 import { Add, AddShoppingCart, Favorite, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -92,10 +92,12 @@ export default function ProductDetails({ product }: Props) {
       }
     } catch (error) {
       toast.error(`Failed to add product to cart. Please try again later.`);
-    } finally {
-      setIsAddingToCart(false);
     }
   }
+
+  useEffect(() => {
+    setIsAddingToCart(false);
+  }, [cartItems]);
 
   function handleAddToWishlist() {
     // check if item already added!!!

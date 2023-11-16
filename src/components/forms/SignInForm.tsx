@@ -123,7 +123,7 @@ export default function SignInForm() {
         ))}
         <CustomButton
           label="sign in"
-          disabled={isLoading}
+          isDisabled={isLoading}
           type="submit"
           styles={{
             marginTop: 3,
@@ -142,7 +142,7 @@ export default function SignInForm() {
         <CustomButton
           onClick={handleSignInWithGoogle}
           label="sign in with google"
-          disabled={isLoading}
+          isDisabled={isLoading}
           type="button"
           styles={{
             marginTop: 2,

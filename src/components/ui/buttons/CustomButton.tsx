@@ -41,6 +41,7 @@ type CustomButtonProps = ButtonProps & {
   backgroundColor?: ButtonBackgroundColorType;
   startIcon?: ReactNode;
   styles?: any;
+  isDisabled?: boolean;
 };
 
 export default function CustomButton({
@@ -49,14 +50,17 @@ export default function CustomButton({
   backgroundColor,
   startIcon,
   styles,
+  isDisabled,
   ...props
 }: CustomButtonProps) {
   const color = useCustomColorPalette();
-  const buttonBackgroundColor = backgroundColor && getButtonBackgroundColor(backgroundColor, color);
+  const buttonBackgroundColor =
+    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, color) : null;
 
   return (
     <Button
       variant="contained"
+      disabled={isDisabled}
       startIcon={
         isLoading ? (
           <PulseLoader

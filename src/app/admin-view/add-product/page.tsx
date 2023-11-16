@@ -318,7 +318,9 @@ export default function AdminViewAddNewProduct() {
       <CustomButton
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
-        disabled={uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields}
+        isDisabled={
+          uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields
+        }
         fullWidth
         component="button"
         isLoading={isClearingAllFields}
@@ -327,7 +329,7 @@ export default function AdminViewAddNewProduct() {
       />
       <CustomButton
         type="submit"
-        disabled={
+        isDisabled={
           uploadInProgress ||
           isLoading ||
           isClearingAllFields ||

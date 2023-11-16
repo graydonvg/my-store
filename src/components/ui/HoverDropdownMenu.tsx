@@ -68,6 +68,7 @@ export default function HoverDropdownMenu({
         {labelContent}
       </Box>
       <Menu
+        disableScrollLock
         elevation={0}
         sx={{
           '& .MuiMenu-list': {

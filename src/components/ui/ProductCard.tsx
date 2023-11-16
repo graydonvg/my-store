@@ -232,7 +232,7 @@ export default function ProductCard({ product }: Props) {
               paddingBottom: { xs: 1, sm: 2 },
             }}>
             <CustomButton
-              disabled={isDeletingProduct}
+              isDisabled={isDeletingProduct}
               onClick={handleDeleteProduct}
               fullWidth
               label={isDeletingProduct ? '' : 'delete'}
@@ -241,6 +241,7 @@ export default function ProductCard({ product }: Props) {
               backgroundColor="red"
             />
             <CustomButton
+              isDisabled={isLoading}
               onClick={handlePrepareProductForUpdate}
               fullWidth
               label={isLoading ? '' : 'update'}
