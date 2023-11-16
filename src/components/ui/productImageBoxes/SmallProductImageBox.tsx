@@ -115,7 +115,7 @@ export default function SmallProductImageBox({
                     <DeleteForever sx={{ fontSize: '26px' }} />
                   ) : (
                     <Spinner
-                      providedColor="white"
+                      spinnerColor="white"
                       size={26}
                     />
                   )}
