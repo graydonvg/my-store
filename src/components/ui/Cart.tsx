@@ -11,6 +11,7 @@ import { Close } from '@mui/icons-material';
 import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import CustomButton from './buttons/CustomButton';
 
 export default function Cart() {
   const router = useRouter();
@@ -77,11 +78,25 @@ export default function Cart() {
         <Box
           sx={{
             paddingTop: `${upperNavbarHeight! + 10}px`,
-            width: { xs: '100vw', sm: '400px' },
+            paddingX: 2,
+            paddingBottom: 2,
+            backgroundColor: color.grey.dark,
+          }}>
+          <Typography
+            component="h1"
+            variant="h5">
+            Your cart
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: '85vw', sm: '400px' },
+            paddingTop: 2,
             paddingX: 2,
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
+            overflowY: 'scroll',
           }}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
@@ -133,6 +148,13 @@ export default function Cart() {
           ) : (
             <Typography>Your cart is empty</Typography>
           )}
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          <CustomButton
+            backgroundColor="blue"
+            fullWidth
+            label="go to checkout"
+          />
         </Box>
       </DrawerComponent>
     </>

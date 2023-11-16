@@ -12,8 +12,6 @@ type Props = {
 export default function CartItemsStateSetter({ cartItems }: Props) {
   const dispatch = useAppDispatch();
 
-  console.log(cartItems);
-
   useEffect(() => {
     dispatch(setCartItems(cartItems));
   }, [cartItems, dispatch]);

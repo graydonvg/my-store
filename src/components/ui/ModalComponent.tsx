@@ -1,11 +1,11 @@
 'use client';
 
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Modal, Grow, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import LoadingBar from './progress/LoadingBar';
 import { ReactNode } from 'react';
-import useCloseModal from '@/hooks/useCloseModal';
+import { closeModal } from '@/lib/redux/modal/modalSlice';
 
 const style = {
   position: 'absolute',
@@ -23,12 +23,16 @@ type Props = {
 };
 
 export default function ModalComponent({ isOpen, children }: Props) {
+  const dispatch = useAppDispatch();
   const showModalLoadingBar = useAppSelector((state) => state.modal.showModalLoadingBar);
   const theme = useTheme();
   const color = useCustomColorPalette();
   const mode = theme.palette.mode;
   const modalBackgroundColor = mode === 'light' ? color.grey.light : color.grey.dark;
-  const handleCloseModal = useCloseModal();
+
+  function handleCloseModal() {
+    dispatch(closeModal());
+  }
 
   return (
     <Modal

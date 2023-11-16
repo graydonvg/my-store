@@ -8,29 +8,27 @@ import CustomButton from './ui/buttons/CustomButton';
 import { Add, AddShoppingCart, Favorite, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import useOpenModal from '@/hooks/useOpenModal';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
+import { setIsSignInModalOpen } from '@/lib/redux/modal/modalSlice';
+import { Spinner } from './ui/progress/Spinner';
 
 type Props = { product: ProductType };
 
 export default function ProductDetails({ product }: Props) {
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const dispatch = useAppDispatch();
   const supabase = createSupabaseBrowserClient();
-  const handleOpenModal = useOpenModal();
   const color = useCustomColorPalette();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { currentUser } = useAppSelector((state) => state.user);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const size = searchParams.get('size');
-  const quantity = Number(searchParams.get('quantity'));
-  const initialQuantity = quantity !== 0 ? quantity : 1;
-  const [itemQuantity, setItemQuantity] = useState(initialQuantity);
-  const [itemSize, setItemSize] = useState<string | null>(size);
+  const [itemQuantity, setItemQuantity] = useState(1);
+  const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.on_sale === 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
 
@@ -40,27 +38,14 @@ export default function ProductDetails({ product }: Props) {
 
   function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     setItemSize((prevSize) => (prevSize !== selectedSize ? selectedSize : null));
-
-    const currentUrl = new URL(window.location.href);
-
-    if (size !== selectedSize) {
-      currentUrl.searchParams.set('size', selectedSize);
-    } else {
-      currentUrl.searchParams.delete('size');
-      currentUrl.searchParams.delete('quantity');
-    }
-
-    router.replace(currentUrl.toString(), {
-      scroll: false,
-    });
   }
 
   function handleOpenSignInModal() {
-    handleOpenModal('sign-in');
+    dispatch(setIsSignInModalOpen(true));
   }
 
   function handleSelectSizeToast() {
-    toast.warning('Please select a size.');
+    toast.info('Please select a size.');
   }
 
   async function handleAddToCart() {
@@ -73,6 +58,8 @@ export default function ProductDetails({ product }: Props) {
       handleSelectSizeToast();
       return;
     }
+
+    setIsAddingToCart(true);
 
     const itemExists = cartItems.find((item) => item?.product?.product_id === product.product_id);
 
@@ -106,6 +93,8 @@ export default function ProductDetails({ product }: Props) {
       }
     } catch (error) {
       toast.error(`Failed to add product to cart. Please try again later.`);
+    } finally {
+      setIsAddingToCart(false);
     }
   }
 
@@ -125,32 +114,10 @@ export default function ProductDetails({ product }: Props) {
 
   function handleIncrementItemQuantity() {
     setItemQuantity((prevQuantity) => prevQuantity + 1);
-
-    const currentUrl = new URL(window.location.href);
-
-    const updatedQuantity = initialQuantity + 1;
-
-    currentUrl.searchParams.set('quantity', updatedQuantity.toString());
-
-    router.replace(currentUrl.toString(), {
-      scroll: false,
-    });
   }
 
   function handleDecrementItemQuantity() {
     setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
-
-    const currentUrl = new URL(window.location.href);
-
-    const updatedQuantity = initialQuantity - 1;
-
-    if (updatedQuantity !== 0) {
-      currentUrl.searchParams.set('quantity', updatedQuantity.toString());
-    }
-
-    router.replace(currentUrl.toString(), {
-      scroll: false,
-    });
   }
 
   return (
@@ -316,9 +283,18 @@ export default function ProductDetails({ product }: Props) {
             <CustomButton
               onClick={handleAddToCart}
               fullWidth
-              label="add to cart"
+              label={isAddingToCart ? 'adding...' : 'add to cart'}
               backgroundColor="blue"
-              startIcon={<AddShoppingCart />}
+              startIcon={
+                isAddingToCart ? (
+                  <Spinner
+                    size={20}
+                    providedColor="white"
+                  />
+                ) : (
+                  <AddShoppingCart />
+                )
+              }
             />
             <CustomButton
               onClick={handleAddToWishlist}

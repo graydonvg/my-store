@@ -6,18 +6,16 @@ import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import Cart from '../../../ui/Cart';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
-import { Fragment } from 'react';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Menu } from '@mui/icons-material';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import NavDrawerContent from '../../navDrawer/NavDrawerContent';
-import { useSearchParams } from 'next/navigation';
 import ModalComponent from '@/components/ui/ModalComponent';
 import SignInForm from '@/components/forms/SignInForm';
 import SignUpForm from '@/components/forms/SignUpForm';
-import useOpenModal from '@/hooks/useOpenModal';
+import { setIsSignInModalOpen, setIsSignUpModalOpen } from '@/lib/redux/modal/modalSlice';
 
 function renderButton(label: string, color: CustomColorPaletteReturnType, onClick: () => void) {
   return (
@@ -53,13 +51,10 @@ function renderDivider() {
 
 export default function UpperNavbarOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
+  const { isSignInModalOpen, isSignUpModalOpen } = useAppSelector((state) => state.modal);
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
-  const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
   const dispatch = useAppDispatch();
   const color = useCustomColorPalette();
-  const searchParams = useSearchParams();
-  const modal = searchParams.get('modal');
-  const handleOpenModal = useOpenModal();
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
@@ -67,6 +62,14 @@ export default function UpperNavbarOptions() {
 
   function handleOpenNavDrawer() {
     dispatch(setIsNavDrawerOpen({ left: true }));
+  }
+
+  function handleOpenSignInModal() {
+    dispatch(setIsSignInModalOpen(true));
+  }
+
+  function handleOpenSignUpModal() {
+    dispatch(setIsSignUpModalOpen(true));
   }
 
   return (
@@ -132,17 +135,17 @@ export default function UpperNavbarOptions() {
               </IconButton>
             </ListItem>
             {renderDivider()}
-            <ListItem disablePadding>{renderButton('Sign in', color, () => handleOpenModal('sign-in'))}</ListItem>
-            <ModalComponent isOpen={modal === 'sign-in'}>
+            <ListItem disablePadding>{renderButton('Sign in', color, () => handleOpenSignInModal())}</ListItem>
+            <ModalComponent isOpen={isSignInModalOpen}>
               <SignInForm />
             </ModalComponent>
             {renderDivider()}
             <ListItem
               disablePadding
               sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {renderButton('Sign Up', color, () => handleOpenModal('sign-up'))}
+              {renderButton('Sign Up', color, () => handleOpenSignUpModal())}
             </ListItem>
-            <ModalComponent isOpen={modal === 'sign-up'}>
+            <ModalComponent isOpen={isSignUpModalOpen}>
               <SignUpForm />
             </ModalComponent>
             {renderDivider()}

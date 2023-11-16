@@ -4,15 +4,18 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import {
+  closeModal,
+  setIsSignInModalOpen,
+  setIsSignUpModalOpen,
+  setShowModalLoadingBar,
+} from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import updateUser from '@/services/users/update-user';
-import useCloseModal from '@/hooks/useCloseModal';
-import useOpenModal from '@/hooks/useOpenModal';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -35,9 +38,6 @@ export default function SignUpForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-  const handleCloseModal = useCloseModal();
-  const handleOpenModal = useOpenModal();
-
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -68,7 +68,7 @@ export default function SignUpForm() {
         const { success: updateSuccess, message: updateMessage } = await updateUser({ first_name, last_name });
 
         if (updateSuccess === true) {
-          handleCloseModal();
+          dispatch(setIsSignUpModalOpen(false));
           setFormData(defaultFormData);
           router.refresh();
           toast.info(`Welcome, ${first_name}!`);
@@ -87,7 +87,8 @@ export default function SignUpForm() {
   }
 
   function handleOpenSignInModal() {
-    handleOpenModal('sign-in');
+    dispatch(closeModal());
+    dispatch(setIsSignInModalOpen(true));
   }
 
   return (

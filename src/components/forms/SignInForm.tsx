@@ -5,15 +5,18 @@ import { Box, Divider, Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import {
+  closeModal,
+  setIsSignInModalOpen,
+  setIsSignUpModalOpen,
+  setShowModalLoadingBar,
+} from '@/lib/redux/modal/modalSlice';
 import CustomButton from '../ui/buttons/CustomButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
-import useCloseModal from '@/hooks/useCloseModal';
-import useOpenModal from '@/hooks/useOpenModal';
 
 const formFields = [
   { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
@@ -31,8 +34,6 @@ export default function SignInForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
   const router = useRouter();
-  const handleCloseModal = useCloseModal();
-  const handleOpenModal = useOpenModal();
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -48,7 +49,7 @@ export default function SignInForm() {
       const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
       if (success === true) {
-        handleCloseModal();
+        dispatch(setIsSignInModalOpen(false));
         setFormData(defaultFormData);
         router.refresh();
       } else {
@@ -77,7 +78,7 @@ export default function SignInForm() {
           },
         },
       });
-      handleCloseModal();
+      dispatch(setIsSignInModalOpen(false));
     } catch (error) {
       toast.error('Failed to sign in.');
     } finally {
@@ -88,7 +89,8 @@ export default function SignInForm() {
   }
 
   function handleOpenSignUpModal() {
-    handleOpenModal('sign-up');
+    dispatch(closeModal());
+    dispatch(setIsSignUpModalOpen(true));
   }
 
   return (
