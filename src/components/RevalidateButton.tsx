@@ -1,6 +1,6 @@
 'use client';
 
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import CustomButton from '@/components/ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -29,7 +29,7 @@ export default function RevalidateButton() {
   }
 
   return (
-    <ContainedButton
+    <CustomButton
       isDisabled={isLoading}
       onClick={handleRevalidate}
       fullWidth

@@ -2,7 +2,7 @@
 
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, List, ListItem } from '@mui/material';
-import Cart from '../../../ui/Cart';
+import Cart from '../../../Cart';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';

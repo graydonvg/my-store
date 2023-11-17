@@ -3,7 +3,7 @@
 import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from './DrawerComponent';
+import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import Image from 'next/image';
@@ -11,9 +11,9 @@ import { Close } from '@mui/icons-material';
 import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import ContainedButton from './buttons/ContainedButton';
+import ContainedButton from './ui/buttons/ContainedButton';
 import { useEffect, useState } from 'react';
-import { Spinner } from './progress/Spinner';
+import { Spinner } from './ui/progress/Spinner';
 
 export default function Cart() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
