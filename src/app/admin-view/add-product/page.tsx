@@ -3,32 +3,19 @@
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import {
-  categories,
-  generateUniqueFileName,
-  getEmptyFormFields,
-  getNumberOfFormFields,
-  toggleButtonSizeOptions,
-} from '@/lib/utils';
+import { categories, getEmptyFormFields, getNumberOfFormFields, toggleButtonSizeOptions } from '@/lib/utils';
 import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
 import CurrencyField from '@/components/ui/inputFields/CurrencyField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
-import CustomButton from '@/components/ui/buttons/CustomButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  resetFormData,
-  resetImageData,
-  setFormData,
-  setImageData,
-  setImageUploadProgress,
-} from '@/lib/redux/addProduct/addProductSlice';
+import { resetFormData, resetImageData, setFormData } from '@/lib/redux/addProduct/addProductSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import { uploadImageToStorage } from '@/lib/firebase';
 import addProduct from '@/services/products/add-product';
 import addProductImageData from '@/services/product-image-data/add-product-image-data';
 import deleteProduct from '@/services/products/delete-product';
@@ -60,52 +47,6 @@ export default function AdminViewAddNewProduct() {
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-
-  async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
-
-    if (!files) return;
-
-    if (files.length + imageData.length > 5) return toast.error('Max. 5 images allowed');
-
-    const imagesToUpload = [];
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const uniqueFileName = generateUniqueFileName(file.name);
-
-      imagesToUpload.push({ file, uniqueFileName });
-    }
-
-    const uploadPromises = imagesToUpload.map((image) =>
-      uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        dispatch(setImageUploadProgress({ file_name: image.uniqueFileName, progress }));
-
-        switch (snapshot.state) {
-          case 'paused':
-            // console.log('Upload is paused');
-            break;
-          case 'running':
-            // console.log('Upload is running');
-            break;
-        }
-      })
-    );
-
-    const imageDataArray = await Promise.allSettled(uploadPromises);
-
-    imageDataArray.map((result, index) => {
-      if (result.status === 'fulfilled') {
-        const { file_name, image_url } = result.value;
-        return dispatch(setImageData({ file_name, image_url, index: index + imageData.length }));
-      } else if (result.status === 'rejected') {
-        toast.error('Image upload failed.');
-        return dispatch(setImageData({ file_name: '', image_url: '', index: index + imageData.length }));
-      }
-    });
-  }
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setFormData({ field: 'sizes', value: selectedSize }));
@@ -254,10 +195,7 @@ export default function AdminViewAddNewProduct() {
         <Grid
           item
           xs={12}>
-          <ManageProductImages
-            onChange={handleImageUpload}
-            isLoading={isLoading || uploadInProgress}
-          />
+          <ManageProductImages isLoading={isLoading || uploadInProgress} />
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -315,7 +253,7 @@ export default function AdminViewAddNewProduct() {
           />
         );
       })}
-      <CustomButton
+      <ContainedButton
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
         isDisabled={
@@ -327,7 +265,7 @@ export default function AdminViewAddNewProduct() {
         startIcon={<DeleteForever />}
         backgroundColor="red"
       />
-      <CustomButton
+      <ContainedButton
         type="submit"
         isDisabled={
           uploadInProgress ||

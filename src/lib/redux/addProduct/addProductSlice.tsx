@@ -91,6 +91,8 @@ export const addProductSlice = createSlice({
     },
     resetImageData(state) {
       state.imageData = initialState.imageData;
+    },
+    resetImageUploadProgess(state) {
       state.imageUploadProgress = initialState.imageUploadProgress;
     },
     resetFormData(state) {
@@ -98,6 +100,9 @@ export const addProductSlice = createSlice({
     },
     resetProductToUpdateId(state) {
       state.productToUpdateId = null;
+    },
+    resetAllProductData() {
+      return initialState;
     },
   },
 });
@@ -111,9 +116,11 @@ export const {
   deleteImage,
   setIsDeletingImage,
   resetImageData,
+  resetImageUploadProgess,
   resetFormData,
   setProductToUpdateId,
   resetProductToUpdateId,
+  resetAllProductData,
 } = actions;
 
 export const userReducer = reducer;

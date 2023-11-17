@@ -4,7 +4,12 @@ import { Box, Divider, ListItem, MenuItem, Typography, useTheme } from '@mui/mat
 import HoverDropdownMenu from '@/components/ui/HoverDropdownMenu';
 import Link from 'next/link';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { resetFormData, resetImageData, resetProductToUpdateId } from '@/lib/redux/addProduct/addProductSlice';
+import {
+  resetAllProductData,
+  resetFormData,
+  resetImageData,
+  resetProductToUpdateId,
+} from '@/lib/redux/addProduct/addProductSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type LowerNavbarOptionProps = {
@@ -47,9 +52,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
       if (productToUpdateId && productToUpdateId?.length > 0) {
-        dispatch(resetImageData());
-        dispatch(resetFormData());
-        dispatch(resetProductToUpdateId());
+        dispatch(resetAllProductData());
       }
     }
   }

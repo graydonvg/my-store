@@ -4,7 +4,7 @@ import { ProductType } from '@/types';
 import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
 import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
-import CustomButton from './ui/buttons/CustomButton';
+import ContainedButton from './ui/buttons/ContainedButton';
 import { Add, AddShoppingCart, Favorite, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, useEffect, useState } from 'react';
@@ -31,8 +31,27 @@ export default function ProductDetails({ product }: Props) {
   const isOnSale = product.on_sale === 'Yes';
   const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
 
+  function sortSizesArray(a: { label: string; value: string }, b: { label: string; value: string }) {
+    const indexOfA = toggleButtonSizeOptions.indexOf(a);
+    const indexOfB = toggleButtonSizeOptions.indexOf(b);
+
+    if (indexOfA !== -1 && indexOfB !== -1) {
+      return indexOfA - indexOfB;
+    } else if (indexOfA !== -1) {
+      return -1;
+    } else if (indexOfB !== -1) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   function getToggleButtonOptions() {
-    return product.sizes.map((size) => toggleButtonSizeOptions.filter((option) => option.value === size)[0]);
+    const availableSizes = product.sizes.map(
+      (size) => toggleButtonSizeOptions.filter((option) => option.value === size)[0]
+    );
+
+    return availableSizes.sort(sortSizesArray);
   }
 
   function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
@@ -92,12 +111,10 @@ export default function ProductDetails({ product }: Props) {
       }
     } catch (error) {
       toast.error(`Failed to add product to cart. Please try again later.`);
+    } finally {
+      setIsAddingToCart(false);
     }
   }
-
-  useEffect(() => {
-    setIsAddingToCart(false);
-  }, [cartItems]);
 
   function handleAddToWishlist() {
     // check if item already added!!!
@@ -246,7 +263,7 @@ export default function ProductDetails({ product }: Props) {
                       aspectRatio: 3 / 2,
                       borderRadius: 0,
                       '&:hover': {
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'inherit',
                       },
                     }}>
                     <Remove />
@@ -281,7 +298,7 @@ export default function ProductDetails({ product }: Props) {
               gap: 2,
               paddingY: 4,
             }}>
-            <CustomButton
+            <ContainedButton
               onClick={handleAddToCart}
               fullWidth
               label={isAddingToCart ? '' : 'add to cart'}
@@ -289,7 +306,7 @@ export default function ProductDetails({ product }: Props) {
               isLoading={isAddingToCart}
               startIcon={<AddShoppingCart />}
             />
-            <CustomButton
+            <ContainedButton
               onClick={handleAddToWishlist}
               fullWidth
               label="add to wishlist"

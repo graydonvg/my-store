@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { resetFormData, resetImageData, resetProductToUpdateId } from '@/lib/redux/addProduct/addProductSlice';
+import { resetAllProductData } from '@/lib/redux/addProduct/addProductSlice';
 
 type NavDrawerOptionProps = {
   onClick?: () => void;
@@ -27,9 +27,7 @@ export default function NavDrawerOption({ onClick, path, label, bodyTextColor, d
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
-      dispatch(resetImageData());
-      dispatch(resetFormData());
-      dispatch(resetProductToUpdateId());
+      dispatch(resetAllProductData());
     }
   }
 

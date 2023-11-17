@@ -15,13 +15,14 @@ import { Spinner } from '../progress/Spinner';
 import { ProductImageDataStoreType } from '@/types';
 
 type Props = {
-  productName: string;
-  productImageData: ProductImageDataStoreType | null;
-  imageIndex: number;
-  selectedImageIndex: number;
+  productName?: string;
+  productImageData?: ProductImageDataStoreType;
+  imageIndex?: number;
+  selectedImageIndex?: number;
+  uploadProgress?: number;
   borderColor?: string;
   isEditMode?: boolean;
-  selectImage: () => void;
+  selectImage?: () => void;
 };
 
 export default function SmallProductImageBox({
@@ -29,6 +30,7 @@ export default function SmallProductImageBox({
   productImageData,
   imageIndex,
   selectedImageIndex,
+  uploadProgress,
   borderColor,
   isEditMode,
   selectImage,
@@ -37,12 +39,11 @@ export default function SmallProductImageBox({
   const color = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const { imageUploadProgress, isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
-  const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
+  const { isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
-    selectImage();
+    // selectImage();
     try {
       if (file_name.length > 0) {
         await deleteImageFromStorage(file_name);
@@ -66,67 +67,62 @@ export default function SmallProductImageBox({
       key={imageIndex}
       onClick={selectImage}
       sx={{
-        maxWidth: { xs: '20%', sm: 'unset' },
-        aspectRatio: 3 / 4,
-        // aspectRatio: { xs: 11 / 12, sm: 3 / 4 },
-        border: `1px solid ${boxBorderColor}`,
-        borderRadius: 1,
         position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexGrow: 1,
-        width: 1,
+        maxWidth: { xs: '19.355%', sm: 'unset' },
+        aspectRatio: 3 / 4,
+        outline: `1px solid ${borderColor}`,
+        borderRadius: 1,
         opacity: productImageData && !isEditMode ? (imageIndex !== selectedImageIndex ? '50%' : null) : null,
       }}>
-      {imageUploadProgress[imageIndex] || productImageData ? (
-        productImageData ? (
-          <>
-            <Image
-              style={{
-                objectFit: 'cover',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-              fill
-              sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px), (min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
-              src={productImageData.image_url}
-              alt={`Image of ${productName}`}
-              priority
-            />
-            {isAdminView && isEditMode ? (
-              <>
-                <IconButton
-                  onClick={() => handleDeleteImage(productImageData.file_name, productImageData.product_image_id ?? '')}
-                  disabled={isDeletingImage}
-                  sx={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    color: 'white',
-                    padding: 0,
-                    borderRadius: 1,
-                    backgroundColor: color.black.opacity.medium,
-                    '&:hover': {
-                      backgroundColor: 'unset',
-                    },
-                  }}>
-                  {!isDeletingImage ? (
-                    <DeleteForever sx={{ fontSize: '26px' }} />
-                  ) : (
-                    <Spinner
-                      spinnerColor="white"
-                      size={26}
-                    />
-                  )}
-                </IconButton>
-              </>
-            ) : null}
-          </>
-        ) : isAdminView ? (
-          <CircularProgressWithLabel value={imageUploadProgress[imageIndex].progress} />
-        ) : null
+      {productImageData ? (
+        <>
+          <Image
+            style={{
+              objectFit: 'cover',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+            fill
+            sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px), (min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
+            src={productImageData.image_url}
+            alt={`Image of ${productName}`}
+            priority
+          />
+          {isAdminView && isEditMode ? (
+            <>
+              <IconButton
+                onClick={() => handleDeleteImage(productImageData.file_name, productImageData.product_image_id ?? '')}
+                disabled={isDeletingImage}
+                sx={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  color: 'white',
+                  padding: 0,
+                  borderRadius: 1,
+                  backgroundColor: color.black.opacity.medium,
+                  '&:hover': {
+                    backgroundColor: 'unset',
+                  },
+                }}>
+                {!isDeletingImage ? (
+                  <DeleteForever sx={{ fontSize: '26px' }} />
+                ) : (
+                  <Spinner
+                    spinnerColor="white"
+                    size={26}
+                  />
+                )}
+              </IconButton>
+            </>
+          ) : null}
+        </>
       ) : null}
+      {uploadProgress && isAdminView ? <CircularProgressWithLabel value={uploadProgress} /> : null}
     </Box>
   );
 }

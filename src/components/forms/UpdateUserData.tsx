@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsUpdateModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
-import CustomButton from '../ui/buttons/CustomButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -89,7 +89,7 @@ export default function UpdateUserData() {
             autoFocus={field.name === 'email'}
           />
         ))}
-        <CustomButton
+        <ContainedButton
           label="submit"
           isDisabled={isLoading}
           type="submit"

@@ -13,7 +13,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { imageData, formData } = useAppSelector((state) => state.addProduct);
+  const { imageData, formData, imageUploadProgress } = useAppSelector((state) => state.addProduct);
   const color = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -27,18 +27,13 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   }, [isAdminView, imageData, product]);
 
   function handleSelectedImage(index: number) {
-    if (
-      (isAdminView && index > imageData.length - 1) ||
-      (product?.product_image_data && index > product?.product_image_data.length - 1)
-    )
-      return;
     setSelectedImageIndex(index);
   }
 
   return (
     <Grid
       container
-      spacing={1}
+      spacing={{ xs: 0.5, sm: 1 }}
       sx={{ maxWidth: isAdminView ? '500px' : null }}>
       <Grid
         item
@@ -49,18 +44,17 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'row', sm: 'column' },
-            gap: { xs: 1, sm: `10.7px` },
+            gap: { xs: 0.5, sm: `10.7px` },
           }}>
           {isAdminView
-            ? Array.from(Array(5)).map((_, index) => (
+            ? imageData.map((data) => (
                 <SmallProductImageBox
-                  key={index}
+                  key={data.index}
                   productName={formData.name}
-                  productImageData={imageData[index]}
-                  imageIndex={index}
-                  borderColor={boxBorderColor}
+                  productImageData={data}
+                  imageIndex={data.index}
                   isEditMode={isEditMode}
-                  selectImage={() => handleSelectedImage(index)}
+                  selectImage={() => handleSelectedImage(data.index)}
                   selectedImageIndex={selectedImageIndex}
                 />
               ))
@@ -69,15 +63,30 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
                 .map((data) => (
                   <SmallProductImageBox
                     key={data.index}
-                    productName={product?.name ?? ''}
-                    productImageData={data || null}
+                    productName={product?.name}
+                    productImageData={data}
                     imageIndex={data.index}
-                    borderColor={boxBorderColor}
                     isEditMode={isEditMode}
                     selectImage={() => handleSelectedImage(data.index)}
                     selectedImageIndex={selectedImageIndex}
                   />
                 ))}
+          {isAdminView
+            ? imageUploadProgress.map((data, index) => (
+                <SmallProductImageBox
+                  key={index}
+                  borderColor={boxBorderColor}
+                  isEditMode={isEditMode}
+                  uploadProgress={data.progress}
+                />
+              ))
+            : null}
+          {isAdminView && imageData.length === 0 && imageUploadProgress.length === 0 ? (
+            <SmallProductImageBox
+              borderColor={boxBorderColor}
+              isEditMode={isEditMode}
+            />
+          ) : null}
         </Box>
       </Grid>
       <Grid
@@ -85,7 +94,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
         xs={12}
         sm={10}
         sx={{ order: { xs: 1, sm: 2 } }}>
-        {isAdminView && imageData.length > 0 ? (
+        {isAdminView ? (
           <LargeProductImageBox
             productName={formData.name}
             productImageData={imageData[selectedImageIndex]}

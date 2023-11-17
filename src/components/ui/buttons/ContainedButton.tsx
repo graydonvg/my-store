@@ -1,7 +1,6 @@
-import { GetDesignTokensType } from '@/components/theme/ThemeRegistry';
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { Button, ButtonProps, ButtonTypeMap, ExtendButtonBase } from '@mui/material';
-import { ElementType, ReactNode } from 'react';
+import { Button, ButtonProps } from '@mui/material';
+import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
 type ButtonBackgroundColorType = 'blue' | 'red';
@@ -44,7 +43,7 @@ type CustomButtonProps = ButtonProps & {
   isDisabled?: boolean;
 };
 
-export default function CustomButton({
+export default function ContainedButton({
   isLoading,
   label,
   backgroundColor,

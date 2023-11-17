@@ -11,7 +11,7 @@ import { Close } from '@mui/icons-material';
 import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import CustomButton from './buttons/CustomButton';
+import ContainedButton from './buttons/ContainedButton';
 import { useEffect, useState } from 'react';
 import { Spinner } from './progress/Spinner';
 
@@ -87,9 +87,10 @@ export default function Cart() {
         <Box
           sx={{
             paddingTop: `${upperNavbarHeight!}px`,
+            paddingBottom: 2,
           }}
         />
-        <Box
+        {/* <Box
           sx={{
             padding: 2,
             // backgroundColor: color.grey.dark,
@@ -97,9 +98,9 @@ export default function Cart() {
           <Typography
             component="h1"
             variant="h5">
-            Your cart
+            Cart
           </Typography>
-        </Box>
+        </Box> */}
         <Box
           sx={{
             width: { xs: '85vw', sm: '400px' },
@@ -135,6 +136,7 @@ export default function Cart() {
                   <Image
                     style={{ objectFit: 'cover', borderRadius: '4px' }}
                     fill
+                    sizes="(min-width: 600px) 110px, calc(25.36vw - 9px)"
                     src={item?.product?.product_image_data[0].image_url ?? ''}
                     alt={`Image of ${item?.product?.name}`}
                     priority
@@ -173,12 +175,12 @@ export default function Cart() {
           )}
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
-          <CustomButton
+          <ContainedButton
             variant="outlined"
             fullWidth
             label="go to cart"
           />
-          <CustomButton
+          <ContainedButton
             backgroundColor="blue"
             fullWidth
             label="checkout"

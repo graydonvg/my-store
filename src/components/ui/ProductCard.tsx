@@ -2,7 +2,7 @@
 
 import { Box, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
-import CustomButton from './buttons/CustomButton';
+import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
@@ -10,9 +10,7 @@ import { deleteAllProductImages, formatCurrency } from '@/lib/utils';
 import { AddProductStoreType, ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
-  resetFormData,
-  resetImageData,
-  resetProductToUpdateId,
+  resetAllProductData,
   setFormData,
   setImageData,
   setImageUploadProgress,
@@ -48,12 +46,10 @@ export default function ProductCard({ product }: Props) {
       await deleteAllProductImages(imageData);
     }
 
-    dispatch(resetImageData());
-    dispatch(resetFormData());
-    dispatch(resetProductToUpdateId());
+    dispatch(resetAllProductData());
     product.product_image_data.map((data) => {
       dispatch(setImageData(data));
-      dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
+      // dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
     });
     dispatch(setProductToUpdateId(product_id));
 
@@ -231,7 +227,7 @@ export default function ProductCard({ product }: Props) {
               paddingX: { xs: 1, sm: 2 },
               paddingBottom: { xs: 1, sm: 2 },
             }}>
-            <CustomButton
+            <ContainedButton
               isDisabled={isDeletingProduct}
               onClick={handleDeleteProduct}
               fullWidth
@@ -240,7 +236,7 @@ export default function ProductCard({ product }: Props) {
               startIcon={<DeleteForever />}
               backgroundColor="red"
             />
-            <CustomButton
+            <ContainedButton
               isDisabled={isLoading}
               onClick={handlePrepareProductForUpdate}
               fullWidth
