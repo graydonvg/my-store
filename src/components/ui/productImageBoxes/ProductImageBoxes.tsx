@@ -33,7 +33,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   }, [imageData, selectedImageIndex]);
 
   function handleSelectedImage(index: number) {
-    setSelectedImageIndex((prevIndex) => (index !== prevIndex ? index : prevIndex));
+    setSelectedImageIndex(index);
   }
 
   return (

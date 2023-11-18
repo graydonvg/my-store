@@ -82,7 +82,7 @@ export default function ProductDetails({ product }: Props) {
     const itemExists = cartItems.find((item) => item?.product?.product_id === product.product_id);
 
     try {
-      if (itemExists) {
+      if (itemExists && itemExists.size === itemSize) {
         const { error } = await supabase.rpc('update', {
           item_id: itemExists.cart_item_id,
           item_quantity: itemQuantity,
@@ -141,7 +141,8 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 0, md: 6 }}>
+      // spacing={{ xs: 1, md: 6 }}
+      sx={{ height: 1 }}>
       <Grid
         item
         xs={12}
@@ -154,9 +155,8 @@ export default function ProductDetails({ product }: Props) {
         md={6}
         sx={{
           '&.MuiGrid-root': {
-            paddingTop: { xs: 2, sm: 4 },
-            paddingX: { xs: 1, md: 4 },
-            paddingRight: { md: 0 },
+            paddingTop: { xs: 1, md: 0 },
+            paddingX: { xs: 1, md: 6 },
           },
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1 }}>

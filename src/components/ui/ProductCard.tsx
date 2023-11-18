@@ -193,12 +193,13 @@ export default function ProductCard({ product }: Props) {
                   <Typography
                     sx={{ paddingRight: 1 }}
                     component="span"
-                    variant="h5">
+                    variant="h5"
+                    fontWeight={500}>
                     {formatCurrency(sale_price)}
                   </Typography>
                   <Typography
                     component="span"
-                    variant="body1"
+                    variant="h6"
                     sx={{ textDecoration: 'line-through', opacity: '70%' }}>
                     {formatCurrency(product.price)}
                   </Typography>
@@ -206,7 +207,8 @@ export default function ProductCard({ product }: Props) {
               ) : (
                 <Typography
                   component="span"
-                  variant="h5">
+                  variant="h5"
+                  fontWeight={500}>
                   {formatCurrency(product.price)}
                 </Typography>
               )}

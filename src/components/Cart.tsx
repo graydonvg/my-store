@@ -1,19 +1,17 @@
 'use client';
 
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
-import Image from 'next/image';
-import { Close } from '@mui/icons-material';
 import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { useEffect, useState } from 'react';
-import { Spinner } from './ui/progress/Spinner';
+import CartItem from './CartItem';
 
 export default function Cart() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
@@ -22,7 +20,6 @@ export default function Cart() {
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const upperNavbarHeight = isBelowMedium
     ? document.getElementById('upper-nav')?.offsetHeight
@@ -87,88 +84,27 @@ export default function Cart() {
         <Box
           sx={{
             paddingTop: `${upperNavbarHeight!}px`,
-            paddingBottom: 2,
+            paddingBottom: { xs: 1, sm: 2 },
           }}
         />
-        {/* <Box
-          sx={{
-            padding: 2,
-            // backgroundColor: color.grey.dark,
-          }}>
-          <Typography
-            component="h1"
-            variant="h5">
-            Cart
-          </Typography>
-        </Box> */}
         <Box
           sx={{
-            width: { xs: '85vw', sm: '400px' },
-            // paddingTop: 2,
-            paddingX: 2,
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
+            width: { xs: '100vw', md: '600px' },
+            paddingX: { xs: 1, sm: 2 },
             overflowY: 'auto',
-            flexGrow: 1,
+            height: 1,
           }}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
-              <Box
+              <CartItem
                 key={item?.cart_item_id}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: 2,
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                  opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
-                }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    position: 'relative',
-                    aspectRatio: 3 / 4,
-                    flexGrow: 1,
-                    minWidth: '30%',
-                    maxWidth: '30%',
-                  }}>
-                  <Image
-                    style={{ objectFit: 'cover', borderRadius: '4px' }}
-                    fill
-                    sizes="(min-width: 600px) 110px, calc(25.36vw - 9px)"
-                    src={item?.product?.product_image_data[0].image_url ?? ''}
-                    alt={`Image of ${item?.product?.name}`}
-                    priority
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    flexGrow: 1,
-                  }}>
-                  <Typography>{item?.product?.name}</Typography>
-                  <Typography>
-                    {item?.product?.price! - item?.product?.price! * (item?.product?.sale_percentage! / 100)}
-                  </Typography>
-                  <Typography>{item?.size}</Typography>
-                  <Typography>{item?.quantity}</Typography>
-                </Box>
-                <IconButton
-                  disabled={cartItemToDelete.id === item?.cart_item_id}
-                  onClick={() => handleDeleteCartItem(item?.cart_item_id!)}>
-                  {cartItemToDelete.id === item?.cart_item_id ? (
-                    <Spinner
-                      size={20}
-                      spinnerColor={mode === 'dark' ? color.grey.light : color.grey.dark}
-                    />
-                  ) : (
-                    <Close sx={{ color: mode === 'dark' ? color.grey.light : color.grey.dark }} />
-                  )}
-                </IconButton>
-              </Box>
+                item={item}
+                cartItemToDelete={cartItemToDelete}
+                deleteCartItem={() => handleDeleteCartItem(item?.cart_item_id!)}
+              />
             ))
           ) : (
             <Typography>Your cart is empty</Typography>

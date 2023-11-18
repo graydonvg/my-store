@@ -55,11 +55,11 @@ export const adminNavOptions = [
 ];
 
 export const toggleButtonSizeOptions = [
-  { label: 'XS', value: 'extra-small' },
-  { label: 'S', value: 'small' },
-  { label: 'M', value: 'medium' },
-  { label: 'L', value: 'large' },
-  { label: 'XL', value: 'extra-large' },
+  { label: 'XS', value: 'XS' },
+  { label: 'S', value: 'S' },
+  { label: 'M', value: 'M' },
+  { label: 'L', value: 'L' },
+  { label: 'XL', value: 'XL' },
 ];
 
 export type NavOptionsType = (typeof navOptions)[0];
