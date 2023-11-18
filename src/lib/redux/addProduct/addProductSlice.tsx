@@ -1,12 +1,8 @@
-import { ProductImageDataStoreType, AddProductStoreType } from '@/types';
+import { ProductImageDataStoreType, AddProductStoreType, ImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type ImageUploadProgressType = {
-  file_name: string;
-  progress: number;
-};
-
 type State = {
+  isEditMode: boolean;
   isDeletingImage: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: ProductImageDataStoreType[];
@@ -15,6 +11,7 @@ type State = {
 };
 
 const initialState: State = {
+  isEditMode: false,
   isDeletingImage: false,
   imageUploadProgress: [],
   imageData: [],
@@ -68,26 +65,20 @@ export const addProductSlice = createSlice({
         state.imageUploadProgress.push(action.payload);
       }
     },
-    setImageData(state, action: PayloadAction<ProductImageDataStoreType>) {
-      const data = [...state.imageData, action.payload];
-      const sortedData = data
-        .slice()
-        .sort((a, b) => a.index - b.index)
-        .map((object) => object);
-
-      state.imageData = sortedData;
+    setImageData(state, action: PayloadAction<ProductImageDataStoreType[]>) {
+      state.imageData = [...state.imageData, ...action.payload];
     },
     deleteImage(state, action: PayloadAction<{ file_name: string }>) {
       state.imageData = state.imageData.filter((image) => image.file_name !== action.payload.file_name);
-      state.imageUploadProgress = state.imageUploadProgress.filter(
-        (upload) => upload.file_name !== action.payload.file_name
-      );
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
     setProductToUpdateId(state, action: PayloadAction<string>) {
       state.productToUpdateId = action.payload;
+    },
+    setIsEditMode(state, action) {
+      state.isEditMode = action.payload;
     },
     resetImageData(state) {
       state.imageData = initialState.imageData;
@@ -119,6 +110,7 @@ export const {
   resetImageUploadProgess,
   resetFormData,
   setProductToUpdateId,
+  setIsEditMode,
   resetProductToUpdateId,
   resetAllProductData,
 } = actions;

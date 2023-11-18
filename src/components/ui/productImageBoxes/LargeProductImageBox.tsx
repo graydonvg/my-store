@@ -40,19 +40,17 @@ export default function LargeProductImageBox({
         display: 'grid',
         placeItems: 'center',
       }}>
-      {imageUploadProgress[selectedImageIndex] || productImageData ? (
-        productImageData ? (
-          <Image
-            style={{ objectFit: 'cover', borderRadius: '4px' }}
-            fill
-            sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
-            src={productImageData.image_url}
-            alt={`Image of ${productName}`}
-            priority
-          />
-        ) : (
-          <CircularProgressWithLabel value={imageUploadProgress[selectedImageIndex].progress} />
-        )
+      {productImageData ? (
+        <Image
+          style={{ objectFit: 'cover', borderRadius: '4px' }}
+          fill
+          sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
+          src={productImageData.image_url}
+          alt={`Image of ${productName}`}
+          priority
+        />
+      ) : imageUploadProgress[selectedImageIndex] ? (
+        <CircularProgressWithLabel value={imageUploadProgress[selectedImageIndex].progress} />
       ) : (
         <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography sx={{ color: textColor }}>No file chosen</Typography>

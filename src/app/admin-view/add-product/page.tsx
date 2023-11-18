@@ -35,9 +35,11 @@ const formFields = [
 
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
-  const { formData, imageData, imageUploadProgress, productToUpdateId } = useAppSelector((state) => state.addProduct);
+  const { formData, imageData, imageUploadProgress, productToUpdateId, isEditMode } = useAppSelector(
+    (state) => state.addProduct
+  );
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const theme = useTheme();
   const color = useCustomColorPalette();
@@ -83,29 +85,9 @@ export default function AdminViewAddNewProduct() {
     }
   }
 
-  async function handleUpdateImageData() {
-    try {
-      const imagesWithNewIndexes = imageData.filter((data, index) => data.index !== index);
-
-      const dataToUpdate = imagesWithNewIndexes.map((data, index) => {
-        return { ...data, index };
-      });
-
-      if (dataToUpdate.length === 0) {
-        return { success: true, message: 'Image data is up to date.' };
-      }
-
-      const { success, message } = await updateProductImageData(dataToUpdate);
-
-      return { success, message };
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     let product_id = '';
 
@@ -145,13 +127,13 @@ export default function AdminViewAddNewProduct() {
       }
       toast.error('Failed to add product. Please try again later.');
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   }
 
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     try {
       const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
@@ -164,17 +146,13 @@ export default function AdminViewAddNewProduct() {
           productToUpdateId!
         );
 
-        const { success: updateImageDataSuccess, message: updateImageDataMessage } = await handleUpdateImageData();
-
-        if (addImageDataSuccess === true && updateImageDataSuccess == true) {
+        if (addImageDataSuccess === true) {
           dispatch(resetFormData());
           dispatch(resetImageData());
           toast.success('Successfully updated product.');
           router.push('/admin-view/all-products');
         } else if (addImageDataSuccess === false) {
           toast.error(addImageDataMessage);
-        } else if (updateImageDataSuccess == true) {
-          toast.error(updateImageDataMessage);
         }
       } else {
         toast.error(updateProductMessage);
@@ -182,7 +160,7 @@ export default function AdminViewAddNewProduct() {
     } catch (error) {
       toast.error('Failed to update product. Please try again later.');
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -195,7 +173,7 @@ export default function AdminViewAddNewProduct() {
         <Grid
           item
           xs={12}>
-          <ManageProductImages isLoading={isLoading || uploadInProgress} />
+          <ManageProductImages isSubmitting={isSubmitting} />
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -205,7 +183,7 @@ export default function AdminViewAddNewProduct() {
           selection={formData.sizes}
           onChange={handleSelectSize}
           buttons={toggleButtonSizeOptions}
-          disabled={isLoading || isClearingAllFields}
+          disabled={isSubmitting || isClearingAllFields}
         />
       </Box>
       {formFields.map((field) => {
@@ -217,7 +195,7 @@ export default function AdminViewAddNewProduct() {
             onChange={handleInputChange}
             value={formData[field.name as keyof typeof formData]}
             options={field.options ?? []}
-            disabled={isLoading || isClearingAllFields}
+            disabled={isSubmitting || isClearingAllFields}
             required
           />
         ) : field.type === 'currency' ? (
@@ -227,7 +205,7 @@ export default function AdminViewAddNewProduct() {
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
-            disabled={isLoading || isClearingAllFields}
+            disabled={isSubmitting || isClearingAllFields}
             required
           />
         ) : field.type === 'percentage' ? (
@@ -237,7 +215,7 @@ export default function AdminViewAddNewProduct() {
             name={field.name}
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
-            disabled={(!isOnSale && field.name === 'sale_percentage') || isLoading || isClearingAllFields}
+            disabled={(!isOnSale && field.name === 'sale_percentage') || isSubmitting || isClearingAllFields}
             required
           />
         ) : (
@@ -248,7 +226,7 @@ export default function AdminViewAddNewProduct() {
             value={formData[field.name as keyof typeof formData]}
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
-            disabled={isLoading || isClearingAllFields}
+            disabled={isSubmitting || isClearingAllFields}
             required
           />
         );
@@ -257,7 +235,7 @@ export default function AdminViewAddNewProduct() {
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
         isDisabled={
-          uploadInProgress || isLoading || isClearingAllFields || emptyFormFields.length === numberOfFormFields
+          uploadInProgress || isSubmitting || isClearingAllFields || emptyFormFields.length === numberOfFormFields
         }
         fullWidth
         component="button"
@@ -268,15 +246,16 @@ export default function AdminViewAddNewProduct() {
       <ContainedButton
         type="submit"
         isDisabled={
+          isEditMode ||
           uploadInProgress ||
-          isLoading ||
+          isSubmitting ||
           isClearingAllFields ||
           (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0
         }
-        label={isLoading ? '' : productToUpdateId ? 'update product' : 'add product'}
+        label={isSubmitting ? '' : productToUpdateId ? 'update product' : 'add product'}
         fullWidth
-        isLoading={isLoading}
+        isLoading={isSubmitting}
         startIcon={<Add />}
         backgroundColor="blue"
       />

@@ -8,7 +8,7 @@ export async function GET(): Promise<NextResponse<CustomResponseType<ProductType
   try {
     const { data: products, error } = await supabase
       .from('products')
-      .select('*, product_image_data(file_name, image_url, product_image_id, index)')
+      .select('*, product_image_data(file_name, image_url, product_image_id)')
       .order('created_at', { ascending: false });
 
     if (error) {

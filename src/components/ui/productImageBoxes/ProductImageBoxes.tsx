@@ -1,6 +1,6 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, Grid, useTheme } from '@mui/material';
+import { Container, Grid, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SmallProductImageBox from './SmallProductImageBox';
 import LargeProductImageBox from './LargeProductImageBox';
@@ -26,90 +26,97 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
     }
   }, [isAdminView, imageData, product]);
 
+  useEffect(() => {
+    if (!imageData[selectedImageIndex]) {
+      setSelectedImageIndex(0);
+    }
+  }, [imageData, selectedImageIndex]);
+
   function handleSelectedImage(index: number) {
-    setSelectedImageIndex(index);
+    setSelectedImageIndex((prevIndex) => (index !== prevIndex ? index : prevIndex));
   }
 
   return (
-    <Grid
-      container
-      spacing={{ xs: 0.5, sm: 1 }}
-      sx={{ maxWidth: isAdminView ? '500px' : null }}>
+    <Container
+      maxWidth={isAdminView ? 'xs' : 'sm'}
+      disableGutters>
       <Grid
-        item
-        xs={12}
-        sm={2}
-        sx={{ order: { xs: 2, sm: 1 } }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'row', sm: 'column' },
-            gap: { xs: 0.5, sm: `10.7px` },
-          }}>
-          {isAdminView
-            ? imageData.map((data) => (
-                <SmallProductImageBox
-                  key={data.index}
-                  productName={formData.name}
-                  productImageData={data}
-                  imageIndex={data.index}
-                  isEditMode={isEditMode}
-                  selectImage={() => handleSelectedImage(data.index)}
-                  selectedImageIndex={selectedImageIndex}
-                />
-              ))
-            : product?.product_image_data
-                ?.sort((imageA, imageB) => imageA.index - imageB.index)
-                .map((data) => (
+        container
+        spacing={{ xs: 0.5, sm: 1 }}>
+        <Grid
+          item
+          xs={12}
+          sm={2}
+          sx={{ order: { xs: 2, sm: 1 } }}>
+          <Grid
+            container
+            spacing={{ xs: 0.5, sm: 1.28 }}>
+            {isAdminView
+              ? imageData.map((data, index) => (
                   <SmallProductImageBox
-                    key={data.index}
+                    key={data.file_name}
+                    productName={formData.name}
+                    productImageData={data}
+                    imageIndex={index}
+                    isEditMode={isEditMode}
+                    selectImage={() => handleSelectedImage(index)}
+                    selectedImageIndex={selectedImageIndex}
+                  />
+                ))
+              : product?.product_image_data.map((data, index) => (
+                  <SmallProductImageBox
+                    key={data.product_image_id}
                     productName={product?.name}
                     productImageData={data}
-                    imageIndex={data.index}
+                    imageIndex={index}
                     isEditMode={isEditMode}
-                    selectImage={() => handleSelectedImage(data.index)}
+                    selectImage={() => handleSelectedImage(index)}
                     selectedImageIndex={selectedImageIndex}
                   />
                 ))}
-          {isAdminView
-            ? imageUploadProgress.map((data, index) => (
-                <SmallProductImageBox
-                  key={index}
-                  borderColor={boxBorderColor}
-                  isEditMode={isEditMode}
-                  uploadProgress={data.progress}
-                />
-              ))
-            : null}
-          {isAdminView && imageData.length === 0 && imageUploadProgress.length === 0 ? (
-            <SmallProductImageBox
+            {isAdminView
+              ? imageUploadProgress.map((data, index) => (
+                  <SmallProductImageBox
+                    key={index}
+                    borderColor={boxBorderColor}
+                    isEditMode={isEditMode}
+                    uploadProgressData={data}
+                  />
+                ))
+              : null}
+            {isAdminView
+              ? Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
+                  <SmallProductImageBox
+                    key={`placeholder-${index}`}
+                    borderColor={boxBorderColor}
+                    isEditMode={isEditMode}
+                  />
+                ))
+              : null}
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          sx={{ order: { xs: 1, sm: 2 } }}>
+          {isAdminView ? (
+            <LargeProductImageBox
+              productName={formData.name}
+              productImageData={imageData[selectedImageIndex]}
+              selectedImageIndex={selectedImageIndex}
               borderColor={boxBorderColor}
-              isEditMode={isEditMode}
             />
-          ) : null}
-        </Box>
+          ) : (
+            <LargeProductImageBox
+              productName={product?.name ?? ''}
+              productImageData={product?.product_image_data[selectedImageIndex]}
+              selectedImageIndex={selectedImageIndex}
+              borderColor={boxBorderColor}
+            />
+          )}
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={10}
-        sx={{ order: { xs: 1, sm: 2 } }}>
-        {isAdminView ? (
-          <LargeProductImageBox
-            productName={formData.name}
-            productImageData={imageData[selectedImageIndex]}
-            selectedImageIndex={selectedImageIndex}
-            borderColor={boxBorderColor}
-          />
-        ) : (
-          <LargeProductImageBox
-            productName={product?.name ?? ''}
-            productImageData={product?.product_image_data[selectedImageIndex]}
-            selectedImageIndex={selectedImageIndex}
-            borderColor={boxBorderColor}
-          />
-        )}
-      </Grid>
-    </Grid>
+    </Container>
   );
 }

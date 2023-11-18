@@ -141,7 +141,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 0, md: 4 }}>
+      spacing={{ xs: 0, md: 6 }}>
       <Grid
         item
         xs={12}

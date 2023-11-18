@@ -13,7 +13,7 @@ export default function RevalidateButton() {
   async function handleRevalidate() {
     setIsLoading(true);
     try {
-      const data = await revalidate('/api/revalidate');
+      const data = await revalidate('/');
 
       if (data.success === true) {
         toast.success(data.message);

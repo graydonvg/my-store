@@ -37,7 +37,7 @@ export default function ProductCard({ product }: Props) {
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const imageUrl = product_image_data.filter((data) => data.index === 0)[0].image_url;
+  const imageUrl = product_image_data[0] ? product_image_data[0].image_url : '';
 
   async function handlePrepareProductForUpdate() {
     setIsLoading(true);
@@ -47,10 +47,7 @@ export default function ProductCard({ product }: Props) {
     }
 
     dispatch(resetAllProductData());
-    product.product_image_data.map((data) => {
-      dispatch(setImageData(data));
-      // dispatch(setImageUploadProgress({ file_name: data.file_name, progress: 100 }));
-    });
+    dispatch(setImageData(product.product_image_data));
     dispatch(setProductToUpdateId(product_id));
 
     for (const key in restOfProductData) {

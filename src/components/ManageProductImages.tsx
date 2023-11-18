@@ -10,6 +10,7 @@ import {
   resetImageUploadProgess,
   setImageData,
   setImageUploadProgress,
+  setIsEditMode,
 } from '@/lib/redux/addProduct/addProductSlice';
 import { deleteAllProductImages, generateUniqueFileName } from '@/lib/utils';
 import { Box } from '@mui/material';
@@ -17,26 +18,26 @@ import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadImageToStorage } from '@/lib/firebase';
+import { ProductImageDataStoreType } from '@/types';
 
 type Props = {
-  isLoading: boolean;
+  isSubmitting: boolean;
 };
 
-export default function ManageProductImages({ isLoading }: Props) {
+export default function ManageProductImages({ isSubmitting }: Props) {
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId } = useAppSelector(
+  const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId, isEditMode } = useAppSelector(
     (state) => state.addProduct
   );
-  const [isEditMode, setIsEditMode] = useState(false);
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const color = useCustomColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   useEffect(() => {
     if (imageData.length === 0) {
-      setIsEditMode(false);
+      dispatch(setIsEditMode(false));
     }
-  }, [imageData]);
+  }, [imageData, dispatch]);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -73,21 +74,22 @@ export default function ManageProductImages({ isLoading }: Props) {
 
     const imageDataArray = await Promise.allSettled(uploadPromises);
 
-    imageDataArray.map((result, index) => {
+    const uploadPromiseResults = imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { file_name, image_url } = result.value;
-        return dispatch(setImageData({ file_name, image_url, index: index + imageData.length }));
-      } else if (result.status === 'rejected') {
-        toast.error('Image upload failed.');
-        return dispatch(setImageData({ file_name: '', image_url: '', index: index + imageData.length }));
+        return { file_name, image_url };
+      } else {
+        toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
+        return { file_name: '', image_url: '' };
       }
     });
 
+    dispatch(setImageData(uploadPromiseResults));
     dispatch(resetImageUploadProgess());
   }
 
   function handleToggleEditMode() {
-    setIsEditMode((previousMode) => !previousMode);
+    isEditMode ? dispatch(setIsEditMode(false)) : dispatch(setIsEditMode(true));
   }
 
   async function handleDeleteAllImages() {
@@ -102,17 +104,21 @@ export default function ManageProductImages({ isLoading }: Props) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
       <ProductImageBoxes isEditMode={isEditMode} />
+      {isEditMode ? (
+        <ContainedButton
+          onClick={handleDeleteAllImages}
+          fullWidth
+          label={isDeletingAllImages ? '' : 'delete all'}
+          backgroundColor="red"
+          isDisabled={!isEditMode || isDeletingAllImages}
+          isLoading={isDeletingAllImages}
+          startIcon={<DeleteForever />}
+        />
+      ) : null}
       <ContainedButton
-        onClick={handleDeleteAllImages}
-        fullWidth
-        label={isDeletingAllImages ? '' : 'delete all'}
-        backgroundColor="red"
-        isDisabled={!isEditMode || isDeletingAllImages}
-        isLoading={isDeletingAllImages}
-        startIcon={<DeleteForever />}
-      />
-      <ContainedButton
-        isDisabled={isDeletingImage || uploadInProgress || imageData.length === 0}
+        isDisabled={
+          isDeletingAllImages || isDeletingImage || uploadInProgress || isSubmitting || imageData.length === 0
+        }
         onClick={() => handleToggleEditMode()}
         fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
@@ -128,17 +134,17 @@ export default function ManageProductImages({ isLoading }: Props) {
       />
       <ContainedButton
         backgroundColor="blue"
-        isDisabled={isLoading || isEditMode}
+        isDisabled={uploadInProgress || isSubmitting || isEditMode}
         styles={{
           '&:hover': { backgroundColor: color.blue.light },
         }}
         label={
           <>
-            {isLoading ? '' : 'upload images'}
+            {uploadInProgress ? '' : 'upload images'}
             <ImageInput onChange={handleImageUpload} />
           </>
         }
-        isLoading={isLoading}
+        isLoading={uploadInProgress}
         startIcon={<CloudUpload />}
         fullWidth
         component="label"

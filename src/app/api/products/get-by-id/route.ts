@@ -13,7 +13,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<CustomResp
   try {
     const { data: product, error } = await supabase
       .from('products')
-      .select('*, product_image_data(file_name, image_url, product_image_id, index)')
+      .select('*, product_image_data(file_name, image_url, product_image_id)')
       .eq('product_id', product_id);
 
     if (error) {
