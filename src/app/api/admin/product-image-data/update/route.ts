@@ -9,7 +9,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const updatePromises = imageData.map((data) =>
-      supabase.from('product_image_data').update({ index: data.index }).eq('product_image_id', data.product_image_id!)
+      supabase.from('product_image_data').update(data).eq('product_image_id', data.product_image_id!)
     );
 
     const [{ error }] = await Promise.all(updatePromises);
