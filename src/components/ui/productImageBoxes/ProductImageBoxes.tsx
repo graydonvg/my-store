@@ -27,10 +27,10 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   }, [isAdminView, imageData, product]);
 
   useEffect(() => {
-    if (!imageData[selectedImageIndex]) {
+    if (isAdminView && !imageData[selectedImageIndex]) {
       setSelectedImageIndex(0);
     }
-  }, [imageData, selectedImageIndex]);
+  }, [imageData, selectedImageIndex, isAdminView]);
 
   function handleSelectedImage(index: number) {
     setSelectedImageIndex(index);

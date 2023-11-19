@@ -117,12 +117,14 @@ export function getNumberOfFormFields(formData: {}): number {
 }
 
 export function formatCurrency(price: number) {
+  let roundedPrice = Math.round(price);
   const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'ZAR',
   });
-  const formattedCurrency = currencyFormatter.format(price);
-  return formattedCurrency.replace('ZAR', 'R');
+  const formattedCurrency = currencyFormatter.format(roundedPrice);
+
+  return formattedCurrency.replace('ZAR', 'R').replace('.00', '');
 }
 
 export default function getURL(path: string) {

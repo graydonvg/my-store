@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, ListItem, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { Spinner } from './ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
@@ -21,7 +21,9 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
     item?.product?.price! - (item?.product?.price! as number) * ((item?.product?.sale_percentage! as number) / 100);
 
   return (
-    <Box
+    <ListItem
+      disableGutters
+      disablePadding
       sx={{
         display: 'flex',
         flexDirection: 'row',
@@ -29,15 +31,14 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
+        paddingY: 1,
       }}>
       <Box
         sx={{
           display: 'flex',
           position: 'relative',
           aspectRatio: 3 / 4,
-          flexGrow: 1,
-          maxWidth: '100px',
-          minWidth: '100px',
+          width: '60px',
         }}>
         <Image
           style={{ objectFit: 'cover', borderRadius: '4px' }}
@@ -50,107 +51,126 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
       </Box>
       <Box
         sx={{
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'space-between',
           alignItems: 'flex-start',
           flexGrow: 1,
-          gap: 1,
+          height: 1,
         }}>
-        <Typography
-          lineHeight={{ xs: 1, sm: 1.6 }}
-          component="h4"
-          variant="h6">
-          {item?.product?.name}
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Typography
-              lineHeight={{ xs: 1, sm: 1.6 }}
-              component="span"
-              variant="body1"
-              sx={{ opacity: '80%' }}>
-              QTY:
-            </Typography>
-            <Typography
-              lineHeight={{ xs: 1, sm: 1.6 }}
-              component="span"
-              variant="body1"
-              fontWeight={500}>
-              {item?.quantity}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Typography
-              lineHeight={{ xs: 1, sm: 1.6 }}
-              component="span"
-              variant="body1"
-              sx={{ opacity: '80%' }}>
-              Size:
-            </Typography>
-            <Typography
-              lineHeight={{ xs: 1, sm: 1.6 }}
-              component="span"
-              variant="body1"
-              fontWeight={500}>
-              {item?.size}
-            </Typography>
-          </Box>
-        </Box>
-        {/* <Typography
-          component="span"
-          variant="h6"
-          fontWeight={700}
-          sx={{ justifySelfSelf: 'flex-end' }}>
-          R{item?.product?.price! - item?.product?.price! * (item?.product?.sale_percentage! / 100)}
-        </Typography> */}
-        <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', paddingTop: 1 }}>
+        <IconButton
+          disabled={cartItemToDelete.id === item?.cart_item_id}
+          onClick={deleteCartItem}
+          sx={{ padding: 0, position: 'absolute', top: 0, right: 0 }}>
+          {cartItemToDelete.id === item?.cart_item_id ? (
+            <Spinner
+              size={20}
+              spinnerColor={mode === 'dark' ? color.grey.light : color.grey.medium}
+            />
+          ) : (
+            <Close sx={{ opacity: '70%' }} />
+          )}
+        </IconButton>
+        <Box component="header">
           <Typography
             lineHeight={1}
-            component="span"
-            variant="h6"
-            fontWeight={700}>
-            {formatCurrency(isOnSale ? salePrice : item?.product?.price!)}
+            component="h4"
+            fontWeight={600}
+            fontSize={15}>
+            {item?.product?.name}
           </Typography>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Typography
+                lineHeight={2.25}
+                component="span"
+                variant="body1"
+                sx={{ opacity: '70%' }}
+                fontSize={13}>
+                QTY:
+              </Typography>
+              <Typography
+                lineHeight={2.25}
+                component="span"
+                variant="body1"
+                fontWeight={600}
+                fontSize={13}>
+                {item?.quantity}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Typography
+                lineHeight={2.25}
+                component="span"
+                variant="body1"
+                sx={{ opacity: '70%' }}
+                fontSize={13}>
+                Size:
+              </Typography>
+              <Typography
+                lineHeight={2.25}
+                component="span"
+                variant="body1"
+                fontWeight={600}
+                fontSize={13}>
+                {item?.size}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          component="footer"
+          sx={{ display: 'flex', width: 1, justifyContent: 'space-between' }}>
           {isOnSale ? (
             <Box
               sx={{
                 display: 'flex',
-                alignItems: 'flex-end',
-                // flexWrap: 'nowrap',
-                gap: 1,
+                borderRadius: 1,
+                paddingX: 1,
+                backgroundColor: color.blue.dark,
+                width: 'fit-content',
+                height: 'fit-content',
               }}>
               <Typography
-                lineHeight={1}
+                lineHeight={1.6}
                 component="span"
-                variant="h6"
-                sx={{ textDecoration: 'line-through', opacity: '50%' }}
-                fontWeight={400}>
-                {formatCurrency(item?.product?.price as number)}
-              </Typography>
-              <Typography
-                lineHeight={1}
-                component="span"
-                variant="h6"
-                sx={{ color: color.blue.light, fontFamily: 'serif' }}>
+                sx={{
+                  color: color.grey.light,
+                }}
+                fontSize={14}>
                 {`-${item?.product?.sale_percentage}%`}
               </Typography>
             </Box>
           ) : null}
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            {isOnSale ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                }}>
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  sx={{ textDecoration: 'line-through', opacity: '70%' }}
+                  fontSize={16}
+                  fontWeight={700}>
+                  {formatCurrency(item?.product?.price as number)}
+                </Typography>
+              </Box>
+            ) : null}
+            <Typography
+              lineHeight={1}
+              component="span"
+              variant="h6"
+              fontSize={16}
+              fontWeight={700}>
+              {formatCurrency(isOnSale ? salePrice : item?.product?.price!)}
+            </Typography>
+          </Box>
         </Box>
       </Box>
-      <IconButton
-        disabled={cartItemToDelete.id === item?.cart_item_id}
-        onClick={deleteCartItem}
-        sx={{ padding: 0 }}>
-        {cartItemToDelete.id === item?.cart_item_id ? (
-          <Spinner
-            size={20}
-            spinnerColor={mode === 'dark' ? color.grey.light : color.grey.dark}
-          />
-        ) : (
-          <Close sx={{ color: mode === 'dark' ? color.grey.light : color.grey.dark }} />
-        )}
-      </IconButton>
-    </Box>
+    </ListItem>
   );
 }

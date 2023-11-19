@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
@@ -87,12 +87,13 @@ export default function Cart() {
             paddingBottom: { xs: 1, sm: 2 },
           }}
         />
-        <Box
+        <List
+          disablePadding
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 2,
-            width: { xs: '100vw', md: '600px' },
+            // gap: 2,
+            width: { xs: '100vw', md: '500px' },
             paddingX: { xs: 1, sm: 2 },
             overflowY: 'auto',
             height: 1,
@@ -109,7 +110,7 @@ export default function Cart() {
           ) : (
             <Typography>Your cart is empty</Typography>
           )}
-        </Box>
+        </List>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
           <ContainedButton
             variant="outlined"
