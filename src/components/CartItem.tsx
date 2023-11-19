@@ -31,14 +31,15 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
-        paddingY: 1,
+        paddingY: 2,
       }}>
       <Box
         sx={{
           display: 'flex',
           position: 'relative',
-          aspectRatio: 3 / 4,
+          aspectRatio: 30 / 43,
           width: '60px',
+          minWidth: '60px',
         }}>
         <Image
           style={{ objectFit: 'cover', borderRadius: '4px' }}
@@ -69,7 +70,10 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
               spinnerColor={mode === 'dark' ? color.grey.light : color.grey.medium}
             />
           ) : (
-            <Close sx={{ opacity: '70%' }} />
+            <Close
+              fontSize="small"
+              sx={{ opacity: '70%' }}
+            />
           )}
         </IconButton>
         <Box component="header">
@@ -121,7 +125,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         </Box>
         <Box
           component="footer"
-          sx={{ display: 'flex', width: 1, justifyContent: 'space-between' }}>
+          sx={{ display: 'flex', width: 1, justifyContent: 'space-between', gap: 2 }}>
           {isOnSale ? (
             <Box
               sx={{
@@ -143,7 +147,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
               </Typography>
             </Box>
           ) : null}
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
             {isOnSale ? (
               <Box
                 sx={{

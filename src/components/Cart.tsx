@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Grid, List, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Grid, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
@@ -10,8 +10,9 @@ import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import CartItem from './CartItem';
+import OutlinedButton from './ui/buttons/OutlinedButton';
 
 export default function Cart() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
@@ -84,7 +85,6 @@ export default function Cart() {
         <Box
           sx={{
             paddingTop: `${upperNavbarHeight!}px`,
-            paddingBottom: { xs: 1, sm: 2 },
           }}
         />
         <List
@@ -92,28 +92,28 @@ export default function Cart() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            // gap: 2,
-            width: { xs: '100vw', md: '500px' },
-            paddingX: { xs: 1, sm: 2 },
+            width: { xs: '85vw', sm: '400px' },
             overflowY: 'auto',
+            paddingX: 2,
             height: 1,
           }}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
-              <CartItem
-                key={item?.cart_item_id}
-                item={item}
-                cartItemToDelete={cartItemToDelete}
-                deleteCartItem={() => handleDeleteCartItem(item?.cart_item_id!)}
-              />
+              <Fragment key={item?.cart_item_id}>
+                <CartItem
+                  item={item}
+                  cartItemToDelete={cartItemToDelete}
+                  deleteCartItem={() => handleDeleteCartItem(item?.cart_item_id!)}
+                />
+                <Divider />
+              </Fragment>
             ))
           ) : (
             <Typography>Your cart is empty</Typography>
           )}
         </List>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
-          <ContainedButton
-            variant="outlined"
+          <OutlinedButton
             fullWidth
             label="go to cart"
           />
