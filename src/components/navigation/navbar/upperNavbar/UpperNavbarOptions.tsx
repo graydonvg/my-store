@@ -27,7 +27,7 @@ function renderDivider() {
 
 export default function UpperNavbarOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitleAndLogo
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color={color.grey.light}
+        color={customColorPalette.grey.light}
       />
       <Box
         component="nav"
@@ -71,7 +71,7 @@ export default function UpperNavbarOptions() {
               sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
               <ThemeToggleIcon
                 size="small"
-                color={color.grey.light}
+                color={customColorPalette.grey.light}
               />
             </ListItem>
             {renderDivider()}

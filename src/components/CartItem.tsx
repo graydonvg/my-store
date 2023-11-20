@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Props) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
@@ -67,7 +67,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
           {cartItemToDelete.id === item?.cart_item_id ? (
             <Spinner
               size={20}
-              spinnerColor={mode === 'dark' ? color.grey.light : color.grey.medium}
+              spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
             />
           ) : (
             <Close
@@ -125,14 +125,14 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         </Box>
         <Box
           component="footer"
-          sx={{ display: 'flex', width: 1, justifyContent: 'space-between', gap: 2 }}>
+          sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           {isOnSale ? (
             <Box
               sx={{
                 display: 'flex',
                 borderRadius: 1,
                 paddingX: 1,
-                backgroundColor: color.blue.dark,
+                backgroundColor: customColorPalette.blue.dark,
                 width: 'fit-content',
                 height: 'fit-content',
               }}>
@@ -140,14 +140,22 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
                 lineHeight={1.6}
                 component="span"
                 sx={{
-                  color: color.grey.light,
+                  color: customColorPalette.grey.light,
                 }}
                 fontSize={14}>
                 {`-${item?.product?.sale_percentage}%`}
               </Typography>
             </Box>
           ) : null}
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flexWrap: 'wrap',
+              width: 1,
+            }}>
             {isOnSale ? (
               <Box
                 sx={{

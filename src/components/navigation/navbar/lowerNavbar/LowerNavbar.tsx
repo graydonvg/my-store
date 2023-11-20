@@ -7,10 +7,10 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function LowerNavbar() {
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const backgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
-  const logoColor = mode === 'light' ? color.grey.medium : color.grey.light;
+  const backgroundColor = mode === 'light' ? customColorPalette.grey.light : customColorPalette.grey.medium;
+  const logoColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
 
   return (
     <Box

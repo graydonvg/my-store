@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const theme = useTheme();
@@ -34,7 +34,7 @@ export default function NavDrawer() {
     <>
       <Menu
         sx={{
-          color: color.grey.light,
+          color: customColorPalette.grey.light,
           cursor: 'pointer',
         }}
         aria-label="open navigation drawer"
@@ -45,7 +45,7 @@ export default function NavDrawer() {
         zIndex={(theme) => theme.zIndex.appBar + 1}>
         <Box
           sx={{
-            backgroundColor: color.grey.dark,
+            backgroundColor: customColorPalette.grey.dark,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -54,7 +54,7 @@ export default function NavDrawer() {
             paddingX: 2,
           }}>
           <Typography
-            color={color.grey.light}
+            color={customColorPalette.grey.light}
             variant="h5"
             component="span">
             Menu
@@ -63,8 +63,8 @@ export default function NavDrawer() {
             sx={{
               cursor: 'pointer',
               padding: 0,
-              color: color.grey.light,
-              '&:hover': { backgroundColor: color.grey.dark },
+              color: customColorPalette.grey.light,
+              '&:hover': { backgroundColor: customColorPalette.grey.dark },
             }}
             aria-label="close navigation drawer"
             onClick={handleCloseNavDrawer}

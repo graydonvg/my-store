@@ -22,7 +22,7 @@ export default function ProductDetails({ product }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const supabase = createSupabaseBrowserClient();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const { currentUser } = useAppSelector((state) => state.user);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
@@ -204,7 +204,7 @@ export default function ProductDetails({ product }: Props) {
                   <Typography
                     component="span"
                     variant="h5"
-                    sx={{ color: color.blue.light, fontFamily: 'serif' }}>
+                    sx={{ color: customColorPalette.blue.light, fontFamily: 'serif' }}>
                     {`-${product.sale_percentage}%`}
                   </Typography>
                 </Box>

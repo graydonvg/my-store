@@ -28,8 +28,8 @@ function renderMenuItem(text: string, key: number, color: CustomColorPaletteRetu
         marginX: 2,
         marginY: '6px',
         cursor: 'default',
-        color: color.grey.light,
-        '&:hover': { backgroundColor: color.grey.dark, color: color.blue.light },
+        color: customColorPalette.grey.light,
+        '&:hover': { backgroundColor: customColorPalette.grey.dark, color: customColorPalette.blue.light },
       }}>
       {/* make this a link. no need for cursor: 'pointer' */}
       {text}
@@ -41,13 +41,14 @@ const lowerNavbarMenuOptions = ['T-Shirts', 'Pants', 'Shoes', 'Hats', 'Socks'];
 
 export default function LowerNavbarOption({ path, label, isLastNavOption }: LowerNavbarOptionProps) {
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const dispatch = useAppDispatch();
   const { productToUpdateId } = useAppSelector((state) => state.addProduct);
   const mode = theme.palette.mode;
-  const labelTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
-  const labelTextHoverColor = mode === 'light' ? color.grey.dark : 'white';
-  const menuOffsetBoxBackgroundColor = mode === 'light' ? color.grey.light : color.grey.medium;
+  const labelTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
+  const labelTextHoverColor = mode === 'light' ? customColorPalette.grey.dark : 'white';
+  const menuOffsetBoxBackgroundColor =
+    mode === 'light' ? customColorPalette.grey.light : customColorPalette.grey.medium;
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {

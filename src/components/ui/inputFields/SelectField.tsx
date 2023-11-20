@@ -6,10 +6,10 @@ type SelectFieldProps = TextFieldProps & {
 };
 
 export default function SelectField({ options, ...props }: SelectFieldProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
@@ -20,7 +20,7 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: color.blue.light,
+            borderColor: customColorPalette.blue.light,
           },
         },
       }}
@@ -29,10 +29,10 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
         <MenuItem
           sx={{
             '&.Mui-selected': {
-              color: color.grey.light,
-              backgroundColor: color.blue.light,
+              color: customColorPalette.grey.light,
+              backgroundColor: customColorPalette.blue.light,
               '&:hover': {
-                backgroundColor: color.blue.light,
+                backgroundColor: customColorPalette.blue.light,
               },
             },
           }}

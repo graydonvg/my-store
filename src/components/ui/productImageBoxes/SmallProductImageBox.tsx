@@ -36,7 +36,7 @@ export default function SmallProductImageBox({
   selectImage,
 }: Props) {
   const dispatch = useAppDispatch();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const { isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
@@ -105,7 +105,7 @@ export default function SmallProductImageBox({
                     color: 'white',
                     padding: 0,
                     borderRadius: 1,
-                    backgroundColor: color.black.opacity.medium,
+                    backgroundColor: customColorPalette.black.opacity.medium,
                     '&:hover': {
                       backgroundColor: 'unset',
                     },

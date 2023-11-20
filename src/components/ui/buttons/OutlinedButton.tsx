@@ -20,9 +20,9 @@ export default function OutlinedButton({
   ...props
 }: CustomButtonProps) {
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const buttondColor = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const buttondColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <Button

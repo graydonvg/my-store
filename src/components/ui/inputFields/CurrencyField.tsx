@@ -7,10 +7,10 @@ type NumbertFieldFieldProps = TextFieldProps & {
 };
 
 export default function CurrencyField({ borderColor, styles, ...props }: NumbertFieldFieldProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
@@ -22,7 +22,7 @@ export default function CurrencyField({ borderColor, styles, ...props }: Numbert
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: color.blue.light,
+            borderColor: customColorPalette.blue.light,
           },
         },
         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {

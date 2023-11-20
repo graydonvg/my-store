@@ -37,7 +37,7 @@ const defaultFormData = {
 };
 
 export default function SignUpForm() {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { isSignUpModalOpen } = useAppSelector((state) => state.modal);
@@ -104,7 +104,7 @@ export default function SignUpForm() {
     <>
       <TextButton
         label="sign up"
-        labelColor={color.grey.light}
+        labelColor={customColorPalette.grey.light}
         onClick={handleOpenSignUpModal}
       />
       <ModalComponent isOpen={isSignUpModalOpen}>

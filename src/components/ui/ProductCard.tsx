@@ -26,7 +26,7 @@ type Props = {
 };
 
 export default function ProductCard({ product }: Props) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { imageData, productToUpdateId } = useAppSelector((state) => state.addProduct);
@@ -139,7 +139,7 @@ export default function ProductCard({ product }: Props) {
                     flexDirection: 'column',
                     borderRadius: 1,
                     paddingX: 0.5,
-                    backgroundColor: color.blue.dark,
+                    backgroundColor: customColorPalette.blue.dark,
                     width: 'min-content',
                   }}>
                   <Typography
@@ -147,7 +147,7 @@ export default function ProductCard({ product }: Props) {
                     variant="caption"
                     sx={{
                       textAlign: 'center',
-                      color: color.grey.light,
+                      color: customColorPalette.grey.light,
                       textTransform: 'uppercase',
                     }}>
                     {`${product.sale_percentage}% off`}
@@ -166,7 +166,7 @@ export default function ProductCard({ product }: Props) {
               <Typography
                 component="span"
                 variant="caption"
-                sx={{ color: color.grey.light, textTransform: 'uppercase' }}>
+                sx={{ color: customColorPalette.grey.light, textTransform: 'uppercase' }}>
                 low stock
               </Typography>
             </Box> */}

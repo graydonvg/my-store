@@ -26,9 +26,9 @@ export default function ModalComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
   const showModalLoadingBar = useAppSelector((state) => state.modal.showModalLoadingBar);
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const modalBackgroundColor = mode === 'light' ? color.grey.light : color.grey.dark;
+  const modalBackgroundColor = mode === 'light' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   function handleCloseModal() {
     dispatch(closeModal());

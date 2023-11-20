@@ -36,7 +36,7 @@ export default function AccountMenu() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
@@ -73,11 +73,11 @@ export default function AccountMenu() {
                 <Typography
                   component="span"
                   sx={{
-                    color: color.grey.light,
+                    color: customColorPalette.grey.light,
                   }}>
                   {currentUser?.first_name ?? 'User'}
                 </Typography>
-                <ArrowDropDown sx={{ color: color.blue.dark, marginLeft: 2 }} />
+                <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
               </>
             }>
             {renderMenuItem(

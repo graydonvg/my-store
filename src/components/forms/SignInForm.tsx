@@ -32,7 +32,7 @@ const defaultFormData = {
 };
 
 export default function SignInForm() {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -106,7 +106,7 @@ export default function SignInForm() {
     <>
       <TextButton
         label="sign in"
-        labelColor={color.grey.light}
+        labelColor={customColorPalette.grey.light}
         onClick={handleOpenSignInModal}
       />
       <ModalComponent isOpen={isSignInModalOpen}>

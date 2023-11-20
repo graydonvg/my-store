@@ -5,27 +5,27 @@ import { PulseLoader } from 'react-spinners';
 
 type ButtonBackgroundColorType = 'blue' | 'red';
 
-function getButtonBackgroundColor(option: ButtonBackgroundColorType, color: CustomColorPaletteReturnType) {
+function getButtonBackgroundColor(option: ButtonBackgroundColorType, customColorPalette: CustomColorPaletteReturnType) {
   const colorOptions = {
     blue: {
-      backgroundColor: color.blue.dark,
+      backgroundColor: customColorPalette.blue.dark,
       '&:hover': {
-        backgroundColor: color.blue.dark,
+        backgroundColor: customColorPalette.blue.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: color.blue.light,
+          backgroundColor: customColorPalette.blue.light,
         },
       },
     },
     red: {
-      backgroundColor: color.red.dark,
+      backgroundColor: customColorPalette.red.dark,
       '&:hover': {
-        backgroundColor: color.red.dark,
+        backgroundColor: customColorPalette.red.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: color.red.light,
+          backgroundColor: customColorPalette.red.light,
         },
       },
     },
@@ -52,9 +52,9 @@ export default function ContainedButton({
   isDisabled,
   ...props
 }: CustomButtonProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const buttonBackgroundColor =
-    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, color) : null;
+    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, customColorPalette) : null;
 
   return (
     <Button

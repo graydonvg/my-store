@@ -7,10 +7,10 @@ type PercentageFieldProps = TextFieldProps & {
 };
 
 export default function PercentageField({ borderColor, styles, ...props }: PercentageFieldProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
@@ -22,7 +22,7 @@ export default function PercentageField({ borderColor, styles, ...props }: Perce
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: color.blue.light,
+            borderColor: customColorPalette.blue.light,
           },
         },
         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {

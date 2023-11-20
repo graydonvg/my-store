@@ -14,10 +14,10 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const isAdminView = pathname.includes('admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { imageData, formData, imageUploadProgress } = useAppSelector((state) => state.addProduct);
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? color.white.opacity.light : color.black.opacity.light;
+  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   useEffect(() => {

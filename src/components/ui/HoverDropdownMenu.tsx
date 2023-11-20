@@ -21,7 +21,7 @@ export default function HoverDropdownMenu({
   menuOffsetBoxHeight,
   menuOffsetBoxBackgroundColor,
 }: HoverDropdownMenuProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
@@ -75,7 +75,7 @@ export default function HoverDropdownMenu({
             padding: 0,
           },
           '& .MuiMenu-paper': {
-            backgroundColor: color.grey.dark,
+            backgroundColor: customColorPalette.grey.dark,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             overflow: 'visible',

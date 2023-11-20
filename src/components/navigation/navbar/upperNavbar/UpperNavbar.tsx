@@ -5,12 +5,12 @@ import UpperNavbarOptions from './UpperNavbarOptions';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function UpperNavbar() {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
 
   return (
     <Box
       id="upper-nav"
-      sx={{ backgroundColor: color.grey.dark }}>
+      sx={{ backgroundColor: customColorPalette.grey.dark }}>
       <Container maxWidth="lg">
         <Box
           sx={{

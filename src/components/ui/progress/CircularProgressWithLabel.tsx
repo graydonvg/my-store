@@ -5,10 +5,10 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useTheme } from '@mui/material';
 
 export function CircularProgressWithLabel(props: CircularProgressProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? color.grey.light : color.grey.dark;
+  const textColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
   const progress = props.value as number;
 
   return (
@@ -17,7 +17,7 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
         variant="determinate"
         sx={{
           '&.MuiCircularProgress-root': {
-            color: color.blue.light,
+            color: customColorPalette.blue.light,
           },
         }}
         {...props}

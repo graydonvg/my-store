@@ -17,7 +17,7 @@ import OutlinedButton from './ui/buttons/OutlinedButton';
 export default function Cart() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
   const router = useRouter();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -63,12 +63,12 @@ export default function Cart() {
         }}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: color.grey.light }}
+          sx={{ color: customColorPalette.grey.light }}
         />
         <Box
           sx={{
-            color: color.grey.light,
-            backgroundColor: color.blue.dark,
+            color: customColorPalette.grey.light,
+            backgroundColor: customColorPalette.blue.dark,
             borderRadius: '50%',
             width: 20,
             height: 20,

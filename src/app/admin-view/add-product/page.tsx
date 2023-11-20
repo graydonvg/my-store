@@ -42,9 +42,9 @@ export default function AdminViewAddNewProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
+  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
   const isOnSale = formData['on_sale'] === 'Yes';
   const emptyFormFields = getEmptyFormFields(formData);
   const numberOfFormFields = getNumberOfFormFields(formData);

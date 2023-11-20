@@ -7,7 +7,7 @@ type LoadingBarProps = {
 };
 
 export default function LoadingBar({ style, isLoading }: LoadingBarProps) {
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   return (
     <>
       {isLoading ? (

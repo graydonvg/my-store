@@ -30,7 +30,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     (state) => state.addProduct
   );
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   useEffect(() => {
@@ -123,9 +123,9 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
         styles={{
-          backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
+          backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.grey.medium,
           '&:hover': {
-            backgroundColor: isEditMode ? color.green.dark : color.grey.medium,
+            backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.grey.medium,
             filter: 'brightness(1.2)',
             transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
           },
@@ -136,7 +136,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         backgroundColor="blue"
         isDisabled={uploadInProgress || isSubmitting || isEditMode}
         styles={{
-          '&:hover': { backgroundColor: color.blue.light },
+          '&:hover': { backgroundColor: customColorPalette.blue.light },
         }}
         label={
           <>

@@ -36,9 +36,9 @@ export default function NavDraweOptions() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const bodyTextColor = mode === 'light' ? color.grey.medium : color.grey.light;
+  const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const router = useRouter();

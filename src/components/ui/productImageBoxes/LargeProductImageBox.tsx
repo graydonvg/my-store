@@ -22,12 +22,12 @@ export default function LargeProductImageBox({
   productName,
 }: Props) {
   const { imageUploadProgress } = useAppSelector((state) => state.addProduct);
-  const color = useCustomColorPalette();
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? color.white.opacity.strong : color.black.opacity.strong;
+  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
   const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
 
   return (
