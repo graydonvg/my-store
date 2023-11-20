@@ -18,7 +18,7 @@ type LowerNavbarOptionProps = {
   isLastNavOption: boolean;
 };
 
-function renderMenuItem(text: string, key: number, color: CustomColorPaletteReturnType) {
+function renderMenuItem(text: string, key: number, customColorPalette: CustomColorPaletteReturnType) {
   return (
     <MenuItem
       key={key}
