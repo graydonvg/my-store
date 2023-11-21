@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, List, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, IconButton, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
@@ -62,7 +62,7 @@ export default function CartDrawer() {
 
   return (
     <>
-      <Box
+      <IconButton
         component="button"
         onClick={handleToggleCart}
         sx={{
@@ -70,7 +70,11 @@ export default function CartDrawer() {
           alignItems: 'center',
           whiteSpace: 'nowrap',
           paddingX: { xs: 0, md: 2 },
-          paddingY: 1,
+          borderRadius: 0,
+          backgroundColor: customColorPalette.grey.dark,
+          '&:hover': {
+            backgroundColor: customColorPalette.grey.dark,
+          },
         }}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
@@ -87,9 +91,9 @@ export default function CartDrawer() {
             placeContent: 'center',
             marginLeft: { xs: 1, md: 2 },
           }}>
-          {cartCount}
+          <Typography>{cartCount}</Typography>
         </Box>
-      </Box>
+      </IconButton>
       <DrawerComponent
         isOpen={isCartOpen}
         zIndex={(theme) => theme.zIndex.appBar - 1}>
@@ -103,7 +107,7 @@ export default function CartDrawer() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '100vw', sm: '600px' },
+            width: { xs: '100vw', sm: '400px' },
             overflowY: 'auto',
             paddingX: 2,
             height: 1,

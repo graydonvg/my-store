@@ -46,7 +46,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
           fill
           sizes="(min-width: 600px) 110px, calc(25.36vw - 9px)"
           src={item?.product?.product_image_data[0].image_url ?? ''}
-          alt={`Image of ${item?.product?.name}`}
+          alt={`${item?.product?.name}`}
           priority
         />
       </Box>

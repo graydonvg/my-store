@@ -114,14 +114,14 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                aspectRatio: 3 / 4,
+                aspectRatio: 25 / 36,
               }}>
               <Image
                 style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
                 fill
                 sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
                 src={imageUrl}
-                alt={`Image of ${product.name}`}
+                alt={`${product.name}`}
                 priority
               />
             </Box>
@@ -176,11 +176,13 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1,
-                paddingX: { xs: 1, sm: 2 },
+                paddingX: { xs: 1, sm: 1 },
               }}>
               <Typography
-                component="h3"
-                variant="h6"
+                component="h4"
+                variant="h4"
+                fontSize={15}
+                fontWeight={600}
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -190,35 +192,29 @@ export default function ProductCard({ product }: Props) {
                 }}>
                 {product.name}
               </Typography>
-              {isOnSale ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    flexWrap: 'wrap',
-                  }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  flexWrap: 'wrap',
+                }}>
+                <Typography
+                  sx={{ paddingRight: 1 }}
+                  component="span"
+                  fontWeight={400}
+                  fontSize={18}>
+                  {formatCurrency(isOnSale ? sale_price : product.price)}
+                </Typography>
+                {isOnSale ? (
                   <Typography
-                    sx={{ paddingRight: 1 }}
                     component="span"
-                    variant="h5"
-                    fontWeight={500}>
-                    {formatCurrency(sale_price)}
-                  </Typography>
-                  <Typography
-                    component="span"
-                    variant="h6"
-                    sx={{ textDecoration: 'line-through', opacity: '70%' }}>
+                    fontWeight={400}
+                    fontSize={16}
+                    sx={{ textDecoration: 'line-through', opacity: '50%' }}>
                     {formatCurrency(product.price)}
                   </Typography>
-                </Box>
-              ) : (
-                <Typography
-                  component="span"
-                  variant="h5"
-                  fontWeight={500}>
-                  {formatCurrency(product.price)}
-                </Typography>
-              )}
+                ) : null}
+              </Box>
             </Box>
           </Box>
         </Link>

@@ -46,7 +46,7 @@ export default function LargeProductImageBox({
           fill
           sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
           src={productImageData.image_url}
-          alt={`Image of ${productName}`}
+          alt={`${productName}`}
           priority
         />
       ) : imageUploadProgress[selectedImageIndex] ? (

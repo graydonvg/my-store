@@ -90,7 +90,7 @@ export default function SmallProductImageBox({
               fill
               sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px), (min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
               src={productImageData.image_url}
-              alt={`Image of ${productName}`}
+              alt={`${productName}`}
               priority
             />
             {isAdminView && isEditMode ? (
