@@ -44,7 +44,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         <Image
           style={{ objectFit: 'cover', borderRadius: '4px' }}
           fill
-          sizes="(min-width: 600px) 110px, calc(25.36vw - 9px)"
+          sizes="60px"
           src={item?.product?.product_image_data[0].image_url ?? ''}
           alt={`${item?.product?.name}`}
           priority

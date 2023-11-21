@@ -88,7 +88,7 @@ export default function SmallProductImageBox({
                 cursor: 'pointer',
               }}
               fill
-              sizes="(min-width: 1260px) 86px, (min-width: 600px) calc(7.81vw - 11px), calc(20vw - 9px), (min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
+              sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
               src={productImageData.image_url}
               alt={`${productName}`}
               priority

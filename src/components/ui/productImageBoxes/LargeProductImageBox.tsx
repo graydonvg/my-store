@@ -44,7 +44,7 @@ export default function LargeProductImageBox({
         <Image
           style={{ objectFit: 'cover', borderRadius: '4px' }}
           fill
-          sizes="(min-width: 1280px) 470px, (min-width: 600px) 37.88vw, 100vw"
+          sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
           src={productImageData.image_url}
           alt={`${productName}`}
           priority
