@@ -37,9 +37,9 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         sx={{
           display: 'flex',
           position: 'relative',
-          aspectRatio: 30 / 43,
+          aspectRatio: 3 / 4,
           width: '60px',
-          minWidth: '60px',
+          flexShrink: 0,
         }}>
         <Image
           style={{ objectFit: 'cover', borderRadius: '4px' }}
@@ -91,7 +91,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
         </Box>
         <Box
           component="header"
-          sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
           <Typography
             lineHeight={1}
             component="h4"

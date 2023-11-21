@@ -105,7 +105,7 @@ export default function ProductCard({ product }: Props) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: { xs: 1, sm: 2 },
+              gap: 2,
               paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
             }}>
             <Box
@@ -201,15 +201,17 @@ export default function ProductCard({ product }: Props) {
                 <Typography
                   sx={{ paddingRight: 1 }}
                   component="span"
-                  fontWeight={400}
+                  fontFamily={'Georgia'}
+                  fontStyle="italic"
                   fontSize={18}>
                   {formatCurrency(isOnSale ? sale_price : product.price)}
                 </Typography>
                 {isOnSale ? (
                   <Typography
                     component="span"
-                    fontWeight={400}
                     fontSize={16}
+                    fontFamily={'Georgia'}
+                    fontStyle="italic"
                     sx={{ textDecoration: 'line-through', opacity: '50%' }}>
                     {formatCurrency(product.price)}
                   </Typography>

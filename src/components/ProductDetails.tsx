@@ -5,9 +5,9 @@ import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
 import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { Add, AddShoppingCart, Favorite, Remove } from '@mui/icons-material';
+import { Add, AddShoppingCart, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -141,12 +141,12 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
-      // spacing={{ xs: 1, md: 6 }}
       sx={{ height: 1 }}>
       <Grid
         item
         xs={12}
-        md={6}>
+        md={6}
+        sx={{ paddingX: { xs: 0.7, md: 0 }, paddingTop: { xs: 0.7, md: 0 } }}>
         <ProductImageBoxes product={product} />
       </Grid>
       <Grid
@@ -155,11 +155,11 @@ export default function ProductDetails({ product }: Props) {
         md={6}
         sx={{
           '&.MuiGrid-root': {
-            paddingTop: { xs: 1, md: 0 },
-            paddingX: { xs: 1, md: 6 },
+            paddingTop: { xs: 2, md: 0 },
+            paddingX: { xs: 1.7, md: 4 },
           },
         }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box
             sx={{
               display: 'flex',
@@ -168,9 +168,10 @@ export default function ProductDetails({ product }: Props) {
               paddingBottom: 2,
             }}>
             <Typography
+              sx={{ paddingY: 1 }}
+              lineHeight={1}
               component="h1"
-              variant="h4"
-              fontWeight={400}>
+              fontSize={30}>
               {product.name}
             </Typography>
             <Box
@@ -182,9 +183,11 @@ export default function ProductDetails({ product }: Props) {
               }}>
               <Typography
                 sx={{ paddingRight: 2 }}
+                lineHeight={1}
                 component="span"
-                variant="h4"
-                fontWeight={500}>
+                fontFamily={'Georgia'}
+                fontStyle="italic"
+                fontSize={42}>
                 {formatCurrency(isOnSale ? salePrice : product.price)}
               </Typography>
               {isOnSale ? (
@@ -193,17 +196,23 @@ export default function ProductDetails({ product }: Props) {
                     display: 'flex',
                     alignItems: 'flex-end',
                     flexWrap: 'nowrap',
+                    paddingTop: 2,
                   }}>
                   <Typography
+                    lineHeight={1}
                     component="span"
-                    variant="h5"
                     sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
-                    fontWeight={400}>
+                    fontFamily={'Georgia'}
+                    fontStyle="italic"
+                    fontSize={22}>
                     {formatCurrency(product.price)}
                   </Typography>
                   <Typography
+                    lineHeight={1}
                     component="span"
-                    variant="h5"
+                    fontSize={22}
+                    fontFamily={'Georgia'}
+                    fontStyle="italic"
                     sx={{ color: customColorPalette.blue.light, fontFamily: 'serif' }}>
                     {`-${product.sale_percentage}%`}
                   </Typography>
@@ -220,9 +229,9 @@ export default function ProductDetails({ product }: Props) {
               paddingBottom: 2,
             }}>
             <Typography
-              component="p"
-              variant="body1"
-              fontWeight={500}
+              component="h3"
+              fontWeight={600}
+              fontSize={14}
               sx={{ textTransform: 'uppercase' }}>
               Select A Size
             </Typography>
@@ -241,9 +250,9 @@ export default function ProductDetails({ product }: Props) {
                   alignItems: 'center',
                 }}>
                 <Typography
-                  component="p"
-                  variant="body1"
-                  fontWeight={500}
+                  component="span"
+                  fontWeight={600}
+                  fontSize={14}
                   sx={{ textTransform: 'uppercase' }}>
                   Quantity
                 </Typography>
@@ -266,11 +275,12 @@ export default function ProductDetails({ product }: Props) {
                         backgroundColor: 'inherit',
                       },
                     }}>
-                    <Remove />
+                    <Remove fontSize="small" />
                   </IconButton>
                   <Typography
                     component="span"
-                    variant="h5"
+                    fontWeight={600}
+                    fontSize={16}
                     sx={{ width: '4ch', textAlign: 'center' }}>
                     {itemQuantity}
                   </Typography>
@@ -285,7 +295,7 @@ export default function ProductDetails({ product }: Props) {
                         backgroundColor: 'transparent',
                       },
                     }}>
-                    <Add />
+                    <Add fontSize="small" />
                   </IconButton>
                 </Box>
               </Box>
@@ -323,24 +333,27 @@ export default function ProductDetails({ product }: Props) {
               paddingY: { xs: 1, sm: 2 },
             }}>
             <Typography
-              component="h2"
-              variant="body1"
+              component="span"
               fontWeight={500}
+              fontSize={16}
               sx={{ opacity: '70%' }}>
               Shipping
             </Typography>
-            <Typography
-              component="p"
-              variant="body1">
-              {product.delivery_info}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <LocalShippingOutlined />
+              <Typography
+                component="p"
+                variant="body1">
+                {product.delivery_info}
+              </Typography>
+            </Box>
           </Box>
           <Divider />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingY: { xs: 1, sm: 2 } }}>
             <Typography
-              component="h2"
-              variant="body1"
+              component="span"
               fontWeight={500}
+              fontSize={16}
               sx={{ opacity: '70%' }}>
               Description
             </Typography>

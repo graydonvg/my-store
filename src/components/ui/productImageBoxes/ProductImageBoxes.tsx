@@ -42,7 +42,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
       disableGutters>
       <Grid
         container
-        spacing={{ xs: 0.5, sm: 1 }}>
+        spacing={1}>
         <Grid
           item
           xs={12}
@@ -50,7 +50,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
           sx={{ order: { xs: 2, sm: 1 } }}>
           <Grid
             container
-            spacing={{ xs: 0.5, sm: 1.28 }}>
+            spacing={{ xs: 1, sm: 1.32 }}>
             {isAdminView
               ? imageData.map((data, index) => (
                   <SmallProductImageBox
