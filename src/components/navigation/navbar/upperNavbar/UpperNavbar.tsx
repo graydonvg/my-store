@@ -8,9 +8,7 @@ export default function UpperNavbar() {
   const customColorPalette = useCustomColorPalette();
 
   return (
-    <Box
-      id="upper-nav"
-      sx={{ backgroundColor: customColorPalette.grey.dark }}>
+    <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
       <Container maxWidth="lg">
         <Box
           sx={{

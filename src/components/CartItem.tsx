@@ -27,7 +27,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
       sx={{
         display: 'flex',
         flexDirection: 'row',
-        gap: { xs: 1, sm: 2 },
+        gap: 2,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
@@ -60,44 +60,65 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
           flexGrow: 1,
           height: 1,
         }}>
-        <IconButton
-          disabled={cartItemToDelete.id === item?.cart_item_id}
-          onClick={deleteCartItem}
-          sx={{ padding: 0, position: 'absolute', top: 0, right: 0 }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            display: 'grid',
+            placeItems: 'center',
+            width: '20px',
+            height: '20px',
+          }}>
           {cartItemToDelete.id === item?.cart_item_id ? (
-            <Spinner
-              size={20}
-              spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
-            />
+            <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
+              <Spinner
+                size={12}
+                spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
+              />
+            </Box>
           ) : (
-            <Close
-              fontSize="small"
-              sx={{ opacity: '70%' }}
-            />
+            <IconButton
+              disabled={cartItemToDelete.id === item?.cart_item_id}
+              onClick={deleteCartItem}
+              sx={{ padding: 0, width: 1, height: 1 }}>
+              <Close
+                fontSize="small"
+                sx={{ opacity: '70%' }}
+              />
+            </IconButton>
           )}
-        </IconButton>
-        <Box component="header">
+        </Box>
+        <Box
+          component="header"
+          sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography
             lineHeight={1}
             component="h4"
             fontWeight={600}
-            fontSize={15}>
+            fontSize={15}
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '1',
+              WebkitBoxOrient: 'vertical',
+              paddingRight: 3,
+            }}>
             {item?.product?.name}
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography
-                lineHeight={2.25}
+                lineHeight={1}
                 component="span"
-                variant="body1"
                 sx={{ opacity: '70%' }}
                 fontSize={13}>
                 QTY:
               </Typography>
               <Typography
-                lineHeight={2.25}
+                lineHeight={1}
                 component="span"
-                variant="body1"
                 fontWeight={600}
                 fontSize={13}>
                 {item?.quantity}
@@ -105,17 +126,15 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
             </Box>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography
-                lineHeight={2.25}
+                lineHeight={1}
                 component="span"
-                variant="body1"
                 sx={{ opacity: '70%' }}
                 fontSize={13}>
                 Size:
               </Typography>
               <Typography
-                lineHeight={2.25}
+                lineHeight={1}
                 component="span"
-                variant="body1"
                 fontWeight={600}
                 fontSize={13}>
                 {item?.size}

@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, Grid, List, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
@@ -13,8 +13,9 @@ import ContainedButton from './ui/buttons/ContainedButton';
 import { Fragment, useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import OutlinedButton from './ui/buttons/OutlinedButton';
+import { formatCurrency } from '@/lib/utils';
 
-export default function Cart() {
+export default function CartDrawer() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
@@ -22,10 +23,19 @@ export default function Cart() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const upperNavbarHeight = isBelowMedium
-    ? document.getElementById('upper-nav')?.offsetHeight
+  const navbarHeight = isBelowMedium
+    ? document.getElementById('navbar')?.offsetHeight
     : document.getElementById('navbar')?.offsetHeight;
   const cartCount = cartItems ? cartItems.reduce((totalCount, item) => totalCount + (item ? item?.quantity : 0), 0) : 0;
+  const cartTotal = cartItems.reduce(
+    (totalPrice, item) =>
+      totalPrice +
+      (item?.product?.on_sale
+        ? item?.product?.price! -
+          (item?.product?.price! as number) * ((item?.product?.sale_percentage! as number) / 100)
+        : item?.product?.price!),
+    0
+  );
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
@@ -84,7 +94,7 @@ export default function Cart() {
         zIndex={(theme) => theme.zIndex.appBar - 1}>
         <Box
           sx={{
-            paddingTop: `${upperNavbarHeight!}px`,
+            paddingTop: `${navbarHeight}px`,
           }}
         />
         <List
@@ -92,7 +102,7 @@ export default function Cart() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '85vw', sm: '400px' },
+            width: { xs: '100vw', sm: '400px' },
             overflowY: 'auto',
             paddingX: 2,
             height: 1,
@@ -112,17 +122,42 @@ export default function Cart() {
             <Typography>Your cart is empty</Typography>
           )}
         </List>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
-          <OutlinedButton
-            fullWidth
-            label="go to cart"
-          />
-          <ContainedButton
-            backgroundColor="blue"
-            fullWidth
-            label="checkout"
-          />
-        </Box>
+        {cartItems.length > 0 ? (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 2,
+                textTransform: 'uppercase',
+              }}>
+              <Typography
+                component="span"
+                fontSize={24}
+                fontWeight={700}>
+                total
+              </Typography>
+              <Typography
+                component="span"
+                fontSize={24}
+                fontWeight={700}>
+                {formatCurrency(cartTotal)}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingX: 2, paddingBottom: 2 }}>
+              <OutlinedButton
+                fullWidth
+                label="view cart"
+              />
+              <ContainedButton
+                backgroundColor="blue"
+                fullWidth
+                label="checkout"
+              />
+            </Box>{' '}
+          </>
+        ) : null}
       </DrawerComponent>
     </>
   );

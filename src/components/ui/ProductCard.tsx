@@ -180,7 +180,14 @@ export default function ProductCard({ product }: Props) {
               }}>
               <Typography
                 component="h3"
-                variant="h6">
+                variant="h6"
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: '2',
+                  WebkitBoxOrient: 'vertical',
+                }}>
                 {product.name}
               </Typography>
               {isOnSale ? (

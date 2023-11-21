@@ -65,7 +65,7 @@ type CartState = {
   cartItems: CartItemType[];
 };
 
-export const CART_INITIAL_STATE: CartState = {
+export const initialState: CartState = {
   isCartOpen: {
     top: false,
     left: false,
@@ -77,7 +77,7 @@ export const CART_INITIAL_STATE: CartState = {
 
 export const cartSlice = createSlice({
   name: 'cart',
-  initialState: CART_INITIAL_STATE,
+  initialState,
   reducers: {
     setIsCartOpen(state, action) {
       state.isCartOpen = action.payload;

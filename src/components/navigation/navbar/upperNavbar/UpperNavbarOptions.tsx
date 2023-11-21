@@ -2,7 +2,7 @@
 
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, List, ListItem } from '@mui/material';
-import Cart from '../../../Cart';
+import CartDrawer from '../../../CartDrawer';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
@@ -53,7 +53,7 @@ export default function UpperNavbarOptions() {
               disablePadding>
               {renderDivider()}
               <ListItem disablePadding>
-                <Cart />
+                <CartDrawer />
               </ListItem>
               {renderDivider()}
               <ListItem disablePadding>

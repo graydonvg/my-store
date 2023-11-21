@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
   const customColorPalette = useCustomColorPalette();
-  const upperNavbarHeight = document.getElementById('upper-nav')?.offsetHeight;
+  const navbarHeight = document.getElementById('navbar')?.offsetHeight;
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
@@ -50,7 +50,7 @@ export default function NavDrawer() {
             justifyContent: 'space-between',
             alignItems: 'center',
             flexShrink: 0,
-            height: upperNavbarHeight,
+            height: navbarHeight,
             paddingX: 2,
           }}>
           <Typography
