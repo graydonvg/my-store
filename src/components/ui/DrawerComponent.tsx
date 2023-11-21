@@ -41,7 +41,7 @@ export default function DrawerComponent({ isOpen, zIndex, children }: Props) {
           <Drawer
             sx={{ zIndex }}
             PaperProps={{
-              elevation: 0,
+              elevation: 1,
               sx: {
                 backgroundColor: 'background.default',
               },

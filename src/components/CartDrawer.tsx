@@ -36,6 +36,7 @@ export default function CartDrawer() {
         : item?.product?.price!),
     0
   );
+  const totalPrice = cartItems.reduce((totalPrice, item) => totalPrice + item?.product?.price!, 0);
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
@@ -102,7 +103,7 @@ export default function CartDrawer() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '100vw', sm: '400px' },
+            width: { xs: '100vw', sm: '600px' },
             overflowY: 'auto',
             paddingX: 2,
             height: 1,
@@ -123,13 +124,47 @@ export default function CartDrawer() {
           )}
         </List>
         {cartItems.length > 0 ? (
-          <>
+          <Box
+            sx={{
+              position: 'relative',
+              padding: 2,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                boxShadow: '0 -2px 4px 0 rgba(0,0,0,0.15)',
+                top: 0,
+                right: 0,
+                left: 0,
+                height: '4px',
+              },
+            }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                textTransform: 'uppercase',
+                justifyContent: 'space-between',
+                paddingBottom: 1,
+              }}>
+              <Typography
+                component="span"
+                fontSize={16}
+                fontWeight={700}>
+                Discount
+              </Typography>
+              <Typography
+                component="span"
+                fontSize={16}
+                fontWeight={700}>
+                {formatCurrency(totalPrice - cartTotal)}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 flexDirection: 'row',
-                padding: 2,
+                paddingBottom: 2,
                 textTransform: 'uppercase',
               }}>
               <Typography
@@ -145,7 +180,7 @@ export default function CartDrawer() {
                 {formatCurrency(cartTotal)}
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingX: 2, paddingBottom: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
               <OutlinedButton
                 fullWidth
                 label="view cart"
@@ -155,8 +190,8 @@ export default function CartDrawer() {
                 fullWidth
                 label="checkout"
               />
-            </Box>{' '}
-          </>
+            </Box>
+          </Box>
         ) : null}
       </DrawerComponent>
     </>
