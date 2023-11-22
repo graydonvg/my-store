@@ -5,19 +5,16 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
-import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
-import { toast } from 'react-toastify';
+import { setCartItemToDelete, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import CartItem from './CartItem';
 import OutlinedButton from './ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 
 export default function CartDrawer() {
-  const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
@@ -31,27 +28,18 @@ export default function CartDrawer() {
   const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
 
+  useEffect(() => {
+    setCartItemToDelete({ id: '' });
+  }, [cartItems]);
+
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
   }
 
-  async function handleDeleteCartItem(cartItemId: string) {
-    setCartItemToDelete({ id: cartItemId });
-    try {
-      const { success, message } = await deleteProductFromCart(cartItemId);
-      if (success === false) {
-        toast.error(message);
-      } else {
-        router.refresh();
-      }
-    } catch (error) {
-      toast.error(`Failed to delete product from cart. Please try again later.`);
-    }
+  function handleGoToCartView() {
+    router.push('/cart/view');
+    handleToggleCart();
   }
-
-  useEffect(() => {
-    setCartItemToDelete({ id: '' });
-  }, [cartItems]);
 
   return (
     <>
@@ -108,11 +96,7 @@ export default function CartDrawer() {
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <Fragment key={item?.cart_item_id}>
-                <CartItem
-                  item={item}
-                  cartItemToDelete={cartItemToDelete}
-                  deleteCartItem={() => handleDeleteCartItem(item?.cart_item_id!)}
-                />
+                <CartItem item={item} />
                 <Divider />
               </Fragment>
             ))
@@ -174,11 +158,12 @@ export default function CartDrawer() {
                 component="span"
                 fontSize={24}
                 fontWeight={700}>
-                {formatCurrency(cartTotal)}
+                {formatCurrency(cartTotal - totalDiscount)}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
               <OutlinedButton
+                onClick={handleGoToCartView}
                 fullWidth
                 label="view cart"
               />

@@ -1,8 +1,8 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 import { AddCartItemDbType, CustomResponseType } from '@/types';
 
 export default async function addProductToCart(cartItem: AddCartItemDbType): Promise<CustomResponseType> {
-  const url = getURL('/api/cart/add');
+  const url = createURL('/api/cart/add');
 
   try {
     const response = await fetch(url, {

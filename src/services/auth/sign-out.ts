@@ -1,8 +1,8 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 import { CustomResponseType } from '@/types';
 
 export default async function signOut(): Promise<CustomResponseType> {
-  const url = getURL('/api/auth/sign-out');
+  const url = createURL('/api/auth/sign-out');
 
   try {
     const response = await fetch(url, {

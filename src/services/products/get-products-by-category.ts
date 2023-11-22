@@ -1,8 +1,8 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 import { CustomResponseType, ProductType } from '@/types';
 
 export default async function getProductsByCategory(category: string): Promise<CustomResponseType<ProductType[]>> {
-  const url = getURL(`/api/products/get-by-category?category=${category}`);
+  const url = createURL(`/api/products/get-by-category?category=${category}`);
 
   try {
     const response = await fetch(url, {

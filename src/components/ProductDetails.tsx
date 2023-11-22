@@ -3,7 +3,7 @@
 import { ProductType } from '@/types';
 import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
-import { formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
+import { calculateDiscountedPrice, formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { Add, AddShoppingCart, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
@@ -29,7 +29,7 @@ export default function ProductDetails({ product }: Props) {
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.on_sale === 'Yes';
-  const salePrice = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
+  const discountedPrice = calculateDiscountedPrice(product.price, product.sale_percentage);
 
   function sortSizesArray(a: { label: string; value: string }, b: { label: string; value: string }) {
     const indexOfA = toggleButtonSizeOptions.indexOf(a);
@@ -145,8 +145,7 @@ export default function ProductDetails({ product }: Props) {
       <Grid
         item
         xs={12}
-        md={6}
-        sx={{ paddingX: { xs: 0.7, md: 0 }, paddingTop: { xs: 0.7, md: 0 } }}>
+        md={6}>
         <ProductImageBoxes product={product} />
       </Grid>
       <Grid
@@ -156,7 +155,7 @@ export default function ProductDetails({ product }: Props) {
         sx={{
           '&.MuiGrid-root': {
             paddingTop: { xs: 2, md: 0 },
-            paddingX: { xs: 1.7, md: 4 },
+            paddingX: { xs: 0, md: 4 },
           },
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -188,7 +187,7 @@ export default function ProductDetails({ product }: Props) {
                 fontFamily={'Georgia'}
                 fontStyle="italic"
                 fontSize={42}>
-                {formatCurrency(isOnSale ? salePrice : product.price)}
+                {formatCurrency(isOnSale ? discountedPrice : product.price)}
               </Typography>
               {isOnSale ? (
                 <Box

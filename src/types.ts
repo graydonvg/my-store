@@ -70,13 +70,3 @@ export type UpdateCartItemDbType = Pick<
   Database['public']['Tables']['cart']['Row'],
   'quantity' | 'cart_item_id' | 'size'
 >;
-
-export type CartState = {
-  isCartOpen: {
-    top: boolean;
-    left: boolean;
-    bottom: boolean;
-    right: boolean;
-  };
-  cartItems: CartItemType[];
-};

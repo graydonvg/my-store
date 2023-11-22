@@ -1,11 +1,11 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 import { CustomResponseType } from '@/types';
 
 export default async function signInWithPassword(formData: {
   email: string;
   password: string;
 }): Promise<CustomResponseType> {
-  const url = getURL('/api/auth/sign-in');
+  const url = createURL('/api/auth/sign-in');
 
   try {
     const response = await fetch(url, {

@@ -5,6 +5,7 @@ import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
+import { toast } from 'react-toastify';
 
 export const categories = ['Men', 'Women', 'kids'];
 
@@ -127,7 +128,7 @@ export function formatCurrency(price: number) {
   return formattedCurrency.replace('ZAR', 'R').replace('.00', '');
 }
 
-export default function getURL(path: string) {
+export default function createURL(path: string) {
   const IS_SERVER = typeof window === 'undefined';
   const siteUrl =
     process.env.NODE_ENV === 'development'
@@ -178,4 +179,8 @@ export async function deleteAllProductImages(
   } catch (error) {
     throw error;
   }
+}
+
+export function calculateDiscountedPrice(price: number, percentage: number) {
+  return price - price * (percentage / 100);
 }

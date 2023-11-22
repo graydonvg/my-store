@@ -6,8 +6,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
+import { usePathname } from 'next/navigation';
 
-const getDesignTokens = (mode: 'light' | 'dark') => ({
+const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
   // components: {
   //   MuiToolbar: {
   //     styleOverrides: {
@@ -27,7 +28,7 @@ const getDesignTokens = (mode: 'light' | 'dark') => ({
       ? {
           // palette values for light mode
           background: {
-            default: 'white',
+            default: isCartView ? grey[200] : 'white',
             // paper: grey[200],
           },
           custom: {
@@ -109,8 +110,10 @@ export type GetDesignTokensType = ReturnType<typeof getDesignTokens>;
 
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
+  const pathname = usePathname();
+  const isCartView = pathname.includes('/cart/view');
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode, isCartView)), [mode, isCartView]);
 
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>

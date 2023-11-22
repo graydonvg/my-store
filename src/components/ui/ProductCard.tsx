@@ -6,7 +6,7 @@ import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
-import { deleteAllProductImages, formatCurrency } from '@/lib/utils';
+import { calculateDiscountedPrice, deleteAllProductImages, formatCurrency } from '@/lib/utils';
 import { AddProductStoreType, ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
@@ -33,7 +33,7 @@ export default function ProductCard({ product }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale === 'Yes';
-  const sale_price = product.price - (product.price as number) * ((product.sale_percentage as number) / 100);
+  const discountedPrice = calculateDiscountedPrice(product.price, product.sale_percentage);
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -176,12 +176,12 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1,
-                paddingX: { xs: 1, sm: 1 },
+                paddingX: 1,
               }}>
               <Typography
                 component="h4"
                 variant="h4"
-                fontSize={15}
+                fontSize={16}
                 fontWeight={600}
                 sx={{
                   overflow: 'hidden',
@@ -204,7 +204,7 @@ export default function ProductCard({ product }: Props) {
                   fontFamily={'Georgia'}
                   fontStyle="italic"
                   fontSize={18}>
-                  {formatCurrency(isOnSale ? sale_price : product.price)}
+                  {formatCurrency(isOnSale ? discountedPrice : product.price)}
                 </Typography>
                 {isOnSale ? (
                   <Typography

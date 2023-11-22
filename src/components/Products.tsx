@@ -10,7 +10,7 @@ export default function Products({ products }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 0.3, sm: 2 }}>
+      spacing={{ xs: 2, sm: 2 }}>
       {products.map((product, index) => (
         <Grid
           key={index}

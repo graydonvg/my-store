@@ -4,21 +4,39 @@ import { Spinner } from './ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { formatCurrency } from '@/lib/utils';
+import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
+import { setCartItemToDelete } from '@/lib/redux/cart/cartSlice';
+import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 type Props = {
-  cartItemToDelete: { id: string };
   item: CartItemType;
-  deleteCartItem: () => void;
 };
 
-export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Props) {
+export default function CartItem({ item }: Props) {
+  const cartItemToDelete = useAppSelector((state) => state.cart.cartItemToDelete);
+  const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
-  const salePrice =
-    item?.product?.price! - (item?.product?.price! as number) * ((item?.product?.sale_percentage! as number) / 100);
+  const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
+
+  async function handleDeleteCartItem(cartItemId: string) {
+    setCartItemToDelete({ id: cartItemId });
+    try {
+      const { success, message } = await deleteProductFromCart(cartItemId);
+      if (success === false) {
+        toast.error(message);
+      } else {
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error(`Failed to delete product from cart. Please try again later.`);
+    }
+  }
 
   return (
     <ListItem
@@ -80,7 +98,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
           ) : (
             <IconButton
               disabled={cartItemToDelete.id === item?.cart_item_id}
-              onClick={deleteCartItem}
+              onClick={() => handleDeleteCartItem(item?.cart_item_id!)}
               sx={{ padding: 0, width: 1, height: 1 }}>
               <Close
                 fontSize="small"
@@ -197,7 +215,7 @@ export default function CartItem({ item, cartItemToDelete, deleteCartItem }: Pro
               variant="h6"
               fontSize={16}
               fontWeight={700}>
-              {formatCurrency(isOnSale ? salePrice : item?.product?.price!)}
+              {formatCurrency(isOnSale ? discountedPrice : item?.product?.price!)}
             </Typography>
           </Box>
         </Box>

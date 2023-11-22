@@ -1,11 +1,11 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 import { CustomResponseType } from '@/types';
 
 export default async function signUpNewUser(formData: {
   email: string;
   password: string;
 }): Promise<CustomResponseType> {
-  const url = getURL('/api/auth/sign-up');
+  const url = createURL('/api/auth/sign-up');
 
   try {
     const response = await fetch(url, {

@@ -1,7 +1,7 @@
-import getURL from '@/lib/utils';
+import createURL from '@/lib/utils';
 
 export default async function revalidate(path: string) {
-  const url = getURL('/api/revalidate');
+  const url = createURL('/api/revalidate');
 
   try {
     const response = await fetch(
