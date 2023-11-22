@@ -14,6 +14,7 @@ import { Fragment, useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import OutlinedButton from './ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
+import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 
 export default function CartDrawer() {
   const [cartItemToDelete, setCartItemToDelete] = useState({ id: '' });
@@ -26,17 +27,9 @@ export default function CartDrawer() {
   const navbarHeight = isBelowMedium
     ? document.getElementById('navbar')?.offsetHeight
     : document.getElementById('navbar')?.offsetHeight;
-  const cartCount = cartItems ? cartItems.reduce((totalCount, item) => totalCount + (item ? item?.quantity : 0), 0) : 0;
-  const cartTotal = cartItems.reduce(
-    (totalPrice, item) =>
-      totalPrice +
-      (item?.product?.on_sale
-        ? item?.product?.price! -
-          (item?.product?.price! as number) * ((item?.product?.sale_percentage! as number) / 100)
-        : item?.product?.price!),
-    0
-  );
-  const totalPrice = cartItems.reduce((totalPrice, item) => totalPrice + item?.product?.price!, 0);
+  const cartTotal = selectCartTotal(cartItems);
+  const cartCount = selectCartCount(cartItems);
+  const totalDiscount = selectTotalDiscount(cartItems);
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
@@ -160,7 +153,7 @@ export default function CartDrawer() {
                 component="span"
                 fontSize={16}
                 fontWeight={700}>
-                {formatCurrency(totalPrice - cartTotal)}
+                {formatCurrency(totalDiscount)}
               </Typography>
             </Box>
             <Box

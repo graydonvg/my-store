@@ -1,4 +1,4 @@
-import { CartItemType } from '@/types';
+import { CartItemType, CartState } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // function checkIfItemExists(itemToCheck: CartItemType, cartItems: CartItemType[]) {
@@ -54,16 +54,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // function clearCartItem(itemToClear: CartItemType, cartItems: CartItemType[]) {
 //   return cartItems.filter((item) => !(item.productId === itemToClear.productId));
 // }
-
-type CartState = {
-  isCartOpen: {
-    top: boolean;
-    left: boolean;
-    bottom: boolean;
-    right: boolean;
-  };
-  cartItems: CartItemType[];
-};
 
 export const initialState: CartState = {
   isCartOpen: {
