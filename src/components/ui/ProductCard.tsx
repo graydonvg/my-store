@@ -97,7 +97,7 @@ export default function ProductCard({ product }: Props) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: { xs: 1, sm: 2 },
+          // gap: { xs: 1, sm: 2 },
           height: 1,
         }}>
         <Link href={`/products/product/${product.product_id}`}>
@@ -105,8 +105,7 @@ export default function ProductCard({ product }: Props) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,
-              paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
+              // paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
             }}>
             <Box
               sx={{
@@ -175,19 +174,20 @@ export default function ProductCard({ product }: Props) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 1,
                 paddingX: 1,
+                paddingY: 2,
+                gap: 1,
               }}>
               <Typography
                 component="h4"
                 variant="h4"
-                fontSize={16}
+                fontSize={15}
                 fontWeight={600}
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   display: '-webkit-box',
-                  WebkitLineClamp: '2',
+                  WebkitLineClamp: '1',
                   WebkitBoxOrient: 'vertical',
                 }}>
                 {product.name}
@@ -197,9 +197,11 @@ export default function ProductCard({ product }: Props) {
                   display: 'flex',
                   alignItems: 'flex-end',
                   flexWrap: 'wrap',
+                  gap: 0.5,
                 }}>
                 <Typography
-                  sx={{ paddingRight: 1 }}
+                  lineHeight={1}
+                  sx={{ paddingRight: 0.5 }}
                   component="span"
                   fontFamily={'Georgia'}
                   fontStyle="italic"
@@ -208,6 +210,7 @@ export default function ProductCard({ product }: Props) {
                 </Typography>
                 {isOnSale ? (
                   <Typography
+                    lineHeight={1}
                     component="span"
                     fontSize={16}
                     fontFamily={'Georgia'}
@@ -227,9 +230,10 @@ export default function ProductCard({ product }: Props) {
               flexDirection: 'column',
               justifyContent: 'flex-end',
               flexGrow: 1,
-              gap: { xs: 1, sm: 2 },
-              paddingX: { xs: 1, sm: 2 },
-              paddingBottom: { xs: 1, sm: 2 },
+              padding: 1,
+              gap: 1,
+              // paddingX: { xs: 1, sm: 2 },
+              // paddingBottom: { xs: 1, sm: 2 },
             }}>
             <ContainedButton
               isDisabled={isDeletingProduct}

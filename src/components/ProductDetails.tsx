@@ -158,7 +158,7 @@ export default function ProductDetails({ product }: Props) {
             paddingX: { xs: 0, md: 4 },
           },
         }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', paddingX: 1 }}>
           <Box
             sx={{
               display: 'flex',
