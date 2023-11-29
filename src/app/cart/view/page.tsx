@@ -1,23 +1,29 @@
 'use client';
 
-import CartItem from '@/components/CartItem';
+import CartItemLarge from '@/components/CartItemLarge';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
+import {
+  selectCartTotal,
+  selectDeliveryFee,
+  selectTotalDiscount,
+  selectTotalToPay,
+} from '@/lib/redux/cart/cartSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { formatCurrency } from '@/lib/utils';
 import { Box, Divider, Grid, List, Typography, useTheme } from '@mui/material';
-
-type Props = {};
 
 export default function CartView() {
   const { cartItems } = useAppSelector((state) => state.cart);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
+  const deliveryFee = selectDeliveryFee(cartItems);
+  const totalToPay = selectTotalToPay(cartItems);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
+  const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
 
   return (
     <Grid
@@ -31,11 +37,10 @@ export default function CartView() {
           disablePadding
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {cartItems.map((item) => (
-            <Box
+            <CartItemLarge
               key={item?.cart_item_id}
-              sx={{ backgroundColor: cardBackgroundColor, paddingX: 2, borderRadius: '4px' }}>
-              <CartItem item={item} />
-            </Box>
+              item={item}
+            />
           ))}
         </List>
       </Grid>
@@ -80,17 +85,18 @@ export default function CartView() {
                 paddingY: 1,
               }}>
               <Typography
-                paddingRight={2}
+                // paddingRight={2}
                 component="span"
                 fontSize={14}
                 fontWeight={600}>
                 Discount total
               </Typography>
               <Typography
+                noWrap
                 component="span"
                 fontSize={14}
                 fontWeight={600}>
-                {formatCurrency(totalDiscount)}
+                {`-${formatCurrency(totalDiscount)}`}
               </Typography>
             </Box>
             <Box
@@ -110,7 +116,7 @@ export default function CartView() {
               <Typography
                 component="span"
                 fontSize={14}>
-                {cartTotal > 500 ? 'FREE' : formatCurrency(100)}
+                {deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)}
               </Typography>
             </Box>
             <Divider />
@@ -133,10 +139,10 @@ export default function CartView() {
                 component="span"
                 fontSize={14}
                 fontWeight={600}>
-                {formatCurrency(cartTotal - totalDiscount)}
+                {formatCurrency(totalToPay)}
               </Typography>
             </Box>
-            <Divider sx={{ border: '1.5px solid rgba(0, 0, 0, 0.12)' }} />
+            <Divider sx={{ border: `1.5px solid ${dividerColor}` }} />
             <Box
               sx={{
                 display: 'flex',
@@ -156,7 +162,7 @@ export default function CartView() {
                 component="span"
                 fontSize={18}
                 fontWeight={700}>
-                {formatCurrency(cartTotal - totalDiscount)}
+                {formatCurrency(totalToPay)}
               </Typography>
             </Box>
           </Box>

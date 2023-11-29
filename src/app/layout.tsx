@@ -47,9 +47,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <main>
             <Container
               sx={{
-                paddingX: { xs: 0.3, sm: 2 },
-                paddingTop: { xs: 0.3, sm: 2 },
-                paddingBottom: 2,
+                padding: { xs: 0.25, sm: 2 },
+                paddingBottom: { xs: 2 },
               }}
               disableGutters
               maxWidth="lg">

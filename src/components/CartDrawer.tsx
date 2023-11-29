@@ -9,7 +9,7 @@ import { setCartItemToDelete, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { Fragment, useEffect } from 'react';
-import CartItem from './CartItem';
+import CartItemSmall from './CartItemSmall';
 import OutlinedButton from './ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
@@ -96,7 +96,7 @@ export default function CartDrawer() {
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <Fragment key={item?.cart_item_id}>
-                <CartItem item={item} />
+                <CartItemSmall item={item} />
                 <Divider />
               </Fragment>
             ))

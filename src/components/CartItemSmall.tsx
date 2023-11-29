@@ -15,7 +15,7 @@ type Props = {
   item: CartItemType;
 };
 
-export default function CartItem({ item }: Props) {
+export default function CartItemSmall({ item }: Props) {
   const cartItemToDelete = useAppSelector((state) => state.cart.cartItemToDelete);
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
