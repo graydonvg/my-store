@@ -12,8 +12,10 @@ import {
 import { useAppSelector } from '@/lib/redux/hooks';
 import { formatCurrency } from '@/lib/utils';
 import { Box, Divider, Grid, List, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function CartView() {
+  const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
@@ -24,6 +26,10 @@ export default function CartView() {
   const mode = theme.palette.mode;
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
+
+  function handleGoToCheckout() {
+    router.push('/checkout/shipping');
+  }
 
   return (
     <Grid
@@ -167,6 +173,7 @@ export default function CartView() {
             </Box>
           </Box>
           <ContainedButton
+            onClick={handleGoToCheckout}
             label="checkout now"
             fullWidth
             backgroundColor="blue"

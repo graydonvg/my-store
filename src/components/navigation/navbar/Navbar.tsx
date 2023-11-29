@@ -5,11 +5,11 @@ import LowerNavbar from '../../navigation/navbar/lowerNavbar/LowerNavbar';
 import UpperNavbar from '../../navigation/navbar/upperNavbar/UpperNavbar';
 import { ElevationScroll } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import CartNavbar from '../cartNavbar';
+import CheckoutNavbar from '../CheckoutNavbar';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isCartView = pathname.includes('/cart');
+  const showCheckoutNav = pathname.includes('/cart') || pathname.includes('/checkout');
   return (
     <>
       <ElevationScroll>
@@ -18,7 +18,7 @@ export default function Navbar() {
           color="transparent"
           elevation={0}
           position="sticky">
-          {!isCartView ? (
+          {!showCheckoutNav ? (
             <>
               <UpperNavbar />
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -26,7 +26,7 @@ export default function Navbar() {
               </Box>
             </>
           ) : (
-            <CartNavbar />
+            <CheckoutNavbar />
           )}
         </AppBar>
       </ElevationScroll>

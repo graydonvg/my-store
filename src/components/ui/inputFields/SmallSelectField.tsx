@@ -1,30 +1,34 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { MenuItem, TextField, TextFieldProps, useTheme } from '@mui/material';
+import { MenuItem, TextField, TextFieldProps, Typography, useTheme } from '@mui/material';
 
 type SelectFieldProps = TextFieldProps & {
   options: string[];
 };
 
-export default function SelectField({ options, ...props }: SelectFieldProps) {
+export default function SmallSelectField({ options, ...textFieldProps }: SelectFieldProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
       select
       sx={{
-        '& label.Mui-focused': {
-          color: greyLightOrDark,
+        '& .MuiOutlinedInput-input': {
+          padding: 0,
+          paddingLeft: 1,
         },
         '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: 'transparent',
+          },
+          '&:hover fieldset': {
+            borderColor: 'transparent',
+          },
           '&.Mui-focused fieldset': {
-            borderColor: customColorPalette.blue.light,
+            borderColor: 'transparent',
           },
         },
       }}
-      {...props}>
+      {...textFieldProps}>
       {options.map((option) => (
         <MenuItem
           sx={{
@@ -38,7 +42,14 @@ export default function SelectField({ options, ...props }: SelectFieldProps) {
           }}
           key={option}
           value={option}>
-          {option}
+          <Typography
+            lineHeight={1}
+            component="span"
+            fontSize={16}
+            fontWeight={600}>
+            {option}
+          </Typography>
+          {/* {option} */}
         </MenuItem>
       ))}
     </TextField>

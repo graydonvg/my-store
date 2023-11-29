@@ -1,6 +1,16 @@
 'use client';
 
-import { Box, IconButton, ListItem, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  ListItem,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
 import { useAppSelector } from '@/lib/redux/hooks';
@@ -9,6 +19,9 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
 import { Spinner } from './ui/progress/Spinner';
 import { Close, Favorite } from '@mui/icons-material';
+import SelectField from './ui/inputFields/LargeSelectField';
+import { useState } from 'react';
+import SmallSelectField from './ui/inputFields/SmallSelectField';
 
 type Props = {
   item: CartItemType;
@@ -21,6 +34,14 @@ export default function CartItemLarge({ item }: Props) {
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
+
+  // const handleSelectQuantity = (event) => {
+  //   setAge(event.target.value);
+  // };
+
+  // const handleSelectSize = (event) => {
+  //   setAge(event.target.value);
+  // };
 
   return (
     <Box
@@ -149,13 +170,10 @@ export default function CartItemLarge({ item }: Props) {
                 fontWeight={600}>
                 Qauntity:
               </Typography>
-              <Typography
-                lineHeight={1}
-                component="span"
-                fontSize={16}
-                fontWeight={600}>
-                {item?.quantity}
-              </Typography>
+              <SmallSelectField
+                defaultValue={item?.quantity}
+                options={Array.from(Array(10)).map((_, index) => (index + 1).toString())}
+              />
             </Box>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography
@@ -166,13 +184,10 @@ export default function CartItemLarge({ item }: Props) {
                 fontWeight={600}>
                 Size:
               </Typography>
-              <Typography
-                lineHeight={1}
-                component="span"
-                fontSize={16}
-                fontWeight={600}>
-                {item?.size}
-              </Typography>
+              <SmallSelectField
+                defaultValue={item?.size}
+                options={item?.product?.sizes!}
+              />
             </Box>
           </Box>
           {/* <Box sx={{ display: 'flex', flexGrow: 1, flexShrink: 1, flexWrap: 'wrap' }}> */}

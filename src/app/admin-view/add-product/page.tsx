@@ -6,7 +6,7 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, getEmptyFormFields, getNumberOfFormFields, toggleButtonSizeOptions } from '@/lib/utils';
 import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
-import SelectField from '@/components/ui/inputFields/SelectField';
+import LargeSelectField from '@/components/ui/inputFields/LargeSelectField';
 import CurrencyField from '@/components/ui/inputFields/CurrencyField';
 import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
@@ -188,7 +188,7 @@ export default function AdminViewAddNewProduct() {
       </Box>
       {formFields.map((field) => {
         return field.type === 'select' ? (
-          <SelectField
+          <LargeSelectField
             key={field.name}
             label={field.label}
             name={field.name}

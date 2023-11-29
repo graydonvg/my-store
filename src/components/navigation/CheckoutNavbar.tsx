@@ -3,9 +3,9 @@
 import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
-import IconBreadcrumbs from '../ui/IconBreadcrumbs';
+import CheckoutBreadcrumbs from '../ui/CheckoutBreadcrumbs';
 
-export default function CartNavbar() {
+export default function CheckoutNavbar() {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -28,7 +28,7 @@ export default function CartNavbar() {
             color={customColorPalette.grey.light}
           />
           <Box sx={{ margin: '0 auto' }}>
-            <IconBreadcrumbs hideText={isBelowSmall ? true : false} />
+            <CheckoutBreadcrumbs />
           </Box>
         </Box>
       </Container>

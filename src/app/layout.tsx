@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     const { data: cart } = await supabase
       .from('cart')
       .select(
-        'created_at, cart_item_id, quantity, size,product: products!inner(name, on_sale, price, sale_percentage, delivery_info, product_id, product_image_data!inner(image_url))'
+        'created_at, cart_item_id, quantity, size, product: products!inner(name, on_sale, price, sale_percentage, delivery_info, product_id, sizes,product_image_data!inner(image_url))'
       )
       // .eq('products.product_image_data.index', 0)
       .order('created_at', { ascending: false });
