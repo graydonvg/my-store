@@ -12,8 +12,6 @@ import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 
-const drawerWidth = '100vw';
-
 function renderNavOptions(
   options: { id: string; label: string; path: string }[],
   bodyTextColor: string,
@@ -25,7 +23,6 @@ function renderNavOptions(
       key={option.id}
       label={option.label}
       path={option.path}
-      drawerWidth={drawerWidth}
       bodyTextColor={bodyTextColor}
     />
   ));
@@ -63,9 +60,7 @@ export default function NavDraweOptions() {
   return (
     <>
       <Box component="nav">
-        <List
-          disablePadding
-          sx={{ width: drawerWidth }}>
+        <List disablePadding>
           {currentUser?.is_admin && isAdminView
             ? renderNavOptions(adminNavOptions, bodyTextColor, handleCloseDrawer)
             : renderNavOptions(navOptions, bodyTextColor, handleCloseDrawer)}
@@ -76,7 +71,6 @@ export default function NavDraweOptions() {
                 key={'myAccount'}
                 label={'My Account'}
                 path={'/user/account'}
-                drawerWidth={drawerWidth}
                 bodyTextColor={bodyTextColor}
               />
               {currentUser.is_admin && (
@@ -85,7 +79,6 @@ export default function NavDraweOptions() {
                   key={'adminView'}
                   label={isAdminView ? 'Client View' : 'Admin View'}
                   path={isAdminView ? '/' : '/admin-view'}
-                  drawerWidth={drawerWidth}
                   bodyTextColor={bodyTextColor}
                 />
               )}
@@ -93,7 +86,6 @@ export default function NavDraweOptions() {
                 onClick={handleSignOut}
                 key={'signOut'}
                 label={'Sign Out'}
-                drawerWidth={drawerWidth}
                 bodyTextColor={bodyTextColor}
               />
             </>

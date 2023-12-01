@@ -81,6 +81,7 @@ export default function CartDrawer() {
         <Box
           sx={{
             paddingTop: `${navbarHeight}px`,
+            width: { xs: '100vw', sm: '400px' },
           }}
         />
         <List
@@ -88,7 +89,6 @@ export default function CartDrawer() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '100vw', sm: '400px' },
             overflowY: 'auto',
             paddingX: 2,
             height: 1,

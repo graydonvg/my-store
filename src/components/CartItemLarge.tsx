@@ -13,40 +13,33 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
 import { Spinner } from './ui/progress/Spinner';
-import { Close, Favorite } from '@mui/icons-material';
+import { Close, Edit, Favorite } from '@mui/icons-material';
 import SelectField from './ui/inputFields/LargeSelectField';
 import { useState } from 'react';
 import SmallSelectField from './ui/inputFields/SmallSelectField';
+import EditCartItemDrawer from './EditCartItemDrawer';
+import { setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
 
 type Props = {
   item: CartItemType;
 };
 
 export default function CartItemLarge({ item }: Props) {
-  const cartItemToDelete = useAppSelector((state) => state.cart.cartItemToDelete);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
 
-  // const handleSelectQuantity = (event) => {
-  //   setAge(event.target.value);
-  // };
-
-  // const handleSelectSize = (event) => {
-  //   setAge(event.target.value);
-  // };
-
   return (
     <Box
       sx={{
-        opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
+        // opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
         padding: 2,
         backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
         borderRadius: '4px',
@@ -61,7 +54,14 @@ export default function CartItemLarge({ item }: Props) {
           gap: 1,
           zIndex: 1,
         }}>
-        <Box sx={{ display: 'grid', placeItems: 'center', width: '20px', height: '20px' }}>
+        <EditCartItemDrawer cartItem={item} />
+        {/* <IconButton onClick={handleEditCartItem}>
+          <Edit
+            fontSize="small"
+            sx={{ opacity: '70%' }}
+          />
+        </IconButton> */}
+        {/* <Box sx={{ display: 'grid', placeItems: 'center', width: '20px', height: '20px' }}>
           <IconButton
             disabled={cartItemToDelete.id === item?.cart_item_id}
             // onClick={() => handleMoveCartItemToWishlist(item?.cart_item_id!)}
@@ -91,7 +91,7 @@ export default function CartItemLarge({ item }: Props) {
               />
             </IconButton>
           )}
-        </Box>
+        </Box> */}
       </Box>
       <ListItem
         disableGutters
@@ -160,8 +160,8 @@ export default function CartItemLarge({ item }: Props) {
             }}>
             {item?.product?.name}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', paddingRight: 2 }}>
               <Typography
                 lineHeight={1}
                 component="span"
@@ -190,7 +190,6 @@ export default function CartItemLarge({ item }: Props) {
               />
             </Box>
           </Box>
-          {/* <Box sx={{ display: 'flex', flexGrow: 1, flexShrink: 1, flexWrap: 'wrap' }}> */}
           <Typography
             lineHeight={1}
             component="p"
@@ -268,7 +267,6 @@ export default function CartItemLarge({ item }: Props) {
         </Box>
       </ListItem>
       <Divider
-        // sx={{ paddingTop: 2 }}
         variant="fullWidth"
         flexItem
       />

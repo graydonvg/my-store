@@ -10,9 +10,9 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
 import { CartItemType, CurrentUserType } from '@/types';
-import UserStateSetter from '@/components/UserStateSetter';
+import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import CartItemsStateSetter from '@/components/CartItemsStateSetter';
+import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 
 export const metadata: Metadata = {
   title: 'MyStore',

@@ -34,7 +34,6 @@ export default function UpperNavbarOptions() {
       <Box
         sx={{
           display: { xs: 'block', md: 'none' },
-          // minWidth: { xs: '52px', sm: '124px' },
         }}>
         <NavDrawer />
       </Box>

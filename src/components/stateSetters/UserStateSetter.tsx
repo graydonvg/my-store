@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { CurrentUserType } from '@/types';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { getEmptyFormFields } from '@/lib/utils';
-import ModalComponent from './ui/ModalComponent';
-import UpdateUserData from './forms/UpdateUserData';
+import ModalComponent from '../ui/ModalComponent';
+import UpdateUserData from '../forms/UpdateUserData';
 import { setIsUpdateModalOpen } from '@/lib/redux/modal/modalSlice';
 
 type Props = {

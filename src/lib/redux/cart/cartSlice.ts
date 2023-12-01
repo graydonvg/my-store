@@ -62,6 +62,7 @@ type CartState = {
     bottom: boolean;
     right: boolean;
   };
+  cartItemToEditId: string;
   cartItems: CartItemType[];
 };
 
@@ -73,6 +74,7 @@ export const initialState: CartState = {
     bottom: false,
     right: false,
   },
+  cartItemToEditId: '',
   cartItems: [],
 };
 
@@ -85,6 +87,9 @@ export const cartSlice = createSlice({
     },
     setCartItems(state, action: PayloadAction<CartItemType[]>) {
       state.cartItems = action.payload;
+    },
+    setCartItemToEditId(state, action) {
+      state.cartItemToEditId = action.payload;
     },
     setCartItemToDelete(state, action: PayloadAction<{ id: string }>) {
       state.cartItemToDelete = action.payload;
@@ -106,7 +111,7 @@ export const cartSlice = createSlice({
 
 const { actions, reducer } = cartSlice;
 
-export const { setIsCartOpen, setCartItems, setCartItemToDelete } = actions;
+export const { setIsCartOpen, setCartItems, setCartItemToDelete, setCartItemToEditId } = actions;
 
 export const cartReducer = reducer;
 

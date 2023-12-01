@@ -52,6 +52,7 @@ export default function NavDrawer() {
             flexShrink: 0,
             height: navbarHeight,
             paddingX: 2,
+            width: '100vw',
           }}>
           <Typography
             color={customColorPalette.grey.light}

@@ -5,7 +5,7 @@ import Drawer from '@mui/material/Drawer';
 import { DrawerAnchor, DrawerState } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 type Props = {
   isOpen: DrawerState;
@@ -16,7 +16,7 @@ type Props = {
 export default function DrawerComponent({ isOpen, zIndex, children }: Props) {
   const dispatch = useAppDispatch();
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
-  const isCartOpen = useAppSelector((state) => state.cart.isCartOpen);
+  const { isCartOpen, cartItemToEditId } = useAppSelector((state) => state.cart);
 
   const handleCloseNavDrawer = (anchor: DrawerAnchor, open: boolean) => (event: KeyboardEvent | MouseEvent) => {
     if (
@@ -32,6 +32,10 @@ export default function DrawerComponent({ isOpen, zIndex, children }: Props) {
 
     if (isCartOpen.right) {
       dispatch(setIsCartOpen({ [anchor]: open }));
+    }
+
+    if (cartItemToEditId) {
+      dispatch(setCartItemToEditId(''));
     }
   };
   return (

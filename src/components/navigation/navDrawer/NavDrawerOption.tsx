@@ -11,7 +11,6 @@ type NavDrawerOptionProps = {
   path?: string;
   label: string;
   bodyTextColor: string;
-  drawerWidth: string;
 };
 
 function renderIcon(label: string, bodyTextColor: string) {
@@ -22,7 +21,7 @@ function renderIcon(label: string, bodyTextColor: string) {
   }
 }
 
-export default function NavDrawerOption({ onClick, path, label, bodyTextColor, drawerWidth }: NavDrawerOptionProps) {
+export default function NavDrawerOption({ onClick, path, label, bodyTextColor }: NavDrawerOptionProps) {
   const dispatch = useAppDispatch();
 
   function handleClearAddProductStoreData() {
@@ -39,20 +38,20 @@ export default function NavDrawerOption({ onClick, path, label, bodyTextColor, d
         onClick={onClick}>
         {path ? (
           <Link
-            style={{ height: '100%' }}
+            style={{ height: '100%', width: '100%' }}
             onClick={handleClearAddProductStoreData}
             tabIndex={-1}
             href={path}>
-            <ListItemButton sx={{ width: drawerWidth, height: '100%' }}>
+            <ListItemButton sx={{ height: '100%' }}>
               <ListItemText
                 primary={label}
-                sx={{ color: bodyTextColor }}
+                sx={{ color: bodyTextColor, width: 1 }}
               />
               {renderIcon(label, bodyTextColor)}
             </ListItemButton>
           </Link>
         ) : (
-          <ListItemButton sx={{ width: drawerWidth, height: '100%' }}>
+          <ListItemButton sx={{ width: 1, height: '100%' }}>
             <ListItemText
               primary={label}
               sx={{ color: bodyTextColor }}
