@@ -82,7 +82,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
           <Box>
-            <Box sx={{ padding: 2 }}>
+            <Box sx={{ padding: 2, paddingBottom: 1 }}>
               <Typography
                 fontWeight={600}
                 fontSize={18}>
