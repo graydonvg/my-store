@@ -76,12 +76,12 @@ export default function CartDrawer() {
         </Box>
       </IconButton>
       <DrawerComponent
+        width={{ xs: '100vw', sm: '400px' }}
         isOpen={isCartOpen}
         zIndex={(theme) => theme.zIndex.appBar - 1}>
         <Box
           sx={{
             paddingTop: `${navbarHeight}px`,
-            width: { xs: '100vw', sm: '400px' },
           }}
         />
         <List

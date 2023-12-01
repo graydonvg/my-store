@@ -58,6 +58,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         />
       </IconButton>
       <DrawerComponent
+        width={{ xs: '80vw', sm: '300px' }}
         isOpen={
           cartItemToEditId === cartItem?.cart_item_id
             ? {
@@ -77,28 +78,27 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         <Box
           sx={{
             paddingTop: `${navbarHeight}px`,
-            width: { xs: '85vw', sm: '400px' },
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
           <Box>
-            <Box sx={{ padding: 2, paddingBottom: 1 }}>
+            <Box sx={{ padding: 2, paddingBottom: 0 }}>
               <Typography
                 fontWeight={600}
-                fontSize={18}>
+                fontSize={24}>
                 Select a size
               </Typography>
             </Box>
             <Divider />
             <List disablePadding>
               {cartItem?.product?.sizes.map((size) => (
-                <Fragment key={size}>
-                  <ListItemButton>
+                <Box key={size}>
+                  <ListItemButton sx={{ height: '56px' }}>
                     {size === cartItem.size ? <Check sx={{ marginRight: 1 }} /> : null}
                     <Typography>{size}</Typography>
                   </ListItemButton>
                   <Divider />
-                </Fragment>
+                </Box>
               ))}
             </List>
           </Box>
@@ -146,7 +146,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   sx={{
                     color: 'inherit',
                     height: '48px',
-                    aspectRatio: 3 / 2,
                     borderRadius: 0,
                     '&:hover': {
                       backgroundColor: 'inherit',
@@ -166,7 +165,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   sx={{
                     color: 'inherit',
                     height: '48px',
-                    aspectRatio: 3 / 2,
                     borderRadius: 0,
                     '&:hover': {
                       backgroundColor: 'transparent',

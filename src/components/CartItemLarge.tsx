@@ -1,29 +1,12 @@
 'use client';
 
-import {
-  Box,
-  FormControl,
-  IconButton,
-  InputLabel,
-  ListItem,
-  MenuItem,
-  Select,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, ListItem, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
-import { Spinner } from './ui/progress/Spinner';
-import { Close, Edit, Favorite } from '@mui/icons-material';
-import SelectField from './ui/inputFields/LargeSelectField';
-import { useState } from 'react';
-import SmallSelectField from './ui/inputFields/SmallSelectField';
 import EditCartItemDrawer from './EditCartItemDrawer';
-import { setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
 
 type Props = {
   item: CartItemType;
@@ -39,7 +22,6 @@ export default function CartItemLarge({ item }: Props) {
   return (
     <Box
       sx={{
-        // opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
         padding: 2,
         backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
         borderRadius: '4px',
@@ -55,43 +37,6 @@ export default function CartItemLarge({ item }: Props) {
           zIndex: 1,
         }}>
         <EditCartItemDrawer cartItem={item} />
-        {/* <IconButton onClick={handleEditCartItem}>
-          <Edit
-            fontSize="small"
-            sx={{ opacity: '70%' }}
-          />
-        </IconButton> */}
-        {/* <Box sx={{ display: 'grid', placeItems: 'center', width: '20px', height: '20px' }}>
-          <IconButton
-            disabled={cartItemToDelete.id === item?.cart_item_id}
-            // onClick={() => handleMoveCartItemToWishlist(item?.cart_item_id!)}
-            sx={{ padding: 0, width: 1, height: 1 }}>
-            <Favorite
-              fontSize="small"
-              sx={{ opacity: '70%' }}
-            />
-          </IconButton>
-        </Box>
-        <Box sx={{ display: 'grid', placeItems: 'center', width: '20px', height: '20px' }}>
-          {cartItemToDelete.id === item?.cart_item_id ? (
-            <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
-              <Spinner
-                size={12}
-                spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
-              />
-            </Box>
-          ) : (
-            <IconButton
-              disabled={cartItemToDelete.id === item?.cart_item_id}
-              // onClick={() => handleDeleteCartItem(item?.cart_item_id!)}
-              sx={{ padding: 0, width: 1, height: 1 }}>
-              <Close
-                fontSize="small"
-                sx={{ opacity: '70%' }}
-              />
-            </IconButton>
-          )}
-        </Box> */}
       </Box>
       <ListItem
         disableGutters
@@ -170,10 +115,13 @@ export default function CartItemLarge({ item }: Props) {
                 fontWeight={600}>
                 Qauntity:
               </Typography>
-              <SmallSelectField
-                defaultValue={item?.quantity}
-                options={Array.from(Array(10)).map((_, index) => (index + 1).toString())}
-              />
+              <Typography
+                lineHeight={1}
+                component="span"
+                fontSize={16}
+                fontWeight={600}>
+                {item?.quantity}
+              </Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography
@@ -184,10 +132,13 @@ export default function CartItemLarge({ item }: Props) {
                 fontWeight={600}>
                 Size:
               </Typography>
-              <SmallSelectField
-                defaultValue={item?.size}
-                options={item?.product?.sizes!}
-              />
+              <Typography
+                lineHeight={1}
+                component="span"
+                fontSize={16}
+                fontWeight={600}>
+                {item?.size}
+              </Typography>
             </Box>
           </Box>
           <Typography
