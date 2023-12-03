@@ -343,6 +343,29 @@ export default function ProductDetails({ product }: Props) {
             </Box>
           </Box>
           <Divider />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              paddingY: { xs: 1, sm: 2 },
+            }}>
+            <Typography
+              component="span"
+              fontWeight={500}
+              fontSize={16}
+              sx={{ opacity: '70%' }}>
+              Returns
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography
+                component="p"
+                variant="body1">
+                {product.return_info}
+              </Typography>
+            </Box>
+          </Box>
+          <Divider />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingY: { xs: 1, sm: 2 } }}>
             <Typography
               component="span"
