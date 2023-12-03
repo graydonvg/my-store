@@ -4,7 +4,7 @@ import CartItemLarge from '@/components/CartItemLarge';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import {
-  selectCartTotal,
+  selectOrderTotal,
   selectDeliveryFee,
   selectTotalDiscount,
   selectTotalToPay,
@@ -12,12 +12,13 @@ import {
 import { useAppSelector } from '@/lib/redux/hooks';
 import { formatCurrency } from '@/lib/utils';
 import { Box, Divider, Grid, List, Typography, useTheme } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function CartView() {
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const cartTotal = selectCartTotal(cartItems);
+  const orderTotal = selectOrderTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const totalToPay = selectTotalToPay(cartItems);
@@ -41,13 +42,41 @@ export default function CartView() {
         md={9}>
         <List
           disablePadding
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {cartItems.map((item) => (
-            <CartItemLarge
-              key={item?.cart_item_id}
-              item={item}
-            />
-          ))}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: 1 }}>
+          {cartItems && cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <CartItemLarge
+                key={item?.cart_item_id}
+                item={item}
+              />
+            ))
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                height: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: cardBackgroundColor,
+                borderRadius: '4px',
+              }}>
+              <Typography
+                component="h1"
+                fontSize={30}>
+                Your cart is empty
+              </Typography>
+              <Link href={'/products/all-products'}>
+                <Typography
+                  component="p"
+                  fontSize={24}
+                  sx={{ textDecoration: 'underline', color: customColorPalette.blue.dark }}>
+                  Continue shopping
+                </Typography>
+              </Link>
+            </Box>
+          )}
         </List>
       </Grid>
       <Grid
@@ -79,32 +108,34 @@ export default function CartView() {
               <Typography
                 component="span"
                 fontSize={14}>
-                {formatCurrency(cartTotal)}
+                {formatCurrency(orderTotal)}
               </Typography>
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: 1,
-                paddingY: 1,
-              }}>
-              <Typography
-                // paddingRight={2}
-                component="span"
-                fontSize={14}
-                fontWeight={600}>
-                Discount total
-              </Typography>
-              <Typography
-                noWrap
-                component="span"
-                fontSize={14}
-                fontWeight={600}>
-                {`-${formatCurrency(totalDiscount)}`}
-              </Typography>
-            </Box>
+            {totalDiscount > 0 ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: 1,
+                  paddingY: 1,
+                }}>
+                <Typography
+                  // paddingRight={2}
+                  component="span"
+                  fontSize={14}
+                  fontWeight={600}>
+                  Discount total
+                </Typography>
+                <Typography
+                  noWrap
+                  component="span"
+                  fontSize={14}
+                  fontWeight={600}>
+                  {`-${formatCurrency(totalDiscount)}`}
+                </Typography>
+              </Box>
+            ) : null}
             <Box
               sx={{
                 display: 'flex',
@@ -122,7 +153,7 @@ export default function CartView() {
               <Typography
                 component="span"
                 fontSize={14}>
-                {deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)}
+                {orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0)}
               </Typography>
             </Box>
             <Divider />
@@ -173,6 +204,7 @@ export default function CartView() {
             </Box>
           </Box>
           <ContainedButton
+            disabled={cartItems.length === 0}
             onClick={handleGoToCheckout}
             label="checkout now"
             fullWidth

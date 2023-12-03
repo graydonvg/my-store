@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { UpdateCartItemDbType, CartItemType, CustomResponseType } from '@/types';
+import { UpdateCartItemDbType, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   const data: UpdateCartItemDbType = await request.json();
 
   if (!session)
-    return NextResponse.json({ success: false, message: 'Failed to add product to cart. Please try again later.' });
+    return NextResponse.json({ success: false, message: 'Failed to update cart item. Please try again later.' });
 
   try {
     const { error } = await supabase
@@ -20,11 +20,11 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       .eq('cart_item_id', data.cart_item_id);
 
     if (error) {
-      return NextResponse.json({ success: false, message: `Failed to add product to cart. ${error.message}.` });
+      return NextResponse.json({ success: false, message: `Failed to update cart item. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Product added to cart successfully.' });
+    return NextResponse.json({ success: true, message: 'Updated cart item successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Failed to add product to cart. An unexpect error occured.' });
+    return NextResponse.json({ success: false, message: 'Failed to update cart item. An unexpect error occured.' });
   }
 }

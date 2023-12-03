@@ -141,6 +141,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
+      spacing={2}
       sx={{ height: 1 }}>
       <Grid
         item
@@ -151,14 +152,8 @@ export default function ProductDetails({ product }: Props) {
       <Grid
         item
         xs={12}
-        md={6}
-        sx={{
-          '&.MuiGrid-root': {
-            paddingTop: { xs: 2, md: 0 },
-            paddingX: { xs: 0, md: 4 },
-          },
-        }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', paddingX: 1 }}>
+        md={6}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box
             sx={{
               display: 'flex',

@@ -1,3 +1,4 @@
+import { roundPrice } from '@/lib/utils';
 import { CartItemType } from '@/types';
 
 export function selectCartCount(items: CartItemType[]) {
@@ -9,20 +10,21 @@ export function selectTotalDiscount(items: CartItemType[]) {
     (totalDiscount, item) =>
       totalDiscount +
       (item?.product?.on_sale
-        ? (item?.product?.price as number) * ((item?.product?.sale_percentage as number) / 100)
+        ? roundPrice((item?.product?.price as number) * ((item?.product?.sale_percentage as number) / 100)) *
+          item.quantity
         : 0),
     0
   );
 }
 
-export function selectCartTotal(items: CartItemType[]) {
-  return items.reduce((totalPrice, item) => totalPrice + item?.product?.price!, 0);
+export function selectOrderTotal(items: CartItemType[]) {
+  return items.reduce((totalPrice, item) => totalPrice + item?.product?.price! * item?.quantity!, 0);
 }
 
 export function selectDeliveryFee(items: CartItemType[]) {
-  return selectCartTotal(items) - selectTotalDiscount(items) > 500 ? 0 : 60;
+  return selectOrderTotal(items) - selectTotalDiscount(items) > 500 ? 0 : 60;
 }
 
 export function selectTotalToPay(items: CartItemType[]) {
-  return selectCartTotal(items) - selectTotalDiscount(items);
+  return selectOrderTotal(items) - selectTotalDiscount(items);
 }

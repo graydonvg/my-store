@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import { Container } from '@mui/material';
 
-export default function CartLayout({ children }: { children: ReactNode }) {
+export default function AddProductLayout({ children }: { children: ReactNode }) {
   return (
     <Container
       sx={{

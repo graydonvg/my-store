@@ -5,18 +5,17 @@ import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
-import { setCartItemToDelete } from '@/lib/redux/cart/cartSlice';
-import deleteProductFromCart from '@/services/cart/delete-item-from-cart';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/lib/redux/hooks';
+import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
+import { useState } from 'react';
 
 type Props = {
   item: CartItemType;
 };
 
 export default function CartItemSmall({ item }: Props) {
-  const cartItemToDelete = useAppSelector((state) => state.cart.cartItemToDelete);
+  const [isDeletingCartItem, setIsDeletingCartItem] = useState(false);
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
@@ -24,17 +23,19 @@ export default function CartItemSmall({ item }: Props) {
   const isOnSale = item?.product?.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
 
-  async function handleDeleteCartItem(cartItemId: string) {
-    setCartItemToDelete({ id: cartItemId });
+  async function handleRemoveCartItem(cartItemId: string) {
+    setIsDeletingCartItem(true);
     try {
-      const { success, message } = await deleteProductFromCart(cartItemId);
-      if (success === false) {
-        toast.error(message);
-      } else {
+      const { success, message } = await deleteItemFromCart(cartItemId);
+      if (success === true) {
         router.refresh();
+      } else {
+        toast.error(message);
       }
     } catch (error) {
       toast.error(`Failed to delete product from cart. Please try again later.`);
+    } finally {
+      setIsDeletingCartItem(false);
     }
   }
 
@@ -48,7 +49,7 @@ export default function CartItemSmall({ item }: Props) {
         gap: 2,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        opacity: cartItemToDelete.id === item?.cart_item_id ? '70%' : null,
+        opacity: isDeletingCartItem ? '70%' : null,
         paddingY: 2,
       }}>
       <Box
@@ -88,7 +89,7 @@ export default function CartItemSmall({ item }: Props) {
             width: '20px',
             height: '20px',
           }}>
-          {cartItemToDelete.id === item?.cart_item_id ? (
+          {isDeletingCartItem ? (
             <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
               <Spinner
                 size={12}
@@ -97,8 +98,8 @@ export default function CartItemSmall({ item }: Props) {
             </Box>
           ) : (
             <IconButton
-              disabled={cartItemToDelete.id === item?.cart_item_id}
-              onClick={() => handleDeleteCartItem(item?.cart_item_id!)}
+              disabled={isDeletingCartItem}
+              onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
               sx={{ padding: 0, width: 1, height: 1 }}>
               <Close
                 fontSize="small"

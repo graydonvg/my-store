@@ -56,7 +56,7 @@ export type CartItemType =
       product:
         | (Pick<
             Database['public']['Tables']['products']['Row'],
-            'name' | 'on_sale' | 'price' | 'sale_percentage' | 'delivery_info' | 'product_id' | 'sizes'
+            'name' | 'on_sale' | 'price' | 'sale_percentage' | 'delivery_info' | 'return_info' | 'product_id' | 'sizes'
           > & {
             product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'image_url'>[];
           })

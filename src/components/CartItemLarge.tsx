@@ -146,15 +146,18 @@ export default function CartItemLarge({ item }: Props) {
             component="p"
             sx={{ opacity: '70%' }}
             fontSize={16}>
-            {/* {`${item?.product?.delivery_info}`} */}
-            Delivery Free
-            <Divider
-              component="span"
-              sx={{ marginX: 1 }}
-              variant="fullWidth"
-              orientation="vertical"
-            />
-            Free exchange or return within 30 days
+            {discountedPrice > 500 ? (
+              <>
+                Delivery Free
+                <Divider
+                  component="span"
+                  sx={{ marginX: 1 }}
+                  variant="fullWidth"
+                  orientation="vertical"
+                />{' '}
+              </>
+            ) : null}
+            {item?.product?.return_info}
           </Typography>
           <Box
             sx={{

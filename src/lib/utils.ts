@@ -116,8 +116,12 @@ export function getNumberOfFormFields(formData: {}): number {
   return formFieldsArray.length;
 }
 
+export function roundPrice(price: number) {
+  return Math.round(price);
+}
+
 export function formatCurrency(price: number) {
-  let roundedPrice = Math.round(price);
+  const roundedPrice = roundPrice(price);
   const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'ZAR',

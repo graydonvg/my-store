@@ -5,14 +5,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemToDelete, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { Fragment, useEffect } from 'react';
 import CartItemSmall from './CartItemSmall';
 import OutlinedButton from './ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
-import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
+import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 
 export default function CartDrawer() {
   const router = useRouter();
@@ -24,21 +24,24 @@ export default function CartDrawer() {
   const navbarHeight = isBelowMedium
     ? document.getElementById('navbar')?.offsetHeight
     : document.getElementById('navbar')?.offsetHeight;
-  const cartTotal = selectCartTotal(cartItems);
+  const orderTotal = selectOrderTotal(cartItems);
   const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
-
-  useEffect(() => {
-    setCartItemToDelete({ id: '' });
-  }, [cartItems]);
+  const mode = theme.palette.mode;
+  const cartEmptyBgColor = mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light;
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
   }
 
   function handleGoToCartView() {
-    router.push('/cart/view');
     handleToggleCart();
+    router.push('/cart/view');
+  }
+
+  function handleGoToCheckout() {
+    handleToggleCart();
+    router.push('/checkout/shipping');
   }
 
   return (
@@ -66,8 +69,8 @@ export default function CartDrawer() {
             color: customColorPalette.grey.light,
             backgroundColor: customColorPalette.blue.dark,
             borderRadius: '50%',
-            width: 20,
-            height: 20,
+            width: 24,
+            height: 24,
             display: 'grid',
             placeContent: 'center',
             marginLeft: { xs: 1, md: 2 },
@@ -101,7 +104,9 @@ export default function CartDrawer() {
               </Fragment>
             ))
           ) : (
-            <Typography>Your cart is empty</Typography>
+            <Box sx={{ backgroundColor: cartEmptyBgColor, padding: 1, marginTop: 2 }}>
+              <Typography>Your cart is empty</Typography>
+            </Box>
           )}
         </List>
         {cartItems.length > 0 ? (
@@ -158,7 +163,7 @@ export default function CartDrawer() {
                 component="span"
                 fontSize={24}
                 fontWeight={700}>
-                {formatCurrency(cartTotal - totalDiscount)}
+                {formatCurrency(orderTotal - totalDiscount)}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
@@ -168,6 +173,7 @@ export default function CartDrawer() {
                 label="view cart"
               />
               <ContainedButton
+                onClick={handleGoToCheckout}
                 backgroundColor="blue"
                 fullWidth
                 label="checkout"
