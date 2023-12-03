@@ -1,6 +1,6 @@
 'use client';
 
-import { List, Box, useTheme, ListItemButton, ListItemText, Divider } from '@mui/material';
+import { List, Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } from '@mui/material';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
@@ -90,20 +90,24 @@ export default function NavDraweOptions() {
               />
             </>
           )}
-          <ListItemButton
-            onClick={handleToggleTheme}
-            sx={{ width: 1, height: '100%' }}>
-            <ListItemText
-              primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-              sx={{ color: bodyTextColor }}
-            />
-            {
-              <ThemeToggleIcon
-                color={bodyTextColor}
-                size={'small'}
+          <ListItem
+            disablePadding
+            sx={{ height: '56px' }}>
+            <ListItemButton
+              onClick={handleToggleTheme}
+              sx={{ width: 1, height: '100%' }}>
+              <ListItemText
+                primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
+                sx={{ color: bodyTextColor }}
               />
-            }
-          </ListItemButton>
+              {
+                <ThemeToggleIcon
+                  color={bodyTextColor}
+                  size={'small'}
+                />
+              }
+            </ListItemButton>
+          </ListItem>
           <Divider />
         </List>
       </Box>
