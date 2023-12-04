@@ -61,6 +61,8 @@ export default function CartView() {
                 alignItems: 'center',
                 backgroundColor: cardBackgroundColor,
                 borderRadius: '4px',
+                paddingX: 2,
+                paddingY: 4,
               }}>
               <Typography
                 component="h1"
@@ -121,7 +123,6 @@ export default function CartView() {
                   paddingY: 1,
                 }}>
                 <Typography
-                  // paddingRight={2}
                   component="span"
                   fontSize={14}
                   fontWeight={600}>

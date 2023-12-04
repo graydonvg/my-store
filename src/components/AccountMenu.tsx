@@ -1,8 +1,8 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { useMediaQuery, useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
-import { ArrowDropDown, AccountCircle, ViewList, Logout } from '@mui/icons-material';
+import { useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
+import { ArrowDropDown, AccountCircle, ViewList, Logout, Favorite } from '@mui/icons-material';
 import { ThemeToggleIcon } from './ui/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
@@ -38,7 +38,6 @@ export default function AccountMenu() {
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const router = useRouter();
@@ -62,62 +61,81 @@ export default function AccountMenu() {
   }
 
   return (
-    <>
-      {!isBelowMedium ? (
+    <HoverDropdownMenu
+      label={
         <>
-          <HoverDropdownMenu
-            menuAnchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            menuTransformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            labelContent={
-              <>
-                <Typography
-                  component="span"
-                  sx={{
-                    color: customColorPalette.grey.light,
-                  }}>
-                  {currentUser?.first_name ?? 'User'}
-                </Typography>
-                <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
-              </>
-            }>
-            {renderMenuItem(
-              <AccountCircle
-                fontSize={iconSize}
-                sx={{ color: iconColor }}
-              />,
-              'My Account'
-            )}
-            {currentUser?.is_admin
-              ? renderMenuItem(
-                  <AdminViewToggleIcon isAdminView={isAdminView} />,
-                  isAdminView ? <Link href={'/'}>Client View</Link> : <Link href={'/admin-view'}>Admin View</Link>
-                )
-              : renderMenuItem(
-                  <ViewList
-                    fontSize={iconSize}
-                    sx={{ color: iconColor }}
-                  />,
-                  'Orders'
-                )}
-            {renderMenuItem(
-              <ThemeToggleIcon
-                color={iconColor}
-                size={iconSize}
-              />,
-              `${mode === 'dark' ? 'Light' : 'Dark'} Mode`,
-              handleToggleTheme
-            )}
-            {renderMenuItem(
-              <Logout
-                fontSize={iconSize}
-                sx={{ color: iconColor }}
-              />,
-              'Sign Out',
-              handleSignOut
-            )}
-          </HoverDropdownMenu>
+          <Typography
+            component="span"
+            sx={{
+              color: customColorPalette.grey.light,
+            }}>
+            {currentUser?.first_name ?? 'User'}
+          </Typography>
+          <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
         </>
+      }>
+      {currentUser?.is_admin ? (
+        <Link href={isAdminView ? '/' : '/admin-view'}>
+          {renderMenuItem(
+            <AdminViewToggleIcon isAdminView={isAdminView} />,
+            isAdminView ? 'Client View' : 'Admin View'
+          )}
+        </Link>
       ) : null}
-    </>
+      {[
+        {
+          label: 'My Account',
+          href: '/account',
+          icon: (
+            <AccountCircle
+              fontSize={iconSize}
+              sx={{ color: iconColor }}
+            />
+          ),
+        },
+        {
+          label: 'Orders',
+          href: '/orders',
+          icon: (
+            <ViewList
+              fontSize={iconSize}
+              sx={{ color: iconColor }}
+            />
+          ),
+        },
+        {
+          label: 'Wishlist',
+          href: '/wishlist',
+          icon: (
+            <Favorite
+              fontSize={iconSize}
+              sx={{ color: iconColor }}
+            />
+          ),
+        },
+      ].map((item) => (
+        <Link
+          key={item.label}
+          href={item.href}>
+          {renderMenuItem(item.icon, item.label)}
+        </Link>
+      ))}
+      {renderMenuItem(
+        <ThemeToggleIcon
+          color={iconColor}
+          size={iconSize}
+        />,
+        `${mode === 'dark' ? 'Light' : 'Dark'} Mode`,
+        handleToggleTheme
+      )}
+      {renderMenuItem(
+        <Logout
+          fontSize={iconSize}
+          sx={{ color: iconColor }}
+        />,
+        'Sign Out',
+        handleSignOut
+      )}
+    </HoverDropdownMenu>
   );
 }

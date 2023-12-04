@@ -70,7 +70,7 @@ export default function CartItemLarge({ item }: Props) {
             lineHeight={1}
             component="p"
             fontWeight={600}
-            fontSize={24}
+            fontSize={20}
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -106,46 +106,36 @@ export default function CartItemLarge({ item }: Props) {
             {item?.product?.name}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', paddingRight: 2 }}>
-              <Typography
-                lineHeight={1}
-                component="span"
-                sx={{ opacity: '70%' }}
-                fontSize={16}
-                fontWeight={600}>
-                Qauntity:
-              </Typography>
-              <Typography
-                lineHeight={1}
-                component="span"
-                fontSize={16}
-                fontWeight={600}>
-                {item?.quantity}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <Typography
-                lineHeight={1}
-                component="span"
-                sx={{ opacity: '70%' }}
-                fontSize={16}
-                fontWeight={600}>
-                Size:
-              </Typography>
-              <Typography
-                lineHeight={1}
-                component="span"
-                fontSize={16}
-                fontWeight={600}>
-                {item?.size}
-              </Typography>
-            </Box>
+            {[
+              { heading: 'Qauntity', value: item?.quantity },
+              { heading: 'Size', value: item?.size },
+            ].map((item) => (
+              <Box
+                key={item.heading}
+                sx={{ display: 'flex', gap: 1, alignItems: 'center', paddingRight: 2 }}>
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  sx={{ opacity: '70%' }}
+                  fontSize={{ xs: 14, sm: 16 }}
+                  fontWeight={600}>
+                  {item.heading}:
+                </Typography>
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  fontSize={16}
+                  fontWeight={600}>
+                  {item.value}
+                </Typography>
+              </Box>
+            ))}
           </Box>
           <Typography
-            lineHeight={1}
+            lineHeight={1.6}
             component="p"
             sx={{ opacity: '70%' }}
-            fontSize={16}>
+            fontSize={{ xs: 14, sm: 16 }}>
             {discountedPrice > 500 ? (
               <>
                 Delivery Free
@@ -154,7 +144,7 @@ export default function CartItemLarge({ item }: Props) {
                   sx={{ marginX: 1 }}
                   variant="fullWidth"
                   orientation="vertical"
-                />{' '}
+                />
               </>
             ) : null}
             {item?.product?.return_info}
@@ -166,7 +156,7 @@ export default function CartItemLarge({ item }: Props) {
               gap: 1,
               alignItems: 'center',
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
-              paddingBottom: { xs: 2, sm: 0 },
+              paddingBottom: 2,
             }}>
             {isOnSale ? (
               <Box
@@ -185,7 +175,7 @@ export default function CartItemLarge({ item }: Props) {
                   sx={{
                     color: customColorPalette.grey.light,
                   }}
-                  fontSize={16}
+                  fontSize={{ xs: 14, sm: 16 }}
                   fontWeight={600}>
                   {`-${item?.product?.sale_percentage}%`}
                 </Typography>
@@ -203,7 +193,7 @@ export default function CartItemLarge({ item }: Props) {
                   lineHeight={1}
                   component="span"
                   sx={{ textDecoration: 'line-through', opacity: '70%' }}
-                  fontSize={24}
+                  fontSize={{ xs: 20, sm: 24 }}
                   fontWeight={400}>
                   {formatCurrency(item?.product?.price as number)}
                 </Typography>
@@ -212,7 +202,7 @@ export default function CartItemLarge({ item }: Props) {
                 lineHeight={1}
                 component="span"
                 variant="h6"
-                fontSize={24}
+                fontSize={{ xs: 20, sm: 24 }}
                 fontWeight={700}>
                 {formatCurrency(isOnSale ? discountedPrice : item?.product?.price!)}
               </Typography>

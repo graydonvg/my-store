@@ -141,7 +141,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={4}
       sx={{ height: 1 }}>
       <Grid
         item

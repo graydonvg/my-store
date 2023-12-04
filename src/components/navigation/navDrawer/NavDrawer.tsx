@@ -71,7 +71,7 @@ export default function NavDrawer() {
             onClick={handleCloseNavDrawer}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'scroll', width: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: 1 }}>
           <NavDraweOptions />
         </Box>
       </DrawerComponent>

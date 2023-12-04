@@ -12,22 +12,6 @@ import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 
-function renderNavOptions(
-  options: { id: string; label: string; path: string }[],
-  bodyTextColor: string,
-  onClick: () => void
-) {
-  return options.map((option) => (
-    <NavDrawerOption
-      onClick={onClick}
-      key={option.id}
-      label={option.label}
-      path={option.path}
-      bodyTextColor={bodyTextColor}
-    />
-  ));
-}
-
 export default function NavDraweOptions() {
   const supabase = createSupabaseBrowserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -57,37 +41,68 @@ export default function NavDraweOptions() {
     dispatch(toggleTheme());
   }
 
+  function renderNavOptions(options: { id: string; label: string; path?: string }[], onClick?: () => void) {
+    return options.map((option) => (
+      <NavDrawerOption
+        onClick={onClick}
+        key={option.id}
+        label={option.label}
+        path={option.path}
+        bodyTextColor={bodyTextColor}
+      />
+    ));
+  }
+
   return (
     <>
       <Box component="nav">
         <List disablePadding>
           {currentUser?.is_admin && isAdminView
-            ? renderNavOptions(adminNavOptions, bodyTextColor, handleCloseDrawer)
-            : renderNavOptions(navOptions, bodyTextColor, handleCloseDrawer)}
+            ? renderNavOptions(adminNavOptions, handleCloseDrawer)
+            : renderNavOptions(navOptions, handleCloseDrawer)}
           {currentUser && (
             <>
-              <NavDrawerOption
-                onClick={handleCloseDrawer}
-                key={'myAccount'}
-                label={'My Account'}
-                path={'/user/account'}
-                bodyTextColor={bodyTextColor}
-              />
-              {currentUser.is_admin && (
-                <NavDrawerOption
-                  onClick={handleCloseDrawer}
-                  key={'adminView'}
-                  label={isAdminView ? 'Client View' : 'Admin View'}
-                  path={isAdminView ? '/' : '/admin-view'}
-                  bodyTextColor={bodyTextColor}
-                />
+              {currentUser.is_admin
+                ? renderNavOptions(
+                    [
+                      {
+                        id: 'adminView',
+                        label: isAdminView ? 'Client View' : 'Admin View',
+                        path: isAdminView ? '/' : '/admin-view',
+                      },
+                    ],
+                    handleCloseDrawer
+                  )
+                : null}
+              {renderNavOptions(
+                [
+                  {
+                    id: 'myAccount',
+                    label: 'My Account',
+                    path: '/account',
+                  },
+                  {
+                    id: 'orders',
+                    label: 'Orders',
+                    path: '/orders',
+                  },
+                  {
+                    id: 'wishlist',
+                    label: 'Wishlist',
+                    path: '/wishlist',
+                  },
+                ],
+                handleCloseDrawer
               )}
-              <NavDrawerOption
-                onClick={handleSignOut}
-                key={'signOut'}
-                label={'Sign Out'}
-                bodyTextColor={bodyTextColor}
-              />
+              {renderNavOptions(
+                [
+                  {
+                    id: 'signOut',
+                    label: 'Sign Out',
+                  },
+                ],
+                handleSignOut
+              )}
             </>
           )}
           <ListItem
@@ -100,12 +115,12 @@ export default function NavDraweOptions() {
                 primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
                 sx={{ color: bodyTextColor }}
               />
-              {
+              <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
                 <ThemeToggleIcon
                   color={bodyTextColor}
                   size={'small'}
                 />
-              }
+              </Box>
             </ListItemButton>
           </ListItem>
           <Divider />

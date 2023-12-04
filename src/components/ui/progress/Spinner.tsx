@@ -1,7 +1,7 @@
 import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
 
 type SpinnerProps = CircularProgressProps & {
-  spinnerColor: string;
+  spinnerColor?: string;
 };
 
 export function Spinner({ spinnerColor, ...props }: SpinnerProps) {

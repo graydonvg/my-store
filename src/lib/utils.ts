@@ -5,6 +5,7 @@ import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
+import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 
 export const categories = ['Men', 'Women', 'kids'];
 

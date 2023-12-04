@@ -1,7 +1,7 @@
 'use client';
 
-import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, Divider, List, ListItem } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { Box, Button, Divider, IconButton, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../../CartDrawer';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
@@ -10,6 +10,10 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import SignInForm from '@/components/forms/SignInForm';
 import SignUpForm from '@/components/forms/SignUpForm';
 import NavDrawer from '../../navDrawer/NavDrawer';
+import { Favorite } from '@mui/icons-material';
+import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
+import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
 function renderDivider() {
   return (
@@ -26,8 +30,16 @@ function renderDivider() {
 }
 
 export default function UpperNavbarOptions() {
+  const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  function handleToggleTheme() {
+    dispatch(toggleTheme());
+  }
 
   return (
     <>
@@ -51,13 +63,26 @@ export default function UpperNavbarOptions() {
               sx={{ display: 'flex', height: '100%' }}
               disablePadding>
               {renderDivider()}
+              {!isBelowMedium ? (
+                <ListItem disablePadding>
+                  <UpperNavIconButton>
+                    <Favorite
+                      aria-label="Wishlist"
+                      sx={{ color: customColorPalette.grey.light, opacity: '50%' }}
+                    />
+                  </UpperNavIconButton>
+                </ListItem>
+              ) : null}
+              {renderDivider()}
               <ListItem disablePadding>
                 <CartDrawer />
               </ListItem>
               {renderDivider()}
-              <ListItem disablePadding>
-                <AccountMenu />
-              </ListItem>
+              {!isBelowMedium ? (
+                <ListItem disablePadding>
+                  <AccountMenu />
+                </ListItem>
+              ) : null}
               {renderDivider()}
             </List>
           </>
@@ -68,10 +93,14 @@ export default function UpperNavbarOptions() {
             <ListItem
               disablePadding
               sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
-              <ThemeToggleIcon
-                size="small"
-                color={customColorPalette.grey.light}
-              />
+              <IconButton
+                onClick={handleToggleTheme}
+                size="small">
+                <ThemeToggleIcon
+                  size="small"
+                  color={customColorPalette.grey.light}
+                />
+              </IconButton>
             </ListItem>
             {renderDivider()}
             <ListItem disablePadding>

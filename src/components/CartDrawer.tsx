@@ -13,6 +13,7 @@ import CartItemSmall from './CartItemSmall';
 import OutlinedButton from './ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
+import UpperNavIconButton from './ui/buttons/upperNavIconButton';
 
 export default function CartDrawer() {
   const router = useRouter();
@@ -46,20 +47,7 @@ export default function CartDrawer() {
 
   return (
     <>
-      <IconButton
-        component="button"
-        onClick={handleToggleCart}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          whiteSpace: 'nowrap',
-          paddingX: { xs: 0, md: 2 },
-          borderRadius: 0,
-          backgroundColor: customColorPalette.grey.dark,
-          '&:hover': {
-            backgroundColor: customColorPalette.grey.dark,
-          },
-        }}>
+      <UpperNavIconButton onClick={handleToggleCart}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
           sx={{ color: customColorPalette.grey.light }}
@@ -69,15 +57,15 @@ export default function CartDrawer() {
             color: customColorPalette.grey.light,
             backgroundColor: customColorPalette.blue.dark,
             borderRadius: '50%',
-            width: 24,
-            height: 24,
+            width: 20,
+            height: 20,
             display: 'grid',
             placeContent: 'center',
             marginLeft: { xs: 1, md: 2 },
           }}>
-          <Typography>{cartCount}</Typography>
+          <Typography fontSize={12}>{cartCount}</Typography>
         </Box>
-      </IconButton>
+      </UpperNavIconButton>
       <DrawerComponent
         width={{ xs: '100vw', sm: '400px' }}
         isOpen={isCartOpen}
@@ -104,7 +92,7 @@ export default function CartDrawer() {
               </Fragment>
             ))
           ) : (
-            <Box sx={{ backgroundColor: cartEmptyBgColor, padding: 1, marginTop: 2 }}>
+            <Box sx={{ backgroundColor: cartEmptyBgColor, padding: 1, marginTop: 2, borderRadius: '4px' }}>
               <Typography>Your cart is empty</Typography>
             </Box>
           )}
