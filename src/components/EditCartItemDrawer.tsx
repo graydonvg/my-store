@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, IconButton, List, ListItemButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -10,10 +10,16 @@ import { Add, Check, Delete, Edit, FavoriteBorder, Remove } from '@mui/icons-mat
 import { CartItemType } from '@/types';
 import TextButton from './ui/buttons/TextButton';
 import { toast } from 'react-toastify';
-import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
+
+const isDrawerOpen = {
+  top: false,
+  left: false,
+  bottom: false,
+  right: false,
+};
 
 type Props = {
   cartItem: CartItemType;
@@ -21,16 +27,11 @@ type Props = {
 
 export default function EditCartItemDrawer({ cartItem }: Props) {
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const supabase = createSupabaseBrowserClient();
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { cartItemToEditId } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const navbarHeight = isBelowMedium
-    ? document.getElementById('navbar')?.offsetHeight
-    : document.getElementById('navbar')?.offsetHeight;
   const mode = theme.palette.mode;
   const buttonLabelColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
@@ -107,24 +108,12 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         isOpen={
           cartItemToEditId === cartItem?.cart_item_id
             ? {
-                top: false,
-                left: false,
-                bottom: false,
+                ...isDrawerOpen,
                 right: true,
               }
-            : {
-                top: false,
-                left: false,
-                bottom: false,
-                right: false,
-              }
+            : isDrawerOpen
         }
-        zIndex={(theme) => theme.zIndex.appBar - 1}>
-        <Box
-          sx={{
-            paddingTop: `${navbarHeight}px`,
-          }}
-        />
+        zIndex={(theme) => theme.zIndex.appBar + 1}>
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
           <Box>
             <Box sx={{ padding: 2, paddingBottom: 1 }}>
@@ -142,12 +131,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                     onClick={() => handleSetCartItemSize(size)}
                     sx={{ height: '56px' }}>
                     {size === cartItem.size ? <Check sx={{ marginRight: 1 }} /> : null}
-                    {/* {size === newSize && isUpdatingItemSize ? (
-                      <Spinner
-                        sx={{ marginRight: 1, color: 'inherit' }}
-                        size={24}
-                      />
-                    ) : null} */}
                     <Typography>{size}</Typography>
                   </ListItemButton>
                   <Divider />

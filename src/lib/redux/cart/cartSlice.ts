@@ -18,7 +18,7 @@ type CartState = {
     bottom: boolean;
     right: boolean;
   };
-  cartItemToEditId: string;
+  cartItemToEditId: string | null;
   cartItems: CartItemType[];
 };
 
@@ -29,7 +29,7 @@ export const initialState: CartState = {
     bottom: false,
     right: false,
   },
-  cartItemToEditId: '',
+  cartItemToEditId: null,
   cartItems: [],
 };
 

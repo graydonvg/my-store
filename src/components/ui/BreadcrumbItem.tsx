@@ -1,8 +1,6 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,23 +13,13 @@ type Props = {
 };
 
 export default function BreadcrumbItem({ href, icon, label }: Props) {
-  const dispatch = useAppDispatch();
-  const { cartItemToEditId } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
 
-  function handleCloseDrawer() {
-    if (!!cartItemToEditId) {
-      dispatch(setCartItemToEditId(''));
-    }
-  }
-
   return (
-    <Link
-      href={href}
-      onClick={handleCloseDrawer}>
+    <Link href={href}>
       <Box
         sx={{
           display: 'flex',

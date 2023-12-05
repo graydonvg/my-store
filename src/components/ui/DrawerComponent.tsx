@@ -36,7 +36,7 @@ export default function DrawerComponent({ isOpen, zIndex, width, children }: Pro
     }
 
     if (cartItemToEditId) {
-      dispatch(setCartItemToEditId(''));
+      dispatch(setCartItemToEditId(null));
     }
   };
   return (
