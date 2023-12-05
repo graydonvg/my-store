@@ -47,6 +47,9 @@ export default function OutlinedButton({
         '&:hover': {
           backgroundColor: 'transparent',
         },
+        '&:active': {
+          backgroundColor: 'transparent',
+        },
         '@media (hover: hover)': {
           '&:hover': {
             backgroundColor: 'transparent',

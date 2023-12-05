@@ -5,13 +5,13 @@ export default function CustomTextField({ ...props }: TextFieldProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const labelFocusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
       sx={{
         '& label.Mui-focused': {
-          color: greyLightOrDark,
+          color: labelFocusedColor,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
