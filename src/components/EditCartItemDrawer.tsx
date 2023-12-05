@@ -4,7 +4,7 @@ import { Box, Divider, IconButton, List, ListItemButton, Typography, useMediaQue
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
+import { setCartItemQuantity, setCartItemSize, setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import { Add, Check, Delete, Edit, FavoriteBorder, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';
@@ -13,18 +13,13 @@ import updateCartItem from '@/services/cart/update-cart-item';
 import { toast } from 'react-toastify';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
-import { useEffect, useState } from 'react';
-import { Spinner } from './ui/progress/Spinner';
-import { PulseLoader } from 'react-spinners';
+import { useState } from 'react';
 
 type Props = {
   cartItem: CartItemType;
 };
 
 export default function EditCartItemDrawer({ cartItem }: Props) {
-  const [newSize, setNewSize] = useState<string | null>(null);
-  const [isUpdatingItemQuantity, setIsUpdatingItemQuantity] = useState(false);
-  const [isUpdatingItemSize, setIsUpdatingItemSize] = useState(false);
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const supabase = createSupabaseBrowserClient();
   const router = useRouter();
@@ -43,9 +38,8 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     dispatch(setCartItemToEditId(cartItem?.cart_item_id));
   }
 
-  async function handleUpdateCartItemSize(size: string) {
-    setIsUpdatingItemSize(true);
-    setNewSize(size);
+  async function handleSetCartItemSize(size: string) {
+    dispatch(setCartItemSize({ id: cartItem?.cart_item_id!, size }));
     try {
       const { success, message } = await updateCartItem({
         cart_item_id: cartItem?.cart_item_id!,
@@ -53,46 +47,34 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         size,
       });
 
-      if (success === true) {
-        router.refresh();
-      } else {
-        toast.error(`Failed to update size. ${message}`);
-        setIsUpdatingItemSize(false);
+      if (success === false) {
+        toast.error(message);
       }
     } catch (error) {
       toast.error(`Failed to update size. Please try again later.`);
-      setIsUpdatingItemSize(false);
+    } finally {
+      router.refresh();
     }
   }
 
-  useEffect(() => {
-    setIsUpdatingItemSize(false);
-  }, [cartItem?.size]);
-
   async function handleUpdateCartItemQuantity(quantity: number) {
     if (cartItem?.quantity === 1 && quantity === -1) return;
-    setIsUpdatingItemQuantity(true);
+    dispatch(setCartItemQuantity({ id: cartItem?.cart_item_id!, quantity }));
     try {
       const { error } = await supabase.rpc('update', {
         item_id: cartItem?.cart_item_id,
         item_quantity: quantity,
       });
 
-      if (!error) {
-        router.refresh();
-      } else {
+      if (error) {
         toast.error(error.message);
-        setIsUpdatingItemQuantity(false);
       }
     } catch (error) {
       toast.error(`Failed to update quantity. Please try again later.`);
-      setIsUpdatingItemQuantity(false);
+    } finally {
+      router.refresh();
     }
   }
-
-  useEffect(() => {
-    setIsUpdatingItemQuantity(false);
-  }, [cartItem?.quantity]);
 
   async function handleRemoveCartItem() {
     setIsRemovingCartItem(true);
@@ -155,15 +137,15 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               {cartItem?.product?.sizes.map((size) => (
                 <Box key={size}>
                   <ListItemButton
-                    onClick={() => handleUpdateCartItemSize(size)}
+                    onClick={() => handleSetCartItemSize(size)}
                     sx={{ height: '56px' }}>
                     {size === cartItem.size ? <Check sx={{ marginRight: 1 }} /> : null}
-                    {size === newSize && isUpdatingItemSize ? (
+                    {/* {size === newSize && isUpdatingItemSize ? (
                       <Spinner
                         sx={{ marginRight: 1, color: 'inherit' }}
                         size={24}
                       />
-                    ) : null}
+                    ) : null} */}
                     <Typography>{size}</Typography>
                   </ListItemButton>
                   <Divider />
@@ -227,14 +209,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   fontWeight={600}
                   fontSize={16}
                   sx={{ width: '4ch', display: 'grid', placeItems: 'center' }}>
-                  {!isUpdatingItemQuantity ? (
-                    cartItem?.quantity
-                  ) : (
-                    <Spinner
-                      size={16}
-                      spinnerColor="inherit"
-                    />
-                  )}
+                  {cartItem?.quantity}
                 </Typography>
                 <IconButton
                   onClick={() => handleUpdateCartItemQuantity(1)}

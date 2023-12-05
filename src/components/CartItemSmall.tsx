@@ -4,11 +4,12 @@ import { Spinner } from './ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
+import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 
 type Props = {
   item: CartItemType;
@@ -21,7 +22,8 @@ export default function CartItemSmall({ item }: Props) {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
+  const price = selectPrice(item);
+  const discountedPrice = selectDiscountedPrice(item);
 
   async function handleRemoveCartItem(cartItemId: string) {
     setIsRemovingCartItem(true);
@@ -197,7 +199,7 @@ export default function CartItemSmall({ item }: Props) {
                   sx={{ textDecoration: 'line-through', opacity: '70%' }}
                   fontSize={16}
                   fontWeight={700}>
-                  {formatCurrency(item?.product?.price as number)}
+                  {formatCurrency(price)}
                 </Typography>
               </Box>
             ) : null}
@@ -207,7 +209,7 @@ export default function CartItemSmall({ item }: Props) {
               variant="h6"
               fontSize={16}
               fontWeight={700}>
-              {formatCurrency(isOnSale ? discountedPrice : item?.product?.price!)}
+              {formatCurrency(isOnSale ? discountedPrice : price)}
             </Typography>
           </Box>
         </Box>

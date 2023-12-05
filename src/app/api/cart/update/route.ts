@@ -14,6 +14,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     return NextResponse.json({ success: false, message: 'Failed to update cart item. Please try again later.' });
 
   try {
+    // throw Error;
     const { error } = await supabase
       .from('cart')
       .update({ quantity: data.quantity, size: data.size })

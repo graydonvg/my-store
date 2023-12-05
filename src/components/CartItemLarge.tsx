@@ -2,11 +2,12 @@
 
 import { Box, ListItem, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { calculateDiscountedPrice, formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from './EditCartItemDrawer';
+import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 
 type Props = {
   item: CartItemType;
@@ -17,7 +18,8 @@ export default function CartItemLarge({ item }: Props) {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const isOnSale = item?.product?.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(item?.product?.price!, item?.product?.sale_percentage!);
+  const price = selectPrice(item);
+  const discountedPrice = selectDiscountedPrice(item);
 
   return (
     <Box
@@ -195,7 +197,7 @@ export default function CartItemLarge({ item }: Props) {
                   sx={{ textDecoration: 'line-through', opacity: '70%' }}
                   fontSize={{ xs: 20, sm: 24 }}
                   fontWeight={400}>
-                  {formatCurrency(item?.product?.price as number)}
+                  {formatCurrency(price)}
                 </Typography>
               ) : null}
               <Typography
@@ -204,7 +206,7 @@ export default function CartItemLarge({ item }: Props) {
                 variant="h6"
                 fontSize={{ xs: 20, sm: 24 }}
                 fontWeight={700}>
-                {formatCurrency(isOnSale ? discountedPrice : item?.product?.price!)}
+                {formatCurrency(isOnSale ? discountedPrice : price)}
               </Typography>
             </Box>
           </Box>

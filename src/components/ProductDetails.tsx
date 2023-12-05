@@ -29,7 +29,7 @@ export default function ProductDetails({ product }: Props) {
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(product.price, product.sale_percentage);
+  const discountedPrice = calculateDiscountedPrice(product);
 
   function sortSizesArray(a: { label: string; value: string }, b: { label: string; value: string }) {
     const indexOfA = toggleButtonSizeOptions.indexOf(a);

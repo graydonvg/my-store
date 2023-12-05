@@ -13,7 +13,6 @@ import {
   resetAllProductData,
   setFormData,
   setImageData,
-  setImageUploadProgress,
   setProductToUpdateId,
 } from '@/lib/redux/addProduct/addProductSlice';
 import deleteProduct from '@/services/products/delete-product';
@@ -33,7 +32,7 @@ export default function ProductCard({ product }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(product.price, product.sale_percentage);
+  const discountedPrice = calculateDiscountedPrice(product);
   const { product_id, product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

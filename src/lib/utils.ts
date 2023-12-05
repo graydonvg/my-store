@@ -1,4 +1,4 @@
-import { ProductImageDataStoreType, CustomResponseType } from '@/types';
+import { ProductImageDataStoreType, CustomResponseType, CartItemType, ProductType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
@@ -185,6 +185,6 @@ export async function deleteAllProductImages(
   }
 }
 
-export function calculateDiscountedPrice(price: number, percentage: number) {
-  return price - price * (percentage / 100);
+export function calculateDiscountedPrice(product: ProductType) {
+  return product?.price - product?.price * (product?.sale_percentage / 100);
 }

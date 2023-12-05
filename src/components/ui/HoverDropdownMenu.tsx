@@ -42,7 +42,6 @@ export default function HoverDropdownMenu({ children, label }: HoverDropdownMenu
   return (
     <>
       <Box
-        component="button"
         sx={{
           // display: 'flex',
           // alignItems: 'center',
