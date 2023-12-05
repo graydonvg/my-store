@@ -1,5 +1,5 @@
 import Products from '@/components/Products';
-import getAllProducts from '@/services/products/get-all-products';
+import { getAllProducts } from '@/services/products/get-products';
 import { ProductType } from '@/types';
 import { Typography } from '@mui/material';
 

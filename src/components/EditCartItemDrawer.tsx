@@ -9,11 +9,11 @@ import { useRouter } from 'next/navigation';
 import { Add, Check, Delete, Edit, FavoriteBorder, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from './ui/buttons/TextButton';
-import updateCartItem from '@/services/cart/update-cart-item';
 import { toast } from 'react-toastify';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
+import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
 
 type Props = {
   cartItem: CartItemType;
@@ -41,9 +41,8 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   async function handleSetCartItemSize(size: string) {
     dispatch(setCartItemSize({ id: cartItem?.cart_item_id!, size }));
     try {
-      const { success, message } = await updateCartItem({
+      const { success, message } = await updateCartItemSize({
         cart_item_id: cartItem?.cart_item_id!,
-        quantity: cartItem?.quantity!,
         size,
       });
 
@@ -60,14 +59,17 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   async function handleUpdateCartItemQuantity(quantity: number) {
     if (cartItem?.quantity === 1 && quantity === -1) return;
     dispatch(setCartItemQuantity({ id: cartItem?.cart_item_id!, quantity }));
+
+    updateCartItemQuantity;
+
     try {
-      const { error } = await supabase.rpc('update', {
-        item_id: cartItem?.cart_item_id,
-        item_quantity: quantity,
+      const { success, message } = await updateCartItemQuantity({
+        cart_item_id: cartItem?.cart_item_id!,
+        quantity,
       });
 
-      if (error) {
-        toast.error(error.message);
+      if (success === false) {
+        toast.error(message);
       }
     } catch (error) {
       toast.error(`Failed to update quantity. Please try again later.`);

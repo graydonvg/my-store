@@ -1,7 +1,7 @@
 import Products from '@/components/Products';
 import RevalidateButton from '@/components/RevalidateButton';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import getAllProducts from '@/services/products/get-all-products';
+import { getAllProducts } from '@/services/products/get-products';
 import { ProductType } from '@/types';
 import { Box } from '@mui/material';
 import { notFound } from 'next/navigation';

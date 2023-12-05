@@ -65,8 +65,3 @@ export type CartItemType =
   | null;
 
 export type AddCartItemDbType = Omit<Omit<Database['public']['Tables']['cart']['Row'], 'created_at'>, 'cart_item_id'>;
-
-export type UpdateCartItemDbType = Pick<
-  Database['public']['Tables']['cart']['Row'],
-  'quantity' | 'cart_item_id' | 'size'
->;
