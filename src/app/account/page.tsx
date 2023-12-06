@@ -1,24 +1,51 @@
 'use client';
 
+import AccountInformation from '@/components/ui/AccountInformation';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
-import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, TextField, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
-
-type Props = {};
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
+import { Box, Grid, TextField, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Account() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const defaultFormData = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    name: '',
+    surname: '',
+  };
+  const [formData, setFormData] = useState(defaultFormData);
   const [updateSurname, setUpdateSurname] = useState(false);
   const [updateName, setUpdateName] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
-  const currentUser = useAppSelector((state) => state.user.currentUser);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+
+  useEffect(() => {
+    setFormData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      name: currentUser?.first_name!,
+      surname: currentUser?.last_name!,
+    });
+  }, [currentUser]);
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  }
 
   function selectUpdatePassword() {
     setUpdateSurname(false);
@@ -38,19 +65,92 @@ export default function Account() {
     setUpdateSurname(true);
   }
 
-  function handleUpdatePassword() {
+  function handleCancelUpdatePassword() {
     setUpdatePassword(false);
-  }
-  function handleUpdateName() {
-    setUpdateName(false);
-  }
-  function handleUpdateSurname() {
-    setUpdateSurname(false);
+    setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
   }
 
-  function renderButtons(onSave?: () => void, onCancel?: () => void) {
+  function handleCancelUpdateName() {
+    setUpdateName(false);
+    setFormData({ ...formData, name: currentUser?.first_name! });
+  }
+
+  function handleCancelUpdateSurname() {
+    setUpdateSurname(false);
+    setFormData({ ...formData, name: currentUser?.last_name! });
+  }
+
+  async function handleUpdatePassword() {
+    if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
+      return toast.error('Please complete all fields.');
+    }
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      return toast.error('Passwords do not match.');
+    }
+
+    try {
+      const { success, message } = await updateUserPassword({
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+        confirmPassword: formData.confirmPassword,
+      });
+
+      if (success === true) {
+        toast.success(message);
+        setUpdatePassword(false);
+        setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to update password. Please try again later.');
+    }
+  }
+
+  async function handleUpdateName() {
+    try {
+      const { success, message } = await updateUserPersonalInformation({
+        first_name: formData.name,
+        last_name: formData.surname,
+      });
+
+      if (success === true) {
+        toast.success(message);
+        setUpdateName(false);
+        dispatch(setCurrentUser({ ...currentUser!, first_name: formData.name }));
+        router.refresh();
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to update personal information. Please try again later.');
+    }
+  }
+
+  async function handleUpdateSurname() {
+    try {
+      const { success, message } = await updateUserPersonalInformation({
+        first_name: formData.name,
+        last_name: formData.surname,
+      });
+
+      if (success === true) {
+        toast.success(message);
+        setUpdateSurname(false);
+        dispatch(setCurrentUser({ ...currentUser!, last_name: formData.surname }));
+        router.refresh();
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to update personal information. Please try again later.');
+    }
+  }
+
+  function renderButtons(onSave: () => void, onCancel: () => void) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 2 }}>
         <ContainedButton
           label="save"
           fullWidth={false}
@@ -69,252 +169,290 @@ export default function Account() {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        maxWidth: { xs: 'unset', sm: '600px' },
-        margin: '0 auto',
-      }}>
-      <Typography
-        component="h2"
-        fontSize={24}
-        fontWeight={600}>
-        Account
-      </Typography>
-      <TextField
-        sx={{
-          pointerEvents: 'none',
-          '& label.Mui-focused': {
-            color: focusedColor,
-          },
-          '& .MuiInputLabel-root': {
-            pointerEvents: 'none',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: 'transparent',
-            },
-            '&:hover fieldset': {
-              borderColor: 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: focusedColor,
-            },
-          },
-        }}
-        fullWidth={true}
-        id={'email'}
-        label={'Email'}
-        name={'email'}
-        type={'email'}
-        value={currentUser?.email}
-        // onChange={handleInputChange}
-      />
-      {!updatePassword ? (
-        <TextField
+    <Grid container>
+      <Grid
+        item
+        xs={12}
+        md={6}>
+        <Box
           sx={{
-            '& label.Mui-focused': {
-              color: focusedColor,
-            },
-            '& .MuiOutlinedInput-input:hover': {
-              cursor: 'pointer',
-            },
-            '& .MuiOutlinedInput-input:focus ': {
-              cursor: 'auto',
-            },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'transparent',
-              },
-              '&:hover fieldset': {
-                borderColor: 'transparent',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'transparent',
-              },
-            },
-          }}
-          fullWidth={true}
-          id={'password'}
-          label={'Password'}
-          name={'password'}
-          type={'password'}
-          value={123456}
-          // onChange={handleInputChange}
-          onClick={selectUpdatePassword}
-        />
-      ) : (
-        <>
-          <TextField
-            sx={{
-              '& label.Mui-focused': {
-                color: focusedColor,
-              },
-              '& .MuiOutlinedInput-input:hover': {
-                cursor: 'pointer',
-              },
-              '& .MuiOutlinedInput-input:focus ': {
-                cursor: 'auto',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&:hover fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: focusedColor,
-                },
-              },
-            }}
-            fullWidth={true}
-            id={'current-password'}
-            label={'Current Password'}
-            name={'current-password'}
-            type={'password'}
-            value={123456}
-            // onChange={handleInputChange}
-          />
-          <TextField
-            sx={{
-              '& label.Mui-focused': {
-                color: focusedColor,
-              },
-              '& .MuiOutlinedInput-input:hover': {
-                cursor: 'pointer',
-              },
-              '& .MuiOutlinedInput-input:focus ': {
-                cursor: 'auto',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&:hover fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: focusedColor,
-                },
-              },
-            }}
-            fullWidth={true}
-            id={'new-password'}
-            label={'New Password'}
-            name={'new-password'}
-            type={'password'}
-            value={123456}
-            // onChange={handleInputChange}
-          />
-          <TextField
-            sx={{
-              '& label.Mui-focused': {
-                color: focusedColor,
-              },
-              '& .MuiOutlinedInput-input:hover': {
-                cursor: 'pointer',
-              },
-              '& .MuiOutlinedInput-input:focus ': {
-                cursor: 'auto',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&:hover fieldset': {
-                  borderColor: updatePassword ? focusedColor : 'transparent',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: focusedColor,
-                },
-              },
-            }}
-            fullWidth={true}
-            id={'confirm-password'}
-            label={'Confirm Password'}
-            name={'confirm-password'}
-            type={'password'}
-            value={123456}
-            // onChange={handleInputChange}
-          />
-          {renderButtons(handleUpdatePassword, () => setUpdatePassword(false))}
-        </>
-      )}
-      <Typography
-        component="h2"
-        fontSize={24}
-        fontWeight={600}>
-        Personal information
-      </Typography>
-      <TextField
-        sx={{
-          '& label.Mui-focused': {
-            color: focusedColor,
-          },
-          '& .MuiOutlinedInput-input:hover': {
-            cursor: 'pointer',
-          },
-          '& .MuiOutlinedInput-input:focus ': {
-            cursor: 'auto',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: updateName ? focusedColor : 'transparent',
-            },
-            '&:hover fieldset': {
-              borderColor: updateName ? focusedColor : 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: focusedColor,
-            },
-          },
-        }}
-        fullWidth={true}
-        id={'name'}
-        label={'Name'}
-        name={'name'}
-        type={'text'}
-        value={currentUser?.first_name}
-        onClick={selectUpdateName}
-        // onChange={handleInputChange}
-      />
-      {updateName ? renderButtons(handleUpdateName, () => setUpdateName(false)) : null}
-      <TextField
-        sx={{
-          '& label.Mui-focused': {
-            color: focusedColor,
-          },
-          '& .MuiOutlinedInput-input:hover': {
-            cursor: 'pointer',
-          },
-          '& .MuiOutlinedInput-input:focus ': {
-            cursor: 'auto',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: updateSurname ? focusedColor : 'transparent',
-            },
-            '&:hover fieldset': {
-              borderColor: updateSurname ? focusedColor : 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: focusedColor,
-            },
-          },
-        }}
-        fullWidth={true}
-        id={'surname'}
-        label={'Surname'}
-        name={'surname'}
-        type={'text'}
-        value={currentUser?.last_name}
-        onClick={selectUpdateSurname}
-        // onChange={handleInputChange}
-      />
-      {updateSurname ? renderButtons(handleUpdateSurname, () => setUpdateSurname(false)) : null}
-    </Box>
+            maxWidth: { xs: 'unset', md: '75%' },
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography
+              component="h2"
+              fontSize={24}
+              fontWeight={600}>
+              Account
+            </Typography>
+            <AccountInformation
+              label="Email"
+              canEdit={false}
+              onClick={null}>
+              <Typography
+                component="span"
+                fontSize={16}>
+                {currentUser?.email}
+              </Typography>
+            </AccountInformation>
+            {!updatePassword ? (
+              <AccountInformation
+                label="Password"
+                canEdit={true}
+                onClick={selectUpdatePassword}>
+                <Typography
+                  component="div"
+                  fontSize={3.3}
+                  sx={{ paddingTop: 1 }}>
+                  {Array.from(Array(16)).map((_, index) => (
+                    <Box
+                      component="span"
+                      key={index}
+                      sx={{ paddingRight: 0.12 }}>
+                      ⚫
+                    </Box>
+                  ))}
+                </Typography>
+              </AccountInformation>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
+                <TextField
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: focusedColor,
+                    },
+                    '& .MuiOutlinedInput-input:hover': {
+                      cursor: 'pointer',
+                    },
+                    '& .MuiOutlinedInput-input:focus ': {
+                      cursor: 'auto',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: `1px solid ${focusedColor}`,
+                      },
+                    },
+                  }}
+                  fullWidth={true}
+                  id={'current-password'}
+                  label={'Current Password'}
+                  name={'currentPassword'}
+                  type={'password'}
+                  value={formData.currentPassword}
+                  onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdatePassword();
+                    }
+                  }}
+                />
+                <TextField
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: focusedColor,
+                    },
+                    '& .MuiOutlinedInput-input:hover': {
+                      cursor: 'pointer',
+                    },
+                    '& .MuiOutlinedInput-input:focus ': {
+                      cursor: 'auto',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: `1px solid ${focusedColor}`,
+                      },
+                    },
+                  }}
+                  fullWidth={true}
+                  id={'new-password'}
+                  label={'New Password'}
+                  name={'newPassword'}
+                  type={'password'}
+                  value={formData.newPassword}
+                  onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdatePassword();
+                    }
+                  }}
+                />
+                <TextField
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: focusedColor,
+                    },
+                    '& .MuiOutlinedInput-input:hover': {
+                      cursor: 'pointer',
+                    },
+                    '& .MuiOutlinedInput-input:focus ': {
+                      cursor: 'auto',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: updatePassword ? focusedColor : 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: `1px solid ${focusedColor}`,
+                      },
+                    },
+                  }}
+                  fullWidth={true}
+                  id={'confirm-password'}
+                  label={'Confirm Password'}
+                  name={'confirmPassword'}
+                  type={'password'}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdatePassword();
+                    }
+                  }}
+                />
+                {renderButtons(handleUpdatePassword, handleCancelUpdatePassword)}
+              </Box>
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography
+              component="h2"
+              fontSize={24}
+              fontWeight={600}>
+              Personal information
+            </Typography>
+            {!updateName ? (
+              <AccountInformation
+                label="Name"
+                canEdit={true}
+                onClick={selectUpdateName}>
+                <Typography
+                  component="span"
+                  fontSize={16}>
+                  {currentUser?.first_name}
+                </Typography>
+              </AccountInformation>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
+                <TextField
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: focusedColor,
+                    },
+                    '& .MuiOutlinedInput-input:hover': {
+                      cursor: 'pointer',
+                    },
+                    '& .MuiOutlinedInput-input:focus ': {
+                      cursor: 'auto',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: updateName ? focusedColor : 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: updateName ? focusedColor : 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: `1px solid ${focusedColor}`,
+                      },
+                    },
+                  }}
+                  fullWidth={true}
+                  id={'name'}
+                  label={'Name'}
+                  name={'name'}
+                  type={'text'}
+                  value={formData.name}
+                  onClick={selectUpdateName}
+                  onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdateName();
+                    }
+                  }}
+                />
+                {renderButtons(handleUpdateName, handleCancelUpdateName)}
+              </Box>
+            )}
+            {!updateSurname ? (
+              <AccountInformation
+                label="Surname"
+                canEdit={true}
+                onClick={selectUpdateSurname}>
+                <Typography
+                  component="span"
+                  fontSize={16}>
+                  {currentUser?.last_name}
+                </Typography>
+              </AccountInformation>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
+                <TextField
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: focusedColor,
+                    },
+                    '& .MuiOutlinedInput-input:hover': {
+                      cursor: 'pointer',
+                    },
+                    '& .MuiOutlinedInput-input:focus ': {
+                      cursor: 'auto',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: updateSurname ? focusedColor : 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: updateSurname ? focusedColor : 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: `1px solid ${focusedColor}`,
+                      },
+                    },
+                  }}
+                  fullWidth={true}
+                  id={'surname'}
+                  label={'Surname'}
+                  name={'surname'}
+                  type={'text'}
+                  value={formData.surname}
+                  onClick={selectUpdateSurname}
+                  onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdateSurname();
+                    }
+                  }}
+                />
+                {renderButtons(handleUpdateSurname, handleCancelUpdateSurname)}
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        md={6}>
+        {/* <Box>stuff</Box> */}
+      </Grid>
+    </Grid>
   );
 }

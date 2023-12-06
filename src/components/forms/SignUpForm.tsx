@@ -15,10 +15,10 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
-import updateUser from '@/services/users/update-user';
 import ModalComponent from '../ui/ModalComponent';
 import TextButton from '../ui/buttons/TextButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { updateUserPersonalInformation } from '@/services/users/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -70,7 +70,10 @@ export default function SignUpForm() {
       });
 
       if (signUpSuccess === true) {
-        const { success: updateSuccess, message: updateMessage } = await updateUser({ first_name, last_name });
+        const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
+          first_name,
+          last_name,
+        });
 
         if (updateSuccess === true) {
           dispatch(setIsSignUpModalOpen(false));

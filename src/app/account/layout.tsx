@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { Container } from '@mui/material';
 
-export default function ProductLayout({ children }: { children: ReactNode }) {
+export default function AccountLayout({ children }: { children: ReactNode }) {
   return (
     <Container
       sx={{
-        padding: { xs: 0.75, sm: 0 },
-        paddingBottom: { xs: 0 },
+        paddingTop: { xs: 1.75, sm: 0 },
+        paddingX: { xs: 1.75, sm: 1 },
       }}
       disableGutters
       maxWidth="lg">

@@ -65,3 +65,10 @@ export type CartItemType =
   | null;
 
 export type AddCartItemDbType = Omit<Omit<Database['public']['Tables']['cart']['Row'], 'created_at'>, 'cart_item_id'>;
+
+export type userPersonalInformationType = Pick<
+  Database['public']['Tables']['users']['Row'],
+  'first_name' | 'last_name'
+>;
+
+export type userPasswordType = { currentPassword: string; newPassword: string; confirmPassword: string };

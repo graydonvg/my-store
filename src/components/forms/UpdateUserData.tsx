@@ -9,7 +9,7 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import updateUser from '@/services/users/update-user';
+import { updateUserPersonalInformation } from '@/services/users/update-user';
 
 const formFields = [
   { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
@@ -40,7 +40,7 @@ export default function UpdateUserData() {
     const { first_name, last_name } = formData;
 
     try {
-      const { success, message } = await updateUser({ first_name, last_name });
+      const { success, message } = await updateUserPersonalInformation({ first_name, last_name });
 
       if (success) {
         dispatch(setIsUpdateModalOpen(false));

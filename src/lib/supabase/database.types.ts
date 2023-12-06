@@ -163,6 +163,12 @@ export interface Database {
         };
         Returns: undefined;
       };
+      verify_user_password: {
+        Args: {
+          password: string;
+        };
+        Returns: boolean;
+      };
     };
     Enums: {
       [_ in never]: never;
