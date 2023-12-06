@@ -24,14 +24,9 @@ export default function Account() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState(defaultFormData);
-  // const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
-  const [updateSurname, setUpdateSurname] = useState(false);
-  const [updateName, setUpdateName] = useState(false);
-  const [updatePassword, setUpdatePassword] = useState(false);
+  const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
-  const mode = theme.palette.mode;
-  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -41,44 +36,14 @@ export default function Account() {
     }));
   }
 
-  // function handleSetFieldToUpdate(field: string) {
-  //   setFieldToUpdate(field);
-  // }
-
-  function selectUpdatePassword() {
+  function handleSetFieldToUpdate(field: string) {
     setFormData(defaultFormData);
-    setUpdateSurname(false);
-    setUpdateName(false);
-    setUpdatePassword(true);
+    setFieldToUpdate(field);
   }
 
-  function selectUpdateName() {
+  function handleCancelUpdateField() {
     setFormData(defaultFormData);
-    setUpdateSurname(false);
-    setUpdatePassword(false);
-    setUpdateName(true);
-  }
-
-  function selectUpdateSurname() {
-    setFormData(defaultFormData);
-    setUpdateName(false);
-    setUpdatePassword(false);
-    setUpdateSurname(true);
-  }
-
-  function handleCancelUpdatePassword() {
-    setUpdatePassword(false);
-    setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
-  }
-
-  function handleCancelUpdateName() {
-    setUpdateName(false);
-    setFormData({ ...formData, name: currentUser?.first_name! });
-  }
-
-  function handleCancelUpdateSurname() {
-    setUpdateSurname(false);
-    setFormData({ ...formData, surname: currentUser?.last_name! });
+    setFieldToUpdate(null);
   }
 
   async function handleUpdatePassword() {
@@ -99,7 +64,7 @@ export default function Account() {
 
       if (success === true) {
         toast.success(message);
-        setUpdatePassword(false);
+        setFieldToUpdate(null);
         setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
       } else {
         toast.error(message);
@@ -118,7 +83,7 @@ export default function Account() {
 
       if (success === true) {
         toast.success(message);
-        setUpdateSurname(false);
+        setFieldToUpdate(null);
         dispatch(setCurrentUser({ ...currentUser!, first_name: formData.name, last_name: formData.surname }));
         router.refresh();
       } else {
@@ -144,6 +109,9 @@ export default function Account() {
     value: string;
     onKeyDownFunction: any;
   }) {
+    const mode = theme.palette.mode;
+    const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+
     return (
       <TextField
         sx={{
@@ -184,7 +152,7 @@ export default function Account() {
     );
   }
 
-  function renderButtons(onSave: () => void, onCancel: () => void) {
+  function renderButtons(onSave: () => void) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 2 }}>
         <ContainedButton
@@ -198,7 +166,7 @@ export default function Account() {
           label="cancel"
           fullWidth={false}
           style={{ minWidth: '96px' }}
-          onClick={onCancel}
+          onClick={handleCancelUpdateField}
         />
       </Box>
     );
@@ -234,11 +202,11 @@ export default function Account() {
                 {currentUser?.email}
               </Typography>
             </AccountInformation>
-            {!updatePassword ? (
+            {fieldToUpdate !== 'password' ? (
               <AccountInformation
                 label="Password"
                 canEdit={true}
-                onClick={selectUpdatePassword}>
+                onClick={() => handleSetFieldToUpdate('password')}>
                 <Typography
                   component="div"
                   fontSize={3.3}
@@ -279,7 +247,7 @@ export default function Account() {
                   value: formData.confirmPassword,
                   onKeyDownFunction: handleUpdatePassword,
                 })}
-                {renderButtons(handleUpdatePassword, handleCancelUpdatePassword)}
+                {renderButtons(handleUpdatePassword)}
               </Box>
             )}
           </Box>
@@ -290,11 +258,11 @@ export default function Account() {
               fontWeight={600}>
               Personal information
             </Typography>
-            {!updateName ? (
+            {fieldToUpdate !== 'name' ? (
               <AccountInformation
                 label="Name"
                 canEdit={true}
-                onClick={selectUpdateName}>
+                onClick={() => handleSetFieldToUpdate('name')}>
                 <Typography
                   component="span"
                   fontSize={16}>
@@ -311,14 +279,14 @@ export default function Account() {
                   value: formData.name,
                   onKeyDownFunction: handleUpdatePersonalInformation,
                 })}
-                {renderButtons(handleUpdatePersonalInformation, handleCancelUpdateName)}
+                {renderButtons(handleUpdatePersonalInformation)}
               </Box>
             )}
-            {!updateSurname ? (
+            {fieldToUpdate !== 'surname' ? (
               <AccountInformation
                 label="Surname"
                 canEdit={true}
-                onClick={selectUpdateSurname}>
+                onClick={() => handleSetFieldToUpdate('surname')}>
                 <Typography
                   component="span"
                   fontSize={16}>
@@ -335,7 +303,7 @@ export default function Account() {
                   value: formData.surname,
                   onKeyDownFunction: handleUpdatePersonalInformation,
                 })}
-                {renderButtons(handleUpdatePersonalInformation, handleCancelUpdateSurname)}
+                {renderButtons(handleUpdatePersonalInformation)}
               </Box>
             )}
           </Box>

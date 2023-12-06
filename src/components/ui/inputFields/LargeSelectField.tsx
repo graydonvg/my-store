@@ -9,18 +9,18 @@ export default function LargeSelectField({ options, ...textFieldProps }: SelectF
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const focusedLabelColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
       select
       sx={{
         '& label.Mui-focused': {
-          color: focusedLabelColor,
+          color: focusedColor,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: customColorPalette.blue.light,
+            border: `1px solid ${focusedColor}`,
           },
         },
       }}

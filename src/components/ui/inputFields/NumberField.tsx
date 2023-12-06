@@ -5,18 +5,18 @@ export default function NumberField({ ...props }: TextFieldProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
       type="number"
       sx={{
         '& label.Mui-focused': {
-          color: greyLightOrDark,
+          color: focusedColor,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: customColorPalette.blue.light,
+            border: `1px solid ${focusedColor}`,
           },
         },
       }}

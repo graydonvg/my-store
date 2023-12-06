@@ -10,7 +10,7 @@ export default function PercentageField({ borderColor, styles, ...props }: Perce
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const greyLightOrDark = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
@@ -18,11 +18,11 @@ export default function PercentageField({ borderColor, styles, ...props }: Perce
       sx={{
         ...styles,
         '& label.Mui-focused': {
-          color: greyLightOrDark,
+          color: focusedColor,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            borderColor: customColorPalette.blue.light,
+            border: `1px solid ${focusedColor}`,
           },
         },
         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
