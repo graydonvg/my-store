@@ -77,7 +77,7 @@ export default function Account() {
 
   function handleCancelUpdateSurname() {
     setUpdateSurname(false);
-    setFormData({ ...formData, name: currentUser?.last_name! });
+    setFormData({ ...formData, surname: currentUser?.last_name! });
   }
 
   async function handleUpdatePassword() {
