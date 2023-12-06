@@ -11,7 +11,7 @@ import { CartItemType } from '@/types';
 import TextButton from './ui/buttons/TextButton';
 import { toast } from 'react-toastify';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
 
 const isDrawerOpen = {
@@ -35,6 +35,10 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const mode = theme.palette.mode;
   const buttonLabelColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
+  useEffect(() => {
+    router.refresh();
+  }, [cartItem?.quantity, cartItem?.size, router]);
+
   function handleEditCartItem() {
     dispatch(setCartItemToEditId(cartItem?.cart_item_id));
   }
@@ -49,19 +53,16 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
       if (success === false) {
         toast.error(message);
+        router.refresh();
       }
     } catch (error) {
       toast.error(`Failed to update size. Please try again later.`);
-    } finally {
-      router.refresh();
     }
   }
 
   async function handleUpdateCartItemQuantity(quantity: number) {
     if (cartItem?.quantity === 1 && quantity === -1) return;
     dispatch(setCartItemQuantity({ id: cartItem?.cart_item_id!, quantity }));
-
-    updateCartItemQuantity;
 
     try {
       const { success, message } = await updateCartItemQuantity({
@@ -71,11 +72,10 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
       if (success === false) {
         toast.error(message);
+        router.refresh();
       }
     } catch (error) {
       toast.error(`Failed to update quantity. Please try again later.`);
-    } finally {
-      router.refresh();
     }
   }
 
