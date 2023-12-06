@@ -83,6 +83,7 @@ export default function SignInForm() {
           },
         },
       });
+
       dispatch(setIsSignInModalOpen(false));
     } catch (error) {
       toast.error('Failed to sign in.');
@@ -158,7 +159,8 @@ export default function SignInForm() {
             <ContainedButton
               onClick={handleSignInWithGoogle}
               label="sign in with google"
-              isDisabled={isLoading}
+              isDisabled={true}
+              // isDisabled={isLoading}
               type="button"
               styles={{
                 marginTop: 2,
