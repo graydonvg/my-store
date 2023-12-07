@@ -18,11 +18,11 @@ export default function UserStateSetter({ userData }: Props) {
   const isUpdateModalOpen = useAppSelector((state) => state.modal.isUpdateModalOpen);
 
   useEffect(() => {
-    const emptyFields = getEmptyFormFields(userData);
+    // const emptyFields = getEmptyFormFields(userData);
 
-    if (emptyFields.length > 0) {
-      dispatch(setIsUpdateModalOpen(true));
-    }
+    // if (emptyFields.length > 0) {
+    //   dispatch(setIsUpdateModalOpen(true));
+    // }
 
     dispatch(setCurrentUser(userData));
   }, [userData, dispatch]);

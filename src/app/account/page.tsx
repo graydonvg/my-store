@@ -1,13 +1,11 @@
 'use client';
 
-import AccountInformation from '@/components/ui/AccountInformation';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
-import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import AccountInfoInput from '@/components/ui/AccountInfoInput';
+import AccountInfo from '@/components/ui/AccountInfo';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
-import { Box, Grid, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -18,14 +16,14 @@ export default function Account() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    name: currentUser?.first_name!,
-    surname: currentUser?.last_name!,
+    name: currentUser?.first_name ?? '',
+    surname: currentUser?.last_name ?? '',
+    contactNumber: currentUser?.contact_number ?? '',
   };
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState(defaultFormData);
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
-  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
@@ -80,6 +78,7 @@ export default function Account() {
       const { success, message } = await updateUserPersonalInformation({
         first_name: formData.name,
         last_name: formData.surname,
+        contact_number: formData.contactNumber,
       });
 
       if (success === true) {
@@ -95,227 +94,221 @@ export default function Account() {
     }
   }
 
-  function renderTextField({
-    id,
-    label,
-    name,
-    type,
-    value,
-    onKeyDownFunction,
-  }: {
-    id: string;
-    label: string;
-    name: string;
-    type: string;
-    value: string;
-    onKeyDownFunction: any;
-  }) {
-    const mode = theme.palette.mode;
-    const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
-
-    return (
-      <TextField
-        sx={{
-          '& label.Mui-focused': {
-            color: focusedColor,
-          },
-          '& .MuiOutlinedInput-input:hover': {
-            cursor: 'pointer',
-          },
-          '& .MuiOutlinedInput-input:focus ': {
-            cursor: 'auto',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              border: `1px solid ${focusedColor}`,
-            },
-            '&:hover fieldset': {
-              border: `1px solid ${focusedColor}`,
-            },
-            '&.Mui-focused fieldset': {
-              border: `1px solid ${focusedColor}`,
-            },
-          },
-        }}
-        fullWidth={true}
-        id={id}
-        label={label}
-        name={name}
-        type={type}
-        value={value}
-        onChange={handleInputChange}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            onKeyDownFunction();
-          }
-        }}
-      />
-    );
-  }
-
-  function renderButtons(onSave: () => void) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 2 }}>
-        <ContainedButton
-          label="save"
-          fullWidth={false}
-          backgroundColor="blue"
-          style={{ minWidth: '96px' }}
-          onClick={onSave}
-        />
-        <OutlinedButton
-          label="cancel"
-          fullWidth={false}
-          style={{ minWidth: '96px' }}
-          onClick={handleCancelUpdateField}
-        />
-      </Box>
-    );
-  }
-
   return (
-    <Grid container>
-      <Grid
-        item
-        xs={12}
-        md={6}>
-        <Box
-          sx={{
-            maxWidth: { xs: 'unset', md: '75%' },
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography
-              component="h2"
-              fontSize={24}
-              fontWeight={600}>
-              Account
-            </Typography>
-            <AccountInformation
-              label="Email"
-              canEdit={false}
-              onClick={null}>
+    <Box>
+      <Box
+        component="header"
+        sx={{ paddingBottom: 2 }}>
+        <Divider />
+        <Typography
+          component="h1"
+          fontSize={{ xs: 26, sm: 30 }}
+          fontWeight={500}
+          sx={{ paddingY: 1, textAlign: 'center' }}>
+          {currentUser?.first_name} {currentUser?.last_name}
+        </Typography>
+        <Divider />
+      </Box>
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          md={6}>
+          <Box
+            sx={{
+              maxWidth: { xs: 'unset', md: '75%' },
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Typography
-                component="span"
-                fontSize={16}>
-                {currentUser?.email}
+                component="h2"
+                fontSize={24}
+                fontWeight={600}>
+                Account
               </Typography>
-            </AccountInformation>
-            {fieldToUpdate !== 'password' ? (
-              <AccountInformation
-                label="Password"
-                canEdit={true}
-                onClick={() => handleSetFieldToUpdate('password')}>
+              <AccountInfo
+                label="Email"
+                canEdit={false}
+                onClick={null}>
                 <Typography
-                  component="div"
-                  fontSize={3.3}
-                  sx={{ paddingTop: 1 }}>
-                  {Array.from(Array(16)).map((_, index) => (
-                    <Box
-                      component="span"
-                      key={index}
-                      sx={{ paddingRight: 0.12 }}>
-                      {mode === 'dark' ? '⚪' : '⚫'}
-                    </Box>
-                  ))}
+                  component="span"
+                  fontSize={16}>
+                  {currentUser?.email}
                 </Typography>
-              </AccountInformation>
-            ) : (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
-                {renderTextField({
-                  id: 'current-password',
-                  label: 'Current Password',
-                  name: 'currentPassword',
-                  type: 'password',
-                  value: formData.currentPassword,
-                  onKeyDownFunction: handleUpdatePassword,
-                })}
-                {renderTextField({
-                  id: 'new-password',
-                  label: 'New Password',
-                  name: 'newPassword',
-                  type: 'password',
-                  value: formData.newPassword,
-                  onKeyDownFunction: handleUpdatePassword,
-                })}
-                {renderTextField({
-                  id: 'confirm-password',
-                  label: 'Confirm Password',
-                  name: 'confirmPassword',
-                  type: 'password',
-                  value: formData.confirmPassword,
-                  onKeyDownFunction: handleUpdatePassword,
-                })}
-                {renderButtons(handleUpdatePassword)}
-              </Box>
-            )}
+              </AccountInfo>
+              {fieldToUpdate !== 'password' ? (
+                <AccountInfo
+                  label="Password"
+                  canEdit={true}
+                  onClick={() => handleSetFieldToUpdate('password')}>
+                  <Typography
+                    component="div"
+                    fontSize={3.3}
+                    sx={{ paddingTop: 1 }}>
+                    {Array.from(Array(16)).map((_, index) => (
+                      <Box
+                        component="span"
+                        key={index}
+                        sx={{ paddingRight: 0.12 }}>
+                        {mode === 'dark' ? '⚪' : '⚫'}
+                      </Box>
+                    ))}
+                  </Typography>
+                </AccountInfo>
+              ) : (
+                <AccountInfoInput
+                  textFieldData={[
+                    {
+                      id: 'current-password',
+                      label: 'Current Password',
+                      name: 'currentPassword',
+                      type: 'password',
+                      value: formData.currentPassword,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePassword,
+                    },
+                    {
+                      id: 'new-password',
+                      label: 'New Password',
+                      name: 'newPassword',
+                      type: 'password',
+                      value: formData.newPassword,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePassword,
+                    },
+                    {
+                      id: 'confirm-password',
+                      label: 'Confirm Password',
+                      name: 'confirmPassword',
+                      type: 'password',
+                      value: formData.confirmPassword,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePassword,
+                    },
+                  ]}
+                  onSave={handleUpdatePassword}
+                  onCancel={handleCancelUpdateField}
+                  disableSave={
+                    formData.currentPassword.length === 0 ||
+                    formData.newPassword.length === 0 ||
+                    formData.confirmPassword.length === 0
+                  }
+                />
+              )}
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography
+                component="h2"
+                fontSize={24}
+                fontWeight={600}>
+                Personal information
+              </Typography>
+              {fieldToUpdate !== 'name' ? (
+                <AccountInfo
+                  label="Name"
+                  canEdit={true}
+                  onClick={() => handleSetFieldToUpdate('name')}>
+                  <Typography
+                    component="span"
+                    fontSize={16}>
+                    {currentUser?.first_name}
+                  </Typography>
+                </AccountInfo>
+              ) : (
+                <AccountInfoInput
+                  textFieldData={[
+                    {
+                      id: 'name',
+                      label: 'Name',
+                      name: 'name',
+                      type: 'text',
+                      value: formData.name,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePersonalInformation,
+                    },
+                  ]}
+                  onSave={handleUpdatePersonalInformation}
+                  onCancel={handleCancelUpdateField}
+                  disableSave={formData.name.length === 0}
+                />
+              )}
+              {fieldToUpdate !== 'surname' ? (
+                <AccountInfo
+                  label="Surname"
+                  canEdit={true}
+                  onClick={() => handleSetFieldToUpdate('surname')}>
+                  <Typography
+                    component="span"
+                    fontSize={16}>
+                    {currentUser?.last_name}
+                  </Typography>
+                </AccountInfo>
+              ) : (
+                <AccountInfoInput
+                  textFieldData={[
+                    {
+                      id: 'surname',
+                      label: 'Surname',
+                      name: 'surname',
+                      type: 'text',
+                      value: formData.surname,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePersonalInformation,
+                    },
+                  ]}
+                  onSave={handleUpdatePersonalInformation}
+                  onCancel={handleCancelUpdateField}
+                  disableSave={formData.surname.length === 0}
+                />
+              )}
+              {fieldToUpdate !== 'contactNumber' ? (
+                <AccountInfo
+                  label="Contact number"
+                  canEdit={true}
+                  onClick={() => handleSetFieldToUpdate('contactNumber')}>
+                  <Typography
+                    component="span"
+                    fontSize={16}>
+                    {currentUser?.contact_number}
+                  </Typography>
+                </AccountInfo>
+              ) : (
+                <AccountInfoInput
+                  textFieldData={[
+                    {
+                      id: 'contact-number',
+                      label: 'Contact number',
+                      name: 'contactNumber',
+                      type: 'text',
+                      value: formData.contactNumber,
+                      onChange: handleInputChange,
+                      onKeyDownFunction: handleUpdatePersonalInformation,
+                    },
+                  ]}
+                  onSave={handleUpdatePersonalInformation}
+                  onCancel={handleCancelUpdateField}
+                  disableSave={formData.contactNumber.length === 0}
+                />
+              )}
+            </Box>
           </Box>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography
               component="h2"
               fontSize={24}
               fontWeight={600}>
-              Personal information
+              Addresses
             </Typography>
-            {fieldToUpdate !== 'name' ? (
-              <AccountInformation
-                label="Name"
-                canEdit={true}
-                onClick={() => handleSetFieldToUpdate('name')}>
-                <Typography
-                  component="span"
-                  fontSize={16}>
-                  {currentUser?.first_name}
-                </Typography>
-              </AccountInformation>
-            ) : (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
-                {renderTextField({
-                  id: 'name',
-                  label: 'Name',
-                  name: 'name',
-                  type: 'text',
-                  value: formData.name,
-                  onKeyDownFunction: handleUpdatePersonalInformation,
-                })}
-                {renderButtons(handleUpdatePersonalInformation)}
-              </Box>
-            )}
-            {fieldToUpdate !== 'surname' ? (
-              <AccountInformation
-                label="Surname"
-                canEdit={true}
-                onClick={() => handleSetFieldToUpdate('surname')}>
-                <Typography
-                  component="span"
-                  fontSize={16}>
-                  {currentUser?.last_name}
-                </Typography>
-              </AccountInformation>
-            ) : (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
-                {renderTextField({
-                  id: 'surname',
-                  label: 'Surname',
-                  name: 'surname',
-                  type: 'text',
-                  value: formData.surname,
-                  onKeyDownFunction: handleUpdatePersonalInformation,
-                })}
-                {renderButtons(handleUpdatePersonalInformation)}
-              </Box>
-            )}
           </Box>
-        </Box>
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}>
-        {/* <Box>stuff</Box> */}
-      </Grid>
-    </Grid>
+    </Box>
   );
 }

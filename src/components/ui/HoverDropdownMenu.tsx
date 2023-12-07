@@ -4,6 +4,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { Box, Menu, PopoverOrigin } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import UpperNavIconButton from './buttons/upperNavIconButton';
+import { usePathname } from 'next/navigation';
 
 type HoverDropdownMenuProps = {
   children: ReactNode;
@@ -43,9 +44,6 @@ export default function HoverDropdownMenu({ children, label }: HoverDropdownMenu
     <>
       <Box
         sx={{
-          // display: 'flex',
-          // alignItems: 'center',
-          // whiteSpace: 'nowrap',
           zIndex: (theme) => theme.zIndex.modal + 1,
         }}
         onClick={handleMenuOpen}

@@ -68,7 +68,7 @@ export type AddCartItemDbType = Omit<Omit<Database['public']['Tables']['cart']['
 
 export type userPersonalInformationType = Pick<
   Database['public']['Tables']['users']['Row'],
-  'first_name' | 'last_name'
+  'first_name' | 'last_name' | 'contact_number'
 >;
 
 export type userPasswordType = { currentPassword: string; newPassword: string; confirmPassword: string };

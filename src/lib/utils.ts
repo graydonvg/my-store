@@ -55,6 +55,24 @@ export const adminNavOptions = [
   },
 ];
 
+export const accountNavOptions = [
+  {
+    id: 'account',
+    label: 'Account',
+    path: '/account',
+  },
+  {
+    id: 'orders',
+    label: 'Orders',
+    path: '/orders',
+  },
+  {
+    id: 'wishlist',
+    label: 'Wishlist',
+    path: '/wishlist',
+  },
+];
+
 export const toggleButtonSizeOptions = [
   { label: 'XS', value: 'XS' },
   { label: 'S', value: 'S' },

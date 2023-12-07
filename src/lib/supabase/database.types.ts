@@ -121,6 +121,7 @@ export interface Database {
       };
       users: {
         Row: {
+          contact_number: string | null;
           email: string;
           first_name: string | null;
           is_admin: boolean;
@@ -128,6 +129,7 @@ export interface Database {
           user_id: string;
         };
         Insert: {
+          contact_number?: string | null;
           email: string;
           first_name?: string | null;
           is_admin?: boolean;
@@ -135,6 +137,7 @@ export interface Database {
           user_id: string;
         };
         Update: {
+          contact_number?: string | null;
           email?: string;
           first_name?: string | null;
           is_admin?: boolean;

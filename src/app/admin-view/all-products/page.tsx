@@ -18,7 +18,7 @@ export default async function AdminViewAllProducts() {
   const { data: products } = await getAllProducts();
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.75 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: { xs: 1.75, sm: 0 } }}>
       <RevalidateButton />
       <Products products={products ?? ([] as ProductType[])} />
     </Box>

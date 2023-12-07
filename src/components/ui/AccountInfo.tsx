@@ -20,7 +20,7 @@ type NonEditableProps = {
 
 type Props = EditableProps | NonEditableProps;
 
-export default function AccountInformation({ canEdit, label, onClick, children }: Props) {
+export default function AccountInfo({ canEdit, label, onClick, children }: Props) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -40,7 +40,7 @@ export default function AccountInformation({ canEdit, label, onClick, children }
             alignItems: 'center',
             paddingBottom: 2,
           }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '42px' }}>
             <Typography
               component="label"
               fontSize={12}
