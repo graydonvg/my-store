@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type EditableProps = {
   canEdit: true;
@@ -20,6 +21,11 @@ type NonEditableProps = {
 type Props = EditableProps | NonEditableProps;
 
 export default function AccountInformation({ canEdit, label, onClick, children }: Props) {
+  const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+
   return (
     <>
       {canEdit ? (
@@ -37,7 +43,7 @@ export default function AccountInformation({ canEdit, label, onClick, children }
             <Typography
               component="label"
               fontSize={12}
-              sx={{ color: 'rgba(0, 0, 0, 0.6)', cursor: 'pointer' }}>
+              sx={{ color: labelColor, cursor: 'pointer' }}>
               {label}
             </Typography>
             {children}
@@ -49,7 +55,7 @@ export default function AccountInformation({ canEdit, label, onClick, children }
           <Typography
             component="label"
             fontSize={12}
-            sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+            sx={{ color: labelColor }}>
             {label}
           </Typography>
           {children}

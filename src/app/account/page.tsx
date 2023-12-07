@@ -27,6 +27,7 @@ export default function Account() {
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
+  const mode = theme.palette.mode;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -216,7 +217,7 @@ export default function Account() {
                       component="span"
                       key={index}
                       sx={{ paddingRight: 0.12 }}>
-                      ⚫
+                      {mode === 'dark' ? '⚪' : '⚫'}
                     </Box>
                   ))}
                 </Typography>
