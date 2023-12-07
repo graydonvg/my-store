@@ -73,6 +73,7 @@ export default function SignUpForm() {
         const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
           first_name,
           last_name,
+          contact_number: null,
         });
 
         if (updateSuccess === true) {
