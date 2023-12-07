@@ -1,7 +1,7 @@
 'use client';
 
-import AccountInfoInput from '@/components/ui/AccountInfoInput';
-import AccountInfo from '@/components/ui/AccountInfo';
+import AccountPageInfoInput from '@/components/ui/AccountPageInfoInput';
+import AccountPageInfo from '@/components/ui/AccountPageInfo';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
@@ -9,6 +9,7 @@ import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
+import AccountPageSection from '@/components/ui/AccountPageSection';
 
 export default function Account() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -20,10 +21,10 @@ export default function Account() {
     surname: currentUser?.last_name ?? '',
     contactNumber: currentUser?.contact_number ?? '',
   };
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState(defaultFormData);
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
@@ -84,7 +85,14 @@ export default function Account() {
       if (success === true) {
         toast.success(message);
         setFieldToUpdate(null);
-        dispatch(setCurrentUser({ ...currentUser!, first_name: formData.name, last_name: formData.surname }));
+        dispatch(
+          setCurrentUser({
+            ...currentUser!,
+            first_name: formData.name,
+            last_name: formData.surname,
+            contact_number: formData.contactNumber,
+          })
+        );
         router.refresh();
       } else {
         toast.error(message);
@@ -92,6 +100,16 @@ export default function Account() {
     } catch (error) {
       toast.error('Failed to update personal information. Please try again later.');
     }
+  }
+
+  function renderUserInfo(value: string) {
+    return (
+      <Typography
+        component="span"
+        fontSize={16}>
+        {value}
+      </Typography>
+    );
   }
 
   return (
@@ -121,25 +139,15 @@ export default function Account() {
               flexDirection: 'column',
               gap: 2,
             }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Typography
-                component="h2"
-                fontSize={24}
-                fontWeight={600}>
-                Account
-              </Typography>
-              <AccountInfo
+            <AccountPageSection title="Account">
+              <AccountPageInfo
                 label="Email"
                 canEdit={false}
                 onClick={null}>
-                <Typography
-                  component="span"
-                  fontSize={16}>
-                  {currentUser?.email}
-                </Typography>
-              </AccountInfo>
+                {renderUserInfo(currentUser?.email!)}
+              </AccountPageInfo>
               {fieldToUpdate !== 'password' ? (
-                <AccountInfo
+                <AccountPageInfo
                   label="Password"
                   canEdit={true}
                   onClick={() => handleSetFieldToUpdate('password')}>
@@ -156,9 +164,9 @@ export default function Account() {
                       </Box>
                     ))}
                   </Typography>
-                </AccountInfo>
+                </AccountPageInfo>
               ) : (
-                <AccountInfoInput
+                <AccountPageInfoInput
                   textFieldData={[
                     {
                       id: 'current-password',
@@ -197,27 +205,17 @@ export default function Account() {
                   }
                 />
               )}
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Typography
-                component="h2"
-                fontSize={24}
-                fontWeight={600}>
-                Personal information
-              </Typography>
+            </AccountPageSection>
+            <AccountPageSection title="Personal information">
               {fieldToUpdate !== 'name' ? (
-                <AccountInfo
+                <AccountPageInfo
                   label="Name"
                   canEdit={true}
                   onClick={() => handleSetFieldToUpdate('name')}>
-                  <Typography
-                    component="span"
-                    fontSize={16}>
-                    {currentUser?.first_name}
-                  </Typography>
-                </AccountInfo>
+                  {renderUserInfo(currentUser?.first_name!)}
+                </AccountPageInfo>
               ) : (
-                <AccountInfoInput
+                <AccountPageInfoInput
                   textFieldData={[
                     {
                       id: 'name',
@@ -235,18 +233,14 @@ export default function Account() {
                 />
               )}
               {fieldToUpdate !== 'surname' ? (
-                <AccountInfo
+                <AccountPageInfo
                   label="Surname"
                   canEdit={true}
                   onClick={() => handleSetFieldToUpdate('surname')}>
-                  <Typography
-                    component="span"
-                    fontSize={16}>
-                    {currentUser?.last_name}
-                  </Typography>
-                </AccountInfo>
+                  {renderUserInfo(currentUser?.last_name!)}
+                </AccountPageInfo>
               ) : (
-                <AccountInfoInput
+                <AccountPageInfoInput
                   textFieldData={[
                     {
                       id: 'surname',
@@ -264,18 +258,14 @@ export default function Account() {
                 />
               )}
               {fieldToUpdate !== 'contactNumber' ? (
-                <AccountInfo
+                <AccountPageInfo
                   label="Contact number"
                   canEdit={true}
                   onClick={() => handleSetFieldToUpdate('contactNumber')}>
-                  <Typography
-                    component="span"
-                    fontSize={16}>
-                    {currentUser?.contact_number}
-                  </Typography>
-                </AccountInfo>
+                  {renderUserInfo(currentUser?.contact_number!)}
+                </AccountPageInfo>
               ) : (
-                <AccountInfoInput
+                <AccountPageInfoInput
                   textFieldData={[
                     {
                       id: 'contact-number',
@@ -292,21 +282,14 @@ export default function Account() {
                   disableSave={formData.contactNumber.length === 0}
                 />
               )}
-            </Box>
+            </AccountPageSection>
           </Box>
         </Grid>
         <Grid
           item
           xs={12}
           md={6}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography
-              component="h2"
-              fontSize={24}
-              fontWeight={600}>
-              Addresses
-            </Typography>
-          </Box>
+          <AccountPageSection title="Addresses">address address address address address</AccountPageSection>
         </Grid>
       </Grid>
     </Box>

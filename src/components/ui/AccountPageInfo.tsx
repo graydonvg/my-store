@@ -20,7 +20,7 @@ type NonEditableProps = {
 
 type Props = EditableProps | NonEditableProps;
 
-export default function AccountInfo({ canEdit, label, onClick, children }: Props) {
+export default function AccountPageInfo({ canEdit, label, onClick, children }: Props) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

@@ -4,7 +4,7 @@ import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, MouseEvent } from 'react';
 
-type AccountInfoInputProps = {
+type AccountPageInfoInputProps = {
   textFieldData: {
     id: string;
     label: string;
@@ -19,7 +19,12 @@ type AccountInfoInputProps = {
   onCancel: (event: MouseEvent<HTMLButtonElement> | undefined) => void;
 };
 
-export default function AccountInfoInput({ textFieldData, disableSave, onSave, onCancel }: AccountInfoInputProps) {
+export default function AccountPageInfoInput({
+  textFieldData,
+  disableSave,
+  onSave,
+  onCancel,
+}: AccountPageInfoInputProps) {
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;

@@ -40,7 +40,7 @@ export default function UpdateUserData() {
     const { first_name, last_name } = formData;
 
     try {
-      const { success, message } = await updateUserPersonalInformation({ first_name, last_name });
+      const { success, message } = await updateUserPersonalInformation({ first_name, last_name, contact_number: null });
 
       if (success) {
         dispatch(setIsUpdateModalOpen(false));
