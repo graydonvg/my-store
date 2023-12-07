@@ -105,7 +105,7 @@ export default function CartDrawer() {
               '&::before': {
                 content: '""',
                 position: 'absolute',
-                boxShadow: '0 -2px 4px 0 rgba(0,0,0,0.15)',
+                boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
                 top: 0,
                 right: 0,
                 left: 0,

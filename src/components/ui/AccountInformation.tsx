@@ -24,7 +24,8 @@ export default function AccountInformation({ canEdit, label, onClick, children }
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const labelColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+  const labelColor =
+    mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
 
   return (
     <>

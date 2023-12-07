@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import { Backdrop, Box, Divider, IconButton, List, ListItemButton, Paper, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
+import { PulseLoader } from 'react-spinners';
 
 const isDrawerOpen = {
   top: false,
@@ -27,6 +28,8 @@ type Props = {
 
 export default function EditCartItemDrawer({ cartItem }: Props) {
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
+  const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
+  const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { cartItemToEditId } = useAppSelector((state) => state.cart);
@@ -34,35 +37,47 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const buttonLabelColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
 
   useEffect(() => {
-    router.refresh();
-  }, [cartItem?.quantity, cartItem?.size, router]);
+    setIsUpdatingCartItemSize(false);
+  }, [cartItem?.size]);
+
+  useEffect(() => {
+    setIsUpdatingCartItemQuantity(false);
+  }, [cartItem?.quantity]);
+
+  useEffect(() => {
+    setIsRemovingCartItem(false);
+  }, [cartItem]);
 
   function handleEditCartItem() {
     dispatch(setCartItemToEditId(cartItem?.cart_item_id));
   }
 
   async function handleSetCartItemSize(size: string) {
-    dispatch(setCartItemSize({ id: cartItem?.cart_item_id!, size }));
+    setIsUpdatingCartItemSize(true);
     try {
       const { success, message } = await updateCartItemSize({
         cart_item_id: cartItem?.cart_item_id!,
         size,
       });
 
-      if (success === false) {
-        toast.error(message);
+      if (success === true) {
         router.refresh();
+      } else {
+        setIsUpdatingCartItemSize(false);
+        toast.error(message);
       }
     } catch (error) {
+      setIsUpdatingCartItemSize(false);
       toast.error(`Failed to update size. Please try again later.`);
     }
   }
 
   async function handleUpdateCartItemQuantity(quantity: number) {
     if (cartItem?.quantity === 1 && quantity === -1) return;
-    dispatch(setCartItemQuantity({ id: cartItem?.cart_item_id!, quantity }));
+    setIsUpdatingCartItemQuantity(true);
 
     try {
       const { success, message } = await updateCartItemQuantity({
@@ -70,11 +85,14 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         quantity,
       });
 
-      if (success === false) {
-        toast.error(message);
+      if (success === true) {
         router.refresh();
+      } else {
+        setIsUpdatingCartItemQuantity(false);
+        toast.error(message);
       }
     } catch (error) {
+      setIsUpdatingCartItemQuantity(false);
       toast.error(`Failed to update quantity. Please try again later.`);
     }
   }
@@ -86,12 +104,12 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       if (success === true) {
         router.refresh();
       } else {
+        setIsRemovingCartItem(false);
         toast.error(message);
       }
     } catch (error) {
-      toast.error(`Failed to remove product from cart. Please try again later.`);
-    } finally {
       setIsRemovingCartItem(false);
+      toast.error(`Failed to remove product from cart. Please try again later.`);
     }
   }
 
@@ -104,7 +122,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         />
       </IconButton>
       <DrawerComponent
-        width={{ xs: '80vw', sm: '300px' }}
+        width={{ xs: '80vw', sm: '350px' }}
         isOpen={
           cartItemToEditId === cartItem?.cart_item_id
             ? {
@@ -114,9 +132,35 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             : isDrawerOpen
         }
         zIndex={(theme) => theme.zIndex.appBar + 1}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            justifyContent: 'space-between',
+          }}>
+          {isUpdatingCartItem ? (
+            <Box
+              sx={{
+                position: 'absolute',
+                display: 'flex',
+                height: 1,
+                width: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: (theme) => theme.zIndex.appBar + 2,
+                backgroundColor: 'transparent',
+              }}>
+              <PulseLoader
+                color={buttonLabelColor}
+                loading={isUpdatingCartItem}
+                size={30}
+              />
+            </Box>
+          ) : null}
           <Box>
-            <Box sx={{ padding: 2, paddingBottom: 1 }}>
+            <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>
               <Typography
                 fontWeight={600}
                 fontSize={24}>
@@ -124,7 +168,9 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               </Typography>
             </Box>
             <Divider />
-            <List disablePadding>
+            <List
+              disablePadding
+              sx={{ opacity: isUpdatingCartItem ? 0.5 : 1 }}>
               {cartItem?.product?.sizes.map((size) => (
                 <Box key={size}>
                   <ListItemButton
@@ -147,10 +193,11 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               padding: 2,
               paddingTop: 0,
               gap: 2,
+              opacity: isUpdatingCartItem ? 0.5 : 1,
               '&::before': {
                 content: '""',
                 position: 'absolute',
-                boxShadow: '0 -2px 4px 0 rgba(0,0,0,0.15)',
+                boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
                 top: 0,
                 right: 0,
                 left: 0,

@@ -176,7 +176,7 @@ export default function AdminViewAddNewProduct() {
           <ManageProductImages isSubmitting={isSubmitting} />
         </Grid>
       </Grid>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"

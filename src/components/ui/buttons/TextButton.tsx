@@ -11,10 +11,6 @@ type Props = ButtonProps & {
 };
 
 export default function TextButton({ label, labelColor, startIcon, isLoading, ...props }: Props) {
-  const theme = useTheme();
-  const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const pulseLoadercolor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
   return (
     <Button
       variant="text"

@@ -62,6 +62,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
                 strong: 'rgba(255, 255, 255, 0.7)',
               },
             },
+            boxShadow: 'rgba(0,0,0,0.15)',
           },
         }
       : {
@@ -101,6 +102,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
                 strong: 'rgba(255, 255, 255, 0.7)',
               },
             },
+            boxShadow: 'rgba(255,255,255,0.15)',
           },
         }),
   },
