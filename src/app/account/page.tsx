@@ -289,7 +289,19 @@ export default function Account() {
           item
           xs={12}
           md={6}>
-          <AccountPageSection title="Addresses">address address address address address</AccountPageSection>
+          <AccountPageSection title="Addresses">
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {currentUser?.addresses?.map((address) => (
+                <Box key={address.address_id}>
+                  <Typography>
+                    {address.complex_or_building ? `${address.complex_or_building},` : null}
+                    {`${address.street_address}, ${address.suburb},${address.province},
+                    ${address.city}, ${address.postal_code}`}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </AccountPageSection>
         </Grid>
       </Grid>
     </Box>

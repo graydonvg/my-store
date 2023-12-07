@@ -11,7 +11,9 @@ export type DrawerState = {
 
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
-export type CurrentUserType = Database['public']['Tables']['users']['Row'];
+export type CurrentUserType = Database['public']['Tables']['users']['Row'] & {
+  addresses: Database['public']['Tables']['addresses']['Row'][];
+};
 
 export type ProductType = Database['public']['Tables']['products']['Row'] & {
   product_image_data: Omit<

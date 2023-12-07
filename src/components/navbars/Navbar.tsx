@@ -1,11 +1,11 @@
 'use client';
 
 import { AppBar, Box } from '@mui/material';
-import LowerNavbar from '../../navigation/navbar/lowerNavbar/LowerNavbar';
-import UpperNavbar from '../../navigation/navbar/upperNavbar/UpperNavbar';
+import LowerNavbar from './lowerNavbar/LowerNavbar';
+import UpperNavbar from './upperNavbar/UpperNavbar';
 import { ElevationScroll } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import CheckoutNavbar from '../CheckoutNavbar';
+import CheckoutNavbar from './CheckoutNavbar';
 
 export default function Navbar() {
   const pathname = usePathname();

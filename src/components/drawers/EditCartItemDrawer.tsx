@@ -1,14 +1,14 @@
 'use client';
 
-import { Backdrop, Box, Divider, IconButton, List, ListItemButton, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from './ui/DrawerComponent';
+import DrawerComponent from '../ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemQuantity, setCartItemSize, setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
+import { setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import { Add, Check, Delete, Edit, FavoriteBorder, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';
-import TextButton from './ui/buttons/TextButton';
+import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useEffect, useState } from 'react';

@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Link, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 import {
   closeModal,
   setIsSignInModalOpen,
@@ -15,9 +15,6 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
-import ModalComponent from '../ui/ModalComponent';
-import TextButton from '../ui/buttons/TextButton';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
 
 const formFields = [
@@ -37,12 +34,11 @@ const defaultFormData = {
 };
 
 export default function SignUpForm() {
-  const customColorPalette = useCustomColorPalette();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { isSignUpModalOpen } = useAppSelector((state) => state.modal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
+
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -95,79 +91,66 @@ export default function SignUpForm() {
     }
   }
 
-  function handleOpenSignUpModal() {
-    dispatch(setIsSignUpModalOpen(true));
-  }
-
   function handleOpenSignInModal() {
     dispatch(closeModal());
     dispatch(setIsSignInModalOpen(true));
   }
 
   return (
-    <>
-      <TextButton
-        label="sign up"
-        labelColor={customColorPalette.grey.light}
-        onClick={handleOpenSignUpModal}
-      />
-      <ModalComponent isOpen={isSignUpModalOpen}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 3,
-          }}>
-          <FormTitle text="Sign up" />
-          <Box
-            component="form"
-            onSubmit={handleSignUp}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 3,
+      }}>
+      <FormTitle text="Sign up" />
+      <Box
+        component="form"
+        onSubmit={handleSignUp}>
+        <Grid
+          container
+          spacing={2}>
+          {formFields.map((field) => (
             <Grid
-              container
-              spacing={2}>
-              {formFields.map((field) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={field.name === 'first_name' || field.name === 'last_name' ? 6 : false}
-                  key={field.name}>
-                  <CustomTextField
-                    required={true}
-                    fullWidth={true}
-                    id={field.name}
-                    label={field.label}
-                    name={field.name}
-                    type={field.type || 'text'}
-                    autoComplete={field.autoComplete}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange}
-                    autoFocus={field.name === 'first_name'}
-                  />
-                </Grid>
-              ))}
+              item
+              xs={12}
+              sm={field.name === 'first_name' || field.name === 'last_name' ? 6 : false}
+              key={field.name}>
+              <CustomTextField
+                required={true}
+                fullWidth={true}
+                id={field.name}
+                label={field.label}
+                name={field.name}
+                type={field.type || 'text'}
+                autoComplete={field.autoComplete}
+                value={formData[field.name as keyof typeof formData]}
+                onChange={handleInputChange}
+                autoFocus={field.name === 'first_name'}
+              />
             </Grid>
-            <ContainedButton
-              label="sign up"
-              isDisabled={isLoading}
-              type="submit"
-              styles={{
-                marginTop: 3,
-                marginBottom: 3,
-              }}
-              fullWidth
-              backgroundColor="blue"
-            />
-            <Link
-              onClick={handleOpenSignInModal}
-              sx={{ cursor: 'pointer' }}
-              component="p"
-              variant="body2">
-              Already have an account? Sign in
-            </Link>
-          </Box>
-        </Box>
-      </ModalComponent>
-    </>
+          ))}
+        </Grid>
+        <ContainedButton
+          label="sign up"
+          isDisabled={isLoading}
+          type="submit"
+          styles={{
+            marginTop: 3,
+            marginBottom: 3,
+          }}
+          fullWidth
+          backgroundColor="blue"
+        />
+        <Link
+          onClick={handleOpenSignInModal}
+          sx={{ cursor: 'pointer' }}
+          component="p"
+          variant="body2">
+          Already have an account? Sign in
+        </Link>
+      </Box>
+    </Box>
   );
 }

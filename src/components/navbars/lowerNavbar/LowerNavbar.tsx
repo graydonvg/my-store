@@ -2,7 +2,7 @@
 
 import { Box, Container, useTheme } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
-import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
+import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 export default function LowerNavbar() {

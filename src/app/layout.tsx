@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
-import Navbar from '@/components/navigation/navbar/Navbar';
 import Toast from '@/components/ui/Toast';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -13,6 +12,7 @@ import { CartItemType, CurrentUserType } from '@/types';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
+import Navbar from '@/components/navbars/Navbar';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
-  const { data: user } = await supabase.from('users').select('*');
+  const { data: user } = await supabase.from('users').select('*, addresses(*)');
   const userData = user ? user[0] : ({} as CurrentUserType);
   let cartItems = [] as CartItemType[];
 

@@ -1,19 +1,19 @@
 'use client';
 
-import { Box, Divider, IconButton, List, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from './ui/DrawerComponent';
+import DrawerComponent from '../ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
-import ContainedButton from './ui/buttons/ContainedButton';
-import { Fragment, useEffect } from 'react';
-import CartItemSmall from './CartItemSmall';
-import OutlinedButton from './ui/buttons/OutlinedButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
+import { Fragment } from 'react';
+import CartItemSmall from '../CartItemSmall';
+import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
-import UpperNavIconButton from './ui/buttons/upperNavIconButton';
+import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 
 export default function CartDrawer() {
   const router = useRouter();

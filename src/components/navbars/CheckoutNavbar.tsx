@@ -2,7 +2,7 @@
 
 import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
+import NavbarTitleAndLogo from './NavbarTitleAndLogo';
 import BreadcrumbsComponent from '../ui/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/BreadcrumbItem';
 import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-material';

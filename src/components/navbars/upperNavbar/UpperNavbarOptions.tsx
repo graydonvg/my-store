@@ -1,19 +1,18 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, Button, Divider, IconButton, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
-import CartDrawer from '../../../CartDrawer';
+import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
+import CartDrawer from '../../drawers/CartDrawer';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
-import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
+import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import SignInForm from '@/components/forms/SignInForm';
-import SignUpForm from '@/components/forms/SignUpForm';
-import NavDrawer from '../../navDrawer/NavDrawer';
+import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
 import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import SignInModal from '@/components/modals/SignInModal';
+import SignUpModal from '@/components/modals/SignUpModal';
 
 function renderDivider() {
   return (
@@ -104,13 +103,13 @@ export default function UpperNavbarOptions() {
             </ListItem>
             {renderDivider()}
             <ListItem disablePadding>
-              <SignInForm />
+              <SignInModal />
             </ListItem>
             {renderDivider()}
             <ListItem
               disablePadding
               sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <SignUpForm />
+              <SignUpModal />
             </ListItem>
             {renderDivider()}
           </List>

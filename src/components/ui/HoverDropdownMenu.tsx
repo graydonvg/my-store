@@ -1,10 +1,9 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { Box, Menu, PopoverOrigin } from '@mui/material';
+import { Box, Menu } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import UpperNavIconButton from './buttons/upperNavIconButton';
-import { usePathname } from 'next/navigation';
 
 type HoverDropdownMenuProps = {
   children: ReactNode;

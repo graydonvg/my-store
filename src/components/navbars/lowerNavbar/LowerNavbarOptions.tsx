@@ -2,7 +2,6 @@ import { navOptions, adminNavOptions, accountNavOptions } from '@/lib/utils';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 
 export default function LowerNavbarOptions() {
   const pathname = usePathname();

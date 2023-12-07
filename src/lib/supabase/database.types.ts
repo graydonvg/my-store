@@ -3,6 +3,47 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          address_id: string;
+          city: string;
+          complex_or_building: string | null;
+          postal_code: number;
+          province: string;
+          street_address: string;
+          suburb: string;
+          user_id: string;
+        };
+        Insert: {
+          address_id?: string;
+          city: string;
+          complex_or_building?: string | null;
+          postal_code: number;
+          province: string;
+          street_address: string;
+          suburb: string;
+          user_id: string;
+        };
+        Update: {
+          address_id?: string;
+          city?: string;
+          complex_or_building?: string | null;
+          postal_code?: number;
+          province?: string;
+          street_address?: string;
+          suburb?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'addresses_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
       cart: {
         Row: {
           cart_item_id: string;
