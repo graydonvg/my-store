@@ -1,20 +1,15 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Divider, Link, Typography } from '@mui/material';
+import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
+import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import {
-  closeModal,
-  setIsSignInModalOpen,
-  setIsSignUpModalOpen,
-  setShowModalLoadingBar,
-} from '@/lib/redux/modal/modalSlice';
+import { setIsSignInModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
 
@@ -28,12 +23,18 @@ const defaultFormData = {
   password: '',
 };
 
-export default function SignInForm() {
+type Props = {
+  children: ReactNode;
+};
+
+export default function SignInForm({ children }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-  const router = useRouter();
+  const isWelcomePath = pathname.includes('/welcome');
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -43,7 +44,7 @@ export default function SignInForm() {
   async function handleSignInWithPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
-    dispatch(setShowModalLoadingBar(true));
+    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
 
     try {
       const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
@@ -56,19 +57,18 @@ export default function SignInForm() {
         toast.error(message);
       }
     } catch (error) {
-      toast.error(`Sign in failed. Please try again later.`);
+      toast.error('Sign in failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      dispatch(setShowModalLoadingBar(false));
+      isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
     }
   }
 
   async function handleSignInWithGoogle() {
-    setIsLoading(true);
-    dispatch(setShowModalLoadingBar(true));
+    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
 
     try {
-      await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${location.origin}/api/auth/callback`,
@@ -79,19 +79,14 @@ export default function SignInForm() {
         },
       });
 
-      dispatch(setIsSignInModalOpen(false));
+      if (error) {
+        toast.error(error.message);
+      }
     } catch (error) {
-      toast.error('Failed to sign in.');
+      toast.error('Sign in failed. Please try again later.');
     } finally {
-      dispatch(setShowModalLoadingBar(false));
-      setIsLoading(false);
-      router.refresh();
+      isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
     }
-  }
-
-  function handleOpenSignUpModal() {
-    dispatch(closeModal());
-    dispatch(setIsSignUpModalOpen(true));
   }
 
   return (
@@ -123,8 +118,9 @@ export default function SignInForm() {
           />
         ))}
         <ContainedButton
-          label="sign in"
+          label={isWelcomePath && isLoading ? '' : 'sign in'}
           isDisabled={isLoading}
+          isLoading={isWelcomePath && isLoading}
           type="submit"
           styles={{
             marginTop: 3,
@@ -143,8 +139,6 @@ export default function SignInForm() {
         <ContainedButton
           onClick={handleSignInWithGoogle}
           label="sign in with google"
-          isDisabled={true}
-          // isDisabled={isLoading}
           type="button"
           styles={{
             marginTop: 2,
@@ -154,13 +148,7 @@ export default function SignInForm() {
           startIcon={<GoogleIcon />}
           backgroundColor="blue"
         />
-        <Link
-          onClick={handleOpenSignUpModal}
-          sx={{ cursor: 'pointer' }}
-          component="p"
-          variant="body2">
-          Don&apos;t have an account? Sign Up
-        </Link>
+        {children}
       </Box>
     </Box>
   );

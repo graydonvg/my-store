@@ -1,19 +1,14 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Link, Grid } from '@mui/material';
+import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
+import { Box, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import {
-  closeModal,
-  setIsSignInModalOpen,
-  setIsSignUpModalOpen,
-  setShowModalLoadingBar,
-} from '@/lib/redux/modal/modalSlice';
+import { setIsSignUpModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
 
@@ -33,11 +28,17 @@ const defaultFormData = {
   confirm_password: '',
 };
 
-export default function SignUpForm() {
+type Props = {
+  children: ReactNode;
+};
+
+export default function SignUpForm({ children }: Props) {
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
+  const isWelcomePath = pathname.includes('/welcome');
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -49,13 +50,13 @@ export default function SignUpForm() {
 
   async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
-    dispatch(setShowModalLoadingBar(true));
 
     if (formData.password !== formData.confirm_password) {
-      setIsLoading(false);
       return toast.error('Passwords do not match.');
     }
+
+    setIsLoading(true);
+    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
 
     const { email, password, first_name, last_name } = formData;
 
@@ -87,13 +88,8 @@ export default function SignUpForm() {
       toast.error('Sign up failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      dispatch(setShowModalLoadingBar(false));
+      !isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
     }
-  }
-
-  function handleOpenSignInModal() {
-    dispatch(closeModal());
-    dispatch(setIsSignInModalOpen(true));
   }
 
   return (
@@ -133,8 +129,9 @@ export default function SignUpForm() {
           ))}
         </Grid>
         <ContainedButton
-          label="sign up"
+          label={isWelcomePath && isLoading ? '' : 'sign up'}
           isDisabled={isLoading}
+          isLoading={isWelcomePath && isLoading}
           type="submit"
           styles={{
             marginTop: 3,
@@ -143,13 +140,7 @@ export default function SignUpForm() {
           fullWidth
           backgroundColor="blue"
         />
-        <Link
-          onClick={handleOpenSignInModal}
-          sx={{ cursor: 'pointer' }}
-          component="p"
-          variant="body2">
-          Already have an account? Sign in
-        </Link>
+        {children}
       </Box>
     </Box>
   );

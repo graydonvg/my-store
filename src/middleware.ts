@@ -28,11 +28,6 @@ export async function middleware(request: NextRequest) {
               headers: request.headers,
             },
           });
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({
@@ -44,11 +39,6 @@ export async function middleware(request: NextRequest) {
             request: {
               headers: request.headers,
             },
-          });
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
           });
         },
       },
@@ -72,22 +62,22 @@ export async function middleware(request: NextRequest) {
 
   const adminOnlyPath = checkPathStartsWith('/api/admin') || checkPathStartsWith('/admin-view');
 
-  const authorizedPath =
+  const authRequiredPath =
     checkPathStartsWith('/account') ||
     checkPathStartsWith('/orders') ||
     checkPathStartsWith('/wishlist') ||
     checkPathStartsWith('/checkout');
 
-  if (adminOnlyPath && (!session || isAdmin === false)) {
+  if ((!session || isAdmin === false) && adminOnlyPath) {
     if (checkPathStartsWith('/api/admin')) {
       return NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else if (checkPathStartsWith('/admin-view')) {
-      return NextResponse.redirect(new URL('/not-authorized', request.url));
+      return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
     }
   }
 
-  if (authorizedPath && !session) {
-    return NextResponse.redirect(new URL('/not-authorized', request.url));
+  if (!session && authRequiredPath) {
+    return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
   }
 
   return response;
