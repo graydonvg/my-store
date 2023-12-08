@@ -55,13 +55,6 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const adminPath = '/admin-view';
-  const apiAdminPath = '/api/admin';
-  const accountPath = '/account';
-  const ordersPath = '/orders';
-  const wishlistPath = '/wishlist';
-  const checkoutPath = '/checkout';
-
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -71,25 +64,28 @@ export async function middleware(request: NextRequest) {
     .select('is_admin')
     .eq('user_id', session?.user.id ?? '');
 
-  const isAdmin = data ? data[0] : false;
+  const isAdmin = data ? data[0].is_admin : false;
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);
   }
 
-  const pathStartsWith =
-    checkPathStartsWith(adminPath) ||
-    checkPathStartsWith(accountPath) ||
-    checkPathStartsWith(ordersPath) ||
-    checkPathStartsWith(wishlistPath) ||
-    checkPathStartsWith(checkoutPath);
+  const adminOnlyPath = checkPathStartsWith('/api/admin') || checkPathStartsWith('/admin-view');
 
-  if (!session || isAdmin === false) {
-    if (checkPathStartsWith(apiAdminPath)) {
+  const authorizedPath =
+    checkPathStartsWith('/account') ||
+    checkPathStartsWith('/orders') ||
+    checkPathStartsWith('/wishlist') ||
+    checkPathStartsWith('/checkout');
+
+  if (adminOnlyPath && (!session || isAdmin === false)) {
+    if (checkPathStartsWith('/api/admin')) {
       return NextResponse.json({ success: false, message: 'Not Authorized.' });
-    } else if (pathStartsWith) {
+    } else if (checkPathStartsWith('/admin-view')) {
       return NextResponse.redirect(new URL('/not-authorized', request.url));
     }
+  } else if (authorizedPath && !session) {
+    return NextResponse.redirect(new URL('/not-authorized', request.url));
   }
 
   return response;
