@@ -68,6 +68,7 @@ export default function SignInForm({ children }: Props) {
     !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
 
     try {
+      // Remember Supabase redirect url for google sign in
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -136,6 +137,7 @@ export default function SignInForm({ children }: Props) {
             OR
           </Typography>
         </Divider>
+        {/* Remember Supabase redirect url for google sign in */}
         <ContainedButton
           onClick={handleSignInWithGoogle}
           label="sign in with google"
