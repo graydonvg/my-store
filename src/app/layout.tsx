@@ -21,6 +21,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   const { data: user } = await supabase.from('users').select('*, addresses(*)');
   const userData = user ? user[0] : ({} as CurrentUserType);
   let cartItems = [] as CartItemType[];
@@ -41,7 +44,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en">
       <body>
         <Providers>
-          <UserStateSetter userData={userData} />
+          <UserStateSetter
+            userData={userData}
+            session={session}
+          />
           <CartItemsStateSetter cartItems={cartItems} />
           <Navbar />
           <main>

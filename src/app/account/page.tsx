@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import AccountPageSection from '@/components/ui/AccountPageSection';
 
 export default function Account() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const { currentUser, isOAuthSignIn } = useAppSelector((state) => state.user);
   const defaultFormData = {
     currentPassword: '',
     newPassword: '',
@@ -146,65 +146,67 @@ export default function Account() {
                 onClick={null}>
                 {renderUserInfo(currentUser?.email!)}
               </AccountPageInfo>
-              {fieldToUpdate !== 'password' ? (
-                <AccountPageInfo
-                  label="Password"
-                  canEdit={true}
-                  onClick={() => handleSetFieldToUpdate('password')}>
-                  <Typography
-                    component="div"
-                    fontSize={3.3}
-                    sx={{ paddingTop: 1 }}>
-                    {Array.from(Array(16)).map((_, index) => (
-                      <Box
-                        component="span"
-                        key={index}
-                        sx={{ paddingRight: 0.12 }}>
-                        {mode === 'dark' ? '⚪' : '⚫'}
-                      </Box>
-                    ))}
-                  </Typography>
-                </AccountPageInfo>
-              ) : (
-                <AccountPageInfoInput
-                  textFieldData={[
-                    {
-                      id: 'current-password',
-                      label: 'Current Password',
-                      name: 'currentPassword',
-                      type: 'password',
-                      value: formData.currentPassword,
-                      onChange: handleInputChange,
-                      onKeyDownFunction: handleUpdatePassword,
-                    },
-                    {
-                      id: 'new-password',
-                      label: 'New Password',
-                      name: 'newPassword',
-                      type: 'password',
-                      value: formData.newPassword,
-                      onChange: handleInputChange,
-                      onKeyDownFunction: handleUpdatePassword,
-                    },
-                    {
-                      id: 'confirm-password',
-                      label: 'Confirm Password',
-                      name: 'confirmPassword',
-                      type: 'password',
-                      value: formData.confirmPassword,
-                      onChange: handleInputChange,
-                      onKeyDownFunction: handleUpdatePassword,
-                    },
-                  ]}
-                  onSave={handleUpdatePassword}
-                  onCancel={handleCancelUpdateField}
-                  disableSave={
-                    formData.currentPassword.length === 0 ||
-                    formData.newPassword.length === 0 ||
-                    formData.confirmPassword.length === 0
-                  }
-                />
-              )}
+              {!isOAuthSignIn ? (
+                fieldToUpdate !== 'password' ? (
+                  <AccountPageInfo
+                    label="Password"
+                    canEdit={true}
+                    onClick={() => handleSetFieldToUpdate('password')}>
+                    <Typography
+                      component="div"
+                      fontSize={3.3}
+                      sx={{ paddingTop: 1 }}>
+                      {Array.from(Array(16)).map((_, index) => (
+                        <Box
+                          component="span"
+                          key={index}
+                          sx={{ paddingRight: 0.12 }}>
+                          {mode === 'dark' ? '⚪' : '⚫'}
+                        </Box>
+                      ))}
+                    </Typography>
+                  </AccountPageInfo>
+                ) : (
+                  <AccountPageInfoInput
+                    textFieldData={[
+                      {
+                        id: 'current-password',
+                        label: 'Current Password',
+                        name: 'currentPassword',
+                        type: 'password',
+                        value: formData.currentPassword,
+                        onChange: handleInputChange,
+                        onKeyDownFunction: handleUpdatePassword,
+                      },
+                      {
+                        id: 'new-password',
+                        label: 'New Password',
+                        name: 'newPassword',
+                        type: 'password',
+                        value: formData.newPassword,
+                        onChange: handleInputChange,
+                        onKeyDownFunction: handleUpdatePassword,
+                      },
+                      {
+                        id: 'confirm-password',
+                        label: 'Confirm Password',
+                        name: 'confirmPassword',
+                        type: 'password',
+                        value: formData.confirmPassword,
+                        onChange: handleInputChange,
+                        onKeyDownFunction: handleUpdatePassword,
+                      },
+                    ]}
+                    onSave={handleUpdatePassword}
+                    onCancel={handleCancelUpdateField}
+                    disableSave={
+                      formData.currentPassword.length === 0 ||
+                      formData.newPassword.length === 0 ||
+                      formData.confirmPassword.length === 0
+                    }
+                  />
+                )
+              ) : null}
             </AccountPageSection>
             <AccountPageSection title="Personal information">
               {fieldToUpdate !== 'name' ? (
