@@ -69,7 +69,7 @@ export default function AccountMenu() {
             sx={{
               color: customColorPalette.grey.light,
             }}>
-            {currentUser?.first_name ?? 'User'}
+            {currentUser?.first_name ?? currentUser?.email.split('@')[0]}
           </Typography>
           <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
         </>
