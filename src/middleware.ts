@@ -84,7 +84,9 @@ export async function middleware(request: NextRequest) {
     } else if (checkPathStartsWith('/admin-view')) {
       return NextResponse.redirect(new URL('/not-authorized', request.url));
     }
-  } else if (authorizedPath && !session) {
+  }
+
+  if (authorizedPath && !session) {
     return NextResponse.redirect(new URL('/not-authorized', request.url));
   }
 
