@@ -2,8 +2,9 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import ModalComponent from '../ui/ModalComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsSignUpModalOpen } from '@/lib/redux/modal/modalSlice';
+import { closeModal, setIsSignInModalOpen, setIsSignUpModalOpen } from '@/lib/redux/modal/modalSlice';
 import SignUpForm from '../forms/SignUpForm';
+import MuiLink from '../ui/MuiLink';
 
 export default function SignUpModal() {
   const customColorPalette = useCustomColorPalette();
@@ -14,6 +15,11 @@ export default function SignUpModal() {
     dispatch(setIsSignUpModalOpen(true));
   }
 
+  function handleOpenSignInModal() {
+    dispatch(closeModal());
+    dispatch(setIsSignInModalOpen(true));
+  }
+
   return (
     <>
       <TextButton
@@ -22,7 +28,9 @@ export default function SignUpModal() {
         onClick={handleOpenSignUpModal}
       />
       <ModalComponent isOpen={isSignUpModalOpen}>
-        <SignUpForm />
+        <SignUpForm>
+          <MuiLink onClick={handleOpenSignInModal}>Already have an account? Sign in</MuiLink>
+        </SignUpForm>
       </ModalComponent>
     </>
   );
