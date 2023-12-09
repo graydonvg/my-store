@@ -131,7 +131,9 @@ export default function Account() {
         </Typography>
         <Divider />
       </Box>
-      <Grid container>
+      <Grid
+        container
+        rowGap={2}>
         <Grid
           item
           xs={12}
