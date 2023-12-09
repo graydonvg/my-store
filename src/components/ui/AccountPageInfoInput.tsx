@@ -4,27 +4,25 @@ import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, MouseEvent } from 'react';
 
-type AccountPageInfoInputProps = {
-  textFieldData: {
-    id: string;
-    label: string;
-    name: string;
-    type: string;
-    value: string;
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onKeyDownFunction: () => void;
-  }[];
+type TextFieldData = {
+  id: string;
+  label: string;
+  name: string;
+  type: string;
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDownFunction: () => void;
+};
+
+type Props = {
+  textFieldData: TextFieldData[];
+  isUpdating: boolean;
   disableSave: boolean;
   onSave: (event: MouseEvent<HTMLButtonElement> | undefined) => void;
   onCancel: (event: MouseEvent<HTMLButtonElement> | undefined) => void;
 };
 
-export default function AccountPageInfoInput({
-  textFieldData,
-  disableSave,
-  onSave,
-  onCancel,
-}: AccountPageInfoInputProps) {
+export default function AccountPageInfoInput({ textFieldData, isUpdating, disableSave, onSave, onCancel }: Props) {
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
@@ -72,8 +70,9 @@ export default function AccountPageInfoInput({
       ))}
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 2 }}>
         <ContainedButton
-          label="save"
-          disabled={disableSave}
+          label={isUpdating ? '' : 'save'}
+          isDisabled={disableSave}
+          isLoading={isUpdating}
           fullWidth={false}
           backgroundColor="blue"
           style={{ minWidth: '96px' }}

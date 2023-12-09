@@ -2,12 +2,11 @@
 
 import AccountPageInfoInput from '@/components/ui/AccountPageInfoInput';
 import AccountPageInfo from '@/components/ui/AccountPageInfo';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import AccountPageSection from '@/components/ui/AccountPageSection';
 
@@ -23,8 +22,8 @@ export default function Account() {
   };
   const [formData, setFormData] = useState(defaultFormData);
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
@@ -55,6 +54,8 @@ export default function Account() {
       return toast.error('Passwords do not match.');
     }
 
+    setIsUpdating(true);
+
     try {
       const { success, message } = await updateUserPassword({
         currentPassword: formData.currentPassword,
@@ -63,6 +64,7 @@ export default function Account() {
       });
 
       if (success === true) {
+        router.refresh();
         toast.success(message);
         setFieldToUpdate(null);
         setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -71,10 +73,14 @@ export default function Account() {
       }
     } catch (error) {
       toast.error('Failed to update password. Please try again later.');
+    } finally {
+      setIsUpdating(false);
     }
   }
 
   async function handleUpdatePersonalInformation() {
+    setIsUpdating(true);
+
     try {
       const { success, message } = await updateUserPersonalInformation({
         first_name: formData.name,
@@ -83,24 +89,22 @@ export default function Account() {
       });
 
       if (success === true) {
-        toast.success(message);
-        setFieldToUpdate(null);
-        dispatch(
-          setCurrentUser({
-            ...currentUser!,
-            first_name: formData.name,
-            last_name: formData.surname,
-            contact_number: formData.contactNumber,
-          })
-        );
         router.refresh();
+        toast.success(message);
       } else {
+        setIsUpdating(false);
         toast.error(message);
       }
     } catch (error) {
+      setIsUpdating(false);
       toast.error('Failed to update personal information. Please try again later.');
     }
   }
+
+  useEffect(() => {
+    setFieldToUpdate(null);
+    setIsUpdating(false);
+  }, [currentUser]);
 
   function renderUserInfo(value: string) {
     return (
@@ -197,6 +201,7 @@ export default function Account() {
                         onKeyDownFunction: handleUpdatePassword,
                       },
                     ]}
+                    isUpdating={isUpdating}
                     onSave={handleUpdatePassword}
                     onCancel={handleCancelUpdateField}
                     disableSave={
@@ -229,6 +234,7 @@ export default function Account() {
                       onKeyDownFunction: handleUpdatePersonalInformation,
                     },
                   ]}
+                  isUpdating={isUpdating}
                   onSave={handleUpdatePersonalInformation}
                   onCancel={handleCancelUpdateField}
                   disableSave={formData.name.length === 0}
@@ -254,6 +260,7 @@ export default function Account() {
                       onKeyDownFunction: handleUpdatePersonalInformation,
                     },
                   ]}
+                  isUpdating={isUpdating}
                   onSave={handleUpdatePersonalInformation}
                   onCancel={handleCancelUpdateField}
                   disableSave={formData.surname.length === 0}
@@ -279,6 +286,7 @@ export default function Account() {
                       onKeyDownFunction: handleUpdatePersonalInformation,
                     },
                   ]}
+                  isUpdating={isUpdating}
                   onSave={handleUpdatePersonalInformation}
                   onCancel={handleCancelUpdateField}
                   disableSave={formData.contactNumber.length === 0}
