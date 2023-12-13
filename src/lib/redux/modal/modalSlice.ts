@@ -4,6 +4,7 @@ type ModalState = {
   isSignInModalOpen: boolean;
   isSignUpModalOpen: boolean;
   isUpdateModalOpen: boolean;
+  isAddAddressModalOpen: boolean;
   showModalLoadingBar: boolean;
 };
 
@@ -11,6 +12,7 @@ const initialState: ModalState = {
   isSignInModalOpen: false,
   isSignUpModalOpen: false,
   isUpdateModalOpen: false,
+  isAddAddressModalOpen: false,
   showModalLoadingBar: false,
 };
 
@@ -27,10 +29,14 @@ export const modalSlice = createSlice({
     setIsUpdateModalOpen(state, action: PayloadAction<boolean>) {
       state.isUpdateModalOpen = action.payload;
     },
+    setIsAddAddressModalOpen(state, action: PayloadAction<boolean>) {
+      state.isAddAddressModalOpen = action.payload;
+    },
     closeModal(state) {
       state.isSignInModalOpen = false;
       state.isSignUpModalOpen = false;
       state.isUpdateModalOpen = false;
+      state.isAddAddressModalOpen = false;
     },
     setShowModalLoadingBar(state, action: PayloadAction<boolean>) {
       state.showModalLoadingBar = action.payload;
@@ -40,7 +46,13 @@ export const modalSlice = createSlice({
 
 const { actions, reducer } = modalSlice;
 
-export const { setIsSignInModalOpen, setIsSignUpModalOpen, setIsUpdateModalOpen, closeModal, setShowModalLoadingBar } =
-  actions;
+export const {
+  setIsSignInModalOpen,
+  setIsSignUpModalOpen,
+  setIsUpdateModalOpen,
+  setIsAddAddressModalOpen,
+  closeModal,
+  setShowModalLoadingBar,
+} = actions;
 
 export const userReducer = reducer;

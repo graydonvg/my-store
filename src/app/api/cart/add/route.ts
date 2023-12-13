@@ -13,7 +13,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   if (!session) return NextResponse.json({ success: false, message: 'Failed to update cart. Please try again later.' });
 
   try {
-    const { data, error } = await supabase.from('cart').insert([cartItem]);
+    const { error } = await supabase.from('cart').insert([cartItem]);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update cart. ${error.message}.` });

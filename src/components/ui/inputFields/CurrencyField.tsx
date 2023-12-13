@@ -34,8 +34,7 @@ export default function CurrencyField({ borderColor, styles, ...props }: Numbert
       }}
       InputProps={{
         inputProps: {
-          pattern: '^\\d+(\\.\\d{2})?$',
-          placeholder: '0.00',
+          placeholder: 'e.g 189',
         },
       }}
       {...props}

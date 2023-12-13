@@ -6,7 +6,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function AccountPageSection({ title, children }: Props) {
+export default function AccountPageSectionContainer({ title, children }: Props) {
   return (
     <Box
       component="section"

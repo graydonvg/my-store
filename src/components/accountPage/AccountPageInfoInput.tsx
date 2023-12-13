@@ -1,6 +1,6 @@
 import { Box, TextField, useTheme } from '@mui/material';
-import OutlinedButton from './buttons/OutlinedButton';
-import ContainedButton from './buttons/ContainedButton';
+import OutlinedButton from '../ui/buttons/OutlinedButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, MouseEvent } from 'react';
 

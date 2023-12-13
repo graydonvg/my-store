@@ -1,7 +1,11 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { TextField, TextFieldProps, useTheme } from '@mui/material';
 
-export default function NumberField({ ...props }: TextFieldProps) {
+type Props = TextFieldProps & {
+  styles?: {};
+};
+
+export default function NumberField({ styles, ...props }: Props) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -11,6 +15,7 @@ export default function NumberField({ ...props }: TextFieldProps) {
     <TextField
       type="number"
       sx={{
+        ...styles,
         '& label.Mui-focused': {
           color: focusedColor,
         },
@@ -19,11 +24,11 @@ export default function NumberField({ ...props }: TextFieldProps) {
             border: `1px solid ${focusedColor}`,
           },
         },
-      }}
-      InputProps={{
-        inputProps: {
-          min: 0,
-          max: 4,
+        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+          display: 'none',
+        },
+        '& input[type=number]': {
+          MozAppearance: 'textfield',
         },
       }}
       {...props}

@@ -21,13 +21,13 @@ import addProductImageData from '@/services/product-image-data/add-product-image
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
-import updateProductImageData from '@/services/product-image-data/update-product-image-data';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
   { label: 'Name', name: 'name' },
   { label: 'Description', name: 'description', multiline: true },
   { label: 'Delivery info', name: 'delivery_info', multiline: true },
+  { label: 'Return info', name: 'return_info', multiline: true },
   { label: 'Price', name: 'price', type: 'currency' },
   { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
   { label: 'Sale %', name: 'sale_percentage', type: 'percentage' },

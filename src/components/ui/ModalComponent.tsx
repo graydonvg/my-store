@@ -7,16 +7,6 @@ import LoadingBar from './progress/LoadingBar';
 import { ReactNode } from 'react';
 import { closeModal } from '@/lib/redux/modal/modalSlice';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  translate: '-50% -50%',
-  width: { xs: 300, sm: 400 },
-  boxShadow: 24,
-  borderRadius: '4px',
-};
-
 type Props = {
   isOpen: boolean;
   children: ReactNode;
@@ -42,7 +32,18 @@ export default function ModalComponent({ isOpen, children }: Props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description">
       <Grow in={isOpen}>
-        <Box sx={{ ...style, backgroundColor: modalBackgroundColor }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            translate: '-50% -50%',
+            width: '95vw',
+            maxWidth: 400,
+            boxShadow: 24,
+            borderRadius: '4px',
+            backgroundColor: modalBackgroundColor,
+          }}>
           <LoadingBar
             isLoading={showModalLoadingBar}
             style={{ borderTopRightRadius: '4px', borderTopLeftRadius: '4px' }}

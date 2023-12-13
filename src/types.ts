@@ -74,3 +74,5 @@ export type userPersonalInformationType = Pick<
 >;
 
 export type userPasswordType = { currentPassword: string; newPassword: string; confirmPassword: string };
+
+export type InsertAddressType = Database['public']['Tables']['addresses']['Insert'];

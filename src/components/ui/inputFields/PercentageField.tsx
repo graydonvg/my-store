@@ -34,8 +34,7 @@ export default function PercentageField({ borderColor, styles, ...props }: Perce
       }}
       InputProps={{
         inputProps: {
-          pattern: '^d+(.d{1,2})?%',
-          placeholder: '0.00%',
+          placeholder: 'e.g. 20',
         },
       }}
       {...props}

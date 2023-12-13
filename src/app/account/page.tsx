@@ -1,14 +1,19 @@
 'use client';
 
-import AccountPageInfoInput from '@/components/ui/AccountPageInfoInput';
-import AccountPageInfo from '@/components/ui/AccountPageInfo';
+import AccountPageInfoInput from '@/components/accountPage/AccountPageInfoInput';
+import AccountPageInfo from '@/components/accountPage/AccountPageInfo';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import AccountPageSection from '@/components/ui/AccountPageSection';
+import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import { Add, Edit } from '@mui/icons-material';
+import AddNewAddressModal from '@/components/modals/AddNewAddressModal';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { deleteAddress } from '@/services/users/delete-address';
 
 export default function Account() {
   const { currentUser, isOAuthSignIn } = useAppSelector((state) => state.user);
@@ -23,9 +28,11 @@ export default function Account() {
   const [formData, setFormData] = useState(defaultFormData);
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const theme = useTheme();
   const mode = theme.palette.mode;
+  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -106,6 +113,24 @@ export default function Account() {
     setIsUpdating(false);
   }, [currentUser]);
 
+  async function handleEditAddress(addressId: string) {
+    console.log('edit', addressId);
+  }
+
+  async function handleDeleteAddress(addressId: string) {
+    try {
+      const { success, message } = await deleteAddress(addressId);
+
+      if (success === true) {
+        router.refresh();
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to delete address. Please try again later.');
+    }
+  }
+
   function renderUserInfo(value: string) {
     return (
       <Typography
@@ -116,12 +141,48 @@ export default function Account() {
     );
   }
 
+  function renderAddressOption({
+    label,
+    hasBorderRight = true,
+    onClick,
+  }: {
+    label: string;
+    hasBorderRight?: boolean;
+    onClick: () => Promise<void>;
+  }) {
+    return (
+      <Typography
+        onClick={onClick}
+        component="span"
+        textTransform="uppercase"
+        lineHeight={1}
+        fontWeight={700}
+        sx={{
+          paddingRight: hasBorderRight ? 1 : 0,
+          borderRight: hasBorderRight ? `1px solid ${borderColor}` : null,
+          color: customColorPalette.blue.dark,
+          '@media (hover: hover)': {
+            '&:hover': {
+              color: customColorPalette.blue.light,
+              textDecoration: 'underline',
+              textDecorationColor: customColorPalette.blue.light,
+              textDecorationThickness: 1,
+              textUnderlineOffset: 2,
+              cursor: 'pointer',
+            },
+          },
+        }}>
+        {label}
+      </Typography>
+    );
+  }
+
   return (
     <Box>
       <Box
         component="header"
-        sx={{ paddingBottom: 2 }}>
-        <Divider />
+        sx={{ marginBottom: 2, borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
+        {/* <Divider /> */}
         <Typography
           component="h1"
           fontSize={{ xs: 26, sm: 30 }}
@@ -129,7 +190,7 @@ export default function Account() {
           sx={{ paddingY: 1, textAlign: 'center' }}>
           {currentUser?.first_name} {currentUser?.last_name}
         </Typography>
-        <Divider />
+        {/* <Divider /> */}
       </Box>
       <Grid
         container
@@ -145,7 +206,7 @@ export default function Account() {
               flexDirection: 'column',
               gap: 2,
             }}>
-            <AccountPageSection title="Account">
+            <AccountPageSectionContainer title="Account">
               <AccountPageInfo
                 label="Email"
                 canEdit={false}
@@ -214,8 +275,8 @@ export default function Account() {
                   />
                 )
               ) : null}
-            </AccountPageSection>
-            <AccountPageSection title="Personal information">
+            </AccountPageSectionContainer>
+            <AccountPageSectionContainer title="Personal information">
               {fieldToUpdate !== 'name' ? (
                 <AccountPageInfo
                   label="Name"
@@ -294,26 +355,75 @@ export default function Account() {
                   disableSave={formData.contactNumber.length === 0}
                 />
               )}
-            </AccountPageSection>
+            </AccountPageSectionContainer>
           </Box>
         </Grid>
         <Grid
           item
           xs={12}
           md={6}>
-          <AccountPageSection title="Addresses">
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              {currentUser?.addresses?.map((address) => (
-                <Box key={address.address_id}>
-                  <Typography>
-                    {address.complex_or_building ? `${address.complex_or_building},` : null}
-                    {`${address.street_address}, ${address.suburb},${address.province},
+          <AccountPageSectionContainer title="Addresses">
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: 2,
+                border: `1px solid ${borderColor}`,
+                borderRadius: '4px',
+              }}>
+              {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
+                currentUser?.addresses?.map((address, index) => {
+                  const isFirstAddress = index === 0;
+                  const isLastAddress = index === currentUser?.addresses.length - 1;
+                  return (
+                    <Box
+                      key={address.address_id}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: { xs: 'flex-start', sm: 'center' },
+                        borderTop: !isFirstAddress ? `1px solid ${borderColor}` : null,
+                        borderBottomLeftRadius: isLastAddress ? '4px' : null,
+                        borderBottomRightRadius: isLastAddress ? '4px' : null,
+                        borderTopRightRadius: isFirstAddress ? '4px' : null,
+                        borderTopLeftRadius: isFirstAddress ? '4px' : null,
+                        padding: 2,
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        rowGap: 2,
+                        columnGap: 4,
+                        '@media (hover: hover)': {
+                          '&:hover': {
+                            backgroundColor:
+                              mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light,
+                          },
+                        },
+                      }}>
+                      <Typography fontSize={16}>
+                        {address.complex_or_building ? `${address.complex_or_building},` : null}
+                        {`${address.street_address}, ${address.suburb}, ${address.province},
                     ${address.city}, ${address.postal_code}`}
-                  </Typography>
-                </Box>
-              ))}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {renderAddressOption({
+                          label: 'edit',
+                          hasBorderRight: true,
+                          onClick: () => handleEditAddress(address.address_id),
+                        })}
+                        {renderAddressOption({
+                          label: 'delete',
+                          hasBorderRight: false,
+                          onClick: () => handleDeleteAddress(address.address_id),
+                        })}
+                      </Box>
+                    </Box>
+                  );
+                })
+              ) : (
+                <Typography>No address found</Typography>
+              )}
             </Box>
-          </AccountPageSection>
+            <AddNewAddressModal />
+          </AccountPageSectionContainer>
         </Grid>
       </Grid>
     </Box>
