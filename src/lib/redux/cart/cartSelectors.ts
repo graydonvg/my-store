@@ -5,6 +5,10 @@ export function selectCartCount(items: CartItemType[]) {
   return items.reduce((totalCount, item) => totalCount + (item ? item?.quantity : 0), 0);
 }
 
+export function selectQuantity(item: CartItemType) {
+  return item?.quantity!;
+}
+
 export function selectPrice(item: CartItemType) {
   return item?.product?.price! * item?.quantity!;
 }

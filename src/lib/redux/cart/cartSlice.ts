@@ -5,9 +5,9 @@ function changeCartItemSize(cartItemId: string, size: string, cartItems: CartIte
   return cartItems.map((item) => (item?.cart_item_id === cartItemId ? { ...item, size } : item));
 }
 
-function changeCartItemQuantity(cartItemId: string, quantity: number, cartItems: CartItemType[]) {
+function changeCartItemQuantity(cartItemId: string, value: number, cartItems: CartItemType[]) {
   return cartItems.map((item) =>
-    item?.cart_item_id === cartItemId ? { ...item, quantity: item.quantity + quantity } : item
+    item?.cart_item_id === cartItemId ? { ...item, quantity: item.quantity + value } : item
   );
 }
 
@@ -50,9 +50,9 @@ export const cartSlice = createSlice({
       const { id, size } = action.payload;
       state.cartItems = changeCartItemSize(id, size, state.cartItems);
     },
-    setCartItemQuantity(state, action: PayloadAction<{ id: string; quantity: number }>) {
-      const { id, quantity } = action.payload;
-      state.cartItems = changeCartItemQuantity(id, quantity, state.cartItems);
+    setCartItemQuantity(state, action: PayloadAction<{ id: string; value: number }>) {
+      const { id, value } = action.payload;
+      state.cartItems = changeCartItemQuantity(id, value, state.cartItems);
     },
   },
 });
