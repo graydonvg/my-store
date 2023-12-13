@@ -109,14 +109,13 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         quantity: newQuantity,
       });
 
-      if (success === true) {
-        router.refresh();
-      } else {
+      if (success === false) {
         toast.error(message);
       }
     } catch (error) {
       toast.error(`Failed to update quantity. Please try again later.`);
     } finally {
+      router.refresh();
       setIsUpdatingCartItemQuantity(false);
     }
   }

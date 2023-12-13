@@ -17,11 +17,6 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     return NextResponse.json({ success: false, message: 'Failed to update quantity. Please try again later.' });
 
   try {
-    // const { error } = await supabase.rpc('update', {
-    //   item_id: data.cart_item_id,
-    //   item_quantity: data.value,
-    // });
-
     const { error } = await supabase
       .from('cart')
       .update({ quantity: data.quantity })
