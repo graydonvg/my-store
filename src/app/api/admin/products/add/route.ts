@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { AddProductDbType, CustomResponseType } from '@/types';
+import { CustomResponseType, InsertProductTypeDb } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<
   >
 > {
   const supabase = await createSupabaseServerClient();
-  const formData: AddProductDbType = await request.json();
+  const formData: InsertProductTypeDb = await request.json();
 
   try {
     const { data, error } = await supabase.from('products').insert([formData]).select('product_id');

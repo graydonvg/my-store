@@ -7,7 +7,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { calculateDiscountedPrice, deleteAllProductImages, formatCurrency } from '@/lib/utils';
-import { AddProductStoreType, ProductType } from '@/types';
+import { InsertProductTypeStore, ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   resetAllProductData,
@@ -55,8 +55,8 @@ export default function ProductCard({ product }: Props) {
       } else {
         dispatch(
           setFormData({
-            field: key as keyof AddProductStoreType,
-            value: restOfProductData[key as keyof AddProductStoreType],
+            field: key as keyof InsertProductTypeStore,
+            value: restOfProductData[key as keyof InsertProductTypeStore],
           })
         );
       }

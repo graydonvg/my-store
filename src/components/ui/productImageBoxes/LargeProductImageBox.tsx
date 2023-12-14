@@ -5,13 +5,13 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
-import { ProductImageDataDbType, ProductImageDataStoreType } from '@/types';
+import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
 import { usePathname } from 'next/navigation';
 
 type Props = {
   selectedImageIndex: number;
   borderColor: string;
-  productImageData?: ProductImageDataDbType | ProductImageDataStoreType;
+  productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
   productName: string;
 };
 

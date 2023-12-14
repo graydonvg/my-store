@@ -1,11 +1,10 @@
-import { ProductImageDataStoreType, CustomResponseType, CartItemType, ProductType } from '@/types';
+import { InsertProductImageDataTypeStore, CustomResponseType, ProductType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
 import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
-import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 
 export const categories = ['Men', 'Women', 'kids'];
 
@@ -161,7 +160,7 @@ export default function createURL(path: string) {
 }
 
 export async function deleteAllProductImages(
-  imageData: ProductImageDataStoreType[],
+  imageData: InsertProductImageDataTypeStore[],
   productId?: string | null
 ): Promise<CustomResponseType> {
   let dbDataDeleteSuccess = true;

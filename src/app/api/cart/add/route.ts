@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { AddCartItemDbType, CustomResponseType } from '@/types';
+import { InsertCartItemType, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
@@ -8,7 +8,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  const cartItem: AddCartItemDbType = await request.json();
+  const cartItem: InsertCartItemType = await request.json();
 
   if (!session) return NextResponse.json({ success: false, message: 'Failed to update cart. Please try again later.' });
 

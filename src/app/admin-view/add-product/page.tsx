@@ -4,7 +4,7 @@ import { Box, Grid, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, getEmptyFormFields, getNumberOfFormFields, toggleButtonSizeOptions } from '@/lib/utils';
-import { AddProductDbType, AddProductStoreType, UpdateProductType } from '@/types';
+import { InsertProductTypeDb, InsertProductTypeStore, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import LargeSelectField from '@/components/ui/inputFields/LargeSelectField';
 import CurrencyField from '@/components/ui/inputFields/CurrencyField';
@@ -56,7 +56,7 @@ export default function AdminViewAddNewProduct() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setFormData({ field: name as keyof AddProductStoreType, value }));
+    dispatch(setFormData({ field: name as keyof InsertProductTypeStore, value }));
   }
 
   async function handleClearAllFormFields() {
@@ -96,7 +96,7 @@ export default function AdminViewAddNewProduct() {
         success: addProductSuccess,
         message: addProductMessage,
         data: productData,
-      } = await addProduct(formData as AddProductDbType);
+      } = await addProduct(formData as InsertProductTypeDb);
 
       if (addProductSuccess === true && productData) {
         product_id = productData.product_id;

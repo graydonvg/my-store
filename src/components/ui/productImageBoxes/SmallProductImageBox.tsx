@@ -12,11 +12,11 @@ import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProdu
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { Spinner } from '../progress/Spinner';
-import { ImageUploadProgressType, ProductImageDataStoreType } from '@/types';
+import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';
 
 type Props = {
   productName?: string;
-  productImageData?: ProductImageDataStoreType;
+  productImageData?: InsertProductImageDataTypeStore;
   imageIndex?: number;
   selectedImageIndex?: number;
   uploadProgressData?: ImageUploadProgressType;

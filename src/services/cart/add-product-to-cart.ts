@@ -1,7 +1,7 @@
 import createURL from '@/lib/utils';
-import { AddCartItemDbType, CustomResponseType } from '@/types';
+import { InsertCartItemType, CustomResponseType } from '@/types';
 
-export default async function addProductToCart(cartItem: AddCartItemDbType): Promise<CustomResponseType> {
+export default async function addProductToCart(cartItem: InsertCartItemType): Promise<CustomResponseType> {
   const url = createURL('/api/cart/add');
 
   try {

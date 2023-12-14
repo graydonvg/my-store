@@ -53,7 +53,7 @@ export default function AddAddressForm() {
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (formData.postal_code.length < 4) return toast.error('Min 4 characters required');
+    // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
     setIsLoading(true);
 

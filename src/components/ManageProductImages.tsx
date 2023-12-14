@@ -18,7 +18,7 @@ import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadImageToStorage } from '@/lib/firebase';
-import { ProductImageDataStoreType } from '@/types';
+import { InsertProductImageDataTypeStore } from '@/types';
 
 type Props = {
   isSubmitting: boolean;

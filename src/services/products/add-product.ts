@@ -1,6 +1,6 @@
-import { AddProductDbType, CustomResponseType } from '@/types';
+import { CustomResponseType, InsertProductTypeDb } from '@/types';
 
-export default async function addProduct(formData: AddProductDbType): Promise<
+export default async function addProduct(formData: InsertProductTypeDb): Promise<
   CustomResponseType<{
     product_id: string;
   }>
