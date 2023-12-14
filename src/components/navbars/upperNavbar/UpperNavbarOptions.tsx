@@ -11,8 +11,8 @@ import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
 import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import SignInModal from '@/components/modals/SignInModal';
-import SignUpModal from '@/components/modals/SignUpModal';
+import SignInDialog from '@/components/dialogs/SignInDialog';
+import SignUpDialog from '@/components/dialogs/SignUpDialog';
 
 function renderDivider() {
   return (
@@ -103,13 +103,13 @@ export default function UpperNavbarOptions() {
             </ListItem>
             {renderDivider()}
             <ListItem disablePadding>
-              <SignInModal />
+              <SignInDialog />
             </ListItem>
             {renderDivider()}
             <ListItem
               disablePadding
               sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <SignUpModal />
+              <SignUpDialog />
             </ListItem>
             {renderDivider()}
           </List>

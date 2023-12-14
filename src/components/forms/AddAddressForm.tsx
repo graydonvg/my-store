@@ -10,7 +10,7 @@ import { addNewAddress } from '@/services/users/add-address';
 import { InsertAddressType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
-import { setIsAddAddressModalOpen } from '@/lib/redux/modal/modalSlice';
+import { setIsAddAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
@@ -65,7 +65,7 @@ export default function AddAddressForm() {
       });
 
       if (success === true) {
-        dispatch(setIsAddAddressModalOpen(false));
+        dispatch(setIsAddAddressDialogOpen(false));
         setFormData(defaultFormData);
         router.refresh();
       } else {

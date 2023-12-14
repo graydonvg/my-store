@@ -5,7 +5,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignInModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import { setIsSignInDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -44,13 +44,13 @@ export default function SignInForm({ children }: Props) {
   async function handleSignInWithPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
-    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
     try {
       const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
       if (success === true) {
-        dispatch(setIsSignInModalOpen(false));
+        dispatch(setIsSignInDialogOpen(false));
         setFormData(defaultFormData);
         router.refresh();
       } else {
@@ -60,12 +60,12 @@ export default function SignInForm({ children }: Props) {
       toast.error('Sign in failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
+      dispatch(setShowDialogLoadingBar(false));
     }
   }
 
   async function handleSignInWithGoogle() {
-    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
     try {
       // Remember Supabase redirect url for google sign in
@@ -86,7 +86,7 @@ export default function SignInForm({ children }: Props) {
     } catch (error) {
       toast.error('Sign in failed. Please try again later.');
     } finally {
-      isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
+      dispatch(setShowDialogLoadingBar(false));
     }
   }
 

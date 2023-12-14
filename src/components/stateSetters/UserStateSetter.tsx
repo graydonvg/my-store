@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
 import { CurrentUserType } from '@/types';
 import { setCurrentUser, setIsOAuthSignIn } from '@/lib/redux/user/userSlice';
-import ModalComponent from '../ui/ModalComponent';
+import DialogComponent from '../ui/DialogComponent';
 import UpdateUserData from '../forms/UpdateUserData';
 import { Session } from '@supabase/supabase-js';
 
@@ -15,13 +15,13 @@ type Props = {
 
 export default function UserStateSetter({ session, userData }: Props) {
   const dispatch = useAppDispatch();
-  const isUpdateModalOpen = useAppSelector((state) => state.modal.isUpdateModalOpen);
+  const isUpdateDialogOpen = useAppSelector((state) => state.dialog.isUpdateDialogOpen);
 
   useEffect(() => {
     // const emptyFields = getEmptyFormFields(userData);
 
     // if (emptyFields.length > 0) {
-    //   dispatch(setIsUpdateModalOpen(true));
+    //   dispatch(setIsUpdateDialogOpen(true));
     // }
 
     if (session && session.user.app_metadata.provider !== 'email') {
@@ -34,8 +34,8 @@ export default function UserStateSetter({ session, userData }: Props) {
   }, [userData, session, dispatch]);
 
   return (
-    <ModalComponent isOpen={isUpdateModalOpen}>
+    <DialogComponent isOpen={isUpdateDialogOpen}>
       <UpdateUserData />
-    </ModalComponent>
+    </DialogComponent>
   );
 }

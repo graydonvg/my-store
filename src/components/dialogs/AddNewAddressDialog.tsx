@@ -1,31 +1,31 @@
-import ModalComponent from '../ui/ModalComponent';
+import DialogComponent from '../ui/DialogComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsAddAddressModalOpen } from '@/lib/redux/modal/modalSlice';
 import AddAddressForm from '../forms/AddAddressForm';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
+import { setIsAddAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 
-export default function AddNewAddressModal() {
+export default function AddNewAddressDialog() {
   const dispatch = useAppDispatch();
-  const { isAddAddressModalOpen } = useAppSelector((state) => state.modal);
+  const { isAddAddressDialogOpen } = useAppSelector((state) => state.dialog);
 
-  function handleOpenAddAddressModal() {
-    dispatch(setIsAddAddressModalOpen(true));
+  function handleOpenAddAddressDialog() {
+    dispatch(setIsAddAddressDialogOpen(true));
   }
 
   return (
     <>
       <ContainedButton
-        onClick={handleOpenAddAddressModal}
+        onClick={handleOpenAddAddressDialog}
         label="add new address"
         styles={{ width: 'fit-content' }}
         fullWidth={false}
         startIcon={<Add />}
         backgroundColor="blue"
       />
-      <ModalComponent isOpen={isAddAddressModalOpen}>
+      <DialogComponent isOpen={isAddAddressDialogOpen}>
         <AddAddressForm />
-      </ModalComponent>
+      </DialogComponent>
     </>
   );
 }

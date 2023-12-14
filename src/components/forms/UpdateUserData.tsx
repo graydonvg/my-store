@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsUpdateModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import { setIsUpdateDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -35,7 +35,7 @@ export default function UpdateUserData() {
   async function handleUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
-    dispatch(setShowModalLoadingBar(true));
+    dispatch(setShowDialogLoadingBar(true));
 
     const { first_name, last_name } = formData;
 
@@ -43,7 +43,7 @@ export default function UpdateUserData() {
       const { success, message } = await updateUserPersonalInformation({ first_name, last_name, contact_number: null });
 
       if (success) {
-        dispatch(setIsUpdateModalOpen(false));
+        dispatch(setIsUpdateDialogOpen(false));
         setFormData(defaultFormData);
         router.refresh();
       } else {
@@ -53,7 +53,7 @@ export default function UpdateUserData() {
       toast.error('Update user failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      dispatch(setShowModalLoadingBar(false));
+      dispatch(setShowDialogLoadingBar(false));
     }
   }
 

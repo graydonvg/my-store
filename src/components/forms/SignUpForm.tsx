@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignUpModalOpen, setShowModalLoadingBar } from '@/lib/redux/modal/modalSlice';
+import { setIsSignUpDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -56,7 +56,7 @@ export default function SignUpForm({ children }: Props) {
     }
 
     setIsLoading(true);
-    !isWelcomePath ? dispatch(setShowModalLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
     const { email, password, first_name, last_name } = formData;
 
@@ -74,7 +74,7 @@ export default function SignUpForm({ children }: Props) {
         });
 
         if (updateSuccess === true) {
-          dispatch(setIsSignUpModalOpen(false));
+          dispatch(setIsSignUpDialogOpen(false));
           setFormData(defaultFormData);
           router.refresh();
           toast.info(`Welcome, ${first_name}!`);
@@ -88,7 +88,7 @@ export default function SignUpForm({ children }: Props) {
       toast.error('Sign up failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      !isWelcomePath ? dispatch(setShowModalLoadingBar(false)) : null;
+      !isWelcomePath ? dispatch(setShowDialogLoadingBar(false)) : null;
     }
   }
 

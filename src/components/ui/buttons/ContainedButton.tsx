@@ -73,7 +73,7 @@ export default function ContainedButton({
       }
       sx={{
         color: 'white',
-        height: '48px',
+        minHeight: '48px',
         ...buttonBackgroundColor,
         ...styles,
       }}

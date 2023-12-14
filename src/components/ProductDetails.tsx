@@ -14,7 +14,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
-import { setIsSignInModalOpen } from '@/lib/redux/modal/modalSlice';
+import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 
 type Props = { product: ProductType };
 
@@ -58,8 +58,8 @@ export default function ProductDetails({ product }: Props) {
     setItemSize((prevSize) => (prevSize !== selectedSize ? selectedSize : null));
   }
 
-  function handleOpenSignInModal() {
-    dispatch(setIsSignInModalOpen(true));
+  function handleOpenSignInDialog() {
+    dispatch(setIsSignInDialogOpen(true));
   }
 
   function handleSelectSizeToast() {
@@ -68,7 +68,7 @@ export default function ProductDetails({ product }: Props) {
 
   async function handleAddToCart() {
     if (!currentUser) {
-      handleOpenSignInModal();
+      handleOpenSignInDialog();
       return;
     }
 
@@ -120,7 +120,7 @@ export default function ProductDetails({ product }: Props) {
     // check if item already added!!!
 
     if (!currentUser) {
-      handleOpenSignInModal();
+      handleOpenSignInDialog();
       return;
     }
 

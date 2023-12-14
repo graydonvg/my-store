@@ -4,14 +4,12 @@ import AccountPageInfoInput from '@/components/accountPage/AccountPageInfoInput'
 import AccountPageInfo from '@/components/accountPage/AccountPageInfo';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
-import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
-import { Add, Edit } from '@mui/icons-material';
-import AddNewAddressModal from '@/components/modals/AddNewAddressModal';
+import AddNewAddressDialog from '@/components/dialogs/AddNewAddressDialog';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { deleteAddress } from '@/services/users/delete-address';
 
@@ -422,7 +420,7 @@ export default function Account() {
                 <Typography>No address found</Typography>
               )}
             </Box>
-            <AddNewAddressModal />
+            <AddNewAddressDialog />
           </AccountPageSectionContainer>
         </Grid>
       </Grid>
