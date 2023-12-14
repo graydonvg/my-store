@@ -22,14 +22,12 @@ export default function CheckoutNavbar() {
     <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
       <Container
         maxWidth="lg"
-        disableGutters>
+        sx={{ paddingX: { xs: 0.25, sm: 2 } }}>
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
-            height: { xs: '64px', md: '40px' },
-            flexGrow: 1,
-            gap: 2,
+            height: { xs: '64px', md: '48px' },
           }}>
           <NavbarTitleAndLogo
             hideText={isBelowSmall ? true : false}

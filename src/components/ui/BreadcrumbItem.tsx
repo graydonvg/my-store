@@ -27,7 +27,11 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
         sx={{
           display: 'flex',
           alignItems: 'center',
+          padding: 0,
           color: pathname === href ? customColorPalette.blue.light : customColorPalette.grey.medium,
+          '&.MuiButton-root': {
+            minWidth: { xs: 'unset', sm: '64px' },
+          },
           '@media (hover: hover)': {
             '&:hover': {
               color: pathname !== href ? customColorPalette.grey.light : null,

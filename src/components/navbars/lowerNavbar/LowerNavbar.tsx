@@ -20,7 +20,7 @@ export default function LowerNavbar() {
       sx={{ backgroundColor }}>
       <Container
         maxWidth="lg"
-        disableGutters>
+        sx={{ paddingX: { xs: 'none', sm: 2 } }}>
         <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
           <NavbarTitleAndLogo
             variant="h6"

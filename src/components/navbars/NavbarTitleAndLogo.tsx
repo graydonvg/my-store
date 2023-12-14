@@ -18,6 +18,7 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
         disableTouchRipple
         sx={{
           display,
+          paddingX: 0,
           alignItems: 'center',
           textTransform: 'none',
           '@media (hover: hover)': {
