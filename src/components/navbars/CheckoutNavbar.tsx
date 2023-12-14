@@ -20,7 +20,9 @@ export default function CheckoutNavbar() {
 
   return (
     <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        disableGutters>
         <Box
           sx={{
             display: 'flex',

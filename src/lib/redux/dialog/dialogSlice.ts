@@ -29,7 +29,7 @@ export const dialogSlice = createSlice({
     setIsUpdateDialogOpen(state, action: PayloadAction<boolean>) {
       state.isUpdateDialogOpen = action.payload;
     },
-    setIsAddAddressDialogOpen(state, action: PayloadAction<boolean>) {
+    setIsAddressDialogOpen(state, action: PayloadAction<boolean>) {
       state.isAddAddressDialogOpen = action.payload;
     },
     closeDialog(state) {
@@ -50,7 +50,7 @@ export const {
   setIsSignInDialogOpen,
   setIsSignUpDialogOpen,
   setIsUpdateDialogOpen,
-  setIsAddAddressDialogOpen,
+  setIsAddressDialogOpen,
   closeDialog,
   setShowDialogLoadingBar,
 } = actions;

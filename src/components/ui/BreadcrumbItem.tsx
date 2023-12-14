@@ -1,7 +1,7 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
@@ -19,8 +19,11 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
   const customColorPalette = useCustomColorPalette();
 
   return (
-    <Link href={href}>
-      <Box
+    <Link
+      href={href}
+      tabIndex={-1}>
+      <Button
+        disableTouchRipple
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -28,6 +31,7 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
           '@media (hover: hover)': {
             '&:hover': {
               color: pathname !== href ? customColorPalette.grey.light : null,
+              backgroundColor: customColorPalette.grey.dark,
             },
           },
         }}>
@@ -40,7 +44,7 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
             {label}
           </Typography>
         )}
-      </Box>
+      </Button>
     </Link>
   );
 }

@@ -63,7 +63,7 @@ export default function ProductDetails({ product }: Props) {
   }
 
   function handleSelectSizeToast() {
-    toast.info('Please select a size.');
+    toast.error('Select a size first.');
   }
 
   async function handleAddToCart() {

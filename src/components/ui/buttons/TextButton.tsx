@@ -1,11 +1,10 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { Button, ButtonProps, useTheme } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
 type Props = ButtonProps & {
-  label: string;
-  labelColor: string;
+  label: ReactNode;
+  labelColor?: string;
   startIcon?: ReactNode;
   isLoading?: boolean;
 };

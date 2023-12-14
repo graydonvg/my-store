@@ -11,14 +11,13 @@ import {
   setImageData,
   setImageUploadProgress,
   setIsEditMode,
-} from '@/lib/redux/addProduct/addProductSlice';
+} from '@/lib/redux/productForm/productFormSlice';
 import { deleteAllProductImages, generateUniqueFileName } from '@/lib/utils';
 import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadImageToStorage } from '@/lib/firebase';
-import { InsertProductImageDataTypeStore } from '@/types';
 
 type Props = {
   isSubmitting: boolean;
@@ -26,8 +25,8 @@ type Props = {
 
 export default function ManageProductImages({ isSubmitting }: Props) {
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, isDeletingImage, productToUpdateId, isEditMode } = useAppSelector(
-    (state) => state.addProduct
+  const { imageUploadProgress, imageData, isDeletingImage, isEditMode, productFormData } = useAppSelector(
+    (state) => state.productForm
   );
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const customColorPalette = useCustomColorPalette();
@@ -95,7 +94,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
   async function handleDeleteAllImages() {
     setIsDeletingAllImages(true);
 
-    await deleteAllProductImages(imageData, productToUpdateId);
+    await deleteAllProductImages(imageData, productFormData.product_id);
 
     dispatch(resetImageData());
     setIsDeletingAllImages(false);

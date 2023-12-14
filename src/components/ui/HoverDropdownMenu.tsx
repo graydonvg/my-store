@@ -6,11 +6,12 @@ import { ReactNode, useState } from 'react';
 import UpperNavIconButton from './buttons/upperNavIconButton';
 
 type HoverDropdownMenuProps = {
+  buttonBackgroundColor: string;
   children: ReactNode;
   label: ReactNode;
 };
 
-export default function HoverDropdownMenu({ children, label }: HoverDropdownMenuProps) {
+export default function HoverDropdownMenu({ buttonBackgroundColor, children, label }: HoverDropdownMenuProps) {
   const customColorPalette = useCustomColorPalette();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -21,7 +22,7 @@ export default function HoverDropdownMenu({ children, label }: HoverDropdownMenu
   }
 
   function handleMenuCloseAfterTimeout() {
-    if (!!timeoutId) {
+    if (timeoutId) {
       clearTimeout(timeoutId);
     }
     timeoutId = setTimeout(() => {
@@ -34,7 +35,7 @@ export default function HoverDropdownMenu({ children, label }: HoverDropdownMenu
   }
 
   function handleMenuEnter() {
-    if (!!timeoutId) {
+    if (timeoutId) {
       clearTimeout(timeoutId);
     }
   }
@@ -48,7 +49,7 @@ export default function HoverDropdownMenu({ children, label }: HoverDropdownMenu
         onClick={handleMenuOpen}
         onMouseEnter={handleMenuOpen}
         onMouseLeave={handleMenuCloseAfterTimeout}>
-        <UpperNavIconButton>{label}</UpperNavIconButton>
+        <UpperNavIconButton backgroundColor={buttonBackgroundColor}>{label}</UpperNavIconButton>
       </Box>
       <Menu
         disableScrollLock

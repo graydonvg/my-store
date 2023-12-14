@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import Link from 'next/link';
 
@@ -11,8 +11,21 @@ type TitleAndLogoProps = {
 
 export default function NavbarTitleAndLogo({ display, variant, color, hideText = false }: TitleAndLogoProps) {
   return (
-    <Link href={'/'}>
-      <Box sx={{ display, alignItems: 'center' }}>
+    <Link
+      href={'/'}
+      tabIndex={-1}>
+      <Button
+        disableTouchRipple
+        sx={{
+          display,
+          alignItems: 'center',
+          textTransform: 'none',
+          '@media (hover: hover)': {
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+          },
+        }}>
         <ShoppingBasket sx={{ mr: 1, color }} />
         {!hideText ? (
           <Typography
@@ -29,7 +42,7 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
             MyStore
           </Typography>
         ) : null}
-      </Box>
+      </Button>
     </Link>
   );
 }

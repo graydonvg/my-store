@@ -9,7 +9,9 @@ export default function UpperNavbar() {
 
   return (
     <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        disableGutters>
         <Box
           sx={{
             display: 'flex',

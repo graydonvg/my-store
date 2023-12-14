@@ -8,13 +8,14 @@ import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 type Props = {
+  elevation?: number;
   width: string | Record<string, string>;
   isOpen: DrawerState;
   zIndex: (theme: any) => number;
   children: ReactNode;
 };
 
-export default function DrawerComponent({ isOpen, zIndex, width, children }: Props) {
+export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, children }: Props) {
   const dispatch = useAppDispatch();
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const { isCartOpen, cartItemToEditId } = useAppSelector((state) => state.cart);
@@ -46,7 +47,8 @@ export default function DrawerComponent({ isOpen, zIndex, width, children }: Pro
           <Drawer
             sx={{ zIndex }}
             PaperProps={{
-              elevation: 1,
+              elevation: elevation,
+              // elevation: 0,
               sx: {
                 width: width,
                 backgroundColor: 'background.default',

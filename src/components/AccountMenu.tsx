@@ -40,6 +40,7 @@ export default function AccountMenu() {
   const mode = theme.palette.mode;
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
+
   const router = useRouter();
 
   function handleToggleTheme() {
@@ -62,6 +63,7 @@ export default function AccountMenu() {
 
   return (
     <HoverDropdownMenu
+      buttonBackgroundColor={customColorPalette.grey.dark}
       label={
         <>
           <Typography

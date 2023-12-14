@@ -21,7 +21,7 @@ export default function LargeProductImageBox({
   productImageData,
   productName,
 }: Props) {
-  const { imageUploadProgress } = useAppSelector((state) => state.addProduct);
+  const { imageUploadProgress } = useAppSelector((state) => state.productForm);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const pathname = usePathname();

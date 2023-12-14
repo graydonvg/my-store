@@ -3,7 +3,7 @@
 import { Box, Divider, ListItem, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { resetAllProductData } from '@/lib/redux/addProduct/addProductSlice';
+import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type LowerNavbarOptionProps = {
@@ -16,14 +16,14 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const dispatch = useAppDispatch();
-  const { productToUpdateId } = useAppSelector((state) => state.addProduct);
+  const { productFormData } = useAppSelector((state) => state.productForm);
   const mode = theme.palette.mode;
   const labelTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
   const labelTextHoverColor = mode === 'light' ? customColorPalette.grey.dark : 'white';
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
-      if (productToUpdateId && productToUpdateId?.length > 0) {
+      if (productFormData.product_id) {
         dispatch(resetAllProductData());
       }
     }

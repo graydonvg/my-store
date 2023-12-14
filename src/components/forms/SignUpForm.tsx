@@ -74,10 +74,10 @@ export default function SignUpForm({ children }: Props) {
         });
 
         if (updateSuccess === true) {
+          router.refresh();
           dispatch(setIsSignUpDialogOpen(false));
           setFormData(defaultFormData);
-          router.refresh();
-          toast.info(`Welcome, ${first_name}!`);
+          toast.success(`Welcome, ${first_name}!`);
         } else {
           toast.error(updateMessage);
         }

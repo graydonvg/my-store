@@ -6,8 +6,7 @@ type State = {
   isDeletingImage: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: InsertProductImageDataTypeStore[];
-  formData: InsertProductTypeStore;
-  productToUpdateId: string | null;
+  productFormData: InsertProductTypeStore;
 };
 
 const initialState: State = {
@@ -15,9 +14,10 @@ const initialState: State = {
   isDeletingImage: false,
   imageUploadProgress: [],
   imageData: [],
-  formData: {
+  productFormData: {
     category: '',
     delivery_info: '',
+    return_info: '',
     description: '',
     name: '',
     on_sale: '',
@@ -25,14 +25,16 @@ const initialState: State = {
     sale_percentage: '',
     sizes: [],
   },
-  productToUpdateId: null,
 };
 
-export const addProductSlice = createSlice({
-  name: 'addProduct',
+export const productFormSlice = createSlice({
+  name: 'productForm',
   initialState,
   reducers: {
-    setFormData(
+    setProductFormData(state, action: PayloadAction<InsertProductTypeStore>) {
+      state.productFormData = action.payload;
+    },
+    setProductFormDataOnChange(
       state,
       action: PayloadAction<{
         field: keyof InsertProductTypeStore;
@@ -41,17 +43,17 @@ export const addProductSlice = createSlice({
     ) {
       const { field, value } = action.payload;
       if (field === 'sizes') {
-        if (state.formData.sizes.includes(value as string)) {
-          const filteredSizes = state.formData.sizes.filter((size) => size !== value);
-          state.formData.sizes = filteredSizes;
+        if (state.productFormData.sizes.includes(value as string)) {
+          const filteredSizes = state.productFormData.sizes.filter((size) => size !== value);
+          state.productFormData.sizes = filteredSizes;
         } else {
-          state.formData.sizes = [...state.formData.sizes, value as string];
+          state.productFormData.sizes = [...state.productFormData.sizes, value as string];
         }
       } else {
         if (field === 'on_sale' && value === 'No') {
-          state.formData = { ...state.formData, sale_percentage: 0 };
+          state.productFormData = { ...state.productFormData, sale_percentage: 0 };
         }
-        state.formData = { ...state.formData, [field]: value };
+        state.productFormData = { ...state.productFormData, [field]: value };
       }
     },
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
@@ -74,9 +76,6 @@ export const addProductSlice = createSlice({
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
-    setProductToUpdateId(state, action: PayloadAction<string>) {
-      state.productToUpdateId = action.payload;
-    },
     setIsEditMode(state, action) {
       state.isEditMode = action.payload;
     },
@@ -86,11 +85,8 @@ export const addProductSlice = createSlice({
     resetImageUploadProgess(state) {
       state.imageUploadProgress = initialState.imageUploadProgress;
     },
-    resetFormData(state) {
-      state.formData = initialState.formData;
-    },
-    resetProductToUpdateId(state) {
-      state.productToUpdateId = null;
+    resetProductFormData(state) {
+      state.productFormData = initialState.productFormData;
     },
     resetAllProductData() {
       return initialState;
@@ -98,20 +94,19 @@ export const addProductSlice = createSlice({
   },
 });
 
-const { actions, reducer } = addProductSlice;
+const { actions, reducer } = productFormSlice;
 
 export const {
-  setFormData,
+  setProductFormData,
+  setProductFormDataOnChange,
   setImageUploadProgress,
   setImageData,
   deleteImage,
   setIsDeletingImage,
   resetImageData,
   resetImageUploadProgess,
-  resetFormData,
-  setProductToUpdateId,
+  resetProductFormData,
   setIsEditMode,
-  resetProductToUpdateId,
   resetAllProductData,
 } = actions;
 

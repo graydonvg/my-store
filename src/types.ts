@@ -57,15 +57,12 @@ export type ProductType = Database['public']['Tables']['products']['Row'] & {
 
 export type InsertProductTypeDb = Database['public']['Tables']['products']['Insert'];
 
-export type InsertProductTypeStore = {
-  category: string;
-  delivery_info: string;
-  description: string;
-  name: string;
-  on_sale: string;
+export type InsertProductTypeStore = Omit<
+  Omit<Database['public']['Tables']['products']['Insert'], 'price'>,
+  'sale_percentage'
+> & {
   price: '' | number;
   sale_percentage: '' | number;
-  sizes: string[];
 };
 
 export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
@@ -73,3 +70,9 @@ export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
 export type userPasswordType = { currentPassword: string; newPassword: string; confirmPassword: string };
 
 export type InsertAddressType = Database['public']['Tables']['addresses']['Insert'];
+
+export type UpdateAddressTypeDb = Database['public']['Tables']['addresses']['Update'];
+
+export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresses']['Update'], 'postal_code'> & {
+  postal_code: '' | number;
+};

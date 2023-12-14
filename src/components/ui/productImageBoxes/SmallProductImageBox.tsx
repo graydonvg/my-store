@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/addProduct/addProductSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { Spinner } from '../progress/Spinner';
@@ -39,7 +39,7 @@ export default function SmallProductImageBox({
   const customColorPalette = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
-  const { isDeletingImage, productToUpdateId } = useAppSelector((state) => state.addProduct);
+  const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
     dispatch(setIsDeletingImage(true));
@@ -47,7 +47,7 @@ export default function SmallProductImageBox({
       if (file_name.length > 0) {
         await deleteImageFromStorage(file_name);
       }
-      if (productToUpdateId && product_image_id) {
+      if (productFormData.product_id && product_image_id) {
         const { success, message } = await deleteProductImageData(product_image_id);
 
         if (success === false) {

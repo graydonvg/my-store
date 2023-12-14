@@ -2,7 +2,7 @@
 
 import AccountPageInfoInput from '@/components/accountPage/AccountPageInfoInput';
 import AccountPageInfo from '@/components/accountPage/AccountPageInfo';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { updateUserPassword, updateUserPersonalInformation } from '@/services/users/update-user';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -12,8 +12,12 @@ import AccountPageSectionContainer from '@/components/accountPage/AccountPageSec
 import AddNewAddressDialog from '@/components/dialogs/AddNewAddressDialog';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { deleteAddress } from '@/services/users/delete-address';
+import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
+import { UpdateAddressTypeStore } from '@/types';
+import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 
 export default function Account() {
+  const dispatch = useAppDispatch();
   const { currentUser, isOAuthSignIn } = useAppSelector((state) => state.user);
   const defaultFormData = {
     currentPassword: '',
@@ -112,8 +116,14 @@ export default function Account() {
   }, [currentUser]);
 
   async function handleEditAddress(addressId: string) {
-    console.log('edit', addressId);
+    const addressToEdit = currentUser?.addresses.filter((address) => address.address_id === addressId)[0] ?? {};
+    dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
+    dispatch(setIsAddressDialogOpen(true));
   }
+
+  const addressFormData = useAppSelector((state) => state.addressForm);
+
+  console.log(addressFormData);
 
   async function handleDeleteAddress(addressId: string) {
     try {
@@ -121,6 +131,7 @@ export default function Account() {
 
       if (success === true) {
         router.refresh();
+        toast.success(message);
       } else {
         toast.error(message);
       }
@@ -179,16 +190,16 @@ export default function Account() {
     <Box>
       <Box
         component="header"
-        sx={{ marginBottom: 2, borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-        {/* <Divider /> */}
+        sx={{ marginBottom: 3, borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
         <Typography
           component="h1"
           fontSize={{ xs: 26, sm: 30 }}
           fontWeight={500}
           sx={{ paddingY: 1, textAlign: 'center' }}>
-          {currentUser?.first_name} {currentUser?.last_name}
+          {currentUser?.first_name && currentUser?.last_name
+            ? `${currentUser?.first_name} ${currentUser?.last_name}`
+            : currentUser?.email}
         </Typography>
-        {/* <Divider /> */}
       </Box>
       <Grid
         container
@@ -365,7 +376,7 @@ export default function Account() {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                marginBottom: 2,
+                marginBottom: 1,
                 border: `1px solid ${borderColor}`,
                 borderRadius: '4px',
               }}>
@@ -417,7 +428,11 @@ export default function Account() {
                   );
                 })
               ) : (
-                <Typography>No address found</Typography>
+                <Box
+                  fontSize={16}
+                  sx={{ padding: 2 }}>
+                  <Typography>No address found</Typography>
+                </Box>
               )}
             </Box>
             <AddNewAddressDialog />

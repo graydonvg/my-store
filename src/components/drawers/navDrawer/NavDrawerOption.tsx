@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { resetAllProductData } from '@/lib/redux/addProduct/addProductSlice';
+import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 
 type NavDrawerOptionProps = {
   onClick?: () => void;

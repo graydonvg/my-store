@@ -1,13 +1,12 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ButtonProps, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Props = ButtonProps & {
+  backgroundColor: string;
   children: ReactNode;
 };
 
-export default function UpperNavIconButton({ children, ...props }: Props) {
-  const customColorPalette = useCustomColorPalette();
+export default function UpperNavIconButton({ backgroundColor, children, ...props }: Props) {
   return (
     <IconButton
       sx={{
@@ -16,9 +15,9 @@ export default function UpperNavIconButton({ children, ...props }: Props) {
         whiteSpace: 'nowrap',
         paddingX: { xs: 0, md: 2 },
         borderRadius: 0,
-        backgroundColor: customColorPalette.grey.dark,
+        backgroundColor: backgroundColor,
         '&:hover': {
-          backgroundColor: customColorPalette.grey.dark,
+          backgroundColor: backgroundColor,
         },
       }}
       {...props}>

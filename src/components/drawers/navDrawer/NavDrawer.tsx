@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
-import { Typography, Box, useTheme, useMediaQuery } from '@mui/material';
+import { Typography, Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NavDraweOptions from './NavDrawerOptions';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -32,14 +32,21 @@ export default function NavDrawer() {
 
   return (
     <>
-      <Menu
+      <IconButton
+        size="small"
         sx={{
           color: customColorPalette.grey.light,
           cursor: 'pointer',
+          '@media (hover: hover)': {
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+          },
         }}
         aria-label="open navigation drawer"
-        onClick={handleOpenNavDrawer}
-      />
+        onClick={handleOpenNavDrawer}>
+        <Menu />
+      </IconButton>
       <DrawerComponent
         width="100vw"
         isOpen={isNavDrawerOpen}
@@ -60,7 +67,8 @@ export default function NavDrawer() {
             component="span">
             Menu
           </Typography>
-          <CloseIcon
+          <IconButton
+            size="small"
             sx={{
               cursor: 'pointer',
               padding: 0,
@@ -68,8 +76,9 @@ export default function NavDrawer() {
               '&:hover': { backgroundColor: customColorPalette.grey.dark },
             }}
             aria-label="close navigation drawer"
-            onClick={handleCloseNavDrawer}
-          />
+            onClick={handleCloseNavDrawer}>
+            <CloseIcon />
+          </IconButton>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: 1 }}>
           <NavDraweOptions />

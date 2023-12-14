@@ -7,12 +7,14 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Add } from '@mui/icons-material';
 import { addNewAddress } from '@/services/users/add-address';
-import { InsertAddressType } from '@/types';
+import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
-import { setIsAddAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
+import { updateAddress } from '@/services/users/update-address';
 
 const formFields = [
   {
@@ -28,30 +30,22 @@ const formFields = [
   { name: 'postal_code', label: 'Postal Code', type: 'number', placeholder: 'e.g 8000' },
 ];
 
-const defaultFormData = {
-  complex_or_building: '',
-  street_address: '',
-  suburb: '',
-  province: '',
-  city: '',
-  postal_code: '',
-};
-
-export default function AddAddressForm() {
+export default function AddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(defaultFormData);
+  const addressFormData = useAppSelector((state) => state.addressForm);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     if (name === 'postal_code' && value.length > 4) return;
-    setFormData((prevFormValues) => ({ ...prevFormValues, [name]: value }));
+    dispatch(setAddressFormDataOnChange({ field: name as keyof UpdateAddressTypeStore, value }));
   }
 
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const { address_id, postal_code, ...restOfAddressData } = addressFormData;
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
@@ -59,20 +53,49 @@ export default function AddAddressForm() {
 
     try {
       const { success, message } = await addNewAddress({
-        ...formData,
-        postal_code: Number(formData.postal_code),
+        ...restOfAddressData,
+        postal_code: Number(postal_code),
         user_id: currentUser?.user_id!,
-      });
+      } as InsertAddressType);
 
       if (success === true) {
-        dispatch(setIsAddAddressDialogOpen(false));
-        setFormData(defaultFormData);
         router.refresh();
+        dispatch(setIsAddressDialogOpen(false));
+        dispatch(clearAddressFormData());
+        toast.success(message);
       } else {
         toast.error(message);
       }
     } catch (error) {
       toast.error('Failed to add address. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
+
+    setIsLoading(true);
+
+    try {
+      const { success, message } = await updateAddress({
+        ...addressFormData,
+        postal_code: Number(addressFormData.postal_code),
+      } as UpdateAddressTypeDb);
+
+      if (success === true) {
+        router.refresh();
+        dispatch(setIsAddressDialogOpen(false));
+        dispatch(clearAddressFormData());
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error('Failed to update address. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -87,11 +110,11 @@ export default function AddAddressForm() {
         gap: 1,
       }}>
       <Box sx={{ textAlign: 'center' }}>
-        <FormTitle text="Add Address" />
+        <FormTitle text={addressFormData.address_id ? 'Edit Address' : 'Add Address'} />
       </Box>
       <Box
         component="form"
-        onSubmit={handleAddNewAddress}>
+        onSubmit={!addressFormData.address_id ? handleAddNewAddress : handleUpdateAddress}>
         {formFields.map((field) => {
           return field.type === 'number' ? (
             <NumberField
@@ -102,7 +125,7 @@ export default function AddAddressForm() {
               id={field.name}
               label={field.label}
               name={field.name}
-              value={formData[field.name as keyof typeof formData]}
+              value={addressFormData[field.name as keyof typeof addressFormData]}
               onChange={handleInputChange}
               placeholder={field.placeholder ?? ''}
               styles={{ maxWidth: '130px' }}
@@ -122,7 +145,7 @@ export default function AddAddressForm() {
               label={field.label}
               name={field.name}
               type={field.type}
-              value={formData[field.name as keyof typeof formData]}
+              value={addressFormData[field.name as keyof typeof addressFormData]}
               onChange={handleInputChange}
               placeholder={field.placeholder ?? ''}
               onKeyDown={(event) => {
@@ -134,7 +157,7 @@ export default function AddAddressForm() {
           );
         })}
         <ContainedButton
-          label={'add'}
+          label={!isLoading ? (addressFormData.address_id ? 'save' : 'add') : ''}
           isDisabled={isLoading}
           isLoading={isLoading}
           type="submit"
@@ -143,7 +166,7 @@ export default function AddAddressForm() {
           }}
           fullWidth
           backgroundColor="blue"
-          startIcon={<Add />}
+          startIcon={!addressFormData.address_id ? <Add /> : null}
         />
       </Box>
     </Box>

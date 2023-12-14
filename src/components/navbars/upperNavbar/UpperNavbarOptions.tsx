@@ -64,7 +64,7 @@ export default function UpperNavbarOptions() {
               {renderDivider()}
               {!isBelowMedium ? (
                 <ListItem disablePadding>
-                  <UpperNavIconButton>
+                  <UpperNavIconButton backgroundColor={customColorPalette.grey.dark}>
                     <Favorite
                       aria-label="Wishlist"
                       sx={{ color: customColorPalette.grey.light, opacity: '50%' }}

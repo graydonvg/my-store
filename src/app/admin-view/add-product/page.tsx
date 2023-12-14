@@ -12,7 +12,11 @@ import PercentageField from '@/components/ui/inputFields/PercentageField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetFormData, resetImageData, setFormData } from '@/lib/redux/addProduct/addProductSlice';
+import {
+  resetProductFormData,
+  resetImageData,
+  setProductFormDataOnChange,
+} from '@/lib/redux/productForm/productFormSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
@@ -35,9 +39,7 @@ const formFields = [
 
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
-  const { formData, imageData, imageUploadProgress, productToUpdateId, isEditMode } = useAppSelector(
-    (state) => state.addProduct
-  );
+  const { productFormData, imageData, imageUploadProgress, isEditMode } = useAppSelector((state) => state.productForm);
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -45,23 +47,23 @@ export default function AdminViewAddNewProduct() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
-  const isOnSale = formData['on_sale'] === 'Yes';
-  const emptyFormFields = getEmptyFormFields(formData);
-  const numberOfFormFields = getNumberOfFormFields(formData);
+  const isOnSale = productFormData.on_sale === 'Yes';
+  const emptyFormFields = getEmptyFormFields(productFormData);
+  const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    dispatch(setFormData({ field: 'sizes', value: selectedSize }));
+    dispatch(setProductFormDataOnChange({ field: 'sizes', value: selectedSize }));
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setFormData({ field: name as keyof InsertProductTypeStore, value }));
+    dispatch(setProductFormDataOnChange({ field: name as keyof InsertProductTypeStore, value }));
   }
 
   async function handleClearAllFormFields() {
     setIsClearingAllFields(true);
-    dispatch(resetFormData());
+    dispatch(resetProductFormData());
     setIsClearingAllFields(false);
   }
 
@@ -96,7 +98,7 @@ export default function AdminViewAddNewProduct() {
         success: addProductSuccess,
         message: addProductMessage,
         data: productData,
-      } = await addProduct(formData as InsertProductTypeDb);
+      } = await addProduct(productFormData as InsertProductTypeDb);
 
       if (addProductSuccess === true && productData) {
         product_id = productData.product_id;
@@ -106,7 +108,7 @@ export default function AdminViewAddNewProduct() {
         );
 
         if (addImageDataSuccess === true) {
-          dispatch(resetFormData());
+          dispatch(resetProductFormData());
           dispatch(resetImageData());
           toast.success('Successfully added product.');
           router.push('/admin-view/all-products');
@@ -137,17 +139,17 @@ export default function AdminViewAddNewProduct() {
 
     try {
       const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
-        ...formData,
-        product_id: productToUpdateId!,
+        ...productFormData,
+        product_id: productFormData.product_id!,
       } as UpdateProductType);
 
       if (updateProductSuccess === true) {
         const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productToUpdateId!
+          productFormData.product_id!
         );
 
         if (addImageDataSuccess === true) {
-          dispatch(resetFormData());
+          dispatch(resetProductFormData());
           dispatch(resetImageData());
           toast.success('Successfully updated product.');
           router.push('/admin-view/all-products');
@@ -167,7 +169,7 @@ export default function AdminViewAddNewProduct() {
   return (
     <Box
       component="form"
-      onSubmit={productToUpdateId ? handleUpdateProduct : handleAddProduct}
+      onSubmit={productFormData.product_id ? handleUpdateProduct : handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <Grid container>
         <Grid
@@ -180,7 +182,7 @@ export default function AdminViewAddNewProduct() {
         <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
-          selection={formData.sizes}
+          selection={productFormData.sizes}
           onChange={handleSelectSize}
           buttons={toggleButtonSizeOptions}
           disabled={isSubmitting || isClearingAllFields}
@@ -193,7 +195,7 @@ export default function AdminViewAddNewProduct() {
             label={field.label}
             name={field.name}
             onChange={handleInputChange}
-            value={formData[field.name as keyof typeof formData]}
+            value={productFormData[field.name as keyof typeof productFormData]}
             options={field.options ?? []}
             disabled={isSubmitting || isClearingAllFields}
             required
@@ -203,7 +205,7 @@ export default function AdminViewAddNewProduct() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formData[field.name as keyof typeof formData]}
+            value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
             disabled={isSubmitting || isClearingAllFields}
             required
@@ -213,7 +215,7 @@ export default function AdminViewAddNewProduct() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formData[field.name as keyof typeof formData]}
+            value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
             disabled={(!isOnSale && field.name === 'sale_percentage') || isSubmitting || isClearingAllFields}
             required
@@ -223,7 +225,7 @@ export default function AdminViewAddNewProduct() {
             key={field.name}
             label={field.label}
             name={field.name}
-            value={formData[field.name as keyof typeof formData]}
+            value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
             disabled={isSubmitting || isClearingAllFields}
@@ -253,7 +255,7 @@ export default function AdminViewAddNewProduct() {
           (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0
         }
-        label={isSubmitting ? '' : productToUpdateId ? 'update product' : 'add product'}
+        label={isSubmitting ? '' : productFormData.product_id ? 'update product' : 'add product'}
         fullWidth
         isLoading={isSubmitting}
         startIcon={<Add />}

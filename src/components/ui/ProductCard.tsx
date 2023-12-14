@@ -7,14 +7,9 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { calculateDiscountedPrice, deleteAllProductImages, formatCurrency } from '@/lib/utils';
-import { InsertProductTypeStore, ProductType } from '@/types';
+import { ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  resetAllProductData,
-  setFormData,
-  setImageData,
-  setProductToUpdateId,
-} from '@/lib/redux/addProduct/addProductSlice';
+import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete-product';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
@@ -28,39 +23,30 @@ export default function ProductCard({ product }: Props) {
   const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { imageData, productToUpdateId } = useAppSelector((state) => state.addProduct);
+  const { imageData, productFormData } = useAppSelector((state) => state.productForm);
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedPrice(product);
-  const { product_id, product_image_data, ...restOfProductData } = product;
+  const { product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const imageUrl = product_image_data[0] ? product_image_data[0].image_url : '';
 
-  async function handlePrepareProductForUpdate() {
+  async function handleSetProductDataForUpdate() {
     setIsLoading(true);
 
-    if (imageData && !productToUpdateId) {
-      await deleteAllProductImages(imageData);
+    if (imageData && !productFormData.product_id) {
+      const { success, message } = await deleteAllProductImages(imageData);
+
+      if (success === false) {
+        toast.error(message);
+      }
     }
 
     dispatch(resetAllProductData());
     dispatch(setImageData(product.product_image_data));
-    dispatch(setProductToUpdateId(product_id));
-
-    for (const key in restOfProductData) {
-      if (key === 'sizes') {
-        restOfProductData['sizes'].map((size) => dispatch(setFormData({ field: 'sizes', value: size })));
-      } else {
-        dispatch(
-          setFormData({
-            field: key as keyof InsertProductTypeStore,
-            value: restOfProductData[key as keyof InsertProductTypeStore],
-          })
-        );
-      }
-    }
+    dispatch(setProductFormData(restOfProductData));
 
     setIsLoading(false);
     router.push('/admin-view/add-product');
@@ -71,10 +57,13 @@ export default function ProductCard({ product }: Props) {
 
     try {
       const deleteImagesPromise = deleteAllProductImages(product_image_data);
-      const deleteProductPromise = deleteProduct(product_id);
+      const deleteProductPromise = deleteProduct(productFormData.product_id!);
+
       const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
+
       const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
       const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
+
       if (deleteImagesSuccess === true && deleteProductSuccess === true) {
         toast.success('Product deleted successfully.');
       } else if (deleteImagesSuccess === false) {
@@ -96,7 +85,6 @@ export default function ProductCard({ product }: Props) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          // gap: { xs: 1, sm: 2 },
           height: 1,
         }}>
         <Link href={`/products/product/${product.product_id}`}>
@@ -104,7 +92,6 @@ export default function ProductCard({ product }: Props) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              // paddingBottom: !isAdminView ? { xs: 1, sm: 2 } : null,
             }}>
             <Box
               sx={{
@@ -231,8 +218,6 @@ export default function ProductCard({ product }: Props) {
               flexGrow: 1,
               padding: 1,
               gap: 1,
-              // paddingX: { xs: 1, sm: 2 },
-              // paddingBottom: { xs: 1, sm: 2 },
             }}>
             <ContainedButton
               isDisabled={isDeletingProduct}
@@ -245,7 +230,7 @@ export default function ProductCard({ product }: Props) {
             />
             <ContainedButton
               isDisabled={isLoading}
-              onClick={handlePrepareProductForUpdate}
+              onClick={handleSetProductDataForUpdate}
               fullWidth
               label={isLoading ? '' : 'update'}
               isLoading={isLoading}

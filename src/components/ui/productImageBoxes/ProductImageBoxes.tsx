@@ -13,7 +13,7 @@ export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { imageData, formData, imageUploadProgress } = useAppSelector((state) => state.addProduct);
+  const { imageData, productFormData: formData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

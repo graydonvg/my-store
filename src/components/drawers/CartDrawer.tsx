@@ -47,7 +47,9 @@ export default function CartDrawer() {
 
   return (
     <>
-      <UpperNavIconButton onClick={handleToggleCart}>
+      <UpperNavIconButton
+        backgroundColor={customColorPalette.grey.dark}
+        onClick={handleToggleCart}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
           sx={{ color: customColorPalette.grey.light }}
@@ -67,6 +69,7 @@ export default function CartDrawer() {
         </Box>
       </UpperNavIconButton>
       <DrawerComponent
+        elevation={1}
         width={{ xs: '100vw', sm: '400px' }}
         isOpen={isCartOpen}
         zIndex={(theme) => theme.zIndex.appBar - 1}>
