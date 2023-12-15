@@ -1,17 +1,16 @@
 'use client';
 
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 import UpperNavbarOptions from './UpperNavbarOptions';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
 
 export default function UpperNavbar() {
   const customColorPalette = useCustomColorPalette();
 
   return (
     <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
-      <Container
-        maxWidth="lg"
-        sx={{ paddingX: { xs: 'none', sm: 2 } }}>
+      <CommonNavbarContainer>
         <Box
           sx={{
             display: 'flex',
@@ -21,7 +20,7 @@ export default function UpperNavbar() {
           }}>
           <UpperNavbarOptions />
         </Box>
-      </Container>
+      </CommonNavbarContainer>
     </Box>
   );
 }

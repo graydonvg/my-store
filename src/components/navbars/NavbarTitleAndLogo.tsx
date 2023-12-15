@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import Link from 'next/link';
 
@@ -14,8 +14,7 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
     <Link
       href={'/'}
       tabIndex={-1}>
-      <Button
-        disableTouchRipple
+      <IconButton
         sx={{
           display,
           paddingX: 0,
@@ -27,13 +26,14 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
             },
           },
         }}>
-        <ShoppingBasket sx={{ mr: 1, color }} />
+        <ShoppingBasket sx={{ color }} />
         {!hideText ? (
           <Typography
             tabIndex={-1}
             variant={variant}
             noWrap
             sx={{
+              marginLeft: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '0.1rem',
@@ -43,7 +43,7 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
             MyStore
           </Typography>
         ) : null}
-      </Button>
+      </IconButton>
     </Link>
   );
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { Box, Container, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
 import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
 
 export default function LowerNavbar() {
   const theme = useTheme();
@@ -18,9 +19,7 @@ export default function LowerNavbar() {
       component="div"
       position="sticky"
       sx={{ backgroundColor }}>
-      <Container
-        maxWidth="lg"
-        sx={{ paddingX: { xs: 'none', sm: 2 } }}>
+      <CommonNavbarContainer>
         <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
           <NavbarTitleAndLogo
             variant="h6"
@@ -29,7 +28,7 @@ export default function LowerNavbar() {
           />
           <LowerNavbarOptions />
         </Box>
-      </Container>
+      </CommonNavbarContainer>
     </Box>
   );
 }

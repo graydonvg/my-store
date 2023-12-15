@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import { Container } from '@mui/material';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { redirect } from 'next/navigation';
+import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
 
 export default async function WelcomeLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
@@ -13,15 +13,5 @@ export default async function WelcomeLayout({ children }: { children: ReactNode 
     redirect('/');
   }
 
-  return (
-    <Container
-      sx={{
-        paddingTop: { xs: 1.75, sm: 2 },
-        paddingX: { xs: 0.75, sm: 0 },
-      }}
-      disableGutters
-      maxWidth="lg">
-      {children}
-    </Container>
-  );
+  return <CommonLayoutContainer>{children}</CommonLayoutContainer>;
 }

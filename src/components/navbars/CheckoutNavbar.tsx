@@ -1,11 +1,12 @@
 'use client';
 
-import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavbarTitleAndLogo from './NavbarTitleAndLogo';
 import BreadcrumbsComponent from '../ui/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/BreadcrumbItem';
 import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-material';
+import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
 
 const breadcrumbData = [
   { href: '/cart/view', icon: <ShoppingCart />, label: 'Cart' },
@@ -20,9 +21,7 @@ export default function CheckoutNavbar() {
 
   return (
     <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
-      <Container
-        maxWidth="lg"
-        sx={{ paddingX: { xs: 0.25, sm: 2 } }}>
+      <CommonNavbarContainer>
         <Box
           sx={{
             display: 'flex',
@@ -46,7 +45,7 @@ export default function CheckoutNavbar() {
             </BreadcrumbsComponent>
           </Box>
         </Box>
-      </Container>
+      </CommonNavbarContainer>
     </Box>
   );
 }

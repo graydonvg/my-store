@@ -35,6 +35,7 @@ export default function NavDrawer() {
       <IconButton
         size="small"
         sx={{
+          padding: 0,
           color: customColorPalette.grey.light,
           cursor: 'pointer',
           '@media (hover: hover)': {
