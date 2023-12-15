@@ -154,7 +154,7 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 paddingX: 1,
-                paddingY: 2,
+                paddingY: 1,
                 gap: 1,
               }}>
               <Typography

@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Typography, useTheme } from '@mui/material';
 import AccountPageInfo from './AccountPageInfo';
 import AccountPageSectionContainer from './AccountPageSectionContainer';

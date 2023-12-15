@@ -35,6 +35,8 @@ function getButtonBackgroundColor(option: ButtonBackgroundColorType, customColor
 }
 
 type CustomButtonProps = ButtonProps & {
+  height?: string | number;
+  minHeight?: string | number;
   isLoading?: boolean;
   label: ReactNode;
   backgroundColor?: ButtonBackgroundColorType;
@@ -44,6 +46,8 @@ type CustomButtonProps = ButtonProps & {
 };
 
 export default function ContainedButton({
+  height,
+  minHeight = '48px',
   isLoading,
   label,
   backgroundColor,
@@ -73,7 +77,8 @@ export default function ContainedButton({
       }
       sx={{
         color: 'white',
-        minHeight: '48px',
+        height,
+        minHeight,
         ...buttonBackgroundColor,
         ...styles,
       }}

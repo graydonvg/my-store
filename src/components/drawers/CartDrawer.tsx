@@ -35,13 +35,19 @@ export default function CartDrawer() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
   }
 
+  function handleCloseCartDrawer() {
+    if (isCartOpen.right === true) {
+      dispatch(setIsCartOpen({ ...isCartOpen, right: false }));
+    }
+  }
+
   function handleGoToCartView() {
-    handleToggleCart();
+    handleCloseCartDrawer();
     router.push('/cart/view');
   }
 
   function handleGoToCheckout() {
-    handleToggleCart();
+    handleCloseCartDrawer();
     router.push('/checkout/shipping');
   }
 

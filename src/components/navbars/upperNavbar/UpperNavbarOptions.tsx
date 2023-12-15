@@ -13,6 +13,9 @@ import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import { useRouter } from 'next/navigation';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 function renderDivider() {
   return (
@@ -29,15 +32,23 @@ function renderDivider() {
 }
 
 export default function UpperNavbarOptions() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
+  const { cartItems, isCartOpen } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
-  const mode = theme.palette.mode;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
+  }
+
+  function handleGoToCheckout() {
+    if (isCartOpen.right === true) {
+      dispatch(setIsCartOpen({ ...isCartOpen, right: false }));
+    }
+    router.push('/checkout/shipping');
   }
 
   return (
@@ -76,6 +87,20 @@ export default function UpperNavbarOptions() {
               <ListItem disablePadding>
                 <CartDrawer />
               </ListItem>
+              {renderDivider()}
+              {!isBelowMedium && cartItems.length > 0 ? (
+                <ListItem
+                  disablePadding
+                  sx={{ padding: 0.5 }}>
+                  <ContainedButton
+                    onClick={handleGoToCheckout}
+                    height={'30px'}
+                    minHeight={1}
+                    label="checkout"
+                    backgroundColor="blue"
+                  />
+                </ListItem>
+              ) : null}
               {renderDivider()}
               {!isBelowMedium ? (
                 <ListItem disablePadding>

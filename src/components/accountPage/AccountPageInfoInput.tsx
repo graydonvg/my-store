@@ -1,8 +1,8 @@
-import { Box, TextField, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, MouseEvent } from 'react';
+import CustomTextField from '../ui/inputFields/CustomTextField';
 
 type TextFieldData = {
   id: string;
@@ -23,38 +23,11 @@ type Props = {
 };
 
 export default function AccountPageInfoInput({ textFieldData, isUpdating, disableSave, onSave, onCancel }: Props) {
-  const theme = useTheme();
-  const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
       {textFieldData.map((data) => (
-        <TextField
+        <CustomTextField
           key={data.id}
-          sx={{
-            '& label.Mui-focused': {
-              color: focusedColor,
-            },
-            '& .MuiOutlinedInput-input:hover': {
-              cursor: 'pointer',
-            },
-            '& .MuiOutlinedInput-input:focus ': {
-              cursor: 'auto',
-            },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                border: `1px solid ${focusedColor}`,
-              },
-              '&:hover fieldset': {
-                border: `1px solid ${focusedColor}`,
-              },
-              '&.Mui-focused fieldset': {
-                border: `1px solid ${focusedColor}`,
-              },
-            },
-          }}
           fullWidth={true}
           label={data.label}
           name={data.name}
