@@ -11,6 +11,18 @@ export type DrawerState = {
 
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
+export type PersonalInformationType = {
+  name: string;
+  surname: string;
+  contactNumber: string;
+};
+
+export type AccountType = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 export type CartItemType =
   | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'user_id'>, 'product_id'> & {
       product:

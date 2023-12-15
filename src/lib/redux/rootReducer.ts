@@ -6,6 +6,7 @@ import { productFormSlice } from './productForm/productFormSlice';
 import { userSlice } from './user/userSlice';
 import { cartSlice } from './cart/cartSlice';
 import { addressFormSlice } from './addressForm/addressFormSlice';
+import { accountSlice } from './account/accountSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormSlice.reducer,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   user: userSlice.reducer,
   cart: cartSlice.reducer,
   addressForm: addressFormSlice.reducer,
+  account: accountSlice.reducer,
 });
