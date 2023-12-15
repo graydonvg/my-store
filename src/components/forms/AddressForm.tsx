@@ -10,7 +10,7 @@ import { addNewAddress } from '@/services/users/add-address';
 import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
-import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { setIsAddressDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
@@ -50,6 +50,7 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
+    dispatch(setShowDialogLoadingBar(true));
     setIsLoading(true);
 
     try {
@@ -85,6 +86,7 @@ export default function AddressForm() {
       toast.error('Failed to add address. Please try again later.');
     } finally {
       router.refresh();
+      dispatch(setShowDialogLoadingBar(false));
       setIsLoading(false);
     }
   }
@@ -94,7 +96,7 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
-    setIsLoading(true);
+    dispatch(setShowDialogLoadingBar(true));
 
     try {
       const { success, message } = await updateAddress({
@@ -127,6 +129,7 @@ export default function AddressForm() {
       toast.error('Failed to update address. Please try again later.');
     } finally {
       router.refresh();
+      dispatch(setShowDialogLoadingBar(false));
       setIsLoading(false);
     }
   }
@@ -187,16 +190,15 @@ export default function AddressForm() {
           );
         })}
         <ContainedButton
-          label={!isLoading ? (addressFormData.address_id ? 'save' : 'add') : ''}
+          label={addressFormData.address_id ? 'save' : 'add'}
           isDisabled={isLoading}
-          isLoading={isLoading}
           type="submit"
           styles={{
             marginTop: 3,
           }}
           fullWidth
           backgroundColor="blue"
-          startIcon={!addressFormData.address_id ? <Add /> : null}
+          startIcon={!addressFormData.address_id && !isLoading ? <Add /> : null}
         />
       </Box>
     </Box>

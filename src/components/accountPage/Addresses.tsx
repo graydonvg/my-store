@@ -141,7 +141,7 @@ export default function Addresses() {
                     sx={{
                       minWidth: '108.16px',
                       display: 'flex',
-                      justifyContent: 'flex-end',
+                      justifyContent: 'flex-start',
                       alignItems: 'center',
                     }}>
                     <PulseLoader

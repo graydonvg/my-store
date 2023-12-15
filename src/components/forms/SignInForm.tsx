@@ -140,6 +140,7 @@ export default function SignInForm({ children }: Props) {
         {/* Remember Supabase redirect url for google sign in */}
         <ContainedButton
           onClick={handleSignInWithGoogle}
+          isDisabled={isLoading}
           label="sign in with google"
           type="button"
           styles={{

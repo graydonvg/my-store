@@ -1,4 +1,3 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { LinearProgress } from '@mui/material';
 
 type LoadingBarProps = {
@@ -7,7 +6,6 @@ type LoadingBarProps = {
 };
 
 export default function LoadingBar({ style, isLoading }: LoadingBarProps) {
-  const customColorPalette = useCustomColorPalette();
   return (
     <>
       {isLoading ? (
