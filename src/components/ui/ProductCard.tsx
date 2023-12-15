@@ -35,35 +35,27 @@ export default function ProductCard({ product }: Props) {
 
   async function handleSetProductDataForUpdate() {
     setIsLoading(true);
-
     if (imageData && !productFormData.product_id) {
       const { success, message } = await deleteAllProductImages(imageData);
-
       if (success === false) {
         toast.error(message);
       }
     }
-
     dispatch(resetAllProductData());
     dispatch(setImageData(product.product_image_data));
     dispatch(setProductFormData(restOfProductData));
-
     setIsLoading(false);
     router.push('/admin-view/add-product');
   }
 
   async function handleDeleteProduct() {
     setIsDeletingProduct(true);
-
     try {
       const deleteImagesPromise = deleteAllProductImages(product_image_data);
       const deleteProductPromise = deleteProduct(productFormData.product_id!);
-
       const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
-
       const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
       const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
-
       if (deleteImagesSuccess === true && deleteProductSuccess === true) {
         toast.success('Product deleted successfully.');
       } else if (deleteImagesSuccess === false) {
@@ -77,6 +69,7 @@ export default function ProductCard({ product }: Props) {
       setIsDeletingProduct(false);
     }
   }
+
   return (
     <Paper
       elevation={1}

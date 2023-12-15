@@ -15,6 +15,8 @@ import { deleteAddress } from '@/services/users/delete-address';
 import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 import { UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { PulseLoader } from 'react-spinners';
 
 export default function Account() {
   const dispatch = useAppDispatch();
@@ -30,11 +32,14 @@ export default function Account() {
   const [formData, setFormData] = useState(defaultFormData);
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
   const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
+  const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -58,20 +63,16 @@ export default function Account() {
     if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
       return toast.error('Please complete all fields.');
     }
-
     if (formData.newPassword !== formData.confirmPassword) {
       return toast.error('Passwords do not match.');
     }
-
     setIsUpdating(true);
-
     try {
       const { success, message } = await updateUserPassword({
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
         confirmPassword: formData.confirmPassword,
       });
-
       if (success === true) {
         router.refresh();
         toast.success(message);
@@ -88,55 +89,70 @@ export default function Account() {
   }
 
   async function handleUpdatePersonalInformation() {
+    if (
+      formData.name === currentUser?.first_name &&
+      formData.surname === currentUser.last_name &&
+      formData.contactNumber === currentUser.contact_number
+    )
+      return;
     setIsUpdating(true);
-
     try {
       const { success, message } = await updateUserPersonalInformation({
         first_name: formData.name,
         last_name: formData.surname,
         contact_number: formData.contactNumber,
       });
-
       if (success === true) {
-        router.refresh();
+        dispatch(
+          setCurrentUser({
+            ...currentUser!,
+            first_name: formData.name,
+            last_name: formData.surname,
+            contact_number: formData.contactNumber,
+          })
+        );
+        setFieldToUpdate(null);
         toast.success(message);
       } else {
-        setIsUpdating(false);
         toast.error(message);
       }
     } catch (error) {
-      setIsUpdating(false);
       toast.error('Failed to update personal information. Please try again later.');
+    } finally {
+      router.refresh();
+      setIsUpdating(false);
     }
   }
 
-  useEffect(() => {
-    setFieldToUpdate(null);
-    setIsUpdating(false);
-  }, [currentUser]);
-
-  async function handleEditAddress(addressId: string) {
+  async function handleSetAddressToEdit(addressId: string) {
     const addressToEdit = currentUser?.addresses.filter((address) => address.address_id === addressId)[0] ?? {};
     dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
     dispatch(setIsAddressDialogOpen(true));
   }
 
-  const addressFormData = useAppSelector((state) => state.addressForm);
-
-  console.log(addressFormData);
-
   async function handleDeleteAddress(addressId: string) {
+    setAddressToDelete({ id: addressId });
+    setIsDeleting(true);
     try {
       const { success, message } = await deleteAddress(addressId);
-
       if (success === true) {
-        router.refresh();
+        const updatedAddresses = currentUser?.addresses.filter((address) => address.address_id !== addressId);
+        dispatch(
+          setCurrentUser({
+            ...currentUser!,
+            addresses: updatedAddresses!,
+          })
+        );
         toast.success(message);
       } else {
         toast.error(message);
       }
     } catch (error) {
       toast.error('Failed to delete address. Please try again later.');
+    } finally {
+      router.refresh();
+      setAddressToDelete(null);
+      setIsDeleting(false);
     }
   }
 
@@ -412,18 +428,34 @@ export default function Account() {
                         {`${address.street_address}, ${address.suburb}, ${address.province},
                     ${address.city}, ${address.postal_code}`}
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {renderAddressOption({
-                          label: 'edit',
-                          hasBorderRight: true,
-                          onClick: () => handleEditAddress(address.address_id),
-                        })}
-                        {renderAddressOption({
-                          label: 'delete',
-                          hasBorderRight: false,
-                          onClick: () => handleDeleteAddress(address.address_id),
-                        })}
-                      </Box>
+                      {isDeleting && addressToDelete?.id === address.address_id ? (
+                        <Box
+                          sx={{
+                            minWidth: '108.16px',
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                          }}>
+                          <PulseLoader
+                            loading={isDeleting}
+                            color={loaderColor}
+                            size={10}
+                          />
+                        </Box>
+                      ) : (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {renderAddressOption({
+                            label: 'edit',
+                            hasBorderRight: true,
+                            onClick: () => handleSetAddressToEdit(address.address_id),
+                          })}
+                          {renderAddressOption({
+                            label: 'delete',
+                            hasBorderRight: false,
+                            onClick: () => handleDeleteAddress(address.address_id),
+                          })}
+                        </Box>
+                      )}
                     </Box>
                   );
                 })

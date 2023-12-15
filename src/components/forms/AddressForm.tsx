@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
 import { updateAddress } from '@/services/users/update-address';
+import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 const formFields = [
   {
@@ -59,7 +60,21 @@ export default function AddressForm() {
       } as InsertAddressType);
 
       if (success === true) {
-        router.refresh();
+        dispatch(
+          setCurrentUser({
+            ...currentUser!,
+            addresses: [
+              ...currentUser?.addresses!,
+              {
+                ...(restOfAddressData as InsertAddressType),
+                postal_code: Number(postal_code),
+                user_id: currentUser?.user_id!,
+                complex_or_building: restOfAddressData.complex_or_building ?? null,
+                address_id: '',
+              },
+            ],
+          })
+        );
         dispatch(setIsAddressDialogOpen(false));
         dispatch(clearAddressFormData());
         toast.success(message);
@@ -69,6 +84,7 @@ export default function AddressForm() {
     } catch (error) {
       toast.error('Failed to add address. Please try again later.');
     } finally {
+      router.refresh();
       setIsLoading(false);
     }
   }
@@ -85,9 +101,22 @@ export default function AddressForm() {
         ...addressFormData,
         postal_code: Number(addressFormData.postal_code),
       } as UpdateAddressTypeDb);
-
       if (success === true) {
-        router.refresh();
+        const updatedAddresses = currentUser?.addresses.map((address) =>
+          address.address_id === addressFormData.address_id
+            ? {
+                ...(addressFormData as InsertAddressType),
+                complex_or_building: addressFormData.complex_or_building ?? null,
+                address_id: addressFormData.address_id!,
+              }
+            : address
+        );
+        dispatch(
+          setCurrentUser({
+            ...currentUser!,
+            addresses: updatedAddresses!,
+          })
+        );
         dispatch(setIsAddressDialogOpen(false));
         dispatch(clearAddressFormData());
         toast.success(message);
@@ -97,6 +126,7 @@ export default function AddressForm() {
     } catch (error) {
       toast.error('Failed to update address. Please try again later.');
     } finally {
+      router.refresh();
       setIsLoading(false);
     }
   }
