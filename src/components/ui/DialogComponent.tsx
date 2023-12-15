@@ -32,8 +32,8 @@ export default function DialogComponent({ isOpen, children }: Props) {
       onClose={handleCloseDialog}
       sx={{
         '& .MuiPaper-root': {
-          margin: 1,
-          maxWidth: 'none',
+          margin: 2,
+          maxWidth: 'none !important',
         },
       }}>
       <Box

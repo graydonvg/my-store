@@ -80,7 +80,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <Paper
       elevation={1}
-      sx={{ borderRadius: 1, height: 1 }}>
+      sx={{ borderRadius: '4px', height: 1 }}>
       <Box
         sx={{
           display: 'flex',

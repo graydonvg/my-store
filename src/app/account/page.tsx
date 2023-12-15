@@ -162,7 +162,7 @@ export default function Account() {
     return (
       <Typography
         onClick={onClick}
-        component="span"
+        component="button"
         textTransform="uppercase"
         lineHeight={1}
         fontWeight={700}
