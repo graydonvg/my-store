@@ -49,18 +49,18 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     setIsRemovingCartItem(false);
   }, [cartItem]);
 
-  function handleEditCartItem() {
+  function handleSetCartItemToEdit() {
     dispatch(setCartItemToEditId(cartItem?.cart_item_id));
   }
 
   async function handleUpdateCartItemSize(size: string) {
+    if (size === cartItem?.size) return;
     setIsUpdatingCartItemSize(true);
     try {
       const { success, message } = await updateCartItemSize({
         cart_item_id: cartItem?.cart_item_id!,
         size,
       });
-
       if (success === true) {
         router.refresh();
       } else {
@@ -83,11 +83,9 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     if (updateCartItemQuantityTimer) {
       clearTimeout(updateCartItemQuantityTimer);
     }
-
     const newTimer = setTimeout(async () => {
       await handleUpdateCartItemQuantity(value);
     }, 1000);
-
     setUpdateCartItemQuantityTimer(newTimer);
   }
 
@@ -102,13 +100,11 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   async function handleUpdateCartItemQuantity(value: number) {
     const newQuantity = cartItem?.quantity! + value;
     setIsUpdatingCartItemQuantity(true);
-
     try {
       const { success, message } = await updateCartItemQuantity({
         cart_item_id: cartItem?.cart_item_id!,
         quantity: newQuantity,
       });
-
       if (success === false) {
         toast.error(message);
       }
@@ -138,7 +134,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
   return (
     <>
-      <IconButton onClick={handleEditCartItem}>
+      <IconButton onClick={handleSetCartItemToEdit}>
         <Edit
           fontSize="small"
           sx={{ opacity: '70%' }}
