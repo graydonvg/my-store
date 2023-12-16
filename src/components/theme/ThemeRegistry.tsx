@@ -113,9 +113,9 @@ export type GetDesignTokensType = ReturnType<typeof getDesignTokens>;
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
   const pathname = usePathname();
-  const isCartView = pathname.includes('/cart/view');
+  const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode, isCartView)), [mode, isCartView]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode, isCheckoutFlow)), [mode, isCheckoutFlow]);
 
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
