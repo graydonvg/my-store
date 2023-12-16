@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
 import { CurrentUserType } from '@/types';
 import { setCurrentUser, setIsOAuthSignIn } from '@/lib/redux/user/userSlice';
-import DialogComponent from '../ui/DialogComponent';
+import DialogComponent from '../dialogs/DialogComponent';
 import UpdateUserData from '../forms/UpdateUserData';
 import { Session } from '@supabase/supabase-js';
 

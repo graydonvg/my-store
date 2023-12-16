@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import AccountPageSectionContainer from './AccountPageSectionContainer';
+import AccountPageSectionContainer from '../AccountPageSectionContainer';
 import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete-address';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
-import AddNewAddressDialog from '../dialogs/AddNewAddressDialog';
+import AddNewAddressDialog from '../../dialogs/AddNewAddressDialog';
 
 export default function Addresses() {
   const router = useRouter();

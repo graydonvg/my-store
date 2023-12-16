@@ -1,9 +1,9 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import AccountPageInfo from './AccountPageInfo';
-import AccountPageInfoInput from './AccountPageInfoInput';
-import AccountPageSectionContainer from './AccountPageSectionContainer';
+import AccountPageInfo from '../AccountPageInfo';
+import AccountPageInfoInput from '../AccountPageInfoInput';
+import AccountPageSectionContainer from '../AccountPageSectionContainer';
 import {
   setFieldToEdit,
   setIsUpdatingAccount,

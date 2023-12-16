@@ -1,5 +1,5 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DialogComponent from '../ui/DialogComponent';
+import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsSignInDialogOpen, setIsSignUpDialogOpen } from '@/lib/redux/dialog/dialogSlice';

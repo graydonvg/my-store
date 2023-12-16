@@ -1,4 +1,4 @@
-import DialogComponent from '../ui/DialogComponent';
+import DialogComponent from './DialogComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AddressForm from '../forms/AddressForm';
 import ContainedButton from '../ui/buttons/ContainedButton';

@@ -3,8 +3,8 @@
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavbarTitleAndLogo from './NavbarTitleAndLogo';
-import BreadcrumbsComponent from '../ui/BreadcrumbsComponent';
-import BreadcrumbItem from '../ui/BreadcrumbItem';
+import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
+import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
 import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
 

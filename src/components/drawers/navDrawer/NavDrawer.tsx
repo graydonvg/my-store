@@ -6,7 +6,7 @@ import { Typography, Box, useTheme, useMediaQuery, IconButton } from '@mui/mater
 import CloseIcon from '@mui/icons-material/Close';
 import NavDraweOptions from './NavDrawerOptions';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from '@/components/ui/DrawerComponent';
+import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
 

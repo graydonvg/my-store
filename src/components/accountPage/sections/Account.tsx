@@ -1,9 +1,9 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import AccountPageInfo from './AccountPageInfo';
-import AccountPageSectionContainer from './AccountPageSectionContainer';
-import AccountPageInfoInput from './AccountPageInfoInput';
+import AccountPageInfo from '../AccountPageInfo';
+import AccountPageSectionContainer from '../AccountPageSectionContainer';
+import AccountPageInfoInput from '../AccountPageInfoInput';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ChangeEvent, ReactNode } from 'react';
 import {

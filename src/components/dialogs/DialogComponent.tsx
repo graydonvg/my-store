@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, useTheme, IconButton, Dialog } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import LoadingBar from './progress/LoadingBar';
+import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
 import { closeDialog } from '@/lib/redux/dialog/dialogSlice';
 import { Close } from '@mui/icons-material';

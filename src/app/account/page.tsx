@@ -3,9 +3,9 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import Account from '@/components/accountPage/Account';
-import PersonalInformation from '@/components/accountPage/PersonalInformation';
-import Addresses from '@/components/accountPage/Addresses';
+import Account from '@/components/accountPage/sections/Account';
+import PersonalInformation from '@/components/accountPage/sections/PersonalInformation';
+import Addresses from '@/components/accountPage/sections/Addresses';
 
 export default function AccountPage() {
   const { currentUser } = useAppSelector((state) => state.user);

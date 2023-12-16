@@ -1,6 +1,6 @@
 import SignInForm from '@/components/forms/SignInForm';
 import MuiLink from '@/components/ui/MuiLink';
-import WelcomePageContainer from '@/components/ui/WelcomePageContainer';
+import WelcomePageContainer from '@/components/ui/containers/WelcomePageContainer';
 import Link from 'next/link';
 
 export default function SignIn() {

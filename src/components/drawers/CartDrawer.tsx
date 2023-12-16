@@ -3,7 +3,7 @@
 import { Box, Divider, List, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from '../ui/DrawerComponent';
+import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';

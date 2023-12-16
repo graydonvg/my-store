@@ -2,7 +2,7 @@
 
 import { Box, Divider, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import DrawerComponent from '../ui/DrawerComponent';
+import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCartItemQuantity, setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
