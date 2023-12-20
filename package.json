@@ -43,5 +43,9 @@
   },
   "devDependencies": {
     "eslint-config-prettier": "^9.1.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.3"
   }
 }
