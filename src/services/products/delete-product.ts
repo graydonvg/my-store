@@ -14,6 +14,6 @@ export default async function deleteProduct(product_id: string): Promise<CustomR
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-user. ${error}`);
+    throw new Error(`@services/delete-product. ${error}`);
   }
 }

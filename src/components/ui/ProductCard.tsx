@@ -23,7 +23,7 @@ export default function ProductCard({ product }: Props) {
   const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { imageData, productFormData } = useAppSelector((state) => state.productForm);
+  const { imageData } = useAppSelector((state) => state.productForm);
   const pathname = usePathname();
   const isAdminView = pathname.includes('admin-view');
   const isOnSale = product.on_sale === 'Yes';
@@ -35,7 +35,7 @@ export default function ProductCard({ product }: Props) {
 
   async function handleSetProductDataForUpdate() {
     setIsLoading(true);
-    if (imageData && !productFormData.product_id) {
+    if (imageData && !product.product_id) {
       const { success, message } = await deleteAllProductImages(imageData);
       if (success === false) {
         toast.error(message);
@@ -52,7 +52,7 @@ export default function ProductCard({ product }: Props) {
     setIsDeletingProduct(true);
     try {
       const deleteImagesPromise = deleteAllProductImages(product_image_data);
-      const deleteProductPromise = deleteProduct(productFormData.product_id!);
+      const deleteProductPromise = deleteProduct(product.product_id!);
       const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
       const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
       const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;

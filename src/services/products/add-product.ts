@@ -18,6 +18,6 @@ export default async function addProduct(formData: InsertProductTypeDb): Promise
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-user. ${error}`);
+    throw new Error(`@services/add-product. ${error}`);
   }
 }

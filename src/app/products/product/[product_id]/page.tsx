@@ -1,6 +1,7 @@
 import ProductDetails from '@/components/ProductDetails';
 import { getAllProducts, getProductById } from '@/services/products/get-products';
 import { ProductType } from '@/types';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,8 +11,13 @@ type Params = {
 
 export async function generateMetadata({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
-
   const product = data ? data : ({} as ProductType);
+
+  if (!product.product_id) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
 
   return {
     title: product?.name,
@@ -23,6 +29,8 @@ export default async function ProductPage({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
 
   const product = data ? data : ({} as ProductType);
+
+  if (!product.product_id) notFound();
 
   return <ProductDetails product={product} />;
 }

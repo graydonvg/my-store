@@ -25,6 +25,7 @@ export async function getProductById(product_id: string): Promise<CustomResponse
       method: 'GET',
       cache: 'force-cache',
     });
+
     const data = await response.json();
 
     return data;
