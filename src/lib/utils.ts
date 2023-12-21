@@ -1,8 +1,8 @@
 import { InsertProductImageDataTypeStore, CustomResponseType, ProductType } from '@/types';
 import { useScrollTrigger } from '@mui/material';
-import { ClassValue, clsx } from 'clsx';
+// import { ClassValue, clsx } from 'clsx';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
-import { twMerge } from 'tailwind-merge';
+// import { twMerge } from 'tailwind-merge';
 import { deleteImageFromStorage } from './firebase';
 import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
 
@@ -93,9 +93,9 @@ export function ElevationScroll({ children }: { children: ReactElement<any, stri
   });
 }
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// export function cn(...inputs: ClassValue[]) {
+//   return twMerge(clsx(inputs));
+// }
 
 export function generateUniqueFileName(fileName: string) {
   const timestamp = Date.now();
