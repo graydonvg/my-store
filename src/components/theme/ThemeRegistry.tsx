@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
-import NextAppDirEmotionCacheProvider from './EmotionCache';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
 
 const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
@@ -118,11 +118,11 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const theme = useMemo(() => createTheme(getDesignTokens(mode, isCheckoutFlow)), [mode, isCheckoutFlow]);
 
   return (
-    <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
+    <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
       </ThemeProvider>
-    </NextAppDirEmotionCacheProvider>
+    </AppRouterCacheProvider>
   );
 }
