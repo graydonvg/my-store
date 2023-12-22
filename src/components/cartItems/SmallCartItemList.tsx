@@ -25,12 +25,15 @@ export default function SmallCartItemList() {
         height: 1,
       }}>
       {cartItems.length > 0 ? (
-        cartItems.map((item) => (
-          <Fragment key={item?.cart_item_id}>
-            <CartItemSmall item={item} />
-            <Divider sx={{ borderColor: dividerColor }} />
-          </Fragment>
-        ))
+        cartItems.map((item, index) => {
+          const isLastItem = cartItems.length - 1 === index;
+          return (
+            <Fragment key={item?.cart_item_id}>
+              <CartItemSmall item={item} />
+              {!isLastItem ? <Divider sx={{ borderColor: dividerColor }} /> : null}
+            </Fragment>
+          );
+        })
       ) : (
         <Box sx={{ padding: 1, marginTop: 2, borderRadius: '4px' }}>
           <Typography>Your cart is empty</Typography>

@@ -43,14 +43,12 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
   function renderOrderTotals({
     label,
     price,
-    paddingRight,
     fontSize,
     fontWeight,
     backgroundColor,
   }: {
     label: string;
     price: string;
-    paddingRight?: number;
     fontSize: number;
     fontWeight?: number;
     backgroundColor?: string;
@@ -67,18 +65,20 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
           borderRadius: '4px',
         }}>
         <Typography
-          paddingRight={paddingRight}
+          paddingRight={2}
           component="span"
           fontSize={fontSize}
           fontWeight={fontWeight}>
           {label}
         </Typography>
-        <Typography
-          component="span"
-          fontSize={fontSize}
-          fontWeight={fontWeight}>
-          {price}
-        </Typography>
+        <Box sx={{ whiteSpace: 'nowrap' }}>
+          <Typography
+            component="span"
+            fontSize={fontSize}
+            fontWeight={fontWeight}>
+            {price}
+          </Typography>
+        </Box>
       </Box>
     );
   }
@@ -100,7 +100,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
           md={3}>
           <Box
             sx={{
-              paddingX: 2,
+              paddingX: 3,
               paddingY: 4,
               backgroundColor: cardBackgroundColor,
               borderRadius: '4px',
@@ -116,7 +116,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
               {renderOrderTotals({
                 label: 'Cart total',
                 price: formatCurrency(orderTotal),
-                paddingRight: 2,
+
                 fontSize: 14,
               })}
               {totalDiscount > 0
@@ -131,14 +131,12 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
               {renderOrderTotals({
                 label: 'Delivery fee',
                 price: orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0),
-                paddingRight: 2,
                 fontSize: 14,
               })}
               <Divider />
               {renderOrderTotals({
                 label: 'Order total',
                 price: formatCurrency(totalToPay),
-                paddingRight: 2,
                 fontSize: 14,
                 fontWeight: 600,
               })}
@@ -146,7 +144,6 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
               {renderOrderTotals({
                 label: 'TOTAL TO PAY',
                 price: formatCurrency(totalToPay),
-                paddingRight: 2,
                 fontSize: 18,
                 fontWeight: 700,
               })}

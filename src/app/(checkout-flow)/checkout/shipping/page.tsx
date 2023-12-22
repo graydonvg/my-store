@@ -15,23 +15,29 @@ export default function Shipping() {
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   return (
-    <Box sx={{ backgroundColor: cardBackgroundColor, padding: 2, display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Box
+      sx={{
+        backgroundColor: cardBackgroundColor,
+        padding: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        borderRadius: '4px',
+      }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography
           component="h2"
           fontSize={24}
-          fontWeight={400}
-          sx={{ paddingLeft: 2 }}>
+          fontWeight={400}>
           Select your address
         </Typography>
         <Addresses />
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography
           component="h2"
           fontSize={24}
-          fontWeight={400}
-          sx={{ paddingLeft: 2 }}>
+          fontWeight={400}>
           {`Your items (${cartItems.length})`}
         </Typography>
         <Box sx={{ border: `1px solid ${borderColor}`, borderRadius: '4px' }}>
