@@ -160,7 +160,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
                 (isPaymentView && 'pay with card')
               }
               fullWidth
-              backgroundColor="blue"
+              backgroundColor={isCartView ? 'blue' : 'red'}
             />
           </Box>
         </Grid>

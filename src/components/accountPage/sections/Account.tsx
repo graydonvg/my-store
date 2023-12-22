@@ -72,7 +72,7 @@ export default function Account({ renderUserInfo }: Props) {
   }
 
   return (
-    <AccountPageSectionContainer title="Account">
+    <>
       <AccountPageInfo
         label="Email"
         canEdit={false}
@@ -141,6 +141,6 @@ export default function Account({ renderUserInfo }: Props) {
           />
         )
       ) : null}
-    </AccountPageSectionContainer>
+    </>
   );
 }

@@ -9,11 +9,12 @@ import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { Fragment } from 'react';
-import CartItemSmall from '../CartItemSmall';
+import CartItemSmall from '../cartItems/CartItemSmall';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
+import SmallCartItemList from '../cartItems/SmallCartItemList';
 
 export default function CartDrawer() {
   const router = useRouter();
@@ -84,28 +85,7 @@ export default function CartDrawer() {
             paddingTop: `${navbarHeight}px`,
           }}
         />
-        <List
-          disablePadding
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            overflowY: 'auto',
-            paddingX: 2,
-            height: 1,
-          }}>
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <Fragment key={item?.cart_item_id}>
-                <CartItemSmall item={item} />
-                <Divider />
-              </Fragment>
-            ))
-          ) : (
-            <Box sx={{ backgroundColor: cartEmptyBgColor, padding: 1, marginTop: 2, borderRadius: '4px' }}>
-              <Typography>Your cart is empty</Typography>
-            </Box>
-          )}
-        </List>
+        <SmallCartItemList />
         {cartItems.length > 0 ? (
           <Box
             sx={{

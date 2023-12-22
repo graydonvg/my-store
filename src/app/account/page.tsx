@@ -6,6 +6,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import Account from '@/components/accountPage/sections/Account';
 import PersonalInformation from '@/components/accountPage/sections/PersonalInformation';
 import Addresses from '@/components/accountPage/sections/Addresses';
+import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
 
 export default function AccountPage() {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -53,15 +54,21 @@ export default function AccountPage() {
               flexDirection: 'column',
               gap: 2,
             }}>
-            <Account renderUserInfo={renderUserInfo} />
-            <PersonalInformation renderUserInfo={renderUserInfo} />
+            <AccountPageSectionContainer title="Account">
+              <Account renderUserInfo={renderUserInfo} />
+            </AccountPageSectionContainer>
+            <AccountPageSectionContainer title="Personal information">
+              <PersonalInformation renderUserInfo={renderUserInfo} />
+            </AccountPageSectionContainer>
           </Box>
         </Grid>
         <Grid
           item
           xs={12}
           md={6}>
-          <Addresses />
+          <AccountPageSectionContainer title="Addresses">
+            <Addresses />
+          </AccountPageSectionContainer>
         </Grid>
       </Grid>
     </Box>

@@ -1,6 +1,6 @@
 'use client';
 
-import CartItemLarge from '@/components/CartItemLarge';
+import CartItemLarge from '@/components/cartItems/CartItemLarge';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography, useTheme } from '@mui/material';

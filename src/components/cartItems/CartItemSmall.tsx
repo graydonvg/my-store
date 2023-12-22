@@ -1,12 +1,14 @@
+'use client';
+
 import { Box, IconButton, ListItem, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { Spinner } from './ui/progress/Spinner';
+import { Spinner } from '../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/lib/utils';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
@@ -16,6 +18,7 @@ type Props = {
 };
 
 export default function CartItemSmall({ item }: Props) {
+  const pathname = usePathname();
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
@@ -24,6 +27,7 @@ export default function CartItemSmall({ item }: Props) {
   const isOnSale = item?.product?.on_sale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
+  const isShippingView = pathname.includes('shipping');
 
   async function handleRemoveCartItem(cartItemId: string) {
     setIsRemovingCartItem(true);
@@ -81,35 +85,37 @@ export default function CartItemSmall({ item }: Props) {
           flexGrow: 1,
           height: 1,
         }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            display: 'grid',
-            placeItems: 'center',
-            width: '20px',
-            height: '20px',
-          }}>
-          {isRemovingCartItem ? (
-            <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
-              <Spinner
-                size={12}
-                spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
-              />
-            </Box>
-          ) : (
-            <IconButton
-              disabled={isRemovingCartItem}
-              onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
-              sx={{ padding: 0, width: 1, height: 1 }}>
-              <Close
-                fontSize="small"
-                sx={{ opacity: '70%' }}
-              />
-            </IconButton>
-          )}
-        </Box>
+        {!isShippingView ? (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              display: 'grid',
+              placeItems: 'center',
+              width: '20px',
+              height: '20px',
+            }}>
+            {isRemovingCartItem ? (
+              <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
+                <Spinner
+                  size={12}
+                  spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
+                />
+              </Box>
+            ) : (
+              <IconButton
+                disabled={isRemovingCartItem}
+                onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
+                sx={{ padding: 0, width: 1, height: 1 }}>
+                <Close
+                  fontSize="small"
+                  sx={{ opacity: '70%' }}
+                />
+              </IconButton>
+            )}
+          </Box>
+        ) : null}
         <Box
           component="header"
           sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>

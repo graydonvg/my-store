@@ -6,7 +6,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
-import EditCartItemDrawer from './drawers/EditCartItemDrawer';
+import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 
 type Props = {

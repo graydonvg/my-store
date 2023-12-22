@@ -1,6 +1,16 @@
 'use client';
 
-import { Table, TableBody, TableCell, TableContainer, TableRow, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import AccountPageSectionContainer from '../AccountPageSectionContainer';
 import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -96,15 +106,22 @@ export default function Addresses() {
   }
 
   return (
-    <AccountPageSectionContainer title="Addresses">
-      <TableContainer sx={{ marginBottom: 1, border: `1px solid ${borderColor}`, borderRadius: '4px' }}>
-        <Table aria-label="address table">
+    <Box>
+      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: '4px' }}>
+        <Table>
           <TableBody>
             {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
               currentUser?.addresses?.map((address, index) => (
                 <TableRow
+                  hover
                   key={index}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
+                  <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
+                    <Checkbox
+                      disableRipple
+                      sx={{ padding: 0 }}
+                    />
+                  </TableCell>
                   <TableCell
                     sx={{
                       display: 'flex',
@@ -115,12 +132,7 @@ export default function Addresses() {
                       rowGap: 2,
                       columnGap: 4,
                       borderBottom: `1px solid ${borderColor}`,
-                      '@media (hover: hover)': {
-                        '&:hover': {
-                          backgroundColor:
-                            mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light,
-                        },
-                      },
+                      width: 1,
                     }}>
                     <Typography fontSize={16}>
                       {address.complex_or_building ? `${address.complex_or_building},` : null}
@@ -128,7 +140,7 @@ export default function Addresses() {
 											${address.city}, ${address.postal_code}`}
                     </Typography>
                     {isDeleting && addressToDelete?.id === address.address_id ? (
-                      <TableCell
+                      <Box
                         sx={{
                           minWidth: '108.16px',
                           display: 'flex',
@@ -142,9 +154,9 @@ export default function Addresses() {
                           color={loaderColor}
                           size={10}
                         />
-                      </TableCell>
+                      </Box>
                     ) : (
-                      <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
                         {renderAddressOption({
                           label: 'edit',
                           hasBorderRight: true,
@@ -155,7 +167,7 @@ export default function Addresses() {
                           hasBorderRight: false,
                           onClick: () => handleDeleteAddress(address.address_id),
                         })}
-                      </TableCell>
+                      </Box>
                     )}
                   </TableCell>
                 </TableRow>
@@ -168,7 +180,9 @@ export default function Addresses() {
           </TableBody>
         </Table>
       </TableContainer>
-      <AddNewAddressDialog />
-    </AccountPageSectionContainer>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <AddNewAddressDialog />
+      </Box>
+    </Box>
   );
 }

@@ -87,7 +87,7 @@ export default function PersonalInformation({ renderUserInfo }: Props) {
   }
 
   return (
-    <AccountPageSectionContainer title="Personal information">
+    <>
       {fieldToEdit !== 'name' ? (
         <AccountPageInfo
           label="Name"
@@ -166,6 +166,6 @@ export default function PersonalInformation({ renderUserInfo }: Props) {
           disableSave={personalInformation.contactNumber.length === 0}
         />
       )}
-    </AccountPageSectionContainer>
+    </>
   );
 }
