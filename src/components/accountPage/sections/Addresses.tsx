@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, useTheme } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Typography, useTheme } from '@mui/material';
 import AccountPageSectionContainer from '../AccountPageSectionContainer';
 import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -97,84 +97,77 @@ export default function Addresses() {
 
   return (
     <AccountPageSectionContainer title="Addresses">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginBottom: 1,
-          border: `1px solid ${borderColor}`,
-          borderRadius: '4px',
-        }}>
-        {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
-          currentUser?.addresses?.map((address, index) => {
-            const isFirstAddress = index === 0;
-            const isLastAddress = index === currentUser?.addresses.length - 1;
-            return (
-              <Box
-                key={address.address_id}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  borderTop: !isFirstAddress ? `1px solid ${borderColor}` : null,
-                  borderBottomLeftRadius: isLastAddress ? '4px' : null,
-                  borderBottomRightRadius: isLastAddress ? '4px' : null,
-                  borderTopRightRadius: isFirstAddress ? '4px' : null,
-                  borderTopLeftRadius: isFirstAddress ? '4px' : null,
-                  padding: 2,
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  rowGap: 2,
-                  columnGap: 4,
-                  '@media (hover: hover)': {
-                    '&:hover': {
-                      backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light,
-                    },
-                  },
-                }}>
-                <Typography fontSize={16}>
-                  {address.complex_or_building ? `${address.complex_or_building},` : null}
-                  {`${address.street_address}, ${address.suburb}, ${address.province},
-					${address.city}, ${address.postal_code}`}
-                </Typography>
-                {isDeleting && addressToDelete?.id === address.address_id ? (
-                  <Box
+      <TableContainer sx={{ marginBottom: 1, border: `1px solid ${borderColor}`, borderRadius: '4px' }}>
+        <Table aria-label="address table">
+          <TableBody>
+            {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
+              currentUser?.addresses?.map((address, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell
                     sx={{
-                      minWidth: '108.16px',
                       display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      padding: 2,
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      rowGap: 2,
+                      columnGap: 4,
+                      borderBottom: `1px solid ${borderColor}`,
+                      '@media (hover: hover)': {
+                        '&:hover': {
+                          backgroundColor:
+                            mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light,
+                        },
+                      },
                     }}>
-                    <PulseLoader
-                      loading={isDeleting}
-                      color={loaderColor}
-                      size={10}
-                    />
-                  </Box>
-                ) : (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {renderAddressOption({
-                      label: 'edit',
-                      hasBorderRight: true,
-                      onClick: () => handleSetAddressToEdit(address.address_id),
-                    })}
-                    {renderAddressOption({
-                      label: 'delete',
-                      hasBorderRight: false,
-                      onClick: () => handleDeleteAddress(address.address_id),
-                    })}
-                  </Box>
-                )}
-              </Box>
-            );
-          })
-        ) : (
-          <Box
-            fontSize={16}
-            sx={{ padding: 2 }}>
-            <Typography>No address found</Typography>
-          </Box>
-        )}
-      </Box>
+                    <Typography fontSize={16}>
+                      {address.complex_or_building ? `${address.complex_or_building},` : null}
+                      {`${address.street_address}, ${address.suburb}, ${address.province},
+											${address.city}, ${address.postal_code}`}
+                    </Typography>
+                    {isDeleting && addressToDelete?.id === address.address_id ? (
+                      <TableCell
+                        sx={{
+                          minWidth: '108.16px',
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          padding: 0,
+                          borderBottom: 0,
+                        }}>
+                        <PulseLoader
+                          loading={isDeleting}
+                          color={loaderColor}
+                          size={10}
+                        />
+                      </TableCell>
+                    ) : (
+                      <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
+                        {renderAddressOption({
+                          label: 'edit',
+                          hasBorderRight: true,
+                          onClick: () => handleSetAddressToEdit(address.address_id),
+                        })}
+                        {renderAddressOption({
+                          label: 'delete',
+                          hasBorderRight: false,
+                          onClick: () => handleDeleteAddress(address.address_id),
+                        })}
+                      </TableCell>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableCell sx={{ padding: 2, borderBottom: 0 }}>
+                <Typography fontSize={16}>No address found</Typography>
+              </TableCell>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <AddNewAddressDialog />
     </AccountPageSectionContainer>
   );
