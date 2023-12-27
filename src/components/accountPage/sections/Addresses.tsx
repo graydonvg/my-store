@@ -113,7 +113,6 @@ export default function Addresses() {
             {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
               currentUser?.addresses?.map((address, index) => (
                 <TableRow
-                  hover
                   key={index}
                   sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
                   <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
