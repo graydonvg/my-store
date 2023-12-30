@@ -70,6 +70,8 @@ export const accountNavOptions = [
   },
 ];
 
+export type NavOptionsType = (typeof navOptions)[0];
+
 export const toggleButtonSizeOptions = [
   { label: 'XS', value: 'XS' },
   { label: 'S', value: 'S' },
@@ -77,8 +79,6 @@ export const toggleButtonSizeOptions = [
   { label: 'L', value: 'L' },
   { label: 'XL', value: 'XL' },
 ];
-
-export type NavOptionsType = (typeof navOptions)[0];
 
 export function ElevationScroll({ children }: { children: ReactElement<any, string | JSXElementConstructor<any>> }) {
   const trigger = useScrollTrigger({

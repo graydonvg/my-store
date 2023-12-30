@@ -30,7 +30,11 @@ export default function UserStateSetter({ session, userData }: Props) {
       dispatch(setIsOAuthSignIn(false));
     }
 
-    dispatch(setCurrentUser(userData));
+    if (userData.user_id) {
+      dispatch(setCurrentUser(userData));
+    } else {
+      dispatch(setCurrentUser(null));
+    }
   }, [userData, session, dispatch]);
 
   return (
