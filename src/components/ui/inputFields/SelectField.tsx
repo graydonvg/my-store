@@ -5,7 +5,7 @@ type SelectFieldProps = TextFieldProps & {
   options: string[];
 };
 
-export default function LargeSelectField({ options, ...textFieldProps }: SelectFieldProps) {
+export default function SelectField({ options, ...textFieldProps }: SelectFieldProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

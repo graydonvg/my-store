@@ -6,9 +6,7 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { categories, getEmptyFormFields, getNumberOfFormFields, toggleButtonSizeOptions } from '@/lib/utils';
 import { InsertProductTypeDb, InsertProductTypeStore, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
-import LargeSelectField from '@/components/ui/inputFields/LargeSelectField';
-import CurrencyField from '@/components/ui/inputFields/CurrencyField';
-import PercentageField from '@/components/ui/inputFields/PercentageField';
+import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -25,6 +23,7 @@ import addProductImageData from '@/services/product-image-data/add-product-image
 import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
+import NumberField from '@/components/ui/inputFields/NumberField';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: categories },
@@ -32,9 +31,9 @@ const formFields = [
   { label: 'Description', name: 'description', multiline: true },
   { label: 'Delivery info', name: 'delivery_info', multiline: true },
   { label: 'Return info', name: 'return_info', multiline: true },
-  { label: 'Price', name: 'price', type: 'currency' },
+  { label: 'Price', name: 'price', placeholder: 'e.g. 199' },
   { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale %', name: 'sale_percentage', type: 'percentage' },
+  { label: 'Sale %', name: 'sale_percentage', placeholder: 'e.g. 20' },
 ];
 
 export default function AdminViewAddNewProduct() {
@@ -190,7 +189,7 @@ export default function AdminViewAddNewProduct() {
       </Box>
       {formFields.map((field) => {
         return field.type === 'select' ? (
-          <LargeSelectField
+          <SelectField
             key={field.name}
             label={field.label}
             name={field.name}
@@ -200,24 +199,26 @@ export default function AdminViewAddNewProduct() {
             disabled={isSubmitting || isClearingAllFields}
             required
           />
-        ) : field.type === 'currency' ? (
-          <CurrencyField
+        ) : field.name === 'price' ? (
+          <NumberField
             key={field.name}
             label={field.label}
             name={field.name}
             value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
             disabled={isSubmitting || isClearingAllFields}
+            placeholder={field.placeholder}
             required
           />
-        ) : field.type === 'percentage' ? (
-          <PercentageField
+        ) : field.name === 'sale_percentage' ? (
+          <NumberField
             key={field.name}
             label={field.label}
             name={field.name}
             value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
             disabled={(!isOnSale && field.name === 'sale_percentage') || isSubmitting || isClearingAllFields}
+            placeholder={field.placeholder}
             required
           />
         ) : (

@@ -11,10 +11,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import AccountPageSectionContainer from '../AccountPageSectionContainer';
 import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ChangeEvent, useState } from 'react';
 import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
@@ -26,6 +25,7 @@ import { toast } from 'react-toastify';
 import AddNewAddressDialog from '../../dialogs/AddNewAddressDialog';
 
 export default function Addresses() {
+  const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
@@ -37,6 +37,7 @@ export default function Addresses() {
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
   const [selectedShippingAddress, setSelectedShippingAddress] = useState<string | null>(null);
+  const isShippingView = pathname.includes('shipping');
 
   function handleSelectShippingAddress(e: ChangeEvent<HTMLInputElement>) {
     setSelectedShippingAddress(e.target.value);
@@ -120,19 +121,17 @@ export default function Addresses() {
                 <TableRow
                   key={index}
                   sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
-                  <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
-                    <Checkbox
-                      value={address.address_id}
-                      checked={
-                        selectedShippingAddress
-                          ? selectedShippingAddress === address.address_id
-                          : address.default_shipping_address
-                      }
-                      onChange={handleSelectShippingAddress}
-                      disableRipple
-                      sx={{ padding: 0 }}
-                    />
-                  </TableCell>
+                  {isShippingView ? (
+                    <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
+                      <Checkbox
+                        value={address.address_id}
+                        checked={selectedShippingAddress === address.address_id}
+                        onChange={handleSelectShippingAddress}
+                        disableRipple
+                        sx={{ padding: 0 }}
+                      />
+                    </TableCell>
+                  ) : null}
                   <TableCell
                     sx={{
                       display: 'flex',

@@ -28,6 +28,7 @@ export default function CartDrawer() {
   const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const mode = theme.palette.mode;
+  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
@@ -88,15 +89,7 @@ export default function CartDrawer() {
             sx={{
               position: 'relative',
               padding: 2,
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
-                top: 0,
-                right: 0,
-                left: 0,
-                height: '4px',
-              },
+              borderTop: `1px solid ${borderColor}`,
             }}>
             <Box
               sx={{

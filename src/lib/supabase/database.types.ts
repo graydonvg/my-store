@@ -8,7 +8,6 @@ export interface Database {
           address_id: string;
           city: string;
           complex_or_building: string | null;
-          default_shipping_address: boolean;
           postal_code: number;
           province: string;
           street_address: string;
@@ -19,7 +18,6 @@ export interface Database {
           address_id?: string;
           city: string;
           complex_or_building?: string | null;
-          default_shipping_address: boolean;
           postal_code: number;
           province: string;
           street_address: string;
@@ -30,7 +28,6 @@ export interface Database {
           address_id?: string;
           city?: string;
           complex_or_building?: string | null;
-          default_shipping_address?: boolean;
           postal_code?: number;
           province?: string;
           street_address?: string;

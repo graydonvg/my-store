@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel } from '@mui/material';
 import FormTitle from './FormTitle';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -24,11 +24,11 @@ const formFields = [
     type: 'text',
     placeholder: 'Name, unit number or floor',
   },
-  { name: 'street_address', label: 'Street address', type: 'text', placeholder: 'e.g 14 Christiaan Barnard Street' },
-  { name: 'suburb', label: 'Suburb', type: 'text', placeholder: 'e.g Foreshore' },
-  { name: 'province', label: 'Province', type: 'text', placeholder: 'e.g Western Cape' },
-  { name: 'city', label: 'City', type: 'text', placeholder: 'e.g Cape Town' },
-  { name: 'postal_code', label: 'Postal Code', type: 'number', placeholder: 'e.g 8000' },
+  { name: 'street_address', label: 'Street address', type: 'text', placeholder: 'e.g. 14 Christiaan Barnard Street' },
+  { name: 'suburb', label: 'Suburb', type: 'text', placeholder: 'e.g. Foreshore' },
+  { name: 'province', label: 'Province', type: 'text', placeholder: 'e.g. Western Cape' },
+  { name: 'city', label: 'City', type: 'text', placeholder: 'e.g. Cape Town' },
+  { name: 'postal_code', label: 'Postal Code', type: 'number', placeholder: 'e.g. 8000' },
 ];
 
 export default function AddressForm() {
