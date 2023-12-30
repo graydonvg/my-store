@@ -16,7 +16,7 @@ import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 import { UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
@@ -36,6 +36,11 @@ export default function Addresses() {
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
+  const [selectedShippingAddress, setSelectedShippingAddress] = useState<string | null>(null);
+
+  function handleSelectShippingAddress(e: ChangeEvent<HTMLInputElement>) {
+    setSelectedShippingAddress(e.target.value);
+  }
 
   async function handleSetAddressToEdit(addressId: string) {
     const addressToEdit = currentUser?.addresses.filter((address) => address.address_id === addressId)[0] ?? {};
@@ -117,6 +122,13 @@ export default function Addresses() {
                   sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
                   <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
                     <Checkbox
+                      value={address.address_id}
+                      checked={
+                        selectedShippingAddress
+                          ? selectedShippingAddress === address.address_id
+                          : address.default_shipping_address
+                      }
+                      onChange={handleSelectShippingAddress}
                       disableRipple
                       sx={{ padding: 0 }}
                     />
@@ -172,9 +184,11 @@ export default function Addresses() {
                 </TableRow>
               ))
             ) : (
-              <TableCell sx={{ padding: 2, borderBottom: 0 }}>
-                <Typography fontSize={16}>No address found</Typography>
-              </TableCell>
+              <TableRow>
+                <TableCell sx={{ padding: 2, borderBottom: 0 }}>
+                  <Typography fontSize={16}>No address found</Typography>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

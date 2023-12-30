@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, List, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './DrawerComponent';
@@ -8,8 +8,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import { Fragment } from 'react';
-import CartItemSmall from '../cartItems/CartItemSmall';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
@@ -30,7 +28,6 @@ export default function CartDrawer() {
   const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const mode = theme.palette.mode;
-  const cartEmptyBgColor = mode === 'dark' ? customColorPalette.grey.dark : customColorPalette.grey.light;
 
   function handleToggleCart() {
     dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
