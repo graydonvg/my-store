@@ -16,7 +16,7 @@ import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { toggleButtonSizeOptions } from '@/constants/sizes';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { calculateDiscountedPrice } from '@/utils/calculateDiscountedPrice';
+import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = { product: ProductType };
 
@@ -31,7 +31,7 @@ export default function ProductDetails({ product }: Props) {
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(product);
+  const discountedPrice = calculateDiscountedProductPrice(product);
 
   function sortSizesArray(a: { label: string; value: string }, b: { label: string; value: string }) {
     const indexOfA = toggleButtonSizeOptions.indexOf(a);

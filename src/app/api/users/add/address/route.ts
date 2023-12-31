@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-
 import { CustomResponseType, InsertAddressType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 

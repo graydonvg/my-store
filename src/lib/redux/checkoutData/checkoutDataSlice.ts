@@ -17,11 +17,14 @@ export const checkoutDataSlice = createSlice({
     setCheckoutData(state, action: PayloadAction<CheckoutDataType>) {
       return { ...state, ...action.payload };
     },
+    resetCheckoutData() {
+      return initialState;
+    },
   },
 });
 
 const { actions, reducer } = checkoutDataSlice;
 
-export const { setCheckoutData } = actions;
+export const { setCheckoutData, resetCheckoutData } = actions;
 
 export const userReducer = reducer;

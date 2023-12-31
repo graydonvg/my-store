@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
@@ -16,6 +16,11 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
+import { loadStripe } from '@stripe/stripe-js';
+import { callStripeSession } from '@/services/stripe/call-stripe-session';
+import { calculateDiscountedCartItemPrice, calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type Props = {
   children: ReactNode;
@@ -38,15 +43,41 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
-  const isPaymentView = pathname.includes('/checkout/payment');
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
 
   function handleNavigate() {
-    if (isCartView) {
-      dispatch(setCheckoutData({ ...checkoutData, totalToPay }));
-      router.push('/checkout/shipping');
-    } else if (isShippingView) {
-      router.push('/checkout/payment');
-    }
+    dispatch(setCheckoutData({ ...checkoutData, totalToPay }));
+    router.push('/checkout/shipping');
+  }
+
+  async function handlePayment() {
+    const stripe = await stripePromise;
+    const createLineItems = cartItems.map((item) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item?.product?.name,
+          images: item?.product?.product_image_data.map((data) => data.image_url),
+        },
+        unit_amount: (item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price!) * 100,
+      },
+
+      quantity: item?.quantity,
+    }));
+
+    const { data } = await callStripeSession(createLineItems);
+
+    console.log(data);
+
+    setIsProcessingOrder(true);
+
+    localStorage.setItem('stripe', 'true');
+
+    const error = await stripe?.redirectToCheckout({
+      sessionId: data?.sessionId!,
+    });
+
+    console.log(error);
   }
 
   function renderOrderTotals({
@@ -159,12 +190,8 @@ export default function CheckoutFlowLayout({ children }: Props) {
             </Box>
             <ContainedButton
               disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingAddress)}
-              onClick={handleNavigate}
-              label={
-                (isCartView && 'checkout now') ||
-                (isShippingView && 'continue to payment') ||
-                (isPaymentView && 'pay with card')
-              }
+              onClick={isCartView ? handleNavigate : handlePayment}
+              label={(isCartView && 'checkout now') || (isShippingView && 'continue to payment')}
               fullWidth
               backgroundColor={isCartView ? 'blue' : 'red'}
             />

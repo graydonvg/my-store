@@ -34,7 +34,7 @@ function getButtonBackgroundColor(option: ButtonBackgroundColorType, customColor
   return colorOptions[option];
 }
 
-type CustomButtonProps = ButtonProps & {
+type ContainedButtonProps = ButtonProps & {
   height?: string | number;
   minHeight?: string | number;
   isLoading?: boolean;
@@ -55,7 +55,7 @@ export default function ContainedButton({
   styles,
   isDisabled,
   ...props
-}: CustomButtonProps) {
+}: ContainedButtonProps) {
   const customColorPalette = useCustomColorPalette();
   const buttonBackgroundColor =
     backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, customColorPalette) : null;

@@ -6,7 +6,7 @@ export default async function Home() {
       <Typography
         variant="h4"
         component="h1"
-        sx={{ textAlign: 'center', padding: 2 }}>
+        sx={{ textAlign: 'center', paddingBottom: 2 }}>
         Home
       </Typography>
     </>

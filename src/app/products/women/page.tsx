@@ -11,7 +11,7 @@ export default async function WomenAllProducts() {
       <Typography
         variant="h4"
         component="h1"
-        sx={{ textAlign: 'center', padding: 2 }}>
+        sx={{ textAlign: 'center', paddingBottom: 2 }}>
         Women
       </Typography>
       <Products products={products ?? ([] as ProductType[])} />

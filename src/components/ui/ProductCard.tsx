@@ -15,7 +15,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
-import { calculateDiscountedPrice } from '@/utils/calculateDiscountedPrice';
+import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 import { borderRadius } from '@/constants/styles';
 
 type Props = {
@@ -30,7 +30,7 @@ export default function ProductCard({ product }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const isOnSale = product.on_sale === 'Yes';
-  const discountedPrice = calculateDiscountedPrice(product);
+  const discountedPrice = calculateDiscountedProductPrice(product);
   const { product_image_data, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
