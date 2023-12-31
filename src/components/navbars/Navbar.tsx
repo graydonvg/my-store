@@ -9,7 +9,8 @@ import { ElevationScroll } from '../ui/ElevationScroll';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const showCheckoutNav = pathname.includes('/cart') || pathname.includes('/checkout');
+  const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
+
   return (
     <>
       <ElevationScroll>
@@ -18,7 +19,7 @@ export default function Navbar() {
           color="transparent"
           elevation={0}
           position="sticky">
-          {!showCheckoutNav ? (
+          {!isCheckoutFlow ? (
             <>
               <UpperNavbar />
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>

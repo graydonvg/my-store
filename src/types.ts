@@ -83,8 +83,19 @@ export type userPasswordType = { currentPassword: string; newPassword: string; c
 
 export type InsertAddressType = Database['public']['Tables']['addresses']['Insert'];
 
+export type AddressType = Database['public']['Tables']['addresses']['Row'];
+
 export type UpdateAddressTypeDb = Database['public']['Tables']['addresses']['Update'];
 
 export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresses']['Update'], 'postal_code'> & {
   postal_code: '' | number;
+};
+
+export type CheckoutDataType = {
+  shippingAddress: AddressType | null;
+  paymentMethod: string;
+  totalToPay: number;
+  isProcessing: boolean;
+  isPaid: boolean;
+  paidAt: string;
 };

@@ -13,6 +13,7 @@ import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import signOut from '@/services/auth/sign-out';
+import { borderRadius } from '@/constants/styles';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
@@ -21,7 +22,7 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
   return (
     <MenuItem
       sx={{
-        borderRadius: 1,
+        borderRadius: borderRadius,
         color: 'custom.grey.light',
         '&:hover': { backgroundColor: 'custom.blue.dark' },
       }}
@@ -39,7 +40,7 @@ export default function AccountMenu() {
   const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
 
   const router = useRouter();
 

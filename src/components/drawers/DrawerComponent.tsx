@@ -48,7 +48,6 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
             sx={{ zIndex }}
             PaperProps={{
               elevation: elevation,
-              // elevation: 0,
               sx: {
                 width: width,
                 backgroundColor: 'background.default',

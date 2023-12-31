@@ -8,6 +8,7 @@ import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   item: CartItemType;
@@ -26,7 +27,7 @@ export default function CartItemLarge({ item }: Props) {
       sx={{
         padding: 2,
         backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
-        borderRadius: '4px',
+        borderRadius: borderRadius,
         position: 'relative',
       }}>
       <Box
@@ -60,7 +61,7 @@ export default function CartItemLarge({ item }: Props) {
               flexShrink: 0,
             }}>
             <Image
-              style={{ objectFit: 'cover', borderRadius: '4px' }}
+              style={{ objectFit: 'cover', borderRadius: borderRadius }}
               fill
               sizes="180px 60px"
               src={item?.product?.product_image_data[0].image_url ?? ''}
@@ -164,7 +165,7 @@ export default function CartItemLarge({ item }: Props) {
               <Box
                 sx={{
                   display: 'flex',
-                  borderRadius: 1,
+                  borderRadius: borderRadius,
                   paddingX: 1,
                   marginRight: 1,
                   backgroundColor: customColorPalette.blue.dark,

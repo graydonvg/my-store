@@ -5,7 +5,7 @@ import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContai
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
   selectOrderTotal,
@@ -14,11 +14,19 @@ import {
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { borderRadius } from '@/constants/styles';
 
-export default function CheckoutFlowLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+};
+
+export default function CheckoutFlowLayout({ children }: Props) {
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
+  const checkoutData = useAppSelector((state) => state.checkoutData);
   const orderTotal = selectOrderTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
@@ -34,6 +42,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
 
   function handleNavigate() {
     if (isCartView) {
+      dispatch(setCheckoutData({ ...checkoutData, totalToPay }));
       router.push('/checkout/shipping');
     } else if (isShippingView) {
       router.push('/checkout/payment');
@@ -62,7 +71,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
           width: 1,
           padding: 1,
           backgroundColor,
-          borderRadius: '4px',
+          borderRadius: borderRadius,
         }}>
         <Typography
           paddingRight={2}
@@ -103,7 +112,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
               paddingX: 3,
               paddingY: 4,
               backgroundColor: cardBackgroundColor,
-              borderRadius: '4px',
+              borderRadius: borderRadius,
             }}>
             <Typography
               component="h1"
@@ -149,7 +158,7 @@ export default function CheckoutFlowLayout({ children }: { children: ReactNode }
               })}
             </Box>
             <ContainedButton
-              disabled={cartItems.length === 0}
+              disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingAddress)}
               onClick={handleNavigate}
               label={
                 (isCartView && 'checkout now') ||

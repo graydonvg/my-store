@@ -34,7 +34,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
-  const { cartItemToEditId } = useAppSelector((state) => state.cart);
+  const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -54,37 +54,58 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   }
 
   async function handleUpdateCartItemSize(size: string) {
+    // If an item with the selected size already exists, update the quantity of that item appropriately and remove the old item. Else, update the size.
+
     if (size === cartItem?.size) return;
+
     setIsUpdatingCartItemSize(true);
-    try {
-      const { success, message } = await updateCartItemSize({
-        cart_item_id: cartItem?.cart_item_id!,
-        size,
-      });
-      if (success === true) {
-        router.refresh();
-      } else {
+
+    const itemOfSelectedSizeExists = cartItems.find(
+      (item) =>
+        item?.product?.product_id === cartItem?.product?.product_id &&
+        item?.size === size &&
+        item.cart_item_id !== cartItem?.cart_item_id
+    );
+
+    if (itemOfSelectedSizeExists) {
+      await handleUpdateCartItemQuantity(
+        itemOfSelectedSizeExists.cart_item_id,
+        itemOfSelectedSizeExists.quantity,
+        cartItem?.quantity!
+      );
+      await handleRemoveCartItem();
+    } else {
+      try {
+        const { success, message } = await updateCartItemSize({
+          cart_item_id: cartItem?.cart_item_id!,
+          size,
+        });
+        if (success === true) {
+          router.refresh();
+        } else {
+          setIsUpdatingCartItemSize(false);
+          toast.error(message);
+        }
+      } catch (error) {
         setIsUpdatingCartItemSize(false);
-        toast.error(message);
+        toast.error(`Failed to update size. Please try again later.`);
       }
-    } catch (error) {
-      setIsUpdatingCartItemSize(false);
-      toast.error(`Failed to update size. Please try again later.`);
     }
   }
 
-  function handleSetCartItemQuantity(value: number) {
+  function handleSetCartItemQuantity(cartItemId: string, value: number) {
     if (cartItem?.quantity! === 1 && value === -1) return;
-    dispatch(setCartItemQuantity({ id: cartItem?.cart_item_id!, value }));
-    scheduleUpdateCartItemQuantityWithDelay(value);
+    dispatch(setCartItemQuantity({ id: cartItemId, value }));
+    scheduleUpdateCartItemQuantityWithDelay(cartItemId, value);
   }
 
-  function scheduleUpdateCartItemQuantityWithDelay(value: number) {
+  function scheduleUpdateCartItemQuantityWithDelay(cartItemId: string, value: number) {
+    // Add a delay before updating the quantity in case the use presses the button multiple times.
     if (updateCartItemQuantityTimer) {
       clearTimeout(updateCartItemQuantityTimer);
     }
     const newTimer = setTimeout(async () => {
-      await handleUpdateCartItemQuantity(value);
+      await handleUpdateCartItemQuantity(cartItemId, cartItem?.quantity!, value);
     }, 1000);
     setUpdateCartItemQuantityTimer(newTimer);
   }
@@ -97,12 +118,12 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     };
   }, [updateCartItemQuantityTimer]);
 
-  async function handleUpdateCartItemQuantity(value: number) {
-    const newQuantity = cartItem?.quantity! + value;
+  async function handleUpdateCartItemQuantity(cartItemId: string, previousQuantity: number, quantityToAdd: number) {
+    const newQuantity = previousQuantity + quantityToAdd;
     setIsUpdatingCartItemQuantity(true);
     try {
       const { success, message } = await updateCartItemQuantity({
-        cart_item_id: cartItem?.cart_item_id!,
+        cart_item_id: cartItemId,
         quantity: newQuantity,
       });
       if (success === false) {
@@ -245,7 +266,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   alignItems: 'center',
                 }}>
                 <IconButton
-                  onClick={() => handleSetCartItemQuantity(-1)}
+                  onClick={() => handleSetCartItemQuantity(cartItem?.cart_item_id!, -1)}
                   sx={{
                     color: 'inherit',
                     height: '48px',
@@ -264,7 +285,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   {cartItem?.quantity}
                 </Typography>
                 <IconButton
-                  onClick={() => handleSetCartItemQuantity(1)}
+                  onClick={() => handleSetCartItemQuantity(cartItem?.cart_item_id!, 1)}
                   sx={{
                     color: 'inherit',
                     height: '48px',

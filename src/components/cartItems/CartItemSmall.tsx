@@ -12,6 +12,7 @@ import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   item: CartItemType;
@@ -27,7 +28,7 @@ export default function CartItemSmall({ item }: Props) {
   const isOnSale = item?.product?.on_sale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
-  const isShippingView = pathname.includes('shipping');
+  const isShippingView = pathname.includes('/checkout/shipping');
 
   async function handleRemoveCartItem(cartItemId: string) {
     setIsRemovingCartItem(true);
@@ -67,7 +68,7 @@ export default function CartItemSmall({ item }: Props) {
           flexShrink: 0,
         }}>
         <Image
-          style={{ objectFit: 'cover', borderRadius: '4px' }}
+          style={{ objectFit: 'cover', borderRadius: borderRadius }}
           fill
           sizes="60px"
           src={item?.product?.product_image_data[0].image_url ?? ''}
@@ -167,7 +168,7 @@ export default function CartItemSmall({ item }: Props) {
             <Box
               sx={{
                 display: 'flex',
-                borderRadius: 1,
+                borderRadius: borderRadius,
                 paddingX: 1,
                 backgroundColor: customColorPalette.blue.dark,
                 width: 'fit-content',

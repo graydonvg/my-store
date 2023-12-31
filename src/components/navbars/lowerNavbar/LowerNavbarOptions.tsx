@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 
 export default function LowerNavbarOptions() {
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
-  const isAccountView = pathname.includes('account') || pathname.includes('orders') || pathname.includes('wishlist');
+  const isAdminView = pathname.includes('/admin-view');
+  const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
 
   return (
     <Box

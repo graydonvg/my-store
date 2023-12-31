@@ -1,3 +1,4 @@
+import { borderRadius } from '@/constants/styles';
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import { ReactNode } from 'react';
@@ -14,7 +15,7 @@ export default function AccordionComponent({ title, defaultExpanded, children }:
       elevation={2}
       disableGutters
       defaultExpanded={defaultExpanded}
-      sx={{ borderRadius: '4px' }}>
+      sx={{ borderRadius: borderRadius }}>
       <AccordionSummary expandIcon={<ExpandMore />}>
         <Typography
           component="h2"

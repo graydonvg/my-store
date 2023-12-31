@@ -1,5 +1,6 @@
 'use client';
 
+import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
 
@@ -39,7 +40,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: labelColor,
                 border: `1px solid ${borderColor} !important`,
-                borderRadius: '4px !important',
+                borderRadius: `${borderRadius} !important`,
                 '@media (hover: hover)': {
                   '&:hover': {
                     backgroundColor: 'transparent',

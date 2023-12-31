@@ -5,6 +5,7 @@ import { Box, Divider, List, Typography, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import CartItemSmall from './CartItemSmall';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   paddingX?: number | string;
@@ -39,7 +40,7 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
           );
         })
       ) : (
-        <Box sx={{ padding: 1, marginTop: 2, borderRadius: '4px' }}>
+        <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius }}>
           <Typography>Your cart is empty</Typography>
         </Box>
       )}

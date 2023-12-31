@@ -21,7 +21,7 @@ export default function NavDraweOptions() {
   const mode = theme.palette.mode;
   const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
   const router = useRouter();
 
   function handleCloseDrawer() {

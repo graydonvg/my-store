@@ -15,20 +15,23 @@ import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
-import { UpdateAddressTypeStore } from '@/types';
+import { AddressType, UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete-address';
 import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddNewAddressDialog from '../../dialogs/AddNewAddressDialog';
+import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { borderRadius } from '@/constants/styles';
 
 export default function Addresses() {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
+  const checkoutData = useAppSelector((state) => state.checkoutData);
   const customColorPalette = useCustomColorPalette();
   const [isDeleting, setIsDeleting] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
@@ -36,11 +39,14 @@ export default function Addresses() {
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
-  const [selectedShippingAddress, setSelectedShippingAddress] = useState<string | null>(null);
-  const isShippingView = pathname.includes('shipping');
+  const isShippingView = pathname.includes('/checkout/shipping');
 
-  function handleSelectShippingAddress(e: ChangeEvent<HTMLInputElement>) {
-    setSelectedShippingAddress(e.target.value);
+  function handleSelectShippingAddress(address: AddressType) {
+    if (checkoutData.shippingAddress?.address_id === address.address_id) {
+      dispatch(setCheckoutData({ ...checkoutData, shippingAddress: null }));
+    } else {
+      dispatch(setCheckoutData({ ...checkoutData, shippingAddress: address }));
+    }
   }
 
   async function handleSetAddressToEdit(addressId: string) {
@@ -113,7 +119,7 @@ export default function Addresses() {
 
   return (
     <Box>
-      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: '4px' }}>
+      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: borderRadius }}>
         <Table>
           <TableBody>
             {currentUser?.addresses && currentUser?.addresses.length > 0 ? (
@@ -124,9 +130,9 @@ export default function Addresses() {
                   {isShippingView ? (
                     <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
                       <Checkbox
-                        value={address.address_id}
-                        checked={selectedShippingAddress === address.address_id}
-                        onChange={handleSelectShippingAddress}
+                        // value={address.address_id}
+                        checked={checkoutData.shippingAddress?.address_id === address.address_id}
+                        onChange={() => handleSelectShippingAddress(address)}
                         disableRipple
                         sx={{ padding: 0 }}
                       />

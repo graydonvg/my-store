@@ -13,6 +13,7 @@ import deleteProductImageDataFromDb from '@/services/product-image-data/delete-p
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { Spinner } from '../progress/Spinner';
 import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   productName?: string;
@@ -38,7 +39,7 @@ export default function SmallProductImageBox({
   const dispatch = useAppDispatch();
   const customColorPalette = useCustomColorPalette();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
   const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
 
   async function handleDeleteImage(file_name: string, product_image_id: string) {
@@ -76,7 +77,7 @@ export default function SmallProductImageBox({
           alignItems: 'center',
           aspectRatio: 3 / 4,
           outline: `1px solid ${borderColor}`,
-          borderRadius: 1,
+          borderRadius: borderRadius,
           opacity: productImageData && !isEditMode ? (imageIndex !== selectedImageIndex ? '50%' : null) : null,
         }}>
         {productImageData ? (
@@ -84,7 +85,7 @@ export default function SmallProductImageBox({
             <Image
               style={{
                 objectFit: 'cover',
-                borderRadius: '4px',
+                borderRadius: borderRadius,
                 cursor: 'pointer',
               }}
               fill
@@ -104,7 +105,7 @@ export default function SmallProductImageBox({
                     height: '100%',
                     color: 'white',
                     padding: 0,
-                    borderRadius: 1,
+                    borderRadius: borderRadius,
                     backgroundColor: customColorPalette.black.opacity.medium,
                     '&:hover': {
                       backgroundColor: 'unset',

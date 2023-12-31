@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { calculateDiscountedPrice } from '@/utils/calculateDiscountedPrice';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   product: ProductType;
@@ -27,7 +28,7 @@ export default function ProductCard({ product }: Props) {
   const dispatch = useAppDispatch();
   const { imageData } = useAppSelector((state) => state.productForm);
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
   const isOnSale = product.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedPrice(product);
   const { product_image_data, ...restOfProductData } = product;
@@ -75,7 +76,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <Paper
       elevation={1}
-      sx={{ borderRadius: '4px', height: 1 }}>
+      sx={{ borderRadius: borderRadius, height: 1 }}>
       <Box
         sx={{
           display: 'flex',
@@ -117,7 +118,7 @@ export default function ProductCard({ product }: Props) {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    borderRadius: 1,
+                    borderRadius: borderRadius,
                     paddingX: 0.5,
                     backgroundColor: customColorPalette.blue.dark,
                     width: 'min-content',
@@ -137,7 +138,7 @@ export default function ProductCard({ product }: Props) {
               {/* <Box
               sx={{
                 display: 'flex',
-                borderRadius: 1,
+                borderRadius: borderRadius,
                 marginTop: 0.5,
                 marginRight: 0.5,
                 paddingX: 0.5,
@@ -156,7 +157,7 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 paddingX: 1,
-                paddingY: 1,
+                paddingY: 2,
                 gap: 1,
               }}>
               <Typography

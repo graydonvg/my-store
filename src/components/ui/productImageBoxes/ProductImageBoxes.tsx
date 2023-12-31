@@ -11,7 +11,7 @@ type Props = { isEditMode?: boolean; product?: ProductType };
 
 export default function ProductImageBoxes({ isEditMode, product }: Props) {
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { imageData, productFormData: formData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const customColorPalette = useCustomColorPalette();

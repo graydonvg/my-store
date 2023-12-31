@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
 import { usePathname } from 'next/navigation';
+import { borderRadius } from '@/constants/styles';
 
 type Props = {
   selectedImageIndex: number;
@@ -25,7 +26,7 @@ export default function LargeProductImageBox({
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('admin-view');
+  const isAdminView = pathname.includes('/admin-view');
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
   const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
@@ -36,13 +37,13 @@ export default function LargeProductImageBox({
         aspectRatio: 3 / 4,
         border: `1px solid ${boxBorderColor}`,
         position: 'relative',
-        borderRadius: 1,
+        borderRadius: borderRadius,
         display: 'grid',
         placeItems: 'center',
       }}>
       {productImageData ? (
         <Image
-          style={{ objectFit: 'cover', borderRadius: '4px' }}
+          style={{ objectFit: 'cover', borderRadius: borderRadius }}
           fill
           sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
           src={productImageData.image_url}

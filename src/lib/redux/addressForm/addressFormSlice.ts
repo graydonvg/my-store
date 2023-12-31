@@ -1,9 +1,7 @@
 import { UpdateAddressTypeStore } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type State = UpdateAddressTypeStore;
-
-const initialState: State = {
+const initialState: UpdateAddressTypeStore = {
   address_id: '',
   complex_or_building: '',
   street_address: '',

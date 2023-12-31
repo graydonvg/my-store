@@ -1,6 +1,7 @@
 'use client';
 
 import CartItemLarge from '@/components/cartItems/CartItemLarge';
+import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography, useTheme } from '@mui/material';
@@ -34,7 +35,7 @@ export default function CartView() {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: cardBackgroundColor,
-            borderRadius: '4px',
+            borderRadius: borderRadius,
             paddingX: 2,
             paddingY: 4,
           }}>
