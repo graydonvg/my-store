@@ -3,7 +3,6 @@
 import { ProductType } from '@/types';
 import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
-import { calculateDiscountedPrice, formatCurrency, toggleButtonSizeOptions } from '@/lib/utils';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { Add, AddShoppingCart, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
@@ -15,6 +14,9 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { toggleButtonSizeOptions } from '@/constants/sizes';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { calculateDiscountedPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = { product: ProductType };
 

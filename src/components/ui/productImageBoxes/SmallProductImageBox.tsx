@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
-import deleteProductImageData from '@/services/product-image-data/delete-product-image-data';
+import deleteProductImageDataFromDb from '@/services/product-image-data/delete-product-image-data';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { Spinner } from '../progress/Spinner';
 import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';
@@ -48,7 +48,7 @@ export default function SmallProductImageBox({
         await deleteImageFromStorage(file_name);
       }
       if (productFormData.product_id && product_image_id) {
-        const { success, message } = await deleteProductImageData(product_image_id);
+        const { success, message } = await deleteProductImageDataFromDb(product_image_id);
 
         if (success === false) {
           toast.error(message);

@@ -6,12 +6,12 @@ import { Spinner } from '../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { formatCurrency } from '@/lib/utils';
 import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 type Props = {
   item: CartItemType;

@@ -1,4 +1,4 @@
-import { navOptions, adminNavOptions, accountNavOptions } from '@/lib/utils';
+import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';

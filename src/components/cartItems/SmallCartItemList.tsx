@@ -6,7 +6,11 @@ import { Fragment } from 'react';
 import CartItemSmall from './CartItemSmall';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
-export default function SmallCartItemList() {
+type Props = {
+  paddingX?: number | string;
+};
+
+export default function SmallCartItemList({ paddingX = 0 }: Props) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
@@ -21,7 +25,7 @@ export default function SmallCartItemList() {
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
-        paddingX: 2,
+        paddingX: paddingX,
         height: 1,
       }}>
       {cartItems.length > 0 ? (

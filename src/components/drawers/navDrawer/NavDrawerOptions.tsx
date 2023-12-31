@@ -6,11 +6,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import { navOptions, adminNavOptions } from '@/lib/utils';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
+import { adminNavOptions, navOptions } from '@/constants/navigation';
 
 export default function NavDraweOptions() {
   const supabase = createSupabaseBrowserClient();

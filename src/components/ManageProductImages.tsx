@@ -12,12 +12,13 @@ import {
   setImageUploadProgress,
   setIsEditMode,
 } from '@/lib/redux/productForm/productFormSlice';
-import { deleteAllProductImages, generateUniqueFileName } from '@/lib/utils';
 import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadImageToStorage } from '@/lib/firebase';
+import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
+import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 
 type Props = {
   isSubmitting: boolean;

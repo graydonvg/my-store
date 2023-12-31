@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
-import { formatCurrency } from '@/lib/utils';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import {
@@ -14,6 +13,7 @@ import {
   selectTotalToPay,
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 export default function CheckoutFlowLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();

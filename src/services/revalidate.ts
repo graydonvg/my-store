@@ -1,4 +1,4 @@
-import createURL from '@/lib/utils';
+import createURL from '@/utils/createURL';
 
 export default async function revalidate(path: string) {
   const url = createURL('/api/revalidate');

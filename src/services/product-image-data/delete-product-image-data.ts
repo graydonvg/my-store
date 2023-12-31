@@ -1,6 +1,6 @@
 import { CustomResponseType } from '@/types';
 
-export default async function deleteProductImageData(product_image_id: string): Promise<CustomResponseType> {
+export default async function deleteProductImageDataFromDb(product_image_id: string): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/admin/product-image-data/delete', {
       method: 'DELETE',

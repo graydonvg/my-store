@@ -6,7 +6,6 @@ import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
-import { calculateDiscountedPrice, deleteAllProductImages, formatCurrency } from '@/lib/utils';
 import { ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
@@ -14,6 +13,9 @@ import deleteProduct from '@/services/products/delete-product';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Link from 'next/link';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
+import { calculateDiscountedPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = {
   product: ProductType;

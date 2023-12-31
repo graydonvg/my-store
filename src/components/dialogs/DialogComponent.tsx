@@ -50,13 +50,14 @@ export default function DialogComponent({ isOpen, children }: Props) {
         />
         <Box sx={{ position: 'absolute', right: 4, top: 4 }}>
           <IconButton
+            disableRipple
             size="small"
             aria-label="close dialog"
             onClick={handleCloseDialog}>
             <Close fontSize="medium" />
           </IconButton>
         </Box>
-        <Box sx={{ padding: 4 }}>{children}</Box>
+        <Box sx={{ padding: 4, paddingTop: 6 }}>{children}</Box>
       </Box>
     </Dialog>
   );

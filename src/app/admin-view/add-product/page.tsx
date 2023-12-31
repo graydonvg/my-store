@@ -3,7 +3,6 @@
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import { categories, getEmptyFormFields, getNumberOfFormFields, toggleButtonSizeOptions } from '@/lib/utils';
 import { InsertProductTypeDb, InsertProductTypeStore, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -24,9 +23,12 @@ import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
 import NumberField from '@/components/ui/inputFields/NumberField';
+import { toggleButtonSizeOptions } from '@/constants/sizes';
+import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
+import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 
 const formFields = [
-  { label: 'Category', name: 'category', type: 'select', options: categories },
+  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
   { label: 'Name', name: 'name' },
   { label: 'Description', name: 'description', multiline: true },
   { label: 'Delivery info', name: 'delivery_info', multiline: true },

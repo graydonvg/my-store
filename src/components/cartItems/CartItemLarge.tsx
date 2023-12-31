@@ -2,12 +2,12 @@
 
 import { Box, ListItem, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { formatCurrency } from '@/lib/utils';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 type Props = {
   item: CartItemType;

@@ -3,9 +3,9 @@
 import { AppBar, Box } from '@mui/material';
 import LowerNavbar from './lowerNavbar/LowerNavbar';
 import UpperNavbar from './upperNavbar/UpperNavbar';
-import { ElevationScroll } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import CheckoutNavbar from './CheckoutNavbar';
+import { ElevationScroll } from '../ui/ElevationScroll';
 
 export default function Navbar() {
   const pathname = usePathname();

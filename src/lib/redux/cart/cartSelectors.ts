@@ -1,4 +1,3 @@
-import { roundPrice } from '@/lib/utils';
 import { CartItemType } from '@/types';
 
 export function selectCartCount(items: CartItemType[]) {
@@ -22,7 +21,7 @@ export function selectTotalDiscount(items: CartItemType[]) {
     (totalDiscount, item) =>
       totalDiscount +
       (item?.product?.on_sale
-        ? roundPrice((item?.product?.price as number) * ((item?.product?.sale_percentage as number) / 100)) *
+        ? Math.round((item?.product?.price as number) * ((item?.product?.sale_percentage as number) / 100)) *
           item.quantity
         : 0),
     0

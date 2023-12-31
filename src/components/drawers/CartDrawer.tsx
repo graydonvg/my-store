@@ -9,10 +9,10 @@ import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
-import { formatCurrency } from '@/lib/utils';
 import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 import SmallCartItemList from '../cartItems/SmallCartItemList';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 export default function CartDrawer() {
   const router = useRouter();
@@ -83,7 +83,7 @@ export default function CartDrawer() {
             paddingTop: `${navbarHeight}px`,
           }}
         />
-        <SmallCartItemList />
+        <SmallCartItemList paddingX={2} />
         {cartItems.length > 0 ? (
           <Box
             sx={{

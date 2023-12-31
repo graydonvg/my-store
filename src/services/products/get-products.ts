@@ -1,5 +1,5 @@
-import createURL from '@/lib/utils';
 import { CustomResponseType, ProductType } from '@/types';
+import createURL from '@/utils/createURL';
 
 export async function getAllProducts(): Promise<CustomResponseType<ProductType[]>> {
   const url = createURL('/api/products/get-all');
