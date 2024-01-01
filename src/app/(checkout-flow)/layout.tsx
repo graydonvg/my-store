@@ -52,22 +52,26 @@ export default function CheckoutFlowLayout({ children }: Props) {
 
   async function handlePayment() {
     const stripe = await stripePromise;
-    const createLineItems = cartItems.map((item) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item?.product?.name,
-          images: item?.product?.product_image_data.map((data) => data.image_url),
-        },
-        unit_amount: (item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price!) * 100,
-      },
+    const createLineItems = cartItems.map((item) => {
+      const unit_amount =
+        (item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price!) * 100;
+      const images = item?.product?.product_image_data.map((data) => data.image_url);
 
-      quantity: item?.quantity,
-    }));
+      return {
+        price_data: {
+          currency: 'zar',
+          product_data: {
+            name: item?.product?.name,
+            images,
+          },
+          unit_amount,
+        },
+
+        quantity: item?.quantity,
+      };
+    });
 
     const { data } = await callStripeSession(createLineItems);
-
-    console.log(data);
 
     setIsProcessingOrder(true);
 

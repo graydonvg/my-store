@@ -19,16 +19,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const response = await request.json();
     const lineItems = response;
-    console.log('lineItems', lineItems);
+
     const session = await stripe.checkout.sessions.create({
+      shipping_address_collection: { allowed_countries: ['ZA'] },
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
       success_url: `${createURL('/checkout/payment')}?status=success`,
       cancel_url: `${createURL('/checkout/payment')}?status=cancel`,
     });
-
-    console.log('session', session);
 
     return NextResponse.json({ success: true, message: 'Payment successfull.', data: { sessionId: session.id } });
   } catch (error) {
