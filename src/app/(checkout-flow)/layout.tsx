@@ -8,9 +8,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
-  selectOrderTotal,
+  selectCartTotal,
   selectTotalDiscount,
-  selectTotalToPay,
+  selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -19,6 +19,8 @@ import { borderRadius } from '@/constants/styles';
 import { loadStripe } from '@stripe/stripe-js';
 import { callStripeSession } from '@/services/stripe/call-stripe-session';
 import { calculateDiscountedCartItemPrice, calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
+import OrderTotals from '@/components/OrderTotals';
+import payWithStripe from '@/utils/payWithStripe';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -30,101 +32,27 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
-  const { cartItems } = useAppSelector((state) => state.cart);
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const orderTotal = selectOrderTotal(cartItems);
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
-  const totalToPay = selectTotalToPay(cartItems);
+  const orderTotal = selectOrderTotal(cartItems);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
-  const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
 
   function handleNavigate() {
-    dispatch(setCheckoutData({ ...checkoutData, totalToPay }));
+    dispatch(setCheckoutData({ ...checkoutData, totalToPay: orderTotal }));
     router.push('/checkout/shipping');
   }
 
-  async function handlePayment() {
-    const stripe = await stripePromise;
-    const createLineItems = cartItems.map((item) => {
-      const unit_amount =
-        (item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price!) * 100;
-      const images = item?.product?.product_image_data.map((data) => data.image_url);
-
-      return {
-        price_data: {
-          currency: 'zar',
-          product_data: {
-            name: item?.product?.name,
-            images,
-          },
-          unit_amount,
-        },
-
-        quantity: item?.quantity,
-      };
-    });
-
-    const { data } = await callStripeSession(createLineItems);
-
-    setIsProcessingOrder(true);
-
-    localStorage.setItem('stripe', 'true');
-
-    const error = await stripe?.redirectToCheckout({
-      sessionId: data?.sessionId!,
-    });
-
-    console.log(error);
-  }
-
-  function renderOrderTotals({
-    label,
-    price,
-    fontSize,
-    fontWeight,
-    backgroundColor,
-  }: {
-    label: string;
-    price: string;
-    fontSize: number;
-    fontWeight?: number;
-    backgroundColor?: string;
-  }) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: 1,
-          padding: 1,
-          backgroundColor,
-          borderRadius: borderRadius,
-        }}>
-        <Typography
-          paddingRight={2}
-          component="span"
-          fontSize={fontSize}
-          fontWeight={fontWeight}>
-          {label}
-        </Typography>
-        <Box sx={{ whiteSpace: 'nowrap' }}>
-          <Typography
-            component="span"
-            fontSize={fontSize}
-            fontWeight={fontWeight}>
-            {price}
-          </Typography>
-        </Box>
-      </Box>
-    );
+  async function handlePayWithStripe() {
+    await payWithStripe(cartItems);
   }
 
   return (
@@ -156,45 +84,16 @@ export default function CheckoutFlowLayout({ children }: Props) {
               lineHeight={1}>
               Your Order
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', paddingY: 2 }}>
-              {renderOrderTotals({
-                label: 'Cart total',
-                price: formatCurrency(orderTotal),
-
-                fontSize: 14,
-              })}
-              {totalDiscount > 0
-                ? renderOrderTotals({
-                    label: 'Discount total',
-                    price: `-${formatCurrency(totalDiscount)}`,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    backgroundColor: '#42a5f517',
-                  })
-                : null}
-              {renderOrderTotals({
-                label: 'Delivery fee',
-                price: orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0),
-                fontSize: 14,
-              })}
-              <Divider />
-              {renderOrderTotals({
-                label: 'Order total',
-                price: formatCurrency(totalToPay),
-                fontSize: 14,
-                fontWeight: 600,
-              })}
-              <Divider sx={{ border: `1.5px solid ${dividerColor}` }} />
-              {renderOrderTotals({
-                label: 'TOTAL TO PAY',
-                price: formatCurrency(totalToPay),
-                fontSize: 18,
-                fontWeight: 700,
-              })}
-            </Box>
+            <OrderTotals
+              cartTotal={cartTotal}
+              totalDiscount={totalDiscount}
+              deliveryFee={deliveryFee}
+              orderTotal={orderTotal}
+              totalToPay={orderTotal}
+            />
             <ContainedButton
               disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingAddress)}
-              onClick={isCartView ? handleNavigate : handlePayment}
+              onClick={isCartView ? handleNavigate : handlePayWithStripe}
               label={(isCartView && 'checkout now') || (isShippingView && 'continue to payment')}
               fullWidth
               backgroundColor={isCartView ? 'blue' : 'red'}

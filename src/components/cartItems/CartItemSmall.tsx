@@ -137,18 +137,18 @@ export default function CartItemSmall({ item }: Props) {
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             {[
-              { heading: 'QTY', value: item?.quantity },
-              { heading: 'Size', value: item?.size },
+              { label: 'QTY', value: item?.quantity },
+              { label: 'Size', value: item?.size },
             ].map((item) => (
               <Box
-                key={item.heading}
+                key={item.label}
                 sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Typography
                   lineHeight={1}
                   component="span"
                   sx={{ opacity: '70%' }}
                   fontSize={13}>
-                  {item.heading}:
+                  {item.label}:
                 </Typography>
                 <Typography
                   lineHeight={1}

@@ -9,9 +9,9 @@ import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-materia
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
 
 const breadcrumbData = [
-  { href: '/cart/view', icon: <ShoppingCart />, label: 'Cart' },
-  { href: '/checkout/shipping', icon: <LocalShippingOutlined />, label: 'Shipping' },
-  { href: '/checkout/payment', icon: <Payment />, label: 'Payment' },
+  { href: '/cart/view', icon: <ShoppingCart />, label: 'cart' },
+  { href: '/checkout/shipping', icon: <LocalShippingOutlined />, label: 'shipping' },
+  { href: '', icon: <Payment />, label: 'payment' },
 ];
 
 export default function CheckoutNavbar() {

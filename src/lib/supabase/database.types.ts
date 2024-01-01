@@ -86,6 +86,115 @@ export interface Database {
           }
         ];
       };
+      order_items: {
+        Row: {
+          order_id: string;
+          order_item_id: string;
+          price_paid: number;
+          product_id: string;
+          product_image_url: string;
+          product_name: string;
+          quantity: number;
+          return_details: string;
+          size: string;
+          user_id: string;
+        };
+        Insert: {
+          order_id: string;
+          order_item_id?: string;
+          price_paid: number;
+          product_id: string;
+          product_image_url: string;
+          product_name: string;
+          quantity: number;
+          return_details: string;
+          size: string;
+          user_id: string;
+        };
+        Update: {
+          order_id?: string;
+          order_item_id?: string;
+          price_paid?: number;
+          product_id?: string;
+          product_image_url?: string;
+          product_name?: string;
+          quantity?: number;
+          return_details?: string;
+          size?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'order_items_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['order_id'];
+          },
+          {
+            foreignKeyName: 'order_items_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['product_id'];
+          },
+          {
+            foreignKeyName: 'order_items_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
+      orders: {
+        Row: {
+          address_id: string;
+          cart_total: number;
+          created_at: string;
+          delivery_fee: number;
+          discount_total: number;
+          order_id: string;
+          order_total: number;
+          user_id: string;
+        };
+        Insert: {
+          address_id: string;
+          cart_total: number;
+          created_at?: string;
+          delivery_fee: number;
+          discount_total: number;
+          order_id?: string;
+          order_total: number;
+          user_id: string;
+        };
+        Update: {
+          address_id?: string;
+          cart_total?: number;
+          created_at?: string;
+          delivery_fee?: number;
+          discount_total?: number;
+          order_id?: string;
+          order_total?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'orders_address_id_fkey';
+            columns: ['address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['address_id'];
+          },
+          {
+            foreignKeyName: 'orders_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
       product_image_data: {
         Row: {
           created_at: string;
@@ -159,6 +268,60 @@ export interface Database {
           sizes?: string[];
         };
         Relationships: [];
+      };
+      shipping_details: {
+        Row: {
+          city: string;
+          complex_or_building: string | null;
+          full_name: string;
+          order_id: string;
+          postal_code: number;
+          province: string;
+          shipping_details_id: string;
+          street_address: string;
+          suburb: string;
+          user_id: string;
+        };
+        Insert: {
+          city: string;
+          complex_or_building?: string | null;
+          full_name: string;
+          order_id: string;
+          postal_code: number;
+          province: string;
+          shipping_details_id?: string;
+          street_address: string;
+          suburb: string;
+          user_id: string;
+        };
+        Update: {
+          city?: string;
+          complex_or_building?: string | null;
+          full_name?: string;
+          order_id?: string;
+          postal_code?: number;
+          province?: string;
+          shipping_details_id?: string;
+          street_address?: string;
+          suburb?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'shipping_details_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['order_id'];
+          },
+          {
+            foreignKeyName: 'shipping_details_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
       };
       users: {
         Row: {

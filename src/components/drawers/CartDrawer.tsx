@@ -9,7 +9,7 @@ import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
-import { selectCartCount, selectOrderTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
+import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 import SmallCartItemList from '../cartItems/SmallCartItemList';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -24,7 +24,7 @@ export default function CartDrawer() {
   const navbarHeight = isBelowMedium
     ? document.getElementById('navbar')?.offsetHeight
     : document.getElementById('navbar')?.offsetHeight;
-  const orderTotal = selectOrderTotal(cartItems);
+  const orderTotal = selectCartTotal(cartItems);
   const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const mode = theme.palette.mode;

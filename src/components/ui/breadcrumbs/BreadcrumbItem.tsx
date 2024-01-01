@@ -1,7 +1,9 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { Box, Button, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useAppSelector } from '@/lib/redux/hooks';
+import payWithStripe from '@/utils/payWithStripe';
+import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
@@ -13,13 +15,20 @@ type Props = {
 };
 
 export default function BreadcrumbItem({ href, icon, label }: Props) {
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const shippingAddress = useAppSelector((state) => state.checkoutData.shippingAddress);
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
 
+  async function handlePayWithStripe() {
+    await payWithStripe(cartItems);
+  }
+
   return (
     <Link
+      onClick={label === 'payment' && shippingAddress ? handlePayWithStripe : undefined}
       href={href}
       tabIndex={-1}>
       <Button

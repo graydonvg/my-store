@@ -7,6 +7,7 @@ import Account from '@/components/accountPage/sections/Account';
 import PersonalInformation from '@/components/accountPage/sections/PersonalInformation';
 import Addresses from '@/components/accountPage/sections/Addresses';
 import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
+import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 
 export default function AccountPage() {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -27,19 +28,13 @@ export default function AccountPage() {
 
   return (
     <Box>
-      <Box
-        component="header"
-        sx={{ marginBottom: 3, borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-        <Typography
-          component="h1"
-          fontSize={{ xs: 26, sm: 30 }}
-          fontWeight={500}
-          sx={{ paddingY: 1, textAlign: 'center' }}>
-          {currentUser?.first_name && currentUser?.last_name
+      <PageHeaderWithBorder
+        label={
+          currentUser?.first_name && currentUser?.last_name
             ? `${currentUser?.first_name} ${currentUser?.last_name}`
-            : currentUser?.email}
-        </Typography>
-      </Box>
+            : currentUser?.email!
+        }
+      />
       <Grid
         container
         rowGap={2}>

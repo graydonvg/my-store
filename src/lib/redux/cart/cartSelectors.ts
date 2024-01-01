@@ -28,14 +28,14 @@ export function selectTotalDiscount(items: CartItemType[]) {
   );
 }
 
-export function selectOrderTotal(items: CartItemType[]) {
+export function selectCartTotal(items: CartItemType[]) {
   return items.reduce((totalPrice, item) => totalPrice + item?.product?.price! * item?.quantity!, 0);
 }
 
 export function selectDeliveryFee(items: CartItemType[]) {
-  return selectOrderTotal(items) - selectTotalDiscount(items) > 500 ? 0 : 60;
+  return selectCartTotal(items) - selectTotalDiscount(items) > 500 ? 0 : 60;
 }
 
-export function selectTotalToPay(items: CartItemType[]) {
-  return selectOrderTotal(items) - selectTotalDiscount(items);
+export function selectOrderTotal(items: CartItemType[]) {
+  return selectCartTotal(items) - selectTotalDiscount(items);
 }

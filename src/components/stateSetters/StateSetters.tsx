@@ -9,6 +9,7 @@ export default async function StateSetters() {
     data: { session },
   } = await supabase.auth.getSession();
   const { data: user } = await supabase.from('users').select('*, addresses(*)');
+
   const userData = user ? user[0] : ({} as CurrentUserType);
   let cartItems = [] as CartItemType[];
 
