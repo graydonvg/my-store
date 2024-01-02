@@ -110,3 +110,8 @@ export type AccountTextFieldData = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDownFunction: () => void;
 };
+
+export type OrderType = Omit<Omit<Database['public']['Tables']['orders']['Row'], 'address_id'>, 'user_id'> & {
+  order_items: Omit<Omit<Database['public']['Tables']['order_items']['Row'], 'order_id'>, 'user_id'>[];
+  shipping_details: Database['public']['Tables']['shipping_details']['Row'][];
+};
