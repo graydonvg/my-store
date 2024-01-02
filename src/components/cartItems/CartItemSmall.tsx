@@ -15,15 +15,15 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 
 type LoadingSpinnerProps = {
-  showSpinner: boolean;
+  show: boolean;
 };
 
-function LoadingSpinner({ showSpinner }: LoadingSpinnerProps) {
+function LoadingSpinner({ show }: LoadingSpinnerProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  if (!showSpinner) return null;
+  if (!show) return null;
 
   return (
     <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
@@ -36,13 +36,13 @@ function LoadingSpinner({ showSpinner }: LoadingSpinnerProps) {
 }
 
 type DeleteCartItemButtonProps = {
-  showButton: boolean;
+  show: boolean;
   disabled: boolean;
   onClick: () => void;
 };
 
-function DeleteCartItemButton({ showButton, disabled, onClick }: DeleteCartItemButtonProps) {
-  if (!showButton) return null;
+function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
+  if (!show) return null;
 
   return (
     <IconButton
@@ -79,9 +79,9 @@ function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled,
         width: '20px',
         height: '20px',
       }}>
-      <LoadingSpinner showSpinner={showSpinner} />
+      <LoadingSpinner show={showSpinner} />
       <DeleteCartItemButton
-        showButton={showDeleteButton}
+        show={showDeleteButton}
         disabled={disabled}
         onClick={onClick}
       />
@@ -90,14 +90,14 @@ function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled,
 }
 
 type SalePercentageBadgeProps = {
-  showBadge: boolean;
+  show: boolean;
   percentage: number;
 };
 
-function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps) {
+function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
   const customColorPalette = useCustomColorPalette();
 
-  if (!showBadge) return null;
+  if (!show) return null;
 
   return (
     <Box
@@ -123,12 +123,12 @@ function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps
 }
 
 type SalePriceProps = {
-  showPrice: boolean;
+  show: boolean;
   price: number;
 };
 
-function SalePrice({ showPrice, price }: SalePriceProps) {
-  if (!showPrice) return null;
+function SalePrice({ show, price }: SalePriceProps) {
+  if (!show) return null;
 
   return (
     <Box
@@ -272,7 +272,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           component="footer"
           sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           <SalePercentageBadge
-            showBadge={isOnSale}
+            show={isOnSale}
             percentage={item?.product?.sale_percentage!}
           />
           <Box
@@ -285,7 +285,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
               width: 1,
             }}>
             <SalePrice
-              showPrice={isOnSale}
+              show={isOnSale}
               price={price}
             />
             <Typography

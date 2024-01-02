@@ -1,16 +1,15 @@
-import { Button, IconButton, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-type TitleAndLogoProps = {
+type Props = {
   display: 'flex' | { xs: 'flex'; md: 'none' };
   variant: 'h5' | 'h6';
   color: string;
   hideText?: boolean;
 };
 
-export default function NavbarTitleAndLogo({ display, variant, color, hideText = false }: TitleAndLogoProps) {
+export default function NavbarTitleAndLogo({ display, variant, color, hideText = false }: Props) {
   const router = useRouter();
 
   function handleGoToHome() {

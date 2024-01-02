@@ -14,25 +14,22 @@ import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 import SmallCartItemList from '../cartItems/SmallCartItemList';
 import { formatCurrency } from '@/utils/formatCurrency';
 
-export default function CartDrawer() {
+type DrawerFooterProps = {
+  show: boolean;
+};
+
+function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const navbarHeight = isBelowMedium
-    ? document.getElementById('navbar')?.offsetHeight
-    : document.getElementById('navbar')?.offsetHeight;
   const orderTotal = selectCartTotal(cartItems);
-  const cartCount = selectCartCount(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
-  function handleToggleCart() {
-    dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
-  }
+  if (!show) return null;
 
   function handleCloseCartDrawer() {
     if (isCartOpen.right === true) {
@@ -48,6 +45,87 @@ export default function CartDrawer() {
   function handleGoToCheckout() {
     handleCloseCartDrawer();
     router.push('/checkout/shipping');
+  }
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        padding: 2,
+        borderTop: `1px solid ${borderColor}`,
+      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          textTransform: 'uppercase',
+          justifyContent: 'space-between',
+          paddingBottom: 1,
+        }}>
+        <Typography
+          component="span"
+          fontSize={16}
+          fontWeight={700}>
+          Discount
+        </Typography>
+        <Typography
+          component="span"
+          fontSize={16}
+          fontWeight={700}>
+          {formatCurrency(totalDiscount)}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          paddingBottom: 2,
+          textTransform: 'uppercase',
+        }}>
+        <Typography
+          component="span"
+          fontSize={24}
+          fontWeight={700}>
+          total
+        </Typography>
+        <Typography
+          component="span"
+          fontSize={24}
+          fontWeight={700}>
+          {formatCurrency(orderTotal - totalDiscount)}
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+        <OutlinedButton
+          onClick={handleGoToCartView}
+          fullWidth
+          label="view cart"
+        />
+        <ContainedButton
+          onClick={handleGoToCheckout}
+          backgroundColor="blue"
+          fullWidth
+          label="checkout"
+        />
+      </Box>
+    </Box>
+  );
+}
+
+export default function CartDrawer() {
+  const customColorPalette = useCustomColorPalette();
+  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+  const navbarHeight = isBelowMedium
+    ? document.getElementById('navbar')?.offsetHeight
+    : document.getElementById('navbar')?.offsetHeight;
+  const cartCount = selectCartCount(cartItems);
+
+  function handleToggleCart() {
+    dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
   }
 
   return (
@@ -84,70 +162,7 @@ export default function CartDrawer() {
           }}
         />
         <SmallCartItemList paddingX={2} />
-        {cartItems.length > 0 ? (
-          <Box
-            sx={{
-              position: 'relative',
-              padding: 2,
-              borderTop: `1px solid ${borderColor}`,
-            }}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                textTransform: 'uppercase',
-                justifyContent: 'space-between',
-                paddingBottom: 1,
-              }}>
-              <Typography
-                component="span"
-                fontSize={16}
-                fontWeight={700}>
-                Discount
-              </Typography>
-              <Typography
-                component="span"
-                fontSize={16}
-                fontWeight={700}>
-                {formatCurrency(totalDiscount)}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                paddingBottom: 2,
-                textTransform: 'uppercase',
-              }}>
-              <Typography
-                component="span"
-                fontSize={24}
-                fontWeight={700}>
-                total
-              </Typography>
-              <Typography
-                component="span"
-                fontSize={24}
-                fontWeight={700}>
-                {formatCurrency(orderTotal - totalDiscount)}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-              <OutlinedButton
-                onClick={handleGoToCartView}
-                fullWidth
-                label="view cart"
-              />
-              <ContainedButton
-                onClick={handleGoToCheckout}
-                backgroundColor="blue"
-                fullWidth
-                label="checkout"
-              />
-            </Box>
-          </Box>
-        ) : null}
+        <DrawerFooter show={cartItems.length > 0} />
       </DrawerComponent>
     </>
   );

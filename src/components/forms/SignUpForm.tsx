@@ -42,6 +42,7 @@ export default function SignUpForm({ children }: Props) {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -56,6 +57,7 @@ export default function SignUpForm({ children }: Props) {
     }
 
     setIsLoading(true);
+
     !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
     const { email, password, first_name, last_name } = formData;

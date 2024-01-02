@@ -17,15 +17,15 @@ import { AccountType } from '@/types';
 import { useRouter } from 'next/navigation';
 
 type PasswordPlaceholderProps = {
-  hidePasswordPlaceholder: boolean;
+  show: boolean;
 };
 
-function PasswordPlaceholder({ hidePasswordPlaceholder }: PasswordPlaceholderProps) {
+function PasswordPlaceholder({ show }: PasswordPlaceholderProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  if (hidePasswordPlaceholder) return null;
+  if (!show) return null;
 
   function handleSetFieldToEdit(field: string) {
     dispatch(setFieldToEdit(field));
@@ -54,15 +54,15 @@ function PasswordPlaceholder({ hidePasswordPlaceholder }: PasswordPlaceholderPro
 }
 
 type UpdatePasswordProps = {
-  hideUpdatePassword: boolean;
+  show: boolean;
 };
 
-function UpdatePassword({ hideUpdatePassword }: UpdatePasswordProps) {
+function UpdatePassword({ show }: UpdatePasswordProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { accountData, isUpdatingAccount } = useAppSelector((state) => state.account);
 
-  if (hideUpdatePassword) return null;
+  if (!show) return null;
 
   function handleCancelUpdateField() {
     dispatch(setFieldToEdit(null));
@@ -165,8 +165,8 @@ export default function Account({ renderUserInfo }: AccountProps) {
         onClick={null}>
         {renderUserInfo(currentUser?.email!)}
       </AccountPageInfo>
-      <PasswordPlaceholder hidePasswordPlaceholder={isOAuthSignIn || fieldToEdit === 'password'} />
-      <UpdatePassword hideUpdatePassword={isOAuthSignIn || fieldToEdit !== 'password'} />
+      <PasswordPlaceholder show={!isOAuthSignIn && fieldToEdit !== 'password'} />
+      <UpdatePassword show={!isOAuthSignIn && fieldToEdit === 'password'} />
     </>
   );
 }

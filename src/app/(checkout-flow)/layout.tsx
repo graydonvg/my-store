@@ -1,9 +1,9 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
-import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
@@ -13,16 +13,10 @@ import {
   selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { formatCurrency } from '@/utils/formatCurrency';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
-import { loadStripe } from '@stripe/stripe-js';
-import { callStripeSession } from '@/services/stripe/call-stripe-session';
-import { calculateDiscountedCartItemPrice, calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 import OrderTotals from '@/components/OrderTotals';
 import payWithStripe from '@/utils/payWithStripe';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type Props = {
   children: ReactNode;

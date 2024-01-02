@@ -43,7 +43,9 @@ export default function SignInForm({ children }: Props) {
 
   async function handleSignInWithPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     setIsLoading(true);
+
     !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
     try {

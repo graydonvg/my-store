@@ -1,4 +1,3 @@
-import { CartItemType, CurrentUserType } from '@/types';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
@@ -10,8 +9,8 @@ export default async function StateSetters() {
   } = await supabase.auth.getSession();
   const { data: user } = await supabase.from('users').select('*, addresses(*)');
 
-  const userData = user ? user[0] : ({} as CurrentUserType);
-  let cartItems = [] as CartItemType[];
+  const userData = user;
+  let cartItems;
 
   if (user) {
     const { data: cart } = await supabase
@@ -21,13 +20,15 @@ export default async function StateSetters() {
       )
       .order('created_at', { ascending: false });
 
-    cartItems = cart ? cart : ([] as CartItemType[]);
+    cartItems = cart;
   }
+
+  if (!cartItems || !userData) return null;
 
   return (
     <>
       <UserStateSetter
-        userData={userData}
+        userData={userData[0]}
         session={session}
       />
       <CartItemsStateSetter cartItems={cartItems} />

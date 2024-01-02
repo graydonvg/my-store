@@ -10,7 +10,7 @@ import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 
 type Props = {
   href: string;
-  icon?: ReactElement<any, string | JSXElementConstructor<any>>;
+  icon: ReactElement<any, string | JSXElementConstructor<any>>;
   label: string;
 };
 
@@ -48,15 +48,15 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
             },
           },
         }}>
-        {icon && cloneElement(icon, { sx: { mr: 1 }, fontSize: 'small' })}
-        {!isBelowSmall && (
+        {cloneElement(icon, { sx: { mr: 1 }, fontSize: 'small' })}
+        {!isBelowSmall ? (
           <Typography
             textTransform="uppercase"
             fontSize={14}
             fontWeight={600}>
             {label}
           </Typography>
-        )}
+        ) : null}
       </Button>
     </Link>
   );

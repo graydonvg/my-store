@@ -14,7 +14,35 @@ import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
 import { PulseLoader } from 'react-spinners';
-import { selectQuantity } from '@/lib/redux/cart/cartSelectors';
+
+type LoaderProps = {
+  show: boolean;
+  buttonLabelColor: string;
+};
+
+function Loader({ show, buttonLabelColor }: LoaderProps) {
+  if (!show) return null;
+
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        display: 'flex',
+        height: 1,
+        width: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: (theme) => theme.zIndex.appBar + 2,
+        backgroundColor: 'transparent',
+      }}>
+      <PulseLoader
+        color={buttonLabelColor}
+        loading={show}
+        size={30}
+      />
+    </Box>
+  );
+}
 
 const isDrawerOpen = {
   top: false,
@@ -181,25 +209,10 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             flex: 1,
             justifyContent: 'space-between',
           }}>
-          {isUpdatingCartItem ? (
-            <Box
-              sx={{
-                position: 'absolute',
-                display: 'flex',
-                height: 1,
-                width: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: (theme) => theme.zIndex.appBar + 2,
-                backgroundColor: 'transparent',
-              }}>
-              <PulseLoader
-                color={buttonLabelColor}
-                loading={isUpdatingCartItem}
-                size={30}
-              />
-            </Box>
-          ) : null}
+          <Loader
+            show={isUpdatingCartItem}
+            buttonLabelColor={buttonLabelColor}
+          />
           <Box>
             <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>
               <Typography

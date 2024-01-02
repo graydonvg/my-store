@@ -18,13 +18,132 @@ import { toggleButtonSizeOptions } from '@/constants/sizes';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 
-type Props = { product: ProductType };
+type PreviousPriceAndPercentageProps = {
+  show: boolean;
+  price: number;
+  percentage: number;
+};
 
-export default function ProductDetails({ product }: Props) {
+function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAndPercentageProps) {
+  const customColorPalette = useCustomColorPalette();
+
+  if (!show) return null;
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'flex-end',
+        flexWrap: 'nowrap',
+        paddingTop: 2,
+      }}>
+      <Typography
+        lineHeight={1}
+        component="span"
+        sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
+        fontFamily={'Georgia'}
+        fontStyle="italic"
+        fontSize={22}>
+        {formatCurrency(price)}
+      </Typography>
+      <Typography
+        lineHeight={1}
+        component="span"
+        fontSize={22}
+        fontFamily={'Georgia'}
+        fontStyle="italic"
+        sx={{ color: customColorPalette.blue.light, fontFamily: 'serif' }}>
+        {`-${percentage}%`}
+      </Typography>
+    </Box>
+  );
+}
+
+type SelectItemQuantityProps = {
+  show: boolean;
+};
+
+function SelectItemQuantity({ show }: SelectItemQuantityProps) {
+  const [itemQuantity, setItemQuantity] = useState(1);
+
+  if (!show) return null;
+
+  function handleIncrementItemQuantity() {
+    setItemQuantity((prevQuantity) => prevQuantity + 1);
+  }
+
+  function handleDecrementItemQuantity() {
+    setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
+  }
+
+  return (
+    <>
+      <Divider />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+        <Typography
+          component="span"
+          fontWeight={600}
+          fontSize={14}
+          sx={{ textTransform: 'uppercase' }}>
+          Quantity
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '320px',
+            flexShrink: 1,
+          }}>
+          <IconButton
+            onClick={handleDecrementItemQuantity}
+            sx={{
+              color: 'inherit',
+              height: '56px',
+              aspectRatio: 3 / 2,
+              borderRadius: 0,
+              '&:hover': {
+                backgroundColor: 'inherit',
+              },
+            }}>
+            <Remove fontSize="small" />
+          </IconButton>
+          <Typography
+            component="span"
+            fontWeight={600}
+            fontSize={16}
+            sx={{ width: '4ch', textAlign: 'center' }}>
+            {itemQuantity}
+          </Typography>
+          <IconButton
+            onClick={handleIncrementItemQuantity}
+            sx={{
+              color: 'inherit',
+              height: '56px',
+              aspectRatio: 3 / 2,
+              borderRadius: 0,
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+            }}>
+            <Add fontSize="small" />
+          </IconButton>
+        </Box>
+      </Box>
+    </>
+  );
+}
+
+type ProductDetailsProps = { product: ProductType };
+
+export default function ProductDetails({ product }: ProductDetailsProps) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const supabase = createSupabaseBrowserClient();
-  const customColorPalette = useCustomColorPalette();
   const router = useRouter();
   const { currentUser } = useAppSelector((state) => state.user);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
@@ -132,14 +251,6 @@ export default function ProductDetails({ product }: Props) {
     }
   }
 
-  function handleIncrementItemQuantity() {
-    setItemQuantity((prevQuantity) => prevQuantity + 1);
-  }
-
-  function handleDecrementItemQuantity() {
-    setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
-  }
-
   return (
     <Grid
       container
@@ -186,34 +297,11 @@ export default function ProductDetails({ product }: Props) {
                 fontSize={42}>
                 {formatCurrency(isOnSale ? discountedPrice : product.price)}
               </Typography>
-              {isOnSale ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    flexWrap: 'nowrap',
-                    paddingTop: 2,
-                  }}>
-                  <Typography
-                    lineHeight={1}
-                    component="span"
-                    sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
-                    fontFamily={'Georgia'}
-                    fontStyle="italic"
-                    fontSize={22}>
-                    {formatCurrency(product.price)}
-                  </Typography>
-                  <Typography
-                    lineHeight={1}
-                    component="span"
-                    fontSize={22}
-                    fontFamily={'Georgia'}
-                    fontStyle="italic"
-                    sx={{ color: customColorPalette.blue.light, fontFamily: 'serif' }}>
-                    {`-${product.sale_percentage}%`}
-                  </Typography>
-                </Box>
-              ) : null}
+              <PreviousPriceAndPercentage
+                show={isOnSale}
+                price={product.price}
+                percentage={product.sale_percentage}
+              />
             </Box>
             <Divider />
           </Box>
@@ -237,66 +325,7 @@ export default function ProductDetails({ product }: Props) {
               selection={itemSize ? [itemSize] : []}
             />
           </Box>
-          {itemSize ? (
-            <>
-              <Divider />
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}>
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  fontSize={14}
-                  sx={{ textTransform: 'uppercase' }}>
-                  Quantity
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '320px',
-                    flexShrink: 1,
-                  }}>
-                  <IconButton
-                    onClick={handleDecrementItemQuantity}
-                    sx={{
-                      color: 'inherit',
-                      height: '56px',
-                      aspectRatio: 3 / 2,
-                      borderRadius: 0,
-                      '&:hover': {
-                        backgroundColor: 'inherit',
-                      },
-                    }}>
-                    <Remove fontSize="small" />
-                  </IconButton>
-                  <Typography
-                    component="span"
-                    fontWeight={600}
-                    fontSize={16}
-                    sx={{ width: '4ch', textAlign: 'center' }}>
-                    {itemQuantity}
-                  </Typography>
-                  <IconButton
-                    onClick={handleIncrementItemQuantity}
-                    sx={{
-                      color: 'inherit',
-                      height: '56px',
-                      aspectRatio: 3 / 2,
-                      borderRadius: 0,
-                      '&:hover': {
-                        backgroundColor: 'transparent',
-                      },
-                    }}>
-                    <Add fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-            </>
-          ) : null}
+          <SelectItemQuantity show={!!itemSize} />
           <Box
             sx={{
               display: 'flex',

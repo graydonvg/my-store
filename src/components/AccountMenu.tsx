@@ -17,8 +17,46 @@ import { borderRadius } from '@/constants/styles';
 
 const iconColor = 'custom.grey.light';
 const iconSize = 'small';
+const accountMenuOptions = [
+  {
+    label: 'My Account',
+    href: '/account',
+    icon: (
+      <AccountCircle
+        fontSize={iconSize}
+        sx={{ color: iconColor }}
+      />
+    ),
+  },
+  {
+    label: 'Orders',
+    href: '/orders',
+    icon: (
+      <ViewList
+        fontSize={iconSize}
+        sx={{ color: iconColor }}
+      />
+    ),
+  },
+  {
+    label: 'Wishlist',
+    href: '/wishlist',
+    icon: (
+      <Favorite
+        fontSize={iconSize}
+        sx={{ color: iconColor }}
+      />
+    ),
+  },
+];
 
-function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) {
+type CustomMenuItemProps = {
+  icon: ReactNode;
+  text: ReactNode;
+  onClick?: () => void;
+};
+
+function CustomMenuItem({ icon, text, onClick }: CustomMenuItemProps) {
   return (
     <MenuItem
       sx={{
@@ -33,14 +71,32 @@ function renderMenuItem(icon: ReactNode, text: ReactNode, onClick?: () => void) 
   );
 }
 
+type AdminMenuItemProps = {
+  show: boolean;
+};
+
+function AdminMenuItem({ show }: AdminMenuItemProps) {
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('/admin-view');
+
+  if (!show) return null;
+
+  return (
+    <Link href={isAdminView ? '/' : '/admin-view'}>
+      <CustomMenuItem
+        text={isAdminView ? 'Client View' : 'Admin View'}
+        icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
+      />
+    </Link>
+  );
+}
+
 export default function AccountMenu() {
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
-  const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
 
   const router = useRouter();
 
@@ -77,68 +133,37 @@ export default function AccountMenu() {
           <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
         </>
       }>
-      {currentUser?.is_admin ? (
-        <Link href={isAdminView ? '/' : '/admin-view'}>
-          {renderMenuItem(
-            <AdminViewToggleIcon isAdminView={isAdminView} />,
-            isAdminView ? 'Client View' : 'Admin View'
-          )}
-        </Link>
-      ) : null}
-      {[
-        {
-          label: 'My Account',
-          href: '/account',
-          icon: (
-            <AccountCircle
-              fontSize={iconSize}
-              sx={{ color: iconColor }}
-            />
-          ),
-        },
-        {
-          label: 'Orders',
-          href: '/orders',
-          icon: (
-            <ViewList
-              fontSize={iconSize}
-              sx={{ color: iconColor }}
-            />
-          ),
-        },
-        {
-          label: 'Wishlist',
-          href: '/wishlist',
-          icon: (
-            <Favorite
-              fontSize={iconSize}
-              sx={{ color: iconColor }}
-            />
-          ),
-        },
-      ].map((item) => (
+      <AdminMenuItem show={!!currentUser && currentUser?.is_admin} />
+      {accountMenuOptions.map((item) => (
         <Link
           key={item.label}
           href={item.href}>
-          {renderMenuItem(item.icon, item.label)}
+          <CustomMenuItem
+            text={item.label}
+            icon={item.icon}
+          />
         </Link>
       ))}
-      {renderMenuItem(
-        <ThemeToggleIcon
-          color={iconColor}
-          size={iconSize}
-        />,
-        `${mode === 'dark' ? 'Light' : 'Dark'} Mode`,
-        handleToggleTheme
-      )}
-      {renderMenuItem(
-        <Logout
-          fontSize={iconSize}
-          sx={{ color: iconColor }}
-        />,
-        'Sign Out',
-        handleSignOut
-      )}
+      <CustomMenuItem
+        text={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
+        icon={
+          <ThemeToggleIcon
+            color={iconColor}
+            size={iconSize}
+          />
+        }
+        onClick={handleToggleTheme}
+      />
+      <CustomMenuItem
+        text={'Sign Out'}
+        icon={
+          <Logout
+            fontSize={iconSize}
+            sx={{ color: iconColor }}
+          />
+        }
+        onClick={handleSignOut}
+      />
     </HoverDropdownMenu>
   );
 }

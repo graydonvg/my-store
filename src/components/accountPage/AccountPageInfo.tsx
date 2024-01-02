@@ -30,14 +30,14 @@ function UserDataWithLabel({ label, children }: UserDataWithLabelProps) {
 }
 
 type EditableFieldProps = {
-  showEditableField: boolean;
+  show: boolean;
   label: string;
   onClick: () => void;
   children: ReactNode;
 };
 
-function EditableField({ showEditableField, label, onClick, children }: EditableFieldProps) {
-  if (!showEditableField) return null;
+function EditableField({ show, label, onClick, children }: EditableFieldProps) {
+  if (!show) return null;
 
   return (
     <Box
@@ -57,13 +57,13 @@ function EditableField({ showEditableField, label, onClick, children }: Editable
 }
 
 type NonEditableFieldProps = {
-  showNonEditableField: boolean;
+  show: boolean;
   label: string;
   children: ReactNode;
 };
 
-function NonEditableField({ showNonEditableField, label, children }: NonEditableFieldProps) {
-  if (!showNonEditableField) return null;
+function NonEditableField({ show, label, children }: NonEditableFieldProps) {
+  if (!show) return null;
 
   return <UserDataWithLabel label={label}>{children}</UserDataWithLabel>;
 }
@@ -88,13 +88,13 @@ export default function AccountPageInfo({ canEdit, label, onClick, children }: A
   return (
     <>
       <EditableField
-        showEditableField={canEdit}
+        show={canEdit}
         label={label}
         onClick={onClick!}>
         {children}
       </EditableField>
       <NonEditableField
-        showNonEditableField={!canEdit}
+        show={!canEdit}
         label={label}>
         {children}
       </NonEditableField>

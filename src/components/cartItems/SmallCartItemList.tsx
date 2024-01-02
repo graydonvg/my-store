@@ -8,11 +8,11 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { borderRadius } from '@/constants/styles';
 
 type CartEmptyMessageProps = {
-  showMessage: boolean;
+  show: boolean;
 };
 
-function CartEmptyMessage({ showMessage }: CartEmptyMessageProps) {
-  if (!showMessage) return null;
+function CartEmptyMessage({ show }: CartEmptyMessageProps) {
+  if (!show) return null;
 
   return (
     <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius }}>
@@ -22,10 +22,10 @@ function CartEmptyMessage({ showMessage }: CartEmptyMessageProps) {
 }
 
 type CartItemsProps = {
-  showCartItems: boolean;
+  show: boolean;
 };
 
-function CartItems({ showCartItems }: CartItemsProps) {
+function CartItems({ show }: CartItemsProps) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
@@ -33,7 +33,7 @@ function CartItems({ showCartItems }: CartItemsProps) {
   const dividerColor =
     mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
-  if (!showCartItems) return null;
+  if (!show) return null;
 
   return cartItems.map((item, index) => {
     const isLastItem = cartItems.length - 1 === index;
@@ -63,8 +63,8 @@ export default function SmallCartItemList({ paddingX = 0 }: SmallCartItemListPro
         paddingX: paddingX,
         height: 1,
       }}>
-      <CartEmptyMessage showMessage={cartItems.length === 0} />
-      <CartItems showCartItems={cartItems.length > 0} />
+      <CartEmptyMessage show={cartItems.length === 0} />
+      <CartItems show={cartItems.length > 0} />
     </List>
   );
 }

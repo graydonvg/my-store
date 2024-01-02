@@ -9,7 +9,65 @@ import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@
 import { usePathname } from 'next/navigation';
 import { borderRadius } from '@/constants/styles';
 
-type Props = {
+type NoFileChosenMessageProps = {
+  show: boolean;
+};
+
+function NoFileChosenMessage({ show }: NoFileChosenMessageProps) {
+  const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
+
+  if (!show) return null;
+
+  return (
+    <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography sx={{ color: textColor }}>No file chosen</Typography>
+      <Typography
+        variant="body2"
+        sx={{ color: textColor }}>
+        {'(Max. 5 images)'}
+      </Typography>
+    </Box>
+  );
+}
+
+type ProductImageProps = {
+  show: boolean;
+  productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
+  productName: string;
+};
+
+function ProductImage({ show, productImageData, productName }: ProductImageProps) {
+  if (!show || !productImageData) return null;
+
+  return (
+    <Image
+      style={{ objectFit: 'cover', borderRadius: borderRadius }}
+      fill
+      sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
+      src={productImageData.image_url}
+      alt={`${productName}`}
+      priority
+    />
+  );
+}
+
+type UploadProgressProps = {
+  show: boolean;
+  selectedImageIndex: number;
+};
+
+function UploadProgress({ show, selectedImageIndex }: UploadProgressProps) {
+  const { imageUploadProgress } = useAppSelector((state) => state.productForm);
+
+  if (!show) return null;
+
+  return <CircularProgressWithLabel value={imageUploadProgress[selectedImageIndex].progress} />;
+}
+
+type LargeProductImageBoxProps = {
   selectedImageIndex: number;
   borderColor: string;
   productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
@@ -21,14 +79,10 @@ export default function LargeProductImageBox({
   borderColor,
   productImageData,
   productName,
-}: Props) {
+}: LargeProductImageBoxProps) {
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
-  const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
   const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
 
   return (
@@ -41,27 +95,16 @@ export default function LargeProductImageBox({
         display: 'grid',
         placeItems: 'center',
       }}>
-      {productImageData ? (
-        <Image
-          style={{ objectFit: 'cover', borderRadius: borderRadius }}
-          fill
-          sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
-          src={productImageData.image_url}
-          alt={`${productName}`}
-          priority
-        />
-      ) : imageUploadProgress[selectedImageIndex] ? (
-        <CircularProgressWithLabel value={imageUploadProgress[selectedImageIndex].progress} />
-      ) : (
-        <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography sx={{ color: textColor }}>No file chosen</Typography>
-          <Typography
-            variant="body2"
-            sx={{ color: textColor }}>
-            {'(Max. 5 images)'}
-          </Typography>
-        </Box>
-      )}
+      <ProductImage
+        show={!!productImageData}
+        productImageData={productImageData}
+        productName={productName}
+      />
+      <UploadProgress
+        show={!!imageUploadProgress[selectedImageIndex] && !productImageData}
+        selectedImageIndex={selectedImageIndex}
+      />
+      <NoFileChosenMessage show={!productImageData && !imageUploadProgress[selectedImageIndex]} />
     </Box>
   );
 }

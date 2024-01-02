@@ -40,12 +40,15 @@ export default function AddressForm() {
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
+
     if (name === 'postal_code' && value.length > 4) return;
+
     dispatch(setAddressFormDataOnChange({ field: name as keyof UpdateAddressTypeStore, value }));
   }
 
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const { address_id, postal_code, ...restOfAddressData } = addressFormData;
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
@@ -103,6 +106,7 @@ export default function AddressForm() {
         ...addressFormData,
         postal_code: Number(addressFormData.postal_code),
       } as UpdateAddressTypeDb);
+
       if (success === true) {
         const updatedAddresses = currentUser?.addresses.map((address) =>
           address.address_id === addressFormData.address_id
@@ -113,6 +117,7 @@ export default function AddressForm() {
               }
             : address
         );
+
         dispatch(
           setCurrentUser({
             ...currentUser!,

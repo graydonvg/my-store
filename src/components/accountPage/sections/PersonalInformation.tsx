@@ -17,14 +17,14 @@ import { updateUserPersonalInformation } from '@/services/users/update-user';
 import { AccountTextFieldData, PersonalInformationType } from '@/types';
 
 type UserDataProps = {
-  showUserData: boolean;
+  show: boolean;
   label: string;
   onClick: () => void;
   children: ReactNode;
 };
 
-function UserData({ showUserData, label, onClick, children }: UserDataProps) {
-  if (!showUserData) return null;
+function UserData({ show, label, onClick, children }: UserDataProps) {
+  if (!show) return null;
 
   return (
     <AccountPageInfo
@@ -37,7 +37,7 @@ function UserData({ showUserData, label, onClick, children }: UserDataProps) {
 }
 
 type UpdateUserDataProps = {
-  showUpdateUserData: boolean;
+  show: boolean;
   isUpdating: boolean;
   onSave: () => void;
   onCancel: () => void;
@@ -45,15 +45,8 @@ type UpdateUserDataProps = {
   textFieldData: AccountTextFieldData[];
 };
 
-function UpdateUserData({
-  showUpdateUserData,
-  isUpdating,
-  onSave,
-  onCancel,
-  value,
-  textFieldData,
-}: UpdateUserDataProps) {
-  if (!showUpdateUserData) return null;
+function UpdateUserData({ show, isUpdating, onSave, onCancel, value, textFieldData }: UpdateUserDataProps) {
+  if (!show) return null;
 
   return (
     <AccountPageInfoInput
@@ -143,13 +136,13 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
   return (
     <>
       <UserData
-        showUserData={fieldToEdit !== 'name'}
+        show={fieldToEdit !== 'name'}
         label="Name"
         onClick={() => handleSetFieldToEdit('name')}>
         {renderUserInfo(currentUser?.first_name!)}
       </UserData>
       <UpdateUserData
-        showUpdateUserData={fieldToEdit === 'name'}
+        show={fieldToEdit === 'name'}
         textFieldData={[
           {
             id: 'name',
@@ -167,13 +160,13 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         value={personalInformation.name}
       />
       <UserData
-        showUserData={fieldToEdit !== 'surname'}
+        show={fieldToEdit !== 'surname'}
         label="Surname"
         onClick={() => handleSetFieldToEdit('surname')}>
         {renderUserInfo(currentUser?.last_name!)}
       </UserData>
       <UpdateUserData
-        showUpdateUserData={fieldToEdit === 'surname'}
+        show={fieldToEdit === 'surname'}
         textFieldData={[
           {
             id: 'surname',
@@ -191,13 +184,13 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         value={personalInformation.surname}
       />
       <UserData
-        showUserData={fieldToEdit !== 'contactNumber'}
+        show={fieldToEdit !== 'contactNumber'}
         label="Contact number"
         onClick={() => handleSetFieldToEdit('contactNumber')}>
         {renderUserInfo(currentUser?.contact_number!)}
       </UserData>
       <UpdateUserData
-        showUpdateUserData={fieldToEdit === 'contactNumber'}
+        show={fieldToEdit === 'contactNumber'}
         textFieldData={[
           {
             id: 'contact-number',

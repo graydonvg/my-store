@@ -5,7 +5,7 @@ import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } fro
 import CartDrawer from '../../drawers/CartDrawer';
 import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
-import NavbarTitleAndLogo from '../NavbarTitleAndLogo';
+import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
@@ -17,7 +17,7 @@ import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useRouter } from 'next/navigation';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
-function renderDivider() {
+function CustomDivider() {
   return (
     <Divider
       variant="fullWidth"
@@ -31,18 +31,82 @@ function renderDivider() {
   );
 }
 
-export default function UpperNavbarOptions() {
-  const router = useRouter();
+type UserSignedOutOptionsProps = {
+  show: boolean;
+};
+
+function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.user.currentUser);
-  const { cartItems, isCartOpen } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  if (!show) return null;
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
   }
+
+  return (
+    <List
+      sx={{ display: 'flex', height: '100%' }}
+      disablePadding>
+      <ListItem
+        disablePadding
+        sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
+        <IconButton
+          onClick={handleToggleTheme}
+          size="small">
+          <ThemeToggleIcon
+            size="small"
+            color={customColorPalette.grey.light}
+          />
+        </IconButton>
+      </ListItem>
+      <CustomDivider />
+      <ListItem disablePadding>
+        <SignInDialog />
+      </ListItem>
+      <CustomDivider />
+      <ListItem
+        disablePadding
+        sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <SignUpDialog />
+      </ListItem>
+      <CustomDivider />
+    </List>
+  );
+}
+
+type FavoriteButtonProps = {
+  show: boolean;
+};
+
+function FavoriteButton({ show }: FavoriteButtonProps) {
+  const customColorPalette = useCustomColorPalette();
+
+  if (!show) return null;
+
+  return (
+    <ListItem disablePadding>
+      <UpperNavIconButton backgroundColor={customColorPalette.grey.dark}>
+        <Favorite
+          aria-label="Wishlist"
+          sx={{ color: customColorPalette.grey.light, opacity: '50%' }}
+        />
+      </UpperNavIconButton>
+    </ListItem>
+  );
+}
+
+type CheckoutButtonProps = {
+  show: boolean;
+};
+
+function CheckoutButton({ show }: CheckoutButtonProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isCartOpen } = useAppSelector((state) => state.cart);
+
+  if (!show) return null;
 
   function handleGoToCheckout() {
     if (isCartOpen.right === true) {
@@ -50,6 +114,71 @@ export default function UpperNavbarOptions() {
     }
     router.push('/checkout/shipping');
   }
+
+  return (
+    <ListItem
+      disablePadding
+      sx={{ padding: 0.5 }}>
+      <ContainedButton
+        onClick={handleGoToCheckout}
+        height={'30px'}
+        minHeight={1}
+        label="checkout"
+        backgroundColor="blue"
+      />
+    </ListItem>
+  );
+}
+
+type AccountDropdownMenuProps = {
+  show: boolean;
+};
+
+function AccountDropdownMenu({ show }: AccountDropdownMenuProps) {
+  if (!show) return null;
+
+  return (
+    <ListItem disablePadding>
+      <AccountMenu />
+    </ListItem>
+  );
+}
+
+type UserSignedInOptionsProps = {
+  show: boolean;
+};
+
+function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const theme = useTheme();
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  if (!show) return null;
+
+  return (
+    <>
+      <List
+        sx={{ display: 'flex', height: '100%' }}
+        disablePadding>
+        <CustomDivider />
+        <FavoriteButton show={!isBelowMedium} />
+        <CustomDivider />
+        <ListItem disablePadding>
+          <CartDrawer />
+        </ListItem>
+        <CustomDivider />
+        <CheckoutButton show={!isBelowMedium && cartItems.length > 0} />
+        <CustomDivider />
+        <AccountDropdownMenu show={!isBelowMedium} />
+        <CustomDivider />
+      </List>
+    </>
+  );
+}
+
+export default function UpperNavbarOptions() {
+  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const customColorPalette = useCustomColorPalette();
 
   return (
     <>
@@ -67,78 +196,8 @@ export default function UpperNavbarOptions() {
       <Box
         component="nav"
         sx={{ height: 1 }}>
-        {currentUser ? (
-          <>
-            <List
-              sx={{ display: 'flex', height: '100%' }}
-              disablePadding>
-              {renderDivider()}
-              {!isBelowMedium ? (
-                <ListItem disablePadding>
-                  <UpperNavIconButton backgroundColor={customColorPalette.grey.dark}>
-                    <Favorite
-                      aria-label="Wishlist"
-                      sx={{ color: customColorPalette.grey.light, opacity: '50%' }}
-                    />
-                  </UpperNavIconButton>
-                </ListItem>
-              ) : null}
-              {renderDivider()}
-              <ListItem disablePadding>
-                <CartDrawer />
-              </ListItem>
-              {renderDivider()}
-              {!isBelowMedium && cartItems.length > 0 ? (
-                <ListItem
-                  disablePadding
-                  sx={{ padding: 0.5 }}>
-                  <ContainedButton
-                    onClick={handleGoToCheckout}
-                    height={'30px'}
-                    minHeight={1}
-                    label="checkout"
-                    backgroundColor="blue"
-                  />
-                </ListItem>
-              ) : null}
-              {renderDivider()}
-              {!isBelowMedium ? (
-                <ListItem disablePadding>
-                  <AccountMenu />
-                </ListItem>
-              ) : null}
-              {renderDivider()}
-            </List>
-          </>
-        ) : (
-          <List
-            sx={{ display: 'flex', height: '100%' }}
-            disablePadding>
-            <ListItem
-              disablePadding
-              sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
-              <IconButton
-                onClick={handleToggleTheme}
-                size="small">
-                <ThemeToggleIcon
-                  size="small"
-                  color={customColorPalette.grey.light}
-                />
-              </IconButton>
-            </ListItem>
-            {renderDivider()}
-            <ListItem disablePadding>
-              <SignInDialog />
-            </ListItem>
-            {renderDivider()}
-            <ListItem
-              disablePadding
-              sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <SignUpDialog />
-            </ListItem>
-            {renderDivider()}
-          </List>
-        )}
+        <UserSignedOutOptions show={!currentUser} />
+        <UserSignedInOptions show={!!currentUser} />
       </Box>
     </>
   );

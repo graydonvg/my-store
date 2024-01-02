@@ -11,11 +11,11 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 
 type FreeDeliveryTextProps = {
-  showText: boolean;
+  show: boolean;
 };
 
-function FreeDeliveryText({ showText }: FreeDeliveryTextProps) {
-  if (!showText) return null;
+function FreeDeliveryText({ show }: FreeDeliveryTextProps) {
+  if (!show) return null;
 
   return (
     <>
@@ -31,14 +31,14 @@ function FreeDeliveryText({ showText }: FreeDeliveryTextProps) {
 }
 
 type SalePercentageBadgeProps = {
-  showBadge: boolean;
+  show: boolean;
   percentage: number;
 };
 
-function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps) {
+function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
   const customColorPalette = useCustomColorPalette();
 
-  if (!showBadge) return null;
+  if (!show) return null;
 
   return (
     <Box
@@ -66,12 +66,12 @@ function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps
 }
 
 type SalePriceProps = {
-  showPrice: boolean;
+  show: boolean;
   price: number;
 };
 
-function SalePrice({ showPrice, price }: SalePriceProps) {
-  if (!showPrice) return null;
+function SalePrice({ show, price }: SalePriceProps) {
+  if (!show) return null;
 
   return (
     <Typography
@@ -214,7 +214,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             component="p"
             sx={{ opacity: '70%' }}
             fontSize={{ xs: 14, sm: 16 }}>
-            <FreeDeliveryText showText={discountedPrice > 500} />
+            <FreeDeliveryText show={discountedPrice > 500} />
             {item?.product?.return_info}
           </Typography>
           <Box
@@ -227,7 +227,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
               paddingBottom: 2,
             }}>
             <SalePercentageBadge
-              showBadge={isOnSale}
+              show={isOnSale}
               percentage={item?.product?.sale_percentage!}
             />
             <Box
@@ -238,7 +238,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 flexWrap: 'nowrap',
               }}>
               <SalePrice
-                showPrice={isOnSale}
+                show={isOnSale}
                 price={price}
               />
               <Typography

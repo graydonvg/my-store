@@ -27,11 +27,11 @@ import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
 
 type NoAddressFoundProps = {
-  showNoAddressFoundMessage: boolean;
+  show: boolean;
 };
 
-function NoAddressFound({ showNoAddressFoundMessage }: NoAddressFoundProps) {
-  if (!showNoAddressFoundMessage) return null;
+function NoAddressFound({ show }: NoAddressFoundProps) {
+  if (!show) return null;
 
   return (
     <TableRow>
@@ -43,11 +43,11 @@ function NoAddressFound({ showNoAddressFoundMessage }: NoAddressFoundProps) {
 }
 
 type SelectShippingAddressCheckboxProps = {
-  showCheckbox: boolean;
+  show: boolean;
   address: AddressType;
 };
 
-function SelectShippingAddressCheckbox({ showCheckbox, address }: SelectShippingAddressCheckboxProps) {
+function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressCheckboxProps) {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const customColorPalette = useCustomColorPalette();
@@ -55,7 +55,7 @@ function SelectShippingAddressCheckbox({ showCheckbox, address }: SelectShipping
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
-  if (!showCheckbox) return null;
+  if (!show) return null;
 
   function handleSelectShippingAddress(address: AddressType) {
     if (checkoutData.shippingAddress?.address_id === address.address_id) {
@@ -117,13 +117,13 @@ function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
 }
 
 type AddressButtonsProps = {
-  showAddressButtons: boolean;
+  show: boolean;
   editAddress: () => Promise<void>;
   deleteAddress: () => Promise<void>;
 };
 
-function AddressButtons({ showAddressButtons, editAddress, deleteAddress }: AddressButtonsProps) {
-  if (!showAddressButtons) return null;
+function AddressButtons({ show, editAddress, deleteAddress }: AddressButtonsProps) {
+  if (!show) return null;
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
@@ -173,10 +173,10 @@ function Loader({ showLoader }: LoaderProps) {
 }
 
 type AddressDataProps = {
-  showAddresses: boolean;
+  show: boolean;
 };
 
-function AddressData({ showAddresses }: AddressDataProps) {
+function AddressData({ show }: AddressDataProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
@@ -189,7 +189,7 @@ function AddressData({ showAddresses }: AddressDataProps) {
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
 
-  if (!showAddresses) return null;
+  if (!show) return null;
 
   async function handleSetAddressToEdit(addressId: string) {
     const addressToEdit = currentUser?.addresses.filter((address) => address.address_id === addressId)[0];
@@ -236,7 +236,7 @@ function AddressData({ showAddresses }: AddressDataProps) {
           key={index}
           sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
           <SelectShippingAddressCheckbox
-            showCheckbox={isShippingView}
+            show={isShippingView}
             address={address}
           />
           <TableCell
@@ -259,7 +259,7 @@ function AddressData({ showAddresses }: AddressDataProps) {
             </Typography>
             <Loader showLoader={isDeleting && addressToDelete?.id === address.address_id} />
             <AddressButtons
-              showAddressButtons={!isDeleting && addressToDelete?.id !== address.address_id}
+              show={!isDeleting && addressToDelete?.id !== address.address_id}
               editAddress={() => handleSetAddressToEdit(address.address_id)}
               deleteAddress={() => handleDeleteAddress(address.address_id)}
             />
@@ -282,10 +282,8 @@ export default function Addresses() {
       <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: borderRadius }}>
         <Table>
           <TableBody>
-            <NoAddressFound
-              showNoAddressFoundMessage={!!currentUser?.addresses && currentUser?.addresses.length === 0}
-            />
-            <AddressData showAddresses={!!currentUser?.addresses && currentUser?.addresses.length > 0} />
+            <NoAddressFound show={!!currentUser?.addresses && currentUser?.addresses.length === 0} />
+            <AddressData show={!!currentUser?.addresses && currentUser?.addresses.length > 0} />
           </TableBody>
         </Table>
       </TableContainer>
