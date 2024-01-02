@@ -5,8 +5,6 @@ import { Typography } from '@mui/material';
 export default async function MenAllProducts() {
   const { data: products } = await getProductsByCategory('Men');
 
-  if (!products) return null;
-
   return (
     <>
       <Typography
@@ -15,7 +13,10 @@ export default async function MenAllProducts() {
         sx={{ textAlign: 'center', paddingBottom: 2 }}>
         Men
       </Typography>
-      <Products products={products} />
+      <Products
+        show={!!products}
+        products={products!}
+      />
     </>
   );
 }

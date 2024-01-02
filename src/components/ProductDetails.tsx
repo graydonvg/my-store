@@ -138,7 +138,9 @@ function SelectItemQuantity({ show }: SelectItemQuantityProps) {
   );
 }
 
-type ProductDetailsProps = { product: ProductType };
+type ProductDetailsProps = {
+  product: ProductType;
+};
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);

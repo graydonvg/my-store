@@ -3,8 +3,6 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Box } from '@mui/material';
 
-type Props = {};
-
 export default async function OrdersPage() {
   const supabase = await createSupabaseServerClient();
 
@@ -15,12 +13,13 @@ export default async function OrdersPage() {
     )
     .order('created_at', { ascending: false });
 
-  if (!orders) return null;
-
   return (
     <Box>
       <PageHeaderWithBorder label="Orders" />
-      <Orders orders={orders} />
+      <Orders
+        show={!!orders}
+        orders={orders!}
+      />
     </Box>
   );
 }

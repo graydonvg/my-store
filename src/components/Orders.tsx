@@ -6,10 +6,13 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 
 type Props = {
+  show: boolean;
   orders: OrderType[];
 };
 
-export default function Orders({ orders }: Props) {
+export default function Orders({ show, orders }: Props) {
+  if (!show) return null;
+
   return (
     <>
       {orders?.map((order) => {

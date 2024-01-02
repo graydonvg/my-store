@@ -3,10 +3,13 @@ import ProductCard from './ui/ProductCard';
 import { ProductType } from '@/types';
 
 type Props = {
+  show: boolean;
   products: ProductType[];
 };
 
-export default function Products({ products }: Props) {
+export default function Products({ show, products }: Props) {
+  if (!show) return null;
+
   return (
     <Grid
       container
