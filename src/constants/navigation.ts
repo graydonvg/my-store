@@ -46,8 +46,8 @@ export const adminNavOptions = [
 
 export const accountNavOptions = [
   {
-    id: 'account',
-    label: 'Account',
+    id: 'myAccount',
+    label: 'My Account',
     path: '/account',
   },
   {

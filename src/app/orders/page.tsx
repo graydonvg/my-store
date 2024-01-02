@@ -2,6 +2,7 @@ import OrderTotals from '@/components/OrderTotals';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { borderRadius } from '@/constants/styles';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
@@ -131,7 +132,7 @@ export default async function Orders() {
                               {[
                                 { label: 'qty', value: item?.quantity },
                                 { label: 'fontSize', value: item?.size },
-                                { label: 'price paid', value: item?.price_paid },
+                                { label: 'price paid', value: formatCurrency(item?.price_paid) },
                               ].map((item) => (
                                 <Box
                                   key={item.label}

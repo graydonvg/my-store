@@ -44,7 +44,6 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
-  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
 
   function handleNavigate() {
     dispatch(setCheckoutData({ ...checkoutData, totalToPay: orderTotal }));

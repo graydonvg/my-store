@@ -14,13 +14,63 @@ import { setCurrentUser } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
-import { PersonalInformationType } from '@/types';
+import { AccountTextFieldData, PersonalInformationType } from '@/types';
 
-type Props = {
+type UserDataProps = {
+  showUserData: boolean;
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+};
+
+function UserData({ showUserData, label, onClick, children }: UserDataProps) {
+  if (!showUserData) return null;
+
+  return (
+    <AccountPageInfo
+      label={label}
+      canEdit={true}
+      onClick={onClick}>
+      {children}
+    </AccountPageInfo>
+  );
+}
+
+type UpdateUserDataProps = {
+  showUpdateUserData: boolean;
+  isUpdating: boolean;
+  onSave: () => void;
+  onCancel: () => void;
+  value: string;
+  textFieldData: AccountTextFieldData[];
+};
+
+function UpdateUserData({
+  showUpdateUserData,
+  isUpdating,
+  onSave,
+  onCancel,
+  value,
+  textFieldData,
+}: UpdateUserDataProps) {
+  if (!showUpdateUserData) return null;
+
+  return (
+    <AccountPageInfoInput
+      textFieldData={textFieldData}
+      isUpdating={isUpdating}
+      onSave={onSave}
+      onCancel={onCancel}
+      disableSave={value.length === 0}
+    />
+  );
+}
+
+type PersonalInformationProps = {
   renderUserInfo: (value: string) => ReactNode;
 };
 
-export default function PersonalInformation({ renderUserInfo }: Props) {
+export default function PersonalInformation({ renderUserInfo }: PersonalInformationProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.currentUser);
@@ -56,13 +106,16 @@ export default function PersonalInformation({ renderUserInfo }: Props) {
       personalInformation.contactNumber === currentUser.contact_number
     )
       return;
+
     dispatch(setIsUpdatingAccount(true));
+
     try {
       const { success, message } = await updateUserPersonalInformation({
         first_name: personalInformation.name,
         last_name: personalInformation.surname,
         contact_number: personalInformation.contactNumber,
       });
+
       if (success === true) {
         dispatch(
           setCurrentUser({
@@ -72,7 +125,9 @@ export default function PersonalInformation({ renderUserInfo }: Props) {
             contact_number: personalInformation.contactNumber,
           })
         );
+
         dispatch(setFieldToEdit(null));
+
         toast.success(message);
       } else {
         toast.error(message);
@@ -87,84 +142,78 @@ export default function PersonalInformation({ renderUserInfo }: Props) {
 
   return (
     <>
-      {fieldToEdit !== 'name' ? (
-        <AccountPageInfo
-          label="Name"
-          canEdit={true}
-          onClick={() => handleSetFieldToEdit('name')}>
-          {renderUserInfo(currentUser?.first_name!)}
-        </AccountPageInfo>
-      ) : (
-        <AccountPageInfoInput
-          textFieldData={[
-            {
-              id: 'name',
-              label: 'Name',
-              name: 'name',
-              type: 'text',
-              value: personalInformation.name,
-              onChange: handleInputChange,
-              onKeyDownFunction: handleUpdatePersonalInformation,
-            },
-          ]}
-          isUpdating={isUpdatingAccount}
-          onSave={handleUpdatePersonalInformation}
-          onCancel={handleCancelUpdateField}
-          disableSave={personalInformation.name.length === 0}
-        />
-      )}
-      {fieldToEdit !== 'surname' ? (
-        <AccountPageInfo
-          label="Surname"
-          canEdit={true}
-          onClick={() => handleSetFieldToEdit('surname')}>
-          {renderUserInfo(currentUser?.last_name!)}
-        </AccountPageInfo>
-      ) : (
-        <AccountPageInfoInput
-          textFieldData={[
-            {
-              id: 'surname',
-              label: 'Surname',
-              name: 'surname',
-              type: 'text',
-              value: personalInformation.surname,
-              onChange: handleInputChange,
-              onKeyDownFunction: handleUpdatePersonalInformation,
-            },
-          ]}
-          isUpdating={isUpdatingAccount}
-          onSave={handleUpdatePersonalInformation}
-          onCancel={handleCancelUpdateField}
-          disableSave={personalInformation.surname.length === 0}
-        />
-      )}
-      {fieldToEdit !== 'contactNumber' ? (
-        <AccountPageInfo
-          label="Contact number"
-          canEdit={true}
-          onClick={() => handleSetFieldToEdit('contactNumber')}>
-          {renderUserInfo(currentUser?.contact_number!)}
-        </AccountPageInfo>
-      ) : (
-        <AccountPageInfoInput
-          textFieldData={[
-            {
-              id: 'contact-number',
-              label: 'Contact number',
-              name: 'contactNumber',
-              type: 'text',
-              value: personalInformation.contactNumber,
-              onChange: handleInputChange,
-              onKeyDownFunction: handleUpdatePersonalInformation,
-            },
-          ]}
-          isUpdating={isUpdatingAccount}
-          onSave={handleUpdatePersonalInformation}
-          onCancel={handleCancelUpdateField}
-          disableSave={personalInformation.contactNumber.length === 0}
-        />
-      )}
+      <UserData
+        showUserData={fieldToEdit !== 'name'}
+        label="Name"
+        onClick={() => handleSetFieldToEdit('name')}>
+        {renderUserInfo(currentUser?.first_name!)}
+      </UserData>
+      <UpdateUserData
+        showUpdateUserData={fieldToEdit === 'name'}
+        textFieldData={[
+          {
+            id: 'name',
+            label: 'Name',
+            name: 'name',
+            type: 'text',
+            value: personalInformation.name,
+            onChange: handleInputChange,
+            onKeyDownFunction: handleUpdatePersonalInformation,
+          },
+        ]}
+        isUpdating={isUpdatingAccount}
+        onCancel={handleCancelUpdateField}
+        onSave={handleUpdatePersonalInformation}
+        value={personalInformation.name}
+      />
+      <UserData
+        showUserData={fieldToEdit !== 'surname'}
+        label="Surname"
+        onClick={() => handleSetFieldToEdit('surname')}>
+        {renderUserInfo(currentUser?.last_name!)}
+      </UserData>
+      <UpdateUserData
+        showUpdateUserData={fieldToEdit === 'surname'}
+        textFieldData={[
+          {
+            id: 'surname',
+            label: 'Surname',
+            name: 'surname',
+            type: 'text',
+            value: personalInformation.surname,
+            onChange: handleInputChange,
+            onKeyDownFunction: handleUpdatePersonalInformation,
+          },
+        ]}
+        isUpdating={isUpdatingAccount}
+        onCancel={handleCancelUpdateField}
+        onSave={handleUpdatePersonalInformation}
+        value={personalInformation.surname}
+      />
+      <UserData
+        showUserData={fieldToEdit !== 'contactNumber'}
+        label="Contact number"
+        onClick={() => handleSetFieldToEdit('contactNumber')}>
+        {renderUserInfo(currentUser?.contact_number!)}
+      </UserData>
+      <UpdateUserData
+        showUpdateUserData={fieldToEdit === 'contactNumber'}
+        textFieldData={[
+          {
+            id: 'contact-number',
+            label: 'Contact number',
+            name: 'contactNumber',
+            type: 'text',
+            value: personalInformation.contactNumber,
+            onChange: handleInputChange,
+            onKeyDownFunction: handleUpdatePersonalInformation,
+          },
+        ]}
+        isUpdating={isUpdatingAccount}
+        onCancel={handleCancelUpdateField}
+        onSave={handleUpdatePersonalInformation}
+        value={personalInformation.contactNumber}
+      />
     </>
   );
 }

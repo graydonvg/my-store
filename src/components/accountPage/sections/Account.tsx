@@ -16,21 +16,53 @@ import { updateUserPassword } from '@/services/users/update-user';
 import { AccountType } from '@/types';
 import { useRouter } from 'next/navigation';
 
-type Props = {
-  renderUserInfo: (value: string) => ReactNode;
+type PasswordPlaceholderProps = {
+  hidePasswordPlaceholder: boolean;
 };
 
-export default function Account({ renderUserInfo }: Props) {
-  const router = useRouter();
+function PasswordPlaceholder({ hidePasswordPlaceholder }: PasswordPlaceholderProps) {
   const dispatch = useAppDispatch();
-  const { isOAuthSignIn, currentUser } = useAppSelector((state) => state.user);
-  const { accountData, fieldToEdit, isUpdatingAccount } = useAppSelector((state) => state.account);
   const theme = useTheme();
   const mode = theme.palette.mode;
+
+  if (hidePasswordPlaceholder) return null;
 
   function handleSetFieldToEdit(field: string) {
     dispatch(setFieldToEdit(field));
   }
+
+  return (
+    <AccountPageInfo
+      label="Password"
+      canEdit={true}
+      onClick={() => handleSetFieldToEdit('password')}>
+      <Typography
+        component="div"
+        fontSize={3.3}
+        sx={{ paddingTop: 1 }}>
+        {Array.from(Array(16)).map((_, index) => (
+          <Box
+            component="span"
+            key={index}
+            sx={{ paddingRight: 0.12 }}>
+            {mode === 'dark' ? '⚪' : '⚫'}
+          </Box>
+        ))}
+      </Typography>
+    </AccountPageInfo>
+  );
+}
+
+type UpdatePasswordProps = {
+  hideUpdatePassword: boolean;
+};
+
+function UpdatePassword({ hideUpdatePassword }: UpdatePasswordProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { accountData, isUpdatingAccount } = useAppSelector((state) => state.account);
+
+  if (hideUpdatePassword) return null;
 
   function handleCancelUpdateField() {
     dispatch(setFieldToEdit(null));
@@ -45,16 +77,20 @@ export default function Account({ renderUserInfo }: Props) {
     if (!accountData.currentPassword || !accountData.newPassword || !accountData.confirmPassword) {
       return toast.error('Please complete all fields.');
     }
+
     if (accountData.newPassword !== accountData.confirmPassword) {
       return toast.error('Passwords do not match.');
     }
+
     dispatch(setIsUpdatingAccount(true));
+
     try {
       const { success, message } = await updateUserPassword({
         currentPassword: accountData.currentPassword,
         newPassword: accountData.newPassword,
         confirmPassword: accountData.confirmPassword,
       });
+
       if (success === true) {
         router.refresh();
         toast.success(message);
@@ -71,6 +107,57 @@ export default function Account({ renderUserInfo }: Props) {
   }
 
   return (
+    <AccountPageInfoInput
+      textFieldData={[
+        {
+          id: 'current-password',
+          label: 'Current Password',
+          name: 'currentPassword',
+          type: 'password',
+          value: accountData.currentPassword,
+          onChange: handleInputChange,
+          onKeyDownFunction: handleUpdatePassword,
+        },
+        {
+          id: 'new-password',
+          label: 'New Password',
+          name: 'newPassword',
+          type: 'password',
+          value: accountData.newPassword,
+          onChange: handleInputChange,
+          onKeyDownFunction: handleUpdatePassword,
+        },
+        {
+          id: 'confirm-password',
+          label: 'Confirm Password',
+          name: 'confirmPassword',
+          type: 'password',
+          value: accountData.confirmPassword,
+          onChange: handleInputChange,
+          onKeyDownFunction: handleUpdatePassword,
+        },
+      ]}
+      isUpdating={isUpdatingAccount}
+      onSave={handleUpdatePassword}
+      onCancel={handleCancelUpdateField}
+      disableSave={
+        accountData.currentPassword.length === 0 ||
+        accountData.newPassword.length === 0 ||
+        accountData.confirmPassword.length === 0
+      }
+    />
+  );
+}
+
+type AccountProps = {
+  renderUserInfo: (value: string) => ReactNode;
+};
+
+export default function Account({ renderUserInfo }: AccountProps) {
+  const { isOAuthSignIn, currentUser } = useAppSelector((state) => state.user);
+  const { fieldToEdit } = useAppSelector((state) => state.account);
+
+  return (
     <>
       <AccountPageInfo
         label="Email"
@@ -78,68 +165,8 @@ export default function Account({ renderUserInfo }: Props) {
         onClick={null}>
         {renderUserInfo(currentUser?.email!)}
       </AccountPageInfo>
-      {!isOAuthSignIn ? (
-        fieldToEdit !== 'password' ? (
-          <AccountPageInfo
-            label="Password"
-            canEdit={true}
-            onClick={() => handleSetFieldToEdit('password')}>
-            <Typography
-              component="div"
-              fontSize={3.3}
-              sx={{ paddingTop: 1 }}>
-              {Array.from(Array(16)).map((_, index) => (
-                <Box
-                  component="span"
-                  key={index}
-                  sx={{ paddingRight: 0.12 }}>
-                  {mode === 'dark' ? '⚪' : '⚫'}
-                </Box>
-              ))}
-            </Typography>
-          </AccountPageInfo>
-        ) : (
-          <AccountPageInfoInput
-            textFieldData={[
-              {
-                id: 'current-password',
-                label: 'Current Password',
-                name: 'currentPassword',
-                type: 'password',
-                value: accountData.currentPassword,
-                onChange: handleInputChange,
-                onKeyDownFunction: handleUpdatePassword,
-              },
-              {
-                id: 'new-password',
-                label: 'New Password',
-                name: 'newPassword',
-                type: 'password',
-                value: accountData.newPassword,
-                onChange: handleInputChange,
-                onKeyDownFunction: handleUpdatePassword,
-              },
-              {
-                id: 'confirm-password',
-                label: 'Confirm Password',
-                name: 'confirmPassword',
-                type: 'password',
-                value: accountData.confirmPassword,
-                onChange: handleInputChange,
-                onKeyDownFunction: handleUpdatePassword,
-              },
-            ]}
-            isUpdating={isUpdatingAccount}
-            onSave={handleUpdatePassword}
-            onCancel={handleCancelUpdateField}
-            disableSave={
-              accountData.currentPassword.length === 0 ||
-              accountData.newPassword.length === 0 ||
-              accountData.confirmPassword.length === 0
-            }
-          />
-        )
-      ) : null}
+      <PasswordPlaceholder hidePasswordPlaceholder={isOAuthSignIn || fieldToEdit === 'password'} />
+      <UpdatePassword hideUpdatePassword={isOAuthSignIn || fieldToEdit !== 'password'} />
     </>
   );
 }

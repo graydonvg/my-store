@@ -1,21 +1,12 @@
 import { Box } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import { ChangeEvent, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import CustomTextField from '../ui/inputFields/CustomTextField';
-
-type TextFieldData = {
-  id: string;
-  label: string;
-  name: string;
-  type: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDownFunction: () => void;
-};
+import { AccountTextFieldData } from '@/types';
 
 type Props = {
-  textFieldData: TextFieldData[];
+  textFieldData: AccountTextFieldData[];
   isUpdating: boolean;
   disableSave: boolean;
   onSave: (event: MouseEvent<HTMLButtonElement> | undefined) => void;

@@ -14,17 +14,148 @@ import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelecto
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 
-type Props = {
-  item: CartItemType;
+type LoadingSpinnerProps = {
+  showSpinner: boolean;
 };
 
-export default function CartItemSmall({ item }: Props) {
-  const pathname = usePathname();
-  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const router = useRouter();
+function LoadingSpinner({ showSpinner }: LoadingSpinnerProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
+
+  if (!showSpinner) return null;
+
+  return (
+    <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
+      <Spinner
+        size={12}
+        spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
+      />
+    </Box>
+  );
+}
+
+type DeleteCartItemButtonProps = {
+  showButton: boolean;
+  disabled: boolean;
+  onClick: () => void;
+};
+
+function DeleteCartItemButton({ showButton, disabled, onClick }: DeleteCartItemButtonProps) {
+  if (!showButton) return null;
+
+  return (
+    <IconButton
+      disabled={disabled}
+      onClick={onClick}
+      sx={{ padding: 0, width: 1, height: 1 }}>
+      <Close
+        fontSize="small"
+        sx={{ opacity: '70%' }}
+      />
+    </IconButton>
+  );
+}
+
+type CartItemButtonsProps = {
+  showButtons: boolean;
+  showSpinner: boolean;
+  showDeleteButton: boolean;
+  disabled: boolean;
+  onClick: () => void;
+};
+
+function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled, onClick }: CartItemButtonsProps) {
+  if (!showButtons) return null;
+
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        display: 'grid',
+        placeItems: 'center',
+        width: '20px',
+        height: '20px',
+      }}>
+      <LoadingSpinner showSpinner={showSpinner} />
+      <DeleteCartItemButton
+        showButton={showDeleteButton}
+        disabled={disabled}
+        onClick={onClick}
+      />
+    </Box>
+  );
+}
+
+type SalePercentageBadgeProps = {
+  showBadge: boolean;
+  percentage: number;
+};
+
+function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps) {
+  const customColorPalette = useCustomColorPalette();
+
+  if (!showBadge) return null;
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        borderRadius: borderRadius,
+        paddingX: 1,
+        backgroundColor: customColorPalette.blue.dark,
+        width: 'fit-content',
+        height: 'fit-content',
+      }}>
+      <Typography
+        lineHeight={1.6}
+        component="span"
+        sx={{
+          color: customColorPalette.grey.light,
+        }}
+        fontSize={14}>
+        {`-${percentage}%`}
+      </Typography>
+    </Box>
+  );
+}
+
+type SalePriceProps = {
+  showPrice: boolean;
+  price: number;
+};
+
+function SalePrice({ showPrice, price }: SalePriceProps) {
+  if (!showPrice) return null;
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'flex-end',
+      }}>
+      <Typography
+        lineHeight={1}
+        component="span"
+        sx={{ textDecoration: 'line-through', opacity: '70%' }}
+        fontSize={16}
+        fontWeight={700}>
+        {formatCurrency(price)}
+      </Typography>
+    </Box>
+  );
+}
+
+type CartItemSmallProps = {
+  item: CartItemType;
+};
+
+export default function CartItemSmall({ item }: CartItemSmallProps) {
+  const pathname = usePathname();
+  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
+  const router = useRouter();
   const isOnSale = item?.product?.on_sale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
@@ -86,37 +217,13 @@ export default function CartItemSmall({ item }: Props) {
           flexGrow: 1,
           height: 1,
         }}>
-        {!isShippingView ? (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              display: 'grid',
-              placeItems: 'center',
-              width: '20px',
-              height: '20px',
-            }}>
-            {isRemovingCartItem ? (
-              <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
-                <Spinner
-                  size={12}
-                  spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
-                />
-              </Box>
-            ) : (
-              <IconButton
-                disabled={isRemovingCartItem}
-                onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
-                sx={{ padding: 0, width: 1, height: 1 }}>
-                <Close
-                  fontSize="small"
-                  sx={{ opacity: '70%' }}
-                />
-              </IconButton>
-            )}
-          </Box>
-        ) : null}
+        <CartItemButtons
+          showButtons={!isShippingView}
+          showSpinner={isRemovingCartItem}
+          showDeleteButton={!isRemovingCartItem}
+          disabled={isRemovingCartItem}
+          onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
+        />
         <Box
           component="header"
           sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
@@ -164,27 +271,10 @@ export default function CartItemSmall({ item }: Props) {
         <Box
           component="footer"
           sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
-          {isOnSale ? (
-            <Box
-              sx={{
-                display: 'flex',
-                borderRadius: borderRadius,
-                paddingX: 1,
-                backgroundColor: customColorPalette.blue.dark,
-                width: 'fit-content',
-                height: 'fit-content',
-              }}>
-              <Typography
-                lineHeight={1.6}
-                component="span"
-                sx={{
-                  color: customColorPalette.grey.light,
-                }}
-                fontSize={14}>
-                {`-${item?.product?.sale_percentage}%`}
-              </Typography>
-            </Box>
-          ) : null}
+          <SalePercentageBadge
+            showBadge={isOnSale}
+            percentage={item?.product?.sale_percentage!}
+          />
           <Box
             sx={{
               display: 'flex',
@@ -194,22 +284,10 @@ export default function CartItemSmall({ item }: Props) {
               flexWrap: 'wrap',
               width: 1,
             }}>
-            {isOnSale ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                }}>
-                <Typography
-                  lineHeight={1}
-                  component="span"
-                  sx={{ textDecoration: 'line-through', opacity: '70%' }}
-                  fontSize={16}
-                  fontWeight={700}>
-                  {formatCurrency(price)}
-                </Typography>
-              </Box>
-            ) : null}
+            <SalePrice
+              showPrice={isOnSale}
+              price={price}
+            />
             <Typography
               lineHeight={1}
               component="span"

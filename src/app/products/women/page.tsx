@@ -1,10 +1,11 @@
 import Products from '@/components/Products';
 import { getProductsByCategory } from '@/services/products/get-products';
-import { ProductType } from '@/types';
 import { Typography } from '@mui/material';
 
 export default async function WomenAllProducts() {
   const { data: products } = await getProductsByCategory('Women');
+
+  if (!products) return null;
 
   return (
     <>
@@ -14,7 +15,7 @@ export default async function WomenAllProducts() {
         sx={{ textAlign: 'center', paddingBottom: 2 }}>
         Women
       </Typography>
-      <Products products={products ?? ([] as ProductType[])} />
+      <Products products={products} />
     </>
   );
 }

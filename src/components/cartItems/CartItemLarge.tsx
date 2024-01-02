@@ -10,11 +10,86 @@ import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelecto
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 
-type Props = {
+type FreeDeliveryTextProps = {
+  showText: boolean;
+};
+
+function FreeDeliveryText({ showText }: FreeDeliveryTextProps) {
+  if (!showText) return null;
+
+  return (
+    <>
+      Delivery Free
+      <Divider
+        component="span"
+        sx={{ marginX: 1 }}
+        variant="fullWidth"
+        orientation="vertical"
+      />
+    </>
+  );
+}
+
+type SalePercentageBadgeProps = {
+  showBadge: boolean;
+  percentage: number;
+};
+
+function SalePercentageBadge({ showBadge, percentage }: SalePercentageBadgeProps) {
+  const customColorPalette = useCustomColorPalette();
+
+  if (!showBadge) return null;
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        borderRadius: borderRadius,
+        paddingX: 1,
+        marginRight: 1,
+        backgroundColor: customColorPalette.blue.dark,
+        width: 'fit-content',
+        height: 'fit-content',
+      }}>
+      <Typography
+        lineHeight={1.6}
+        component="span"
+        sx={{
+          color: customColorPalette.grey.light,
+        }}
+        fontSize={{ xs: 14, sm: 16 }}
+        fontWeight={600}>
+        {`-${percentage}%`}
+      </Typography>
+    </Box>
+  );
+}
+
+type SalePriceProps = {
+  showPrice: boolean;
+  price: number;
+};
+
+function SalePrice({ showPrice, price }: SalePriceProps) {
+  if (!showPrice) return null;
+
+  return (
+    <Typography
+      lineHeight={1}
+      component="span"
+      sx={{ textDecoration: 'line-through', opacity: '70%' }}
+      fontSize={{ xs: 20, sm: 24 }}
+      fontWeight={400}>
+      {formatCurrency(price)}
+    </Typography>
+  );
+}
+
+type CartItemLargeProps = {
   item: CartItemType;
 };
 
-export default function CartItemLarge({ item }: Props) {
+export default function CartItemLarge({ item }: CartItemLargeProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -139,17 +214,7 @@ export default function CartItemLarge({ item }: Props) {
             component="p"
             sx={{ opacity: '70%' }}
             fontSize={{ xs: 14, sm: 16 }}>
-            {discountedPrice > 500 ? (
-              <>
-                Delivery Free
-                <Divider
-                  component="span"
-                  sx={{ marginX: 1 }}
-                  variant="fullWidth"
-                  orientation="vertical"
-                />
-              </>
-            ) : null}
+            <FreeDeliveryText showText={discountedPrice > 500} />
             {item?.product?.return_info}
           </Typography>
           <Box
@@ -161,29 +226,10 @@ export default function CartItemLarge({ item }: Props) {
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            {isOnSale ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  borderRadius: borderRadius,
-                  paddingX: 1,
-                  marginRight: 1,
-                  backgroundColor: customColorPalette.blue.dark,
-                  width: 'fit-content',
-                  height: 'fit-content',
-                }}>
-                <Typography
-                  lineHeight={1.6}
-                  component="span"
-                  sx={{
-                    color: customColorPalette.grey.light,
-                  }}
-                  fontSize={{ xs: 14, sm: 16 }}
-                  fontWeight={600}>
-                  {`-${item?.product?.sale_percentage}%`}
-                </Typography>
-              </Box>
-            ) : null}
+            <SalePercentageBadge
+              showBadge={isOnSale}
+              percentage={item?.product?.sale_percentage!}
+            />
             <Box
               sx={{
                 display: 'flex',
@@ -191,16 +237,10 @@ export default function CartItemLarge({ item }: Props) {
                 alignItems: 'center',
                 flexWrap: 'nowrap',
               }}>
-              {isOnSale ? (
-                <Typography
-                  lineHeight={1}
-                  component="span"
-                  sx={{ textDecoration: 'line-through', opacity: '70%' }}
-                  fontSize={{ xs: 20, sm: 24 }}
-                  fontWeight={400}>
-                  {formatCurrency(price)}
-                </Typography>
-              ) : null}
+              <SalePrice
+                showPrice={isOnSale}
+                price={price}
+              />
               <Typography
                 lineHeight={1}
                 component="span"

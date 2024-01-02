@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
 
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
@@ -98,4 +99,14 @@ export type CheckoutDataType = {
   isProcessing: boolean;
   isPaid: boolean;
   paidAt: string;
+};
+
+export type AccountTextFieldData = {
+  id: string;
+  label: string;
+  name: string;
+  type: string;
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDownFunction: () => void;
 };

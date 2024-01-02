@@ -7,17 +7,51 @@ import CartItemSmall from './CartItemSmall';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { borderRadius } from '@/constants/styles';
 
-type Props = {
-  paddingX?: number | string;
+type CartEmptyMessageProps = {
+  showMessage: boolean;
 };
 
-export default function SmallCartItemList({ paddingX = 0 }: Props) {
+function CartEmptyMessage({ showMessage }: CartEmptyMessageProps) {
+  if (!showMessage) return null;
+
+  return (
+    <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius }}>
+      <Typography>Your cart is empty</Typography>
+    </Box>
+  );
+}
+
+type CartItemsProps = {
+  showCartItems: boolean;
+};
+
+function CartItems({ showCartItems }: CartItemsProps) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const dividerColor =
     mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
+
+  if (!showCartItems) return null;
+
+  return cartItems.map((item, index) => {
+    const isLastItem = cartItems.length - 1 === index;
+    return (
+      <Fragment key={item?.cart_item_id}>
+        <CartItemSmall item={item} />
+        {!isLastItem ? <Divider sx={{ borderColor: dividerColor }} /> : null}
+      </Fragment>
+    );
+  });
+}
+
+type SmallCartItemListProps = {
+  paddingX?: number | string;
+};
+
+export default function SmallCartItemList({ paddingX = 0 }: SmallCartItemListProps) {
+  const { cartItems } = useAppSelector((state) => state.cart);
 
   return (
     <List
@@ -29,21 +63,8 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
         paddingX: paddingX,
         height: 1,
       }}>
-      {cartItems.length > 0 ? (
-        cartItems.map((item, index) => {
-          const isLastItem = cartItems.length - 1 === index;
-          return (
-            <Fragment key={item?.cart_item_id}>
-              <CartItemSmall item={item} />
-              {!isLastItem ? <Divider sx={{ borderColor: dividerColor }} /> : null}
-            </Fragment>
-          );
-        })
-      ) : (
-        <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius }}>
-          <Typography>Your cart is empty</Typography>
-        </Box>
-      )}
+      <CartEmptyMessage showMessage={cartItems.length === 0} />
+      <CartItems showCartItems={cartItems.length > 0} />
     </List>
   );
 }

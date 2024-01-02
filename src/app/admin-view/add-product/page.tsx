@@ -115,9 +115,11 @@ export default function AdminViewAddNewProduct() {
           router.push('/admin-view/all-products');
         } else {
           const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+
           if (deleteProductSuccess === false) {
             toast.error(deleteProductMessage);
           }
+
           toast.error(addImageDataMessage);
         }
       } else {
@@ -125,9 +127,11 @@ export default function AdminViewAddNewProduct() {
       }
     } catch (error) {
       const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+
       if (deleteProductSuccess === false) {
         toast.error(deleteProductMessage);
       }
+
       toast.error('Failed to add product. Please try again later.');
     } finally {
       setIsSubmitting(false);
