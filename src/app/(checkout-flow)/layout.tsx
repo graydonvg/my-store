@@ -52,7 +52,8 @@ export default function CheckoutFlowLayout({ children }: Props) {
     <CommonLayoutContainer>
       <Grid
         container
-        spacing={2}>
+        columnSpacing={2}
+        rowSpacing={0}>
         <Grid
           item
           xs={12}

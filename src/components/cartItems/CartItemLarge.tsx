@@ -104,6 +104,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
         backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
         borderRadius: borderRadius,
         position: 'relative',
+        marginBottom: 2,
       }}>
       <Box
         sx={{
