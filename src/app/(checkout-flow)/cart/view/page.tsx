@@ -9,16 +9,16 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 
 type CartEmptyProps = {
-  showCartEmptyMessage: boolean;
+  show: boolean;
 };
 
-function CartEmpty({ showCartEmptyMessage }: CartEmptyProps) {
+function CartEmpty({ show }: CartEmptyProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
 
-  if (!showCartEmptyMessage) return null;
+  if (!show) return null;
 
   return (
     <Box
@@ -52,12 +52,12 @@ function CartEmpty({ showCartEmptyMessage }: CartEmptyProps) {
 }
 
 type CartItemsProps = {
-  showCartItems: boolean;
+  show: boolean;
   cartItems: CartItemType[];
 };
 
-function CartItems({ showCartItems, cartItems }: CartItemsProps) {
-  if (!showCartItems) return null;
+function CartItems({ show, cartItems }: CartItemsProps) {
+  if (!show) return null;
 
   return (
     <>
@@ -76,9 +76,9 @@ export default function CartView() {
 
   return (
     <>
-      <CartEmpty showCartEmptyMessage={cartItems.length === 0} />
+      <CartEmpty show={cartItems.length === 0} />
       <CartItems
-        showCartItems={cartItems.length !== 0}
+        show={cartItems.length !== 0}
         cartItems={cartItems}
       />
     </>
