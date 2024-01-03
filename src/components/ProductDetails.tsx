@@ -1,10 +1,21 @@
 'use client';
 
 import { ProductType } from '@/types';
-import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Divider,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  Typography,
+} from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { Add, AddShoppingCart, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
+import { Add, AddShoppingCart, ExpandMore, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -17,6 +28,8 @@ import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { toggleButtonSizeOptions } from '@/constants/sizes';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
+import AccordionComponent from './ui/AccordionComponent';
+import { borderRadius } from '@/constants/styles';
 
 type PreviousPriceAndPercentageProps = {
   show: boolean;
@@ -366,7 +379,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               sx={{ opacity: '70%' }}>
               Shipping
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, paddingLeft: 1 }}>
               <LocalShippingOutlined />
               <Typography
                 component="p"
@@ -390,7 +403,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               sx={{ opacity: '70%' }}>
               Returns
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, paddingLeft: 1 }}>
               <Typography
                 component="p"
                 variant="body1">
@@ -399,20 +412,45 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </Box>
           </Box>
           <Divider />
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingY: { xs: 1, sm: 2 } }}>
-            <Typography
-              component="span"
-              fontWeight={500}
-              fontSize={16}
-              sx={{ opacity: '70%' }}>
-              Description
-            </Typography>
-            <Typography
-              component="p"
-              variant="body1">
-              {product.description}
-            </Typography>
-          </Box>
+          <Accordion
+            elevation={0}
+            disableGutters
+            defaultExpanded={true}
+            sx={{ borderRadius: borderRadius }}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              sx={{ padding: 0 }}>
+              <Typography
+                component="span"
+                fontWeight={500}
+                fontSize={16}
+                sx={{ opacity: '70%' }}>
+                Product Details
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ padding: 0 }}>
+              <List
+                sx={{
+                  listStyleType: 'disc',
+                  paddingLeft: 3,
+                  '& .MuiListItem-root': {
+                    display: 'list-item',
+                  },
+                }}>
+                {product.details?.split(',').map((detail, index) => (
+                  <ListItem
+                    key={index}
+                    sx={{ padding: 0, paddingBottom: 1 }}>
+                    <Typography
+                      component="p"
+                      variant="body1">
+                      {detail}
+                    </Typography>
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Grid>
     </Grid>

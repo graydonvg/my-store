@@ -229,10 +229,11 @@ export interface Database {
       };
       products: {
         Row: {
+          brand: string | null;
           category: string;
           created_at: string;
           delivery_info: string;
-          description: string;
+          details: string;
           name: string;
           on_sale: string;
           price: number;
@@ -242,10 +243,11 @@ export interface Database {
           sizes: string[];
         };
         Insert: {
+          brand?: string | null;
           category: string;
           created_at?: string;
           delivery_info: string;
-          description: string;
+          details: string;
           name: string;
           on_sale: string;
           price: number;
@@ -255,10 +257,11 @@ export interface Database {
           sizes: string[];
         };
         Update: {
+          brand?: string | null;
           category?: string;
           created_at?: string;
           delivery_info?: string;
-          description?: string;
+          details?: string;
           name?: string;
           on_sale?: string;
           price?: number;

@@ -30,7 +30,7 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
   { label: 'Name', name: 'name' },
-  { label: 'Description', name: 'description', multiline: true },
+  { label: 'Product Details', name: 'details', multiline: true, placeholder: 'e.g. Black, Regular fit, ...' },
   { label: 'Delivery info', name: 'delivery_info', multiline: true },
   { label: 'Return info', name: 'return_info', multiline: true },
   { label: 'Price', name: 'price', placeholder: 'e.g. 199' },
@@ -52,6 +52,8 @@ export default function AdminViewAddNewProduct() {
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+
+  console.log(productFormData.details);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormDataOnChange({ field: 'sizes', value: selectedSize }));
@@ -236,6 +238,7 @@ export default function AdminViewAddNewProduct() {
             onChange={handleInputChange}
             multiline={field.multiline ?? false}
             disabled={isSubmitting || isClearingAllFields}
+            placeholder={field.placeholder}
             required
           />
         );

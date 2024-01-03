@@ -18,7 +18,7 @@ const initialState: State = {
     category: '',
     delivery_info: '',
     return_info: '',
-    description: '',
+    details: '',
     name: '',
     on_sale: '',
     price: '',

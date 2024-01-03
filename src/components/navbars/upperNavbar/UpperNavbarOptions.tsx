@@ -116,17 +116,20 @@ function CheckoutButton({ show }: CheckoutButtonProps) {
   }
 
   return (
-    <ListItem
-      disablePadding
-      sx={{ padding: 0.5 }}>
-      <ContainedButton
-        onClick={handleGoToCheckout}
-        height={'30px'}
-        minHeight={1}
-        label="checkout"
-        backgroundColor="blue"
-      />
-    </ListItem>
+    <>
+      <CustomDivider />
+      <ListItem
+        disablePadding
+        sx={{ padding: 0.5 }}>
+        <ContainedButton
+          onClick={handleGoToCheckout}
+          height={'30px'}
+          minHeight={1}
+          label="checkout"
+          backgroundColor="blue"
+        />
+      </ListItem>
+    </>
   );
 }
 
@@ -166,7 +169,6 @@ function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
         <ListItem disablePadding>
           <CartDrawer />
         </ListItem>
-        <CustomDivider />
         <CheckoutButton show={!isBelowMedium && cartItems.length > 0} />
         <CustomDivider />
         <AccountDropdownMenu show={!isBelowMedium} />

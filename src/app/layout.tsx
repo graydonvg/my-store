@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
-import { Box, Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import Toast from '@/components/ui/Toast';
 import Navbar from '@/components/navbars/Navbar';
 import StateSetters from '@/components/stateSetters/StateSetters';
