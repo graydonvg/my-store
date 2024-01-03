@@ -292,7 +292,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             <Box>
               <Typography
                 sx={{ paddingY: 1 }}
-                lineHeight={1}
+                lineHeight={1.2}
                 component="h1"
                 fontSize={30}>
                 {product.name}
@@ -300,7 +300,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <Typography
                 sx={{ paddingY: 1, opacity: '70%' }}
                 lineHeight={1}
-                component="h1"
+                component="span"
                 fontSize={16}>
                 {product.brand}
               </Typography>

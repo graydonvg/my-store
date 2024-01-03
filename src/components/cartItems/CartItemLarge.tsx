@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, ListItem, Typography, useTheme } from '@mui/material';
+import { Box, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { Divider } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -9,6 +9,48 @@ import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
+
+type ProductNameAndBrandProps = {
+  show: boolean;
+  name: string;
+  brand: string;
+};
+
+function ProductNameAndBrand({ show, name, brand }: ProductNameAndBrandProps) {
+  if (!show) return null;
+
+  return (
+    <>
+      <Typography
+        lineHeight={1}
+        component="p"
+        fontWeight={600}
+        fontSize={{ xs: 20, sm: 24 }}
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: '1',
+          WebkitBoxOrient: 'vertical',
+          paddingRight: 3,
+        }}>
+        {name}
+      </Typography>
+      <Typography
+        lineHeight={1}
+        component="span"
+        fontWeight={600}
+        fontSize={14}
+        sx={{
+          display: '-webkit-box',
+          opacity: '70%',
+          marginTop: '6px',
+        }}>
+        {brand}
+      </Typography>
+    </>
+  );
+}
 
 type FreeDeliveryTextProps = {
   show: boolean;
@@ -96,6 +138,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
   const isOnSale = item?.product?.on_sale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
+  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box
@@ -123,7 +166,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
-          gap: 4,
+          gap: 2,
           alignItems: 'flex-start',
           justifyContent: 'flex-start',
         }}>
@@ -145,45 +188,29 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
               priority
             />
           </Box>
-          <Typography
-            lineHeight={1}
-            component="p"
-            fontWeight={600}
-            fontSize={20}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: { xs: '-webkit-box', sm: 'none' },
-              WebkitLineClamp: '1',
-              WebkitBoxOrient: 'vertical',
-              paddingRight: 3,
-            }}>
-            {item?.product?.name}
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <ProductNameAndBrand
+              show={isBelowSmall}
+              name={item?.product?.name!}
+              brand={item?.product?.brand!}
+            />
+          </Box>
         </Box>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 4,
+            gap: 3,
             paddingTop: { xs: 0, sm: 1 },
             width: 1,
           }}>
-          <Typography
-            lineHeight={1}
-            component="p"
-            fontWeight={600}
-            fontSize={24}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: { xs: 'none', sm: '-webkit-box' },
-              WebkitLineClamp: '1',
-              WebkitBoxOrient: 'vertical',
-              paddingRight: 3,
-            }}>
-            {item?.product?.name}
-          </Typography>
+          <Box>
+            <ProductNameAndBrand
+              show={!isBelowSmall}
+              name={item?.product?.name!}
+              brand={item?.product?.brand!}
+            />
+          </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
             {[
               { heading: 'Qauntity', value: item?.quantity },

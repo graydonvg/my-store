@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from './buttons/ContainedButton';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -215,12 +215,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                // paddingX: 1,
                 paddingY: 2,
               }}>
               <Typography
                 component="h4"
-                variant="h4"
                 fontSize={15}
                 fontWeight={600}
                 lineHeight={'20px'}
@@ -234,8 +232,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {product.name}
               </Typography>
               <Typography
-                component="h4"
-                variant="h4"
+                component="span"
                 fontSize={14}
                 lineHeight={'22px'}
                 sx={{

@@ -35,7 +35,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         paddingY: 4,
       }}>
       <Typography
-        component="h1"
+        component="p"
         fontSize={30}>
         Your cart is empty
       </Typography>
