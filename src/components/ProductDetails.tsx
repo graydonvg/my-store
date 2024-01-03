@@ -46,12 +46,12 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
     <Box
       sx={{
         display: 'flex',
-        alignItems: 'flex-end',
+        alignSelf: 'flex-end',
+        alignItems: 'center',
         flexWrap: 'nowrap',
-        paddingTop: 2,
       }}>
       <Typography
-        lineHeight={1}
+        lineHeight={1.3}
         component="span"
         sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
         fontFamily={'Georgia'}
@@ -308,12 +308,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             <Box
               sx={{
                 display: 'flex',
-                alignItems: { sm: 'flex-end' },
+                alignItems: 'center',
                 flexWrap: 'wrap',
-                flexDirection: { xs: 'column', sm: 'row' },
+                rowGap: 1,
+                columnGap: 2,
               }}>
               <Typography
-                sx={{ paddingRight: 2 }}
                 lineHeight={1}
                 component="span"
                 fontFamily={'Georgia'}

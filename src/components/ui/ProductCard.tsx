@@ -64,7 +64,7 @@ function SalePrice({ show, price }: SalePriceProps) {
     <Typography
       lineHeight={1}
       component="span"
-      fontSize={16}
+      fontSize={18}
       fontFamily={'Georgia'}
       fontStyle="italic"
       sx={{ textDecoration: 'line-through', opacity: '50%' }}>
@@ -219,7 +219,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               }}>
               <Typography
                 component="h4"
-                fontSize={15}
+                fontSize={16}
                 fontWeight={600}
                 lineHeight={'20px'}
                 sx={{
@@ -243,17 +243,16 @@ export default function ProductCard({ product }: ProductCardProps) {
               <Box
                 sx={{
                   display: 'flex',
-                  alignItems: 'flex-end',
+                  alignItems: 'center',
                   flexWrap: 'wrap',
-                  columnGap: 0.5,
+                  columnGap: 1,
                 }}>
                 <Typography
                   lineHeight={'24px'}
-                  sx={{ paddingRight: 0.5 }}
                   component="span"
                   fontFamily={'Georgia'}
                   fontStyle="italic"
-                  fontSize={18}>
+                  fontSize={20}>
                   {formatCurrency(isOnSale ? discountedPrice : product.price)}
                 </Typography>
                 <SalePrice
