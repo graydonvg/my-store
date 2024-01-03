@@ -1,18 +1,13 @@
 import Products from '@/components/Products';
+import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { getProductsByCategory } from '@/services/products/get-products';
-import { Typography } from '@mui/material';
 
 export default async function MenAllProducts() {
   const { data: products } = await getProductsByCategory('Men');
 
   return (
     <>
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{ textAlign: 'center', paddingBottom: 2 }}>
-        Men
-      </Typography>
+      <PageHeaderWithBorder label="Men" />
       <Products
         show={!!products}
         products={products!}

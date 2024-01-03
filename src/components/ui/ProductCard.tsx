@@ -169,9 +169,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product_image_data[0] ? product_image_data[0].image_url : '';
 
   return (
-    <Paper
-      elevation={1}
-      sx={{ borderRadius: borderRadius, height: 1 }}>
+    <Box sx={{ borderRadius: borderRadius, height: 1 }}>
       <Box
         sx={{
           display: 'flex',
@@ -217,15 +215,15 @@ export default function ProductCard({ product }: ProductCardProps) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                paddingX: 1,
+                // paddingX: 1,
                 paddingY: 2,
-                gap: 1,
               }}>
               <Typography
                 component="h4"
                 variant="h4"
                 fontSize={15}
                 fontWeight={600}
+                lineHeight={'20px'}
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -235,15 +233,25 @@ export default function ProductCard({ product }: ProductCardProps) {
                 }}>
                 {product.name}
               </Typography>
+              <Typography
+                component="h4"
+                variant="h4"
+                fontSize={14}
+                lineHeight={'22px'}
+                sx={{
+                  opacity: '70%',
+                }}>
+                {product.brand}
+              </Typography>
               <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'flex-end',
                   flexWrap: 'wrap',
-                  gap: 0.5,
+                  columnGap: 0.5,
                 }}>
                 <Typography
-                  lineHeight={1}
+                  lineHeight={'24px'}
                   sx={{ paddingRight: 0.5 }}
                   component="span"
                   fontFamily={'Georgia'}
@@ -264,6 +272,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           product={product}
         />
       </Box>
-    </Paper>
+    </Box>
   );
 }

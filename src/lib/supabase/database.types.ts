@@ -229,7 +229,7 @@ export interface Database {
       };
       products: {
         Row: {
-          brand: string | null;
+          brand: string;
           category: string;
           created_at: string;
           delivery_info: string;
@@ -243,7 +243,7 @@ export interface Database {
           sizes: string[];
         };
         Insert: {
-          brand?: string | null;
+          brand: string;
           category: string;
           created_at?: string;
           delivery_info: string;
@@ -257,7 +257,7 @@ export interface Database {
           sizes: string[];
         };
         Update: {
-          brand?: string | null;
+          brand?: string;
           category?: string;
           created_at?: string;
           delivery_info?: string;

@@ -289,13 +289,22 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               gap: 2,
               paddingBottom: 2,
             }}>
-            <Typography
-              sx={{ paddingY: 1 }}
-              lineHeight={1}
-              component="h1"
-              fontSize={30}>
-              {product.name}
-            </Typography>
+            <Box>
+              <Typography
+                sx={{ paddingY: 1 }}
+                lineHeight={1}
+                component="h1"
+                fontSize={30}>
+                {product.name}
+              </Typography>
+              <Typography
+                sx={{ paddingY: 1, opacity: '70%' }}
+                lineHeight={1}
+                component="h1"
+                fontSize={16}>
+                {product.brand}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 display: 'flex',

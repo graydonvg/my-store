@@ -20,6 +20,7 @@ const initialState: State = {
     return_info: '',
     details: '',
     name: '',
+    brand: '',
     on_sale: '',
     price: '',
     sale_percentage: '',
