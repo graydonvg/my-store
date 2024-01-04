@@ -1,4 +1,4 @@
-import Orders from '@/components/Orders';
+import Orders from '@/components/orders/Orders';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Box } from '@mui/material';

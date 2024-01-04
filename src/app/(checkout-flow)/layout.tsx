@@ -14,7 +14,7 @@ import {
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { borderRadius } from '@/constants/styles';
-import OrderTotals from '@/components/OrderTotals';
+import OrderTotals from '@/components/orders/OrderTotals';
 import payWithStripe from '@/utils/payWithStripe';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { toast } from 'react-toastify';
