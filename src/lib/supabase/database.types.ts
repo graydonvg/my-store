@@ -132,13 +132,6 @@ export interface Database {
             referencedColumns: ['order_id'];
           },
           {
-            foreignKeyName: 'order_items_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'products';
-            referencedColumns: ['product_id'];
-          },
-          {
             foreignKeyName: 'order_items_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
@@ -149,43 +142,36 @@ export interface Database {
       };
       orders: {
         Row: {
-          address_id: string;
           cart_total: number;
           created_at: string;
           delivery_fee: number;
           discount_total: number;
+          is_paid: boolean;
           order_id: string;
           order_total: number;
           user_id: string;
         };
         Insert: {
-          address_id: string;
           cart_total: number;
           created_at?: string;
           delivery_fee: number;
           discount_total: number;
+          is_paid?: boolean;
           order_id?: string;
           order_total: number;
           user_id: string;
         };
         Update: {
-          address_id?: string;
           cart_total?: number;
           created_at?: string;
           delivery_fee?: number;
           discount_total?: number;
+          is_paid?: boolean;
           order_id?: string;
           order_total?: number;
           user_id?: string;
         };
         Relationships: [
-          {
-            foreignKeyName: 'orders_address_id_fkey';
-            columns: ['address_id'];
-            isOneToOne: false;
-            referencedRelation: 'addresses';
-            referencedColumns: ['address_id'];
-          },
           {
             foreignKeyName: 'orders_user_id_fkey';
             columns: ['user_id'];

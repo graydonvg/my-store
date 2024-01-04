@@ -35,47 +35,6 @@ type UserSignedOutOptionsProps = {
   show: boolean;
 };
 
-function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
-  const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
-
-  if (!show) return null;
-
-  function handleToggleTheme() {
-    dispatch(toggleTheme());
-  }
-
-  return (
-    <List
-      sx={{ display: 'flex', height: '100%' }}
-      disablePadding>
-      <ListItem
-        disablePadding
-        sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
-        <IconButton
-          onClick={handleToggleTheme}
-          size="small">
-          <ThemeToggleIcon
-            size="small"
-            color={customColorPalette.grey.light}
-          />
-        </IconButton>
-      </ListItem>
-      <CustomDivider />
-      <ListItem disablePadding>
-        <SignInDialog />
-      </ListItem>
-      <CustomDivider />
-      <ListItem
-        disablePadding
-        sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <SignUpDialog />
-      </ListItem>
-      <CustomDivider />
-    </List>
-  );
-}
-
 type FavoriteButtonProps = {
   show: boolean;
 };
@@ -144,6 +103,47 @@ function AccountDropdownMenu({ show }: AccountDropdownMenuProps) {
     <ListItem disablePadding>
       <AccountMenu />
     </ListItem>
+  );
+}
+
+function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
+  const dispatch = useAppDispatch();
+  const customColorPalette = useCustomColorPalette();
+
+  if (!show) return null;
+
+  function handleToggleTheme() {
+    dispatch(toggleTheme());
+  }
+
+  return (
+    <List
+      sx={{ display: 'flex', height: '100%' }}
+      disablePadding>
+      <ListItem
+        disablePadding
+        sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
+        <IconButton
+          onClick={handleToggleTheme}
+          size="small">
+          <ThemeToggleIcon
+            size="small"
+            color={customColorPalette.grey.light}
+          />
+        </IconButton>
+      </ListItem>
+      <CustomDivider />
+      <ListItem disablePadding>
+        <SignInDialog />
+      </ListItem>
+      <CustomDivider />
+      <ListItem
+        disablePadding
+        sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <SignUpDialog />
+      </ListItem>
+      <CustomDivider />
+    </List>
   );
 }
 

@@ -3,35 +3,35 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 
 export default async function StateSetters() {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const { data: user } = await supabase.from('users').select('*, addresses(*)');
+  // const supabase = await createSupabaseServerClient();
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
+  // const { data: user } = await supabase.from('users').select('*, addresses(*)');
 
-  const userData = user;
-  let cartItems;
+  // const userData = !!user ? user[0] : null;
+  // let cartItems;
 
-  if (user) {
-    const { data: cart } = await supabase
-      .from('cart')
-      .select(
-        'created_at, cart_item_id, quantity, size, product: products!inner(name, on_sale, price, sale_percentage, delivery_info, return_info, product_id, sizes, brand, product_image_data!inner(image_url))'
-      )
-      .order('created_at', { ascending: false });
+  // if (user) {
+  //   const { data: cart } = await supabase
+  //     .from('cart')
+  //     .select(
+  //       'created_at, cart_item_id, quantity, size, product: products!inner(name, on_sale, price, sale_percentage, delivery_info, return_info, product_id, sizes, brand, product_image_data!inner(image_url))'
+  //     )
+  //     .order('created_at', { ascending: false });
 
-    cartItems = cart;
-  }
+  //   cartItems = cart;
+  // }
 
-  if (!cartItems || !userData) return null;
+  // if (!cartItems || !userData) return null;
 
   return (
     <>
-      <UserStateSetter
-        userData={userData[0]}
+      {/* <UserStateSetter
+        userData={userData}
         session={session}
       />
-      <CartItemsStateSetter cartItems={cartItems} />
+      <CartItemsStateSetter cartItems={cartItems} /> */}
     </>
   );
 }

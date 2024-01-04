@@ -3,10 +3,13 @@
 import CartItemLarge from '@/components/cartItems/CartItemLarge';
 import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { CartItemType } from '@/types';
 import { Box, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 type CartEmptyProps = {
   show: boolean;
@@ -72,7 +75,16 @@ function CartItems({ show, cartItems }: CartItemsProps) {
 }
 
 export default function CartView() {
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
+  const paymentStatus = searchParams.get('payment');
+
+  useEffect(() => {
+    if (paymentStatus === 'cancel') {
+      dispatch(setCheckoutData({ isProcessing: false }));
+    }
+  }, [dispatch, paymentStatus]);
 
   return (
     <>

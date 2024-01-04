@@ -8,7 +8,7 @@ import { Session } from '@supabase/supabase-js';
 
 type Props = {
   session: Session | null;
-  userData: CurrentUserType;
+  userData: CurrentUserType | null;
 };
 
 export default function UserStateSetter({ session, userData }: Props) {

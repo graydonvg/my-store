@@ -50,6 +50,7 @@ type SelectShippingAddressCheckboxProps = {
 function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressCheckboxProps) {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
+  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -57,11 +58,13 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
 
   if (!show) return null;
 
+  console.log(checkoutData);
+
   function handleSelectShippingAddress(address: AddressType) {
     if (checkoutData.shippingAddress?.address_id === address.address_id) {
-      dispatch(setCheckoutData({ ...checkoutData, shippingAddress: null }));
+      dispatch(setCheckoutData({ shippingAddress: null }));
     } else {
-      dispatch(setCheckoutData({ ...checkoutData, shippingAddress: address }));
+      dispatch(setCheckoutData({ shippingAddress: { ...address, user_id: user_id! } }));
     }
   }
 
@@ -287,7 +290,7 @@ export default function Addresses() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 2 }}>
         <AddNewAddressDialog />
       </Box>
     </Box>

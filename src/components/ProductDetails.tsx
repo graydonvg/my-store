@@ -425,7 +425,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             elevation={0}
             disableGutters
             defaultExpanded={true}
-            sx={{ borderRadius: borderRadius }}>
+            sx={{ borderRadius: borderRadius, backgroundColor: 'transparent' }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
               sx={{ padding: 0 }}>

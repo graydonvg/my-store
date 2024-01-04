@@ -1,9 +1,18 @@
+'use client';
+
 import { OrderType } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
 import OrderTotals from './OrderTotals';
 import Image from 'next/image';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
+import { useCallback, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { useRouter, useSearchParams } from 'next/navigation';
+import addOrder from '@/services/orders/add';
+import { toast } from 'react-toastify';
+import { PulseLoader } from 'react-spinners';
 
 type Props = {
   show: boolean;
@@ -11,6 +20,61 @@ type Props = {
 };
 
 export default function Orders({ show, orders }: Props) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
+  const checkoutData = useAppSelector((state) => state.checkoutData);
+  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const paymentStatus = searchParams.get('payment');
+
+  const createOrder = useCallback(
+    async function handleCreateOrder() {
+      const { data, success } = await addOrder({
+        cart_total: checkoutData.paymentTotals.cartTotal,
+        delivery_fee: checkoutData.paymentTotals.deliveryFee,
+        discount_total: checkoutData.paymentTotals.totalDiscount,
+        order_total: checkoutData.paymentTotals.orderTotal,
+        user_id: user_id!,
+        is_paid: true,
+      });
+    },
+
+    [
+      checkoutData.paymentTotals.cartTotal,
+      checkoutData.paymentTotals.deliveryFee,
+      checkoutData.paymentTotals.orderTotal,
+      checkoutData.paymentTotals.totalDiscount,
+      user_id,
+    ]
+  );
+
+  useEffect(() => {
+    if (checkoutData.isProcessing === true && paymentStatus === 'success') {
+      createOrder();
+      //if success
+      // dispatch(resetCheckoutData())
+      // router.push('/orders');
+      // toast.success('Payment successfull!');
+    }
+  }, [checkoutData.isProcessing, paymentStatus, createOrder, router]);
+
+  if (checkoutData.isProcessing === true)
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}>
+        <PulseLoader
+          size={40}
+          color="white"
+          loading={checkoutData.isProcessing}
+        />
+      </Box>
+    );
+
   if (!show) return null;
 
   return (

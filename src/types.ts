@@ -101,12 +101,22 @@ export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresse
 };
 
 export type CheckoutDataType = {
-  shippingAddress: AddressType | null;
-  paymentMethod: string;
-  totalToPay: number;
   isProcessing: boolean;
-  isPaid: boolean;
-  paidAt: string;
+  orderItems: {
+    productId: string;
+    quantity: number;
+    size: string;
+    pricePaid: number;
+    productName: string;
+    returnDetails: string;
+  }[];
+  paymentTotals: {
+    cartTotal: number;
+    deliveryFee: number;
+    totalDiscount: number;
+    orderTotal: number;
+  };
+  shippingAddress: (AddressType & { user_id: string }) | null;
 };
 
 export type AccountTextFieldData = {
@@ -121,5 +131,10 @@ export type AccountTextFieldData = {
 
 export type OrderType = Omit<Omit<Database['public']['Tables']['orders']['Row'], 'address_id'>, 'user_id'> & {
   order_items: Omit<Omit<Database['public']['Tables']['order_items']['Row'], 'order_id'>, 'user_id'>[];
-  shipping_details: Database['public']['Tables']['shipping_details']['Row'][];
+  shipping_details: Omit<
+    Omit<Omit<Database['public']['Tables']['shipping_details']['Row'], 'shipping_details_id'>, 'user_id'>,
+    'order_id'
+  >[];
 };
+
+export type InserOrderType = Omit<Database['public']['Tables']['orders']['Insert'], 'address_id'>;

@@ -13,10 +13,13 @@ import {
   selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
 import OrderTotals from '@/components/OrderTotals';
 import payWithStripe from '@/utils/payWithStripe';
+import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { toast } from 'react-toastify';
+import addOrder from '@/services/orders/add';
+import { calculateDiscountedCartItemPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = {
   children: ReactNode;
@@ -39,13 +42,40 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
 
-  function handleNavigate() {
-    dispatch(setCheckoutData({ ...checkoutData, totalToPay: orderTotal }));
+  function handleCheckout() {
+    const orderItems = cartItems.map((item) => {
+      const pricePaid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+      return {
+        productId: item?.product?.product_id!,
+        quantity: item?.quantity!,
+        size: item?.size!,
+        pricePaid: pricePaid!,
+        productName: item?.product?.name!,
+        returnDetails: item?.product?.return_info!,
+      };
+    });
+    dispatch(
+      setCheckoutData({
+        paymentTotals: { cartTotal, deliveryFee, orderTotal, totalDiscount },
+        orderItems,
+        isProcessing: true,
+      })
+    );
     router.push('/checkout/shipping');
   }
 
   async function handlePayWithStripe() {
-    await payWithStripe(cartItems);
+    try {
+      dispatch(setCheckoutData({ isProcessing: true }));
+
+      const error = await payWithStripe(cartItems);
+
+      if (!!error) {
+        dispatch(setCheckoutData({ isProcessing: false }));
+      }
+    } catch (error) {
+      toast.error('Failed to process payment. Please try again later');
+    }
   }
 
   return (
@@ -87,7 +117,7 @@ export default function CheckoutFlowLayout({ children }: Props) {
             />
             <ContainedButton
               disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingAddress)}
-              onClick={isCartView ? handleNavigate : handlePayWithStripe}
+              onClick={isCartView ? handleCheckout : handlePayWithStripe}
               label={(isCartView && 'checkout now') || (isShippingView && 'continue to payment')}
               fullWidth
               backgroundColor={isCartView ? 'blue' : 'red'}

@@ -6,14 +6,14 @@ import { CartItemType } from '@/types';
 import { setCartItems } from '@/lib/redux/cart/cartSlice';
 
 type Props = {
-  cartItems: CartItemType[];
+  cartItems: CartItemType[] | null;
 };
 
 export default function CartItemsStateSetter({ cartItems }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setCartItems(cartItems));
+    dispatch(setCartItems(cartItems !== null ? cartItems : []));
   }, [cartItems, dispatch]);
 
   return null;

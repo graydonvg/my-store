@@ -14,7 +14,7 @@ export async function POST(request: Request): Promise<
   const formData: InsertProductTypeDb = await request.json();
 
   try {
-    const { data, error } = await supabase.from('products').insert([formData]).select('product_id');
+    const { data, error } = await supabase.from('products').insert(formData).select('product_id');
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add product. ${error.message}.` });

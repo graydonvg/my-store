@@ -6,6 +6,7 @@ import { Fragment } from 'react';
 import CartItemSmall from './CartItemSmall';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { borderRadius } from '@/constants/styles';
+import { usePathname } from 'next/navigation';
 
 type CartEmptyMessageProps = {
   show: boolean;
@@ -26,21 +27,31 @@ type CartItemsProps = {
 };
 
 function CartItems({ show }: CartItemsProps) {
+  const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const dividerColor =
     mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
+  const isShippingView = pathname.includes('/checkout/shipping');
 
   if (!show) return null;
 
   return cartItems.map((item, index) => {
     const isLastItem = cartItems.length - 1 === index;
+    let showDivider;
+
+    if (!isShippingView) {
+      showDivider = true;
+    } else if (isShippingView && !isLastItem) {
+      showDivider = true;
+    }
+
     return (
       <Fragment key={item?.cart_item_id}>
         <CartItemSmall item={item} />
-        {!isLastItem ? <Divider sx={{ borderColor: dividerColor }} /> : null}
+        {showDivider ? <Divider sx={{ borderColor: dividerColor }} /> : null}
       </Fragment>
     );
   });

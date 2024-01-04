@@ -1,12 +1,14 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import payWithStripe from '@/utils/payWithStripe';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
+import { toast } from 'react-toastify';
 
 type Props = {
   href: string;
@@ -15,6 +17,7 @@ type Props = {
 };
 
 export default function BreadcrumbItem({ href, icon, label }: Props) {
+  const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
   const shippingAddress = useAppSelector((state) => state.checkoutData.shippingAddress);
   const theme = useTheme();
@@ -23,7 +26,19 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
   const customColorPalette = useCustomColorPalette();
 
   async function handlePayWithStripe() {
-    await payWithStripe(cartItems);
+    async function handlePayWithStripe() {
+      try {
+        dispatch(setCheckoutData({ isProcessing: true }));
+
+        const error = await payWithStripe(cartItems);
+
+        if (!!error) {
+          dispatch(setCheckoutData({ isProcessing: false }));
+        }
+      } catch (error) {
+        toast.error('Failed to process payment. Please try again later');
+      }
+    }
   }
 
   return (
