@@ -54,11 +54,15 @@ export const cartSlice = createSlice({
       const { id, value } = action.payload;
       state.cartItems = changeCartItemQuantity(id, value, state.cartItems);
     },
+    clearCart(state) {
+      state.cartItems = initialState.cartItems;
+    },
   },
 });
 
 const { actions, reducer } = cartSlice;
 
-export const { setIsCartOpen, setCartItems, setCartItemToEditId, setCartItemSize, setCartItemQuantity } = actions;
+export const { setIsCartOpen, setCartItems, setCartItemToEditId, setCartItemSize, setCartItemQuantity, clearCart } =
+  actions;
 
 export const cartReducer = reducer;

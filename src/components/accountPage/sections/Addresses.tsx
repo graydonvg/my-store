@@ -50,28 +50,35 @@ type SelectShippingAddressCheckboxProps = {
 function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressCheckboxProps) {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const currentUser = useAppSelector((state) => state.user.currentUser);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
+  const fullName = `${currentUser?.first_name} ${currentUser?.last_name}`;
 
   if (!show) return null;
 
   console.log(checkoutData);
 
   function handleSelectShippingAddress(address: AddressType) {
-    if (checkoutData.shippingAddress?.address_id === address.address_id) {
-      dispatch(setCheckoutData({ shippingAddress: null }));
+    const { address_id, ...restOfAddressData } = address;
+    if (checkoutData.selectedAddressId === address.address_id) {
+      dispatch(setCheckoutData({ selectedAddressId: null, shippingDetails: null }));
     } else {
-      dispatch(setCheckoutData({ shippingAddress: { ...address, user_id: user_id! } }));
+      dispatch(
+        setCheckoutData({
+          selectedAddressId: address_id,
+          shippingDetails: { ...restOfAddressData, full_name: fullName, contact_number: currentUser?.contact_number! },
+        })
+      );
     }
   }
 
   return (
     <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
       <Checkbox
-        checked={checkoutData.shippingAddress?.address_id === address.address_id}
+        checked={checkoutData.selectedAddressId === address.address_id}
         onChange={() => handleSelectShippingAddress(address)}
         disableRipple
         sx={{ padding: 0 }}

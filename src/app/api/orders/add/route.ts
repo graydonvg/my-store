@@ -16,7 +16,8 @@ export async function POST(request: Request): Promise<
   } = await supabase.auth.getSession();
   const orderData: InserOrderType = await request.json();
 
-  if (!session) return NextResponse.json({ success: false, message: 'Failed to update cart. Please try again later.' });
+  if (!session)
+    return NextResponse.json({ success: false, message: 'Failed to create order. Please try again later.' });
 
   try {
     const { error, data } = await supabase.from('orders').insert(orderData).select('order_id');

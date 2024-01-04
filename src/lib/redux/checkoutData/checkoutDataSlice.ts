@@ -2,6 +2,7 @@ import { CheckoutDataType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: CheckoutDataType = {
+  selectedAddressId: null,
   orderItems: [],
   paymentTotals: {
     cartTotal: 0,
@@ -9,7 +10,7 @@ const initialState: CheckoutDataType = {
     orderTotal: 0,
     totalDiscount: 0,
   },
-  shippingAddress: null,
+  shippingDetails: null,
   isProcessing: false,
 };
 

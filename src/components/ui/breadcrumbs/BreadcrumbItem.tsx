@@ -19,31 +19,29 @@ type Props = {
 export default function BreadcrumbItem({ href, icon, label }: Props) {
   const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const shippingAddress = useAppSelector((state) => state.checkoutData.shippingAddress);
+  const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
 
   async function handlePayWithStripe() {
-    async function handlePayWithStripe() {
-      try {
-        dispatch(setCheckoutData({ isProcessing: true }));
+    try {
+      dispatch(setCheckoutData({ isProcessing: true }));
 
-        const error = await payWithStripe(cartItems);
+      const error = await payWithStripe(cartItems);
 
-        if (!!error) {
-          dispatch(setCheckoutData({ isProcessing: false }));
-        }
-      } catch (error) {
-        toast.error('Failed to process payment. Please try again later');
+      if (!!error) {
+        dispatch(setCheckoutData({ isProcessing: false }));
       }
+    } catch (error) {
+      toast.error('Failed to process payment. Please try again later');
     }
   }
 
   return (
     <Link
-      onClick={label === 'payment' && shippingAddress ? handlePayWithStripe : undefined}
+      onClick={label === 'payment' && !!shippingDetails ? handlePayWithStripe : undefined}
       href={href}
       tabIndex={-1}>
       <Button

@@ -262,6 +262,7 @@ export interface Database {
         Row: {
           city: string;
           complex_or_building: string | null;
+          contact_number: string;
           full_name: string;
           order_id: string;
           postal_code: number;
@@ -274,6 +275,7 @@ export interface Database {
         Insert: {
           city: string;
           complex_or_building?: string | null;
+          contact_number: string;
           full_name: string;
           order_id: string;
           postal_code: number;
@@ -286,6 +288,7 @@ export interface Database {
         Update: {
           city?: string;
           complex_or_building?: string | null;
+          contact_number?: string;
           full_name?: string;
           order_id?: string;
           postal_code?: number;
@@ -352,7 +355,7 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      update: {
+      update_cart_item_quantity: {
         Args: {
           item_id: string;
           item_quantity: number;

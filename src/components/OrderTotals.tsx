@@ -77,14 +77,16 @@ export default function OrderTotals({ orderTotal, totalDiscount, deliveryFee, to
         price={orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0)}
         fontSize={14}
       />
-      <Divider />
       {!!totalToPay ? (
-        <Total
-          label="Order total"
-          price={formatCurrency(orderTotal)}
-          fontSize={14}
-          fontWeight={600}
-        />
+        <>
+          <Divider />
+          <Total
+            label="Order total"
+            price={formatCurrency(orderTotal)}
+            fontSize={14}
+            fontWeight={600}
+          />
+        </>
       ) : null}
       <Divider sx={{ border: `1.5px solid ${dividerColor}` }} />
       <Total

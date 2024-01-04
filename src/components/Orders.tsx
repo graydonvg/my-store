@@ -1,7 +1,7 @@
 'use client';
 
 import { OrderType } from '@/types';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from './OrderTotals';
 import Image from 'next/image';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -13,6 +13,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import addOrder from '@/services/orders/add';
 import { toast } from 'react-toastify';
 import { PulseLoader } from 'react-spinners';
+import addOrderItems from '@/services/orders/items/add';
+import addOrderShippingDetails from '@/services/orders/shipping-details/add';
+import { clearCart } from '@/lib/redux/cart/cartSlice';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type Props = {
   show: boolean;
@@ -26,10 +30,15 @@ export default function Orders({ show, orders }: Props) {
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
   const paymentStatus = searchParams.get('payment');
+  const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
+  const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
 
   const createOrder = useCallback(
     async function handleCreateOrder() {
-      const { data, success } = await addOrder({
+      const { data, success, message } = await addOrder({
         cart_total: checkoutData.paymentTotals.cartTotal,
         delivery_fee: checkoutData.paymentTotals.deliveryFee,
         discount_total: checkoutData.paymentTotals.totalDiscount,
@@ -37,9 +46,57 @@ export default function Orders({ show, orders }: Props) {
         user_id: user_id!,
         is_paid: true,
       });
+
+      if (success === true && !!data) {
+        const shippingDetails = checkoutData.shippingDetails!;
+
+        const createOrderItems = checkoutData.orderItems.map((item) => {
+          return {
+            ...item,
+            order_id: data.order_id,
+            user_id: user_id!,
+          };
+        });
+
+        const addOrderItemsPromise = addOrderItems(createOrderItems);
+
+        const addOrderShippingDetailsPromise = addOrderShippingDetails({
+          ...shippingDetails,
+          order_id: data.order_id,
+          user_id: user_id!,
+        });
+
+        const [addOrderItemsResponse, addOrderShippingDetailsResponse] = await Promise.all([
+          addOrderItemsPromise,
+          addOrderShippingDetailsPromise,
+        ]);
+
+        if (addOrderItemsResponse.success === true && addOrderShippingDetailsResponse.success === true) {
+          router.push('/orders');
+          toast.success('Order created successfully');
+          dispatch(resetCheckoutData());
+          // dispatch(clearCart());
+        } else if (addOrderItemsResponse.success === false) {
+          toast.error(addOrderItemsResponse.message);
+          dispatch(resetCheckoutData());
+          // dispatch(clearCart());
+        } else if (addOrderShippingDetailsResponse.success === false) {
+          toast.error(addOrderShippingDetailsResponse.message);
+          dispatch(resetCheckoutData());
+          // dispatch(clearCart());
+        }
+      } else {
+        toast.error(message);
+        dispatch(resetCheckoutData());
+        // dispatch(clearCart());
+      }
     },
 
     [
+      router,
+      dispatch,
+      checkoutData.orderItems,
+      checkoutData.shippingDetails,
       checkoutData.paymentTotals.cartTotal,
       checkoutData.paymentTotals.deliveryFee,
       checkoutData.paymentTotals.orderTotal,
@@ -51,10 +108,6 @@ export default function Orders({ show, orders }: Props) {
   useEffect(() => {
     if (checkoutData.isProcessing === true && paymentStatus === 'success') {
       createOrder();
-      //if success
-      // dispatch(resetCheckoutData())
-      // router.push('/orders');
-      // toast.success('Payment successfull!');
     }
   }, [checkoutData.isProcessing, paymentStatus, createOrder, router]);
 
@@ -66,9 +119,16 @@ export default function Orders({ show, orders }: Props) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 4,
         }}>
+        <Typography fontSize={{ xs: 16, sm: 36 }}>Payment successfull!</Typography>
+        <Typography fontSize={{ xs: 14, sm: 24 }}>Creating your order</Typography>
         <PulseLoader
-          size={40}
+          size={24}
           color="white"
           loading={checkoutData.isProcessing}
         />
@@ -80,9 +140,9 @@ export default function Orders({ show, orders }: Props) {
   return (
     <>
       {orders?.map((order) => {
-        const shippingDetails = order.shipping_details;
-        const { full_name, complex_or_building, street_address, suburb, province, city, postal_code } =
-          shippingDetails[0];
+        if (!order.shipping_details[0]) return null;
+
+        const shippingDetails = Object.values(order.shipping_details[0]);
 
         const orderItems = order.order_items;
 
@@ -95,7 +155,7 @@ export default function Orders({ show, orders }: Props) {
             <Grid
               item
               xs={3}>
-              <Box sx={{ border: '1px solid black', borderRadius, padding: 2 }}>
+              <Box sx={{ border: `1px solid ${borderColor}`, borderRadius, padding: 2 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
                     <Typography
@@ -121,16 +181,14 @@ export default function Orders({ show, orders }: Props) {
                       Shipping Details:
                     </Typography>
                     <Box>
-                      {[full_name, complex_or_building, street_address, suburb, province, city, postal_code].map(
-                        (value) => (
-                          <Typography
-                            key={value}
-                            component="h3"
-                            fontSize={14}>
-                            {value}
-                          </Typography>
-                        )
-                      )}
+                      {shippingDetails.map((value) => (
+                        <Typography
+                          key={value}
+                          component="h3"
+                          fontSize={14}>
+                          {value}
+                        </Typography>
+                      ))}
                     </Box>
                   </Box>
                   <Box>
@@ -153,7 +211,7 @@ export default function Orders({ show, orders }: Props) {
             <Grid
               item
               xs={9}>
-              <Box sx={{ border: '1px solid black', borderRadius, padding: 2 }}>
+              <Box sx={{ border: `1px solid ${borderColor}`, borderRadius, padding: 2 }}>
                 <Grid
                   container
                   spacing={2}>
@@ -161,13 +219,15 @@ export default function Orders({ show, orders }: Props) {
                     <Grid
                       key={item.order_item_id}
                       item
-                      xs={6}>
+                      xs={12}
+                      lg={6}>
                       <Grid
                         container
                         spacing={2}>
                         <Grid
                           item
-                          xs={4}>
+                          xs={2}
+                          lg={4}>
                           <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
                             <Image
                               style={{
@@ -184,7 +244,8 @@ export default function Orders({ show, orders }: Props) {
                         </Grid>
                         <Grid
                           item
-                          xs={8}>
+                          xs={10}
+                          lg={8}>
                           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingBottom: 2 }}>
                             <Typography fontSize={18}>{item.product_name}</Typography>
                             <Box>

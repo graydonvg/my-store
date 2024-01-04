@@ -100,25 +100,6 @@ export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresse
   postal_code: '' | number;
 };
 
-export type CheckoutDataType = {
-  isProcessing: boolean;
-  orderItems: {
-    productId: string;
-    quantity: number;
-    size: string;
-    pricePaid: number;
-    productName: string;
-    returnDetails: string;
-  }[];
-  paymentTotals: {
-    cartTotal: number;
-    deliveryFee: number;
-    totalDiscount: number;
-    orderTotal: number;
-  };
-  shippingAddress: (AddressType & { user_id: string }) | null;
-};
-
 export type AccountTextFieldData = {
   id: string;
   label: string;
@@ -129,7 +110,7 @@ export type AccountTextFieldData = {
   onKeyDownFunction: () => void;
 };
 
-export type OrderType = Omit<Omit<Database['public']['Tables']['orders']['Row'], 'address_id'>, 'user_id'> & {
+export type OrderType = Omit<Database['public']['Tables']['orders']['Row'], 'user_id'> & {
   order_items: Omit<Omit<Database['public']['Tables']['order_items']['Row'], 'order_id'>, 'user_id'>[];
   shipping_details: Omit<
     Omit<Omit<Database['public']['Tables']['shipping_details']['Row'], 'shipping_details_id'>, 'user_id'>,
@@ -137,4 +118,31 @@ export type OrderType = Omit<Omit<Database['public']['Tables']['orders']['Row'],
   >[];
 };
 
-export type InserOrderType = Omit<Database['public']['Tables']['orders']['Insert'], 'address_id'>;
+export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
+
+export type InserOrderItemsType = Database['public']['Tables']['order_items']['Insert'];
+
+export type InserOrderShippingDetailsType = Database['public']['Tables']['shipping_details']['Insert'];
+
+export type OrderItemsTypeStore = Omit<
+  Omit<Database['public']['Tables']['order_items']['Insert'], 'order_id'>,
+  'user_id'
+>;
+
+export type OrderShippingDetailsTypeStore = Omit<
+  Omit<Database['public']['Tables']['shipping_details']['Insert'], 'order_id'>,
+  'user_id'
+>;
+
+export type CheckoutDataType = {
+  selectedAddressId: string | null;
+  isProcessing: boolean;
+  orderItems: OrderItemsTypeStore[];
+  paymentTotals: {
+    cartTotal: number;
+    deliveryFee: number;
+    totalDiscount: number;
+    orderTotal: number;
+  };
+  shippingDetails: OrderShippingDetailsTypeStore | null;
+};

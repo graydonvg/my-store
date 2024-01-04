@@ -54,27 +54,29 @@ function DrawerFooter({ show }: DrawerFooterProps) {
         padding: 2,
         borderTop: `1px solid ${borderColor}`,
       }}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          textTransform: 'uppercase',
-          justifyContent: 'space-between',
-          paddingBottom: 1,
-        }}>
-        <Typography
-          component="span"
-          fontSize={16}
-          fontWeight={700}>
-          Discount
-        </Typography>
-        <Typography
-          component="span"
-          fontSize={16}
-          fontWeight={700}>
-          {formatCurrency(totalDiscount)}
-        </Typography>
-      </Box>
+      {totalDiscount > 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            textTransform: 'uppercase',
+            justifyContent: 'space-between',
+            paddingBottom: 1,
+          }}>
+          <Typography
+            component="span"
+            fontSize={16}
+            fontWeight={700}>
+            Discount
+          </Typography>
+          <Typography
+            component="span"
+            fontSize={16}
+            fontWeight={700}>
+            {formatCurrency(totalDiscount)}
+          </Typography>
+        </Box>
+      ) : null}
       <Box
         sx={{
           display: 'flex',

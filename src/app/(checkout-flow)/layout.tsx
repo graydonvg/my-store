@@ -43,21 +43,22 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const isShippingView = pathname.includes('/checkout/shipping');
 
   function handleCheckout() {
-    const orderItems = cartItems.map((item) => {
-      const pricePaid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+    const createOrderItems = cartItems.map((item) => {
+      const price_paid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
       return {
-        productId: item?.product?.product_id!,
+        product_id: item?.product?.product_id!,
         quantity: item?.quantity!,
         size: item?.size!,
-        pricePaid: pricePaid!,
-        productName: item?.product?.name!,
-        returnDetails: item?.product?.return_info!,
+        price_paid: price_paid!,
+        product_name: item?.product?.name!,
+        product_image_url: item?.product?.product_image_data[0].image_url!,
+        return_details: item?.product?.return_info!,
       };
     });
     dispatch(
       setCheckoutData({
         paymentTotals: { cartTotal, deliveryFee, orderTotal, totalDiscount },
-        orderItems,
+        orderItems: createOrderItems,
         isProcessing: true,
       })
     );
@@ -116,7 +117,7 @@ export default function CheckoutFlowLayout({ children }: Props) {
               totalToPay={orderTotal}
             />
             <ContainedButton
-              disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingAddress)}
+              disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingDetails)}
               onClick={isCartView ? handleCheckout : handlePayWithStripe}
               label={(isCartView && 'checkout now') || (isShippingView && 'continue to payment')}
               fullWidth
