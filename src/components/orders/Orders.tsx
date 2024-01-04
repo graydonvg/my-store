@@ -142,8 +142,6 @@ export default function Orders({ show, orders }: Props) {
   return (
     <>
       {orders?.map((order) => {
-        if (!order.shipping_details[0]) return null;
-
         return (
           <Grid
             key={order.order_id}
@@ -151,11 +149,12 @@ export default function Orders({ show, orders }: Props) {
             spacing={3}
             sx={{ marginBottom: 4 }}>
             <OrderDetails
-              show={!isBelowMedium}
+              show={!isBelowMedium && !!order.shipping_details[0]}
               order={order}
               borderColor={borderColor}
             />
             <OrderItems
+              show={order.order_items.length > 0}
               order={order}
               borderColor={borderColor}
             />

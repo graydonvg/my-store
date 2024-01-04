@@ -6,14 +6,17 @@ import { OrderType } from '@/types';
 import OrderDetails from './OrderDetails';
 
 type Props = {
+  show: boolean;
   order: OrderType;
   borderColor: string;
 };
 
-export default function OrderItems({ borderColor, order }: Props) {
+export default function OrderItems({ show, borderColor, order }: Props) {
   const theme = useTheme();
   const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  if (!show) return null;
 
   return (
     <Grid

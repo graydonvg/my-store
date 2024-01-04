@@ -17,7 +17,7 @@ export default async function OrdersPage() {
     <Box>
       <PageHeaderWithBorder label="Orders" />
       <Orders
-        show={!!orders}
+        show={!!orders && orders.length > 0}
         orders={orders!}
       />
     </Box>
