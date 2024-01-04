@@ -17,7 +17,7 @@ import ToggleButtons from './ui/buttons/ToggleButtons';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { Add, AddShoppingCart, ExpandMore, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -151,6 +151,22 @@ function SelectItemQuantity({ show }: SelectItemQuantityProps) {
   );
 }
 
+type DetailsHeadingProps = {
+  children: ReactNode;
+};
+
+function DetailsHeading({ children }: DetailsHeadingProps) {
+  return (
+    <Typography
+      component="span"
+      fontWeight={500}
+      fontSize={16}
+      sx={{ opacity: '70%' }}>
+      {children}
+    </Typography>
+  );
+}
+
 type ProductDetailsProps = {
   product: ProductType;
 };
@@ -219,7 +235,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
     try {
       if (itemExists && itemExists.size === itemSize) {
-        const { error } = await supabase.rpc('update', {
+        const { error } = await supabase.rpc('update_cart_item_quantity', {
           item_id: itemExists.cart_item_id,
           item_quantity: itemQuantity,
         });
@@ -385,9 +401,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               component="span"
               fontWeight={500}
               fontSize={16}
-              sx={{ opacity: '70%' }}>
-              Shipping
-            </Typography>
+              sx={{ opacity: '70%' }}></Typography>
+            <DetailsHeading>Shipping</DetailsHeading>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, paddingLeft: 1 }}>
               <LocalShippingOutlined />
               <Typography
@@ -405,13 +420,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               gap: 1,
               paddingY: { xs: 1, sm: 2 },
             }}>
-            <Typography
-              component="span"
-              fontWeight={500}
-              fontSize={16}
-              sx={{ opacity: '70%' }}>
-              Returns
-            </Typography>
+            <DetailsHeading>Returns</DetailsHeading>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, paddingLeft: 1 }}>
               <Typography
                 component="p"
@@ -428,14 +437,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             sx={{ borderRadius: borderRadius, backgroundColor: 'transparent' }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              sx={{ padding: 0 }}>
-              <Typography
-                component="span"
-                fontWeight={500}
-                fontSize={16}
-                sx={{ opacity: '70%' }}>
-                Product Details
-              </Typography>
+              sx={{ padding: 0, minHeight: 'unset', paddingY: { xs: 1, sm: 2 } }}>
+              <DetailsHeading>Product Details</DetailsHeading>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
               <List
@@ -450,11 +453,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                   <ListItem
                     key={index}
                     sx={{ padding: 0, paddingBottom: 1 }}>
-                    <Typography
-                      component="p"
-                      variant="body1">
-                      {detail}
-                    </Typography>
+                    <Typography component="p">{detail}</Typography>
                   </ListItem>
                 ))}
               </List>

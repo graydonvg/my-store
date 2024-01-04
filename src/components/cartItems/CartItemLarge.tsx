@@ -9,33 +9,37 @@ import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
+import Link from 'next/link';
 
 type ProductNameAndBrandProps = {
   show: boolean;
   name: string;
   brand: string;
+  productId: string;
 };
 
-function ProductNameAndBrand({ show, name, brand }: ProductNameAndBrandProps) {
+function ProductNameAndBrand({ show, name, brand, productId }: ProductNameAndBrandProps) {
   if (!show) return null;
 
   return (
     <>
-      <Typography
-        lineHeight={1}
-        component="p"
-        fontWeight={600}
-        fontSize={{ xs: 20, sm: 24 }}
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          display: '-webkit-box',
-          WebkitLineClamp: '1',
-          WebkitBoxOrient: 'vertical',
-          paddingRight: 3,
-        }}>
-        {name}
-      </Typography>
+      <Link href={`/products/product/${productId}`}>
+        <Typography
+          lineHeight={1}
+          component="p"
+          fontWeight={600}
+          fontSize={{ xs: 20, sm: 24 }}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: '1',
+            WebkitBoxOrient: 'vertical',
+            paddingRight: 3,
+          }}>
+          {name}
+        </Typography>
+      </Link>
       <Typography
         lineHeight={1}
         component="span"
@@ -171,26 +175,29 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           justifyContent: 'flex-start',
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              position: 'relative',
-              aspectRatio: 3 / 4,
-              width: { xs: '60px', sm: '160px' },
-              flexShrink: 0,
-            }}>
-            <Image
-              style={{ objectFit: 'cover', borderRadius: borderRadius }}
-              fill
-              sizes="180px 60px"
-              src={item?.product?.product_image_data[0].image_url ?? ''}
-              alt={`${item?.product?.name}`}
-              priority
-            />
-          </Box>
+          <Link href={`/products/product/${item?.product?.product_id}`}>
+            <Box
+              sx={{
+                display: 'flex',
+                position: 'relative',
+                aspectRatio: 3 / 4,
+                width: { xs: '60px', sm: '160px' },
+                flexShrink: 0,
+              }}>
+              <Image
+                style={{ objectFit: 'cover', borderRadius: borderRadius }}
+                fill
+                sizes="180px 60px"
+                src={item?.product?.product_image_data[0].image_url ?? ''}
+                alt={`${item?.product?.name}`}
+                priority
+              />
+            </Box>
+          </Link>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductNameAndBrand
               show={isBelowSmall}
+              productId={item?.product?.product_id!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -207,6 +214,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           <Box>
             <ProductNameAndBrand
               show={!isBelowSmall}
+              productId={item?.product?.product_id!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />

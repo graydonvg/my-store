@@ -132,7 +132,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         flexGrow: 1,
-        padding: 1,
+        paddingY: 1,
         gap: 1,
       }}>
       <ContainedButton

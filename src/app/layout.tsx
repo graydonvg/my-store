@@ -1,10 +1,9 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import { Container } from '@mui/material';
 import Toast from '@/components/ui/Toast';
 import Navbar from '@/components/navbars/Navbar';
-import StateSetters from '@/components/stateSetters/StateSetters';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -25,7 +24,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     data: { session },
   } = await supabase.auth.getSession();
   const { data: user } = await supabase.from('users').select('*, addresses(*)');
-
   const userData = !!user ? user[0] : null;
   let cartItems = null;
 
@@ -49,9 +47,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             session={session}
           />
           <CartItemsStateSetter cartItems={cartItems} />
-          {/* <Suspense fallback={null}>
-            <StateSetters />
-          </Suspense> */}
           <Navbar />
           <main>
             <Container
