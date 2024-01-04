@@ -1,7 +1,8 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { resetCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { clearCart } from '@/lib/redux/cart/cartSlice';
+import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addOrder from '@/services/orders/add';
 import addOrderItems from '@/services/orders/items/add';
@@ -11,8 +12,6 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
-
-type Props = {};
 
 export default function PaymentSuccess() {
   const router = useRouter();
@@ -73,6 +72,7 @@ export default function PaymentSuccess() {
           toast.error(addOrderShippingDetailsResponse.message);
           router.push('/');
           dispatch(resetCheckoutData());
+
           return;
         }
       }
@@ -93,9 +93,10 @@ export default function PaymentSuccess() {
 
   useEffect(() => {
     if (checkoutData.isProcessing === true) {
+      dispatch(clearCart());
       createOrder();
     }
-  }, [checkoutData.isProcessing, createOrder, router]);
+  }, [dispatch, checkoutData.isProcessing, createOrder, router]);
 
   return (
     <Box
