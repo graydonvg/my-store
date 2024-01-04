@@ -1,11 +1,12 @@
 'use client';
 
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { resetCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addOrder from '@/services/orders/add';
 import addOrderItems from '@/services/orders/items/add';
 import addOrderShippingDetails from '@/services/orders/shipping-details/add';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -18,6 +19,10 @@ export default function PaymentSuccess() {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   const createOrder = useCallback(
     async function handleCreateOrder() {
@@ -109,7 +114,7 @@ export default function PaymentSuccess() {
       <Typography fontSize={{ xs: 14, sm: 24 }}>Creating your order</Typography>
       <PulseLoader
         size={24}
-        color="white"
+        color={loaderColor}
         loading={true}
       />
     </Box>
