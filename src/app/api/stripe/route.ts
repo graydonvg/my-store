@@ -24,11 +24,11 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${createURL('/orders')}?payment=success`,
+      success_url: `${createURL('/payment/success')}`,
       cancel_url: `${createURL('/cart/view')}?payment=cancel`,
     });
 
-    return NextResponse.json({ success: true, message: 'Payment successfull.', data: { sessionId: session.id } });
+    return NextResponse.json({ success: true, message: 'Payment successful.', data: { sessionId: session.id } });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to process payment. An unexpect error occured.' });
   }

@@ -2,6 +2,7 @@ import { OrderType } from '@/types';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from './OrderTotals';
 import { borderRadius } from '@/constants/styles';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type Props = {
   show: boolean;
@@ -11,6 +12,7 @@ type Props = {
 
 export default function OrderDetails({ show, order, borderColor }: Props) {
   const shippingData = Object.values(order.shipping_details[0]);
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -33,8 +35,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
             </Typography>
             <Typography
               component="span"
-              fontSize={14}
-              color="blue">
+              fontSize={14}>
               {order.created_at.split('T')[0]}
             </Typography>
           </Box>
@@ -43,7 +44,8 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               component="h4"
               fontSize={14}
               fontWeight={500}
-              textTransform="uppercase">
+              textTransform="uppercase"
+              sx={{ opacity: '70%' }}>
               Shipping Details:
             </Typography>
             <Box>
@@ -61,7 +63,8 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
             <Typography
               component="h3"
               fontSize={18}
-              fontWeight={600}>
+              fontWeight={600}
+              sx={{ opacity: '70%' }}>
               Order Summary
             </Typography>
             <OrderTotals
