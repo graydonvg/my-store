@@ -58,9 +58,19 @@ export default function PaymentSuccess() {
           addOrderShippingDetailsPromise,
         ]);
 
+        //Removing shipping entry
+        //Removing shipping entry
+        //Removing shipping entry
+        //Removing shipping entry
         if (addOrderItemsResponse.success === true && addOrderShippingDetailsResponse.success === true) {
           toast.success('Order created successfully');
           router.push('/orders');
+          dispatch(resetCheckoutData());
+          return;
+        } else if (addOrderItemsResponse.success === false && addOrderShippingDetailsResponse.success === false) {
+          toast.error(addOrderItemsResponse.message);
+          toast.error(addOrderShippingDetailsResponse.message);
+          router.push('/');
           dispatch(resetCheckoutData());
           return;
         } else if (addOrderItemsResponse.success === false) {
@@ -72,7 +82,6 @@ export default function PaymentSuccess() {
           toast.error(addOrderShippingDetailsResponse.message);
           router.push('/');
           dispatch(resetCheckoutData());
-
           return;
         }
       }

@@ -22,7 +22,7 @@ export const checkoutDataSlice = createSlice({
       return { ...state, ...action.payload };
     },
     resetCheckoutData() {
-      return initialState;
+      return { ...initialState, isProcessing: true };
     },
   },
 });

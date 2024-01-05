@@ -74,20 +74,13 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
 
 type SelectItemQuantityProps = {
   show: boolean;
+  quantity: number;
+  increment: () => void;
+  decrement: () => void;
 };
 
-function SelectItemQuantity({ show }: SelectItemQuantityProps) {
-  const [itemQuantity, setItemQuantity] = useState(1);
-
+function SelectItemQuantity({ show, quantity, increment, decrement }: SelectItemQuantityProps) {
   if (!show) return null;
-
-  function handleIncrementItemQuantity() {
-    setItemQuantity((prevQuantity) => prevQuantity + 1);
-  }
-
-  function handleDecrementItemQuantity() {
-    setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
-  }
 
   return (
     <>
@@ -113,7 +106,7 @@ function SelectItemQuantity({ show }: SelectItemQuantityProps) {
             flexShrink: 1,
           }}>
           <IconButton
-            onClick={handleDecrementItemQuantity}
+            onClick={decrement}
             sx={{
               color: 'inherit',
               height: '56px',
@@ -130,10 +123,10 @@ function SelectItemQuantity({ show }: SelectItemQuantityProps) {
             fontWeight={600}
             fontSize={16}
             sx={{ width: '4ch', textAlign: 'center' }}>
-            {itemQuantity}
+            {quantity}
           </Typography>
           <IconButton
-            onClick={handleIncrementItemQuantity}
+            onClick={increment}
             sx={{
               color: 'inherit',
               height: '56px',
@@ -218,15 +211,21 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     toast.error('Select a size first.');
   }
 
+  function handleIncrementItemQuantity() {
+    setItemQuantity((prevQuantity) => prevQuantity + 1);
+  }
+
+  function handleDecrementItemQuantity() {
+    setItemQuantity((prevQuantity) => (prevQuantity !== 1 ? prevQuantity - 1 : 1));
+  }
+
   async function handleAddToCart() {
     if (!currentUser) {
       handleOpenSignInDialog();
-      return;
     }
 
     if (!itemSize) {
       handleSelectSizeToast();
-      return;
     }
 
     setIsAddingToCart(true);
@@ -250,8 +249,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         const { success, message } = await addProductToCart({
           product_id: product.product_id,
           quantity: itemQuantity,
-          size: itemSize,
-          user_id: currentUser?.user_id,
+          size: itemSize!,
+          user_id: currentUser?.user_id!,
         });
 
         if (success === false) {
@@ -365,7 +364,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               selection={itemSize ? [itemSize] : []}
             />
           </Box>
-          <SelectItemQuantity show={!!itemSize} />
+          <SelectItemQuantity
+            show={!!itemSize}
+            quantity={itemQuantity}
+            increment={handleIncrementItemQuantity}
+            decrement={handleDecrementItemQuantity}
+          />
           <Box
             sx={{
               display: 'flex',
