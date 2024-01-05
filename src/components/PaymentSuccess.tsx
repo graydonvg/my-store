@@ -22,14 +22,18 @@ export default function PaymentSuccess() {
   const mode = theme.palette.mode;
   const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
+  // Fix this
+  // Fix this
+  // Returns success false and true
   const clearCartItems = useCallback(
     async function clearAllCartItems() {
       dispatch(clearCart());
-      const { success, message } = await deleteAllCartItems(user_id!);
+      await deleteAllCartItems(user_id!);
+      // const { success, message } = await deleteAllCartItems(user_id!);
 
-      if (success === false) {
-        toast.error(message);
-      }
+      // if (success === false) {
+      //   toast.error(message);
+      // }
     },
     [dispatch, user_id]
   );
@@ -41,9 +45,8 @@ export default function PaymentSuccess() {
       if (success === false) {
         toast.error(message);
       } else {
-        toast.success(message);
-        router.push('/orders');
         dispatch(resetCheckoutData());
+        router.push('/orders');
       }
     },
 

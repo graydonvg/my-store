@@ -63,6 +63,10 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
 
   useEffect(() => {
     if (paymentStatus === 'cancel') {
+      // Delete order
+      // Delete order
+      // Delete order
+      // Delete order
       dispatch(setCheckoutData({ isProcessing: false }));
     }
   }, [dispatch, paymentStatus]);

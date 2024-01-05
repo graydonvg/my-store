@@ -12,7 +12,6 @@ type Props = {
 
 export default function OrderDetails({ show, order, borderColor }: Props) {
   const shippingDataArray = order.shipping_details.split(',');
-  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -32,18 +31,33 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
           borderTopRightRadius: borderRadius,
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            <Typography
-              component="span"
-              fontSize={14}
-              fontWeight={600}>
-              Order Date:
-            </Typography>
-            <Typography
-              component="span"
-              fontSize={14}>
-              {order.created_at.split('T')[0]}
-            </Typography>
+          <Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Typography
+                component="span"
+                fontSize={14}
+                fontWeight={600}>
+                Order Status:
+              </Typography>
+              <Typography
+                component="span"
+                fontSize={14}>
+                {order.is_paid === true ? 'Paid' : 'Payment pending'}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Typography
+                component="span"
+                fontSize={14}
+                fontWeight={600}>
+                Order Date:
+              </Typography>
+              <Typography
+                component="span"
+                fontSize={14}>
+                {order.created_at.split('T')[0]}
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             <Typography
