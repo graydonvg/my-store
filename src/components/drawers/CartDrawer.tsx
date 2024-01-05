@@ -7,7 +7,6 @@ import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
-import ContainedButton from '../ui/buttons/ContainedButton';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
@@ -23,6 +22,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
+  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const orderTotal = selectCartTotal(cartItems);
@@ -41,11 +41,6 @@ function DrawerFooter({ show }: DrawerFooterProps) {
   function handleGoToCartView() {
     handleCloseCartDrawer();
     router.push('/cart/view');
-  }
-
-  function handleGoToCheckout() {
-    handleCloseCartDrawer();
-    router.push('/checkout/shipping');
   }
 
   return (

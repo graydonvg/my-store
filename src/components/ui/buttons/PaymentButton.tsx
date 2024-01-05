@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import BreadcrumbItem from '../breadcrumbs/BreadcrumbItem';
 import { Payment } from '@mui/icons-material';
 import ContainedButton from './ContainedButton';
+import addOrder from '@/services/orders/add';
+import addOrderItems from '@/services/orders/items/add';
 
 type Props = {
   showContainedButton?: boolean;
@@ -13,10 +15,52 @@ type Props = {
 
 export default function PaymentButton({ showBreadcrumbButton = false, showContainedButton = false }: Props) {
   const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const checkoutData = useAppSelector((state) => state.checkoutData);
+  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+
+  async function handleCreateOrder() {
+    const { success, message, data } = await addOrder({
+      user_id: user_id!,
+      shipping_details: checkoutData.shippingDetails!,
+      cart_total: checkoutData.paymentTotals.cartTotal,
+      delivery_fee: checkoutData.paymentTotals.deliveryFee,
+      discount_total: checkoutData.paymentTotals.totalDiscount,
+      order_total: checkoutData.paymentTotals.orderTotal,
+    });
+
+    if (success === true && !!data) {
+      const createOrderItems = checkoutData.orderItems.map((item) => {
+        return {
+          ...item,
+          order_id: data.order_id,
+          user_id: user_id!,
+        };
+      });
+
+      const { success, message } = await addOrderItems(createOrderItems);
+
+      if (success === true) {
+        toast.success('Order created successfully');
+        dispatch(setCheckoutData({ orderId: data.order_id }));
+        return { success: true, message };
+      } else {
+        toast.error(message);
+        return { success: false, message };
+      }
+    } else {
+      toast.error(message);
+      return { success: false, message };
+    }
+  }
 
   async function handlePayWithStripe() {
+    const { success, message } = await handleCreateOrder();
+
+    if (success === false) {
+      return toast.error(message);
+    }
+
     dispatch(setCheckoutData({ isProcessing: true }));
 
     const error = await payWithStripe(cartItems);
@@ -30,7 +74,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   if (showContainedButton)
     return (
       <ContainedButton
-        disabled={!shippingDetails}
+        disabled={!checkoutData.shippingDetails}
         onClick={handlePayWithStripe}
         label={'continue to payment'}
         fullWidth
@@ -44,7 +88,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         href=""
         icon={<Payment />}
         label="payment"
-        onLinkClick={!!shippingDetails ? handlePayWithStripe : undefined}
+        onLinkClick={!!checkoutData.shippingDetails ? handlePayWithStripe : undefined}
       />
     );
 }

@@ -12,6 +12,7 @@ const initialState: CheckoutDataType = {
   },
   shippingDetails: null,
   isProcessing: false,
+  orderId: null,
 };
 
 export const checkoutDataSlice = createSlice({
@@ -22,7 +23,7 @@ export const checkoutDataSlice = createSlice({
       return { ...state, ...action.payload };
     },
     resetCheckoutData() {
-      return { ...initialState, isProcessing: true };
+      return { ...initialState };
     },
   },
 });

@@ -4,10 +4,9 @@ import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await createSupabaseServerClient();
-  const cartItemId: string = await request.json();
-
   try {
+    const supabase = await createSupabaseServerClient();
+    const cartItemId: string = await request.json();
     const { error } = await supabase.from('cart').delete().eq('cart_item_id', cartItemId);
 
     if (error) {

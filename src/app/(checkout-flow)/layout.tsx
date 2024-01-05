@@ -14,9 +14,7 @@ import {
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { borderRadius } from '@/constants/styles';
 import OrderTotals from '@/components/orders/OrderTotals';
-import payWithStripe from '@/utils/payWithStripe';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
-import { toast } from 'react-toastify';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import PaymentButton from '@/components/ui/buttons/PaymentButton';
 
@@ -26,19 +24,7 @@ type NavButtonProps = {
 };
 
 function NavButton({ showCheckoutButton, showPaymentButton }: NavButtonProps) {
-  const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
-
-  async function handlePayWithStripe() {
-    dispatch(setCheckoutData({ isProcessing: true }));
-
-    const error = await payWithStripe(cartItems);
-
-    if (error?.success === false) {
-      dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error(error.message);
-    }
-  }
 
   if (showCheckoutButton)
     return (
@@ -60,6 +46,7 @@ type CheckoutFlowLayoutProps = {
 export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps) {
   const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
+  const checkoutData = useAppSelector((state) => state.checkoutData);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);

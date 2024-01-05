@@ -59,15 +59,23 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
 
   if (!show) return null;
 
-  function handleSelectShippingAddress(address: AddressType) {
-    const { address_id, ...restOfAddressData } = address;
+  function handleSelectShippingAddress() {
+    const { address_id, user_id, ...restOfAddressData } = address;
+    const shippingDetailsArray = Object.values({
+      full_name: fullName,
+      contact_number: currentUser?.contact_number,
+      ...restOfAddressData,
+    });
+    const filteredShippingDetailsArray = shippingDetailsArray.filter((value) => value !== '' && value !== null);
+    const shippingDetailsString = filteredShippingDetailsArray.join(',');
+
     if (checkoutData.selectedAddressId === address.address_id) {
       dispatch(setCheckoutData({ selectedAddressId: null, shippingDetails: null }));
     } else {
       dispatch(
         setCheckoutData({
           selectedAddressId: address_id,
-          shippingDetails: { ...restOfAddressData, full_name: fullName, contact_number: currentUser?.contact_number! },
+          shippingDetails: shippingDetailsString,
         })
       );
     }
@@ -77,7 +85,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
     <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
       <Checkbox
         checked={checkoutData.selectedAddressId === address.address_id}
-        onChange={() => handleSelectShippingAddress(address)}
+        onChange={handleSelectShippingAddress}
         disableRipple
         sx={{ padding: 0 }}
       />

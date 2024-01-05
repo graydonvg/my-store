@@ -35,8 +35,7 @@ export default function CheckoutButton({
 }: CheckoutButtonProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isCartOpen } = useAppSelector((state) => state.cart);
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
@@ -45,6 +44,7 @@ export default function CheckoutButton({
   function handleCheckout() {
     const createOrderItems = cartItems.map((item) => {
       const price_paid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+
       return {
         product_id: item?.product?.product_id!,
         quantity: item?.quantity!,

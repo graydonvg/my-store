@@ -4,19 +4,20 @@ import { borderRadius } from '@/constants/styles';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { OrderType } from '@/types';
 import OrderDetails from './OrderDetails';
+import Link from 'next/link';
 
 type Props = {
-  show: boolean;
+  // show: boolean;
   order: OrderType;
   borderColor: string;
 };
 
-export default function OrderItems({ show, borderColor, order }: Props) {
+export default function OrderItems({ borderColor, order }: Props) {
   const theme = useTheme();
   const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
-  if (!show) return null;
+  // if (!show) return null;
 
   return (
     <Grid
@@ -57,19 +58,22 @@ export default function OrderItems({ show, borderColor, order }: Props) {
                     xs={4}
                     md={2}
                     lg={4}>
-                    <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
-                      <Image
-                        style={{
-                          objectFit: 'cover',
-                          borderRadius: borderRadius,
-                          cursor: 'pointer',
-                        }}
-                        fill
-                        priority
-                        src={item.product_image_url}
-                        alt={`Image of ${item.product_name}`}
-                      />
-                    </Box>
+                    <Link href={`/products/product/${item.product_id}`}>
+                      <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
+                        <Image
+                          style={{
+                            objectFit: 'cover',
+                            borderRadius: borderRadius,
+                            cursor: 'pointer',
+                          }}
+                          fill
+                          priority
+                          src={item.product_image_url}
+                          alt={`Image of ${item.product_name}`}
+                          sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
+                        />
+                      </Box>
+                    </Link>
                   </Grid>
                   <Grid
                     item
@@ -77,7 +81,9 @@ export default function OrderItems({ show, borderColor, order }: Props) {
                     md={10}
                     lg={8}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingBottom: 2 }}>
-                      <Typography fontSize={18}>{item.product_name}</Typography>
+                      <Link href={`/products/product/${item.product_id}`}>
+                        <Typography fontSize={18}>{item.product_name}</Typography>
+                      </Link>
                       <Box>
                         {[
                           { label: 'qty', value: item?.quantity },

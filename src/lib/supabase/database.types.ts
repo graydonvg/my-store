@@ -149,6 +149,7 @@ export interface Database {
           is_paid: boolean;
           order_id: string;
           order_total: number;
+          shipping_details: string;
           user_id: string;
         };
         Insert: {
@@ -159,6 +160,7 @@ export interface Database {
           is_paid?: boolean;
           order_id?: string;
           order_total: number;
+          shipping_details: string;
           user_id: string;
         };
         Update: {
@@ -169,6 +171,7 @@ export interface Database {
           is_paid?: boolean;
           order_id?: string;
           order_total?: number;
+          shipping_details?: string;
           user_id?: string;
         };
         Relationships: [

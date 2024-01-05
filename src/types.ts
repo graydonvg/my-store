@@ -114,10 +114,6 @@ export type AccountTextFieldData = {
 
 export type OrderType = Omit<Database['public']['Tables']['orders']['Row'], 'user_id'> & {
   order_items: Omit<Omit<Database['public']['Tables']['order_items']['Row'], 'order_id'>, 'user_id'>[];
-  shipping_details: Omit<
-    Omit<Omit<Database['public']['Tables']['shipping_details']['Row'], 'shipping_details_id'>, 'user_id'>,
-    'order_id'
-  >[];
 };
 
 export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
@@ -146,5 +142,8 @@ export type CheckoutDataType = {
     totalDiscount: number;
     orderTotal: number;
   };
-  shippingDetails: OrderShippingDetailsTypeStore | null;
+  shippingDetails: string | null;
+  orderId: string | null;
 };
+
+export type UpdateOrderType = { order_id: string; is_paid: boolean };

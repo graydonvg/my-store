@@ -2,11 +2,10 @@
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { clearCart } from '@/lib/redux/cart/cartSlice';
-import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { resetCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import addOrder from '@/services/orders/add';
-import addOrderItems from '@/services/orders/items/add';
-import addOrderShippingDetails from '@/services/orders/shipping-details/add';
+import deleteAllCartItems from '@/services/cart/delete-all-cart-items';
+import updateOrder from '@/services/orders/update';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
@@ -23,89 +22,40 @@ export default function PaymentSuccess() {
   const mode = theme.palette.mode;
   const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
-  const createOrder = useCallback(
-    async function handleCreateOrder() {
-      const { data, success } = await addOrder({
-        cart_total: checkoutData.paymentTotals.cartTotal,
-        delivery_fee: checkoutData.paymentTotals.deliveryFee,
-        discount_total: checkoutData.paymentTotals.totalDiscount,
-        order_total: checkoutData.paymentTotals.orderTotal,
-        user_id: user_id!,
-        is_paid: true,
-      });
+  const clearCartItems = useCallback(
+    async function clearAllCartItems() {
+      dispatch(clearCart());
+      const { success, message } = await deleteAllCartItems(user_id!);
 
-      if (success === true && !!data) {
-        const shippingDetails = checkoutData.shippingDetails!;
+      if (success === false) {
+        toast.error(message);
+      }
+    },
+    [dispatch, user_id]
+  );
 
-        const createOrderItems = checkoutData.orderItems.map((item) => {
-          return {
-            ...item,
-            order_id: data.order_id,
-            user_id: user_id!,
-          };
-        });
+  const updateOrderPaymentStatus = useCallback(
+    async function handleUpdateOrderPaymentStatus() {
+      const { success, message } = await updateOrder({ order_id: checkoutData.orderId!, is_paid: true });
 
-        const addOrderItemsPromise = addOrderItems(createOrderItems);
-
-        const addOrderShippingDetailsPromise = addOrderShippingDetails({
-          ...shippingDetails,
-          order_id: data.order_id,
-          user_id: user_id!,
-        });
-
-        const [addOrderItemsResponse, addOrderShippingDetailsResponse] = await Promise.all([
-          addOrderItemsPromise,
-          addOrderShippingDetailsPromise,
-        ]);
-
-        //Removing shipping entry
-        //Removing shipping entry
-        //Removing shipping entry
-        //Removing shipping entry
-        if (addOrderItemsResponse.success === true && addOrderShippingDetailsResponse.success === true) {
-          toast.success('Order created successfully');
-          router.push('/orders');
-          dispatch(resetCheckoutData());
-          return;
-        } else if (addOrderItemsResponse.success === false && addOrderShippingDetailsResponse.success === false) {
-          toast.error(addOrderItemsResponse.message);
-          toast.error(addOrderShippingDetailsResponse.message);
-          router.push('/');
-          dispatch(resetCheckoutData());
-          return;
-        } else if (addOrderItemsResponse.success === false) {
-          toast.error(addOrderItemsResponse.message);
-          router.push('/');
-          dispatch(resetCheckoutData());
-          return;
-        } else if (addOrderShippingDetailsResponse.success === false) {
-          toast.error(addOrderShippingDetailsResponse.message);
-          router.push('/');
-          dispatch(resetCheckoutData());
-          return;
-        }
+      if (success === false) {
+        toast.error(message);
+      } else {
+        toast.success(message);
+        router.push('/orders');
+        dispatch(resetCheckoutData());
       }
     },
 
-    [
-      router,
-      dispatch,
-      checkoutData.orderItems,
-      checkoutData.shippingDetails,
-      checkoutData.paymentTotals.cartTotal,
-      checkoutData.paymentTotals.deliveryFee,
-      checkoutData.paymentTotals.orderTotal,
-      checkoutData.paymentTotals.totalDiscount,
-      user_id,
-    ]
+    [dispatch, checkoutData.orderId, router]
   );
 
   useEffect(() => {
     if (checkoutData.isProcessing === true) {
-      dispatch(clearCart());
-      createOrder();
+      clearCartItems();
+      updateOrderPaymentStatus();
     }
-  }, [dispatch, checkoutData.isProcessing, createOrder, router]);
+  }, [dispatch, checkoutData.isProcessing, clearCartItems, updateOrderPaymentStatus, router]);
 
   return (
     <Box
@@ -121,7 +71,7 @@ export default function PaymentSuccess() {
         gap: 4,
       }}>
       <Typography fontSize={{ xs: 16, sm: 36 }}>Payment successful!</Typography>
-      <Typography fontSize={{ xs: 14, sm: 24 }}>Creating your order</Typography>
+      <Typography fontSize={{ xs: 14, sm: 24 }}>Thank you for your order!</Typography>
       <PulseLoader
         size={24}
         color={loaderColor}

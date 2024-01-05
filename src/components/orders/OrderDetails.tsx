@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function OrderDetails({ show, order, borderColor }: Props) {
-  const shippingData = Object.values(order.shipping_details[0]);
+  const shippingDataArray = order.shipping_details.split(',');
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
@@ -54,7 +54,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               Shipping Details:
             </Typography>
             <Box>
-              {shippingData.map((value) => (
+              {shippingDataArray.map((value) => (
                 <Typography
                   key={value}
                   component="h3"
