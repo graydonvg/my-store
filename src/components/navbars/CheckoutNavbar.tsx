@@ -7,11 +7,11 @@ import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
 import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
+import PaymentButton from '../ui/buttons/PaymentButton';
 
 const breadcrumbData = [
   { href: '/cart/view', icon: <ShoppingCart />, label: 'cart' },
   { href: '/checkout/shipping', icon: <LocalShippingOutlined />, label: 'shipping' },
-  { href: '', icon: <Payment />, label: 'payment' },
 ];
 
 export default function CheckoutNavbar() {
@@ -42,6 +42,7 @@ export default function CheckoutNavbar() {
                   {...item}
                 />
               ))}
+              <PaymentButton showBreadcrumbButton={true} />
             </BreadcrumbsComponent>
           </Box>
         </Box>

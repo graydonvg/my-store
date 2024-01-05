@@ -2,7 +2,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { calculateDiscountedCartItemPrice } from './calculateDiscountedPrice';
 import { callStripeSession } from '@/services/stripe/call-stripe-session';
 import { CartItemType } from '@/types';
-import { toast } from 'react-toastify';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -34,10 +33,11 @@ export default async function payWithStripe(cartItems: CartItemType[]) {
     });
 
     if (error) {
-      toast.error(error.error.message);
-      return error;
+      const message = error.error.message ? error.error.message : 'Failed to process payment.';
+
+      return { success: false, message: message };
     }
   } catch (error) {
-    throw error;
+    return { success: false, message: 'Failed to process payment. An unexpected error occured.', data: error };
   }
 }

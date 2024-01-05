@@ -13,6 +13,7 @@ import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/red
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 import SmallCartItemList from '../cartItems/SmallCartItemList';
 import { formatCurrency } from '@/utils/formatCurrency';
+import CheckoutButton from '../ui/buttons/CheckoutButton';
 
 type DrawerFooterProps = {
   show: boolean;
@@ -104,8 +105,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
           fullWidth
           label="view cart"
         />
-        <ContainedButton
-          onClick={handleGoToCheckout}
+        <CheckoutButton
           backgroundColor="blue"
           fullWidth
           label="checkout"

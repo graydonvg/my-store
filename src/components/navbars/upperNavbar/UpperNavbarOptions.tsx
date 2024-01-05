@@ -16,6 +16,7 @@ import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useRouter } from 'next/navigation';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 
 function CustomDivider() {
   return (
@@ -60,19 +61,8 @@ type CheckoutButtonProps = {
   show: boolean;
 };
 
-function CheckoutButton({ show }: CheckoutButtonProps) {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { isCartOpen } = useAppSelector((state) => state.cart);
-
+function GoToCheckoutButton({ show }: CheckoutButtonProps) {
   if (!show) return null;
-
-  function handleGoToCheckout() {
-    if (isCartOpen.right === true) {
-      dispatch(setIsCartOpen({ ...isCartOpen, right: false }));
-    }
-    router.push('/checkout/shipping');
-  }
 
   return (
     <>
@@ -80,8 +70,7 @@ function CheckoutButton({ show }: CheckoutButtonProps) {
       <ListItem
         disablePadding
         sx={{ padding: 0.5 }}>
-        <ContainedButton
-          onClick={handleGoToCheckout}
+        <CheckoutButton
           height={'30px'}
           minHeight={1}
           label="checkout"
@@ -169,7 +158,7 @@ function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
         <ListItem disablePadding>
           <CartDrawer />
         </ListItem>
-        <CheckoutButton show={!isBelowMedium && cartItems.length > 0} />
+        <GoToCheckoutButton show={!isBelowMedium && cartItems.length > 0} />
         <CustomDivider />
         <AccountDropdownMenu show={!isBelowMedium} />
         <CustomDivider />

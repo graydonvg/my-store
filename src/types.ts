@@ -1,6 +1,8 @@
 import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
 
+export type ContainedButtonButtonBackgroundColorType = 'blue' | 'red';
+
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type DrawerState = {

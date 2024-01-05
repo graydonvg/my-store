@@ -10,11 +10,14 @@ import { borderRadius } from '@/constants/styles';
 
 export default function Shipping() {
   const { cartItems } = useAppSelector((state) => state.cart);
+  const checkoutData = useAppSelector((state) => state.checkoutData);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  console.log(checkoutData);
 
   return (
     <Box

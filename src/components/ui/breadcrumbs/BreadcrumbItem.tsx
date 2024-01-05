@@ -1,47 +1,38 @@
 'use client';
 
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import payWithStripe from '@/utils/payWithStripe';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
-import { toast } from 'react-toastify';
 
 type Props = {
   href: string;
   icon: ReactElement<any, string | JSXElementConstructor<any>>;
   label: string;
+  onLinkClick?: () => void;
 };
 
-export default function BreadcrumbItem({ href, icon, label }: Props) {
-  const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
+export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props) {
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
+  const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
+  let labelHoverColor = null;
 
-  async function handlePayWithStripe() {
-    try {
-      dispatch(setCheckoutData({ isProcessing: true }));
-
-      const error = await payWithStripe(cartItems);
-
-      if (!!error) {
-        dispatch(setCheckoutData({ isProcessing: false }));
-      }
-    } catch (error) {
-      toast.error('Failed to process payment. Please try again later');
-    }
+  // Payment breadcrumb: Change label color on hover if address IS selected.
+  // Other breadcrumbs: Change label color on hover if path is NOT selected.
+  if (label === 'payment' && !!shippingDetails) {
+    labelHoverColor = customColorPalette.grey.light;
+  } else if (label !== 'payment' && pathname !== href) {
+    labelHoverColor = customColorPalette.grey.light;
   }
 
   return (
     <Link
-      onClick={label === 'payment' && !!shippingDetails ? handlePayWithStripe : undefined}
+      onClick={onLinkClick}
       href={href}
       tabIndex={-1}>
       <Button
@@ -56,7 +47,7 @@ export default function BreadcrumbItem({ href, icon, label }: Props) {
           },
           '@media (hover: hover)': {
             '&:hover': {
-              color: pathname !== href ? customColorPalette.grey.light : null,
+              color: labelHoverColor,
               backgroundColor: customColorPalette.grey.dark,
             },
           },

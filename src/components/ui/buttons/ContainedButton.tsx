@@ -1,11 +1,13 @@
 import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
+import { ContainedButtonButtonBackgroundColorType } from '@/types';
 import { Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
-type ButtonBackgroundColorType = 'blue' | 'red';
-
-function getButtonBackgroundColor(option: ButtonBackgroundColorType, customColorPalette: CustomColorPaletteReturnType) {
+function getButtonBackgroundColor(
+  option: ContainedButtonButtonBackgroundColorType,
+  customColorPalette: CustomColorPaletteReturnType
+) {
   const colorOptions = {
     blue: {
       backgroundColor: customColorPalette.blue.dark,
@@ -39,7 +41,7 @@ type ContainedButtonProps = ButtonProps & {
   minHeight?: string | number;
   isLoading?: boolean;
   label: ReactNode;
-  backgroundColor?: ButtonBackgroundColorType;
+  backgroundColor?: ContainedButtonButtonBackgroundColorType;
   startIcon?: ReactNode;
   styles?: any;
   isDisabled?: boolean;

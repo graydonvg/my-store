@@ -59,8 +59,6 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
 
   if (!show) return null;
 
-  console.log(checkoutData);
-
   function handleSelectShippingAddress(address: AddressType) {
     const { address_id, ...restOfAddressData } = address;
     if (checkoutData.selectedAddressId === address.address_id) {

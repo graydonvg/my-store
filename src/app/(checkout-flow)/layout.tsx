@@ -1,10 +1,9 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
@@ -18,18 +17,48 @@ import OrderTotals from '@/components/orders/OrderTotals';
 import payWithStripe from '@/utils/payWithStripe';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { toast } from 'react-toastify';
-import addOrder from '@/services/orders/add';
-import { calculateDiscountedCartItemPrice } from '@/utils/calculateDiscountedPrice';
+import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
+import PaymentButton from '@/components/ui/buttons/PaymentButton';
 
-type Props = {
+type NavButtonProps = {
+  showCheckoutButton: boolean;
+  showPaymentButton: boolean;
+};
+
+function NavButton({ showCheckoutButton, showPaymentButton }: NavButtonProps) {
+  const dispatch = useAppDispatch();
+  const { cartItems } = useAppSelector((state) => state.cart);
+
+  async function handlePayWithStripe() {
+    dispatch(setCheckoutData({ isProcessing: true }));
+
+    const error = await payWithStripe(cartItems);
+
+    if (error?.success === false) {
+      dispatch(setCheckoutData({ isProcessing: false }));
+      toast.error(error.message);
+    }
+  }
+
+  if (showCheckoutButton)
+    return (
+      <CheckoutButton
+        disabled={cartItems.length === 0}
+        label={'checkout now'}
+        fullWidth={true}
+        backgroundColor={'blue'}
+      />
+    );
+
+  if (showPaymentButton) return <PaymentButton showContainedButton={true} />;
+}
+
+type CheckoutFlowLayoutProps = {
   children: ReactNode;
 };
 
-export default function CheckoutFlowLayout({ children }: Props) {
-  const dispatch = useAppDispatch();
+export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const checkoutData = useAppSelector((state) => state.checkoutData);
   const { cartItems } = useAppSelector((state) => state.cart);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
@@ -41,43 +70,15 @@ export default function CheckoutFlowLayout({ children }: Props) {
   const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
+  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const paymentStatus = searchParams.get('payment');
 
-  function handleCheckout() {
-    const createOrderItems = cartItems.map((item) => {
-      const price_paid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
-      return {
-        product_id: item?.product?.product_id!,
-        quantity: item?.quantity!,
-        size: item?.size!,
-        price_paid: price_paid!,
-        product_name: item?.product?.name!,
-        product_image_url: item?.product?.product_image_data[0].image_url!,
-        return_details: item?.product?.return_info!,
-      };
-    });
-    dispatch(
-      setCheckoutData({
-        paymentTotals: { cartTotal, deliveryFee, orderTotal, totalDiscount },
-        orderItems: createOrderItems,
-        isProcessing: true,
-      })
-    );
-    router.push('/checkout/shipping');
-  }
-
-  async function handlePayWithStripe() {
-    try {
-      dispatch(setCheckoutData({ isProcessing: true }));
-
-      const error = await payWithStripe(cartItems);
-
-      if (!!error) {
-        dispatch(setCheckoutData({ isProcessing: false }));
-      }
-    } catch (error) {
-      toast.error('Failed to process payment. Please try again later');
+  useEffect(() => {
+    if (paymentStatus === 'cancel') {
+      dispatch(setCheckoutData({ isProcessing: false }));
     }
-  }
+  }, [dispatch, paymentStatus]);
 
   return (
     <CommonLayoutContainer>
@@ -116,12 +117,9 @@ export default function CheckoutFlowLayout({ children }: Props) {
               orderTotal={orderTotal}
               totalToPay={orderTotal}
             />
-            <ContainedButton
-              disabled={cartItems.length === 0 || (isShippingView && !checkoutData.shippingDetails)}
-              onClick={isCartView ? handleCheckout : handlePayWithStripe}
-              label={(isCartView && 'checkout now') || (isShippingView && 'continue to payment')}
-              fullWidth
-              backgroundColor={isCartView ? 'blue' : 'red'}
+            <NavButton
+              showCheckoutButton={isCartView}
+              showPaymentButton={isShippingView}
             />
           </Box>
         </Grid>
