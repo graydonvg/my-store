@@ -41,7 +41,6 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
       const { success, message } = await addOrderItems(createOrderItems);
 
       if (success === true) {
-        toast.success('Order created successfully');
         dispatch(setCheckoutData({ orderId: data.order_id }));
         return { success: true, message };
       } else {

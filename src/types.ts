@@ -120,15 +120,8 @@ export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
 
 export type InserOrderItemsType = Database['public']['Tables']['order_items']['Insert'];
 
-export type InserOrderShippingDetailsType = Database['public']['Tables']['shipping_details']['Insert'];
-
 export type OrderItemsTypeStore = Omit<
   Omit<Database['public']['Tables']['order_items']['Insert'], 'order_id'>,
-  'user_id'
->;
-
-export type OrderShippingDetailsTypeStore = Omit<
-  Omit<Database['public']['Tables']['shipping_details']['Insert'], 'order_id'>,
   'user_id'
 >;
 
