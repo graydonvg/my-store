@@ -23,7 +23,7 @@ import deleteProduct from '@/services/products/delete-product';
 import updateProduct from '@/services/products/update-product';
 import ManageProductImages from '@/components/ManageProductImages';
 import NumberField from '@/components/ui/inputFields/NumberField';
-import { toggleButtonSizeOptions } from '@/constants/sizes';
+import { orderedSizesForToggleButtons } from '@/constants/sizes';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 
@@ -53,6 +53,8 @@ export default function AdminViewAddNewProduct() {
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+
+  console.log(productFormData.sizes);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormDataOnChange({ field: 'sizes', value: selectedSize }));
@@ -190,7 +192,7 @@ export default function AdminViewAddNewProduct() {
           aria-label="select size"
           selection={productFormData.sizes}
           onChange={handleSelectSize}
-          buttons={toggleButtonSizeOptions}
+          buttons={orderedSizesForToggleButtons}
           disabled={isSubmitting || isClearingAllFields}
         />
       </Box>

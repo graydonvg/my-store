@@ -23,14 +23,20 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
       item
       xs={0}
       md={3}>
-      <Box sx={{ border: `1px solid ${borderColor}`, borderRadius: isBelowMedium ? 'none' : borderRadius, padding: 2 }}>
+      <Box
+        sx={{
+          border: `1px solid ${borderColor}`,
+          padding: 2,
+          borderRadius: isBelowMedium ? 'none' : borderRadius,
+          borderTopLeftRadius: borderRadius,
+          borderTopRightRadius: borderRadius,
+        }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
             <Typography
               component="span"
               fontSize={14}
-              fontWeight={600}
-              sx={{ opacity: '70%' }}>
+              fontWeight={600}>
               Order Date:
             </Typography>
             <Typography
@@ -44,8 +50,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               component="h4"
               fontSize={14}
               fontWeight={500}
-              textTransform="uppercase"
-              sx={{ opacity: '70%' }}>
+              textTransform="uppercase">
               Shipping Details:
             </Typography>
             <Box>
@@ -63,8 +68,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
             <Typography
               component="h3"
               fontSize={18}
-              fontWeight={600}
-              sx={{ opacity: '70%' }}>
+              fontWeight={600}>
               Order Summary
             </Typography>
             <OrderTotals

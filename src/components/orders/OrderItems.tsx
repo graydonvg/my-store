@@ -32,8 +32,10 @@ export default function OrderItems({ show, borderColor, order }: Props) {
         sx={{
           border: `1px solid ${borderColor}`,
           borderTop: isBelowMedium ? 'none' : `1px solid ${borderColor}`,
-          borderRadius: isBelowMedium ? 'none' : borderRadius,
           padding: 2,
+          borderRadius: isBelowMedium ? 'none' : borderRadius,
+          borderBottomLeftRadius: borderRadius,
+          borderBottomRightRadius: borderRadius,
         }}>
         <Grid
           container

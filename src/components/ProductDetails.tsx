@@ -25,11 +25,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
-import { toggleButtonSizeOptions } from '@/constants/sizes';
+import { orderedSizesForToggleButtons } from '@/constants/sizes';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
-import AccordionComponent from './ui/AccordionComponent';
 import { borderRadius } from '@/constants/styles';
+import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
 
 type PreviousPriceAndPercentageProps = {
   show: boolean;
@@ -176,27 +176,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const isOnSale = product.on_sale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
 
-  function sortSizesArray(a: { label: string; value: string }, b: { label: string; value: string }) {
-    const indexOfA = toggleButtonSizeOptions.indexOf(a);
-    const indexOfB = toggleButtonSizeOptions.indexOf(b);
+  function getItemSizeToggleButtonOptions() {
+    const availableSizes = product.sizes
+      .map((size) => orderedSizesForToggleButtons.filter((option) => option.value === size)[0])
+      .sort(sortItemSizesArrayForToggleButtons);
 
-    if (indexOfA !== -1 && indexOfB !== -1) {
-      return indexOfA - indexOfB;
-    } else if (indexOfA !== -1) {
-      return -1;
-    } else if (indexOfB !== -1) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-
-  function getToggleButtonOptions() {
-    const availableSizes = product.sizes.map(
-      (size) => toggleButtonSizeOptions.filter((option) => option.value === size)[0]
-    );
-
-    return availableSizes.sort(sortSizesArray);
+    return availableSizes;
   }
 
   function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
@@ -360,7 +345,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </Typography>
             <ToggleButtons
               onChange={handleSelectSize}
-              buttons={getToggleButtonOptions()}
+              buttons={getItemSizeToggleButtonOptions()}
               selection={itemSize ? [itemSize] : []}
             />
           </Box>

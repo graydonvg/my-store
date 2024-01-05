@@ -1,4 +1,6 @@
+import { orderedSizesForStore } from '@/constants/sizes';
 import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType } from '@/types';
+import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
@@ -48,7 +50,10 @@ export const productFormSlice = createSlice({
           const filteredSizes = state.productFormData.sizes.filter((size) => size !== value);
           state.productFormData.sizes = filteredSizes;
         } else {
-          state.productFormData.sizes = [...state.productFormData.sizes, value as string];
+          const sizes = [...state.productFormData.sizes, value as string];
+          const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
+
+          state.productFormData.sizes = sortedSizes;
         }
       } else {
         if (field === 'on_sale' && value === 'No') {
