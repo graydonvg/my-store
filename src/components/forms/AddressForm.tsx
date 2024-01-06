@@ -19,16 +19,16 @@ import { setCurrentUser } from '@/lib/redux/user/userSlice';
 
 const formFields = [
   {
-    name: 'complex_or_building',
+    name: 'complexOrBuilding',
     label: 'Complex / Building',
     type: 'text',
     placeholder: 'Name, unit number or floor',
   },
-  { name: 'street_address', label: 'Street address', type: 'text', placeholder: 'e.g. 14 Christiaan Barnard Street' },
+  { name: 'streetAddress', label: 'Street address', type: 'text', placeholder: 'e.g. 14 Christiaan Barnard Street' },
   { name: 'suburb', label: 'Suburb', type: 'text', placeholder: 'e.g. Foreshore' },
   { name: 'province', label: 'Province', type: 'text', placeholder: 'e.g. Western Cape' },
   { name: 'city', label: 'City', type: 'text', placeholder: 'e.g. Cape Town' },
-  { name: 'postal_code', label: 'Postal Code', type: 'number', placeholder: 'e.g. 8000' },
+  { name: 'postalCode', label: 'Postal Code', type: 'number', placeholder: 'e.g. 8000' },
 ];
 
 export default function AddressForm() {
@@ -41,7 +41,7 @@ export default function AddressForm() {
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    if (name === 'postal_code' && value.length > 4) return;
+    if (name === 'postalCode' && value.length > 4) return;
 
     dispatch(setAddressFormDataOnChange({ field: name as keyof UpdateAddressTypeStore, value }));
   }
@@ -49,7 +49,7 @@ export default function AddressForm() {
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const { address_id, postal_code, ...restOfAddressData } = addressFormData;
+    const { addressId, postalCode, ...restOfAddressData } = addressFormData;
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
@@ -59,8 +59,8 @@ export default function AddressForm() {
     try {
       const { success, message } = await addNewAddress({
         ...restOfAddressData,
-        postal_code: Number(postal_code),
-        user_id: currentUser?.user_id!,
+        postalCode: Number(postalCode),
+        userId: currentUser?.userId!,
       } as InsertAddressType);
 
       if (success === true) {
@@ -71,10 +71,10 @@ export default function AddressForm() {
               ...currentUser?.addresses!,
               {
                 ...(restOfAddressData as InsertAddressType),
-                postal_code: Number(postal_code),
-                user_id: currentUser?.user_id!,
-                complex_or_building: restOfAddressData.complex_or_building ?? null,
-                address_id: '',
+                postalCode: Number(postalCode),
+                userId: currentUser?.userId!,
+                complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
+                addressId: '',
               },
             ],
           })
@@ -104,16 +104,16 @@ export default function AddressForm() {
     try {
       const { success, message } = await updateAddress({
         ...addressFormData,
-        postal_code: Number(addressFormData.postal_code),
+        postal_code: Number(addressFormData.postalCode),
       } as UpdateAddressTypeDb);
 
       if (success === true) {
         const updatedAddresses = currentUser?.addresses.map((address) =>
-          address.address_id === addressFormData.address_id
+          address.addressId === addressFormData.addressId
             ? {
                 ...(addressFormData as InsertAddressType),
-                complex_or_building: addressFormData.complex_or_building ?? null,
-                address_id: addressFormData.address_id!,
+                complexOrBuilding: addressFormData.complexOrBuilding ?? null,
+                addressId: addressFormData.addressId!,
               }
             : address
         );
@@ -148,11 +148,11 @@ export default function AddressForm() {
         gap: 1,
       }}>
       <Box sx={{ textAlign: 'center' }}>
-        <FormTitle text={addressFormData.address_id ? 'Edit Address' : 'Add Address'} />
+        <FormTitle text={addressFormData.addressId ? 'Edit Address' : 'Add Address'} />
       </Box>
       <Box
         component="form"
-        onSubmit={!addressFormData.address_id ? handleAddNewAddress : handleUpdateAddress}>
+        onSubmit={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}>
         {formFields.map((field) => {
           return field.type === 'number' ? (
             <NumberField
@@ -195,7 +195,7 @@ export default function AddressForm() {
           );
         })}
         <ContainedButton
-          label={addressFormData.address_id ? 'save' : 'add'}
+          label={addressFormData.addressId ? 'save' : 'add'}
           isDisabled={isLoading}
           type="submit"
           styles={{
@@ -203,7 +203,7 @@ export default function AddressForm() {
           }}
           fullWidth
           backgroundColor="blue"
-          startIcon={!addressFormData.address_id && !isLoading ? <Add /> : null}
+          startIcon={!addressFormData.addressId && !isLoading ? <Add /> : null}
         />
       </Box>
     </Box>
