@@ -165,7 +165,7 @@ export default function NavDraweOptions() {
     <Box component="nav">
       <List disablePadding>
         <AdminNavOptions
-          show={!!currentUser && currentUser?.is_admin}
+          show={!!currentUser && currentUser?.isAdmin}
           options={[
             {
               id: 'adminView',
@@ -177,7 +177,7 @@ export default function NavDraweOptions() {
         />
         <AdminNavOptions
           options={adminNavOptions}
-          show={!!currentUser && currentUser?.is_admin && isAdminView}
+          show={!!currentUser && currentUser?.isAdmin && isAdminView}
           onClick={handleCloseDrawer}
         />
         <ClientViewNavOptions

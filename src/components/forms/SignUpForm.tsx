@@ -13,19 +13,19 @@ import signUpNewUser from '@/services/auth/sign-up';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
 
 const formFields = [
-  { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'last_name', autoComplete: 'family-name' },
+  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
   { label: 'Email Address', name: 'email', autoComplete: 'email' },
   { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
-  { label: 'Confirm Password', name: 'confirm_password', type: 'password', autoComplete: 'new-password' },
+  { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
 ];
 
 const defaultFormData = {
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
-  confirm_password: '',
+  confirmPassword: '',
 };
 
 type Props = {
@@ -52,7 +52,7 @@ export default function SignUpForm({ children }: Props) {
   async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (formData.password !== formData.confirm_password) {
+    if (formData.password !== formData.confirmPassword) {
       return toast.error('Passwords do not match.');
     }
 
@@ -60,7 +60,7 @@ export default function SignUpForm({ children }: Props) {
 
     !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
 
-    const { email, password, first_name, last_name } = formData;
+    const { email, password, firstName, lastName } = formData;
 
     try {
       const { success: signUpSuccess, message: signUpMessage } = await signUpNewUser({
@@ -70,16 +70,16 @@ export default function SignUpForm({ children }: Props) {
 
       if (signUpSuccess === true) {
         const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
-          first_name,
-          last_name,
-          contact_number: null,
+          firstName,
+          lastName,
+          contactNumber: null,
         });
 
         if (updateSuccess === true) {
           router.refresh();
           dispatch(setIsSignUpDialogOpen(false));
           setFormData(defaultFormData);
-          toast.success(`Welcome, ${first_name}!`);
+          toast.success(`Welcome, ${firstName}!`);
         } else {
           toast.error(updateMessage);
         }
@@ -113,7 +113,7 @@ export default function SignUpForm({ children }: Props) {
             <Grid
               item
               xs={12}
-              sm={field.name === 'first_name' || field.name === 'last_name' ? 6 : false}
+              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
               key={field.name}>
               <CustomTextField
                 required={true}
@@ -125,7 +125,7 @@ export default function SignUpForm({ children }: Props) {
                 autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
-                autoFocus={field.name === 'first_name'}
+                autoFocus={field.name === 'firstName'}
               />
             </Grid>
           ))}

@@ -12,10 +12,10 @@ export async function deleteAllProductImages(
   let dbDataDeleteSuccess = true;
 
   try {
-    const storageImagesToDelete = imageData.map((data) => data.file_name);
+    const storageImagesToDelete = imageData.map((data) => data.fileName);
 
     const storageDeletePromises = storageImagesToDelete.map(
-      (file_name) => file_name.length > 0 && deleteImageFromStorage(file_name)
+      (fileName) => fileName.length > 0 && deleteImageFromStorage(fileName)
     );
 
     const storageDeleteResults = await Promise.allSettled(storageDeletePromises);
@@ -23,10 +23,10 @@ export async function deleteAllProductImages(
     const storageDeleteSuccess = storageDeleteResults.every((result) => result.status === 'fulfilled');
 
     if (productId) {
-      const dbProductImageDataToDelete = imageData.map((data) => data.product_image_id);
+      const dbProductImageDataToDelete = imageData.map((data) => data.productImageId);
 
-      const dbProductImageDataDeletePromises = dbProductImageDataToDelete.map((product_image_id) =>
-        deleteProductImageDataFromDb(product_image_id!)
+      const dbProductImageDataDeletePromises = dbProductImageDataToDelete.map((productImageId) =>
+        deleteProductImageDataFromDb(productImageId!)
       );
 
       const dbDataDeleteResults = await Promise.allSettled(dbProductImageDataDeletePromises);

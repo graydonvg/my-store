@@ -6,8 +6,8 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   try {
     const supabase = await createSupabaseServerClient();
-    const { order_id, is_paid }: UpdateOrderType = await request.json();
-    const { error } = await supabase.from('orders').update({ is_paid }).eq('order_id', order_id);
+    const { orderId, isPaid }: UpdateOrderType = await request.json();
+    const { error } = await supabase.from('orders').update({ isPaid }).eq('orderId', orderId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update order. ${error.message}.` });

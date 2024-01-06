@@ -2,7 +2,7 @@ import { CustomResponseType, InsertProductTypeDb } from '@/types';
 
 export default async function addProduct(formData: InsertProductTypeDb): Promise<
   CustomResponseType<{
-    product_id: string;
+    productId: string;
   }>
 > {
   try {

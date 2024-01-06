@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     });
 
   try {
-    const { error } = await supabase.from('addresses').update(formData).eq('address_id', formData.address_id!);
+    const { error } = await supabase.from('addresses').update(formData).eq('addressId', formData.addressId!);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update address. ${error.message}.` });

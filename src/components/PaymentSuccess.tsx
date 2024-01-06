@@ -16,7 +16,7 @@ export default function PaymentSuccess() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const userId = useAppSelector((state) => state.user.currentUser?.userId);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -28,19 +28,19 @@ export default function PaymentSuccess() {
   const clearCartItems = useCallback(
     async function clearAllCartItems() {
       dispatch(clearCart());
-      await deleteAllCartItems(user_id!);
-      // const { success, message } = await deleteAllCartItems(user_id!);
+      await deleteAllCartItems(userId!);
+      // const { success, message } = await deleteAllCartItems(userId!);
 
       // if (success === false) {
       //   toast.error(message);
       // }
     },
-    [dispatch, user_id]
+    [dispatch, userId]
   );
 
   const updateOrderPaymentStatus = useCallback(
     async function handleUpdateOrderPaymentStatus() {
-      const { success, message } = await updateOrder({ order_id: checkoutData.orderId!, is_paid: true });
+      const { success, message } = await updateOrder({ orderId: checkoutData.orderId!, isPaid: true });
 
       if (success === false) {
         toast.error(message);

@@ -17,8 +17,8 @@ export async function getAllProducts(): Promise<CustomResponseType<ProductType[]
   }
 }
 
-export async function getProductById(product_id: string): Promise<CustomResponseType<ProductType>> {
-  const url = createURL(`/api/products/get-by-id?product_id=${product_id}`);
+export async function getProductById(productId: string): Promise<CustomResponseType<ProductType>> {
+  const url = createURL(`/api/products/get-by-id?product_id=${productId}`);
 
   try {
     const response = await fetch(url, {

@@ -15,7 +15,7 @@ export default function UserStateSetter({ session, userData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!!userData && !!userData.user_id) {
+    if (!!userData && !!userData.userId) {
       dispatch(setCurrentUser(userData));
     } else {
       dispatch(setCurrentUser(null));

@@ -51,10 +51,10 @@ export async function middleware(request: NextRequest) {
 
   const { data } = await supabase
     .from('users')
-    .select('is_admin')
-    .eq('user_id', session?.user.id ?? '');
+    .select('isAdmin')
+    .eq('userId', session?.user.id ?? '');
 
-  const isAdmin = data ? data[0].is_admin : false;
+  const isAdmin = data ? data[0].isAdmin : false;
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);

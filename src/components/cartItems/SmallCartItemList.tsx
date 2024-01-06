@@ -58,7 +58,7 @@ function CartItems({ show }: CartItemsProps) {
     }
 
     return (
-      <Fragment key={item?.cart_item_id}>
+      <Fragment key={item?.cartItemId}>
         <CartItemSmall item={item} />
         {showDivider ? <Divider sx={{ borderColor: dividerColor }} /> : null}
       </Fragment>

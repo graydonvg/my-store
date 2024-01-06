@@ -32,11 +32,11 @@ const formFields = [
   { label: 'Name', name: 'name' },
   { label: 'Brand', name: 'brand' },
   { label: 'Product Details', name: 'details', multiline: true, placeholder: 'e.g. Black, Regular fit, ...' },
-  { label: 'Delivery info', name: 'delivery_info', multiline: true },
-  { label: 'Return info', name: 'return_info', multiline: true },
+  { label: 'Delivery info', name: 'deliveryInfo', multiline: true },
+  { label: 'Return info', name: 'returnInfo', multiline: true },
   { label: 'Price', name: 'price', placeholder: 'e.g. 199' },
-  { label: 'On sale', name: 'on_sale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale %', name: 'sale_percentage', placeholder: 'e.g. 20' },
+  { label: 'On sale', name: 'isOnSale', type: 'select', options: ['No', 'Yes'] },
+  { label: 'Sale %', name: 'salePercentage', placeholder: 'e.g. 20' },
 ];
 
 export default function AdminViewAddNewProduct() {
@@ -49,12 +49,10 @@ export default function AdminViewAddNewProduct() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
-  const isOnSale = productFormData.on_sale === 'Yes';
+  const isOnSale = productFormData.isOnSale === 'Yes';
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-
-  console.log(productFormData.sizes);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormDataOnChange({ field: 'sizes', value: selectedSize }));
@@ -71,12 +69,12 @@ export default function AdminViewAddNewProduct() {
     setIsClearingAllFields(false);
   }
 
-  async function handleAddImageData(product_id: string) {
+  async function handleAddImageData(productId: string) {
     try {
-      const newData = imageData.filter((data) => !data.product_image_id);
+      const newData = imageData.filter((data) => !data.productImageId);
       const dataToInsert = newData.map((data) => {
-        const { product_image_id, ...restOfData } = data;
-        return { ...restOfData, product_id };
+        const { productImageId, ...restOfData } = data;
+        return { ...restOfData, productId };
       });
 
       if (dataToInsert.length === 0) {
@@ -95,7 +93,7 @@ export default function AdminViewAddNewProduct() {
     event.preventDefault();
     setIsSubmitting(true);
 
-    let product_id = '';
+    let productId = '';
 
     try {
       const {
@@ -105,10 +103,10 @@ export default function AdminViewAddNewProduct() {
       } = await addProduct(productFormData as InsertProductTypeDb);
 
       if (addProductSuccess === true && productData) {
-        product_id = productData.product_id;
+        productId = productData.productId;
 
         const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productData.product_id
+          productData.productId
         );
 
         if (addImageDataSuccess === true) {
@@ -117,7 +115,7 @@ export default function AdminViewAddNewProduct() {
           toast.success('Successfully added product.');
           router.push('/admin-view/all-products');
         } else {
-          const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+          const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
 
           if (deleteProductSuccess === false) {
             toast.error(deleteProductMessage);
@@ -129,7 +127,7 @@ export default function AdminViewAddNewProduct() {
         toast.error(addProductMessage);
       }
     } catch (error) {
-      const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(product_id);
+      const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
 
       if (deleteProductSuccess === false) {
         toast.error(deleteProductMessage);
@@ -148,12 +146,12 @@ export default function AdminViewAddNewProduct() {
     try {
       const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
         ...productFormData,
-        product_id: productFormData.product_id!,
+        productId: productFormData.productId!,
       } as UpdateProductType);
 
       if (updateProductSuccess === true) {
         const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productFormData.product_id!
+          productFormData.productId!
         );
 
         if (addImageDataSuccess === true) {
@@ -177,7 +175,7 @@ export default function AdminViewAddNewProduct() {
   return (
     <Box
       component="form"
-      onSubmit={productFormData.product_id ? handleUpdateProduct : handleAddProduct}
+      onSubmit={productFormData.productId ? handleUpdateProduct : handleAddProduct}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <Grid container>
         <Grid
@@ -219,14 +217,14 @@ export default function AdminViewAddNewProduct() {
             placeholder={field.placeholder}
             required
           />
-        ) : field.name === 'sale_percentage' ? (
+        ) : field.name === 'salePercentage' ? (
           <NumberField
             key={field.name}
             label={field.label}
             name={field.name}
             value={productFormData[field.name as keyof typeof productFormData]}
             onChange={handleInputChange}
-            disabled={(!isOnSale && field.name === 'sale_percentage') || isSubmitting || isClearingAllFields}
+            disabled={(!isOnSale && field.name === 'salePercentage') || isSubmitting || isClearingAllFields}
             placeholder={field.placeholder}
             required
           />
@@ -266,7 +264,7 @@ export default function AdminViewAddNewProduct() {
           (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0
         }
-        label={isSubmitting ? '' : productFormData.product_id ? 'update product' : 'add product'}
+        label={isSubmitting ? '' : productFormData.productId ? 'update product' : 'add product'}
         fullWidth
         isLoading={isSubmitting}
         startIcon={<Add />}

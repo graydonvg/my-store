@@ -18,14 +18,14 @@ const initialState: State = {
   imageData: [],
   productFormData: {
     category: '',
-    delivery_info: '',
-    return_info: '',
+    deliveryInfo: '',
+    returnInfo: '',
     details: '',
     name: '',
     brand: '',
-    on_sale: '',
+    isOnSale: '',
     price: '',
-    sale_percentage: '',
+    salePercentage: '',
     sizes: [],
   },
 };
@@ -56,15 +56,15 @@ export const productFormSlice = createSlice({
           state.productFormData.sizes = sortedSizes;
         }
       } else {
-        if (field === 'on_sale' && value === 'No') {
-          state.productFormData = { ...state.productFormData, sale_percentage: 0 };
+        if (field === 'isOnSale' && value === 'No') {
+          state.productFormData = { ...state.productFormData, salePercentage: 0 };
         }
         state.productFormData = { ...state.productFormData, [field]: value };
       }
     },
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
       const existingIndex = state.imageUploadProgress.findIndex(
-        (upload) => upload.file_name === action.payload.file_name
+        (upload) => upload.fileName === action.payload.fileName
       );
 
       if (existingIndex !== -1) {
@@ -76,8 +76,8 @@ export const productFormSlice = createSlice({
     setImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
       state.imageData = [...state.imageData, ...action.payload];
     },
-    deleteImage(state, action: PayloadAction<{ file_name: string }>) {
-      state.imageData = state.imageData.filter((image) => image.file_name !== action.payload.file_name);
+    deleteImage(state, action: PayloadAction<{ fileName: string }>) {
+      state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;

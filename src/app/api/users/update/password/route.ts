@@ -14,7 +14,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     return NextResponse.json({ success: false, message: 'Failed to update password. Please try again later.' });
 
   try {
-    const { data: success } = await supabase.rpc('verify_user_password', {
+    const { data: success } = await supabase.rpc('verifyUserPassword', {
       password: formData.currentPassword,
     });
 

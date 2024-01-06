@@ -5,10 +5,10 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
-  const product_image_id: string = await request.json();
+  const productImageId: string = await request.json();
 
   try {
-    const { error } = await supabase.from('product_image_data').delete().eq('product_image_id', product_image_id);
+    const { error } = await supabase.from('productImageData').delete().eq('productImageId', productImageId);
 
     if (error) {
       return NextResponse.json({

@@ -20,27 +20,27 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
 
   async function handleCreateOrder() {
     const { success, message, data } = await addOrder({
-      user_id: checkoutData.userId!,
-      shipping_details: checkoutData.shippingDetails!,
-      cart_total: checkoutData.paymentTotals.cartTotal,
-      delivery_fee: checkoutData.paymentTotals.deliveryFee,
-      discount_total: checkoutData.paymentTotals.totalDiscount,
-      order_total: checkoutData.paymentTotals.orderTotal,
+      userId: checkoutData.userId!,
+      shippingDetails: checkoutData.shippingDetails!,
+      cartTotal: checkoutData.paymentTotals.cartTotal,
+      deliveryFee: checkoutData.paymentTotals.deliveryFee,
+      discountTotal: checkoutData.paymentTotals.discountTotal,
+      orderTotal: checkoutData.paymentTotals.orderTotal,
     });
 
     if (success === true && !!data) {
       const createOrderItems = checkoutData.orderItems.map((item) => {
         return {
           ...item,
-          order_id: data.order_id,
-          user_id: checkoutData.userId!,
+          orderId: data.orderId,
+          userId: checkoutData.userId!,
         };
       });
 
       const { success, message } = await addOrderItems(createOrderItems);
 
       if (success === true) {
-        dispatch(setCheckoutData({ orderId: data.order_id }));
+        dispatch(setCheckoutData({ orderId: data.orderId }));
         return { success: true, message };
       } else {
         toast.error(message);

@@ -2,13 +2,13 @@ import { UpdateAddressTypeStore } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: UpdateAddressTypeStore = {
-  address_id: '',
-  complex_or_building: '',
-  street_address: '',
+  addressId: '',
+  complexOrBuilding: '',
+  streetAddress: '',
   suburb: '',
   province: '',
   city: '',
-  postal_code: '',
+  postalCode: '',
 };
 
 export const addressFormSlice = createSlice({

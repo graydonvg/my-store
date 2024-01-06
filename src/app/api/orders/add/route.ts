@@ -6,7 +6,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function POST(request: Request): Promise<
   NextResponse<
     CustomResponseType<{
-      order_id: string;
+      orderId: string;
     }>
   >
 > {
@@ -20,15 +20,15 @@ export async function POST(request: Request): Promise<
     return NextResponse.json({ success: false, message: 'Failed to create order. Please try again later.' });
 
   try {
-    const { error, data } = await supabase.from('orders').insert(orderData).select('order_id');
+    const { error, data } = await supabase.from('orders').insert(orderData).select('orderId');
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to create order. ${error.message}.` });
     }
 
-    const order_id = data[0];
+    const orderId = data[0];
 
-    return NextResponse.json({ success: true, message: 'Order created successfully.', data: order_id });
+    return NextResponse.json({ success: true, message: 'Order created successfully.', data: orderId });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to create order. An unexpect error occured.' });
   }

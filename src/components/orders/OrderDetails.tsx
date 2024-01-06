@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function OrderDetails({ show, order, borderColor }: Props) {
-  const shippingDataArray = order.shipping_details.split(',');
+  const shippingDataArray = order.shippingDetails.split(',');
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -42,7 +42,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               <Typography
                 component="span"
                 fontSize={14}>
-                {order.is_paid === true ? 'Paid' : 'Payment pending'}
+                {order.isPaid === true ? 'Paid' : 'Payment pending'}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -55,7 +55,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               <Typography
                 component="span"
                 fontSize={14}>
-                {order.created_at.split('T')[0]}
+                {order.createdAt.split('T')[0]}
               </Typography>
             </Box>
           </Box>
@@ -86,10 +86,10 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               Order Summary
             </Typography>
             <OrderTotals
-              cartTotal={order.cart_total}
-              totalDiscount={order.discount_total}
-              deliveryFee={order.delivery_fee}
-              orderTotal={order.order_total}
+              cartTotal={order.cartTotal}
+              discountTotal={order.discountTotal}
+              deliveryFee={order.deliveryFee}
+              orderTotal={order.orderTotal}
             />
           </Box>
         </Box>

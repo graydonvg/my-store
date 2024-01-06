@@ -14,7 +14,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     return NextResponse.json({ success: false, message: 'Failed to add order items. Please try again later.' });
 
   try {
-    const { error } = await supabase.from('order_items').insert(orderItemsData);
+    const { error } = await supabase.from('orderItems').insert(orderItemsData);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add order items. ${error.message}.` });

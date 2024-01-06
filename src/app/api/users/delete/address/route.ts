@@ -8,7 +8,7 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
   const addressId: string = await request.json();
 
   try {
-    const { error } = await supabase.from('addresses').delete().eq('address_id', addressId);
+    const { error } = await supabase.from('addresses').delete().eq('addressId', addressId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to delete address. ${error.message}.` });

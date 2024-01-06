@@ -72,12 +72,12 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
   useEffect(() => {
     dispatch(
       setPersonalInformation({
-        name: currentUser?.first_name ?? '',
-        surname: currentUser?.last_name ?? '',
-        contactNumber: currentUser?.contact_number ?? '',
+        name: currentUser?.firstName ?? '',
+        surname: currentUser?.lastName ?? '',
+        contactNumber: currentUser?.contactNumber ?? '',
       })
     );
-  }, [dispatch, currentUser?.first_name, currentUser?.last_name, currentUser?.contact_number]);
+  }, [dispatch, currentUser?.firstName, currentUser?.lastName, currentUser?.contactNumber]);
 
   function handleSetFieldToEdit(field: string) {
     dispatch(setFieldToEdit(field));
@@ -94,28 +94,28 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
   async function handleUpdatePersonalInformation() {
     if (
-      personalInformation.name === currentUser?.first_name &&
-      personalInformation.surname === currentUser.last_name &&
-      personalInformation.contactNumber === currentUser.contact_number
+      personalInformation.name === currentUser?.firstName &&
+      personalInformation.surname === currentUser.lastName &&
+      personalInformation.contactNumber === currentUser.contactNumber
     )
       return;
 
     dispatch(setIsUpdatingAccount(true));
 
+    const userInfo = {
+      firstName: personalInformation.name,
+      lastName: personalInformation.surname,
+      contactNumber: personalInformation.contactNumber,
+    };
+
     try {
-      const { success, message } = await updateUserPersonalInformation({
-        first_name: personalInformation.name,
-        last_name: personalInformation.surname,
-        contact_number: personalInformation.contactNumber,
-      });
+      const { success, message } = await updateUserPersonalInformation(userInfo);
 
       if (success === true) {
         dispatch(
           setCurrentUser({
             ...currentUser!,
-            first_name: personalInformation.name,
-            last_name: personalInformation.surname,
-            contact_number: personalInformation.contactNumber,
+            ...userInfo,
           })
         );
 
@@ -139,7 +139,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'name'}
         label="Name"
         onClick={() => handleSetFieldToEdit('name')}>
-        {renderUserInfo(currentUser?.first_name!)}
+        {renderUserInfo(currentUser?.firstName!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'name'}
@@ -163,7 +163,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'surname'}
         label="Surname"
         onClick={() => handleSetFieldToEdit('surname')}>
-        {renderUserInfo(currentUser?.last_name!)}
+        {renderUserInfo(currentUser?.lastName!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'surname'}
@@ -187,7 +187,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'contactNumber'}
         label="Contact number"
         onClick={() => handleSetFieldToEdit('contactNumber')}>
-        {renderUserInfo(currentUser?.contact_number!)}
+        {renderUserInfo(currentUser?.contactNumber!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'contactNumber'}

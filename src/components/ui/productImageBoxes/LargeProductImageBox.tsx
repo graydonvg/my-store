@@ -47,7 +47,7 @@ function ProductImage({ show, productImageData, productName }: ProductImageProps
       style={{ objectFit: 'cover', borderRadius: borderRadius }}
       fill
       sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
-      src={productImageData.image_url}
+      src={productImageData.imageUrl}
       alt={`${productName}`}
       priority
     />

@@ -78,7 +78,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   }, [cartItem]);
 
   function handleSetCartItemToEdit() {
-    dispatch(setCartItemToEditId(cartItem?.cart_item_id));
+    dispatch(setCartItemToEditId(cartItem?.cartItemId));
   }
 
   async function handleUpdateCartItemSize(size: string) {
@@ -90,14 +90,14 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
     const itemOfSelectedSizeExists = cartItems.find(
       (item) =>
-        item?.product?.product_id === cartItem?.product?.product_id &&
+        item?.product?.productId === cartItem?.product?.productId &&
         item?.size === size &&
-        item.cart_item_id !== cartItem?.cart_item_id
+        item.cartItemId !== cartItem?.cartItemId
     );
 
     if (itemOfSelectedSizeExists) {
       await handleUpdateCartItemQuantity(
-        itemOfSelectedSizeExists.cart_item_id,
+        itemOfSelectedSizeExists.cartItemId,
         itemOfSelectedSizeExists.quantity,
         cartItem?.quantity!
       );
@@ -105,7 +105,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     } else {
       try {
         const { success, message } = await updateCartItemSize({
-          cart_item_id: cartItem?.cart_item_id!,
+          cartItemId: cartItem?.cartItemId!,
           size,
         });
         if (success === true) {
@@ -151,7 +151,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     setIsUpdatingCartItemQuantity(true);
     try {
       const { success, message } = await updateCartItemQuantity({
-        cart_item_id: cartItemId,
+        cartItemId: cartItemId,
         quantity: newQuantity,
       });
       if (success === false) {
@@ -168,7 +168,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   async function handleRemoveCartItem() {
     setIsRemovingCartItem(true);
     try {
-      const { success, message } = await deleteItemFromCart(cartItem?.cart_item_id!);
+      const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
       if (success === true) {
         router.refresh();
       } else {
@@ -193,7 +193,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         elevation={1}
         width={{ xs: '80vw', sm: '350px' }}
         isOpen={
-          cartItemToEditId === cartItem?.cart_item_id
+          cartItemToEditId === cartItem?.cartItemId
             ? {
                 ...isDrawerOpen,
                 right: true,
@@ -279,7 +279,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   alignItems: 'center',
                 }}>
                 <IconButton
-                  onClick={() => handleSetCartItemQuantity(cartItem?.cart_item_id!, -1)}
+                  onClick={() => handleSetCartItemQuantity(cartItem?.cartItemId!, -1)}
                   sx={{
                     color: 'inherit',
                     height: '48px',
@@ -298,7 +298,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
                   {cartItem?.quantity}
                 </Typography>
                 <IconButton
-                  onClick={() => handleSetCartItemQuantity(cartItem?.cart_item_id!, 1)}
+                  onClick={() => handleSetCartItemQuantity(cartItem?.cartItemId!, 1)}
                   sx={{
                     color: 'inherit',
                     height: '48px',

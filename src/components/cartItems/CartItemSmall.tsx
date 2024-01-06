@@ -156,7 +156,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
   const pathname = usePathname();
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const router = useRouter();
-  const isOnSale = item?.product?.on_sale === 'Yes';
+  const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
   const isShippingView = pathname.includes('/checkout/shipping');
@@ -202,7 +202,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           style={{ objectFit: 'cover', borderRadius: borderRadius }}
           fill
           sizes="60px"
-          src={item?.product?.product_image_data[0].image_url ?? ''}
+          src={item?.product?.productImageData[0].imageUrl ?? ''}
           alt={`${item?.product?.name}`}
           priority
         />
@@ -222,7 +222,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           showSpinner={isRemovingCartItem}
           showDeleteButton={!isRemovingCartItem}
           disabled={isRemovingCartItem}
-          onClick={() => handleRemoveCartItem(item?.cart_item_id!)}
+          onClick={() => handleRemoveCartItem(item?.cartItemId!)}
         />
         <Box
           component="header"
@@ -273,7 +273,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           <SalePercentageBadge
             show={isOnSale}
-            percentage={item?.product?.sale_percentage!}
+            percentage={item?.product?.salePercentage!}
           />
           <Box
             sx={{

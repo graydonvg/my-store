@@ -1,7 +1,7 @@
 import { CustomResponseType } from '@/types';
 
 export async function updateCartItemSize(cartItemData: {
-  cart_item_id: string;
+  cartItemId: string;
   size: string;
 }): Promise<CustomResponseType> {
   try {
@@ -22,7 +22,7 @@ export async function updateCartItemSize(cartItemData: {
 }
 
 export async function updateCartItemQuantity(cartItemData: {
-  cart_item_id: string;
+  cartItemId: string;
   quantity: number;
 }): Promise<CustomResponseType> {
   try {

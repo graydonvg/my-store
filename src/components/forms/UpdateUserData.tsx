@@ -12,13 +12,13 @@ import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
 
 const formFields = [
-  { label: 'First Name', name: 'first_name', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'last_name', autoComplete: 'family-name' },
+  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
+  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
 ];
 
 const defaultFormData = {
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
 };
 
 export default function UpdateUserData() {
@@ -37,10 +37,10 @@ export default function UpdateUserData() {
     setIsLoading(true);
     dispatch(setShowDialogLoadingBar(true));
 
-    const { first_name, last_name } = formData;
+    const { firstName, lastName } = formData;
 
     try {
-      const { success, message } = await updateUserPersonalInformation({ first_name, last_name, contact_number: null });
+      const { success, message } = await updateUserPersonalInformation({ firstName, lastName, contactNumber: null });
 
       if (success) {
         dispatch(setIsUpdateDialogOpen(false));

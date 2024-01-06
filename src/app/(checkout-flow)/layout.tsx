@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
   selectCartTotal,
-  selectTotalDiscount,
+  selectDiscountTotal,
   selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -49,7 +49,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const cartTotal = selectCartTotal(cartItems);
-  const totalDiscount = selectTotalDiscount(cartItems);
+  const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
   const customColorPalette = useCustomColorPalette();
@@ -65,8 +65,8 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const deleteOrderOnCancel = useCallback(
     async function handleDeleteOrder() {
       await deleteOrder({
-        user_id: checkoutData.userId!,
-        order_id: checkoutData.orderId!,
+        userId: checkoutData.userId!,
+        orderId: checkoutData.orderId!,
       });
     },
     [checkoutData.orderId, checkoutData.userId]
@@ -115,7 +115,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
             <Box sx={{ paddingY: 2 }}>
               <OrderTotals
                 cartTotal={cartTotal}
-                totalDiscount={totalDiscount}
+                discountTotal={discountTotal}
                 deliveryFee={deliveryFee}
                 orderTotal={orderTotal}
                 totalToPay={orderTotal}

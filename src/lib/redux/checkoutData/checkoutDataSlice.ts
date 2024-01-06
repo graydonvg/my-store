@@ -8,7 +8,7 @@ const initialState: CheckoutDataType = {
     cartTotal: 0,
     deliveryFee: 0,
     orderTotal: 0,
-    totalDiscount: 0,
+    discountTotal: 0,
   },
   shippingDetails: null,
   isProcessing: false,

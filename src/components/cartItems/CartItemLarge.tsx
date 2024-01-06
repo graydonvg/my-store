@@ -139,7 +139,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const isOnSale = item?.product?.on_sale === 'Yes';
+  const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -175,7 +175,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           justifyContent: 'flex-start',
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-          <Link href={`/products/product/${item?.product?.product_id}`}>
+          <Link href={`/products/product/${item?.product?.productId}`}>
             <Box
               sx={{
                 display: 'flex',
@@ -188,7 +188,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 style={{ objectFit: 'cover', borderRadius: borderRadius }}
                 fill
                 sizes="180px 60px"
-                src={item?.product?.product_image_data[0].image_url ?? ''}
+                src={item?.product?.productImageData[0].imageUrl ?? ''}
                 alt={`${item?.product?.name}`}
                 priority
               />
@@ -197,7 +197,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductNameAndBrand
               show={isBelowSmall}
-              productId={item?.product?.product_id!}
+              productId={item?.product?.productId!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -214,7 +214,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           <Box>
             <ProductNameAndBrand
               show={!isBelowSmall}
-              productId={item?.product?.product_id!}
+              productId={item?.product?.productId!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -251,7 +251,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             sx={{ opacity: '70%' }}
             fontSize={{ xs: 14, sm: 16 }}>
             <FreeDeliveryText show={discountedPrice > 500} />
-            {item?.product?.return_info}
+            {item?.product?.returnInfo}
           </Typography>
           <Box
             sx={{
@@ -264,7 +264,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             }}>
             <SalePercentageBadge
               show={isOnSale}
-              percentage={item?.product?.sale_percentage!}
+              percentage={item?.product?.salePercentage!}
             />
             <Box
               sx={{

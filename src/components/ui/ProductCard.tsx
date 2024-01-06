@@ -82,7 +82,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { imageData } = useAppSelector((state) => state.productForm);
-  const { product_image_data, ...restOfProductData } = product;
+  const { productImageData, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -90,14 +90,14 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
 
   async function handleSetProductDataForUpdate() {
     setIsLoading(true);
-    if (imageData && !product.product_id) {
+    if (imageData && !product.productId) {
       const { success, message } = await deleteAllProductImages(imageData);
       if (success === false) {
         toast.error(message);
       }
     }
     dispatch(resetAllProductData());
-    dispatch(setImageData(product.product_image_data));
+    dispatch(setImageData(product.productImageData));
     dispatch(setProductFormData(restOfProductData));
     setIsLoading(false);
     router.push('/admin-view/add-product');
@@ -106,8 +106,8 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
   async function handleDeleteProduct() {
     setIsDeletingProduct(true);
     try {
-      const deleteImagesPromise = deleteAllProductImages(product_image_data);
-      const deleteProductPromise = deleteProduct(product.product_id!);
+      const deleteImagesPromise = deleteAllProductImages(productImageData);
+      const deleteProductPromise = deleteProduct(product.productId!);
       const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
       const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
       const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
@@ -163,10 +163,10 @@ type ProductCardProps = {
 export default function ProductCard({ product }: ProductCardProps) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const isOnSale = product.on_sale === 'Yes';
+  const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
-  const { product_image_data } = product;
-  const imageUrl = product_image_data[0] ? product_image_data[0].image_url : '';
+  const { productImageData } = product;
+  const imageUrl = productImageData[0] ? productImageData[0].imageUrl : '';
 
   return (
     <Box sx={{ borderRadius: borderRadius, height: 1 }}>
@@ -176,7 +176,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           flexDirection: 'column',
           height: 1,
         }}>
-        <Link href={`/products/product/${product.product_id}`}>
+        <Link href={`/products/product/${product.productId}`}>
           <Box
             sx={{
               display: 'flex',
@@ -208,7 +208,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               }}>
               <SalePercentageBadge
                 show={isOnSale}
-                percentage={product.sale_percentage}
+                percentage={product.salePercentage}
               />
             </Box>
             <Box

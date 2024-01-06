@@ -27,14 +27,14 @@ function DeleteButton({ show, productImageData }: DeleteButtonProps) {
 
   if (!show || !productImageData) return null;
 
-  async function handleDeleteImage(file_name: string, product_image_id: string) {
+  async function handleDeleteImage(fileName: string, productImageId: string) {
     dispatch(setIsDeletingImage(true));
     try {
-      if (file_name.length > 0) {
-        await deleteImageFromStorage(file_name);
+      if (fileName.length > 0) {
+        await deleteImageFromStorage(fileName);
       }
-      if (productFormData.product_id && product_image_id) {
-        const { success, message } = await deleteProductImageDataFromDb(product_image_id);
+      if (productFormData.productId && productImageId) {
+        const { success, message } = await deleteProductImageDataFromDb(productImageId);
 
         if (success === false) {
           toast.error(message);
@@ -43,14 +43,14 @@ function DeleteButton({ show, productImageData }: DeleteButtonProps) {
     } catch (error) {
       toast.error('Error deleting image from storage.');
     } finally {
-      dispatch(deleteImage({ file_name }));
+      dispatch(deleteImage({ fileName }));
       dispatch(setIsDeletingImage(false));
     }
   }
 
   return (
     <IconButton
-      onClick={() => handleDeleteImage(productImageData.file_name, productImageData.product_image_id ?? '')}
+      onClick={() => handleDeleteImage(productImageData.fileName, productImageData.productImageId ?? '')}
       disabled={isDeletingImage}
       sx={{
         position: 'absolute',
@@ -99,7 +99,7 @@ function ProductImage({ show, isEditMode, productName, productImageData }: Produ
         }}
         fill
         sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
-        src={productImageData.image_url}
+        src={productImageData.imageUrl}
         alt={`${productName}`}
         priority
       />

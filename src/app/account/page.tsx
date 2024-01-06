@@ -11,9 +11,9 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 function PageHeaderWithFullName() {
   const { currentUser } = useAppSelector((state) => state.user);
 
-  if (!currentUser?.first_name && !currentUser?.last_name) return null;
+  if (!currentUser?.firstName && !currentUser?.lastName) return null;
 
-  const fullName = `${currentUser?.first_name} ${currentUser?.last_name}`;
+  const fullName = `${currentUser?.firstName} ${currentUser?.lastName}`;
 
   return <PageHeaderWithBorder label={fullName} />;
 }
@@ -21,7 +21,7 @@ function PageHeaderWithFullName() {
 function PageHeaderWithEmail() {
   const { currentUser } = useAppSelector((state) => state.user);
 
-  if (!currentUser || currentUser?.first_name) return null;
+  if (!currentUser || currentUser?.firstName) return null;
 
   return <PageHeaderWithBorder label={currentUser.email} />;
 }

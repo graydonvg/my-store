@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
-import { selectCartCount, selectCartTotal, selectTotalDiscount } from '@/lib/redux/cart/cartSelectors';
+import { selectCartCount, selectCartTotal, selectDiscountTotal } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
 import SmallCartItemList from '../cartItems/SmallCartItemList';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -22,11 +22,11 @@ function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const userId = useAppSelector((state) => state.user.currentUser?.userId);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const orderTotal = selectCartTotal(cartItems);
-  const totalDiscount = selectTotalDiscount(cartItems);
+  const discountTotal = selectDiscountTotal(cartItems);
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
@@ -50,7 +50,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
         padding: 2,
         borderTop: `1px solid ${borderColor}`,
       }}>
-      {totalDiscount > 0 ? (
+      {discountTotal > 0 ? (
         <Box
           sx={{
             display: 'flex',
@@ -69,7 +69,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
             component="span"
             fontSize={16}
             fontWeight={700}>
-            {formatCurrency(totalDiscount)}
+            {formatCurrency(discountTotal)}
           </Typography>
         </Box>
       ) : null}
@@ -91,7 +91,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
           component="span"
           fontSize={24}
           fontWeight={700}>
-          {formatCurrency(orderTotal - totalDiscount)}
+          {formatCurrency(orderTotal - discountTotal)}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

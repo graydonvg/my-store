@@ -2,12 +2,12 @@ import { CartItemType } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function changeCartItemSize(cartItemId: string, size: string, cartItems: CartItemType[]) {
-  return cartItems.map((item) => (item?.cart_item_id === cartItemId ? { ...item, size } : item));
+  return cartItems.map((item) => (item?.cartItemId === cartItemId ? { ...item, size } : item));
 }
 
 function changeCartItemQuantity(cartItemId: string, value: number, cartItems: CartItemType[]) {
   return cartItems.map((item) =>
-    item?.cart_item_id === cartItemId ? { ...item, quantity: item.quantity + value } : item
+    item?.cartItemId === cartItemId ? { ...item, quantity: item.quantity + value } : item
   );
 }
 

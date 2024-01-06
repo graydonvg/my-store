@@ -165,15 +165,15 @@ type ProductDetailsProps = {
 };
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
+  const supabase = createSupabaseBrowserClient();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
-  const supabase = createSupabaseBrowserClient();
   const router = useRouter();
   const { currentUser } = useAppSelector((state) => state.user);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
-  const isOnSale = product.on_sale === 'Yes';
+  const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
 
   function getItemSizeToggleButtonOptions() {
@@ -217,12 +217,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
     setIsAddingToCart(true);
 
-    const itemExists = cartItems.find((item) => item?.product?.product_id === product.product_id);
+    const itemExists = cartItems.find((item) => item?.product?.productId === product.productId);
 
     try {
       if (itemExists && itemExists.size === itemSize) {
-        const { error } = await supabase.rpc('update_cart_item_quantity', {
-          item_id: itemExists.cart_item_id,
+        const { error } = await supabase.rpc('updateCartItemQuantity', {
+          item_id: itemExists.cartItemId,
           item_quantity: itemQuantity,
         });
 
@@ -234,10 +234,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         }
       } else {
         const { success, message } = await addProductToCart({
-          product_id: product.product_id,
+          productId: product.productId,
           quantity: itemQuantity,
           size: itemSize!,
-          user_id: currentUser?.user_id!,
+          userId: currentUser?.userId!,
         });
 
         if (success === false) {
@@ -326,7 +326,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <PreviousPriceAndPercentage
                 show={isOnSale}
                 price={product.price}
-                percentage={product.sale_percentage}
+                percentage={product.salePercentage}
               />
             </Box>
             <Divider />
@@ -394,7 +394,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <Typography
                 component="p"
                 variant="body1">
-                {product.delivery_info}
+                {product.deliveryInfo}
               </Typography>
             </Box>
           </Box>
@@ -411,7 +411,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <Typography
                 component="p"
                 variant="body1">
-                {product.return_info}
+                {product.returnInfo}
               </Typography>
             </Box>
           </Box>

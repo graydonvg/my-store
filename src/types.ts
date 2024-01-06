@@ -27,21 +27,21 @@ export type AccountType = {
 };
 
 export type CartItemType =
-  | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'user_id'>, 'product_id'> & {
+  | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'userId'>, 'productId'> & {
       product:
         | (Pick<
             Database['public']['Tables']['products']['Row'],
             | 'name'
-            | 'on_sale'
+            | 'isOnSale'
             | 'price'
-            | 'sale_percentage'
-            | 'delivery_info'
-            | 'return_info'
-            | 'product_id'
+            | 'salePercentage'
+            | 'deliveryInfo'
+            | 'returnInfo'
+            | 'productId'
             | 'sizes'
             | 'brand'
           > & {
-            product_image_data: Pick<Database['public']['Tables']['product_image_data']['Row'], 'image_url'>[];
+            productImageData: Pick<Database['public']['Tables']['productImageData']['Row'], 'imageUrl'>[];
           })
         | null;
     })
@@ -52,40 +52,37 @@ export type CurrentUserType = Database['public']['Tables']['users']['Row'] & {
 };
 
 export type ImageUploadProgressType = {
-  file_name: string;
+  fileName: string;
   progress: number;
 };
 
 export type UpdateProductType = Database['public']['Tables']['products']['Update'];
 
 export type InsertProductImageDataTypeStore = {
-  image_url: string;
-  file_name: string;
-  product_image_id?: string;
+  imageUrl: string;
+  fileName: string;
+  productImageId?: string;
 };
 
-export type InsertProductImageDataTypeDb = Database['public']['Tables']['product_image_data']['Insert'];
+export type InsertProductImageDataTypeDb = Database['public']['Tables']['productImageData']['Insert'];
 
 export type userPersonalInformationType = Pick<
   Database['public']['Tables']['users']['Row'],
-  'first_name' | 'last_name' | 'contact_number'
+  'firstName' | 'lastName' | 'contactNumber'
 >;
 
 export type ProductType = Database['public']['Tables']['products']['Row'] & {
-  product_image_data: Omit<
-    Omit<Database['public']['Tables']['product_image_data']['Row'], 'created_at'>,
-    'product_id'
-  >[];
+  productImageData: Omit<Omit<Database['public']['Tables']['productImageData']['Row'], 'createdAt'>, 'productId'>[];
 };
 
 export type InsertProductTypeDb = Database['public']['Tables']['products']['Insert'];
 
 export type InsertProductTypeStore = Omit<
   Omit<Database['public']['Tables']['products']['Insert'], 'price'>,
-  'sale_percentage'
+  'salePercentage'
 > & {
   price: '' | number;
-  sale_percentage: '' | number;
+  salePercentage: '' | number;
 };
 
 export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
@@ -98,8 +95,8 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressTypeDb = Database['public']['Tables']['addresses']['Update'];
 
-export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresses']['Update'], 'postal_code'> & {
-  postal_code: '' | number;
+export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresses']['Update'], 'postalCode'> & {
+  postalCode: '' | number;
 };
 
 export type AccountTextFieldData = {
@@ -112,18 +109,15 @@ export type AccountTextFieldData = {
   onKeyDownFunction: () => void;
 };
 
-export type OrderType = Omit<Database['public']['Tables']['orders']['Row'], 'user_id'> & {
-  order_items: Omit<Omit<Database['public']['Tables']['order_items']['Row'], 'order_id'>, 'user_id'>[];
+export type OrderType = Omit<Database['public']['Tables']['orders']['Row'], 'userId'> & {
+  orderItems: Omit<Omit<Database['public']['Tables']['orderItems']['Row'], 'orderId'>, 'userId'>[];
 };
 
 export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
 
-export type InserOrderItemsType = Database['public']['Tables']['order_items']['Insert'];
+export type InserOrderItemsType = Database['public']['Tables']['orderItems']['Insert'];
 
-export type OrderItemsTypeStore = Omit<
-  Omit<Database['public']['Tables']['order_items']['Insert'], 'order_id'>,
-  'user_id'
->;
+export type OrderItemsTypeStore = Omit<Omit<Database['public']['Tables']['orderItems']['Insert'], 'orderId'>, 'userId'>;
 
 export type CheckoutDataType = {
   selectedAddressId: string | null;
@@ -132,7 +126,7 @@ export type CheckoutDataType = {
   paymentTotals: {
     cartTotal: number;
     deliveryFee: number;
-    totalDiscount: number;
+    discountTotal: number;
     orderTotal: number;
   };
   shippingDetails: string | null;
@@ -140,6 +134,6 @@ export type CheckoutDataType = {
   userId: string | null;
 };
 
-export type UpdateOrderType = { order_id: string; is_paid: boolean };
+export type UpdateOrderType = { orderId: string; isPaid: boolean };
 
-export type DeleteOrderType = { order_id: string; user_id: string };
+export type DeleteOrderType = { orderId: string; userId: string };

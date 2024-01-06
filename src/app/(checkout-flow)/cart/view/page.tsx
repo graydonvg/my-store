@@ -63,7 +63,7 @@ function CartItems({ show, cartItems }: CartItemsProps) {
     <>
       {cartItems.map((item) => (
         <CartItemLarge
-          key={item?.cart_item_id}
+          key={item?.cartItemId}
           item={item}
         />
       ))}

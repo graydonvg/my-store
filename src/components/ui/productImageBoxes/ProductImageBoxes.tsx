@@ -43,7 +43,7 @@ function SmallImageAdminView({ show, isEditMode, selectImage, selectedImageIndex
     <>
       {imageData.map((data, index) => (
         <SmallProductImageBox
-          key={data.file_name}
+          key={data.fileName}
           productName={productFormData.name}
           productImageData={data}
           imageIndex={index}
@@ -75,9 +75,9 @@ function SmallImageClientView({
 
   return (
     <>
-      {product.product_image_data.map((data, index) => (
+      {product.productImageData.map((data, index) => (
         <SmallProductImageBox
-          key={data.file_name}
+          key={data.fileName}
           productName={product?.name}
           productImageData={data}
           imageIndex={index}
@@ -129,7 +129,7 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
   const boxBorderColor = isAdminView ? borderColor : 'transparent';
 
   useEffect(() => {
-    if ((isAdminView && imageData.length === 0) || product?.product_image_data.length === 0) {
+    if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
       setSelectedImageIndex(0);
     }
   }, [isAdminView, imageData, product]);
@@ -203,7 +203,7 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
             // Gets image from db
             <LargeProductImageBox
               productName={product?.name ?? ''}
-              productImageData={product?.product_image_data[selectedImageIndex]}
+              productImageData={product?.productImageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
               borderColor={boxBorderColor}
             />

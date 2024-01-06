@@ -9,9 +9,10 @@ export default async function payWithStripe(cartItems: CartItemType[]) {
   try {
     const stripe = await stripePromise;
     const createLineItems = cartItems.map((item) => {
-      const unitAmount = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price!;
+      const unitAmount =
+        item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price!;
       const roundedAmount = Math.round(unitAmount) * 100;
-      const images = item?.product?.product_image_data.map((data) => data.image_url);
+      const images = item?.product?.productImageData.map((data) => data.imageUrl);
 
       return {
         price_data: {

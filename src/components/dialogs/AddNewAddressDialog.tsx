@@ -12,7 +12,7 @@ export default function AddNewAddressDialog() {
   const addressFormData = useAppSelector((state) => state.addressForm);
 
   function handleOpenAddAddressDialog() {
-    if (addressFormData.address_id) {
+    if (addressFormData.addressId) {
       dispatch(clearAddressFormData());
     }
     dispatch(setIsAddressDialogOpen(true));

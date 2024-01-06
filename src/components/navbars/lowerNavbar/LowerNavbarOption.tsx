@@ -23,7 +23,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
-      if (productFormData.product_id) {
+      if (productFormData.productId) {
         dispatch(resetAllProductData());
       }
     }

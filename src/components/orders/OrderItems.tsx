@@ -38,12 +38,12 @@ export default function OrderItems({ borderColor, order }: Props) {
         <Grid
           container
           spacing={2}>
-          {order.order_items.map((item, index) => {
-            const numberOfItems = order.order_items.length;
+          {order.orderItems.map((item, index) => {
+            const numberOfItems = order.orderItems.length;
             const isLastItem = numberOfItems - 1 === index;
             return (
               <Grid
-                key={item.order_item_id}
+                key={item.orderItemId}
                 item
                 xs={12}
                 lg={6}>
@@ -56,7 +56,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                     xs={4}
                     md={2}
                     lg={4}>
-                    <Link href={`/products/product/${item.product_id}`}>
+                    <Link href={`/products/product/${item.productId}`}>
                       <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
                         <Image
                           style={{
@@ -66,8 +66,8 @@ export default function OrderItems({ borderColor, order }: Props) {
                           }}
                           fill
                           priority
-                          src={item.product_image_url}
-                          alt={`Image of ${item.product_name}`}
+                          src={item.productImageUrl}
+                          alt={`Image of ${item.productName}`}
                           sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
                         />
                       </Box>
@@ -79,14 +79,14 @@ export default function OrderItems({ borderColor, order }: Props) {
                     md={10}
                     lg={8}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Link href={`/products/product/${item.product_id}`}>
-                        <Typography fontSize={18}>{item.product_name}</Typography>
+                      <Link href={`/products/product/${item.productId}`}>
+                        <Typography fontSize={18}>{item.productName}</Typography>
                       </Link>
                       <Box>
                         {[
                           { label: 'qty', value: item?.quantity },
                           { label: 'fontSize', value: item?.size },
-                          { label: 'price paid', value: formatCurrency(item?.price_paid) },
+                          { label: 'price paid', value: formatCurrency(item?.pricePaid) },
                         ].map((item) => (
                           <Box
                             key={item.label}
@@ -107,7 +107,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                         textTransform="uppercase"
                         fontWeight={500}
                         sx={{ opacity: '70%' }}>
-                        {item.return_details}
+                        {item.returnDetails}
                       </Typography>
                     </Box>
                   </Grid>

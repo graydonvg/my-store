@@ -7,7 +7,7 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
   try {
     const supabase = await createSupabaseServerClient();
     const cartItemId: string = await request.json();
-    const { error } = await supabase.from('cart').delete().eq('cart_item_id', cartItemId);
+    const { error } = await supabase.from('cart').delete().eq('cartItemId', cartItemId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to remove product from cart. ${error.message}.` });

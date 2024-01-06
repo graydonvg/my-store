@@ -6,7 +6,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function POST(request: Request): Promise<
   NextResponse<
     CustomResponseType<{
-      product_id: string;
+      productId: string;
     }>
   >
 > {
@@ -14,15 +14,15 @@ export async function POST(request: Request): Promise<
   const formData: InsertProductTypeDb = await request.json();
 
   try {
-    const { data, error } = await supabase.from('products').insert(formData).select('product_id');
+    const { data, error } = await supabase.from('products').insert(formData).select('productId');
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add product. ${error.message}.` });
     }
 
-    const product_id = data[0];
+    const productId = data[0];
 
-    return NextResponse.json({ success: true, message: 'Product added successfully.', data: product_id });
+    return NextResponse.json({ success: true, message: 'Product added successfully.', data: productId });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add product. An unexpect error occured.' });
   }

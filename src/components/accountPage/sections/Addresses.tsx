@@ -55,26 +55,26 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   const theme = useTheme();
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
-  const fullName = `${currentUser?.first_name} ${currentUser?.last_name}`;
+  const fullName = `${currentUser?.firstName} ${currentUser?.lastName}`;
 
   if (!show) return null;
 
   function handleSelectShippingAddress() {
-    const { address_id, user_id, ...restOfAddressData } = address;
+    const { addressId, userId, ...restOfAddressData } = address;
     const shippingDetailsArray = Object.values({
-      full_name: fullName,
-      contact_number: currentUser?.contact_number,
+      fullName: fullName,
+      contactNumber: currentUser?.contactNumber,
       ...restOfAddressData,
     });
     const filteredShippingDetailsArray = shippingDetailsArray.filter((value) => value !== '' && value !== null);
     const shippingDetailsString = filteredShippingDetailsArray.join(',');
 
-    if (checkoutData.selectedAddressId === address.address_id) {
+    if (checkoutData.selectedAddressId === address.addressId) {
       dispatch(setCheckoutData({ selectedAddressId: null, shippingDetails: null }));
     } else {
       dispatch(
         setCheckoutData({
-          selectedAddressId: address_id,
+          selectedAddressId: addressId,
           shippingDetails: shippingDetailsString,
         })
       );
@@ -84,7 +84,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   return (
     <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
       <Checkbox
-        checked={checkoutData.selectedAddressId === address.address_id}
+        checked={checkoutData.selectedAddressId === address.addressId}
         onChange={handleSelectShippingAddress}
         disableRipple
         sx={{ padding: 0 }}
@@ -208,7 +208,7 @@ function AddressData({ show }: AddressDataProps) {
   if (!show) return null;
 
   async function handleSetAddressToEdit(addressId: string) {
-    const addressToEdit = currentUser?.addresses.filter((address) => address.address_id === addressId)[0];
+    const addressToEdit = currentUser?.addresses.filter((address) => address.addressId === addressId)[0];
 
     if (!!addressToEdit) {
       dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
@@ -224,7 +224,7 @@ function AddressData({ show }: AddressDataProps) {
       const { success, message } = await deleteAddress(addressId);
 
       if (success === true) {
-        const updatedAddresses = currentUser?.addresses.filter((address) => address.address_id !== addressId);
+        const updatedAddresses = currentUser?.addresses.filter((address) => address.addressId !== addressId);
         dispatch(
           setCurrentUser({
             ...currentUser!,
@@ -268,16 +268,16 @@ function AddressData({ show }: AddressDataProps) {
               width: 1,
             }}>
             <Typography fontSize={16}>
-              {address.complex_or_building ? `${address.complex_or_building},` : null}
+              {address.complexOrBuilding ? `${address.complexOrBuilding},` : null}
 
-              {`${address.street_address}, ${address.suburb}, ${address.province},
-											${address.city}, ${address.postal_code}`}
+              {`${address.streetAddress}, ${address.suburb}, ${address.province},
+											${address.city}, ${address.postalCode}`}
             </Typography>
-            <Loader showLoader={isDeleting && addressToDelete?.id === address.address_id} />
+            <Loader showLoader={isDeleting && addressToDelete?.id === address.addressId} />
             <AddressButtons
-              show={!isDeleting && addressToDelete?.id !== address.address_id}
-              editAddress={() => handleSetAddressToEdit(address.address_id)}
-              deleteAddress={() => handleDeleteAddress(address.address_id)}
+              show={!isDeleting && addressToDelete?.id !== address.addressId}
+              editAddress={() => handleSetAddressToEdit(address.addressId)}
+              deleteAddress={() => handleDeleteAddress(address.addressId)}
             />
           </TableCell>
         </TableRow>

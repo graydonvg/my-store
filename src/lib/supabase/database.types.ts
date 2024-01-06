@@ -5,214 +5,214 @@ export interface Database {
     Tables: {
       addresses: {
         Row: {
-          address_id: string;
+          addressId: string;
           city: string;
-          complex_or_building: string | null;
-          postal_code: number;
+          complexOrBuilding: string | null;
+          postalCode: number;
           province: string;
-          street_address: string;
+          streetAddress: string;
           suburb: string;
-          user_id: string;
+          userId: string;
         };
         Insert: {
-          address_id?: string;
+          addressId?: string;
           city: string;
-          complex_or_building?: string | null;
-          postal_code: number;
+          complexOrBuilding?: string | null;
+          postalCode: number;
           province: string;
-          street_address: string;
+          streetAddress: string;
           suburb: string;
-          user_id: string;
+          userId: string;
         };
         Update: {
-          address_id?: string;
+          addressId?: string;
           city?: string;
-          complex_or_building?: string | null;
-          postal_code?: number;
+          complexOrBuilding?: string | null;
+          postalCode?: number;
           province?: string;
-          street_address?: string;
+          streetAddress?: string;
           suburb?: string;
-          user_id?: string;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'addresses_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'addresses_userId_fkey';
+            columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
-            referencedColumns: ['user_id'];
+            referencedColumns: ['userId'];
           }
         ];
       };
       cart: {
         Row: {
-          cart_item_id: string;
-          created_at: string;
-          product_id: string;
+          cartItemId: string;
+          createdAt: string;
+          productId: string;
           quantity: number;
           size: string;
-          user_id: string;
+          userId: string;
         };
         Insert: {
-          cart_item_id?: string;
-          created_at?: string;
-          product_id: string;
+          cartItemId?: string;
+          createdAt?: string;
+          productId: string;
           quantity: number;
           size: string;
-          user_id: string;
+          userId: string;
         };
         Update: {
-          cart_item_id?: string;
-          created_at?: string;
-          product_id?: string;
+          cartItemId?: string;
+          createdAt?: string;
+          productId?: string;
           quantity?: number;
           size?: string;
-          user_id?: string;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'cart_product_id_fkey';
-            columns: ['product_id'];
+            foreignKeyName: 'cart_productId_fkey';
+            columns: ['productId'];
             isOneToOne: false;
             referencedRelation: 'products';
-            referencedColumns: ['product_id'];
+            referencedColumns: ['productId'];
           },
           {
-            foreignKeyName: 'cart_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'cart_userId_fkey';
+            columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
-            referencedColumns: ['id'];
+            referencedColumns: ['userId'];
           }
         ];
       };
-      order_items: {
+      orderItems: {
         Row: {
-          order_id: string;
-          order_item_id: string;
-          price_paid: number;
-          product_id: string;
-          product_image_url: string;
-          product_name: string;
+          orderId: string;
+          orderItemId: string;
+          pricePaid: number;
+          productId: string;
+          productImageUrl: string;
+          productName: string;
           quantity: number;
-          return_details: string;
+          returnDetails: string;
           size: string;
-          user_id: string;
+          userId: string;
         };
         Insert: {
-          order_id: string;
-          order_item_id?: string;
-          price_paid: number;
-          product_id: string;
-          product_image_url: string;
-          product_name: string;
+          orderId: string;
+          orderItemId?: string;
+          pricePaid: number;
+          productId: string;
+          productImageUrl: string;
+          productName: string;
           quantity: number;
-          return_details: string;
+          returnDetails: string;
           size: string;
-          user_id: string;
+          userId: string;
         };
         Update: {
-          order_id?: string;
-          order_item_id?: string;
-          price_paid?: number;
-          product_id?: string;
-          product_image_url?: string;
-          product_name?: string;
+          orderId?: string;
+          orderItemId?: string;
+          pricePaid?: number;
+          productId?: string;
+          productImageUrl?: string;
+          productName?: string;
           quantity?: number;
-          return_details?: string;
+          returnDetails?: string;
           size?: string;
-          user_id?: string;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'order_items_order_id_fkey';
-            columns: ['order_id'];
+            foreignKeyName: 'orderItems_orderId_fkey';
+            columns: ['orderId'];
             isOneToOne: false;
             referencedRelation: 'orders';
-            referencedColumns: ['order_id'];
+            referencedColumns: ['orderId'];
           },
           {
-            foreignKeyName: 'order_items_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'orderItems_userId_fkey';
+            columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
-            referencedColumns: ['user_id'];
+            referencedColumns: ['userId'];
           }
         ];
       };
       orders: {
         Row: {
-          cart_total: number;
-          created_at: string;
-          delivery_fee: number;
-          discount_total: number;
-          is_paid: boolean;
-          order_id: string;
-          order_total: number;
-          shipping_details: string;
-          user_id: string;
+          cartTotal: number;
+          createdAt: string;
+          deliveryFee: number;
+          discountTotal: number;
+          isPaid: boolean;
+          orderId: string;
+          orderTotal: number;
+          shippingDetails: string;
+          userId: string;
         };
         Insert: {
-          cart_total: number;
-          created_at?: string;
-          delivery_fee: number;
-          discount_total: number;
-          is_paid?: boolean;
-          order_id?: string;
-          order_total: number;
-          shipping_details: string;
-          user_id: string;
+          cartTotal: number;
+          createdAt?: string;
+          deliveryFee: number;
+          discountTotal: number;
+          isPaid?: boolean;
+          orderId?: string;
+          orderTotal: number;
+          shippingDetails: string;
+          userId: string;
         };
         Update: {
-          cart_total?: number;
-          created_at?: string;
-          delivery_fee?: number;
-          discount_total?: number;
-          is_paid?: boolean;
-          order_id?: string;
-          order_total?: number;
-          shipping_details?: string;
-          user_id?: string;
+          cartTotal?: number;
+          createdAt?: string;
+          deliveryFee?: number;
+          discountTotal?: number;
+          isPaid?: boolean;
+          orderId?: string;
+          orderTotal?: number;
+          shippingDetails?: string;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'orders_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'orders_userId_fkey';
+            columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
-            referencedColumns: ['user_id'];
+            referencedColumns: ['userId'];
           }
         ];
       };
-      product_image_data: {
+      productImageData: {
         Row: {
-          created_at: string;
-          file_name: string;
-          image_url: string;
-          product_id: string;
-          product_image_id: string;
+          createdAt: string;
+          fileName: string;
+          imageUrl: string;
+          productId: string;
+          productImageId: string;
         };
         Insert: {
-          created_at?: string;
-          file_name: string;
-          image_url: string;
-          product_id: string;
-          product_image_id?: string;
+          createdAt?: string;
+          fileName: string;
+          imageUrl: string;
+          productId: string;
+          productImageId?: string;
         };
         Update: {
-          created_at?: string;
-          file_name?: string;
-          image_url?: string;
-          product_id?: string;
-          product_image_id?: string;
+          createdAt?: string;
+          fileName?: string;
+          imageUrl?: string;
+          productId?: string;
+          productImageId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'product_image_data_product_id_fkey';
-            columns: ['product_id'];
+            foreignKeyName: 'productImageData_productId_fkey';
+            columns: ['productId'];
             isOneToOne: false;
             referencedRelation: 'products';
-            referencedColumns: ['product_id'];
+            referencedColumns: ['productId'];
           }
         ];
       };
@@ -220,133 +220,76 @@ export interface Database {
         Row: {
           brand: string;
           category: string;
-          created_at: string;
-          delivery_info: string;
+          createdAt: string;
+          deliveryInfo: string;
           details: string;
+          isOnSale: string;
           name: string;
-          on_sale: string;
           price: number;
-          product_id: string;
-          return_info: string;
-          sale_percentage: number;
+          productId: string;
+          returnInfo: string;
+          salePercentage: number;
           sizes: string[];
         };
         Insert: {
           brand: string;
           category: string;
-          created_at?: string;
-          delivery_info: string;
+          createdAt?: string;
+          deliveryInfo: string;
           details: string;
+          isOnSale: string;
           name: string;
-          on_sale: string;
           price: number;
-          product_id?: string;
-          return_info: string;
-          sale_percentage: number;
+          productId?: string;
+          returnInfo: string;
+          salePercentage: number;
           sizes: string[];
         };
         Update: {
           brand?: string;
           category?: string;
-          created_at?: string;
-          delivery_info?: string;
+          createdAt?: string;
+          deliveryInfo?: string;
           details?: string;
+          isOnSale?: string;
           name?: string;
-          on_sale?: string;
           price?: number;
-          product_id?: string;
-          return_info?: string;
-          sale_percentage?: number;
+          productId?: string;
+          returnInfo?: string;
+          salePercentage?: number;
           sizes?: string[];
         };
         Relationships: [];
       };
-      shipping_details: {
-        Row: {
-          city: string;
-          complex_or_building: string | null;
-          contact_number: string;
-          full_name: string;
-          order_id: string;
-          postal_code: number;
-          province: string;
-          shipping_details_id: string;
-          street_address: string;
-          suburb: string;
-          user_id: string;
-        };
-        Insert: {
-          city: string;
-          complex_or_building?: string | null;
-          contact_number: string;
-          full_name: string;
-          order_id: string;
-          postal_code: number;
-          province: string;
-          shipping_details_id?: string;
-          street_address: string;
-          suburb: string;
-          user_id: string;
-        };
-        Update: {
-          city?: string;
-          complex_or_building?: string | null;
-          contact_number?: string;
-          full_name?: string;
-          order_id?: string;
-          postal_code?: number;
-          province?: string;
-          shipping_details_id?: string;
-          street_address?: string;
-          suburb?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'shipping_details_order_id_fkey';
-            columns: ['order_id'];
-            isOneToOne: false;
-            referencedRelation: 'orders';
-            referencedColumns: ['order_id'];
-          },
-          {
-            foreignKeyName: 'shipping_details_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['user_id'];
-          }
-        ];
-      };
       users: {
         Row: {
-          contact_number: string | null;
+          contactNumber: string | null;
           email: string;
-          first_name: string | null;
-          is_admin: boolean;
-          last_name: string | null;
-          user_id: string;
+          firstName: string | null;
+          isAdmin: boolean;
+          lastName: string | null;
+          userId: string;
         };
         Insert: {
-          contact_number?: string | null;
+          contactNumber?: string | null;
           email: string;
-          first_name?: string | null;
-          is_admin?: boolean;
-          last_name?: string | null;
-          user_id: string;
+          firstName?: string | null;
+          isAdmin?: boolean;
+          lastName?: string | null;
+          userId: string;
         };
         Update: {
-          contact_number?: string | null;
+          contactNumber?: string | null;
           email?: string;
-          first_name?: string | null;
-          is_admin?: boolean;
-          last_name?: string | null;
-          user_id?: string;
+          firstName?: string | null;
+          isAdmin?: boolean;
+          lastName?: string | null;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'users_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'users_userId_fkey';
+            columns: ['userId'];
             isOneToOne: true;
             referencedRelation: 'users';
             referencedColumns: ['id'];
@@ -358,14 +301,14 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      update_cart_item_quantity: {
+      updateCartItemQuantity: {
         Args: {
           item_id: string;
           item_quantity: number;
         };
         Returns: undefined;
       };
-      verify_user_password: {
+      verifyUserPassword: {
         Args: {
           password: string;
         };

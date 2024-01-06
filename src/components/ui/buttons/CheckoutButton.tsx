@@ -12,7 +12,7 @@ import {
   selectCartTotal,
   selectDeliveryFee,
   selectOrderTotal,
-  selectTotalDiscount,
+  selectDiscountTotal,
 } from '@/lib/redux/cart/cartSelectors';
 
 type CheckoutButtonProps = ButtonProps & {
@@ -36,31 +36,32 @@ export default function CheckoutButton({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
+  const userId = useAppSelector((state) => state.user.currentUser?.userId);
   const cartTotal = selectCartTotal(cartItems);
-  const totalDiscount = selectTotalDiscount(cartItems);
+  const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
 
   function handleCheckout() {
     const createOrderItems = cartItems.map((item) => {
-      const price_paid = item?.product?.on_sale ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+      const pricePaid =
+        item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
 
       return {
-        product_id: item?.product?.product_id!,
+        productId: item?.product?.productId!,
         quantity: item?.quantity!,
         size: item?.size!,
-        price_paid: price_paid!,
-        product_name: item?.product?.name!,
-        product_image_url: item?.product?.product_image_data[0].image_url!,
-        return_details: item?.product?.return_info!,
+        pricePaid: pricePaid!,
+        productName: item?.product?.name!,
+        productImageUrl: item?.product?.productImageData[0].imageUrl!,
+        returnDetails: item?.product?.returnInfo!,
       };
     });
     dispatch(
       setCheckoutData({
-        paymentTotals: { cartTotal, deliveryFee, orderTotal, totalDiscount },
+        paymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
         orderItems: createOrderItems,
-        userId: user_id,
+        userId: userId,
       })
     );
 

@@ -59,7 +59,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        dispatch(setImageUploadProgress({ file_name: image.uniqueFileName, progress }));
+        dispatch(setImageUploadProgress({ fileName: image.uniqueFileName, progress }));
 
         switch (snapshot.state) {
           case 'paused':
@@ -76,11 +76,11 @@ export default function ManageProductImages({ isSubmitting }: Props) {
 
     const uploadPromiseResults = imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
-        const { file_name, image_url } = result.value;
-        return { file_name, image_url };
+        const { fileName, imageUrl } = result.value;
+        return { fileName, imageUrl };
       } else {
         toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
-        return { file_name: '', image_url: '' };
+        return { fileName: '', imageUrl: '' };
       }
     });
 
@@ -95,7 +95,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
   async function handleDeleteAllImages() {
     setIsDeletingAllImages(true);
 
-    await deleteAllProductImages(imageData, productFormData.product_id);
+    await deleteAllProductImages(imageData, productFormData.productId);
 
     dispatch(resetImageData());
     setIsDeletingAllImages(false);

@@ -2,7 +2,7 @@ import { CustomResponseType, InserOrderType } from '@/types';
 
 export default async function addOrder(orderData: InserOrderType): Promise<
   CustomResponseType<{
-    order_id: string;
+    orderId: string;
   }>
 > {
   try {

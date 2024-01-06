@@ -8,7 +8,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   const imageData: InsertProductImageDataTypeDb[] = await request.json();
 
   try {
-    const { error } = await supabase.from('product_image_data').insert(imageData);
+    const { error } = await supabase.from('productImageData').insert(imageData);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add image data to database. ${error.message}.` });
