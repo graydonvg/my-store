@@ -6,11 +6,11 @@ import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
 type Params = {
-  params: { productId: string };
+  params: { product_id: string };
 };
 
-export async function generateMetadata({ params: { productId } }: Params) {
-  const { data } = await getProductById(productId);
+export async function generateMetadata({ params: { product_id } }: Params) {
+  const { data } = await getProductById(product_id);
   const product = data ? data : ({} as ProductType);
 
   if (!product.productId) {
@@ -25,8 +25,8 @@ export async function generateMetadata({ params: { productId } }: Params) {
   };
 }
 
-export default async function ProductPage({ params: { productId } }: Params) {
-  const { data } = await getProductById(productId);
+export default async function ProductPage({ params: { product_id } }: Params) {
+  const { data } = await getProductById(product_id);
 
   const product = data ? data : ({} as ProductType);
 
@@ -41,6 +41,6 @@ export async function generateStaticParams() {
   const products = productsData ?? [];
 
   return products.map((product) => ({
-    productId: product.productId.toString(),
+    product_id: product.productId.toString(),
   }));
 }
