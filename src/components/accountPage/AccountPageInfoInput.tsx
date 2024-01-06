@@ -32,7 +32,7 @@ export default function AccountPageInfoInput({ textFieldData, isUpdating, disabl
           }}
         />
       ))}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 6 }}>
         <ContainedButton
           label={isUpdating ? '' : 'save'}
           isDisabled={disableSave}

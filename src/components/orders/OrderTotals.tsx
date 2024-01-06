@@ -1,6 +1,7 @@
 'use client';
 
 import { borderRadius } from '@/constants/styles';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Divider, Typography, useTheme } from '@mui/material';
 
@@ -52,6 +53,7 @@ type Props = {
 };
 
 export default function OrderTotals({ orderTotal, totalDiscount, deliveryFee, totalToPay, cartTotal }: Props) {
+  const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
@@ -69,7 +71,7 @@ export default function OrderTotals({ orderTotal, totalDiscount, deliveryFee, to
           price={`-${formatCurrency(totalDiscount)}`}
           fontSize={14}
           fontWeight={600}
-          backgroundColor="#42a5f517"
+          backgroundColor={customColorPalette.grey.medium}
         />
       ) : null}
       <Total
