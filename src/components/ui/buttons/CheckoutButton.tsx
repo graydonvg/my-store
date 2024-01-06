@@ -36,6 +36,7 @@ export default function CheckoutButton({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
+  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
@@ -59,6 +60,7 @@ export default function CheckoutButton({
       setCheckoutData({
         paymentTotals: { cartTotal, deliveryFee, orderTotal, totalDiscount },
         orderItems: createOrderItems,
+        userId: user_id,
       })
     );
 

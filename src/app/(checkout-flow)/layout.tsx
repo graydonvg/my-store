@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -17,6 +17,7 @@ import OrderTotals from '@/components/orders/OrderTotals';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import PaymentButton from '@/components/ui/buttons/PaymentButton';
+import deleteOrder from '@/services/orders/delete';
 
 type NavButtonProps = {
   showCheckoutButton: boolean;
@@ -45,7 +46,7 @@ type CheckoutFlowLayoutProps = {
 
 export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps) {
   const pathname = usePathname();
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const cartTotal = selectCartTotal(cartItems);
   const totalDiscount = selectTotalDiscount(cartItems);
@@ -61,15 +62,25 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment');
 
+  const deleteOrderOnCancel = useCallback(
+    async function handleDeleteOrder() {
+      await deleteOrder({
+        user_id: checkoutData.userId!,
+        order_id: checkoutData.orderId!,
+      });
+    },
+    [checkoutData.orderId, checkoutData.userId]
+  );
+
   useEffect(() => {
-    if (paymentStatus === 'cancel') {
-      // Delete order
-      // Delete order
-      // Delete order
-      // Delete order
+    if (paymentStatus === 'cancel' && checkoutData.isProcessing) {
       dispatch(setCheckoutData({ isProcessing: false }));
+
+      if (!!checkoutData.orderId) {
+        deleteOrderOnCancel();
+      }
     }
-  }, [dispatch, paymentStatus]);
+  }, [dispatch, paymentStatus, checkoutData.orderId, deleteOrderOnCancel, checkoutData.isProcessing]);
 
   return (
     <CommonLayoutContainer>

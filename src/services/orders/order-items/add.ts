@@ -2,7 +2,7 @@ import { CustomResponseType, InserOrderItemsType } from '@/types';
 
 export default async function addOrderItems(orderItems: InserOrderItemsType[]): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/orders/items/add', {
+    const response = await fetch('/api/orders/order-items/add', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

@@ -13,8 +13,6 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to update order. ${error.message}.` });
     }
 
-    console.log('update order server', error);
-
     return NextResponse.json({ success: true, message: 'Order updated successfully.' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to update order. An unexpect error occured.' });

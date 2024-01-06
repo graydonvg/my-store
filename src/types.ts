@@ -137,6 +137,9 @@ export type CheckoutDataType = {
   };
   shippingDetails: string | null;
   orderId: string | null;
+  userId: string | null;
 };
 
 export type UpdateOrderType = { order_id: string; is_paid: boolean };
+
+export type DeleteOrderType = { order_id: string; user_id: string };

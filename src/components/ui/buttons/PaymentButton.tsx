@@ -6,7 +6,7 @@ import BreadcrumbItem from '../breadcrumbs/BreadcrumbItem';
 import { Payment } from '@mui/icons-material';
 import ContainedButton from './ContainedButton';
 import addOrder from '@/services/orders/add';
-import addOrderItems from '@/services/orders/items/add';
+import addOrderItems from '@/services/orders/order-items/add';
 
 type Props = {
   showContainedButton?: boolean;
@@ -17,11 +17,10 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const user_id = useAppSelector((state) => state.user.currentUser?.user_id);
 
   async function handleCreateOrder() {
     const { success, message, data } = await addOrder({
-      user_id: user_id!,
+      user_id: checkoutData.userId!,
       shipping_details: checkoutData.shippingDetails!,
       cart_total: checkoutData.paymentTotals.cartTotal,
       delivery_fee: checkoutData.paymentTotals.deliveryFee,
@@ -34,7 +33,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         return {
           ...item,
           order_id: data.order_id,
-          user_id: user_id!,
+          user_id: checkoutData.userId!,
         };
       });
 
@@ -54,13 +53,13 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   }
 
   async function handlePayWithStripe() {
+    dispatch(setCheckoutData({ isProcessing: true }));
+
     const { success, message } = await handleCreateOrder();
 
     if (success === false) {
       return toast.error(message);
     }
-
-    dispatch(setCheckoutData({ isProcessing: true }));
 
     const error = await payWithStripe(cartItems);
 
@@ -75,9 +74,10 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
       <ContainedButton
         disabled={!checkoutData.shippingDetails}
         onClick={handlePayWithStripe}
-        label={'continue to payment'}
+        label={!checkoutData.isProcessing ? 'continue to payment' : ''}
         fullWidth
         backgroundColor={'red'}
+        isLoading={checkoutData.isProcessing}
       />
     );
 

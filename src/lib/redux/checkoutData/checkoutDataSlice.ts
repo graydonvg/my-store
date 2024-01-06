@@ -13,6 +13,7 @@ const initialState: CheckoutDataType = {
   shippingDetails: null,
   isProcessing: false,
   orderId: null,
+  userId: null,
 };
 
 export const checkoutDataSlice = createSlice({

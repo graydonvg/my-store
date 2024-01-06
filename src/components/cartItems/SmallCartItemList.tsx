@@ -13,11 +13,20 @@ type CartEmptyMessageProps = {
 };
 
 function CartEmptyMessage({ show }: CartEmptyMessageProps) {
+  const theme = useTheme();
+  const customColorPalette = useCustomColorPalette();
+  const mode = theme.palette.mode;
+  const textBackgroundColor = mode === 'dark' ? customColorPalette.grey.medium : customColorPalette.grey.light;
+
   if (!show) return null;
 
   return (
-    <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius }}>
-      <Typography>Your cart is empty</Typography>
+    <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius, backgroundColor: textBackgroundColor }}>
+      <Typography
+        component="p"
+        fontSize={24}>
+        Your cart is empty.
+      </Typography>
     </Box>
   );
 }
