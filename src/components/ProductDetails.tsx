@@ -207,10 +207,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   async function handleAddToCart() {
     if (!currentUser) {
       handleOpenSignInDialog();
+      return;
     }
 
     if (!itemSize) {
       handleSelectSizeToast();
+      return;
     }
 
     setIsAddingToCart(true);
