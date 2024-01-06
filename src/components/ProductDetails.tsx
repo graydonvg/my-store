@@ -386,11 +386,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               gap: 1,
               paddingY: { xs: 1, sm: 2 },
             }}>
-            <Typography
-              component="span"
-              fontWeight={500}
-              fontSize={16}
-              sx={{ opacity: '70%' }}></Typography>
             <DetailsHeading>Shipping</DetailsHeading>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, paddingLeft: 1 }}>
               <LocalShippingOutlined />
@@ -426,7 +421,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             sx={{ borderRadius: borderRadius, backgroundColor: 'transparent' }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              sx={{ padding: 0, minHeight: 'unset', paddingY: { xs: 1, sm: 2 } }}>
+              sx={{
+                padding: 0,
+                minHeight: 'unset',
+                paddingY: { xs: 1, sm: 2 },
+                '& .MuiAccordionSummary-content': {
+                  margin: '0',
+                },
+              }}>
               <DetailsHeading>Product Details</DetailsHeading>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
