@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../drawers/CartDrawer';
-import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
+import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import AccountMenu from '@/components/AccountMenu';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';

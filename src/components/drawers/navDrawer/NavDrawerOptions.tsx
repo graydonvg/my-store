@@ -4,7 +4,7 @@ import { List, Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } 
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
-import { ThemeToggleIcon } from '@/components/ui/ThemeToggleIcon';
+import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
@@ -115,73 +115,81 @@ function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsPro
   );
 }
 
-export default function NavDraweOptions() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+function ThemeButton() {
   const dispatch = useAppDispatch();
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
-  const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
   }
+
+  return (
+    <>
+      <ListItem
+        disablePadding
+        sx={{ height: '56px' }}>
+        <ListItemButton
+          onClick={handleToggleTheme}
+          sx={{ width: 1, height: '100%' }}>
+          <ListItemText
+            primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
+            sx={{ color: bodyTextColor }}
+          />
+          <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
+            <ThemeToggleIcon
+              color={bodyTextColor}
+              size={'small'}
+            />
+          </Box>
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+    </>
+  );
+}
+
+export default function NavDraweOptions() {
+  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('/admin-view');
 
   function handleCloseDrawer() {
     dispatch(setIsNavDrawerOpen({ left: false }));
   }
 
   return (
-    <>
-      <Box component="nav">
-        <List disablePadding>
-          <AdminNavOptions
-            show={!!currentUser && currentUser?.is_admin}
-            options={[
-              {
-                id: 'adminView',
-                label: isAdminView ? 'Client View' : 'Admin View',
-                path: isAdminView ? '/' : '/admin-view',
-              },
-            ]}
-            onClick={handleCloseDrawer}
-          />
-          <AdminNavOptions
-            options={adminNavOptions}
-            show={!!currentUser && currentUser?.is_admin && isAdminView}
-            onClick={handleCloseDrawer}
-          />
-          <ClientViewNavOptions
-            show={!isAdminView}
-            onClick={handleCloseDrawer}
-          />
-          <UserSignedInOptions
-            show={!!currentUser}
-            handleCloseDrawer={handleCloseDrawer}
-          />
-          <ListItem
-            disablePadding
-            sx={{ height: '56px' }}>
-            <ListItemButton
-              onClick={handleToggleTheme}
-              sx={{ width: 1, height: '100%' }}>
-              <ListItemText
-                primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-                sx={{ color: bodyTextColor }}
-              />
-              <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
-                <ThemeToggleIcon
-                  color={bodyTextColor}
-                  size={'small'}
-                />
-              </Box>
-            </ListItemButton>
-          </ListItem>
-          <Divider />
-        </List>
-      </Box>
-    </>
+    <Box component="nav">
+      <List disablePadding>
+        <AdminNavOptions
+          show={!!currentUser && currentUser?.is_admin}
+          options={[
+            {
+              id: 'adminView',
+              label: isAdminView ? 'Client View' : 'Admin View',
+              path: isAdminView ? '/' : '/admin-view',
+            },
+          ]}
+          onClick={handleCloseDrawer}
+        />
+        <AdminNavOptions
+          options={adminNavOptions}
+          show={!!currentUser && currentUser?.is_admin && isAdminView}
+          onClick={handleCloseDrawer}
+        />
+        <ClientViewNavOptions
+          show={!isAdminView}
+          onClick={handleCloseDrawer}
+        />
+        <UserSignedInOptions
+          show={!!currentUser}
+          handleCloseDrawer={handleCloseDrawer}
+        />
+        <ThemeButton />
+      </List>
+    </Box>
   );
 }

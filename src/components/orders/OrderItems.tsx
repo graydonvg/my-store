@@ -7,7 +7,6 @@ import OrderDetails from './OrderDetails';
 import Link from 'next/link';
 
 type Props = {
-  // show: boolean;
   order: OrderType;
   borderColor: string;
 };
@@ -16,8 +15,6 @@ export default function OrderItems({ borderColor, order }: Props) {
   const theme = useTheme();
   const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-
-  // if (!show) return null;
 
   return (
     <Grid
@@ -42,7 +39,8 @@ export default function OrderItems({ borderColor, order }: Props) {
           container
           spacing={2}>
           {order.order_items.map((item, index) => {
-            const isLastItem = order.order_items.length - 1 === index;
+            const numberOfItems = order.order_items.length;
+            const isLastItem = numberOfItems - 1 === index;
             return (
               <Grid
                 key={item.order_item_id}
@@ -52,7 +50,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                 <Grid
                   container
                   spacing={2}
-                  sx={{ marginBottom: 2 }}>
+                  sx={{ paddingBottom: numberOfItems > 1 && !isLastItem ? 2 : 0 }}>
                   <Grid
                     item
                     xs={4}
@@ -80,7 +78,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                     xs={8}
                     md={10}
                     lg={8}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingBottom: 2 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <Link href={`/products/product/${item.product_id}`}>
                         <Typography fontSize={18}>{item.product_name}</Typography>
                       </Link>

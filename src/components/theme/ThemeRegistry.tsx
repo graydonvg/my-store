@@ -50,6 +50,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
             },
             black: {
               opacity: {
+                lightest: 'rgba(0, 0, 0, 0.12)',
                 lighter: 'rgba(0, 0, 0, 0.26)',
                 light: 'rgba(0, 0, 0, 0.3)',
                 medium: 'rgba(0, 0, 0, 0.5)',
@@ -58,6 +59,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
             },
             white: {
               opacity: {
+                lightest: 'rgba(255, 255, 255, 0.12)',
                 light: 'rgba(255, 255, 255, 0.3)',
                 strong: 'rgba(255, 255, 255, 0.7)',
               },
@@ -90,6 +92,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
             },
             black: {
               opacity: {
+                lightest: 'rgba(0, 0, 0, 0.12)',
                 lighter: 'rgba(0, 0, 0, 0.26)',
                 light: 'rgba(0, 0, 0, 0.3)',
                 medium: 'rgba(0, 0, 0, 0.5)',
@@ -98,6 +101,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCartView: boolean) => ({
             },
             white: {
               opacity: {
+                lightest: 'rgba(255, 255, 255, 0.12)',
                 light: 'rgba(255, 255, 255, 0.3)',
                 strong: 'rgba(255, 255, 255, 0.7)',
               },

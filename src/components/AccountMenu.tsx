@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import { useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout, Favorite } from '@mui/icons-material';
-import { ThemeToggleIcon } from './ui/ThemeToggleIcon';
+import { ThemeToggleIcon } from './theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from './ui/HoverDropdownMenu';

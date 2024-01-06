@@ -3,7 +3,7 @@
 import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { Box, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 type TotalProps = {
   label: string;
@@ -56,10 +56,12 @@ export default function OrderTotals({ orderTotal, totalDiscount, deliveryFee, to
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const dividerColor = mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
+  const borderColor =
+    mode === 'dark' ? customColorPalette.white.opacity.lightest : customColorPalette.black.opacity.lightest;
+  const discountTotalBackgroundColor = mode === 'dark' ? customColorPalette.grey.medium : customColorPalette.grey.light;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', paddingY: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Total
         label="Cart total"
         price={formatCurrency(cartTotal)}
@@ -71,26 +73,30 @@ export default function OrderTotals({ orderTotal, totalDiscount, deliveryFee, to
           price={`-${formatCurrency(totalDiscount)}`}
           fontSize={14}
           fontWeight={600}
-          backgroundColor={customColorPalette.grey.medium}
+          backgroundColor={discountTotalBackgroundColor}
         />
       ) : null}
-      <Total
-        label="Delivery fee"
-        price={orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0)}
-        fontSize={14}
-      />
+      <Box
+        sx={{
+          borderBottom: !totalToPay ? `2px solid ${borderColor}` : 'none',
+          marginBottom: !totalToPay ? 1 : 0,
+        }}>
+        <Total
+          label="Delivery fee"
+          price={orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0)}
+          fontSize={14}
+        />
+      </Box>
       {!!totalToPay ? (
-        <>
-          <Divider />
+        <Box sx={{ marginBottom: 1, borderTop: `1px solid ${borderColor}`, borderBottom: `2px solid ${borderColor}` }}>
           <Total
             label="Order total"
             price={formatCurrency(orderTotal)}
             fontSize={14}
             fontWeight={600}
           />
-        </>
+        </Box>
       ) : null}
-      <Divider sx={{ border: `1.5px solid ${dividerColor}` }} />
       <Total
         label={totalToPay ? 'TOTAL TO PAY' : 'ORDER TOTAL'}
         price={formatCurrency(totalToPay ? totalToPay : orderTotal)}

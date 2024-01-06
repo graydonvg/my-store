@@ -35,7 +35,6 @@ export default function Orders({ show, orders }: Props) {
               borderColor={borderColor}
             />
             <OrderItems
-              // show={order.order_items.length > 0}
               order={order}
               borderColor={borderColor}
             />

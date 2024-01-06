@@ -78,7 +78,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               ))}
             </Box>
           </Box>
-          <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography
               component="h3"
               fontSize={18}

@@ -112,13 +112,15 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
               lineHeight={1}>
               Your Order
             </Typography>
-            <OrderTotals
-              cartTotal={cartTotal}
-              totalDiscount={totalDiscount}
-              deliveryFee={deliveryFee}
-              orderTotal={orderTotal}
-              totalToPay={orderTotal}
-            />
+            <Box sx={{ paddingY: 2 }}>
+              <OrderTotals
+                cartTotal={cartTotal}
+                totalDiscount={totalDiscount}
+                deliveryFee={deliveryFee}
+                orderTotal={orderTotal}
+                totalToPay={orderTotal}
+              />
+            </Box>
             <NavButton
               showCheckoutButton={isCartView}
               showPaymentButton={isShippingView}
