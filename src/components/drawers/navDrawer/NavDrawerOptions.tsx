@@ -9,8 +9,8 @@ import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
-import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
+import signOut from '@/services/auth/sign-out';
 
 type NavOptionsType = {
   id: string;
@@ -42,12 +42,12 @@ function NavOptions({ options, onClick }: NavOptionsProps) {
 
 type AdminNavOptionsProps = {
   options: NavOptionsType;
-  showOptions: boolean;
+  show: boolean;
   onClick: () => void;
 };
 
-function AdminNavOptions({ showOptions, options, onClick }: AdminNavOptionsProps) {
-  if (!showOptions) return null;
+function AdminNavOptions({ show, options, onClick }: AdminNavOptionsProps) {
+  if (!show) return null;
 
   return (
     <NavOptions
@@ -58,12 +58,12 @@ function AdminNavOptions({ showOptions, options, onClick }: AdminNavOptionsProps
 }
 
 type ClientViewNavOptionsProps = {
-  showOptions: boolean;
+  show: boolean;
   onClick: () => void;
 };
 
-function ClientViewNavOptions({ showOptions, onClick }: ClientViewNavOptionsProps) {
-  if (!showOptions) return null;
+function ClientViewNavOptions({ show, onClick }: ClientViewNavOptionsProps) {
+  if (!show) return null;
 
   return (
     <NavOptions
@@ -73,33 +73,64 @@ function ClientViewNavOptions({ showOptions, onClick }: ClientViewNavOptionsProp
   );
 }
 
+type UserSignedInOptionsProps = {
+  show: boolean;
+  handleCloseDrawer: () => void;
+};
+
+function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsProps) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  if (!show) return null;
+
+  async function handleSignOut() {
+    const { success, message } = await signOut();
+    if (success === false) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+      router.refresh();
+    }
+
+    dispatch(setIsNavDrawerOpen({ left: false }));
+  }
+
+  return (
+    <>
+      <NavOptions
+        options={accountNavOptions}
+        onClick={handleCloseDrawer}
+      />
+      <NavOptions
+        options={[
+          {
+            id: 'signOut',
+            label: 'Sign Out',
+          },
+        ]}
+        onClick={handleSignOut}
+      />
+    </>
+  );
+}
+
 export default function NavDraweOptions() {
-  const supabase = createSupabaseBrowserClient();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
+  const theme = useTheme();
   const mode = theme.palette.mode;
   const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const router = useRouter();
-
-  function handleCloseDrawer() {
-    dispatch(setIsNavDrawerOpen({ left: false }));
-  }
-
-  async function handleSignOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error(`Sign out failed. ${error.message}.`);
-    }
-    router.refresh();
-    dispatch(setIsNavDrawerOpen({ left: false }));
-  }
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
+  }
+
+  function handleCloseDrawer() {
+    dispatch(setIsNavDrawerOpen({ left: false }));
   }
 
   return (
@@ -107,7 +138,7 @@ export default function NavDraweOptions() {
       <Box component="nav">
         <List disablePadding>
           <AdminNavOptions
-            showOptions={currentUser !== null && currentUser?.is_admin}
+            show={!!currentUser && currentUser?.is_admin}
             options={[
               {
                 id: 'adminView',
@@ -119,25 +150,16 @@ export default function NavDraweOptions() {
           />
           <AdminNavOptions
             options={adminNavOptions}
-            showOptions={currentUser !== null && currentUser?.is_admin && isAdminView}
+            show={!!currentUser && currentUser?.is_admin && isAdminView}
             onClick={handleCloseDrawer}
           />
           <ClientViewNavOptions
-            showOptions={!currentUser?.is_admin || !isAdminView}
+            show={!isAdminView}
             onClick={handleCloseDrawer}
           />
-          <NavOptions
-            options={accountNavOptions}
-            onClick={handleCloseDrawer}
-          />
-          <NavOptions
-            options={[
-              {
-                id: 'signOut',
-                label: 'Sign Out',
-              },
-            ]}
-            onClick={handleSignOut}
+          <UserSignedInOptions
+            show={!!currentUser}
+            handleCloseDrawer={handleCloseDrawer}
           />
           <ListItem
             disablePadding
