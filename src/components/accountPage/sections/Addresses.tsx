@@ -20,7 +20,7 @@ import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 import { AddressType, UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete-address';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddNewAddressDialog from '../../dialogs/AddNewAddressDialog';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
@@ -50,12 +50,12 @@ type SelectShippingAddressCheckboxProps = {
 function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressCheckboxProps) {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
-  const fullName = `${currentUser?.firstName} ${currentUser?.lastName}`;
+  const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   if (!show) return null;
 
@@ -63,7 +63,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
     const { addressId, userId, ...restOfAddressData } = address;
     const shippingDetailsArray = Object.values({
       fullName: fullName,
-      contactNumber: currentUser?.contactNumber,
+      contactNumber: userData?.contactNumber,
       ...restOfAddressData,
     });
     const filteredShippingDetailsArray = shippingDetailsArray.filter((value) => value !== '' && value !== null);
@@ -195,7 +195,7 @@ type AddressDataProps = {
 function AddressData({ show }: AddressDataProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { currentUser } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
   const customColorPalette = useCustomColorPalette();
   const [isDeleting, setIsDeleting] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
@@ -208,7 +208,7 @@ function AddressData({ show }: AddressDataProps) {
   if (!show) return null;
 
   async function handleSetAddressToEdit(addressId: string) {
-    const addressToEdit = currentUser?.addresses.filter((address) => address.addressId === addressId)[0];
+    const addressToEdit = userData?.addresses.filter((address) => address.addressId === addressId)[0];
 
     if (!!addressToEdit) {
       dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
@@ -224,10 +224,10 @@ function AddressData({ show }: AddressDataProps) {
       const { success, message } = await deleteAddress(addressId);
 
       if (success === true) {
-        const updatedAddresses = currentUser?.addresses.filter((address) => address.addressId !== addressId);
+        const updatedAddresses = userData?.addresses.filter((address) => address.addressId !== addressId);
         dispatch(
-          setCurrentUser({
-            ...currentUser!,
+          setUserData({
+            ...userData!,
             addresses: updatedAddresses!,
           })
         );
@@ -247,7 +247,7 @@ function AddressData({ show }: AddressDataProps) {
 
   return (
     <>
-      {currentUser?.addresses?.map((address, index) => (
+      {userData?.addresses?.map((address, index) => (
         <TableRow
           key={index}
           sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
@@ -287,7 +287,7 @@ function AddressData({ show }: AddressDataProps) {
 }
 
 export default function Addresses() {
-  const { currentUser } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -298,8 +298,8 @@ export default function Addresses() {
       <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: borderRadius }}>
         <Table>
           <TableBody>
-            <NoAddressFound show={!!currentUser?.addresses && currentUser?.addresses.length === 0} />
-            <AddressData show={!!currentUser?.addresses && currentUser?.addresses.length > 0} />
+            <NoAddressFound show={!!userData?.addresses && userData?.addresses.length === 0} />
+            <AddressData show={!!userData?.addresses && userData?.addresses.length > 0} />
           </TableBody>
         </Table>
       </TableContainer>

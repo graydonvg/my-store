@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
 import { updateAddress } from '@/services/users/update-address';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { setUserData } from '@/lib/redux/user/userSlice';
 
 const formFields = [
   {
@@ -34,7 +34,7 @@ const formFields = [
 export default function AddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const [isLoading, setIsLoading] = useState(false);
   const addressFormData = useAppSelector((state) => state.addressForm);
 
@@ -60,19 +60,19 @@ export default function AddressForm() {
       const { success, message } = await addNewAddress({
         ...restOfAddressData,
         postalCode: Number(postalCode),
-        userId: currentUser?.userId!,
+        userId: userData?.userId!,
       } as InsertAddressType);
 
       if (success === true) {
         dispatch(
-          setCurrentUser({
-            ...currentUser!,
+          setUserData({
+            ...userData!,
             addresses: [
-              ...currentUser?.addresses!,
+              ...userData?.addresses!,
               {
                 ...(restOfAddressData as InsertAddressType),
                 postalCode: Number(postalCode),
-                userId: currentUser?.userId!,
+                userId: userData?.userId!,
                 complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
                 addressId: '',
               },
@@ -108,7 +108,7 @@ export default function AddressForm() {
       } as UpdateAddressTypeDb);
 
       if (success === true) {
-        const updatedAddresses = currentUser?.addresses.map((address) =>
+        const updatedAddresses = userData?.addresses.map((address) =>
           address.addressId === addressFormData.addressId
             ? {
                 ...(addressFormData as InsertAddressType),
@@ -119,8 +119,8 @@ export default function AddressForm() {
         );
 
         dispatch(
-          setCurrentUser({
-            ...currentUser!,
+          setUserData({
+            ...userData!,
             addresses: updatedAddresses!,
           })
         );

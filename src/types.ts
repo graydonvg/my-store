@@ -47,7 +47,7 @@ export type CartItemType =
     })
   | null;
 
-export type CurrentUserType = Database['public']['Tables']['users']['Row'] & {
+export type UserDataType = Database['public']['Tables']['users']['Row'] & {
   addresses: Database['public']['Tables']['addresses']['Row'][];
 };
 

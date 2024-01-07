@@ -92,7 +92,7 @@ function AdminMenuItem({ show }: AdminMenuItemProps) {
 }
 
 export default function AccountMenu() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
@@ -128,12 +128,12 @@ export default function AccountMenu() {
             sx={{
               color: customColorPalette.grey.light,
             }}>
-            {currentUser?.firstName ?? currentUser?.email.split('@')[0] ?? 'Account'}
+            {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
           </Typography>
           <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
         </>
       }>
-      <AdminMenuItem show={!!currentUser && currentUser?.isAdmin} />
+      <AdminMenuItem show={!!userData && userData?.isAdmin} />
       {accountMenuOptions.map((item) => (
         <Link
           key={item.label}

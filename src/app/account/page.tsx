@@ -9,21 +9,21 @@ import AccountPageSectionContainer from '@/components/accountPage/AccountPageSec
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 
 function PageHeaderWithFullName() {
-  const { currentUser } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
 
-  if (!currentUser?.firstName && !currentUser?.lastName) return null;
+  if (!userData?.firstName && !userData?.lastName) return null;
 
-  const fullName = `${currentUser?.firstName} ${currentUser?.lastName}`;
+  const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   return <PageHeaderWithBorder label={fullName} />;
 }
 
 function PageHeaderWithEmail() {
-  const { currentUser } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
 
-  if (!currentUser || currentUser?.firstName) return null;
+  if (!userData || userData?.firstName) return null;
 
-  return <PageHeaderWithBorder label={currentUser.email} />;
+  return <PageHeaderWithBorder label={userData.email} />;
 }
 
 export default function AccountPage() {

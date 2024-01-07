@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest): Promise<NextResponse<CustomResponseType<ProductType>>> {
   const supabase = await createSupabaseServerClient();
   const searchParams = request.nextUrl.searchParams;
-  const productId = searchParams.get('productId');
+  const productId = searchParams.get('product_id');
 
   if (!productId)
     return NextResponse.json({ success: false, message: 'Failed to get product. Please provide a valid ID.' });

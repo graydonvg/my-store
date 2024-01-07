@@ -1,22 +1,22 @@
-import { CurrentUserType } from '@/types';
+import { UserDataType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type UserState = {
   isOAuthSignIn: boolean;
-  currentUser: CurrentUserType | null;
+  userData: UserDataType | null;
 };
 
 const initialState: UserState = {
   isOAuthSignIn: false,
-  currentUser: null,
+  userData: null,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setCurrentUser(state, action: PayloadAction<CurrentUserType | null>) {
-      state.currentUser = action.payload;
+    setUserData(state, action: PayloadAction<UserDataType | null>) {
+      state.userData = action.payload;
     },
     setIsOAuthSignIn(state, action: PayloadAction<boolean>) {
       state.isOAuthSignIn = action.payload;
@@ -26,6 +26,6 @@ export const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { setCurrentUser, setIsOAuthSignIn } = actions;
+export const { setUserData, setIsOAuthSignIn } = actions;
 
 export const userReducer = reducer;

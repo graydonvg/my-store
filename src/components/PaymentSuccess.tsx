@@ -16,7 +16,7 @@ export default function PaymentSuccess() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const userId = useAppSelector((state) => state.user.currentUser?.userId);
+  const userId = useAppSelector((state) => state.user.userData?.userId);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

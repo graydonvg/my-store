@@ -169,7 +169,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { currentUser } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
@@ -205,7 +205,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   }
 
   async function handleAddToCart() {
-    if (!currentUser) {
+    if (!userData) {
       handleOpenSignInDialog();
       return;
     }
@@ -237,7 +237,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           productId: product.productId,
           quantity: itemQuantity,
           size: itemSize!,
-          userId: currentUser?.userId!,
+          userId: userData?.userId!,
         });
 
         if (success === false) {
@@ -257,7 +257,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   function handleAddToWishlist() {
     // check if item already added!!!
 
-    if (!currentUser) {
+    if (!userData) {
       handleOpenSignInDialog();
       return;
     }

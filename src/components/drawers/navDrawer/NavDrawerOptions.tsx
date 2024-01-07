@@ -152,7 +152,7 @@ function ThemeButton() {
 }
 
 export default function NavDraweOptions() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
@@ -165,7 +165,7 @@ export default function NavDraweOptions() {
     <Box component="nav">
       <List disablePadding>
         <AdminNavOptions
-          show={!!currentUser && currentUser?.isAdmin}
+          show={!!userData && userData?.isAdmin}
           options={[
             {
               id: 'adminView',
@@ -177,7 +177,7 @@ export default function NavDraweOptions() {
         />
         <AdminNavOptions
           options={adminNavOptions}
-          show={!!currentUser && currentUser?.isAdmin && isAdminView}
+          show={!!userData && userData?.isAdmin && isAdminView}
           onClick={handleCloseDrawer}
         />
         <ClientViewNavOptions
@@ -185,7 +185,7 @@ export default function NavDraweOptions() {
           onClick={handleCloseDrawer}
         />
         <UserSignedInOptions
-          show={!!currentUser}
+          show={!!userData}
           handleCloseDrawer={handleCloseDrawer}
         />
         <ThemeButton />

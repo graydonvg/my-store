@@ -22,7 +22,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const userId = useAppSelector((state) => state.user.currentUser?.userId);
+  const userId = useAppSelector((state) => state.user.userData?.userId);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const orderTotal = selectCartTotal(cartItems);

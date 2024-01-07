@@ -2,13 +2,13 @@
 
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
-import { CurrentUserType } from '@/types';
-import { setCurrentUser, setIsOAuthSignIn } from '@/lib/redux/user/userSlice';
+import { UserDataType } from '@/types';
+import { setUserData, setIsOAuthSignIn } from '@/lib/redux/user/userSlice';
 import { Session } from '@supabase/supabase-js';
 
 type Props = {
   session: Session | null;
-  userData: CurrentUserType | null;
+  userData: UserDataType | null;
 };
 
 export default function UserStateSetter({ session, userData }: Props) {
@@ -16,9 +16,9 @@ export default function UserStateSetter({ session, userData }: Props) {
 
   useEffect(() => {
     if (!!userData && !!userData.userId) {
-      dispatch(setCurrentUser(userData));
+      dispatch(setUserData(userData));
     } else {
-      dispatch(setCurrentUser(null));
+      dispatch(setUserData(null));
     }
 
     if (!!session && session.user.app_metadata.provider !== 'email') {

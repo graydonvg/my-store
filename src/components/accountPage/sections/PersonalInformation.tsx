@@ -10,7 +10,7 @@ import {
   setPersonalInformationOnChange,
 } from '@/lib/redux/account/accountSlice';
 import { ChangeEvent, ReactNode, useEffect } from 'react';
-import { setCurrentUser } from '@/lib/redux/user/userSlice';
+import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
@@ -66,18 +66,18 @@ type PersonalInformationProps = {
 export default function PersonalInformation({ renderUserInfo }: PersonalInformationProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const { personalInformation, fieldToEdit, isUpdatingAccount } = useAppSelector((state) => state.account);
 
   useEffect(() => {
     dispatch(
       setPersonalInformation({
-        name: currentUser?.firstName ?? '',
-        surname: currentUser?.lastName ?? '',
-        contactNumber: currentUser?.contactNumber ?? '',
+        name: userData?.firstName ?? '',
+        surname: userData?.lastName ?? '',
+        contactNumber: userData?.contactNumber ?? '',
       })
     );
-  }, [dispatch, currentUser?.firstName, currentUser?.lastName, currentUser?.contactNumber]);
+  }, [dispatch, userData?.firstName, userData?.lastName, userData?.contactNumber]);
 
   function handleSetFieldToEdit(field: string) {
     dispatch(setFieldToEdit(field));
@@ -94,9 +94,9 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
   async function handleUpdatePersonalInformation() {
     if (
-      personalInformation.name === currentUser?.firstName &&
-      personalInformation.surname === currentUser.lastName &&
-      personalInformation.contactNumber === currentUser.contactNumber
+      personalInformation.name === userData?.firstName &&
+      personalInformation.surname === userData.lastName &&
+      personalInformation.contactNumber === userData.contactNumber
     )
       return;
 
@@ -113,8 +113,8 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
       if (success === true) {
         dispatch(
-          setCurrentUser({
-            ...currentUser!,
+          setUserData({
+            ...userData!,
             ...userInfo,
           })
         );
@@ -139,7 +139,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'name'}
         label="Name"
         onClick={() => handleSetFieldToEdit('name')}>
-        {renderUserInfo(currentUser?.firstName!)}
+        {renderUserInfo(userData?.firstName!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'name'}
@@ -163,7 +163,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'surname'}
         label="Surname"
         onClick={() => handleSetFieldToEdit('surname')}>
-        {renderUserInfo(currentUser?.lastName!)}
+        {renderUserInfo(userData?.lastName!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'surname'}
@@ -187,7 +187,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         show={fieldToEdit !== 'contactNumber'}
         label="Contact number"
         onClick={() => handleSetFieldToEdit('contactNumber')}>
-        {renderUserInfo(currentUser?.contactNumber!)}
+        {renderUserInfo(userData?.contactNumber!)}
       </UserData>
       <UpdateUserData
         show={fieldToEdit === 'contactNumber'}

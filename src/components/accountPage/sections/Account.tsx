@@ -154,7 +154,7 @@ type AccountProps = {
 };
 
 export default function Account({ renderUserInfo }: AccountProps) {
-  const { isOAuthSignIn, currentUser } = useAppSelector((state) => state.user);
+  const { isOAuthSignIn, userData } = useAppSelector((state) => state.user);
   const { fieldToEdit } = useAppSelector((state) => state.account);
 
   return (
@@ -163,7 +163,7 @@ export default function Account({ renderUserInfo }: AccountProps) {
         label="Email"
         canEdit={false}
         onClick={null}>
-        {renderUserInfo(currentUser?.email!)}
+        {renderUserInfo(userData?.email!)}
       </AccountPageInfo>
       <PasswordPlaceholder show={!isOAuthSignIn && fieldToEdit !== 'password'} />
       <UpdatePassword show={!isOAuthSignIn && fieldToEdit === 'password'} />

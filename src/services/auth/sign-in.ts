@@ -1,20 +1,18 @@
 import { CustomResponseType } from '@/types';
-import createURL from '@/utils/createURL';
 
 export default async function signInWithPassword(formData: {
   email: string;
   password: string;
 }): Promise<CustomResponseType> {
-  const url = createURL('/api/auth/sign-in');
-
   try {
-    const response = await fetch(url, {
+    const response = await fetch('/api/auth/sign-in', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
       body: JSON.stringify(formData),
     });
+
     const data = await response.json();
 
     return data;

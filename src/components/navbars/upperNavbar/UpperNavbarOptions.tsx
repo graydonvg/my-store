@@ -168,7 +168,7 @@ function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
 }
 
 export default function UpperNavbarOptions() {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
+  const userData = useAppSelector((state) => state.user.userData);
   const customColorPalette = useCustomColorPalette();
 
   return (
@@ -187,8 +187,8 @@ export default function UpperNavbarOptions() {
       <Box
         component="nav"
         sx={{ height: 1 }}>
-        <UserSignedOutOptions show={!currentUser} />
-        <UserSignedInOptions show={!!currentUser} />
+        <UserSignedOutOptions show={!userData} />
+        <UserSignedInOptions show={!!userData} />
       </Box>
     </>
   );
