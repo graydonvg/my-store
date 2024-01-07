@@ -42,7 +42,11 @@ export default function OrderItems({ borderColor, order }: Props) {
           spacing={2}>
           {order.orderItems.map((item, index) => {
             const numberOfItems = order.orderItems.length;
+            const isFirstItem = index === 0;
+            const isSecondItem = index === 1;
+            const isSecondLastItem = numberOfItems - 2 === index;
             const isLastItem = numberOfItems - 1 === index;
+
             return (
               <Grid
                 key={item.orderItemId}
@@ -52,7 +56,13 @@ export default function OrderItems({ borderColor, order }: Props) {
                 <Grid
                   container
                   spacing={2}
-                  sx={{ paddingBottom: numberOfItems > 1 && !isLastItem ? 2 : 0 }}>
+                  sx={{
+                    paddingBottom: {
+                      xs: numberOfItems > 1 && !isLastItem ? 2 : 0,
+                      lg:
+                        numberOfItems > 2 && !isLastItem && !isFirstItem && !isSecondItem && !isSecondLastItem ? 2 : 0,
+                    },
+                  }}>
                   <Grid
                     item
                     xs={4}
