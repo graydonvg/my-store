@@ -9,11 +9,10 @@ import { ProductType } from '@/types';
 
 type EmptySmallBoxWithBorderProps = {
   show: boolean;
-  boxBorderColor: string;
   isEditMode?: boolean;
 };
 
-function EmptySmallBoxWithBorder({ show, boxBorderColor, isEditMode }: EmptySmallBoxWithBorderProps) {
+function EmptySmallBoxWithBorder({ show, isEditMode }: EmptySmallBoxWithBorderProps) {
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
@@ -21,7 +20,6 @@ function EmptySmallBoxWithBorder({ show, boxBorderColor, isEditMode }: EmptySmal
   return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
     <SmallProductImageBox
       key={`placeholder-${index}`}
-      borderColor={boxBorderColor}
       isEditMode={isEditMode}
     />
   ));
@@ -93,10 +91,9 @@ function SmallImageClientView({
 type BoxWithUploadProgressProps = {
   show: boolean;
   isEditMode?: boolean;
-  boxBorderColor: string;
 };
 
-function BoxWithUploadProgress({ show, isEditMode, boxBorderColor }: BoxWithUploadProgressProps) {
+function BoxWithUploadProgress({ show, isEditMode }: BoxWithUploadProgressProps) {
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
@@ -106,7 +103,6 @@ function BoxWithUploadProgress({ show, isEditMode, boxBorderColor }: BoxWithUplo
       {imageUploadProgress.map((data, index) => (
         <SmallProductImageBox
           key={index}
-          borderColor={boxBorderColor}
           isEditMode={isEditMode}
           uploadProgressData={data}
         />
@@ -123,7 +119,7 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const customColorPalette = useCustomColorPalette();
-  const boxBorderColor = isAdminView ? customColorPalette.border : 'transparent';
+  const boxBorderColor = isAdminView ? customColorPalette.textField.border : 'transparent';
 
   useEffect(() => {
     if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
@@ -173,12 +169,11 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
             />
             <BoxWithUploadProgress
               show={isAdminView && imageUploadProgress.length > 0}
-              boxBorderColor={boxBorderColor}
+              // boxBorderColor={boxBorderColor}
               isEditMode={isEditMode}
             />
             <EmptySmallBoxWithBorder
               show={isAdminView}
-              boxBorderColor={boxBorderColor}
               isEditMode={isEditMode}
             />
           </Grid>
@@ -194,7 +189,6 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
               productName={productFormData.name}
               productImageData={imageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
-              borderColor={boxBorderColor}
             />
           ) : (
             // Gets image from db
@@ -202,7 +196,6 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
               productName={product?.name ?? ''}
               productImageData={product?.productImageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
-              borderColor={boxBorderColor}
             />
           )}
         </Grid>

@@ -32,7 +32,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               aspectRatio: 4 / 3,
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: customColorPalette.textField.label,
-                border: `1px solid ${customColorPalette.border} !important`,
+                border: `1px solid ${customColorPalette.textField.border} !important`,
                 borderRadius: `${borderRadius} !important`,
                 '@media (hover: hover)': {
                   '&:hover': {

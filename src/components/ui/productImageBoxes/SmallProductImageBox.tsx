@@ -114,7 +114,6 @@ type SmallProductImageBoxProps = {
   imageIndex?: number;
   selectedImageIndex?: number;
   uploadProgressData?: ImageUploadProgressType;
-  borderColor?: string;
   isEditMode?: boolean;
   selectImage?: () => void;
 };
@@ -125,12 +124,24 @@ export default function SmallProductImageBoxProps({
   imageIndex,
   selectedImageIndex,
   uploadProgressData,
-  borderColor,
   isEditMode,
   selectImage,
 }: SmallProductImageBoxProps) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
+  const customColorPalette = useCustomColorPalette();
+  let boxBorderColor;
+
+  // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
+  if (isAdminView) {
+    if (!!uploadProgressData && !productImageData) {
+      boxBorderColor = customColorPalette.textField.focused;
+    } else if (!productImageData) {
+      boxBorderColor = customColorPalette.textField.border;
+    }
+  } else {
+    boxBorderColor = 'transparent';
+  }
 
   return (
     <Grid
@@ -145,7 +156,7 @@ export default function SmallProductImageBoxProps({
           justifyContent: 'center',
           alignItems: 'center',
           aspectRatio: 3 / 4,
-          outline: `1px solid ${borderColor}`,
+          outline: `1px solid ${boxBorderColor}`,
           borderRadius: borderRadius,
           opacity: productImageData && !isEditMode ? (imageIndex !== selectedImageIndex ? '50%' : null) : null,
         }}>

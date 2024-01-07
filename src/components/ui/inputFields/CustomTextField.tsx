@@ -7,6 +7,12 @@ export default function CustomTextField({ ...props }: TextFieldProps) {
   return (
     <TextField
       sx={{
+        '& label': {
+          color: customColorPalette.textField.label,
+        },
+        '& fieldset': {
+          borderColor: customColorPalette.textField.border,
+        },
         '& label.Mui-focused': {
           color: customColorPalette.textField.focused,
         },

@@ -13,6 +13,12 @@ export default function NumberField({ styles, ...props }: Props) {
       type="number"
       sx={{
         ...styles,
+        '& label': {
+          color: customColorPalette.textField.label,
+        },
+        '& fieldset': {
+          borderColor: customColorPalette.textField.border,
+        },
         '& label.Mui-focused': {
           color: customColorPalette.textField.focused,
         },

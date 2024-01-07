@@ -66,21 +66,31 @@ function UploadProgress({ show, selectedImageIndex }: UploadProgressProps) {
 
 type LargeProductImageBoxProps = {
   selectedImageIndex: number;
-  borderColor: string;
   productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
   productName: string;
 };
 
 export default function LargeProductImageBox({
   selectedImageIndex,
-  borderColor,
   productImageData,
   productName,
 }: LargeProductImageBoxProps) {
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const boxBorderColor = isAdminView && !productImageData ? borderColor : 'transparent';
+  const customColorPalette = useCustomColorPalette();
+  let boxBorderColor;
+
+  // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
+  if (isAdminView) {
+    if (!!imageUploadProgress[selectedImageIndex] && !productImageData) {
+      boxBorderColor = customColorPalette.textField.focused;
+    } else if (!productImageData) {
+      boxBorderColor = customColorPalette.textField.border;
+    }
+  } else {
+    boxBorderColor = 'transparent';
+  }
 
   return (
     <Box

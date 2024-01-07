@@ -12,6 +12,12 @@ export default function SelectField({ options, ...textFieldProps }: SelectFieldP
     <TextField
       select
       sx={{
+        '& label': {
+          color: customColorPalette.textField.label,
+        },
+        '& fieldset': {
+          borderColor: customColorPalette.textField.border,
+        },
         '& label.Mui-focused': {
           color: customColorPalette.textField.focused,
         },

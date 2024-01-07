@@ -56,7 +56,7 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
             },
             textField: {
               label: 'rgba(0, 0, 0, 0.6)',
-              border: 'rgba(0, 0, 0, 0.6)',
+              border: 'rgba(0, 0, 0, 0.23)',
               hover: 'rgba(0, 0, 0, 0.87)',
               focused: 'rgba(0, 0, 0, 0.87)',
             },
@@ -111,8 +111,8 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
               white: '#fff',
             },
             textField: {
-              label: 'rgba(0, 0, 0, 0.7)',
-              border: 'rgba(0, 0, 0, 0.7)',
+              label: 'rgba(255, 255, 255, 0.7)',
+              border: 'rgba(255, 255, 255, 0.23)',
               hover: '#fff',
               focused: '#fff',
             },
