@@ -10,24 +10,24 @@ function getButtonBackgroundColor(
 ) {
   const colorOptions = {
     blue: {
-      backgroundColor: customColorPalette.blue.dark,
+      backgroundColor: customColorPalette.primary.dark,
       '&:hover': {
-        backgroundColor: customColorPalette.blue.dark,
+        backgroundColor: customColorPalette.primary.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: customColorPalette.blue.light,
+          backgroundColor: customColorPalette.primary.light,
         },
       },
     },
     red: {
-      backgroundColor: customColorPalette.red.dark,
+      backgroundColor: customColorPalette.warning.dark,
       '&:hover': {
-        backgroundColor: customColorPalette.red.dark,
+        backgroundColor: customColorPalette.warning.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: customColorPalette.red.light,
+          backgroundColor: customColorPalette.warning.light,
         },
       },
     },

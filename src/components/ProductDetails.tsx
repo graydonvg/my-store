@@ -53,10 +53,11 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
       <Typography
         lineHeight={1.3}
         component="span"
-        sx={{ textDecoration: 'line-through', opacity: '50%', paddingRight: 1 }}
         fontFamily={'Georgia'}
         fontStyle="italic"
-        fontSize={22}>
+        fontSize={22}
+        color={customColorPalette.typographyVariants.grey}
+        sx={{ textDecoration: 'line-through', paddingRight: 1 }}>
         {formatCurrency(price)}
       </Typography>
       <Typography
@@ -65,7 +66,7 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
         fontSize={22}
         fontFamily={'Georgia'}
         fontStyle="italic"
-        sx={{ color: customColorPalette.blue.light, fontFamily: 'serif' }}>
+        sx={{ color: customColorPalette.primary.light, fontFamily: 'serif' }}>
         {`-${percentage}%`}
       </Typography>
     </Box>
@@ -149,12 +150,14 @@ type DetailsHeadingProps = {
 };
 
 function DetailsHeading({ children }: DetailsHeadingProps) {
+  const customColorPalette = useCustomColorPalette();
+
   return (
     <Typography
       component="span"
       fontWeight={500}
       fontSize={16}
-      sx={{ opacity: '70%' }}>
+      color={customColorPalette.typographyVariants.grey}>
       {children}
     </Typography>
   );
@@ -166,6 +169,7 @@ type ProductDetailsProps = {
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const supabase = createSupabaseBrowserClient();
+  const customColorPalette = useCustomColorPalette();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -300,10 +304,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 {product.name}
               </Typography>
               <Typography
-                sx={{ paddingY: 1, opacity: '70%' }}
+                sx={{ paddingY: 1 }}
                 lineHeight={1}
                 component="span"
-                fontSize={16}>
+                fontSize={16}
+                color={customColorPalette.typographyVariants.grey}>
                 {product.brand}
               </Typography>
             </Box>

@@ -25,9 +25,9 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   // Payment breadcrumb: Change label color on hover if address IS selected.
   // Other breadcrumbs: Change label color on hover if path is NOT selected.
   if (label === 'payment' && !!shippingDetails) {
-    labelHoverColor = customColorPalette.grey.light;
+    labelHoverColor = customColorPalette.typographyVariants.white;
   } else if (label !== 'payment' && pathname !== href) {
-    labelHoverColor = customColorPalette.grey.light;
+    labelHoverColor = customColorPalette.typographyVariants.white;
   }
 
   return (
@@ -41,14 +41,14 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           display: 'flex',
           alignItems: 'center',
           padding: 0,
-          color: pathname === href ? customColorPalette.blue.light : customColorPalette.grey.medium,
+          color: pathname === href ? customColorPalette.primary.light : customColorPalette.shade.medium,
           '&.MuiButton-root': {
             minWidth: { xs: 'unset', sm: '64px' },
           },
           '@media (hover: hover)': {
             '&:hover': {
               color: labelHoverColor,
-              backgroundColor: customColorPalette.grey.dark,
+              backgroundColor: customColorPalette.navBar.upper.background,
             },
           },
         }}>

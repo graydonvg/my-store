@@ -9,7 +9,7 @@ export default function UpperNavbar() {
   const customColorPalette = useCustomColorPalette();
 
   return (
-    <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
+    <Box sx={{ backgroundColor: customColorPalette.navBar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{

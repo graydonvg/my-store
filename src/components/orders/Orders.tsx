@@ -14,8 +14,6 @@ type Props = {
 export default function Orders({ show, orders }: Props) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   if (!show) return null;
@@ -32,11 +30,11 @@ export default function Orders({ show, orders }: Props) {
             <OrderDetails
               show={!isBelowMedium}
               order={order}
-              borderColor={borderColor}
+              borderColor={customColorPalette.border}
             />
             <OrderItems
               order={order}
-              borderColor={borderColor}
+              borderColor={customColorPalette.border}
             />
           </Grid>
         );

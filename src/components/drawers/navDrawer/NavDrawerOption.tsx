@@ -5,17 +5,19 @@ import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type IconProps = {
   label: string;
-  bodyTextColor: string;
 };
 
-function Icon({ label, bodyTextColor }: IconProps) {
+function Icon({ label }: IconProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (label === 'Sign Out') {
-    return <Logout sx={{ color: bodyTextColor }} />;
+    return <Logout sx={{ color: customColorPalette.navBar.lower.text }} />;
   } else {
-    return <ArrowForwardIos sx={{ color: bodyTextColor }} />;
+    return <ArrowForwardIos sx={{ color: customColorPalette.navBar.lower.text }} />;
   }
 }
 
@@ -23,11 +25,11 @@ type ButtonWithLinkProps = {
   showButtonWithLink: boolean;
   path: string;
   label: string;
-  bodyTextColor: string;
 };
 
-function ButtonWithLink({ showButtonWithLink, path, label, bodyTextColor }: ButtonWithLinkProps) {
+function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps) {
   const dispatch = useAppDispatch();
+  const customColorPalette = useCustomColorPalette();
 
   if (!showButtonWithLink) return null;
 
@@ -46,12 +48,9 @@ function ButtonWithLink({ showButtonWithLink, path, label, bodyTextColor }: Butt
       <ListItemButton sx={{ height: '100%' }}>
         <ListItemText
           primary={label}
-          sx={{ color: bodyTextColor, width: 1 }}
+          sx={{ color: customColorPalette.navBar.lower.text, width: 1 }}
         />
-        <Icon
-          label={label}
-          bodyTextColor={bodyTextColor}
-        />
+        <Icon label={label} />
       </ListItemButton>
     </Link>
   );
@@ -61,22 +60,20 @@ type ButtonNoLinkProps = {
   showButtonNoLink: boolean;
   path: string;
   label: string;
-  bodyTextColor: string;
 };
 
-function ButtonNoLink({ showButtonNoLink, label, bodyTextColor }: ButtonNoLinkProps) {
+function ButtonNoLink({ showButtonNoLink, label }: ButtonNoLinkProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!showButtonNoLink) return null;
 
   return (
     <ListItemButton sx={{ width: 1, height: '100%' }}>
       <ListItemText
         primary={label}
-        sx={{ color: bodyTextColor }}
+        sx={{ color: customColorPalette.navBar.lower.text }}
       />
-      <Icon
-        label={label}
-        bodyTextColor={bodyTextColor}
-      />
+      <Icon label={label} />
     </ListItemButton>
   );
 }
@@ -88,7 +85,7 @@ type NavDrawerOptionProps = {
   bodyTextColor: string;
 };
 
-export default function NavDrawerOption({ onClick, path, label, bodyTextColor }: NavDrawerOptionProps) {
+export default function NavDrawerOption({ onClick, path, label }: NavDrawerOptionProps) {
   return (
     <>
       <ListItem
@@ -99,13 +96,11 @@ export default function NavDrawerOption({ onClick, path, label, bodyTextColor }:
           showButtonWithLink={!!path}
           label={label}
           path={path!}
-          bodyTextColor={bodyTextColor}
         />
         <ButtonNoLink
           showButtonNoLink={!path}
           label={label}
           path={path!}
-          bodyTextColor={bodyTextColor}
         />
       </ListItem>
       <Divider />

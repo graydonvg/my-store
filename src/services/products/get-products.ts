@@ -3,7 +3,9 @@ import createURL from '@/utils/createURL';
 
 export async function getAllProducts(): Promise<CustomResponseType<ProductType[]>> {
   try {
-    const response = await fetch('/api/products/get-all', {
+    const url = createURL('/api/products/get-all');
+
+    const response = await fetch(url, {
       method: 'GET',
       cache: 'force-cache',
     });
@@ -17,7 +19,9 @@ export async function getAllProducts(): Promise<CustomResponseType<ProductType[]
 
 export async function getProductById(productId: string): Promise<CustomResponseType<ProductType>> {
   try {
-    const response = await fetch(`/api/products/get-by-id?product_id=${productId}`, {
+    const url = createURL(`/api/products/get-by-id?product_id=${productId}`);
+
+    const response = await fetch(url, {
       method: 'GET',
       cache: 'force-cache',
     });
@@ -32,7 +36,9 @@ export async function getProductById(productId: string): Promise<CustomResponseT
 
 export async function getProductsByCategory(category: string): Promise<CustomResponseType<ProductType[]>> {
   try {
-    const response = await fetch(`/api/products/get-by-category?category=${category}`, {
+    const url = createURL(`/api/products/get-by-category?category=${category}`);
+
+    const response = await fetch(url, {
       method: 'GET',
       cache: 'force-cache',
     });

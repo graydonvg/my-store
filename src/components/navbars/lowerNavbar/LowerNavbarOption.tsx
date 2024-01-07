@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, ListItem, Typography, useTheme } from '@mui/material';
+import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
@@ -13,13 +13,9 @@ type LowerNavbarOptionProps = {
 };
 
 export default function LowerNavbarOption({ path, label, isLastNavOption }: LowerNavbarOptionProps) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
-  const mode = theme.palette.mode;
-  const labelTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
-  const labelTextHoverColor = mode === 'light' ? customColorPalette.grey.dark : 'white';
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
@@ -39,11 +35,11 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
             component="span"
             sx={{
               textTransform: 'none',
-              color: labelTextColor,
+              color: customColorPalette.navBar.lower.text,
               '&:hover': {
-                color: labelTextHoverColor,
+                color: customColorPalette.typography,
                 textDecoration: 'underline',
-                textDecorationColor: labelTextHoverColor,
+                textDecorationColor: customColorPalette.typography,
                 textDecorationThickness: 1,
                 textUnderlineOffset: 6,
               },

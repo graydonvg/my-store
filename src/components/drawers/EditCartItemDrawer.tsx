@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItemButton, Typography } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -64,9 +64,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const customColorPalette = useCustomColorPalette();
   const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const buttonLabelColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
   const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
 
   useEffect(() => {
@@ -186,7 +183,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       <IconButton onClick={handleSetCartItemToEdit}>
         <Edit
           fontSize="small"
-          sx={{ opacity: '70%' }}
+          sx={{ color: customColorPalette.typographyVariants.grey }}
         />
       </IconButton>
       <DrawerComponent
@@ -211,7 +208,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           }}>
           <Loader
             show={isUpdatingCartItem}
-            buttonLabelColor={buttonLabelColor}
+            buttonLabelColor={customColorPalette.typography}
           />
           <Box>
             <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>
@@ -313,7 +310,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             </Box>
             <TextButton
               label="move to wishlist"
-              labelColor={buttonLabelColor}
+              labelColor={customColorPalette.typography}
               startIcon={<FavoriteBorder />}
             />
             <TextButton
@@ -321,7 +318,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               isLoading={isRemovingCartItem}
               onClick={handleRemoveCartItem}
               label={!isRemovingCartItem ? 'remove' : ''}
-              labelColor={buttonLabelColor}
+              labelColor={customColorPalette.typography}
               startIcon={<Delete />}
             />
           </Box>

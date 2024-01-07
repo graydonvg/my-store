@@ -13,16 +13,20 @@ type CartEmptyMessageProps = {
 };
 
 function CartEmptyMessage({ show }: CartEmptyMessageProps) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const textBackgroundColor = mode === 'dark' ? customColorPalette.grey.medium : customColorPalette.grey.light;
 
   if (!show) return null;
 
   return (
-    <Box sx={{ padding: 1, marginTop: 2, borderRadius: borderRadius, backgroundColor: textBackgroundColor }}>
+    <Box
+      sx={{
+        padding: 1,
+        marginTop: 2,
+        borderRadius: borderRadius,
+        backgroundColor: customColorPalette.navBar.lower.background,
+      }}>
       <Typography
+        lineHeight={1}
         component="p"
         fontSize={24}>
         Your cart is empty.
@@ -39,10 +43,6 @@ function CartItems({ show }: CartItemsProps) {
   const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const dividerColor =
-    mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const isShippingView = pathname.includes('/checkout/shipping');
 
   if (!show) return null;
@@ -60,7 +60,7 @@ function CartItems({ show }: CartItemsProps) {
     return (
       <Fragment key={item?.cartItemId}>
         <CartItemSmall item={item} />
-        {showDivider ? <Divider sx={{ borderColor: dividerColor }} /> : null}
+        {showDivider ? <Divider sx={{ borderColor: customColorPalette.border }} /> : null}
       </Fragment>
     );
   });

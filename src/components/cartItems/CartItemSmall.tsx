@@ -20,16 +20,15 @@ type LoadingSpinnerProps = {
 
 function LoadingSpinner({ show }: LoadingSpinnerProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
 
   if (!show) return null;
 
   return (
     <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
       <Spinner
+        thickness={5}
         size={12}
-        spinnerColor={mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.medium}
+        spinnerColor={customColorPalette.typographyVariants.grey}
       />
     </Box>
   );
@@ -42,6 +41,8 @@ type DeleteCartItemButtonProps = {
 };
 
 function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!show) return null;
 
   return (
@@ -51,7 +52,7 @@ function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonP
       sx={{ padding: 0, width: 1, height: 1 }}>
       <Close
         fontSize="small"
-        sx={{ opacity: '70%' }}
+        sx={{ color: customColorPalette.typographyVariants.grey }}
       />
     </IconButton>
   );
@@ -105,7 +106,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         display: 'flex',
         borderRadius: borderRadius,
         paddingX: 1,
-        backgroundColor: customColorPalette.blue.dark,
+        backgroundColor: customColorPalette.primary.dark,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -113,7 +114,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: customColorPalette.grey.light,
+          color: customColorPalette.typographyVariants.white,
         }}
         fontSize={14}>
         {`-${percentage}%`}
@@ -128,6 +129,8 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!show) return null;
 
   return (
@@ -139,9 +142,10 @@ function SalePrice({ show, price }: SalePriceProps) {
       <Typography
         lineHeight={1}
         component="span"
-        sx={{ textDecoration: 'line-through', opacity: '70%' }}
         fontSize={16}
-        fontWeight={700}>
+        fontWeight={700}
+        color={customColorPalette.typographyVariants.grey}
+        sx={{ textDecoration: 'line-through' }}>
         {formatCurrency(price)}
       </Typography>
     </Box>
@@ -153,6 +157,7 @@ type CartItemSmallProps = {
 };
 
 export default function CartItemSmall({ item }: CartItemSmallProps) {
+  const customColorPalette = useCustomColorPalette();
   const pathname = usePathname();
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const router = useRouter();
@@ -253,8 +258,8 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
                 <Typography
                   lineHeight={1}
                   component="span"
-                  sx={{ opacity: '70%' }}
-                  fontSize={13}>
+                  fontSize={13}
+                  color={customColorPalette.typographyVariants.grey}>
                   {item.label}:
                 </Typography>
                 <Typography

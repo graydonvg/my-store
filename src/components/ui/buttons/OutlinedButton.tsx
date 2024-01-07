@@ -1,5 +1,5 @@
-import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
-import { Button, ButtonProps, useTheme } from '@mui/material';
+import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import { Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
@@ -19,10 +19,7 @@ export default function OutlinedButton({
   isDisabled,
   ...props
 }: CustomButtonProps) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const buttondColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <Button
@@ -40,9 +37,9 @@ export default function OutlinedButton({
         )
       }
       sx={{
-        color: buttondColor,
+        color: customColorPalette.typography,
         height: '48px',
-        borderColor: buttondColor,
+        borderColor: customColorPalette.typography,
         backgroundColor: 'transparent',
         '&:hover': {
           backgroundColor: 'transparent',
@@ -53,7 +50,7 @@ export default function OutlinedButton({
         '@media (hover: hover)': {
           '&:hover': {
             backgroundColor: 'transparent',
-            borderColor: buttondColor,
+            borderColor: customColorPalette.typography,
           },
         },
 

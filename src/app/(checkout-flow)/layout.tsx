@@ -53,9 +53,6 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
   const dispatch = useAppDispatch();
@@ -102,7 +99,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
             sx={{
               paddingX: 3,
               paddingY: 4,
-              backgroundColor: cardBackgroundColor,
+              backgroundColor: customColorPalette.card.background,
               borderRadius: borderRadius,
             }}>
             <Typography

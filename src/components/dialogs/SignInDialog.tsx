@@ -24,7 +24,7 @@ export default function SignInDialog() {
     <>
       <TextButton
         label="sign in"
-        labelColor={customColorPalette.grey.light}
+        labelColor={customColorPalette.navBar.upper.text}
         onClick={handleOpenSignInDialog}
       />
       <DialogComponent isOpen={isSignInDialogOpen}>

@@ -35,7 +35,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         flexDirection: 'column',
         borderRadius: borderRadius,
         paddingX: 0.5,
-        backgroundColor: customColorPalette.blue.dark,
+        backgroundColor: customColorPalette.primary.dark,
         width: 'min-content',
       }}>
       <Typography
@@ -43,7 +43,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         variant="caption"
         sx={{
           textAlign: 'center',
-          color: customColorPalette.grey.light,
+          color: customColorPalette.typographyVariants.white,
           textTransform: 'uppercase',
         }}>
         {`${percentage}% off`}
@@ -58,16 +58,19 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!show) return null;
 
   return (
     <Typography
       lineHeight={1}
       component="span"
-      fontSize={18}
+      fontSize={16}
       fontFamily={'Georgia'}
       fontStyle="italic"
-      sx={{ textDecoration: 'line-through', opacity: '50%' }}>
+      color={customColorPalette.typographyVariants.grey}
+      sx={{ textDecoration: 'line-through' }}>
       {formatCurrency(price)}
     </Typography>
   );
@@ -161,6 +164,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const customColorPalette = useCustomColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const isOnSale = product.isOnSale === 'Yes';
@@ -235,9 +239,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 component="span"
                 fontSize={14}
                 lineHeight={'22px'}
-                sx={{
-                  opacity: '70%',
-                }}>
+                color={customColorPalette.typographyVariants.grey}>
                 {product.brand}
               </Typography>
               <Box

@@ -10,9 +10,7 @@ type Props = {
 };
 
 export default function WelcomePageContainer({ children }: Props) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
 
   return (
     <Box
@@ -22,7 +20,7 @@ export default function WelcomePageContainer({ children }: Props) {
         borderRadius: borderRadius,
         padding: 4,
         maxWidth: 400,
-        backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
+        backgroundColor: customColorPalette.card.background,
       }}>
       {children}
     </Box>

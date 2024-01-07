@@ -19,6 +19,8 @@ type ProductNameAndBrandProps = {
 };
 
 function ProductNameAndBrand({ show, name, brand, productId }: ProductNameAndBrandProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!show) return null;
 
   return (
@@ -45,9 +47,9 @@ function ProductNameAndBrand({ show, name, brand, productId }: ProductNameAndBra
         component="span"
         fontWeight={600}
         fontSize={14}
+        color={customColorPalette.typographyVariants.grey}
         sx={{
           display: '-webkit-box',
-          opacity: '70%',
           marginTop: '6px',
         }}>
         {brand}
@@ -93,7 +95,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         borderRadius: borderRadius,
         paddingX: 1,
         marginRight: 1,
-        backgroundColor: customColorPalette.blue.dark,
+        backgroundColor: customColorPalette.primary.dark,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -101,7 +103,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: customColorPalette.grey.light,
+          color: customColorPalette.typographyVariants.white,
         }}
         fontSize={{ xs: 14, sm: 16 }}
         fontWeight={600}>
@@ -117,15 +119,18 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
+  const customColorPalette = useCustomColorPalette();
+
   if (!show) return null;
 
   return (
     <Typography
       lineHeight={1}
       component="span"
-      sx={{ textDecoration: 'line-through', opacity: '70%' }}
       fontSize={{ xs: 20, sm: 24 }}
-      fontWeight={400}>
+      fontWeight={400}
+      color={customColorPalette.typographyVariants.grey}
+      sx={{ textDecoration: 'line-through' }}>
       {formatCurrency(price)}
     </Typography>
   );
@@ -138,7 +143,6 @@ type CartItemLargeProps = {
 export default function CartItemLarge({ item }: CartItemLargeProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
-  const mode = theme.palette.mode;
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
@@ -148,7 +152,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
     <Box
       sx={{
         padding: 2,
-        backgroundColor: mode === 'dark' ? customColorPalette.grey.dark : 'white',
+        backgroundColor: customColorPalette.card.background,
         borderRadius: borderRadius,
         position: 'relative',
         marginBottom: 2,
@@ -221,19 +225,19 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
             {[
-              { heading: 'Qauntity', value: item?.quantity },
-              { heading: 'Size', value: item?.size },
+              { label: 'Qauntity', value: item?.quantity },
+              { label: 'Size', value: item?.size },
             ].map((item) => (
               <Box
-                key={item.heading}
+                key={item.label}
                 sx={{ display: 'flex', gap: 1, alignItems: 'center', paddingRight: 2 }}>
                 <Typography
                   lineHeight={1}
                   component="span"
-                  sx={{ opacity: '70%' }}
                   fontSize={{ xs: 14, sm: 16 }}
-                  fontWeight={600}>
-                  {item.heading}:
+                  fontWeight={600}
+                  color={customColorPalette.typographyVariants.grey}>
+                  {item.label}:
                 </Typography>
                 <Typography
                   lineHeight={1}
@@ -248,8 +252,8 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           <Typography
             lineHeight={1.6}
             component="p"
-            sx={{ opacity: '70%' }}
-            fontSize={{ xs: 14, sm: 16 }}>
+            fontSize={{ xs: 14, sm: 16 }}
+            color={customColorPalette.typographyVariants.grey}>
             <FreeDeliveryText show={discountedPrice > 500} />
             {item?.product?.returnInfo}
           </Typography>

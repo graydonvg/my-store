@@ -17,10 +17,7 @@ type Props = {
 export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
   const showDialogLoadingBar = useAppSelector((state) => state.dialog.showDialogLoadingBar);
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const dialogBackgroundColor = mode === 'light' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   function handleCloseDialog() {
     dispatch(closeDialog());
@@ -43,7 +40,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           maxWidth: 400,
           boxShadow: 24,
           borderRadius: borderRadius,
-          backgroundColor: dialogBackgroundColor,
+          backgroundColor: customColorPalette.dialog.background,
         }}>
         <LoadingBar
           isLoading={showDialogLoadingBar}

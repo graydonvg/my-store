@@ -36,7 +36,7 @@ export default function NavDrawer() {
         size="small"
         sx={{
           padding: 0,
-          color: customColorPalette.grey.light,
+          color: customColorPalette.navBar.upper.text,
           cursor: 'pointer',
           '@media (hover: hover)': {
             '&:hover': {
@@ -54,7 +54,7 @@ export default function NavDrawer() {
         zIndex={(theme) => theme.zIndex.appBar + 1}>
         <Box
           sx={{
-            backgroundColor: customColorPalette.grey.dark,
+            backgroundColor: customColorPalette.navBar.upper.background,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -63,7 +63,7 @@ export default function NavDrawer() {
             paddingX: 2,
           }}>
           <Typography
-            color={customColorPalette.grey.light}
+            color={customColorPalette.navBar.upper.text}
             variant="h5"
             component="span">
             Menu
@@ -73,8 +73,8 @@ export default function NavDrawer() {
             sx={{
               cursor: 'pointer',
               padding: 0,
-              color: customColorPalette.grey.light,
-              '&:hover': { backgroundColor: customColorPalette.grey.dark },
+              color: customColorPalette.navBar.upper.text,
+              '&:hover': { backgroundColor: customColorPalette.navBar.upper.background },
             }}
             aria-label="close navigation drawer"
             onClick={handleCloseNavDrawer}>

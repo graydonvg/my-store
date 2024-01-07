@@ -15,18 +15,15 @@ type NoFileChosenMessageProps = {
 
 function NoFileChosenMessage({ show }: NoFileChosenMessageProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
 
   if (!show) return null;
 
   return (
     <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Typography sx={{ color: textColor }}>No file chosen</Typography>
+      <Typography color={customColorPalette.textField.label}>No file chosen</Typography>
       <Typography
         variant="body2"
-        sx={{ color: textColor }}>
+        color={customColorPalette.textField.label}>
         {'(Max. 5 images)'}
       </Typography>
     </Box>

@@ -59,7 +59,7 @@ function DeleteButton({ show, productImageData }: DeleteButtonProps) {
         color: 'white',
         padding: 0,
         borderRadius: borderRadius,
-        backgroundColor: customColorPalette.black.opacity.medium,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         '&:hover': {
           backgroundColor: 'unset',
         },

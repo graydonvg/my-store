@@ -1,5 +1,4 @@
-import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
@@ -11,17 +10,13 @@ type UserDataWithLabelProps = {
 
 function UserDataWithLabel({ label, children }: UserDataWithLabelProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const labelColor =
-    mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', paddingBottom: 2 }}>
       <Typography
         component="label"
         fontSize={12}
-        sx={{ color: labelColor }}>
+        color={customColorPalette.textField.label}>
         {label}
       </Typography>
       {children}

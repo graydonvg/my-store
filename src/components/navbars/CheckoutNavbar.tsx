@@ -20,7 +20,7 @@ export default function CheckoutNavbar() {
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ backgroundColor: customColorPalette.grey.dark }}>
+    <Box sx={{ backgroundColor: customColorPalette.navBar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{
@@ -32,7 +32,7 @@ export default function CheckoutNavbar() {
             hideText={isBelowSmall ? true : false}
             variant="h5"
             display="flex"
-            color={customColorPalette.grey.light}
+            color={customColorPalette.navBar.upper.text}
           />
           <Box sx={{ margin: '0 auto' }}>
             <BreadcrumbsComponent>

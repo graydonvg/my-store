@@ -1,6 +1,6 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Container, Grid, useTheme } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SmallProductImageBox from './SmallProductImageBox';
 import LargeProductImageBox from './LargeProductImageBox';
@@ -123,10 +123,7 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
-  const boxBorderColor = isAdminView ? borderColor : 'transparent';
+  const boxBorderColor = isAdminView ? customColorPalette.border : 'transparent';
 
   useEffect(() => {
     if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { InsertProductTypeDb, InsertProductTypeStore, UpdateProductType } from '@/types';
@@ -46,9 +46,6 @@ export default function AdminViewAddNewProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
   const isOnSale = productFormData.isOnSale === 'Yes';
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
@@ -185,7 +182,7 @@ export default function AdminViewAddNewProduct() {
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Typography sx={{ color: textColor }}>Available Sizes *</Typography>
+        <Typography color={customColorPalette.textField.label}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
           selection={productFormData.sizes}

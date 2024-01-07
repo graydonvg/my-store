@@ -24,10 +24,7 @@ type NavOptionsProps = {
 };
 
 function NavOptions({ options, onClick }: NavOptionsProps) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
 
   return options.map((option) => (
     <NavDrawerOption
@@ -35,7 +32,7 @@ function NavOptions({ options, onClick }: NavOptionsProps) {
       key={option.id}
       label={option.label}
       path={option.path}
-      bodyTextColor={bodyTextColor}
+      bodyTextColor={customColorPalette.navBar.lower.text}
     />
   ));
 }
@@ -120,7 +117,6 @@ function ThemeButton() {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const bodyTextColor = mode === 'light' ? customColorPalette.grey.medium : customColorPalette.grey.light;
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
@@ -136,11 +132,11 @@ function ThemeButton() {
           sx={{ width: 1, height: '100%' }}>
           <ListItemText
             primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-            sx={{ color: bodyTextColor }}
+            sx={{ color: customColorPalette.navBar.lower.text }}
           />
           <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
             <ThemeToggleIcon
-              color={bodyTextColor}
+              color={customColorPalette.navBar.lower.text}
               size={'small'}
             />
           </Box>

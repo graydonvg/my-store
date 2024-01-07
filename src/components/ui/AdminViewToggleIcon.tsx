@@ -11,7 +11,8 @@ type Props = {
 
 export function AdminViewToggleIcon({ isAdminView }: Props) {
   const customColorPalette = useCustomColorPalette();
-  const iconColor = customColorPalette.grey.light;
+  const iconColor = customColorPalette.typographyVariants.white;
+
   return (
     <>
       {isAdminView ? (

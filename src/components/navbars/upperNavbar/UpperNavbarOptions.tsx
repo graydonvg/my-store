@@ -13,19 +13,18 @@ import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
-import { useRouter } from 'next/navigation';
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 
 function CustomDivider() {
+  const customColorPalette = useCustomColorPalette();
+
   return (
     <Divider
       variant="fullWidth"
       orientation="vertical"
       sx={{
         display: { xs: 'none', md: 'flex' },
-        backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'custom.grey.dark' : 'black'),
+        backgroundColor: customColorPalette.navBar.upper.divider,
       }}
       flexItem
     />
@@ -47,10 +46,10 @@ function FavoriteButton({ show }: FavoriteButtonProps) {
 
   return (
     <ListItem disablePadding>
-      <UpperNavIconButton backgroundColor={customColorPalette.grey.dark}>
+      <UpperNavIconButton backgroundColor={customColorPalette.navBar.upper.background}>
         <Favorite
           aria-label="Wishlist"
-          sx={{ color: customColorPalette.grey.light, opacity: '50%' }}
+          sx={{ color: customColorPalette.typographyVariants.white, opacity: '50%' }}
         />
       </UpperNavIconButton>
     </ListItem>
@@ -117,7 +116,7 @@ function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
           size="small">
           <ThemeToggleIcon
             size="small"
-            color={customColorPalette.grey.light}
+            color={customColorPalette.navBar.upper.text}
           />
         </IconButton>
       </ListItem>
@@ -182,7 +181,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitleAndLogo
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color={customColorPalette.grey.light}
+        color={customColorPalette.navBar.upper.text}
       />
       <Box
         component="nav"

@@ -2,13 +2,9 @@ import CircularProgress, { CircularProgressProps } from '@mui/material/CircularP
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { useTheme } from '@mui/material';
 
 export function CircularProgressWithLabel(props: CircularProgressProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const textColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
   const progress = props.value as number;
 
   return (
@@ -17,7 +13,7 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
         variant="determinate"
         sx={{
           '&.MuiCircularProgress-root': {
-            color: customColorPalette.blue.light,
+            color: customColorPalette.primary.light,
           },
         }}
         {...props}
@@ -36,7 +32,7 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
         <Typography
           variant="caption"
           component="div"
-          sx={{ color: textColor }}>
+          sx={{ color: customColorPalette.typography }}>
           {`${Math.round(progress)}%`}
         </Typography>
       </Box>

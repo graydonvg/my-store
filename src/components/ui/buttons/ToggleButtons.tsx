@@ -2,7 +2,7 @@
 
 import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useTheme } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
@@ -10,14 +10,7 @@ type ToggleButtonsProps = ToggleButtonGroupProps & {
 };
 
 export default function ToggleButtons({ buttons, selection, ...props }: ToggleButtonsProps) {
-  const theme = useTheme();
   const customColorPalette = useCustomColorPalette();
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
-  const selectedBorderColor = mode === 'dark' ? 'black' : 'white';
-  const borderColorHover = mode === 'dark' ? 'white' : 'black';
-  const labelColor =
-    mode === 'dark' ? customColorPalette.white.opacity.strong : customColorPalette.black.opacity.strong;
 
   return (
     <ToggleButtonGroup
@@ -38,29 +31,29 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               height: '56px',
               aspectRatio: 4 / 3,
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
-                color: labelColor,
-                border: `1px solid ${borderColor} !important`,
+                color: customColorPalette.textField.label,
+                border: `1px solid ${customColorPalette.border} !important`,
                 borderRadius: `${borderRadius} !important`,
                 '@media (hover: hover)': {
                   '&:hover': {
                     backgroundColor: 'transparent',
-                    color: labelColor,
-                    border: `1px solid ${borderColorHover} !important`,
+                    color: customColorPalette.textField.label,
+                    border: `1px solid ${customColorPalette.textField.hover} !important`,
                   },
                 },
               },
               '&.MuiToggleButton-root.Mui-selected': {
-                color: 'white',
-                borderColor: `${selectedBorderColor} !important`,
-                backgroundColor: customColorPalette.blue.light,
+                color: customColorPalette.typographyVariants.white,
+                borderColor: (theme) => `${theme.palette.background.default} !important`,
+                backgroundColor: customColorPalette.primary.light,
                 '&:hover': {
-                  backgroundColor: customColorPalette.blue.light,
+                  backgroundColor: customColorPalette.primary.light,
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: 'white',
-                    backgroundColor: customColorPalette.blue.light,
-                    border: `1px solid ${selectedBorderColor} !important`,
+                    color: customColorPalette.typographyVariants.white,
+                    backgroundColor: customColorPalette.primary.light,
+                    border: (theme) => `1px solid ${theme.palette.background.default} !important`,
                     filter: 'brightness(1.1)',
                     transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                   },

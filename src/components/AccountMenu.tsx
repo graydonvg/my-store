@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import signOut from '@/services/auth/sign-out';
 import { borderRadius } from '@/constants/styles';
 
-const iconColor = 'custom.grey.light';
+const iconColor = 'white';
 const iconSize = 'small';
 const accountMenuOptions = [
   {
@@ -57,12 +57,14 @@ type CustomMenuItemProps = {
 };
 
 function CustomMenuItem({ icon, text, onClick }: CustomMenuItemProps) {
+  const customColorPalette = useCustomColorPalette();
+
   return (
     <MenuItem
       sx={{
         borderRadius: borderRadius,
-        color: 'custom.grey.light',
-        '&:hover': { backgroundColor: 'custom.blue.dark' },
+        color: 'white',
+        '&:hover': { backgroundColor: customColorPalette.primary.dark },
       }}
       onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
@@ -120,17 +122,17 @@ export default function AccountMenu() {
 
   return (
     <HoverDropdownMenu
-      buttonBackgroundColor={customColorPalette.grey.dark}
+      buttonBackgroundColor={customColorPalette.navBar.upper.background}
       label={
         <>
           <Typography
             component="span"
             sx={{
-              color: customColorPalette.grey.light,
+              color: 'white',
             }}>
             {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
           </Typography>
-          <ArrowDropDown sx={{ color: customColorPalette.blue.dark, marginLeft: 2 }} />
+          <ArrowDropDown sx={{ color: customColorPalette.primary.dark, marginLeft: 2 }} />
         </>
       }>
       <AdminMenuItem show={!!userData && userData?.isAdmin} />

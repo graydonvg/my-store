@@ -123,9 +123,9 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
         styles={{
-          backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.grey.medium,
+          backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.shade.medium,
           '&:hover': {
-            backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.grey.medium,
+            backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.shade.medium,
             filter: 'brightness(1.2)',
             transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
           },
@@ -136,7 +136,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         backgroundColor="blue"
         isDisabled={uploadInProgress || isSubmitting || isEditMode}
         styles={{
-          '&:hover': { backgroundColor: customColorPalette.blue.light },
+          '&:hover': { backgroundColor: customColorPalette.primary.light },
         }}
         label={
           <>

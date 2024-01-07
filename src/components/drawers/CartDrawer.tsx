@@ -22,13 +22,9 @@ function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const customColorPalette = useCustomColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const userId = useAppSelector((state) => state.user.userData?.userId);
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const orderTotal = selectCartTotal(cartItems);
   const discountTotal = selectDiscountTotal(cartItems);
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   if (!show) return null;
 
@@ -48,7 +44,15 @@ function DrawerFooter({ show }: DrawerFooterProps) {
       sx={{
         position: 'relative',
         padding: 2,
-        borderTop: `1px solid ${borderColor}`,
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
+          top: 0,
+          right: 0,
+          left: 0,
+          height: '4px',
+        },
       }}>
       {discountTotal > 0 ? (
         <Box
@@ -128,16 +132,16 @@ export default function CartDrawer() {
   return (
     <>
       <UpperNavIconButton
-        backgroundColor={customColorPalette.grey.dark}
+        backgroundColor={customColorPalette.navBar.upper.background}
         onClick={handleToggleCart}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: customColorPalette.grey.light }}
+          sx={{ color: customColorPalette.navBar.upper.text }}
         />
         <Box
           sx={{
-            color: customColorPalette.grey.light,
-            backgroundColor: customColorPalette.blue.dark,
+            color: customColorPalette.navBar.upper.text,
+            backgroundColor: customColorPalette.primary.dark,
             borderRadius: '50%',
             width: 20,
             height: 20,

@@ -54,7 +54,6 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   if (!show) return null;
@@ -82,7 +81,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   }
 
   return (
-    <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, paddingRight: 0 }}>
+    <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${customColorPalette.border}`, paddingRight: 0 }}>
       <Checkbox
         checked={checkoutData.selectedAddressId === address.addressId}
         onChange={handleSelectShippingAddress}
@@ -103,7 +102,6 @@ function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   return (
     <Typography
@@ -114,13 +112,13 @@ function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
       fontWeight={700}
       sx={{
         paddingRight: hasBorderRight ? 1 : 0,
-        borderRight: hasBorderRight ? `1px solid ${borderColor}` : null,
-        color: customColorPalette.blue.dark,
+        borderRight: hasBorderRight ? `1px solid ${customColorPalette.border}` : null,
+        color: customColorPalette.primary.dark,
         '@media (hover: hover)': {
           '&:hover': {
-            color: customColorPalette.blue.light,
+            color: customColorPalette.primary.light,
             textDecoration: 'underline',
-            textDecorationColor: customColorPalette.blue.light,
+            textDecorationColor: customColorPalette.primary.light,
             textDecorationThickness: 1,
             textUnderlineOffset: 2,
             cursor: 'pointer',
@@ -163,9 +161,6 @@ type LoaderProps = {
 
 function Loader({ showLoader }: LoaderProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   if (!showLoader) return null;
 
@@ -181,7 +176,7 @@ function Loader({ showLoader }: LoaderProps) {
       }}>
       <PulseLoader
         loading={showLoader}
-        color={loaderColor}
+        color={customColorPalette.typography}
         size={10}
       />
     </Box>
@@ -200,8 +195,6 @@ function AddressData({ show }: AddressDataProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
   const theme = useTheme();
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
 
@@ -264,7 +257,7 @@ function AddressData({ show }: AddressDataProps) {
               flexDirection: { xs: 'column', sm: 'row' },
               rowGap: 2,
               columnGap: 4,
-              borderBottom: `1px solid ${borderColor}`,
+              borderBottom: `1px solid ${customColorPalette.border}`,
               width: 1,
             }}>
             <Typography fontSize={16}>
@@ -291,11 +284,11 @@ export default function Addresses() {
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   return (
     <Box>
-      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${borderColor}`, borderRadius: borderRadius }}>
+      <TableContainer
+        sx={{ marginBottom: 2, border: `1px solid ${customColorPalette.border}`, borderRadius: borderRadius }}>
         <Table>
           <TableBody>
             <NoAddressFound show={!!userData?.addresses && userData?.addresses.length === 0} />

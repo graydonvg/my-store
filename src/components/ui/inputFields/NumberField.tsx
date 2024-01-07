@@ -1,5 +1,5 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
-import { TextField, TextFieldProps, useTheme } from '@mui/material';
+import { TextField, TextFieldProps } from '@mui/material';
 
 type Props = TextFieldProps & {
   styles?: {};
@@ -7,9 +7,6 @@ type Props = TextFieldProps & {
 
 export default function NumberField({ styles, ...props }: Props) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const focusedColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   return (
     <TextField
@@ -17,11 +14,11 @@ export default function NumberField({ styles, ...props }: Props) {
       sx={{
         ...styles,
         '& label.Mui-focused': {
-          color: focusedColor,
+          color: customColorPalette.textField.focused,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            border: `1px solid ${focusedColor}`,
+            border: `1px solid ${customColorPalette.textField.focused}`,
           },
         },
         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {

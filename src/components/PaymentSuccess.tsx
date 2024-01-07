@@ -18,9 +18,6 @@ export default function PaymentSuccess() {
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const userId = useAppSelector((state) => state.user.userData?.userId);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const loaderColor = mode === 'dark' ? customColorPalette.grey.light : customColorPalette.grey.dark;
 
   // Fix this
   // Fix this
@@ -77,7 +74,7 @@ export default function PaymentSuccess() {
       <Typography fontSize={{ xs: 14, sm: 24 }}>Thank you for your order!</Typography>
       <PulseLoader
         size={24}
-        color={loaderColor}
+        color={customColorPalette.typography}
         loading={true}
       />
     </Box>

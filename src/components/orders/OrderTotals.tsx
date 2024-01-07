@@ -56,9 +56,8 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const borderColor =
-    mode === 'dark' ? customColorPalette.white.opacity.lightest : customColorPalette.black.opacity.lightest;
-  const discountTotalBackgroundColor = mode === 'dark' ? customColorPalette.grey.medium : customColorPalette.grey.light;
+  const discountTotalBackgroundColor =
+    mode === 'dark' ? customColorPalette.shade.medium : customColorPalette.shade.light;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -78,7 +77,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
       ) : null}
       <Box
         sx={{
-          borderBottom: !totalToPay ? `2px solid ${borderColor}` : 'none',
+          borderBottom: !totalToPay ? `2px solid ${customColorPalette.border}` : 'none',
           marginBottom: !totalToPay ? 1 : 0,
         }}>
         <Total
@@ -88,7 +87,12 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
         />
       </Box>
       {!!totalToPay ? (
-        <Box sx={{ marginBottom: 1, borderTop: `1px solid ${borderColor}`, borderBottom: `2px solid ${borderColor}` }}>
+        <Box
+          sx={{
+            marginBottom: 1,
+            borderTop: `1px solid ${customColorPalette.border}`,
+            borderBottom: `2px solid ${customColorPalette.border}`,
+          }}>
           <Total
             label="Order total"
             price={formatCurrency(orderTotal)}

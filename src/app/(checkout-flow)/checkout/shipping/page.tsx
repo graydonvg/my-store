@@ -12,14 +12,12 @@ export default function Shipping() {
   const { cartItems } = useAppSelector((state) => state.cart);
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
-  const mode = theme.palette.mode;
-  const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box
       sx={{
-        backgroundColor: cardBackgroundColor,
+        backgroundColor: customColorPalette.card.background,
         paddingX: 2,
         paddingY: 4,
         display: 'flex',

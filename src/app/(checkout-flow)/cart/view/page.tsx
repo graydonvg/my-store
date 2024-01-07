@@ -14,9 +14,6 @@ type CartEmptyProps = {
 
 function CartEmpty({ show }: CartEmptyProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const cardBackgroundColor = mode === 'dark' ? customColorPalette.grey.dark : 'white';
 
   if (!show) return null;
 
@@ -29,7 +26,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: cardBackgroundColor,
+        backgroundColor: customColorPalette.card.background,
         borderRadius: borderRadius,
         paddingX: 2,
         paddingY: 4,
@@ -43,7 +40,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         <Typography
           component="p"
           fontSize={24}
-          sx={{ textDecoration: 'underline', color: customColorPalette.blue.dark }}>
+          sx={{ textDecoration: 'underline', color: customColorPalette.primary.dark }}>
           Continue shopping
         </Typography>
       </Link>

@@ -1,6 +1,6 @@
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Typography, useTheme } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 type AccordionProps = {
@@ -11,9 +11,6 @@ type AccordionProps = {
 
 export default function AccordionComponent({ title, defaultExpanded, children }: AccordionProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-  const borderColor = mode === 'dark' ? customColorPalette.white.opacity.light : customColorPalette.black.opacity.light;
 
   return (
     <Accordion
@@ -22,7 +19,7 @@ export default function AccordionComponent({ title, defaultExpanded, children }:
       defaultExpanded={defaultExpanded}
       sx={{
         backgroundColor: 'transparent',
-        borderBottom: `1px solid ${borderColor}`,
+        borderBottom: `1px solid ${customColorPalette.border}`,
         borderRadius: '0 !important',
         '&:before': {
           display: 'none',
