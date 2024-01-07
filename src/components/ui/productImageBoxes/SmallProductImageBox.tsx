@@ -78,12 +78,12 @@ function DeleteButton({ show, productImageData }: DeleteButtonProps) {
 
 type ProductImageProps = {
   show: boolean;
-  isEditMode?: boolean;
   productName?: string;
   productImageData?: InsertProductImageDataTypeStore;
 };
 
-function ProductImage({ show, isEditMode, productName, productImageData }: ProductImageProps) {
+function ProductImage({ show, productName, productImageData }: ProductImageProps) {
+  const isEditMode = useAppSelector((state) => state.productForm.isEditMode);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
 
@@ -114,7 +114,6 @@ type SmallProductImageBoxProps = {
   imageIndex?: number;
   selectedImageIndex?: number;
   uploadProgressData?: ImageUploadProgressType;
-  isEditMode?: boolean;
   selectImage?: () => void;
 };
 
@@ -124,9 +123,9 @@ export default function SmallProductImageBoxProps({
   imageIndex,
   selectedImageIndex,
   uploadProgressData,
-  isEditMode,
   selectImage,
 }: SmallProductImageBoxProps) {
+  const isEditMode = useAppSelector((state) => state.productForm.isEditMode);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const customColorPalette = useCustomColorPalette();
@@ -164,7 +163,6 @@ export default function SmallProductImageBoxProps({
           show={!!productImageData}
           productName={productName}
           productImageData={productImageData}
-          isEditMode={isEditMode}
         />
         {!!uploadProgressData && isAdminView ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
       </Box>

@@ -11,15 +11,16 @@ import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
 import signOut from '@/services/auth/sign-out';
+import SignOutButton from '@/components/ui/buttons/SignOutButton';
 
-type NavOptionsType = {
+type OptionsType = {
   id: string;
   label: string;
   path?: string;
 }[];
 
 type NavOptionsProps = {
-  options: NavOptionsType;
+  options: OptionsType;
   onClick: () => void;
 };
 
@@ -38,7 +39,7 @@ function NavOptions({ options, onClick }: NavOptionsProps) {
 }
 
 type AdminNavOptionsProps = {
-  options: NavOptionsType;
+  options: OptionsType;
   show: boolean;
   onClick: () => void;
 };
@@ -76,22 +77,7 @@ type UserSignedInOptionsProps = {
 };
 
 function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsProps) {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
   if (!show) return null;
-
-  async function handleSignOut() {
-    const { success, message } = await signOut();
-    if (success === false) {
-      toast.error(message);
-    } else {
-      toast.success(message);
-      router.refresh();
-    }
-
-    dispatch(setIsNavDrawerOpen({ left: false }));
-  }
 
   return (
     <>
@@ -99,15 +85,7 @@ function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsPro
         options={accountNavOptions}
         onClick={handleCloseDrawer}
       />
-      <NavOptions
-        options={[
-          {
-            id: 'signOut',
-            label: 'Sign Out',
-          },
-        ]}
-        onClick={handleSignOut}
-      />
+      <SignOutButton showNavDrawerButton={true} />
     </>
   );
 }

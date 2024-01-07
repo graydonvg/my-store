@@ -8,7 +8,7 @@ import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 
 type IconProps = {
-  label: string;
+  label: string | 'Sign Out';
 };
 
 function Icon({ label }: IconProps) {

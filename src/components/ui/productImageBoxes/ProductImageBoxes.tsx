@@ -1,4 +1,3 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -9,30 +8,25 @@ import { ProductType } from '@/types';
 
 type EmptySmallBoxWithBorderProps = {
   show: boolean;
-  isEditMode?: boolean;
 };
 
-function EmptySmallBoxWithBorder({ show, isEditMode }: EmptySmallBoxWithBorderProps) {
+function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
 
   return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
-    <SmallProductImageBox
-      key={`placeholder-${index}`}
-      isEditMode={isEditMode}
-    />
+    <SmallProductImageBox key={`placeholder-${index}`} />
   ));
 }
 
 type SmallImageAdminViewProps = {
   show: boolean;
-  isEditMode?: boolean;
   selectImage: (index: number) => void;
   selectedImageIndex: number;
 };
 
-function SmallImageAdminView({ show, isEditMode, selectImage, selectedImageIndex }: SmallImageAdminViewProps) {
+function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallImageAdminViewProps) {
   const { imageData, productFormData } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
@@ -45,7 +39,6 @@ function SmallImageAdminView({ show, isEditMode, selectImage, selectedImageIndex
           productName={productFormData.name}
           productImageData={data}
           imageIndex={index}
-          isEditMode={isEditMode}
           selectImage={() => selectImage(index)}
           selectedImageIndex={selectedImageIndex}
         />
@@ -57,18 +50,11 @@ function SmallImageAdminView({ show, isEditMode, selectImage, selectedImageIndex
 type SmallImageClientViewProps = {
   show: boolean;
   product: ProductType;
-  isEditMode?: boolean;
   selectImage: (index: number) => void;
   selectedImageIndex: number;
 };
 
-function SmallImageClientView({
-  show,
-  product,
-  isEditMode,
-  selectImage,
-  selectedImageIndex,
-}: SmallImageClientViewProps) {
+function SmallImageClientView({ show, product, selectImage, selectedImageIndex }: SmallImageClientViewProps) {
   if (!show) return;
 
   return (
@@ -79,7 +65,6 @@ function SmallImageClientView({
           productName={product?.name}
           productImageData={data}
           imageIndex={index}
-          isEditMode={isEditMode}
           selectImage={() => selectImage(index)}
           selectedImageIndex={selectedImageIndex}
         />
@@ -90,10 +75,9 @@ function SmallImageClientView({
 
 type BoxWithUploadProgressProps = {
   show: boolean;
-  isEditMode?: boolean;
 };
 
-function BoxWithUploadProgress({ show, isEditMode }: BoxWithUploadProgressProps) {
+function BoxWithUploadProgress({ show }: BoxWithUploadProgressProps) {
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
@@ -103,7 +87,6 @@ function BoxWithUploadProgress({ show, isEditMode }: BoxWithUploadProgressProps)
       {imageUploadProgress.map((data, index) => (
         <SmallProductImageBox
           key={index}
-          isEditMode={isEditMode}
           uploadProgressData={data}
         />
       ))}
@@ -111,15 +94,13 @@ function BoxWithUploadProgress({ show, isEditMode }: BoxWithUploadProgressProps)
   );
 }
 
-type ProductImageBoxesProps = { isEditMode?: boolean; product?: ProductType };
+type ProductImageBoxesProps = { product?: ProductType };
 
-export default function ProductImageBoxes({ isEditMode, product }: ProductImageBoxesProps) {
+export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
-  const customColorPalette = useCustomColorPalette();
-  const boxBorderColor = isAdminView ? customColorPalette.textField.border : 'transparent';
+  const { imageData, productFormData, imageUploadProgress, isEditMode } = useAppSelector((state) => state.productForm);
 
   useEffect(() => {
     if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
@@ -157,7 +138,6 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
               show={isAdminView}
               selectImage={handleSelectedImage}
               selectedImageIndex={selectedImageIndex}
-              isEditMode={isEditMode}
             />
             {/* Gets image from db */}
             <SmallImageClientView
@@ -165,17 +145,12 @@ export default function ProductImageBoxes({ isEditMode, product }: ProductImageB
               product={product!}
               selectImage={handleSelectedImage}
               selectedImageIndex={selectedImageIndex}
-              isEditMode={isEditMode}
             />
             <BoxWithUploadProgress
               show={isAdminView && imageUploadProgress.length > 0}
               // boxBorderColor={boxBorderColor}
-              isEditMode={isEditMode}
             />
-            <EmptySmallBoxWithBorder
-              show={isAdminView}
-              isEditMode={isEditMode}
-            />
+            <EmptySmallBoxWithBorder show={isAdminView} />
           </Grid>
         </Grid>
         <Grid

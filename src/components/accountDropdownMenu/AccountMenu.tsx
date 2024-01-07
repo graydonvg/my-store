@@ -1,30 +1,29 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { useTheme, Typography, MenuItem, ListItemIcon } from '@mui/material';
+import { useTheme, Typography } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Logout, Favorite } from '@mui/icons-material';
-import { ThemeToggleIcon } from './theme/ThemeToggleIcon';
+import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import HoverDropdownMenu from './ui/HoverDropdownMenu';
+import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { AdminViewToggleIcon } from './ui/AdminViewToggleIcon';
+import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { toast } from 'react-toastify';
 import signOut from '@/services/auth/sign-out';
-import { borderRadius } from '@/constants/styles';
+import AccountMenuItem from './AccountMenuItem';
+import { accountMenuIconColor, accountMenuIconSize } from '@/constants/styles';
+import SignOutButton from '../ui/buttons/SignOutButton';
 
-const iconColor = 'white';
-const iconSize = 'small';
 const accountMenuOptions = [
   {
     label: 'My Account',
     href: '/account',
     icon: (
       <AccountCircle
-        fontSize={iconSize}
-        sx={{ color: iconColor }}
+        fontSize={accountMenuIconSize}
+        sx={{ color: accountMenuIconColor }}
       />
     ),
   },
@@ -33,8 +32,8 @@ const accountMenuOptions = [
     href: '/orders',
     icon: (
       <ViewList
-        fontSize={iconSize}
-        sx={{ color: iconColor }}
+        fontSize={accountMenuIconSize}
+        sx={{ color: accountMenuIconColor }}
       />
     ),
   },
@@ -43,35 +42,12 @@ const accountMenuOptions = [
     href: '/wishlist',
     icon: (
       <Favorite
-        fontSize={iconSize}
-        sx={{ color: iconColor }}
+        fontSize={accountMenuIconSize}
+        sx={{ color: accountMenuIconColor }}
       />
     ),
   },
 ];
-
-type CustomMenuItemProps = {
-  icon: ReactNode;
-  text: ReactNode;
-  onClick?: () => void;
-};
-
-function CustomMenuItem({ icon, text, onClick }: CustomMenuItemProps) {
-  const customColorPalette = useCustomColorPalette();
-
-  return (
-    <MenuItem
-      sx={{
-        borderRadius: borderRadius,
-        color: 'white',
-        '&:hover': { backgroundColor: customColorPalette.primary.dark },
-      }}
-      onClick={onClick}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      {text}
-    </MenuItem>
-  );
-}
 
 type AdminMenuItemProps = {
   show: boolean;
@@ -85,7 +61,7 @@ function AdminMenuItem({ show }: AdminMenuItemProps) {
 
   return (
     <Link href={isAdminView ? '/' : '/admin-view'}>
-      <CustomMenuItem
+      <AccountMenuItem
         text={isAdminView ? 'Client View' : 'Admin View'}
         icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
       />
@@ -140,32 +116,23 @@ export default function AccountMenu() {
         <Link
           key={item.label}
           href={item.href}>
-          <CustomMenuItem
+          <AccountMenuItem
             text={item.label}
             icon={item.icon}
           />
         </Link>
       ))}
-      <CustomMenuItem
+      <AccountMenuItem
         text={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
         icon={
           <ThemeToggleIcon
-            color={iconColor}
-            size={iconSize}
+            color={accountMenuIconColor}
+            size={accountMenuIconSize}
           />
         }
         onClick={handleToggleTheme}
       />
-      <CustomMenuItem
-        text={'Sign Out'}
-        icon={
-          <Logout
-            fontSize={iconSize}
-            sx={{ color: iconColor }}
-          />
-        }
-        onClick={handleSignOut}
-      />
+      <SignOutButton showAccountMenuButton={true} />
     </HoverDropdownMenu>
   );
 }
