@@ -17,6 +17,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 import { borderRadius } from '@/constants/styles';
+import revalidate from '@/services/revalidate';
 
 type SalePercentageBadgeProps = {
   show: boolean;
@@ -93,12 +94,14 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
 
   async function handleSetProductDataForUpdate() {
     setIsLoading(true);
+
     if (imageData && !product.productId) {
       const { success, message } = await deleteAllProductImages(imageData);
       if (success === false) {
         toast.error(message);
       }
     }
+
     dispatch(resetAllProductData());
     dispatch(setImageData(product.productImageData));
     dispatch(setProductFormData(restOfProductData));
@@ -106,26 +109,38 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
     router.push('/admin-view/add-product');
   }
 
+  async function handleRevalidate() {
+    const data = await revalidate('/');
+
+    if (data.success === true) {
+      toast.success(data.message);
+      router.refresh();
+    } else {
+      toast.error(data.message);
+    }
+  }
+
   async function handleDeleteProduct() {
     setIsDeletingProduct(true);
-    try {
-      const deleteImagesPromise = deleteAllProductImages(productImageData);
-      const deleteProductPromise = deleteProduct(product.productId!);
-      const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
-      const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
-      const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
-      if (deleteImagesSuccess === true && deleteProductSuccess === true) {
-        toast.success('Product deleted successfully.');
-      } else if (deleteImagesSuccess === false) {
-        toast.error(deleteImagesMessage);
-      } else if (deleteProductSuccess === false) {
-        toast.error(deleteProductMessage);
-      }
-    } catch (error) {
-      toast.error('An unexpected error occured.');
-    } finally {
-      setIsDeletingProduct(false);
+
+    const deleteImagesPromise = deleteAllProductImages(productImageData);
+    const deleteProductPromise = deleteProduct(product.productId!);
+
+    const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
+
+    const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
+    const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
+
+    if (deleteImagesSuccess === true && deleteProductSuccess === true) {
+      await handleRevalidate();
+      toast.success('Product deleted successfully.');
+    } else if (deleteImagesSuccess === false) {
+      toast.error(deleteImagesMessage);
+    } else if (deleteProductSuccess === false) {
+      toast.error(deleteProductMessage);
     }
+
+    setIsDeletingProduct(false);
   }
 
   return (

@@ -26,6 +26,7 @@ import NumberField from '@/components/ui/inputFields/NumberField';
 import { orderedSizesForToggleButtons } from '@/constants/sizes';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import revalidate from '@/services/revalidate';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
@@ -86,87 +87,85 @@ export default function AdminViewAddNewProduct() {
     }
   }
 
+  async function handleRevalidate() {
+    const data = await revalidate('/');
+
+    if (data.success === true) {
+      toast.success(data.message);
+      router.refresh();
+    } else {
+      toast.error(data.message);
+    }
+  }
+
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
 
     let productId = '';
 
-    try {
-      const {
-        success: addProductSuccess,
-        message: addProductMessage,
-        data: productData,
-      } = await addProduct(productFormData as InsertProductTypeDb);
+    const {
+      success: addProductSuccess,
+      message: addProductMessage,
+      data: productData,
+    } = await addProduct(productFormData as InsertProductTypeDb);
 
-      if (addProductSuccess === true && productData) {
-        productId = productData.productId;
+    if (addProductSuccess === true && productData) {
+      productId = productData.productId;
 
-        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productData.productId
-        );
+      const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+        productData.productId
+      );
 
-        if (addImageDataSuccess === true) {
-          dispatch(resetProductFormData());
-          dispatch(resetImageData());
-          toast.success('Successfully added product.');
-          router.push('/admin-view/all-products');
-        } else {
-          const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
-
-          if (deleteProductSuccess === false) {
-            toast.error(deleteProductMessage);
-          }
-
-          toast.error(addImageDataMessage);
-        }
+      if (addImageDataSuccess === true) {
+        await handleRevalidate();
+        dispatch(resetProductFormData());
+        dispatch(resetImageData());
+        toast.success('Successfully added product.');
+        router.push('/admin-view/all-products');
       } else {
-        toast.error(addProductMessage);
-      }
-    } catch (error) {
-      const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
+        const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
 
-      if (deleteProductSuccess === false) {
-        toast.error(deleteProductMessage);
+        if (deleteProductSuccess === false) {
+          toast.error(deleteProductMessage);
+        }
+        toast.error(addImageDataMessage);
       }
-
-      toast.error('Failed to add product. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      toast.error(addProductMessage);
     }
+
+    setIsSubmitting(false);
   }
 
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
-        ...productFormData,
-        productId: productFormData.productId!,
-      } as UpdateProductType);
+    const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
+      ...productFormData,
+      productId: productFormData.productId!,
+    } as UpdateProductType);
 
-      if (updateProductSuccess === true) {
-        const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-          productFormData.productId!
-        );
+    if (updateProductSuccess === true) {
+      const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+        productFormData.productId!
+      );
 
-        if (addImageDataSuccess === true) {
-          dispatch(resetProductFormData());
-          dispatch(resetImageData());
-          toast.success('Successfully updated product.');
-          router.push('/admin-view/all-products');
-        } else if (addImageDataSuccess === false) {
-          toast.error(addImageDataMessage);
-        }
-      } else {
-        toast.error(updateProductMessage);
+      if (addImageDataSuccess === true) {
+        await handleRevalidate();
+        dispatch(resetProductFormData());
+        dispatch(resetImageData());
+        toast.success('Successfully updated product.');
+        router.push('/admin-view/all-products');
+      } else if (addImageDataSuccess === false) {
+        toast.error(addImageDataMessage);
       }
-    } catch (error) {
-      toast.error('Failed to update product. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      toast.error(updateProductMessage);
     }
+
+    setIsSubmitting(false);
   }
 
   return (

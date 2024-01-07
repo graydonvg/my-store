@@ -12,20 +12,17 @@ export default function RevalidateButton() {
 
   async function handleRevalidate() {
     setIsLoading(true);
-    try {
-      const data = await revalidate('/');
 
-      if (data.success === true) {
-        toast.success(data.message);
-        router.refresh();
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error('Revalidation failed. Please try again later.');
-    } finally {
-      setIsLoading(false);
+    const data = await revalidate('/');
+
+    if (data.success === true) {
+      toast.success(data.message);
+      router.refresh();
+    } else {
+      toast.error(data.message);
     }
+
+    setIsLoading(false);
   }
 
   return (
