@@ -19,15 +19,17 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
-  const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
+  const { shippingDetails, isProcessing } = useAppSelector((state) => state.checkoutData);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const isPointerEventsDisabled =
-    (label === 'payment' && !shippingDetails) || (label === 'shipping' && cartItems.length === 0);
+    (label === 'payment' && !shippingDetails) ||
+    (label === 'shipping' && cartItems.length === 0) ||
+    isProcessing === true;
 
   return (
     <Link
       onClick={onLinkClick}
-      href={href}
+      href={href !== '/checkout/payment' ? href : ''}
       tabIndex={-1}
       style={{
         pointerEvents: isPointerEventsDisabled ? 'none' : 'auto',

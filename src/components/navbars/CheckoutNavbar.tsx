@@ -5,7 +5,7 @@ import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
 import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
-import { LocalShippingOutlined, Payment, ShoppingCart } from '@mui/icons-material';
+import { LocalShippingOutlined, ShoppingCart } from '@mui/icons-material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
 import PaymentButton from '../ui/buttons/PaymentButton';
 

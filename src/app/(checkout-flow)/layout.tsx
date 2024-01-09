@@ -107,7 +107,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const isCheckoutPath = pathname.includes('/checkout');
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const paymentStatus = searchParams.get('payment');
+  const paymentStatus = searchParams.get('payment-status');
   const shouldRedirect =
     isCheckoutPath && !paymentStatus && cartItems.length === 0 && checkoutData.isProcessing === false;
 

@@ -18,7 +18,7 @@ export default function PaymentSuccessPage() {
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const customColorPalette = useCustomColorPalette();
   const searchParams = useSearchParams();
-  const paymentStatus = searchParams.get('payment');
+  const paymentStatus = searchParams.get('payment-status');
 
   useEffect(() => {
     if (paymentStatus === 'success' && checkoutData.isProcessing === true) {

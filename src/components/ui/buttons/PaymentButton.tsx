@@ -84,7 +84,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   if (showBreadcrumbButton)
     return (
       <BreadcrumbItem
-        href=""
+        href="/checkout/payment"
         icon={<Payment />}
         label="payment"
         onLinkClick={handlePayWithStripe}

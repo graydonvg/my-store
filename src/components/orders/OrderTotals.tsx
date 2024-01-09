@@ -56,8 +56,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
   const customColorPalette = useCustomColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const discountTotalBackgroundColor =
-    mode === 'dark' ? customColorPalette.shade.medium : customColorPalette.shade.light;
+  const discountTotalBackgroundColor = mode === 'dark' ? customColorPalette.shade.dark : 'rgba(66, 165, 245, 0.09)';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
