@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { PulseLoader } from 'react-spinners';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
@@ -52,8 +42,6 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const userData = useAppSelector((state) => state.user.userData);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
   const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   if (!show) return null;
@@ -100,8 +88,6 @@ type AddressButtonProps = {
 
 function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
 
   return (
     <Typography
@@ -194,7 +180,6 @@ function AddressData({ show }: AddressDataProps) {
   const customColorPalette = useCustomColorPalette();
   const [isDeleting, setIsDeleting] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
-  const theme = useTheme();
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
 
@@ -243,7 +228,15 @@ function AddressData({ show }: AddressDataProps) {
       {userData?.addresses?.map((address, index) => (
         <TableRow
           key={index}
-          sx={{ display: 'flex', '&:last-child td': { border: 0 } }}>
+          sx={{
+            display: 'flex',
+            '&:last-child td': { border: 0 },
+            '@media (hover: hover)': {
+              '&:hover': {
+                backgroundColor: customColorPalette.shade.medium,
+              },
+            },
+          }}>
           <SelectShippingAddressCheckbox
             show={isShippingView}
             address={address}
@@ -282,8 +275,6 @@ function AddressData({ show }: AddressDataProps) {
 export default function Addresses() {
   const { userData } = useAppSelector((state) => state.user);
   const customColorPalette = useCustomColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
 
   return (
     <Box>

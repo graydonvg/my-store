@@ -5,7 +5,7 @@ import { borderRadius } from '@/constants/styles';
 import useCustomColorPalette from '@/hooks/useCustomColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { CartItemType } from '@/types';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
 type CartEmptyProps = {

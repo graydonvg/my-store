@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${createURL('/payment/success')}`,
+      success_url: `${createURL('/checkout/payment')}?payment=success`,
       cancel_url: `${createURL('/cart/view')}?payment=cancel`,
     });
 

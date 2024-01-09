@@ -60,15 +60,18 @@ export async function middleware(request: NextRequest) {
     return request.nextUrl.pathname.startsWith(path);
   }
 
+  // Make sure the path is included in the matcher below
+
   const adminOnlyPath = checkPathStartsWith('/api/admin') || checkPathStartsWith('/admin-view');
 
   const authRequiredPath =
     checkPathStartsWith('/account') ||
     checkPathStartsWith('/orders') ||
     checkPathStartsWith('/wishlist') ||
+    checkPathStartsWith('/cart') ||
     checkPathStartsWith('/checkout');
 
-  if ((!session || isAdmin === false) && adminOnlyPath) {
+  if (adminOnlyPath && (!session || isAdmin === false)) {
     if (checkPathStartsWith('/api/admin')) {
       return NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else if (checkPathStartsWith('/admin-view')) {
@@ -76,7 +79,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (!session && authRequiredPath) {
+  if (authRequiredPath && !session) {
     return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
   }
 
@@ -84,5 +87,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/admin/:path*', '/admin-view/:path*', '/account', '/orders', '/wishlist', '/checkout/:path*'],
+  matcher: [
+    '/api/admin/:path*',
+    '/admin-view/:path*',
+    '/account',
+    '/orders',
+    '/wishlist',
+    '/checkout/:path*',
+    '/cart/:path*',
+  ],
 };

@@ -10,11 +10,14 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const { error } = await supabase.from('orders').update({ isPaid }).eq('orderId', orderId);
 
     if (error) {
-      return NextResponse.json({ success: false, message: `Failed to update order. ${error.message}.` });
+      return NextResponse.json({ success: false, message: `Failed to update order payment status. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Order updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Order payment status updated successfully.' });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Failed to update order. An unexpect error occured.' });
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to update order payment status. An unexpect error occured.',
+    });
   }
 }

@@ -20,21 +20,18 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const pathname = usePathname();
   const customColorPalette = useCustomColorPalette();
   const shippingDetails = useAppSelector((state) => state.checkoutData.shippingDetails);
-  let labelHoverColor = null;
-
-  // Payment breadcrumb: Change label color on hover if address IS selected.
-  // Other breadcrumbs: Change label color on hover if path is NOT selected.
-  if (label === 'payment' && !!shippingDetails) {
-    labelHoverColor = customColorPalette.typographyVariants.white;
-  } else if (label !== 'payment' && pathname !== href) {
-    labelHoverColor = customColorPalette.typographyVariants.white;
-  }
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const isPointerEventsDisabled =
+    (label === 'payment' && !shippingDetails) || (label === 'shipping' && cartItems.length === 0);
 
   return (
     <Link
       onClick={onLinkClick}
       href={href}
-      tabIndex={-1}>
+      tabIndex={-1}
+      style={{
+        pointerEvents: isPointerEventsDisabled ? 'none' : 'auto',
+      }}>
       <Button
         disableTouchRipple
         sx={{
@@ -47,7 +44,7 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           },
           '@media (hover: hover)': {
             '&:hover': {
-              color: labelHoverColor,
+              color: pathname === href ? customColorPalette.primary.light : customColorPalette.navBar.upper.text,
               backgroundColor: customColorPalette.navBar.upper.background,
             },
           },

@@ -72,7 +72,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   if (showContainedButton)
     return (
       <ContainedButton
-        disabled={!checkoutData.shippingDetails}
+        isDisabled={!checkoutData.shippingDetails || cartItems.length === 0}
         onClick={handlePayWithStripe}
         label={!checkoutData.isProcessing ? 'continue to payment' : ''}
         fullWidth
@@ -87,7 +87,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         href=""
         icon={<Payment />}
         label="payment"
-        onLinkClick={!!checkoutData.shippingDetails ? handlePayWithStripe : undefined}
+        onLinkClick={handlePayWithStripe}
       />
     );
 }

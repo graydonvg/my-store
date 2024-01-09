@@ -2,7 +2,7 @@ import { CustomResponseType, UpdateOrderType } from '@/types';
 
 export default async function updateOrder(orderData: UpdateOrderType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/orders/update', {
+    const response = await fetch('/api/orders/update/payment-status', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -14,6 +14,6 @@ export default async function updateOrder(orderData: UpdateOrderType): Promise<C
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-order. ${error}`);
+    throw new Error(`@services/update-order-payment-status. ${error}`);
   }
 }

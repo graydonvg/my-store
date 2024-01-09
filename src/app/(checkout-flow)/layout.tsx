@@ -1,9 +1,9 @@
 'use client';
 
-import { ReactNode, useCallback, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
-import { Box, Grid, Typography, useTheme } from '@mui/material';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { Box, Grid, Typography } from '@mui/material';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
@@ -46,6 +46,7 @@ type CheckoutFlowLayoutProps = {
 
 export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const cartTotal = selectCartTotal(cartItems);
@@ -55,29 +56,43 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const customColorPalette = useCustomColorPalette();
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
+  const isCheckoutPath = pathname.includes('/checkout');
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment');
-
-  const deleteOrderOnCancel = useCallback(
-    async function handleDeleteOrder() {
-      await deleteOrder({
-        userId: checkoutData.userId!,
-        orderId: checkoutData.orderId!,
-      });
-    },
-    [checkoutData.orderId, checkoutData.userId]
-  );
+  const shouldRedirect =
+    isCheckoutPath && !paymentStatus && cartItems.length === 0 && checkoutData.isProcessing === false;
 
   useEffect(() => {
-    if (paymentStatus === 'cancel' && checkoutData.isProcessing) {
+    if (shouldRedirect) {
+      router.push('/cart/view');
+    } else if (paymentStatus === 'cancel' && checkoutData.isProcessing) {
       dispatch(setCheckoutData({ isProcessing: false }));
 
       if (!!checkoutData.orderId) {
-        deleteOrderOnCancel();
+        const handleDeleteOrder = async () => {
+          await deleteOrder({
+            userId: checkoutData.userId!,
+            orderId: checkoutData.orderId!,
+          });
+        };
+
+        handleDeleteOrder();
       }
     }
-  }, [dispatch, paymentStatus, checkoutData.orderId, deleteOrderOnCancel, checkoutData.isProcessing]);
+  }, [
+    dispatch,
+    shouldRedirect,
+    cartItems.length,
+    isCheckoutPath,
+    router,
+    paymentStatus,
+    checkoutData.orderId,
+    checkoutData.userId,
+    checkoutData.isProcessing,
+  ]);
+
+  if (shouldRedirect) return null;
 
   return (
     <CommonLayoutContainer>
