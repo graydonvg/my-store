@@ -3,8 +3,6 @@ import { getAllProducts, getProductById } from '@/services/products/get-products
 import { ProductType } from '@/types';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
-
 type Params = {
   params: { product_id: string };
 };
