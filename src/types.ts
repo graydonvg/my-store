@@ -136,4 +136,4 @@ export type CheckoutDataType = {
 
 export type UpdateOrderType = { orderId: string; isPaid: boolean };
 
-export type DeleteOrderType = { orderId: string; userId: string };
+export type DeleteOrderType = { orderId: string };

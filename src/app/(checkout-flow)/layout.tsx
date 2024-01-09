@@ -40,6 +40,60 @@ function NavButton({ showCheckoutButton, showPaymentButton }: NavButtonProps) {
   if (showPaymentButton) return <PaymentButton showContainedButton={true} />;
 }
 
+type YourOrderTotalsProps = {
+  show: boolean;
+};
+
+function YourOrderTotals({ show }: YourOrderTotalsProps) {
+  const pathname = usePathname();
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const cartTotal = selectCartTotal(cartItems);
+  const discountTotal = selectDiscountTotal(cartItems);
+  const deliveryFee = selectDeliveryFee(cartItems);
+  const orderTotal = selectOrderTotal(cartItems);
+  const customColorPalette = useCustomColorPalette();
+  const isCartView = pathname.includes('/cart/view');
+  const isShippingView = pathname.includes('/checkout/shipping');
+
+  if (!show) return null;
+
+  return (
+    <Grid
+      item
+      xs={12}
+      md={3}>
+      <Box
+        sx={{
+          paddingX: 3,
+          paddingY: 4,
+          backgroundColor: customColorPalette.card.background,
+          borderRadius: borderRadius,
+        }}>
+        <Typography
+          component="h1"
+          fontFamily="Source Sans Pro,sans-serif"
+          fontSize={30}
+          lineHeight={1}>
+          Your Order
+        </Typography>
+        <Box sx={{ paddingY: 2 }}>
+          <OrderTotals
+            cartTotal={cartTotal}
+            discountTotal={discountTotal}
+            deliveryFee={deliveryFee}
+            orderTotal={orderTotal}
+            totalToPay={orderTotal}
+          />
+        </Box>
+        <NavButton
+          showCheckoutButton={isCartView}
+          showPaymentButton={isShippingView}
+        />
+      </Box>
+    </Grid>
+  );
+}
+
 type CheckoutFlowLayoutProps = {
   children: ReactNode;
 };
@@ -49,13 +103,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const cartTotal = selectCartTotal(cartItems);
-  const discountTotal = selectDiscountTotal(cartItems);
-  const deliveryFee = selectDeliveryFee(cartItems);
-  const orderTotal = selectOrderTotal(cartItems);
-  const customColorPalette = useCustomColorPalette();
-  const isCartView = pathname.includes('/cart/view');
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isPaymentView = pathname.includes('/checkout/payment');
   const isCheckoutPath = pathname.includes('/checkout');
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
@@ -72,7 +120,6 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
       if (!!checkoutData.orderId) {
         const handleDeleteOrder = async () => {
           await deleteOrder({
-            userId: checkoutData.userId!,
             orderId: checkoutData.orderId!,
           });
         };
@@ -88,7 +135,6 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
     router,
     paymentStatus,
     checkoutData.orderId,
-    checkoutData.userId,
     checkoutData.isProcessing,
   ]);
 
@@ -106,39 +152,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
           md={9}>
           {children}
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={3}>
-          <Box
-            sx={{
-              paddingX: 3,
-              paddingY: 4,
-              backgroundColor: customColorPalette.card.background,
-              borderRadius: borderRadius,
-            }}>
-            <Typography
-              component="h1"
-              fontFamily="Source Sans Pro,sans-serif"
-              fontSize={30}
-              lineHeight={1}>
-              Your Order
-            </Typography>
-            <Box sx={{ paddingY: 2 }}>
-              <OrderTotals
-                cartTotal={cartTotal}
-                discountTotal={discountTotal}
-                deliveryFee={deliveryFee}
-                orderTotal={orderTotal}
-                totalToPay={orderTotal}
-              />
-            </Box>
-            <NavButton
-              showCheckoutButton={isCartView}
-              showPaymentButton={isShippingView}
-            />
-          </Box>
-        </Grid>
+        <YourOrderTotals show={!isPaymentView} />
       </Grid>
     </CommonLayoutContainer>
   );

@@ -9,12 +9,12 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    const { orderId, userId }: DeleteOrderType = await request.json();
+    const { orderId }: DeleteOrderType = await request.json();
 
     if (!session)
-      return NextResponse.json({ success: false, message: 'Failed to delete order. Please try again later.' });
+      return NextResponse.json({ success: false, message: 'Failed to delete order. No user session exists' });
 
-    const { error } = await supabase.from('orders').delete().eq('orderId', orderId).eq('userId', userId);
+    const { error } = await supabase.from('orders').delete().eq('orderId', orderId).eq('userId', session.user.id);
 
     if (!!error) {
       return NextResponse.json({ success: false, message: `Failed to delete order. ${error.message}.` });
