@@ -231,11 +231,6 @@ function AddressData({ show }: AddressDataProps) {
           sx={{
             display: 'flex',
             '&:last-child td': { border: 0 },
-            '@media (hover: hover)': {
-              '&:hover': {
-                backgroundColor: customColorPalette.shade.medium,
-              },
-            },
           }}>
           <SelectShippingAddressCheckbox
             show={isShippingView}
@@ -253,17 +248,32 @@ function AddressData({ show }: AddressDataProps) {
               borderBottom: `1px solid ${customColorPalette.border}`,
               width: 1,
             }}>
-            <Typography fontSize={16}>
-              {address.complexOrBuilding ? `${address.complexOrBuilding},` : null}
+            <Box>
+              <Typography fontSize={16}>
+                {address.complexOrBuilding ? `${address.complexOrBuilding},` : null}
 
-              {`${address.streetAddress}, ${address.suburb}, ${address.province},
+                {`${address.streetAddress}, ${address.suburb}, ${address.province},
 											${address.city}, ${address.postalCode}`}
-            </Typography>
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Typography
+                  color={customColorPalette.typographyVariants.grey}
+                  fontSize={14}
+                  fontWeight={500}>
+                  Recipient:
+                </Typography>
+                <Typography
+                  color={customColorPalette.typographyVariants.grey}
+                  fontSize={14}>
+                  {`${address.recipientFirstName} ${address.recipientLastName}, ${address.recipientContactNumber}`}
+                </Typography>
+              </Box>
+            </Box>
             <Loader showLoader={isDeleting && addressToDelete?.id === address.addressId} />
             <AddressButtons
               show={!isDeleting && addressToDelete?.id !== address.addressId}
-              editAddress={() => handleSetAddressToEdit(address.addressId)}
-              deleteAddress={() => handleDeleteAddress(address.addressId)}
+              editAddress={() => handleSetAddressToEdit(address.addressId!)}
+              deleteAddress={() => handleDeleteAddress(address.addressId!)}
             />
           </TableCell>
         </TableRow>

@@ -8,8 +8,12 @@ export interface Database {
           addressId: string;
           city: string;
           complexOrBuilding: string | null;
+          createdAt: string;
           postalCode: number;
           province: string;
+          recipientContactNumber: string;
+          recipientFirstName: string;
+          recipientLastName: string;
           streetAddress: string;
           suburb: string;
           userId: string;
@@ -18,8 +22,12 @@ export interface Database {
           addressId?: string;
           city: string;
           complexOrBuilding?: string | null;
+          createdAt?: string;
           postalCode: number;
           province: string;
+          recipientContactNumber: string;
+          recipientFirstName: string;
+          recipientLastName: string;
           streetAddress: string;
           suburb: string;
           userId: string;
@@ -28,8 +36,12 @@ export interface Database {
           addressId?: string;
           city?: string;
           complexOrBuilding?: string | null;
+          createdAt?: string;
           postalCode?: number;
           province?: string;
+          recipientContactNumber?: string;
+          recipientFirstName?: string;
+          recipientLastName?: string;
           streetAddress?: string;
           suburb?: string;
           userId?: string;

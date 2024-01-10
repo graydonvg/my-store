@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Checkbox, FormControl, FormControlLabel } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -17,7 +17,13 @@ import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/ad
 import { updateAddress } from '@/services/users/update-address';
 import { setUserData } from '@/lib/redux/user/userSlice';
 
-const formFields = [
+const contactDetailsFormFields = [
+  { name: 'recipientFirstName', label: 'First Name', type: 'text', placeholder: 'e.g. John' },
+  { name: 'recipientLastName', label: 'Last Name', type: 'text', placeholder: 'e.g. Doe' },
+  { name: 'recipientContactNumber', label: 'Contact Number', type: 'text', placeholder: 'e.g. 0721234567' },
+];
+
+const deliveryAddressFormFields = [
   {
     name: 'complexOrBuilding',
     label: 'Complex / Building',
@@ -56,42 +62,38 @@ export default function AddressForm() {
     dispatch(setShowDialogLoadingBar(true));
     setIsLoading(true);
 
-    try {
-      const { success, message } = await addNewAddress({
-        ...restOfAddressData,
-        postalCode: Number(postalCode),
-        userId: userData?.userId!,
-      } as InsertAddressType);
+    const { success, message } = await addNewAddress({
+      ...restOfAddressData,
+      postalCode: Number(postalCode),
+      userId: userData?.userId!,
+    } as InsertAddressType);
 
-      if (success === true) {
-        dispatch(
-          setUserData({
-            ...userData!,
-            addresses: [
-              ...userData?.addresses!,
-              {
-                ...(restOfAddressData as InsertAddressType),
-                postalCode: Number(postalCode),
-                userId: userData?.userId!,
-                complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
-                addressId: '',
-              },
-            ],
-          })
-        );
-        dispatch(setIsAddressDialogOpen(false));
-        dispatch(clearAddressFormData());
-        toast.success(message);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Failed to add address. Please try again later.');
-    } finally {
-      router.refresh();
-      dispatch(setShowDialogLoadingBar(false));
-      setIsLoading(false);
+    if (success === true) {
+      // dispatch(
+      //   setUserData({
+      //     ...userData!,
+      //     addresses: [
+      //       ...userData?.addresses!,
+      //       {
+      //         ...restOfAddressData,
+      //         postalCode: Number(postalCode),
+      //         userId: userData?.userId!,
+      //         complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
+      //       },
+      //     ],
+      //   })
+      // );
+
+      dispatch(setIsAddressDialogOpen(false));
+      dispatch(clearAddressFormData());
+      toast.success(message);
+    } else {
+      toast.error(message);
     }
+
+    router.refresh();
+    dispatch(setShowDialogLoadingBar(false));
+    setIsLoading(false);
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -101,42 +103,38 @@ export default function AddressForm() {
 
     dispatch(setShowDialogLoadingBar(true));
 
-    try {
-      const { success, message } = await updateAddress({
-        ...addressFormData,
-        postal_code: Number(addressFormData.postalCode),
-      } as UpdateAddressTypeDb);
+    const { success, message } = await updateAddress({
+      ...addressFormData,
+      postalCode: Number(addressFormData.postalCode),
+    } as UpdateAddressTypeDb);
 
-      if (success === true) {
-        const updatedAddresses = userData?.addresses.map((address) =>
-          address.addressId === addressFormData.addressId
-            ? {
-                ...(addressFormData as InsertAddressType),
-                complexOrBuilding: addressFormData.complexOrBuilding ?? null,
-                addressId: addressFormData.addressId!,
-              }
-            : address
-        );
+    if (success === true) {
+      // const updatedAddresses = userData?.addresses.map((address) =>
+      //   address.addressId === addressFormData.addressId
+      //     ? {
+      //         ...(addressFormData as InsertAddressType),
+      //         complexOrBuilding: addressFormData.complexOrBuilding ?? null,
+      //         addressId: addressFormData.addressId!,
+      //       }
+      //     : address
+      // );
 
-        dispatch(
-          setUserData({
-            ...userData!,
-            addresses: updatedAddresses!,
-          })
-        );
-        dispatch(setIsAddressDialogOpen(false));
-        dispatch(clearAddressFormData());
-        toast.success(message);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Failed to update address. Please try again later.');
-    } finally {
-      router.refresh();
-      dispatch(setShowDialogLoadingBar(false));
-      setIsLoading(false);
+      // dispatch(
+      //   setUserData({
+      //     ...userData!,
+      //     addresses: updatedAddresses!,
+      //   })
+      // );
+      dispatch(setIsAddressDialogOpen(false));
+      dispatch(clearAddressFormData());
+      toast.success(message);
+    } else {
+      toast.error(message);
     }
+
+    router.refresh();
+    dispatch(setShowDialogLoadingBar(false));
+    setIsLoading(false);
   }
 
   return (
@@ -147,37 +145,20 @@ export default function AddressForm() {
         alignItems: 'center',
         gap: 1,
       }}>
-      <Box sx={{ textAlign: 'center' }}>
+      <Box sx={{ textAlign: 'center', paddingBottom: 1 }}>
         <FormTitle text={addressFormData.addressId ? 'Edit Address' : 'Add Address'} />
       </Box>
       <Box
         component="form"
-        onSubmit={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}>
-        {formFields.map((field) => {
-          return field.type === 'number' ? (
-            <NumberField
-              key={field.name}
-              margin="normal"
-              required={true}
-              fullWidth={false}
-              id={field.name}
-              label={field.label}
-              name={field.name}
-              value={addressFormData[field.name as keyof typeof addressFormData]}
-              onChange={handleInputChange}
-              placeholder={field.placeholder ?? ''}
-              styles={{ maxWidth: '130px' }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  handleAddNewAddress;
-                }
-              }}
-            />
-          ) : (
+        onSubmit={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box>
+          <Typography fontSize={18}>Contact Details</Typography>
+          {contactDetailsFormFields.map((field) => (
             <CustomTextField
               key={field.name}
               margin="normal"
-              required={field.name !== 'complex_or_building' ? true : false}
+              required={true}
               fullWidth={true}
               id={field.name}
               label={field.label}
@@ -192,15 +173,56 @@ export default function AddressForm() {
                 }
               }}
             />
-          );
-        })}
+          ))}
+        </Box>
+        <Divider />
+        <Box>
+          <Typography fontSize={18}>Delivery Address</Typography>
+          {deliveryAddressFormFields.map((field) => {
+            return field.type === 'number' ? (
+              <NumberField
+                key={field.name}
+                margin="normal"
+                required={true}
+                fullWidth={false}
+                id={field.name}
+                label={field.label}
+                name={field.name}
+                value={addressFormData[field.name as keyof typeof addressFormData]}
+                onChange={handleInputChange}
+                placeholder={field.placeholder ?? ''}
+                styles={{ maxWidth: '130px' }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    handleAddNewAddress;
+                  }
+                }}
+              />
+            ) : (
+              <CustomTextField
+                key={field.name}
+                margin="normal"
+                required={field.name !== 'complexOrBuilding' ? true : false}
+                fullWidth={true}
+                id={field.name}
+                label={field.label}
+                name={field.name}
+                value={addressFormData[field.name as keyof typeof addressFormData]}
+                onChange={handleInputChange}
+                placeholder={field.placeholder ?? ''}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    handleAddNewAddress;
+                  }
+                }}
+              />
+            );
+          })}
+        </Box>
         <ContainedButton
           label={addressFormData.addressId ? 'save' : 'add'}
           isDisabled={isLoading}
           type="submit"
-          styles={{
-            marginTop: 3,
-          }}
           fullWidth
           backgroundColor="blue"
           startIcon={!addressFormData.addressId && !isLoading ? <Add /> : null}

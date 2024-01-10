@@ -73,8 +73,8 @@ export default function AccountMenu() {
   const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const customColorPalette = useCustomColorPalette();
   const mode = theme.palette.mode;
+  const customColorPalette = useCustomColorPalette();
 
   const router = useRouter();
 

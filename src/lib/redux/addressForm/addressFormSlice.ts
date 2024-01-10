@@ -3,6 +3,9 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: UpdateAddressTypeStore = {
   addressId: '',
+  recipientFirstName: '',
+  recipientLastName: '',
+  recipientContactNumber: '',
   complexOrBuilding: '',
   streetAddress: '',
   suburb: '',

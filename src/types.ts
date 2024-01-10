@@ -26,18 +26,37 @@ export type AccountType = {
   confirmPassword: string;
 };
 
-export type CartItemType =
-  | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'userId'>, 'productId'> & {
-      product:
-        | (Omit<Omit<Database['public']['Tables']['products']['Row'], 'createdAt'>, 'details'> & {
-            productImageData: Pick<Database['public']['Tables']['productImageData']['Row'], 'imageUrl'>[];
-          })
-        | null;
-    })
-  | null;
+export type CartItemType = {
+  createdAt: string;
+  cartItemId: string;
+  quantity: number;
+  size: string;
+  product: {
+    name: string;
+    isOnSale: string;
+    price: number;
+    salePercentage: number;
+    deliveryInfo: string;
+    returnInfo: string;
+    productId: string;
+    sizes: string[];
+    brand: string;
+    category: string;
+    productImageData:
+      | {
+          imageUrl: string;
+        }[];
+  } | null;
+};
 
-export type UserDataType = Database['public']['Tables']['users']['Row'] & {
-  addresses: Database['public']['Tables']['addresses']['Row'][];
+export type UserDataType = {
+  contactNumber: string | null;
+  email: string;
+  firstName: string | null;
+  isAdmin: boolean;
+  lastName: string | null;
+  userId: string;
+  addresses: AddressType[];
 };
 
 export type ImageUploadProgressType = {
@@ -55,28 +74,55 @@ export type InsertProductImageDataTypeStore = {
 
 export type InsertProductImageDataTypeDb = Database['public']['Tables']['productImageData']['Insert'];
 
-export type userPersonalInformationType = Pick<
-  Database['public']['Tables']['users']['Row'],
-  'firstName' | 'lastName' | 'contactNumber'
->;
+export type userPersonalInformationType = {
+  contactNumber: string | null;
+  firstName: string | null;
+  lastName: string | null;
+};
 
-export type ProductType = Database['public']['Tables']['products']['Row'] & {
-  productImageData: Omit<Omit<Database['public']['Tables']['productImageData']['Row'], 'createdAt'>, 'productId'>[];
+export type ProductType = {
+  brand: string;
+  category: string;
+  createdAt: string;
+  deliveryInfo: string;
+  details: string;
+  isOnSale: string;
+  name: string;
+  price: number;
+  productId: string;
+  returnInfo: string;
+  salePercentage: number;
+  sizes: string[];
+  productImageData: {
+    fileName: string;
+    imageUrl: string;
+    productImageId: string;
+  }[];
 };
 
 export type InsertProductTypeDb = Database['public']['Tables']['products']['Insert'];
 
-export type InsertProductTypeStore = Omit<
-  Omit<Database['public']['Tables']['products']['Insert'], 'price'>,
-  'salePercentage'
-> & {
+export type InsertProductTypeStore = {
+  productId?: string;
+  brand: string;
+  category: string;
+  deliveryInfo: string;
+  details: string;
+  isOnSale: string;
+  name: string;
+  returnInfo: string;
+  sizes: string[];
   price: '' | number;
   salePercentage: '' | number;
 };
 
 export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
 
-export type userPasswordType = { currentPassword: string; newPassword: string; confirmPassword: string };
+export type userPasswordType = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export type InsertAddressType = Database['public']['Tables']['addresses']['Insert'];
 
@@ -84,7 +130,16 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressTypeDb = Database['public']['Tables']['addresses']['Update'];
 
-export type UpdateAddressTypeStore = Omit<Database['public']['Tables']['addresses']['Update'], 'postalCode'> & {
+export type UpdateAddressTypeStore = {
+  addressId: string;
+  recipientContactNumber: string;
+  recipientFirstName: string;
+  recipientLastName: string;
+  city: string;
+  complexOrBuilding: string | null;
+  province: string;
+  streetAddress: string;
+  suburb: string;
   postalCode: '' | number;
 };
 
@@ -128,12 +183,15 @@ export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
 
 export type InserOrderItemsType = Database['public']['Tables']['orderItems']['Insert'];
 
-export type OrderItemsTypeStore = Omit<Omit<Database['public']['Tables']['orderItems']['Insert'], 'orderId'>, 'userId'>;
-
 export type CheckoutDataType = {
   selectedAddressId: string | null;
   isProcessing: boolean;
-  orderItems: OrderItemsTypeStore[];
+  orderItems: {
+    pricePaid: number;
+    productId: string;
+    quantity: number;
+    size: string;
+  }[];
   paymentTotals: {
     cartTotal: number;
     deliveryFee: number;

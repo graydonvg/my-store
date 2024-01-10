@@ -1,4 +1,3 @@
-import { orderedSizesForStore } from '@/constants/sizes';
 import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
