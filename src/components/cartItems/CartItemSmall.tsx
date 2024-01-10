@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Spinner } from '../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import { CartItemType } from '@/types';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
 import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
@@ -19,7 +19,7 @@ type LoadingSpinnerProps = {
 };
 
 function LoadingSpinner({ show }: LoadingSpinnerProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -28,7 +28,7 @@ function LoadingSpinner({ show }: LoadingSpinnerProps) {
       <Spinner
         thickness={5}
         size={12}
-        spinnerColor={customColorPalette.typographyVariants.grey}
+        spinnerColor={colorPalette.typographyVariants.grey}
       />
     </Box>
   );
@@ -41,7 +41,7 @@ type DeleteCartItemButtonProps = {
 };
 
 function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -52,7 +52,7 @@ function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonP
       sx={{ padding: 0, width: 1, height: 1 }}>
       <Close
         fontSize="small"
-        sx={{ color: customColorPalette.typographyVariants.grey }}
+        sx={{ color: colorPalette.typographyVariants.grey }}
       />
     </IconButton>
   );
@@ -96,7 +96,7 @@ type SalePercentageBadgeProps = {
 };
 
 function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -106,7 +106,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         display: 'flex',
         borderRadius: borderRadius,
         paddingX: 1,
-        backgroundColor: customColorPalette.primary.dark,
+        backgroundColor: colorPalette.primary.dark,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -114,7 +114,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: customColorPalette.typographyVariants.white,
+          color: colorPalette.typographyVariants.white,
         }}
         fontSize={14}>
         {`-${percentage}%`}
@@ -129,7 +129,7 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -144,7 +144,7 @@ function SalePrice({ show, price }: SalePriceProps) {
         component="span"
         fontSize={16}
         fontWeight={700}
-        color={customColorPalette.typographyVariants.grey}
+        color={colorPalette.typographyVariants.grey}
         sx={{ textDecoration: 'line-through' }}>
         {formatCurrency(price)}
       </Typography>
@@ -157,7 +157,7 @@ type CartItemSmallProps = {
 };
 
 export default function CartItemSmall({ item }: CartItemSmallProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const router = useRouter();
@@ -259,7 +259,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
                   lineHeight={1}
                   component="span"
                   fontSize={13}
-                  color={customColorPalette.typographyVariants.grey}>
+                  color={colorPalette.typographyVariants.grey}>
                   {item.label}:
                 </Typography>
                 <Typography

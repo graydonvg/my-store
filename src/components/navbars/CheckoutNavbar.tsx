@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
 import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
@@ -15,12 +15,12 @@ const breadcrumbData = [
 ];
 
 export default function CheckoutNavbar() {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ backgroundColor: customColorPalette.navBar.upper.background }}>
+    <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{
@@ -32,7 +32,7 @@ export default function CheckoutNavbar() {
             hideText={isBelowSmall ? true : false}
             variant="h5"
             display="flex"
-            color={customColorPalette.navBar.upper.text}
+            color={colorPalette.navBar.upper.text}
           />
           <Box sx={{ margin: '0 auto' }}>
             <BreadcrumbsComponent>

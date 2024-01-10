@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type UserDataWithLabelProps = {
   label: string;
@@ -9,14 +9,14 @@ type UserDataWithLabelProps = {
 };
 
 function UserDataWithLabel({ label, children }: UserDataWithLabelProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', paddingBottom: 2 }}>
       <Typography
         component="label"
         fontSize={12}
-        color={customColorPalette.textField.label}>
+        color={colorPalette.textField.label}>
         {label}
       </Typography>
       {children}

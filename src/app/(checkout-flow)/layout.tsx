@@ -11,7 +11,7 @@ import {
   selectDiscountTotal,
   selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { borderRadius } from '@/constants/styles';
 import OrderTotals from '@/components/orders/OrderTotals';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
@@ -51,7 +51,7 @@ function YourOrderTotals({ show }: YourOrderTotalsProps) {
   const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
 
@@ -66,7 +66,7 @@ function YourOrderTotals({ show }: YourOrderTotalsProps) {
         sx={{
           paddingX: 3,
           paddingY: 4,
-          backgroundColor: customColorPalette.card.background,
+          backgroundColor: colorPalette.card.background,
           borderRadius: borderRadius,
         }}>
         <Typography

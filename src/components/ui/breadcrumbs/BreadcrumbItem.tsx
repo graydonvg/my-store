@@ -1,6 +1,6 @@
 'use client';
 
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const { shippingDetails, isProcessing } = useAppSelector((state) => state.checkoutData);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const isPointerEventsDisabled =
@@ -40,14 +40,14 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           display: 'flex',
           alignItems: 'center',
           padding: 0,
-          color: pathname === href ? customColorPalette.primary.light : customColorPalette.shade.medium,
+          color: pathname === href ? colorPalette.primary.light : colorPalette.shade.medium,
           '&.MuiButton-root': {
             minWidth: { xs: 'unset', sm: '64px' },
           },
           '@media (hover: hover)': {
             '&:hover': {
-              color: pathname === href ? customColorPalette.primary.light : customColorPalette.navBar.upper.text,
-              backgroundColor: customColorPalette.navBar.upper.background,
+              color: pathname === href ? colorPalette.primary.light : colorPalette.navBar.upper.text,
+              backgroundColor: colorPalette.navBar.upper.background,
             },
           },
         }}>

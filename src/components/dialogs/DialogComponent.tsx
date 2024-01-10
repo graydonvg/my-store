@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, useTheme, IconButton, Dialog } from '@mui/material';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
 import { closeDialog } from '@/lib/redux/dialog/dialogSlice';
@@ -17,7 +17,7 @@ type Props = {
 export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
   const showDialogLoadingBar = useAppSelector((state) => state.dialog.showDialogLoadingBar);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   function handleCloseDialog() {
     dispatch(closeDialog());
@@ -40,7 +40,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           maxWidth: 400,
           boxShadow: 24,
           borderRadius: borderRadius,
-          backgroundColor: customColorPalette.dialog.background,
+          backgroundColor: colorPalette.dialog.background,
         }}>
         <LoadingBar
           isLoading={showDialogLoadingBar}

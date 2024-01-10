@@ -1,6 +1,6 @@
 'use client';
 
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DeleteForever } from '@mui/icons-material';
 import { Box, Grid, IconButton } from '@mui/material';
@@ -22,7 +22,7 @@ type DeleteButtonProps = {
 
 function DeleteButton({ show, productImageData }: DeleteButtonProps) {
   const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
 
   if (!show || !productImageData) return null;
@@ -128,15 +128,15 @@ export default function SmallProductImageBoxProps({
   const isEditMode = useAppSelector((state) => state.productForm.isEditMode);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   let boxBorderColor;
 
   // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
   if (isAdminView) {
     if (!!uploadProgressData && !productImageData) {
-      boxBorderColor = customColorPalette.textField.focused;
+      boxBorderColor = colorPalette.textField.focused;
     } else if (!productImageData) {
-      boxBorderColor = customColorPalette.textField.border;
+      boxBorderColor = colorPalette.textField.border;
     }
   } else {
     boxBorderColor = 'transparent';

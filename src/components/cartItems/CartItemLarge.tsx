@@ -3,7 +3,7 @@
 import { Box, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { Divider } from '@mui/material';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
@@ -20,7 +20,7 @@ type ProductNameAndBrandProps = {
 };
 
 function ProductNameAndBrand({ show, name, brand, productId, category }: ProductNameAndBrandProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -48,7 +48,7 @@ function ProductNameAndBrand({ show, name, brand, productId, category }: Product
         component="span"
         fontWeight={600}
         fontSize={14}
-        color={customColorPalette.typographyVariants.grey}
+        color={colorPalette.typographyVariants.grey}
         sx={{
           display: '-webkit-box',
           marginTop: '6px',
@@ -85,7 +85,7 @@ type SalePercentageBadgeProps = {
 };
 
 function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -96,7 +96,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         borderRadius: borderRadius,
         paddingX: 1,
         marginRight: 1,
-        backgroundColor: customColorPalette.primary.dark,
+        backgroundColor: colorPalette.primary.dark,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -104,7 +104,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: customColorPalette.typographyVariants.white,
+          color: colorPalette.typographyVariants.white,
         }}
         fontSize={{ xs: 14, sm: 16 }}
         fontWeight={600}>
@@ -120,7 +120,7 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -130,7 +130,7 @@ function SalePrice({ show, price }: SalePriceProps) {
       component="span"
       fontSize={{ xs: 20, sm: 24 }}
       fontWeight={400}
-      color={customColorPalette.typographyVariants.grey}
+      color={colorPalette.typographyVariants.grey}
       sx={{ textDecoration: 'line-through' }}>
       {formatCurrency(price)}
     </Typography>
@@ -142,7 +142,7 @@ type CartItemLargeProps = {
 };
 
 export default function CartItemLarge({ item }: CartItemLargeProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
@@ -153,7 +153,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
     <Box
       sx={{
         padding: 2,
-        backgroundColor: customColorPalette.card.background,
+        backgroundColor: colorPalette.card.background,
         borderRadius: borderRadius,
         position: 'relative',
         marginBottom: 2,
@@ -239,7 +239,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                   component="span"
                   fontSize={{ xs: 14, sm: 16 }}
                   fontWeight={600}
-                  color={customColorPalette.typographyVariants.grey}>
+                  color={colorPalette.typographyVariants.grey}>
                   {item.label}:
                 </Typography>
                 <Typography
@@ -256,7 +256,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             lineHeight={1.6}
             component="p"
             fontSize={{ xs: 14, sm: 16 }}
-            color={customColorPalette.typographyVariants.grey}>
+            color={colorPalette.typographyVariants.grey}>
             <FreeDeliveryText show={discountedPrice > 500} />
             {item?.product?.returnInfo}
           </Typography>

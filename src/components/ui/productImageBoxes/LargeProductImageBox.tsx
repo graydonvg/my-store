@@ -1,6 +1,6 @@
 'use client';
 
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -14,16 +14,16 @@ type NoFileChosenMessageProps = {
 };
 
 function NoFileChosenMessage({ show }: NoFileChosenMessageProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
   return (
     <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Typography color={customColorPalette.textField.label}>No file chosen</Typography>
+      <Typography color={colorPalette.textField.label}>No file chosen</Typography>
       <Typography
         variant="body2"
-        color={customColorPalette.textField.label}>
+        color={colorPalette.textField.label}>
         {'(Max. 5 images)'}
       </Typography>
     </Box>
@@ -78,15 +78,15 @@ export default function LargeProductImageBox({
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   let boxBorderColor;
 
   // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
   if (isAdminView) {
     if (!!imageUploadProgress[selectedImageIndex] && !productImageData) {
-      boxBorderColor = customColorPalette.textField.focused;
+      boxBorderColor = colorPalette.textField.focused;
     } else if (!productImageData) {
-      boxBorderColor = customColorPalette.textField.border;
+      boxBorderColor = colorPalette.textField.border;
     }
   } else {
     boxBorderColor = 'transparent';

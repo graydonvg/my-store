@@ -1,4 +1,4 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { MenuItem, TextField, TextFieldProps } from '@mui/material';
 
 type SelectFieldProps = TextFieldProps & {
@@ -6,24 +6,24 @@ type SelectFieldProps = TextFieldProps & {
 };
 
 export default function SelectField({ options, ...textFieldProps }: SelectFieldProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <TextField
       select
       sx={{
         '& label': {
-          color: customColorPalette.textField.label,
+          color: colorPalette.textField.label,
         },
         '& fieldset': {
-          borderColor: customColorPalette.textField.border,
+          borderColor: colorPalette.textField.border,
         },
         '& label.Mui-focused': {
-          color: customColorPalette.textField.focused,
+          color: colorPalette.textField.focused,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            border: `1px solid ${customColorPalette.textField.focused}`,
+            border: `1px solid ${colorPalette.textField.focused}`,
           },
         },
       }}
@@ -32,10 +32,10 @@ export default function SelectField({ options, ...textFieldProps }: SelectFieldP
         <MenuItem
           sx={{
             '&.Mui-selected': {
-              color: customColorPalette.typographyVariants.white,
-              backgroundColor: customColorPalette.primary.light,
+              color: colorPalette.typographyVariants.white,
+              backgroundColor: colorPalette.primary.light,
               '&:hover': {
-                backgroundColor: customColorPalette.primary.light,
+                backgroundColor: colorPalette.primary.light,
               },
             },
           }}

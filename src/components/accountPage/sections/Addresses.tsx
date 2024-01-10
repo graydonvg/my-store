@@ -2,7 +2,7 @@
 
 import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { PulseLoader } from 'react-spinners';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useState } from 'react';
@@ -41,7 +41,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
   const userData = useAppSelector((state) => state.user.userData);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   if (!show) return null;
@@ -69,7 +69,7 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
   }
 
   return (
-    <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${customColorPalette.border}`, paddingRight: 0 }}>
+    <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${colorPalette.border}`, paddingRight: 0 }}>
       <Checkbox
         checked={checkoutData.selectedAddressId === address.addressId}
         onChange={handleSelectShippingAddress}
@@ -87,7 +87,7 @@ type AddressButtonProps = {
 };
 
 function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Typography
@@ -98,13 +98,13 @@ function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
       fontWeight={700}
       sx={{
         paddingRight: hasBorderRight ? 1 : 0,
-        borderRight: hasBorderRight ? `1px solid ${customColorPalette.border}` : null,
-        color: customColorPalette.primary.dark,
+        borderRight: hasBorderRight ? `1px solid ${colorPalette.border}` : null,
+        color: colorPalette.primary.dark,
         '@media (hover: hover)': {
           '&:hover': {
-            color: customColorPalette.primary.light,
+            color: colorPalette.primary.light,
             textDecoration: 'underline',
-            textDecorationColor: customColorPalette.primary.light,
+            textDecorationColor: colorPalette.primary.light,
             textDecorationThickness: 1,
             textUnderlineOffset: 2,
             cursor: 'pointer',
@@ -146,7 +146,7 @@ type LoaderProps = {
 };
 
 function Loader({ showLoader }: LoaderProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!showLoader) return null;
 
@@ -162,7 +162,7 @@ function Loader({ showLoader }: LoaderProps) {
       }}>
       <PulseLoader
         loading={showLoader}
-        color={customColorPalette.typography}
+        color={colorPalette.typography}
         size={10}
       />
     </Box>
@@ -177,7 +177,7 @@ function AddressData({ show }: AddressDataProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { userData } = useAppSelector((state) => state.user);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const [isDeleting, setIsDeleting] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<{ id: string } | null>(null);
   const pathname = usePathname();
@@ -245,7 +245,7 @@ function AddressData({ show }: AddressDataProps) {
               flexDirection: { xs: 'column', sm: 'row' },
               rowGap: 2,
               columnGap: 4,
-              borderBottom: `1px solid ${customColorPalette.border}`,
+              borderBottom: `1px solid ${colorPalette.border}`,
               width: 1,
             }}>
             <Box>
@@ -257,13 +257,13 @@ function AddressData({ show }: AddressDataProps) {
               </Typography>
               <Box sx={{ display: 'flex', gap: 1 }}>
                 <Typography
-                  color={customColorPalette.typographyVariants.grey}
+                  color={colorPalette.typographyVariants.grey}
                   fontSize={14}
                   fontWeight={500}>
                   Recipient:
                 </Typography>
                 <Typography
-                  color={customColorPalette.typographyVariants.grey}
+                  color={colorPalette.typographyVariants.grey}
                   fontSize={14}>
                   {`${address.recipientFirstName} ${address.recipientLastName}, ${address.recipientContactNumber}`}
                 </Typography>
@@ -284,12 +284,11 @@ function AddressData({ show }: AddressDataProps) {
 
 export default function Addresses() {
   const { userData } = useAppSelector((state) => state.user);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Box>
-      <TableContainer
-        sx={{ marginBottom: 2, border: `1px solid ${customColorPalette.border}`, borderRadius: borderRadius }}>
+      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${colorPalette.border}`, borderRadius: borderRadius }}>
         <Table>
           <TableBody>
             <NoAddressFound show={!!userData?.addresses && userData?.addresses.length === 0} />

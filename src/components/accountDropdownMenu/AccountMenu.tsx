@@ -9,7 +9,7 @@ import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { toast } from 'react-toastify';
 import signOut from '@/services/auth/sign-out';
 import AccountMenuItem from './AccountMenuItem';
@@ -74,7 +74,7 @@ export default function AccountMenu() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   const router = useRouter();
 
@@ -98,7 +98,7 @@ export default function AccountMenu() {
 
   return (
     <HoverDropdownMenu
-      buttonBackgroundColor={customColorPalette.navBar.upper.background}
+      buttonBackgroundColor={colorPalette.navBar.upper.background}
       label={
         <>
           <Typography
@@ -108,7 +108,7 @@ export default function AccountMenu() {
             }}>
             {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
           </Typography>
-          <ArrowDropDown sx={{ color: customColorPalette.primary.dark, marginLeft: 2 }} />
+          <ArrowDropDown sx={{ color: colorPalette.primary.dark, marginLeft: 2 }} />
         </>
       }>
       <AdminMenuItem show={!!userData && userData?.isAdmin} />

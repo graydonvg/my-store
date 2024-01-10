@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Divider, IconButton, List, ListItemButton, Typography } from '@mui/material';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCartItemQuantity, setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
@@ -61,7 +61,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const router = useRouter();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
@@ -183,7 +183,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       <IconButton onClick={handleSetCartItemToEdit}>
         <Edit
           fontSize="small"
-          sx={{ color: customColorPalette.typographyVariants.grey }}
+          sx={{ color: colorPalette.typographyVariants.grey }}
         />
       </IconButton>
       <DrawerComponent
@@ -208,7 +208,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           }}>
           <Loader
             show={isUpdatingCartItem}
-            buttonLabelColor={customColorPalette.typography}
+            buttonLabelColor={colorPalette.typography}
           />
           <Box>
             <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>
@@ -248,7 +248,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               '&::before': {
                 content: '""',
                 position: 'absolute',
-                boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
+                boxShadow: `0 -2px 4px 0 ${colorPalette.boxShadow}`,
                 top: 0,
                 right: 0,
                 left: 0,
@@ -310,7 +310,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             </Box>
             <TextButton
               label="move to wishlist"
-              labelColor={customColorPalette.typography}
+              labelColor={colorPalette.typography}
               startIcon={<FavoriteBorder />}
             />
             <TextButton
@@ -318,7 +318,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
               isLoading={isRemovingCartItem}
               onClick={handleRemoveCartItem}
               label={!isRemovingCartItem ? 'remove' : ''}
-              labelColor={customColorPalette.typography}
+              labelColor={colorPalette.typography}
               startIcon={<Delete />}
             />
           </Box>

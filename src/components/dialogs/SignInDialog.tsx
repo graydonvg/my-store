@@ -1,4 +1,4 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -7,7 +7,7 @@ import SignInForm from '../forms/SignInForm';
 import MuiLink from '../ui/MuiLink';
 
 export default function SignInDialog() {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const { isSignInDialogOpen } = useAppSelector((state) => state.dialog);
 
@@ -24,7 +24,7 @@ export default function SignInDialog() {
     <>
       <TextButton
         label="sign in"
-        labelColor={customColorPalette.navBar.upper.text}
+        labelColor={colorPalette.navBar.upper.text}
         onClick={handleOpenSignInDialog}
       />
       <DialogComponent isOpen={isSignInDialogOpen}>

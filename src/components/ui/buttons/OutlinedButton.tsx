@@ -1,4 +1,4 @@
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -19,7 +19,7 @@ export default function OutlinedButton({
   isDisabled,
   ...props
 }: CustomButtonProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Button
@@ -37,9 +37,9 @@ export default function OutlinedButton({
         )
       }
       sx={{
-        color: customColorPalette.typography,
+        color: colorPalette.typography,
         height: '48px',
-        borderColor: customColorPalette.typography,
+        borderColor: colorPalette.typography,
         backgroundColor: 'transparent',
         '&:hover': {
           backgroundColor: 'transparent',
@@ -50,7 +50,7 @@ export default function OutlinedButton({
         '@media (hover: hover)': {
           '&:hover': {
             backgroundColor: 'transparent',
-            borderColor: customColorPalette.typography,
+            borderColor: colorPalette.typography,
           },
         },
 

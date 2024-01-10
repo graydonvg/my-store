@@ -1,7 +1,7 @@
 import AccountMenuItem from '@/components/accountDropdownMenu/AccountMenuItem';
 import NavDrawerOption from '@/components/drawers/navDrawer/NavDrawerOption';
 import { accountMenuIconColor, accountMenuIconSize } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import signOut from '@/services/auth/sign-out';
@@ -17,7 +17,7 @@ type Props = {
 export default function SignOutButton({ showAccountMenuButton = false, showNavDrawerButton = false }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   async function handleSignOut() {
     const { success, message } = await signOut();
@@ -50,7 +50,7 @@ export default function SignOutButton({ showAccountMenuButton = false, showNavDr
       <NavDrawerOption
         onClick={handleSignOut}
         label="Sign Out"
-        bodyTextColor={customColorPalette.navBar.lower.text}
+        bodyTextColor={colorPalette.navBar.lower.text}
       />
     );
 }

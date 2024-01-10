@@ -4,7 +4,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, List, Typography, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import CartItemSmall from './CartItemSmall';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { borderRadius } from '@/constants/styles';
 import { usePathname } from 'next/navigation';
 
@@ -13,7 +13,7 @@ type CartEmptyMessageProps = {
 };
 
 function CartEmptyMessage({ show }: CartEmptyMessageProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -23,7 +23,7 @@ function CartEmptyMessage({ show }: CartEmptyMessageProps) {
         padding: 1,
         marginTop: 2,
         borderRadius: borderRadius,
-        backgroundColor: customColorPalette.navBar.lower.background,
+        backgroundColor: colorPalette.navBar.lower.background,
       }}>
       <Typography
         lineHeight={1}
@@ -42,7 +42,7 @@ type CartItemsProps = {
 function CartItems({ show }: CartItemsProps) {
   const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const isShippingView = pathname.includes('/checkout/shipping');
 
   if (!show) return null;
@@ -60,7 +60,7 @@ function CartItems({ show }: CartItemsProps) {
     return (
       <Fragment key={item?.cartItemId}>
         <CartItemSmall item={item} />
-        {showDivider ? <Divider sx={{ borderColor: customColorPalette.border }} /> : null}
+        {showDivider ? <Divider sx={{ borderColor: colorPalette.border }} /> : null}
       </Fragment>
     );
   });

@@ -6,7 +6,7 @@ import CartDrawer from '../../drawers/CartDrawer';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import AccountMenu from '@/components/accountDropdownMenu/AccountMenu';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
 import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
@@ -16,7 +16,7 @@ import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 
 function CustomDivider() {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Divider
@@ -24,7 +24,7 @@ function CustomDivider() {
       orientation="vertical"
       sx={{
         display: { xs: 'none', md: 'flex' },
-        backgroundColor: customColorPalette.navBar.upper.divider,
+        backgroundColor: colorPalette.navBar.upper.divider,
       }}
       flexItem
     />
@@ -40,16 +40,16 @@ type FavoriteButtonProps = {
 };
 
 function FavoriteButton({ show }: FavoriteButtonProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
   return (
     <ListItem disablePadding>
-      <UpperNavIconButton backgroundColor={customColorPalette.navBar.upper.background}>
+      <UpperNavIconButton backgroundColor={colorPalette.navBar.upper.background}>
         <Favorite
           aria-label="Wishlist"
-          sx={{ color: customColorPalette.typographyVariants.white, opacity: '50%' }}
+          sx={{ color: colorPalette.typographyVariants.white, opacity: '50%' }}
         />
       </UpperNavIconButton>
     </ListItem>
@@ -96,7 +96,7 @@ function AccountDropdownMenu({ show }: AccountDropdownMenuProps) {
 
 function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
   const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -116,7 +116,7 @@ function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
           size="small">
           <ThemeToggleIcon
             size="small"
-            color={customColorPalette.navBar.upper.text}
+            color={colorPalette.navBar.upper.text}
           />
         </IconButton>
       </ListItem>
@@ -168,7 +168,7 @@ function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
 
 export default function UpperNavbarOptions() {
   const userData = useAppSelector((state) => state.user.userData);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <>
@@ -181,7 +181,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitleAndLogo
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color={customColorPalette.navBar.upper.text}
+        color={colorPalette.navBar.upper.text}
       />
       <Box
         component="nav"

@@ -1,6 +1,6 @@
 'use client';
 
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { clearCart } from '@/lib/redux/cart/cartSlice';
 import { resetCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -16,7 +16,7 @@ export default function PaymentSuccessPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment-status');
 
@@ -67,7 +67,7 @@ export default function PaymentSuccessPage() {
       <Typography fontSize={{ xs: 14, sm: 24 }}>Thank you for your order!</Typography>
       <PulseLoader
         size={24}
-        color={customColorPalette.typography}
+        color={colorPalette.typography}
         loading={true}
       />
     </Box>

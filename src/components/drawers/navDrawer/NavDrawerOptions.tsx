@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from './NavDrawerOption';
 import { toast } from 'react-toastify';
 import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
@@ -25,7 +25,7 @@ type NavOptionsProps = {
 };
 
 function NavOptions({ options, onClick }: NavOptionsProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return options.map((option) => (
     <NavDrawerOption
@@ -33,7 +33,7 @@ function NavOptions({ options, onClick }: NavOptionsProps) {
       key={option.id}
       label={option.label}
       path={option.path}
-      bodyTextColor={customColorPalette.navBar.lower.text}
+      bodyTextColor={colorPalette.navBar.lower.text}
     />
   ));
 }
@@ -92,7 +92,7 @@ function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsPro
 
 function ThemeButton() {
   const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
@@ -110,11 +110,11 @@ function ThemeButton() {
           sx={{ width: 1, height: '100%' }}>
           <ListItemText
             primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-            sx={{ color: customColorPalette.navBar.lower.text }}
+            sx={{ color: colorPalette.navBar.lower.text }}
           />
           <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
             <ThemeToggleIcon
-              color={customColorPalette.navBar.lower.text}
+              color={colorPalette.navBar.lower.text}
               size={'small'}
             />
           </Box>

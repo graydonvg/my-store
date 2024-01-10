@@ -5,19 +5,19 @@ import { ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type IconProps = {
   label: string | 'Sign Out';
 };
 
 function Icon({ label }: IconProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (label === 'Sign Out') {
-    return <Logout sx={{ color: customColorPalette.navBar.lower.text }} />;
+    return <Logout sx={{ color: colorPalette.navBar.lower.text }} />;
   } else {
-    return <ArrowForwardIos sx={{ color: customColorPalette.navBar.lower.text }} />;
+    return <ArrowForwardIos sx={{ color: colorPalette.navBar.lower.text }} />;
   }
 }
 
@@ -29,7 +29,7 @@ type ButtonWithLinkProps = {
 
 function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps) {
   const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!showButtonWithLink) return null;
 
@@ -48,7 +48,7 @@ function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps
       <ListItemButton sx={{ height: '100%' }}>
         <ListItemText
           primary={label}
-          sx={{ color: customColorPalette.navBar.lower.text, width: 1 }}
+          sx={{ color: colorPalette.navBar.lower.text, width: 1 }}
         />
         <Icon label={label} />
       </ListItemButton>
@@ -63,7 +63,7 @@ type ButtonNoLinkProps = {
 };
 
 function ButtonNoLink({ showButtonNoLink, label }: ButtonNoLinkProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!showButtonNoLink) return null;
 
@@ -71,7 +71,7 @@ function ButtonNoLink({ showButtonNoLink, label }: ButtonNoLinkProps) {
     <ListItemButton sx={{ width: 1, height: '100%' }}>
       <ListItemText
         primary={label}
-        sx={{ color: customColorPalette.navBar.lower.text }}
+        sx={{ color: colorPalette.navBar.lower.text }}
       />
       <Icon label={label} />
     </ListItemButton>

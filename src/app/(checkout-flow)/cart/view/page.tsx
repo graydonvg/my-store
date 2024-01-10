@@ -2,7 +2,7 @@
 
 import CartItemLarge from '@/components/cartItems/CartItemLarge';
 import { borderRadius } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { CartItemType } from '@/types';
 import { Box, Typography } from '@mui/material';
@@ -13,7 +13,7 @@ type CartEmptyProps = {
 };
 
 function CartEmpty({ show }: CartEmptyProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -26,7 +26,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: customColorPalette.card.background,
+        backgroundColor: colorPalette.card.background,
         borderRadius: borderRadius,
         paddingX: 2,
         paddingY: 4,
@@ -40,7 +40,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         <Typography
           component="p"
           fontSize={24}
-          sx={{ textDecoration: 'underline', color: customColorPalette.primary.dark }}>
+          sx={{ textDecoration: 'underline', color: colorPalette.primary.dark }}>
           Continue shopping
         </Typography>
       </Link>

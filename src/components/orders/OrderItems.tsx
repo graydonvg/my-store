@@ -7,7 +7,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { OrderType } from '@/types';
 import OrderDetails from './OrderDetails';
 import Link from 'next/link';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   order: OrderType;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function OrderItems({ borderColor, order }: Props) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
@@ -109,7 +109,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                               fontSize={13}
                               textTransform="uppercase"
                               fontWeight={500}
-                              color={customColorPalette.typographyVariants.grey}>
+                              color={colorPalette.typographyVariants.grey}>
                               {item.label}:
                             </Typography>
                             <Typography fontSize={13}>{item.value}</Typography>
@@ -119,7 +119,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                       <Typography
                         fontSize={13}
                         textTransform="uppercase"
-                        color={customColorPalette.typographyVariants.grey}>
+                        color={colorPalette.typographyVariants.grey}>
                         {item.product?.returnInfo}
                       </Typography>
                     </Box>

@@ -20,7 +20,7 @@ import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addProductToCart from '@/services/cart/add-product-to-cart';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
@@ -38,7 +38,7 @@ type PreviousPriceAndPercentageProps = {
 };
 
 function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAndPercentageProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -56,7 +56,7 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
         fontFamily={'Georgia'}
         fontStyle="italic"
         fontSize={22}
-        color={customColorPalette.typographyVariants.grey}
+        color={colorPalette.typographyVariants.grey}
         sx={{ textDecoration: 'line-through', paddingRight: 1 }}>
         {formatCurrency(price)}
       </Typography>
@@ -66,7 +66,7 @@ function PreviousPriceAndPercentage({ show, price, percentage }: PreviousPriceAn
         fontSize={22}
         fontFamily={'Georgia'}
         fontStyle="italic"
-        sx={{ color: customColorPalette.primary.light, fontFamily: 'serif' }}>
+        sx={{ color: colorPalette.primary.light, fontFamily: 'serif' }}>
         {`-${percentage}%`}
       </Typography>
     </Box>
@@ -150,14 +150,14 @@ type DetailsHeadingProps = {
 };
 
 function DetailsHeading({ children }: DetailsHeadingProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Typography
       component="span"
       fontWeight={500}
       fontSize={16}
-      color={customColorPalette.typographyVariants.grey}>
+      color={colorPalette.typographyVariants.grey}>
       {children}
     </Typography>
   );
@@ -169,7 +169,7 @@ type ProductDetailsProps = {
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const supabase = createSupabaseBrowserClient();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -308,7 +308,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 lineHeight={1}
                 component="span"
                 fontSize={16}
-                color={customColorPalette.typographyVariants.grey}>
+                color={colorPalette.typographyVariants.grey}>
                 {product.brand}
               </Typography>
             </Box>

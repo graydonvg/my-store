@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     (state) => state.productForm
   );
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   useEffect(() => {
@@ -123,9 +123,9 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         fullWidth
         label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
         styles={{
-          backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.shade.medium,
+          backgroundColor: isEditMode ? colorPalette.green.dark : colorPalette.shade.medium,
           '&:hover': {
-            backgroundColor: isEditMode ? customColorPalette.green.dark : customColorPalette.shade.medium,
+            backgroundColor: isEditMode ? colorPalette.green.dark : colorPalette.shade.medium,
             filter: 'brightness(1.2)',
             transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
           },
@@ -136,7 +136,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         backgroundColor="blue"
         isDisabled={uploadInProgress || isSubmitting || isEditMode}
         styles={{
-          '&:hover': { backgroundColor: customColorPalette.primary.light },
+          '&:hover': { backgroundColor: colorPalette.primary.light },
         }}
         label={
           <>

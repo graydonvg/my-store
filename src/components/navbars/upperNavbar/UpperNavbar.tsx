@@ -2,14 +2,14 @@
 
 import { Box } from '@mui/material';
 import UpperNavbarOptions from './UpperNavbarOptions';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
 
 export default function UpperNavbar() {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
-    <Box sx={{ backgroundColor: customColorPalette.navBar.upper.background }}>
+    <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{

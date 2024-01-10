@@ -1,7 +1,7 @@
 'use client';
 
 import { borderRadius } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { Box, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function WelcomePageContainer({ children }: Props) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <Box
@@ -20,7 +20,7 @@ export default function WelcomePageContainer({ children }: Props) {
         borderRadius: borderRadius,
         padding: 4,
         maxWidth: 400,
-        backgroundColor: customColorPalette.card.background,
+        backgroundColor: colorPalette.card.background,
       }}>
       {children}
     </Box>

@@ -1,7 +1,7 @@
 'use client';
 
 import { borderRadius } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography, useTheme } from '@mui/material';
 
@@ -53,10 +53,10 @@ type Props = {
 };
 
 export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const discountTotalBackgroundColor = mode === 'dark' ? customColorPalette.shade.dark : 'rgba(66, 165, 245, 0.09)';
+  const discountTotalBackgroundColor = mode === 'dark' ? colorPalette.shade.dark : 'rgba(66, 165, 245, 0.09)';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -76,7 +76,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
       ) : null}
       <Box
         sx={{
-          borderBottom: !totalToPay ? `2px solid ${customColorPalette.border}` : 'none',
+          borderBottom: !totalToPay ? `2px solid ${colorPalette.border}` : 'none',
           marginBottom: !totalToPay ? 1 : 0,
         }}>
         <Total
@@ -89,8 +89,8 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
         <Box
           sx={{
             marginBottom: 1,
-            borderTop: `1px solid ${customColorPalette.border}`,
-            borderBottom: `2px solid ${customColorPalette.border}`,
+            borderTop: `1px solid ${colorPalette.border}`,
+            borderBottom: `2px solid ${colorPalette.border}`,
           }}>
           <Total
             label="Order total"

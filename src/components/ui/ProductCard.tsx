@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from './buttons/ContainedButton';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { DeleteForever } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { ProductType } from '@/types';
@@ -25,7 +25,7 @@ type SalePercentageBadgeProps = {
 };
 
 function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -36,7 +36,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         flexDirection: 'column',
         borderRadius: borderRadius,
         paddingX: 0.5,
-        backgroundColor: customColorPalette.primary.dark,
+        backgroundColor: colorPalette.primary.dark,
         width: 'min-content',
       }}>
       <Typography
@@ -44,7 +44,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
         variant="caption"
         sx={{
           textAlign: 'center',
-          color: customColorPalette.typographyVariants.white,
+          color: colorPalette.typographyVariants.white,
           textTransform: 'uppercase',
         }}>
         {`${percentage}% off`}
@@ -59,7 +59,7 @@ type SalePriceProps = {
 };
 
 function SalePrice({ show, price }: SalePriceProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   if (!show) return null;
 
@@ -70,7 +70,7 @@ function SalePrice({ show, price }: SalePriceProps) {
       fontSize={16}
       fontFamily={'Georgia'}
       fontStyle="italic"
-      color={customColorPalette.typographyVariants.grey}
+      color={colorPalette.typographyVariants.grey}
       sx={{ textDecoration: 'line-through' }}>
       {formatCurrency(price)}
     </Typography>
@@ -179,7 +179,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const isOnSale = product.isOnSale === 'Yes';
@@ -254,7 +254,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 component="span"
                 fontSize={14}
                 lineHeight={'22px'}
-                color={customColorPalette.typographyVariants.grey}>
+                color={colorPalette.typographyVariants.grey}>
                 {product.brand}
               </Typography>
               <Box

@@ -1,4 +1,4 @@
-import useCustomColorPalette, { CustomColorPaletteReturnType } from '@/hooks/useCustomColorPalette';
+import useColorPalette, { ColorPaletteReturnType } from '@/hooks/useColorPalette';
 import { ContainedButtonButtonBackgroundColorType } from '@/types';
 import { Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
@@ -6,28 +6,28 @@ import { PulseLoader } from 'react-spinners';
 
 function getButtonBackgroundColor(
   option: ContainedButtonButtonBackgroundColorType,
-  customColorPalette: CustomColorPaletteReturnType
+  colorPalette: ColorPaletteReturnType
 ) {
   const colorOptions = {
     blue: {
-      backgroundColor: customColorPalette.primary.dark,
+      backgroundColor: colorPalette.primary.dark,
       '&:hover': {
-        backgroundColor: customColorPalette.primary.dark,
+        backgroundColor: colorPalette.primary.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: customColorPalette.primary.light,
+          backgroundColor: colorPalette.primary.light,
         },
       },
     },
     red: {
-      backgroundColor: customColorPalette.warning.dark,
+      backgroundColor: colorPalette.warning.dark,
       '&:hover': {
-        backgroundColor: customColorPalette.warning.dark,
+        backgroundColor: colorPalette.warning.dark,
       },
       '@media (hover: hover)': {
         '&:hover': {
-          backgroundColor: customColorPalette.warning.light,
+          backgroundColor: colorPalette.warning.light,
         },
       },
     },
@@ -58,9 +58,9 @@ export default function ContainedButton({
   isDisabled,
   ...props
 }: ContainedButtonProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const buttonBackgroundColor =
-    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, customColorPalette) : null;
+    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, colorPalette) : null;
 
   return (
     <Button

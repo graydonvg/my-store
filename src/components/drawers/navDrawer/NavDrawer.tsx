@@ -5,14 +5,14 @@ import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Typography, Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NavDraweOptions from './NavDrawerOptions';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const navbarHeight = document.getElementById('navbar')?.offsetHeight;
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const theme = useTheme();
@@ -36,7 +36,7 @@ export default function NavDrawer() {
         size="small"
         sx={{
           padding: 0,
-          color: customColorPalette.navBar.upper.text,
+          color: colorPalette.navBar.upper.text,
           cursor: 'pointer',
           '@media (hover: hover)': {
             '&:hover': {
@@ -54,7 +54,7 @@ export default function NavDrawer() {
         zIndex={(theme) => theme.zIndex.appBar + 1}>
         <Box
           sx={{
-            backgroundColor: customColorPalette.navBar.upper.background,
+            backgroundColor: colorPalette.navBar.upper.background,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -63,7 +63,7 @@ export default function NavDrawer() {
             paddingX: 2,
           }}>
           <Typography
-            color={customColorPalette.navBar.upper.text}
+            color={colorPalette.navBar.upper.text}
             variant="h5"
             component="span">
             Menu
@@ -73,8 +73,8 @@ export default function NavDrawer() {
             sx={{
               cursor: 'pointer',
               padding: 0,
-              color: customColorPalette.navBar.upper.text,
-              '&:hover': { backgroundColor: customColorPalette.navBar.upper.background },
+              color: colorPalette.navBar.upper.text,
+              '&:hover': { backgroundColor: colorPalette.navBar.upper.background },
             }}
             aria-label="close navigation drawer"
             onClick={handleCloseNavDrawer}>

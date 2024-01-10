@@ -4,14 +4,14 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { NavigateNext } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   children: ReactNode;
 };
 
 export default function BreadcrumbsComponent({ children }: Props) {
-  const customColor = useCustomColorPalette();
+  const customColor = useColorPalette();
 
   return (
     <Box role="presentation">

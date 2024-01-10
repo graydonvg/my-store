@@ -2,7 +2,7 @@ import { OrderType } from '@/types';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from './OrderTotals';
 import { borderRadius } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   show: boolean;

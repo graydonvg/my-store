@@ -2,7 +2,7 @@
 
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from './DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
@@ -20,7 +20,7 @@ type DrawerFooterProps = {
 
 function DrawerFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const orderTotal = selectCartTotal(cartItems);
@@ -47,7 +47,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
         '&::before': {
           content: '""',
           position: 'absolute',
-          boxShadow: `0 -2px 4px 0 ${customColorPalette.boxShadow}`,
+          boxShadow: `0 -2px 4px 0 ${colorPalette.boxShadow}`,
           top: 0,
           right: 0,
           left: 0,
@@ -115,7 +115,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
 }
 
 export default function CartDrawer() {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -132,16 +132,16 @@ export default function CartDrawer() {
   return (
     <>
       <UpperNavIconButton
-        backgroundColor={customColorPalette.navBar.upper.background}
+        backgroundColor={colorPalette.navBar.upper.background}
         onClick={handleToggleCart}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: customColorPalette.navBar.upper.text }}
+          sx={{ color: colorPalette.navBar.upper.text }}
         />
         <Box
           sx={{
-            color: customColorPalette.navBar.upper.text,
-            backgroundColor: customColorPalette.primary.dark,
+            color: colorPalette.navBar.upper.text,
+            backgroundColor: colorPalette.primary.dark,
             borderRadius: '50%',
             width: 20,
             height: 20,

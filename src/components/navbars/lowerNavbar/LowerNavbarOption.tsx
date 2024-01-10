@@ -2,7 +2,7 @@
 
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
@@ -13,7 +13,7 @@ type LowerNavbarOptionProps = {
 };
 
 export default function LowerNavbarOption({ path, label, isLastNavOption }: LowerNavbarOptionProps) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
 
@@ -35,11 +35,11 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
             component="span"
             sx={{
               textTransform: 'none',
-              color: customColorPalette.navBar.lower.text,
+              color: colorPalette.navBar.lower.text,
               '&:hover': {
-                color: customColorPalette.typography,
+                color: colorPalette.typography,
                 textDecoration: 'underline',
-                textDecorationColor: customColorPalette.typography,
+                textDecorationColor: colorPalette.typography,
                 textDecorationThickness: 1,
                 textUnderlineOffset: 6,
               },

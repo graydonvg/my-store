@@ -1,7 +1,7 @@
 'use client';
 
 import { borderRadius } from '@/constants/styles';
-import useCustomColorPalette from '@/hooks/useCustomColorPalette';
+import useColorPalette from '@/hooks/useColorPalette';
 import { ListItemIcon, MenuItem } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -12,14 +12,14 @@ type Props = {
 };
 
 export default function AccountMenuItem({ icon, text, onClick }: Props) {
-  const customColorPalette = useCustomColorPalette();
+  const colorPalette = useColorPalette();
 
   return (
     <MenuItem
       sx={{
         borderRadius: borderRadius,
         color: 'white',
-        '&:hover': { backgroundColor: customColorPalette.primary.dark },
+        '&:hover': { backgroundColor: colorPalette.primary.dark },
       }}
       onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
