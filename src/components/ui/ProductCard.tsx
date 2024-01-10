@@ -195,7 +195,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           flexDirection: 'column',
           height: 1,
         }}>
-        <Link href={`/products/product/${product.productId}`}>
+        <Link href={`/products/${product.category.toLowerCase()}/${product.productId}`}>
           <Box
             sx={{
               display: 'flex',

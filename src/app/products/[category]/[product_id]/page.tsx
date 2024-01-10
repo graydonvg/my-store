@@ -1,9 +1,9 @@
 import ProductDetails from '@/components/ProductDetails';
 import { getAllProducts, getProductById } from '@/services/products/get-products';
 import { ProductType } from '@/types';
-import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
+export const dynamicParams = false;
 
 type Params = {
   params: { product_id: string };
@@ -30,8 +30,6 @@ export default async function ProductPage({ params: { product_id } }: Params) {
 
   const product = data ? data : ({} as ProductType);
 
-  if (!product.productId) notFound();
-
   return <ProductDetails product={product} />;
 }
 
@@ -41,6 +39,7 @@ export async function generateStaticParams() {
   const products = productsData ?? [];
 
   return products.map((product) => ({
+    category: product.category.toString().toLowerCase(),
     product_id: product.productId.toString(),
   }));
 }

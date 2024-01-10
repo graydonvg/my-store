@@ -8,7 +8,7 @@ import OrderItems from './OrderItems';
 
 type Props = {
   show: boolean;
-  orders: OrderType[];
+  orders: OrderType[] | null;
 };
 
 export default function Orders({ show, orders }: Props) {

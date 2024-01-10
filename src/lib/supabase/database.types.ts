@@ -92,10 +92,7 @@ export interface Database {
           orderItemId: string;
           pricePaid: number;
           productId: string;
-          productImageUrl: string;
-          productName: string;
           quantity: number;
-          returnDetails: string;
           size: string;
           userId: string;
         };
@@ -104,10 +101,7 @@ export interface Database {
           orderItemId?: string;
           pricePaid: number;
           productId: string;
-          productImageUrl: string;
-          productName: string;
           quantity: number;
-          returnDetails: string;
           size: string;
           userId: string;
         };
@@ -116,10 +110,7 @@ export interface Database {
           orderItemId?: string;
           pricePaid?: number;
           productId?: string;
-          productImageUrl?: string;
-          productName?: string;
           quantity?: number;
-          returnDetails?: string;
           size?: string;
           userId?: string;
         };
@@ -130,6 +121,13 @@ export interface Database {
             isOneToOne: false;
             referencedRelation: 'orders';
             referencedColumns: ['orderId'];
+          },
+          {
+            foreignKeyName: 'orderItems_productId_fkey';
+            columns: ['productId'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['productId'];
           },
           {
             foreignKeyName: 'orderItems_userId_fkey';

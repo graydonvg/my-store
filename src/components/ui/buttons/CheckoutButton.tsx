@@ -52,9 +52,6 @@ export default function CheckoutButton({
         quantity: item?.quantity!,
         size: item?.size!,
         pricePaid: pricePaid!,
-        productName: item?.product?.name!,
-        productImageUrl: item?.product?.productImageData[0].imageUrl!,
-        returnDetails: item?.product?.returnInfo!,
       };
     });
     dispatch(

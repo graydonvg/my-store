@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { borderRadius } from '@/constants/styles';
@@ -68,7 +70,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                     xs={4}
                     md={2}
                     lg={4}>
-                    <Link href={`/products/product/${item.productId}`}>
+                    <Link href={`/products/${item.product?.category.toLowerCase()}/${item.product?.productId}`}>
                       <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
                         <Image
                           style={{
@@ -78,8 +80,8 @@ export default function OrderItems({ borderColor, order }: Props) {
                           }}
                           fill
                           priority
-                          src={item.productImageUrl}
-                          alt={`Image of ${item.productName}`}
+                          src={item.product?.productImageData[0].imageUrl!}
+                          alt={`Image of ${item.product?.name}`}
                           sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
                         />
                       </Box>
@@ -91,8 +93,8 @@ export default function OrderItems({ borderColor, order }: Props) {
                     md={10}
                     lg={8}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Link href={`/products/product/${item.productId}`}>
-                        <Typography fontSize={18}>{item.productName}</Typography>
+                      <Link href={`/products/${item.product?.category.toLowerCase()}/${item.product?.name}`}>
+                        <Typography fontSize={18}>{item.product?.name}</Typography>
                       </Link>
                       <Box>
                         {[
@@ -118,7 +120,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                         fontSize={13}
                         textTransform="uppercase"
                         color={customColorPalette.typographyVariants.grey}>
-                        {item.returnDetails}
+                        {item.product?.returnInfo}
                       </Typography>
                     </Box>
                   </Grid>

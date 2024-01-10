@@ -16,16 +16,17 @@ type ProductNameAndBrandProps = {
   name: string;
   brand: string;
   productId: string;
+  category: string;
 };
 
-function ProductNameAndBrand({ show, name, brand, productId }: ProductNameAndBrandProps) {
+function ProductNameAndBrand({ show, name, brand, productId, category }: ProductNameAndBrandProps) {
   const customColorPalette = useCustomColorPalette();
 
   if (!show) return null;
 
   return (
     <>
-      <Link href={`/products/product/${productId}`}>
+      <Link href={`/products/${category.toLowerCase()}/${productId}`}>
         <Typography
           lineHeight={1}
           component="p"
@@ -179,7 +180,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
           justifyContent: 'flex-start',
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-          <Link href={`/products/product/${item?.product?.productId}`}>
+          <Link href={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}>
             <Box
               sx={{
                 display: 'flex',
@@ -202,6 +203,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             <ProductNameAndBrand
               show={isBelowSmall}
               productId={item?.product?.productId!}
+              category={item?.product?.category!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -219,6 +221,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             <ProductNameAndBrand
               show={!isBelowSmall}
               productId={item?.product?.productId!}
+              category={item?.product?.category!}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />

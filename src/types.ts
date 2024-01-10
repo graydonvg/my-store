@@ -29,18 +29,7 @@ export type AccountType = {
 export type CartItemType =
   | (Omit<Omit<Database['public']['Tables']['cart']['Row'], 'userId'>, 'productId'> & {
       product:
-        | (Pick<
-            Database['public']['Tables']['products']['Row'],
-            | 'name'
-            | 'isOnSale'
-            | 'price'
-            | 'salePercentage'
-            | 'deliveryInfo'
-            | 'returnInfo'
-            | 'productId'
-            | 'sizes'
-            | 'brand'
-          > & {
+        | (Omit<Omit<Database['public']['Tables']['products']['Row'], 'createdAt'>, 'details'> & {
             productImageData: Pick<Database['public']['Tables']['productImageData']['Row'], 'imageUrl'>[];
           })
         | null;
@@ -109,8 +98,30 @@ export type AccountTextFieldData = {
   onKeyDownFunction: () => void;
 };
 
-export type OrderType = Omit<Database['public']['Tables']['orders']['Row'], 'userId'> & {
-  orderItems: Omit<Omit<Database['public']['Tables']['orderItems']['Row'], 'orderId'>, 'userId'>[];
+export type OrderType = {
+  createdAt: string;
+  orderId: string;
+  cartTotal: number;
+  discountTotal: number;
+  deliveryFee: number;
+  orderTotal: number;
+  isPaid: boolean;
+  shippingDetails: string;
+  orderItems: {
+    orderItemId: string;
+    quantity: number;
+    size: string;
+    pricePaid: number;
+    product: {
+      productId: string;
+      name: string;
+      category: string;
+      returnInfo: string;
+      productImageData: {
+        imageUrl: string | undefined;
+      }[];
+    } | null;
+  }[];
 };
 
 export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
