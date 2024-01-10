@@ -3,10 +3,10 @@ import OutlinedButton from '../ui/buttons/OutlinedButton';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { MouseEvent } from 'react';
 import CustomTextField from '../ui/inputFields/CustomTextField';
-import { AccountTextFieldData } from '@/types';
+import { AccountTextFieldDataType } from '@/types';
 
 type Props = {
-  textFieldData: AccountTextFieldData[];
+  textFieldData: AccountTextFieldDataType[];
   isUpdating: boolean;
   disableSave: boolean;
   onSave: (event: MouseEvent<HTMLButtonElement> | undefined) => void;

@@ -119,9 +119,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
 
       if (!!checkoutData.orderId) {
         const handleDeleteOrder = async () => {
-          await deleteOrder({
-            orderId: checkoutData.orderId!,
-          });
+          await deleteOrder(checkoutData.orderId!);
         };
 
         handleDeleteOrder();

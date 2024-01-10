@@ -40,29 +40,20 @@ type SelectShippingAddressCheckboxProps = {
 function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressCheckboxProps) {
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const userData = useAppSelector((state) => state.user.userData);
   const colorPalette = useColorPalette();
-  const fullName = `${userData?.firstName} ${userData?.lastName}`;
 
   if (!show) return null;
 
   function handleSelectShippingAddress() {
-    const { addressId, userId, ...restOfAddressData } = address;
-    const shippingDetailsArray = Object.values({
-      fullName: fullName,
-      contactNumber: userData?.contactNumber,
-      ...restOfAddressData,
-    });
-    const filteredShippingDetailsArray = shippingDetailsArray.filter((value) => value !== '' && value !== null);
-    const shippingDetailsString = filteredShippingDetailsArray.join(',');
+    const { addressId, userId, createdAt, ...shippingDetails } = address;
 
-    if (checkoutData.selectedAddressId === address.addressId) {
+    if (checkoutData.selectedAddressId === addressId) {
       dispatch(setCheckoutData({ selectedAddressId: null, shippingDetails: null }));
     } else {
       dispatch(
         setCheckoutData({
           selectedAddressId: addressId,
-          shippingDetails: shippingDetailsString,
+          shippingDetails: shippingDetails,
         })
       );
     }

@@ -1,13 +1,13 @@
-import { CustomResponseType, DeleteOrderType } from '@/types';
+import { CustomResponseType } from '@/types';
 
-export default async function deleteOrder(orderData: DeleteOrderType): Promise<CustomResponseType> {
+export default async function deleteOrder(orderId: string): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/orders/delete', {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(orderData),
+      body: JSON.stringify(orderId),
     });
 
     const data = await response.json();

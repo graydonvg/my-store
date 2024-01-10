@@ -143,7 +143,7 @@ export type UpdateAddressTypeStore = {
   postalCode: '' | number;
 };
 
-export type AccountTextFieldData = {
+export type AccountTextFieldDataType = {
   id: string;
   label: string;
   name: string;
@@ -151,6 +151,20 @@ export type AccountTextFieldData = {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDownFunction: () => void;
+};
+
+export type InsertShippingDetailsType = Database['public']['Tables']['shippingDetails']['Insert'];
+
+export type ShippingDetailsType = {
+  recipientFirstName: string;
+  recipientLastName: string;
+  recipientContactNumber: string;
+  complexOrBuilding: string | null;
+  streetAddress: string;
+  suburb: string;
+  province: string;
+  city: string;
+  postalCode: number;
 };
 
 export type OrderType = {
@@ -161,7 +175,7 @@ export type OrderType = {
   deliveryFee: number;
   orderTotal: number;
   isPaid: boolean;
-  shippingDetails: string;
+  shippingDetails: ShippingDetailsType[];
   orderItems: {
     orderItemId: string;
     quantity: number;
@@ -181,7 +195,7 @@ export type OrderType = {
 
 export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
 
-export type InserOrderItemsType = Database['public']['Tables']['orderItems']['Insert'];
+export type InserOrderItemType = Database['public']['Tables']['orderItems']['Insert'];
 
 export type CheckoutDataType = {
   selectedAddressId: string | null;
@@ -198,11 +212,35 @@ export type CheckoutDataType = {
     discountTotal: number;
     orderTotal: number;
   };
-  shippingDetails: string | null;
+  shippingDetails: ShippingDetailsType | null;
   orderId: string | null;
   userId: string | null;
 };
 
-export type UpdateOrderType = { orderId: string; isPaid: boolean };
+export type UpdateOrderType = {
+  orderId: string;
+  isPaid: boolean;
+};
 
-export type DeleteOrderType = { orderId: string };
+export type UserAuthType = {
+  email: string;
+  password: string;
+};
+
+export type UpdateCartItemSizeType = {
+  cartItemId: string;
+  size: string;
+};
+
+export type UpdateCartItemQuantityType = {
+  cartItemId: string;
+  quantity: number;
+};
+
+export type AddOrderResponseType = {
+  orderId: string;
+};
+
+export type AddProductResponseType = {
+  productId: string;
+};

@@ -7,6 +7,7 @@ import { Payment } from '@mui/icons-material';
 import ContainedButton from './ContainedButton';
 import addOrder from '@/services/orders/add';
 import addOrderItems from '@/services/orders/order-items/add';
+import addOrderShippingDetails from '@/services/orders/shipping-details/add';
 
 type Props = {
   showContainedButton?: boolean;
@@ -19,9 +20,12 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   const checkoutData = useAppSelector((state) => state.checkoutData);
 
   async function handleCreateOrder() {
-    const { success, message, data } = await addOrder({
+    const {
+      success,
+      message: addOrderMessage,
+      data,
+    } = await addOrder({
       userId: checkoutData.userId!,
-      shippingDetails: checkoutData.shippingDetails!,
       cartTotal: checkoutData.paymentTotals.cartTotal,
       deliveryFee: checkoutData.paymentTotals.deliveryFee,
       discountTotal: checkoutData.paymentTotals.discountTotal,
@@ -37,18 +41,35 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         };
       });
 
-      const { success, message } = await addOrderItems(createOrderItems);
+      const createShippingDetails = {
+        ...checkoutData.shippingDetails!,
+        orderId: data.orderId,
+        userId: checkoutData.userId!,
+      };
 
-      if (success === true) {
+      const addShippingDetailsPromise = await addOrderShippingDetails(createShippingDetails);
+      const addOrderItemsPromise = await addOrderItems(createOrderItems);
+
+      const [addShippingDetailsResponse, addOrderItemsResponse] = await Promise.all([
+        addShippingDetailsPromise,
+        addOrderItemsPromise,
+      ]);
+
+      const { success: addShippingDetailsSuccess, message: addShippingDetailsMessage } = addShippingDetailsResponse;
+      const { success: addOrderItemsSuccess, message: addOrderItemsMessage } = addOrderItemsResponse;
+
+      if (addShippingDetailsSuccess === true || addOrderItemsSuccess === true) {
         dispatch(setCheckoutData({ orderId: data.orderId }));
-        return { success: true, message };
+        return { success: true, message: addOrderMessage };
+      } else if (addShippingDetailsSuccess === false) {
+        return { success: false, message: addShippingDetailsMessage };
+      } else if (addOrderItemsSuccess === false) {
+        return { success: false, message: addOrderItemsMessage };
       } else {
-        toast.error(message);
-        return { success: false, message };
+        return { success: false, message: 'Failed to add order items and shipping details' };
       }
     } else {
-      toast.error(message);
-      return { success: false, message };
+      return { success: false, addOrderMessage };
     }
   }
 
@@ -58,6 +79,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
     const { success, message } = await handleCreateOrder();
 
     if (success === false) {
+      dispatch(setCheckoutData({ isProcessing: false }));
       return toast.error(message);
     }
 

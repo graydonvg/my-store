@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType, InserOrderItemsType } from '@/types';
+import { CustomResponseType, InserOrderItemType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
@@ -8,7 +8,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  const orderItemsData: InserOrderItemsType = await request.json();
+  const orderItemsData: InserOrderItemType = await request.json();
 
   if (!session)
     return NextResponse.json({ success: false, message: 'Failed to add order items. Please try again later.' });

@@ -159,7 +159,6 @@ export interface Database {
           isPaid: boolean;
           orderId: string;
           orderTotal: number;
-          shippingDetails: string;
           userId: string;
         };
         Insert: {
@@ -170,7 +169,6 @@ export interface Database {
           isPaid?: boolean;
           orderId?: string;
           orderTotal: number;
-          shippingDetails: string;
           userId: string;
         };
         Update: {
@@ -181,7 +179,6 @@ export interface Database {
           isPaid?: boolean;
           orderId?: string;
           orderTotal?: number;
-          shippingDetails?: string;
           userId?: string;
         };
         Relationships: [
@@ -270,6 +267,66 @@ export interface Database {
           sizes?: string[];
         };
         Relationships: [];
+      };
+      shippingDetails: {
+        Row: {
+          city: string;
+          complexOrBuilding: string | null;
+          orderId: string;
+          postalCode: number;
+          province: string;
+          recipientContactNumber: string;
+          recipientFirstName: string;
+          recipientLastName: string;
+          shippingDetailsId: string;
+          streetAddress: string;
+          suburb: string;
+          userId: string;
+        };
+        Insert: {
+          city: string;
+          complexOrBuilding?: string | null;
+          orderId: string;
+          postalCode: number;
+          province: string;
+          recipientContactNumber: string;
+          recipientFirstName: string;
+          recipientLastName: string;
+          shippingDetailsId?: string;
+          streetAddress: string;
+          suburb: string;
+          userId: string;
+        };
+        Update: {
+          city?: string;
+          complexOrBuilding?: string | null;
+          orderId?: string;
+          postalCode?: number;
+          province?: string;
+          recipientContactNumber?: string;
+          recipientFirstName?: string;
+          recipientLastName?: string;
+          shippingDetailsId?: string;
+          streetAddress?: string;
+          suburb?: string;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'shippingDetails_orderId_fkey';
+            columns: ['orderId'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['orderId'];
+          },
+          {
+            foreignKeyName: 'shippingDetails_userId_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['userId'];
+          }
+        ];
       };
       users: {
         Row: {

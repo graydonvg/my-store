@@ -14,7 +14,7 @@ import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update-user';
-import { AccountTextFieldData, PersonalInformationType } from '@/types';
+import { AccountTextFieldDataType, PersonalInformationType } from '@/types';
 
 type UserDataProps = {
   show: boolean;
@@ -42,7 +42,7 @@ type UpdateUserDataProps = {
   onSave: () => void;
   onCancel: () => void;
   value: string;
-  textFieldData: AccountTextFieldData[];
+  textFieldData: AccountTextFieldDataType[];
 };
 
 function UpdateUserData({ show, isUpdating, onSave, onCancel, value, textFieldData }: UpdateUserDataProps) {

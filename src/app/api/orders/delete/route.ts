@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType, DeleteOrderType } from '@/types';
+import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
@@ -9,7 +9,7 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    const { orderId }: DeleteOrderType = await request.json();
+    const orderId: string = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: 'Failed to delete order. No user session exists' });
