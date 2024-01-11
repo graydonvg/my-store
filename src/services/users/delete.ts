@@ -2,7 +2,7 @@ import { CustomResponseType } from '@/types';
 
 export async function deleteAddress(addressId: string): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/address/delete', {
+    const response = await fetch(`/api/users/address/delete?address_id=${addressId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
