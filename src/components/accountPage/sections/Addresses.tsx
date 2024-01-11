@@ -22,7 +22,7 @@ import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete-address';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
-import AddNewAddressDialog from '../../dialogs/AddNewAddressDialog';
+import AddressDialog from '../../dialogs/AddressDialog';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
 
@@ -300,7 +300,7 @@ export default function Addresses() {
         </Table>
       </TableContainer>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 2 }}>
-        <AddNewAddressDialog />
+        <AddressDialog />
       </Box>
     </Box>
   );

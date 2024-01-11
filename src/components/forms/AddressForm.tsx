@@ -69,20 +69,22 @@ export default function AddressForm() {
     } as InsertAddressType);
 
     if (success === true) {
-      // dispatch(
-      //   setUserData({
-      //     ...userData!,
-      //     addresses: [
-      //       ...userData?.addresses!,
-      //       {
-      //         ...restOfAddressData,
-      //         postalCode: Number(postalCode),
-      //         userId: userData?.userId!,
-      //         complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
-      //       },
-      //     ],
-      //   })
-      // );
+      dispatch(
+        setUserData({
+          ...userData!,
+          addresses: [
+            ...userData?.addresses!,
+            {
+              ...restOfAddressData,
+              postalCode: Number(postalCode),
+              userId: userData?.userId!,
+              complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
+              addressId: '',
+              createdAt: '',
+            },
+          ],
+        })
+      );
 
       dispatch(setIsAddressDialogOpen(false));
       dispatch(clearAddressFormData());
@@ -109,22 +111,25 @@ export default function AddressForm() {
     } as UpdateAddressTypeDb);
 
     if (success === true) {
-      // const updatedAddresses = userData?.addresses.map((address) =>
-      //   address.addressId === addressFormData.addressId
-      //     ? {
-      //         ...(addressFormData as InsertAddressType),
-      //         complexOrBuilding: addressFormData.complexOrBuilding ?? null,
-      //         addressId: addressFormData.addressId!,
-      //       }
-      //     : address
-      // );
+      const updatedAddresses = userData?.addresses.map((address) =>
+        address.addressId === addressFormData.addressId
+          ? {
+              ...addressFormData,
+              postalCode: Number(addressFormData.postalCode),
+              complexOrBuilding: addressFormData.complexOrBuilding,
+              addressId: addressFormData.addressId!,
+              userId: address.userId,
+              createdAt: address.createdAt,
+            }
+          : address
+      );
 
-      // dispatch(
-      //   setUserData({
-      //     ...userData!,
-      //     addresses: updatedAddresses!,
-      //   })
-      // );
+      dispatch(
+        setUserData({
+          ...userData!,
+          addresses: updatedAddresses!,
+        })
+      );
       dispatch(setIsAddressDialogOpen(false));
       dispatch(clearAddressFormData());
       toast.success(message);

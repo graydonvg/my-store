@@ -6,7 +6,7 @@ import { Add } from '@mui/icons-material';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { clearAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 
-export default function AddNewAddressDialog() {
+export default function AddressDialog() {
   const dispatch = useAppDispatch();
   const { isAddAddressDialogOpen } = useAppSelector((state) => state.dialog);
   const addressFormData = useAppSelector((state) => state.addressForm);
