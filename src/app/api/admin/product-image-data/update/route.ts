@@ -5,6 +5,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
+
   const imageData: InsertProductImageDataTypeStore[] = await request.json();
 
   try {

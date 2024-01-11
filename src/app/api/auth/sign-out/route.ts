@@ -5,6 +5,7 @@ import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-serve
 
 export async function GET(): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClientForAuth();
+
   const {
     data: { session },
   } = await supabase.auth.getSession();

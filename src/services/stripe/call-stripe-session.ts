@@ -1,10 +1,6 @@
-import { CustomResponseType, InsertAddressType } from '@/types';
+import { CustomResponseType, StripeResponseType } from '@/types';
 
-export async function callStripeSession(lineItems: any): Promise<
-  CustomResponseType<{
-    sessionId: string;
-  }>
-> {
+export async function callStripeSession(lineItems: any): Promise<CustomResponseType<StripeResponseType>> {
   try {
     const response = await fetch('/api/stripe', {
       method: 'POST',

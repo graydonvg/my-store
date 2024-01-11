@@ -1,4 +1,4 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, StripeResponseType } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createURL from '@/utils/createURL';
@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
 });
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType<{ sessionId: string }>>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponseType<StripeResponseType>>> {
   try {
     const supabase = await createSupabaseServerClient();
     const {

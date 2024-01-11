@@ -5,6 +5,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
+
   const productId: string = await request.json();
 
   try {

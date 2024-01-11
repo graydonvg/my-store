@@ -6,7 +6,9 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
   try {
     const supabase = await createSupabaseServerClient();
+
     const cartItemId: string = await request.json();
+
     const { error } = await supabase.from('cart').delete().eq('cartItemId', cartItemId);
 
     if (error) {
