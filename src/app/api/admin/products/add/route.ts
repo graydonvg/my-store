@@ -2,13 +2,24 @@ import { NextResponse } from 'next/server';
 
 import { AddProductResponseType, CustomResponseType, InsertProductTypeDb } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddProductResponseType>>> {
   const supabase = await createSupabaseServerClient();
 
-  const formData: InsertProductTypeDb = await request.json();
-
   try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const formData: InsertProductTypeDb = await request.json();
+
+    if (!session)
+      return NextResponse.json({ success: false, message: `Failed to add product. ${notAuthenticatedError}` });
+
+    if (!formData)
+      return NextResponse.json({ success: false, message: `Failed to add product. ${noDataReceivedError}` });
+
     const { data, error } = await supabase.from('products').insert(formData).select('productId');
 
     if (error) {

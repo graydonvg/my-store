@@ -2,17 +2,18 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { notAuthenticatedError } from '@/constants/api';
 
 export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
-  try {
-    const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
+  try {
     const {
       data: { session },
     } = await supabase.auth.getSession();
 
     if (!session)
-      return NextResponse.json({ success: false, message: 'Failed to clear cart. No user session exists.' });
+      return NextResponse.json({ success: false, message: `Failed to clear cart. ${notAuthenticatedError}` });
 
     const { error } = await supabase.from('cart').delete().eq('userId', session.user.id);
 

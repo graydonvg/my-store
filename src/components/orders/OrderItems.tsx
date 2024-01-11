@@ -93,7 +93,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                     md={10}
                     lg={8}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Link href={`/products/${item.product?.category.toLowerCase()}/${item.product?.name}`}>
+                      <Link href={`/products/${item.product?.category.toLowerCase()}/${item.product?.productId}`}>
                         <Typography fontSize={18}>{item.product?.name}</Typography>
                       </Link>
                       <Box>

@@ -2,18 +2,24 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, userPasswordType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const formData: userPasswordType = await request.json();
-
-  if (!session)
-    return NextResponse.json({ success: false, message: 'Failed to update password. Please try again later.' });
 
   try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const formData: userPasswordType = await request.json();
+
+    if (!session)
+      return NextResponse.json({ success: false, message: `Failed to update password. ${notAuthenticatedError}` });
+
+    if (!formData)
+      return NextResponse.json({ success: false, message: `Failed to update password. ${noDataReceivedError}` });
+
     const { data: success } = await supabase.rpc('verifyUserPassword', {
       password: formData.currentPassword,
     });
