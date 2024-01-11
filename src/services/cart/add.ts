@@ -2,7 +2,7 @@ import { InsertCartItemType, CustomResponseType } from '@/types';
 
 export default async function addItemToCart(cartItemData: InsertCartItemType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/cart/add', {
+    const response = await fetch('/api/secure/cart/add', {
       method: 'POST',
       cache: 'no-store',
       body: JSON.stringify(cartItemData),

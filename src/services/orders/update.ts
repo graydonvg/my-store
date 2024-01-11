@@ -2,7 +2,7 @@ import { CustomResponseType, UpdateOrderType } from '@/types';
 
 export default async function updateOrderPaymentStatus(orderData: UpdateOrderType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/orders/update/payment-status', {
+    const response = await fetch('/api/secure/orders/update/payment-status', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

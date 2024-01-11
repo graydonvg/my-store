@@ -2,7 +2,7 @@ import { CustomResponseType, InsertAddressType } from '@/types';
 
 export async function addNewAddress(addressData: InsertAddressType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/address/add', {
+    const response = await fetch('/api/secure/users/address/add', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

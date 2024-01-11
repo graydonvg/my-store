@@ -2,7 +2,7 @@ import { CustomResponseType } from '@/types';
 
 export default async function deleteOrder(orderId: string): Promise<CustomResponseType> {
   try {
-    const response = await fetch(`/api/orders/delete?order_id=${orderId}`, {
+    const response = await fetch(`/api/secure/orders/delete?order_id=${orderId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
