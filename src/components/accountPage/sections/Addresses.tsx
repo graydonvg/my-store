@@ -239,9 +239,9 @@ function AddressData({ show }: AddressDataProps) {
               borderBottom: `1px solid ${colorPalette.border}`,
               width: 1,
             }}>
-            <Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Typography fontSize={16}>
-                {address.complexOrBuilding ? `${address.complexOrBuilding},` : null}
+                {address.complexOrBuilding ? `${address.complexOrBuilding}, ` : null}
 
                 {`${address.streetAddress}, ${address.suburb}, ${address.province},
 											${address.city}, ${address.postalCode}`}

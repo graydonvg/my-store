@@ -6,7 +6,7 @@ import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/che
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import deleteAllCartItems from '@/services/cart/delete-all-cart-items';
 import updateOrder from '@/services/orders/update';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -19,6 +19,8 @@ export default function PaymentSuccessPage() {
   const colorPalette = useColorPalette();
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment-status');
+  const theme = useTheme();
+  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (paymentStatus === 'success' && checkoutData.isProcessing === true) {
@@ -62,12 +64,22 @@ export default function PaymentSuccessPage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        width: 1,
         gap: 4,
       }}>
-      <Typography fontSize={{ xs: 16, sm: 36 }}>Payment successful!</Typography>
-      <Typography fontSize={{ xs: 14, sm: 24 }}>Thank you for your order!</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+        }}>
+        <Typography fontSize={{ xs: 24, sm: 40 }}>Payment successful!</Typography>
+        <Typography fontSize={{ xs: 16, sm: 24 }}>Thank you for your order!</Typography>
+      </Box>
       <PulseLoader
-        size={24}
+        size={isBelowSmall ? 16 : 24}
         color={colorPalette.typography}
         loading={true}
       />

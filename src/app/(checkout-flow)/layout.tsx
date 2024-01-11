@@ -147,7 +147,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
         <Grid
           item
           xs={12}
-          md={9}>
+          md={!isPaymentView ? 9 : 12}>
           {children}
         </Grid>
         <YourOrderTotals show={!isPaymentView} />
