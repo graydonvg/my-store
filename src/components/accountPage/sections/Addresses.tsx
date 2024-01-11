@@ -1,6 +1,16 @@
 'use client';
 
-import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  Divider,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { PulseLoader } from 'react-spinners';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
@@ -73,11 +83,10 @@ function SelectShippingAddressCheckbox({ show, address }: SelectShippingAddressC
 
 type AddressButtonProps = {
   label: string;
-  hasBorderRight: boolean;
   onClick: () => Promise<void>;
 };
 
-function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
+function AddressButton({ label, onClick }: AddressButtonProps) {
   const colorPalette = useColorPalette();
 
   return (
@@ -88,8 +97,6 @@ function AddressButton({ label, hasBorderRight, onClick }: AddressButtonProps) {
       lineHeight={1}
       fontWeight={700}
       sx={{
-        paddingRight: hasBorderRight ? 1 : 0,
-        borderRight: hasBorderRight ? `1px solid ${colorPalette.border}` : null,
         color: colorPalette.primary.dark,
         '@media (hover: hover)': {
           '&:hover': {
@@ -114,6 +121,8 @@ type AddressButtonsProps = {
 };
 
 function AddressButtons({ show, editAddress, deleteAddress }: AddressButtonsProps) {
+  const colorPalette = useColorPalette();
+
   if (!show) return null;
 
   return (
@@ -121,12 +130,15 @@ function AddressButtons({ show, editAddress, deleteAddress }: AddressButtonsProp
       <AddressButton
         label="edit"
         onClick={editAddress}
-        hasBorderRight={true}
+      />
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderColor: colorPalette.border }}
       />
       <AddressButton
         label="delete"
         onClick={deleteAddress}
-        hasBorderRight={false}
       />
     </Box>
   );
