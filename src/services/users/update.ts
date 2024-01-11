@@ -2,7 +2,7 @@ import { CustomResponseType, UpdateAddressTypeDb, userPasswordType, userPersonal
 
 export async function updateAddress(formData: UpdateAddressTypeDb): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/update/address', {
+    const response = await fetch('/api/users/address/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -14,7 +14,7 @@ export async function updateAddress(formData: UpdateAddressTypeDb): Promise<Cust
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/update/address. ${error}`);
+    throw new Error(`@services/users/address/update. ${error}`);
   }
 }
 
@@ -22,7 +22,7 @@ export async function updateUserPersonalInformation(
   formData: userPersonalInformationType
 ): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/update/personal', {
+    const response = await fetch('/api/users/personal/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -34,13 +34,13 @@ export async function updateUserPersonalInformation(
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/update/personal. ${error}`);
+    throw new Error(`@services/users/personal/update. ${error}`);
   }
 }
 
 export async function updateUserPassword(formData: userPasswordType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/update/password', {
+    const response = await fetch('/api/users/password/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -52,6 +52,6 @@ export async function updateUserPassword(formData: userPasswordType): Promise<Cu
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/update/password. ${error}`);
+    throw new Error(`@services/users/password/update. ${error}`);
   }
 }
