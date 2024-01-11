@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, UserAuthType } from '@/types';
 import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-server-auth';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClientForAuth();
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  const formData: { email: string; password: string } = await request.json();
-  const { email, password } = formData;
+
+  const formData: UserAuthType = await request.json();
 
   if (session)
     return NextResponse.json({
@@ -19,8 +20,8 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
+      email: formData.email,
+      password: formData.password,
     });
 
     if (error) {

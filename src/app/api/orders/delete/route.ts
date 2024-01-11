@@ -6,9 +6,11 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
   try {
     const supabase = await createSupabaseServerClient();
+
     const {
       data: { session },
     } = await supabase.auth.getSession();
+
     const orderId: string = await request.json();
 
     if (!session)

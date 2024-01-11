@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, UpdateCartItemSizeType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  const data: {
-    cartItemId: string;
-    size: string;
-  } = await request.json();
+
+  const data: UpdateCartItemSizeType = await request.json();
 
   if (!session) return NextResponse.json({ success: false, message: 'Failed to update size. Please try again later.' });
 

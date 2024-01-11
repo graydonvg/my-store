@@ -203,10 +203,6 @@ export type AddOrderType = {
   shippingDetails: ShippingDetailsType;
 };
 
-export type AddOrderTypeResponseType = {
-  orderId: string;
-};
-
 export type CheckoutDataType = {
   selectedAddressId: string | null;
   isProcessing: boolean;
@@ -253,4 +249,8 @@ export type AddOrderResponseType = {
 
 export type AddProductResponseType = {
   productId: string;
+};
+
+export type StripeResponseType = {
+  sessionId: string;
 };

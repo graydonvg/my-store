@@ -1,6 +1,7 @@
+import { CustomResponseType } from '@/types';
 import createURL from '@/utils/createURL';
 
-export default async function revalidate(path: string) {
+export default async function revalidate(path: string): Promise<CustomResponseType> {
   const url = createURL('/api/revalidate');
 
   try {

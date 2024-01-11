@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
 
-import { AddOrderType, AddOrderTypeResponseType, CustomResponseType } from '@/types';
+import { AddOrderType, AddOrderResponseType, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddOrderTypeResponseType>>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddOrderResponseType>>> {
   const supabase = await createSupabaseServerClient();
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
   const orderData: AddOrderType = await request.json();
 
   if (!session)

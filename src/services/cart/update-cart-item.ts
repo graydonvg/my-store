@@ -1,9 +1,6 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, UpdateCartItemQuantityType, UpdateCartItemSizeType } from '@/types';
 
-export async function updateCartItemSize(cartItemData: {
-  cartItemId: string;
-  size: string;
-}): Promise<CustomResponseType> {
+export async function updateCartItemSize(cartItemData: UpdateCartItemSizeType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/cart/update/size', {
       method: 'POST',
@@ -21,10 +18,7 @@ export async function updateCartItemSize(cartItemData: {
   }
 }
 
-export async function updateCartItemQuantity(cartItemData: {
-  cartItemId: string;
-  quantity: number;
-}): Promise<CustomResponseType> {
+export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantityType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/cart/update/quantity', {
       method: 'POST',
