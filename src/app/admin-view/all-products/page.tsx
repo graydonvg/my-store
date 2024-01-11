@@ -1,6 +1,6 @@
 import Products from '@/components/Products';
 import RevalidateButton from '@/components/RevalidateButton';
-import { getAllProducts } from '@/services/products/get-products';
+import { getAllProducts } from '@/services/products/get';
 import { Box } from '@mui/material';
 
 export default async function AdminViewAllProducts() {

@@ -1,6 +1,6 @@
 import Products from '@/components/Products';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
-import { getAllProducts } from '@/services/products/get-products';
+import { getAllProducts } from '@/services/products/get';
 
 export default async function AllProducts() {
   const { data: products } = await getAllProducts();

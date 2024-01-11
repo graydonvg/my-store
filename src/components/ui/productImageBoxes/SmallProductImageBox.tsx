@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
-import deleteProductImageDataFromDb from '@/services/product-image-data/delete-product-image-data';
+import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { Spinner } from '../progress/Spinner';
 import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';

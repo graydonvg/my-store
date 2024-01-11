@@ -14,7 +14,7 @@ export async function updateCartItemSize(cartItemData: UpdateCartItemSizeType): 
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-cart-item. ${error}`);
+    throw new Error(`@services/cart/update. ${error}`);
   }
 }
 
@@ -32,6 +32,6 @@ export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantit
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-cart-item. ${error}`);
+    throw new Error(`@services/cart/update. ${error}`);
   }
 }

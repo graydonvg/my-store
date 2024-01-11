@@ -16,6 +16,6 @@ export default async function updateProductImageData(
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-product-image-data. ${error}`);
+    throw new Error(`@services/product-image-data/update. ${error}`);
   }
 }

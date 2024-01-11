@@ -1,5 +1,5 @@
 import { deleteImageFromStorage } from '@/lib/firebase';
-import deleteProductImageDataFromDb from '@/services/product-image-data/delete-product-image-data';
+import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { CustomResponseType, InsertProductImageDataTypeStore } from '@/types';
 
 // Delete images that have been uploaded to storage.

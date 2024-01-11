@@ -16,6 +16,6 @@ export default async function addProductImageData(
 
     return data;
   } catch (error) {
-    throw new Error(`@services/add-product-image-data. ${error}`);
+    throw new Error(`@services/product-image-data/add. ${error}`);
   }
 }

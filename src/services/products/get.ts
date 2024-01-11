@@ -13,7 +13,7 @@ export async function getAllProducts(): Promise<CustomResponseType<ProductType[]
 
     return data;
   } catch (error) {
-    throw new Error(`@services/get-all-products. ${error}`);
+    throw new Error(`@services/products/get-all. ${error}`);
   }
 }
 
@@ -30,7 +30,7 @@ export async function getProductById(productId: string): Promise<CustomResponseT
 
     return data;
   } catch (error) {
-    throw new Error(`@services/get-product-by-id. ${error}`);
+    throw new Error(`@services/products/get-by-id. ${error}`);
   }
 }
 
@@ -46,6 +46,6 @@ export async function getProductsByCategory(category: string): Promise<CustomRes
 
     return data;
   } catch (error) {
-    throw new Error(`@services/get-products-by-category. ${error}`);
+    throw new Error(`@services/products/get-by-category. ${error}`);
   }
 }

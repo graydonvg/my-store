@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import addProductToCart from '@/services/cart/add-product-to-cart';
+import addProductToCart from '@/services/cart/add';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { orderedSizesForToggleButtons } from '@/constants/sizes';

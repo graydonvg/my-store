@@ -14,6 +14,6 @@ export default async function signInWithPassword(formData: UserAuthType): Promis
 
     return data;
   } catch (error) {
-    throw new Error(`@services/sign-in. ${error}`);
+    throw new Error(`@services/auth/sign-in. ${error}`);
   }
 }

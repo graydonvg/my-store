@@ -14,6 +14,6 @@ export default async function addOrder(orderData: AddOrderType): Promise<CustomR
 
     return data;
   } catch (error) {
-    throw new Error(`@services/add-order. ${error}`);
+    throw new Error(`@services/orders/add. ${error}`);
   }
 }

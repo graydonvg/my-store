@@ -14,6 +14,6 @@ export default async function deleteProduct(productId: string): Promise<CustomRe
 
     return data;
   } catch (error) {
-    throw new Error(`@services/delete-product. ${error}`);
+    throw new Error(`@services/products/delete. ${error}`);
   }
 }

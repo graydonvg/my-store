@@ -14,6 +14,6 @@ export default async function deleteProductImageDataFromDb(productImageId: strin
 
     return data;
   } catch (error) {
-    throw new Error(`@services/delete-product-image-data. ${error}`);
+    throw new Error(`@services/product-image-data/delete. ${error}`);
   }
 }

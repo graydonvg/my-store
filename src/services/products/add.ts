@@ -16,6 +16,6 @@ export default async function addProduct(
 
     return data;
   } catch (error) {
-    throw new Error(`@services/add-product. ${error}`);
+    throw new Error(`@services/products/add. ${error}`);
   }
 }

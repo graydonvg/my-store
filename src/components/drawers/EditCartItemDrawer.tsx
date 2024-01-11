@@ -10,10 +10,10 @@ import { Add, Check, Delete, Edit, FavoriteBorder, Remove } from '@mui/icons-mat
 import { CartItemType } from '@/types';
 import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';
-import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useEffect, useState } from 'react';
-import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update-cart-item';
+import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { PulseLoader } from 'react-spinners';
+import { deleteItemFromCart } from '@/services/cart/delete';
 
 type LoaderProps = {
   show: boolean;
