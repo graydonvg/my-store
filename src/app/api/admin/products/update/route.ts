@@ -6,10 +6,10 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
 
-  const formData: UpdateProductType = await request.json();
+  const productData: UpdateProductType = await request.json();
 
   try {
-    const { error } = await supabase.from('products').update(formData).eq('productId', formData.productId!);
+    const { error } = await supabase.from('products').update(productData).eq('productId', productData.productId!);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update product. ${error.message}.` });

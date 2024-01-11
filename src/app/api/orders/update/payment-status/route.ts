@@ -7,9 +7,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
   try {
     const supabase = await createSupabaseServerClient();
 
-    const { orderId, isPaid }: UpdateOrderType = await request.json();
+    const orderData: UpdateOrderType = await request.json();
 
-    const { error } = await supabase.from('orders').update({ isPaid }).eq('orderId', orderId);
+    const { error } = await supabase
+      .from('orders')
+      .update({ isPaid: orderData.isPaid })
+      .eq('orderId', orderData.orderId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update order payment status. ${error.message}.` });

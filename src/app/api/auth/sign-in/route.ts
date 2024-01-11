@@ -4,17 +4,18 @@ import { CustomResponseType, UserAuthType } from '@/types';
 import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-server-auth';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabase = await createSupabaseServerClientForAuth();
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const formData: UserAuthType = await request.json();
-
-  if (session) return NextResponse.json({ success: false, message: 'Sign in failed. A user session already exists.' });
-
   try {
+    const supabase = await createSupabaseServerClientForAuth();
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const formData: UserAuthType = await request.json();
+
+    if (session)
+      return NextResponse.json({ success: false, message: 'Sign in failed. A user session already exists.' });
+
     const { error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,

@@ -6,10 +6,10 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddProductResponseType>>> {
   const supabase = await createSupabaseServerClient();
 
-  const formData: InsertProductTypeDb = await request.json();
+  const productData: InsertProductTypeDb = await request.json();
 
   try {
-    const { data, error } = await supabase.from('products').insert(formData).select('productId');
+    const { data, error } = await supabase.from('products').insert(productData).select('productId');
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add product. ${error.message}.` });

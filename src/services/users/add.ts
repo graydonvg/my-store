@@ -1,19 +1,19 @@
 import { CustomResponseType, InsertAddressType } from '@/types';
 
-export async function addNewAddress(formData: InsertAddressType): Promise<CustomResponseType> {
+export async function addNewAddress(userData: InsertAddressType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/add/address', {
+    const response = await fetch('/api/users/address/add', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(userData),
     });
 
     const data = await response.json();
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/add/address. ${error}`);
+    throw new Error(`@services/users/address/add. ${error}`);
   }
 }

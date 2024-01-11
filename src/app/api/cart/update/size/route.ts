@@ -10,12 +10,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     data: { session },
   } = await supabase.auth.getSession();
 
-  const data: UpdateCartItemSizeType = await request.json();
+  const cartItemData: UpdateCartItemSizeType = await request.json();
 
   if (!session) return NextResponse.json({ success: false, message: 'Failed to update size. Please try again later.' });
 
   try {
-    const { error } = await supabase.from('cart').update({ size: data.size }).eq('cartItemId', data.cartItemId);
+    const { error } = await supabase
+      .from('cart')
+      .update({ size: cartItemData.size })
+      .eq('cartItemId', cartItemData.cartItemId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update size. ${error.message}.` });
