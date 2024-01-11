@@ -2,7 +2,7 @@
 
 import useColorPalette from '@/hooks/useColorPalette';
 import { clearCart } from '@/lib/redux/cart/cartSlice';
-import { resetCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import deleteAllCartItems from '@/services/cart/delete-all-cart-items';
 import updateOrder from '@/services/orders/update';
@@ -39,6 +39,7 @@ export default function PaymentSuccessPage() {
 
         if (success === false) {
           toast.error(message);
+          dispatch(setCheckoutData({ isProcessing: false }));
         } else {
           dispatch(resetCheckoutData());
         }

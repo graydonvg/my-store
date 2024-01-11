@@ -153,8 +153,6 @@ export type AccountTextFieldDataType = {
   onKeyDownFunction: () => void;
 };
 
-export type InsertShippingDetailsType = Database['public']['Tables']['shippingDetails']['Insert'];
-
 export type ShippingDetailsType = {
   recipientFirstName: string;
   recipientLastName: string;
@@ -193,9 +191,21 @@ export type OrderType = {
   }[];
 };
 
-export type InserOrderType = Database['public']['Tables']['orders']['Insert'];
+export type AddOrderType = {
+  orderDetails: {
+    cartTotal: number;
+    deliveryFee: number;
+    discountTotal: number;
+    isPaid: boolean;
+    orderTotal: number;
+  };
+  orderItems: { pricePaid: number; productId: string; quantity: number; size: string }[];
+  shippingDetails: ShippingDetailsType;
+};
 
-export type InserOrderItemType = Database['public']['Tables']['orderItems']['Insert'];
+export type AddOrderTypeResponseType = {
+  orderId: string;
+};
 
 export type CheckoutDataType = {
   selectedAddressId: string | null;
