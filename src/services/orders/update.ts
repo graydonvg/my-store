@@ -1,6 +1,6 @@
 import { CustomResponseType, UpdateOrderType } from '@/types';
 
-export default async function updateOrder(orderData: UpdateOrderType): Promise<CustomResponseType> {
+export default async function updateOrderPaymentStatus(orderData: UpdateOrderType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/orders/update/payment-status', {
       method: 'POST',
@@ -14,6 +14,6 @@ export default async function updateOrder(orderData: UpdateOrderType): Promise<C
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-order-payment-status. ${error}`);
+    throw new Error(`@services/orders/update. ${error}`);
   }
 }

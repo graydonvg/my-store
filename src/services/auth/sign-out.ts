@@ -10,6 +10,6 @@ export default async function signOut(): Promise<CustomResponseType> {
 
     return data;
   } catch (error) {
-    throw new Error(`@services/sign-out. ${error}`);
+    throw new Error(`@services/auth/sign-out. ${error}`);
   }
 }

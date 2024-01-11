@@ -14,6 +14,6 @@ export async function addNewAddress(formData: InsertAddressType): Promise<Custom
 
     return data;
   } catch (error) {
-    throw new Error(`@services/add-address. ${error}`);
+    throw new Error(`@services/users/add/address. ${error}`);
   }
 }

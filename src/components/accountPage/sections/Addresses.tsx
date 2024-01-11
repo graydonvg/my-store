@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 import { AddressType, UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
-import { deleteAddress } from '@/services/users/delete-address';
+import { deleteAddress } from '@/services/users/delete';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddressDialog from '../../dialogs/AddressDialog';

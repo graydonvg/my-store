@@ -8,11 +8,11 @@ import { CartItemType } from '@/types';
 import useColorPalette from '@/hooks/useColorPalette';
 import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
-import deleteItemFromCart from '@/services/cart/delete-item-from-cart';
 import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
+import { deleteItemFromCart } from '@/services/cart/delete';
 
 type LoadingSpinnerProps = {
   show: boolean;

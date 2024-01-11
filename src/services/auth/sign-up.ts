@@ -14,6 +14,6 @@ export default async function signUpNewUser(formData: UserAuthType): Promise<Cus
 
     return data;
   } catch (error) {
-    throw new Error(`@services/sign-up. ${error}`);
+    throw new Error(`@services/auth/sign-up. ${error}`);
   }
 }

@@ -14,6 +14,6 @@ export default async function updateProduct(formData: UpdateProductType): Promis
 
     return data;
   } catch (error) {
-    throw new Error(`@services/update-product. ${error}`);
+    throw new Error(`@services/products/update. ${error}`);
   }
 }

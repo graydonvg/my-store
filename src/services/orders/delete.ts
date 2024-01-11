@@ -14,6 +14,6 @@ export default async function deleteOrder(orderId: string): Promise<CustomRespon
 
     return data;
   } catch (error) {
-    throw new Error(`@services/delete-order. ${error}`);
+    throw new Error(`@services/orders/delete. ${error}`);
   }
 }

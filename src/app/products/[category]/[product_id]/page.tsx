@@ -1,5 +1,5 @@
 import ProductDetails from '@/components/ProductDetails';
-import { getAllProducts, getProductById } from '@/services/products/get-products';
+import { getAllProducts, getProductById } from '@/services/products/get';
 import { ProductType } from '@/types';
 
 export const dynamic = 'force-dynamic';

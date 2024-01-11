@@ -13,8 +13,8 @@ import { ChangeEvent, ReactNode, useEffect } from 'react';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { updateUserPersonalInformation } from '@/services/users/update-user';
 import { AccountTextFieldDataType, PersonalInformationType } from '@/types';
+import { updateUserPersonalInformation } from '@/services/users/update';
 
 type UserDataProps = {
   show: boolean;

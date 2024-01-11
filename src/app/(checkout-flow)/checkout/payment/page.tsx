@@ -4,8 +4,8 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { clearCart } from '@/lib/redux/cart/cartSlice';
 import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import deleteAllCartItems from '@/services/cart/delete-all-cart-items';
-import updateOrder from '@/services/orders/update';
+import { deleteAllCartItems } from '@/services/cart/delete';
+import updateOrderPaymentStatus from '@/services/orders/update';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -37,7 +37,7 @@ export default function PaymentSuccessPage() {
       handleClearAllCartItems();
 
       const handleUpdateOrderPaymentStatus = async () => {
-        const { success, message } = await updateOrder({ orderId: checkoutData.orderId!, isPaid: true });
+        const { success, message } = await updateOrderPaymentStatus({ orderId: checkoutData.orderId!, isPaid: true });
 
         if (success === false) {
           toast.error(message);

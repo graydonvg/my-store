@@ -6,7 +6,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Add } from '@mui/icons-material';
-import { addNewAddress } from '@/services/users/add-address';
+import { addNewAddress } from '@/services/users/add';
 import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
@@ -14,7 +14,7 @@ import { setIsAddressDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dia
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
-import { updateAddress } from '@/services/users/update-address';
+import { updateAddress } from '@/services/users/update';
 import { setUserData } from '@/lib/redux/user/userSlice';
 
 const contactDetailsFormFields = [

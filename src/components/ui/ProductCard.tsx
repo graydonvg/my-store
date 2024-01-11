@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ProductType } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
-import deleteProduct from '@/services/products/delete-product';
+import deleteProduct from '@/services/products/delete';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Link from 'next/link';

@@ -17,10 +17,10 @@ import {
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import addProduct from '@/services/products/add-product';
-import addProductImageData from '@/services/product-image-data/add-product-image-data';
-import deleteProduct from '@/services/products/delete-product';
-import updateProduct from '@/services/products/update-product';
+import addProduct from '@/services/products/add';
+import addProductImageData from '@/services/product-image-data/add';
+import deleteProduct from '@/services/products/delete';
+import updateProduct from '@/services/products/update';
 import ManageProductImages from '@/components/ManageProductImages';
 import NumberField from '@/components/ui/inputFields/NumberField';
 import { orderedSizesForToggleButtons } from '@/constants/sizes';

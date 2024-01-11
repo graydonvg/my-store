@@ -12,6 +12,6 @@ export default async function addProductToCart(cartItem: InsertCartItemType): Pr
 
     return data;
   } catch (error) {
-    throw new Error(`@services/add-product-to-cart. ${error}`);
+    throw new Error(`@services/cart/add. ${error}`);
   }
 }

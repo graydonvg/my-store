@@ -12,9 +12,9 @@ import {
   setIsUpdatingAccount,
 } from '@/lib/redux/account/accountSlice';
 import { toast } from 'react-toastify';
-import { updateUserPassword } from '@/services/users/update-user';
 import { AccountType } from '@/types';
 import { useRouter } from 'next/navigation';
+import { updateUserPassword } from '@/services/users/update';
 
 type PasswordPlaceholderProps = {
   show: boolean;
