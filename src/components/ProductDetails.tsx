@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import addProductToCart from '@/services/cart/add';
+import addItemToCart from '@/services/cart/add';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { orderedSizesForToggleButtons } from '@/constants/sizes';
@@ -237,7 +237,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           toast.error(error.message);
         }
       } else {
-        const { success, message } = await addProductToCart({
+        const { success, message } = await addItemToCart({
           productId: product.productId,
           quantity: itemQuantity,
           size: itemSize!,

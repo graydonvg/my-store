@@ -11,15 +11,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: InsertAddressType = await request.json();
+    const addressData: InsertAddressType = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: `Failed to add address. ${notAuthenticatedError}` });
 
-    if (!formData)
+    if (!addressData)
       return NextResponse.json({ success: false, message: `Failed to add address. ${noDataReceivedError}` });
 
-    const { error } = await supabase.from('addresses').insert(formData);
+    const { error } = await supabase.from('addresses').insert(addressData);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add address. ${error.message}.` });

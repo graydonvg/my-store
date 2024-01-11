@@ -1,13 +1,13 @@
 import { CustomResponseType, UpdateProductType } from '@/types';
 
-export default async function updateProduct(formData: UpdateProductType): Promise<CustomResponseType> {
+export default async function updateProduct(productData: UpdateProductType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/admin/products/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(productData),
     });
 
     const data = await response.json();

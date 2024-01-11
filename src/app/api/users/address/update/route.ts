@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: UpdateAddressTypeDb = await request.json();
+    const addressData: UpdateAddressTypeDb = await request.json();
 
     if (!session)
       return NextResponse.json({
@@ -20,13 +20,13 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: 'Failed to update address. Please try again later.',
       });
 
-    if (!formData)
+    if (!addressData)
       return NextResponse.json({
         success: false,
         message: `Failed to update address. ${noDataReceivedError}`,
       });
 
-    const { error } = await supabase.from('addresses').update(formData).eq('addressId', formData.addressId!);
+    const { error } = await supabase.from('addresses').update(addressData).eq('addressId', addressData.addressId!);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update address. ${error.message}.` });

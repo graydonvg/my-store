@@ -6,13 +6,13 @@ import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-serve
 export async function GET(): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClientForAuth();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) return NextResponse.json({ success: false, message: 'Sign out failed. No user session exists.' });
-
   try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) return NextResponse.json({ success: false, message: 'Sign out failed. No user session exists.' });
+
     const { error } = await supabase.auth.signOut();
 
     if (error) {

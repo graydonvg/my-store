@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: { firstName: string; lastName: string } = await request.json();
+    const personalData: { firstName: string; lastName: string } = await request.json();
 
     if (!session)
       return NextResponse.json({
@@ -20,13 +20,13 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: `Failed to update personal information. ${notAuthenticatedError}`,
       });
 
-    if (!formData)
+    if (!personalData)
       return NextResponse.json({
         success: false,
         message: `Failed to update personal information. ${noDataReceivedError}`,
       });
 
-    const { error } = await supabase.from('users').update(formData).eq('userId', session.user.id);
+    const { error } = await supabase.from('users').update(personalData).eq('userId', session.user.id);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update personal information. ${error.message}.` });

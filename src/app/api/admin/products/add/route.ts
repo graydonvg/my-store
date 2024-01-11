@@ -12,15 +12,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: InsertProductTypeDb = await request.json();
+    const productData: InsertProductTypeDb = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: `Failed to add product. ${notAuthenticatedError}` });
 
-    if (!formData)
+    if (!productData)
       return NextResponse.json({ success: false, message: `Failed to add product. ${noDataReceivedError}` });
 
-    const { data, error } = await supabase.from('products').insert(formData).select('productId');
+    const { data, error } = await supabase.from('products').insert(productData).select('productId');
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add product. ${error.message}.` });

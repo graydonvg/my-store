@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: UserAuthType = await request.json();
+    const signUpData: UserAuthType = await request.json();
 
     if (session)
       return NextResponse.json({
@@ -20,15 +20,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: 'Sign up failed. Please sign out before creating a new account.',
       });
 
-    if (!formData)
+    if (!signUpData)
       return NextResponse.json({
         success: false,
         message: `Sign up failed. ${noDataReceivedError}`,
       });
 
     const { error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
+      email: signUpData.email,
+      password: signUpData.password,
     });
 
     if (error) {

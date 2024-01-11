@@ -1,7 +1,7 @@
 import { AddProductResponseType, CustomResponseType, InsertProductTypeDb } from '@/types';
 
 export default async function addProduct(
-  formData: InsertProductTypeDb
+  productData: InsertProductTypeDb
 ): Promise<CustomResponseType<AddProductResponseType>> {
   try {
     const response = await fetch('/api/admin/products/add', {
@@ -9,7 +9,7 @@ export default async function addProduct(
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(productData),
     });
 
     const data = await response.json();

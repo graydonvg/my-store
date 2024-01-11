@@ -1,13 +1,13 @@
 import { CustomResponseType, UserAuthType } from '@/types';
 
-export default async function signInWithPassword(formData: UserAuthType): Promise<CustomResponseType> {
+export default async function signInWithPassword(signInData: UserAuthType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/auth/sign-in', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(signInData),
     });
 
     const data = await response.json();

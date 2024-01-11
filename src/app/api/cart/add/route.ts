@@ -12,18 +12,18 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: InsertCartItemType = await request.json();
+    const cartItemData: InsertCartItemType = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: `Failed to add item to cart. ${notAuthenticatedError}` });
 
-    if (!formData)
+    if (!cartItemData)
       return NextResponse.json({
         success: false,
         message: `Failed to update cart. ${noDataReceivedError}`,
       });
 
-    const { error } = await supabase.from('cart').insert(formData);
+    const { error } = await supabase.from('cart').insert(cartItemData);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to add item to cart. ${error.message}.` });

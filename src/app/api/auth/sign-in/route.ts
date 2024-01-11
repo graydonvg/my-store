@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: UserAuthType = await request.json();
+    const signInData: UserAuthType = await request.json();
 
     if (session)
       return NextResponse.json({
@@ -20,15 +20,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: 'Sign in failed. A user session already exists.',
       });
 
-    if (!formData)
+    if (!signInData)
       return NextResponse.json({
         success: false,
         message: `Sign in failed. ${noDataReceivedError}`,
       });
 
     const { error } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
+      email: signInData.email,
+      password: signInData.password,
     });
 
     if (error) {

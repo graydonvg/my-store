@@ -12,15 +12,18 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const data: UpdateCartItemQuantityType = await request.json();
+    const cartItemData: UpdateCartItemQuantityType = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: `Failed to update quantity. ${notAuthenticatedError}` });
 
-    if (!data)
+    if (!cartItemData)
       return NextResponse.json({ success: false, message: `Failed to update quantity. ${noDataReceivedError}` });
 
-    const { error } = await supabase.from('cart').update({ quantity: data.quantity }).eq('cartItemId', data.cartItemId);
+    const { error } = await supabase
+      .from('cart')
+      .update({ quantity: cartItemData.quantity })
+      .eq('cartItemId', cartItemData.cartItemId);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update quantity. ${error.message}.` });

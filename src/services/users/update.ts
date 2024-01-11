@@ -1,13 +1,13 @@
 import { CustomResponseType, UpdateAddressTypeDb, userPasswordType, userPersonalInformationType } from '@/types';
 
-export async function updateAddress(formData: UpdateAddressTypeDb): Promise<CustomResponseType> {
+export async function updateAddress(addressData: UpdateAddressTypeDb): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/users/address/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(addressData),
     });
 
     const data = await response.json();
@@ -19,7 +19,7 @@ export async function updateAddress(formData: UpdateAddressTypeDb): Promise<Cust
 }
 
 export async function updateUserPersonalInformation(
-  formData: userPersonalInformationType
+  personalData: userPersonalInformationType
 ): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/users/personal/update', {
@@ -27,7 +27,7 @@ export async function updateUserPersonalInformation(
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(personalData),
     });
 
     const data = await response.json();
@@ -38,14 +38,14 @@ export async function updateUserPersonalInformation(
   }
 }
 
-export async function updateUserPassword(formData: userPasswordType): Promise<CustomResponseType> {
+export async function updateUserPassword(passwordData: userPasswordType): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/users/password/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(passwordData),
     });
 
     const data = await response.json();

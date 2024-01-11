@@ -12,20 +12,20 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { session },
     } = await supabase.auth.getSession();
 
-    const formData: userPasswordType = await request.json();
+    const passwordData: userPasswordType = await request.json();
 
     if (!session)
       return NextResponse.json({ success: false, message: `Failed to update password. ${notAuthenticatedError}` });
 
-    if (!formData)
+    if (!passwordData)
       return NextResponse.json({ success: false, message: `Failed to update password. ${noDataReceivedError}` });
 
     const { data: success } = await supabase.rpc('verifyUserPassword', {
-      password: formData.currentPassword,
+      password: passwordData.currentPassword,
     });
 
-    if (success === true && formData.newPassword === formData.confirmPassword) {
-      const { error } = await supabase.auth.updateUser({ password: formData.newPassword });
+    if (success === true && passwordData.newPassword === passwordData.confirmPassword) {
+      const { error } = await supabase.auth.updateUser({ password: passwordData.newPassword });
 
       if (error) {
         return NextResponse.json({ success: false, message: `Failed to update password. ${error.message}.` });
