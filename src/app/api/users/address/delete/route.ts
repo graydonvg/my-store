@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { noIdReceivedError, notAuthenticatedError } from '@/constants/api';
 
-export async function DELETE(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function DELETE(request: NextRequest): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -12,7 +12,8 @@ export async function DELETE(request: Request): Promise<NextResponse<CustomRespo
       data: { session },
     } = await supabase.auth.getSession();
 
-    const addressId: string = await request.json();
+    const searchParams = request.nextUrl.searchParams;
+    const addressId = searchParams.get('address_id');
 
     if (!session)
       return NextResponse.json({

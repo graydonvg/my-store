@@ -2,12 +2,11 @@ import { CustomResponseType } from '@/types';
 
 export default async function deleteProduct(productId: string): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/admin/products/delete', {
+    const response = await fetch(`/api/admin/products/delete?product_id=${productId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(productId),
     });
 
     const data = await response.json();
