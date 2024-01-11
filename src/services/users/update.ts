@@ -2,7 +2,7 @@ import { CustomResponseType, UpdateAddressTypeDb, userPasswordType, userPersonal
 
 export async function updateAddress(addressData: UpdateAddressTypeDb): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/address/update', {
+    const response = await fetch('/api/secure/users/address/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -22,7 +22,7 @@ export async function updateUserPersonalInformation(
   personalData: userPersonalInformationType
 ): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/personal/update', {
+    const response = await fetch('/api/secure/users/personal/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -40,7 +40,7 @@ export async function updateUserPersonalInformation(
 
 export async function updateUserPassword(passwordData: userPasswordType): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/users/password/update', {
+    const response = await fetch('/api/secure/users/password/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

@@ -4,7 +4,7 @@ export default async function updateProductImageData(
   imageData: InsertProductImageDataTypeStore[]
 ): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/admin/product-image-data/update', {
+    const response = await fetch('/api/secure/admin/product-image-data/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

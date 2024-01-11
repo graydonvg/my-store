@@ -2,7 +2,7 @@ import { CustomResponseType } from '@/types';
 
 export default async function signOut(): Promise<CustomResponseType> {
   try {
-    const response = await fetch('/api/auth/sign-out', {
+    const response = await fetch('/api/secure/auth/sign-out', {
       method: 'GET',
     });
 

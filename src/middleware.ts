@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { Database } from './lib/supabase/database.types';
+import { notAuthenticatedError } from './constants/api';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -60,11 +61,13 @@ export async function middleware(request: NextRequest) {
     return request.nextUrl.pathname.startsWith(path);
   }
 
+  //								!!!IMPORTANT!!!
   // Make sure the path is included in the matcher below
 
-  const adminOnlyPath = checkPathStartsWith('/api/admin') || checkPathStartsWith('/admin-view');
+  const adminOnlyPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin-view');
 
   const authRequiredPath =
+    checkPathStartsWith('/api/secure') ||
     checkPathStartsWith('/account') ||
     checkPathStartsWith('/orders') ||
     checkPathStartsWith('/wishlist') ||
@@ -72,15 +75,19 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/checkout');
 
   if (adminOnlyPath && (!session || isAdmin === false)) {
-    if (checkPathStartsWith('/api/admin')) {
+    if (checkPathStartsWith('/api')) {
       return NextResponse.json({ success: false, message: 'Not Authorized.' });
-    } else if (checkPathStartsWith('/admin-view')) {
+    } else {
       return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
     }
   }
 
   if (authRequiredPath && !session) {
-    return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
+    if (checkPathStartsWith('/api')) {
+      return NextResponse.json({ success: false, message: notAuthenticatedError });
+    } else {
+      return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
+    }
   }
 
   return response;
@@ -88,7 +95,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/api/admin/:path*',
+    '/api/secure/:path*',
     '/admin-view/:path*',
     '/account',
     '/orders',

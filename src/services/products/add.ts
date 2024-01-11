@@ -4,7 +4,7 @@ export default async function addProduct(
   productData: InsertProductTypeDb
 ): Promise<CustomResponseType<AddProductResponseType>> {
   try {
-    const response = await fetch('/api/admin/products/add', {
+    const response = await fetch('/api/secure/admin/products/add', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

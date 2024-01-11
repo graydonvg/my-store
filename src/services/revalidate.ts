@@ -2,7 +2,7 @@ import { CustomResponseType } from '@/types';
 import createURL from '@/utils/createURL';
 
 export default async function revalidate(path: string): Promise<CustomResponseType> {
-  const url = createURL('/api/revalidate');
+  const url = createURL('/api/secure/revalidate');
 
   try {
     const response = await fetch(
