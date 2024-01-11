@@ -2,20 +2,24 @@ import { NextResponse } from 'next/server';
 
 import { AddOrderType, AddOrderResponseType, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddOrderResponseType>>> {
   const supabase = await createSupabaseServerClient();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const orderData: AddOrderType = await request.json();
-
-  if (!session)
-    return NextResponse.json({ success: false, message: 'Failed to create order. Please try again later.' });
-
   try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const orderData: AddOrderType = await request.json();
+
+    if (!session)
+      return NextResponse.json({ success: false, message: `Failed to create order. ${notAuthenticatedError}` });
+
+    if (!orderData)
+      return NextResponse.json({ success: false, message: `Failed to create order. ${noDataReceivedError}` });
+
     const { error, data } = await supabase
       .from('orders')
       .insert({ ...orderData.orderDetails, userId: session.user.id })
