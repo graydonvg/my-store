@@ -2,6 +2,48 @@ import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadPro
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+function handleSetProductDataOnChange(
+  field: keyof InsertProductTypeStore,
+  value: InsertProductTypeStore[keyof InsertProductTypeStore],
+  productFormData: InsertProductTypeStore,
+  initialState: State
+) {
+  if (field === 'sizes') {
+    return handleSizesChange(value as string, productFormData);
+  } else if (field === 'isOnSale' && value === 'No') {
+    return { ...productFormData, [field]: value, salePercentage: 0 };
+  } else if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
+    return { ...productFormData, [field]: value, salePercentage: initialState.productFormData.salePercentage };
+  } else {
+    return { ...productFormData, [field]: value };
+  }
+}
+
+function handleSizesChange(value: string, productFormData: InsertProductTypeStore) {
+  if (productFormData.sizes.includes(value)) {
+    const filteredSizes = productFormData.sizes.filter((size) => size !== value);
+    return { ...productFormData, sizes: filteredSizes };
+  } else {
+    const sizes = [...productFormData.sizes, value];
+    const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
+    return { ...productFormData, sizes: sortedSizes };
+  }
+}
+
+function handleSetImageUploadProgress(
+  payload: ImageUploadProgressType,
+  imageUploadProgress: ImageUploadProgressType[]
+) {
+  const existingIndex = imageUploadProgress.findIndex((upload) => upload.fileName === payload.fileName);
+  if (existingIndex !== -1) {
+    imageUploadProgress[existingIndex] = payload;
+  } else {
+    imageUploadProgress.push(payload);
+  }
+
+  return [...imageUploadProgress];
+}
+
 type State = {
   isEditMode: boolean;
   isDeletingImage: boolean;
@@ -44,33 +86,10 @@ export const productFormSlice = createSlice({
       }>
     ) {
       const { field, value } = action.payload;
-      if (field === 'sizes') {
-        if (state.productFormData.sizes.includes(value as string)) {
-          const filteredSizes = state.productFormData.sizes.filter((size) => size !== value);
-          state.productFormData.sizes = filteredSizes;
-        } else {
-          const sizes = [...state.productFormData.sizes, value as string];
-          const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
-
-          state.productFormData.sizes = sortedSizes;
-        }
-      } else {
-        if (field === 'isOnSale' && value === 'No') {
-          state.productFormData = { ...state.productFormData, salePercentage: 0 };
-        }
-        state.productFormData = { ...state.productFormData, [field]: value };
-      }
+      state.productFormData = handleSetProductDataOnChange(field, value, state.productFormData, initialState);
     },
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
-      const existingIndex = state.imageUploadProgress.findIndex(
-        (upload) => upload.fileName === action.payload.fileName
-      );
-
-      if (existingIndex !== -1) {
-        state.imageUploadProgress[existingIndex] = action.payload;
-      } else {
-        state.imageUploadProgress.push(action.payload);
-      }
+      state.imageUploadProgress = handleSetImageUploadProgress(action.payload, state.imageUploadProgress);
     },
     setImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
       state.imageData = [...state.imageData, ...action.payload];
