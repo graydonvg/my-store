@@ -13,6 +13,8 @@ import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelecto
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 import { deleteItemFromCart } from '@/services/cart/delete';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { removeItemFromCart } from '@/lib/redux/cart/cartSlice';
 
 type LoadingSpinnerProps = {
   show: boolean;
@@ -34,39 +36,30 @@ function LoadingSpinner({ show }: LoadingSpinnerProps) {
   );
 }
 
-type DeleteCartItemButtonProps = {
-  show: boolean;
-  disabled: boolean;
-  onClick: () => void;
-};
+// type DeleteCartItemButtonProps = {
+//   show: boolean;
+//   disabled: boolean;
+//   onClick: () => void;
+// };
 
-function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
-  const colorPalette = useColorPalette();
+// function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
+//   const colorPalette = useColorPalette();
 
-  if (!show) return null;
+//   if (!show) return null;
 
-  return (
-    <IconButton
-      disabled={disabled}
-      onClick={onClick}
-      sx={{ padding: 0, width: 1, height: 1 }}>
-      <Close
-        fontSize="small"
-        sx={{ color: colorPalette.typographyVariants.grey }}
-      />
-    </IconButton>
-  );
-}
+//   return (
+
+//   );
+// }
 
 type CartItemButtonsProps = {
   showButtons: boolean;
-  showSpinner: boolean;
-  showDeleteButton: boolean;
-  disabled: boolean;
   onClick: () => void;
 };
 
-function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled, onClick }: CartItemButtonsProps) {
+function CartItemButtons({ showButtons, onClick }: CartItemButtonsProps) {
+  const colorPalette = useColorPalette();
+
   if (!showButtons) return null;
 
   return (
@@ -80,12 +73,14 @@ function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled,
         width: '20px',
         height: '20px',
       }}>
-      <LoadingSpinner show={showSpinner} />
-      <DeleteCartItemButton
-        show={showDeleteButton}
-        disabled={disabled}
+      <IconButton
         onClick={onClick}
-      />
+        sx={{ padding: 0, width: 1, height: 1 }}>
+        <Close
+          fontSize="small"
+          sx={{ color: colorPalette.typographyVariants.grey }}
+        />
+      </IconButton>
     </Box>
   );
 }
@@ -157,9 +152,9 @@ type CartItemSmallProps = {
 };
 
 export default function CartItemSmall({ item }: CartItemSmallProps) {
+  const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const pathname = usePathname();
-  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const router = useRouter();
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
@@ -167,19 +162,17 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
   const isShippingView = pathname.includes('/checkout/shipping');
 
   async function handleRemoveCartItem(cartItemId: string) {
-    setIsRemovingCartItem(true);
-    try {
-      const { success, message } = await deleteItemFromCart(cartItemId);
-      if (success === true) {
-        router.refresh();
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error(`Failed to remove product from cart. Please try again later.`);
-    } finally {
-      setIsRemovingCartItem(false);
+    dispatch(removeItemFromCart({ id: cartItemId }));
+
+    const { success, message } = await deleteItemFromCart(cartItemId);
+
+    if (success === false) {
+      toast.error(message);
     }
+
+    console.log('refresh');
+
+    router.refresh();
   }
 
   return (
@@ -192,7 +185,6 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
         gap: 2,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        opacity: isRemovingCartItem ? '70%' : null,
         paddingY: 2,
       }}>
       <Box
@@ -224,9 +216,6 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
         }}>
         <CartItemButtons
           showButtons={!isShippingView}
-          showSpinner={isRemovingCartItem}
-          showDeleteButton={!isRemovingCartItem}
-          disabled={isRemovingCartItem}
           onClick={() => handleRemoveCartItem(item?.cartItemId!)}
         />
         <Box

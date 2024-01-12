@@ -23,13 +23,14 @@ import { toast } from 'react-toastify';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
-import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
 import { orderedSizesForToggleButtons } from '@/constants/sizes';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 import { borderRadius } from '@/constants/styles';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
+import { updateCartItemQuantity } from '@/services/cart/update';
+import { setCartItemQuantity, setCartItems, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 type PreviousPriceAndPercentageProps = {
   show: boolean;
@@ -168,13 +169,12 @@ type ProductDetailsProps = {
 };
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  const supabase = createSupabaseBrowserClient();
   const colorPalette = useColorPalette();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { userData } = useAppSelector((state) => state.user);
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const { cartItems, isCartOpen } = useAppSelector((state) => state.cart);
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.isOnSale === 'Yes';
@@ -223,39 +223,55 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
     const itemExists = cartItems.find((item) => item?.product?.productId === product.productId);
 
-    try {
-      if (itemExists && itemExists.size === itemSize) {
-        const { error } = await supabase.rpc('updateCartItemQuantity', {
-          item_id: itemExists.cartItemId,
-          item_quantity: itemQuantity,
-        });
+    if (itemExists && itemExists.size === itemSize) {
+      dispatch(setCartItemQuantity({ id: itemExists.cartItemId, value: itemQuantity }));
 
-        if (!error) {
-          router.refresh();
-          setItemQuantity(1);
-        } else {
-          toast.error(error.message);
-        }
-      } else {
-        const { success, message } = await addItemToCart({
-          productId: product.productId,
-          quantity: itemQuantity,
-          size: itemSize!,
-          userId: userData?.userId!,
-        });
+      dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
 
-        if (success === false) {
-          toast.error(message);
-        } else {
-          router.refresh();
-          setItemQuantity(1);
-        }
+      const { success, message } = await updateCartItemQuantity({
+        cartItemId: itemExists.cartItemId,
+        quantity: itemExists.quantity + itemQuantity,
+      });
+
+      if (success === false) {
+        toast.error(message);
       }
-    } catch (error) {
-      toast.error(`Failed to add product to cart. Please try again later.`);
-    } finally {
-      setIsAddingToCart(false);
+
+      setItemQuantity(1);
+      router.refresh();
+    } else {
+      dispatch(
+        setCartItems([
+          {
+            createdAt: '',
+            cartItemId: '',
+            quantity: itemQuantity,
+            size: itemSize,
+            product: product,
+          },
+          ...cartItems,
+        ])
+      );
+
+      dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
+
+      const { success, message } = await addItemToCart({
+        productId: product.productId,
+        quantity: itemQuantity,
+        size: itemSize!,
+        userId: userData?.userId!,
+      });
+
+      if (success === false) {
+        toast.error(message);
+      }
+
+      setItemQuantity(1);
+      router.refresh();
     }
+
+    dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
+    setIsAddingToCart(false);
   }
 
   function handleAddToWishlist() {
@@ -370,6 +386,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               paddingY: 4,
             }}>
             <ContainedButton
+              isDisabled={isAddingToCart}
               onClick={handleAddToCart}
               fullWidth
               label={isAddingToCart ? '' : 'add to cart'}

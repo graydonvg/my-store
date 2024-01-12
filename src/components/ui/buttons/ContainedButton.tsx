@@ -59,8 +59,7 @@ export default function ContainedButton({
   ...props
 }: ContainedButtonProps) {
   const colorPalette = useColorPalette();
-  const buttonBackgroundColor =
-    backgroundColor && !isDisabled ? getButtonBackgroundColor(backgroundColor, colorPalette) : null;
+  const buttonBackgroundColor = backgroundColor ? getButtonBackgroundColor(backgroundColor, colorPalette) : null;
 
   return (
     <Button

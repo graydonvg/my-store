@@ -2,7 +2,7 @@
 
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { ButtonProps, ListItem } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ContainedButton';
 import { ContainedButtonButtonBackgroundColorType } from '@/types';
