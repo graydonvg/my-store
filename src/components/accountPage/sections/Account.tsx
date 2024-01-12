@@ -84,26 +84,22 @@ function UpdatePassword({ show }: UpdatePasswordProps) {
 
     dispatch(setIsUpdatingAccount(true));
 
-    try {
-      const { success, message } = await updateUserPassword({
-        currentPassword: accountData.currentPassword,
-        newPassword: accountData.newPassword,
-        confirmPassword: accountData.confirmPassword,
-      });
+    const { success, message } = await updateUserPassword({
+      currentPassword: accountData.currentPassword,
+      newPassword: accountData.newPassword,
+      confirmPassword: accountData.confirmPassword,
+    });
 
-      if (success === true) {
-        router.refresh();
-        toast.success(message);
-        dispatch(setFieldToEdit(null));
-        dispatch(clearPasswordFields());
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Failed to update password. Please try again later.');
-    } finally {
-      dispatch(setIsUpdatingAccount(false));
+    if (success === false) {
+      toast.error(message);
+    } else {
+      router.refresh();
+      toast.success(message);
+      dispatch(setFieldToEdit(null));
+      dispatch(clearPasswordFields());
     }
+
+    dispatch(setIsUpdatingAccount(false));
   }
 
   return (

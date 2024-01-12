@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
@@ -209,14 +209,16 @@ export default function ProductCard({ product }: ProductCardProps) {
                 alignItems: 'center',
                 aspectRatio: 25 / 36,
               }}>
-              <Image
-                style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
-                fill
-                sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
-                src={imageUrl}
-                alt={`${product.name}`}
-                priority
-              />
+              <Suspense fallback={<Box sx={{ backgroundColor: 'green', width: 1, height: 1 }}>loading...</Box>}>
+                <Image
+                  style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
+                  fill
+                  sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
+                  src={imageUrl}
+                  alt={`${product.name}`}
+                  priority
+                />
+              </Suspense>
             </Box>
             <Box
               sx={{

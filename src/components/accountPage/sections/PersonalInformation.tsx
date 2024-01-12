@@ -110,29 +110,18 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
     dispatch(setUserData({ ...(userData as UserDataType), ...userInfo }));
 
-    try {
-      const { success, message } = await updateUserPersonalInformation(userInfo);
+    dispatch(setFieldToEdit(null));
 
-      if (success === true) {
-        dispatch(
-          setUserData({
-            ...userData!,
-            ...userInfo,
-          })
-        );
+    const { success, message } = await updateUserPersonalInformation(userInfo);
 
-        dispatch(setFieldToEdit(null));
-
-        toast.success(message);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Failed to update personal information. Please try again later.');
-    } finally {
-      router.refresh();
-      dispatch(setIsUpdatingAccount(false));
+    if (success === false) {
+      toast.error(message);
+    } else {
+      toast.success(message);
     }
+
+    router.refresh();
+    dispatch(setIsUpdatingAccount(false));
   }
 
   return (
