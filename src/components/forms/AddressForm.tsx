@@ -59,8 +59,27 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
-    dispatch(setShowDialogLoadingBar(true));
-    setIsLoading(true);
+    // dispatch(setShowDialogLoadingBar(true));
+    // setIsLoading(true);
+
+    dispatch(
+      setUserData({
+        ...userData!,
+        addresses: [
+          {
+            ...restOfAddressData,
+            postalCode: Number(postalCode),
+            userId: userData?.userId!,
+            complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
+            addressId: '',
+            createdAt: '',
+          },
+          ...userData?.addresses!,
+        ],
+      })
+    );
+
+    dispatch(setIsAddressDialogOpen(false));
 
     const { success, message } = await addNewAddress({
       ...restOfAddressData,
@@ -68,34 +87,17 @@ export default function AddressForm() {
       userId: userData?.userId!,
     } as InsertAddressType);
 
-    if (success === true) {
-      dispatch(
-        setUserData({
-          ...userData!,
-          addresses: [
-            ...userData?.addresses!,
-            {
-              ...restOfAddressData,
-              postalCode: Number(postalCode),
-              userId: userData?.userId!,
-              complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
-              addressId: '',
-              createdAt: '',
-            },
-          ],
-        })
-      );
-
-      dispatch(setIsAddressDialogOpen(false));
+    if (success === false) {
+      toast.error(message);
+    } else {
+      // dispatch(setIsAddressDialogOpen(false));
       dispatch(clearAddressFormData());
       toast.success(message);
-    } else {
-      toast.error(message);
     }
 
     router.refresh();
-    dispatch(setShowDialogLoadingBar(false));
-    setIsLoading(false);
+    // dispatch(setShowDialogLoadingBar(false));
+    // setIsLoading(false);
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -103,43 +105,46 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
-    dispatch(setShowDialogLoadingBar(true));
+    // dispatch(setShowDialogLoadingBar(true));
+
+    const updatedAddresses = userData?.addresses.map((address) =>
+      address.addressId === addressFormData.addressId
+        ? {
+            ...addressFormData,
+            postalCode: Number(addressFormData.postalCode),
+            complexOrBuilding: addressFormData.complexOrBuilding,
+            addressId: addressFormData.addressId!,
+            userId: address.userId,
+            createdAt: address.createdAt,
+          }
+        : address
+    );
+
+    dispatch(
+      setUserData({
+        ...userData!,
+        addresses: updatedAddresses!,
+      })
+    );
+
+    dispatch(setIsAddressDialogOpen(false));
 
     const { success, message } = await updateAddress({
       ...addressFormData,
       postalCode: Number(addressFormData.postalCode),
     } as UpdateAddressTypeDb);
 
-    if (success === true) {
-      const updatedAddresses = userData?.addresses.map((address) =>
-        address.addressId === addressFormData.addressId
-          ? {
-              ...addressFormData,
-              postalCode: Number(addressFormData.postalCode),
-              complexOrBuilding: addressFormData.complexOrBuilding,
-              addressId: addressFormData.addressId!,
-              userId: address.userId,
-              createdAt: address.createdAt,
-            }
-          : address
-      );
-
-      dispatch(
-        setUserData({
-          ...userData!,
-          addresses: updatedAddresses!,
-        })
-      );
-      dispatch(setIsAddressDialogOpen(false));
+    if (success === false) {
+      toast.error(message);
+    } else {
+      // dispatch(setIsAddressDialogOpen(false));
       dispatch(clearAddressFormData());
       toast.success(message);
-    } else {
-      toast.error(message);
     }
 
     router.refresh();
-    dispatch(setShowDialogLoadingBar(false));
-    setIsLoading(false);
+    // dispatch(setShowDialogLoadingBar(false));
+    // setIsLoading(false);
   }
 
   return (

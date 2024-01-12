@@ -143,7 +143,8 @@ function UpdatePassword({ show }: UpdatePasswordProps) {
       disableSave={
         accountData.currentPassword.length === 0 ||
         accountData.newPassword.length === 0 ||
-        accountData.confirmPassword.length === 0
+        accountData.confirmPassword.length === 0 ||
+        isUpdatingAccount
       }
     />
   );

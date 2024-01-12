@@ -15,8 +15,8 @@ export type DrawerState = {
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
 export type PersonalInformationType = {
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   contactNumber: string;
 };
 

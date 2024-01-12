@@ -17,8 +17,8 @@ const initialState: State = {
     confirmPassword: '',
   },
   personalInformation: {
-    name: '',
-    surname: '',
+    firstName: '',
+    lastName: '',
     contactNumber: '',
   },
 };

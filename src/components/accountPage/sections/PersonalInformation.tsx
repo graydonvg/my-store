@@ -13,7 +13,7 @@ import { ChangeEvent, ReactNode, useEffect } from 'react';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { AccountTextFieldDataType, PersonalInformationType } from '@/types';
+import { AccountTextFieldDataType, PersonalInformationType, UserDataType } from '@/types';
 import { updateUserPersonalInformation } from '@/services/users/update';
 
 type UserDataProps = {
@@ -54,7 +54,7 @@ function UpdateUserData({ show, isUpdating, onSave, onCancel, value, textFieldDa
       isUpdating={isUpdating}
       onSave={onSave}
       onCancel={onCancel}
-      disableSave={value.length === 0}
+      disableSave={value.length === 0 || isUpdating}
     />
   );
 }
@@ -72,14 +72,14 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
   useEffect(() => {
     dispatch(
       setPersonalInformation({
-        name: userData?.firstName ?? '',
-        surname: userData?.lastName ?? '',
+        firstName: userData?.firstName ?? '',
+        lastName: userData?.lastName ?? '',
         contactNumber: userData?.contactNumber ?? '',
       })
     );
   }, [dispatch, userData?.firstName, userData?.lastName, userData?.contactNumber]);
 
-  function handleSetFieldToEdit(field: string) {
+  function handleSetFieldToEdit(field: keyof PersonalInformationType) {
     dispatch(setFieldToEdit(field));
   }
 
@@ -94,8 +94,8 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
   async function handleUpdatePersonalInformation() {
     if (
-      personalInformation.name === userData?.firstName &&
-      personalInformation.surname === userData.lastName &&
+      personalInformation.firstName === userData?.firstName &&
+      personalInformation.lastName === userData.lastName &&
       personalInformation.contactNumber === userData.contactNumber
     )
       return;
@@ -103,10 +103,12 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
     dispatch(setIsUpdatingAccount(true));
 
     const userInfo = {
-      firstName: personalInformation.name,
-      lastName: personalInformation.surname,
-      contactNumber: personalInformation.contactNumber,
+      firstName: personalInformation?.firstName,
+      lastName: personalInformation?.lastName,
+      contactNumber: personalInformation?.contactNumber,
     };
+
+    dispatch(setUserData({ ...(userData as UserDataType), ...userInfo }));
 
     try {
       const { success, message } = await updateUserPersonalInformation(userInfo);
@@ -136,20 +138,20 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
   return (
     <>
       <UserData
-        show={fieldToEdit !== 'name'}
+        show={fieldToEdit !== 'firstName'}
         label="Name"
-        onClick={() => handleSetFieldToEdit('name')}>
+        onClick={() => handleSetFieldToEdit('firstName')}>
         {renderUserInfo(userData?.firstName!)}
       </UserData>
       <UpdateUserData
-        show={fieldToEdit === 'name'}
+        show={fieldToEdit === 'firstName'}
         textFieldData={[
           {
-            id: 'name',
+            id: 'firstName',
             label: 'Name',
-            name: 'name',
+            name: 'firstName',
             type: 'text',
-            value: personalInformation.name,
+            value: personalInformation.firstName,
             onChange: handleInputChange,
             onKeyDownFunction: handleUpdatePersonalInformation,
           },
@@ -157,23 +159,23 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         isUpdating={isUpdatingAccount}
         onCancel={handleCancelUpdateField}
         onSave={handleUpdatePersonalInformation}
-        value={personalInformation.name}
+        value={personalInformation.firstName}
       />
       <UserData
-        show={fieldToEdit !== 'surname'}
+        show={fieldToEdit !== 'lastName'}
         label="Surname"
-        onClick={() => handleSetFieldToEdit('surname')}>
+        onClick={() => handleSetFieldToEdit('lastName')}>
         {renderUserInfo(userData?.lastName!)}
       </UserData>
       <UpdateUserData
-        show={fieldToEdit === 'surname'}
+        show={fieldToEdit === 'lastName'}
         textFieldData={[
           {
-            id: 'surname',
+            id: 'lastName',
             label: 'Surname',
-            name: 'surname',
+            name: 'lastName',
             type: 'text',
-            value: personalInformation.surname,
+            value: personalInformation.lastName,
             onChange: handleInputChange,
             onKeyDownFunction: handleUpdatePersonalInformation,
           },
@@ -181,7 +183,7 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
         isUpdating={isUpdatingAccount}
         onCancel={handleCancelUpdateField}
         onSave={handleUpdatePersonalInformation}
-        value={personalInformation.surname}
+        value={personalInformation.lastName}
       />
       <UserData
         show={fieldToEdit !== 'contactNumber'}
