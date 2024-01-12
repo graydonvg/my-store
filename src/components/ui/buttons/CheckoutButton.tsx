@@ -63,7 +63,7 @@ export default function CheckoutButton({
     );
 
     if (isCartOpen.right === true) {
-      dispatch(setIsCartOpen({ ...isCartOpen, right: false }));
+      dispatch(setIsCartOpen(false));
     }
 
     router.push('/checkout/shipping');

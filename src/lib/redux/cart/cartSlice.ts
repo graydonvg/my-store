@@ -15,17 +15,15 @@ function handleRemoveItemFromCart(cartItemId: string, cartItems: CartItemType[])
   return cartItems.filter((item) => item.cartItemId !== cartItemId);
 }
 
-type IsCartOpenType = {
-  top: boolean;
-  left: boolean;
-  bottom: boolean;
-  right: boolean;
-};
-
 type CartItemToEditIdType = string | null;
 
 type CartState = {
-  isCartOpen: IsCartOpenType;
+  isCartOpen: {
+    top: boolean;
+    left: boolean;
+    bottom: boolean;
+    right: boolean;
+  };
   cartItemToEditId: CartItemToEditIdType;
   cartItems: CartItemType[];
 };
@@ -45,8 +43,8 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setIsCartOpen(state, action: PayloadAction<IsCartOpenType>) {
-      state.isCartOpen = action.payload;
+    setIsCartOpen(state, action: PayloadAction<boolean>) {
+      state.isCartOpen.right = action.payload;
     },
     setCartItems(state, action: PayloadAction<CartItemType[]>) {
       state.cartItems = action.payload;

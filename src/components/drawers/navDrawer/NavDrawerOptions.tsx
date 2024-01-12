@@ -132,7 +132,7 @@ export default function NavDraweOptions() {
   const isAdminView = pathname.includes('/admin-view');
 
   function handleCloseDrawer() {
-    dispatch(setIsNavDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen(false));
   }
 
   return (

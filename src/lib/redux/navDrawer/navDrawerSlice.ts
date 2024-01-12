@@ -1,10 +1,6 @@
 import { DrawerState } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-function handleDrawer(isOpen: Partial<DrawerState>, isDrawerOpen: DrawerState) {
-  return { ...isDrawerOpen, ...isOpen };
-}
-
 type InitialStateType = {
   isNavDrawerOpen: DrawerState;
 };
@@ -22,8 +18,8 @@ export const navDrawerSlice = createSlice({
   name: 'navDrawer',
   initialState,
   reducers: {
-    setIsNavDrawerOpen(state, action: PayloadAction<Partial<DrawerState>>) {
-      state.isNavDrawerOpen = handleDrawer(action.payload, state.isNavDrawerOpen);
+    setIsNavDrawerOpen(state, action: PayloadAction<boolean>) {
+      state.isNavDrawerOpen.left = action.payload;
     },
   },
 });

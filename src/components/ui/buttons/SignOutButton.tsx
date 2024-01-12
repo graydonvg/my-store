@@ -28,7 +28,7 @@ export default function SignOutButton({ showAccountMenuButton = false, showNavDr
       router.refresh();
     }
 
-    dispatch(setIsNavDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen(false));
   }
 
   if (showAccountMenuButton)

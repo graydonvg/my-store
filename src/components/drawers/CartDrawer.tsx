@@ -30,7 +30,7 @@ function DrawerFooter({ show }: DrawerFooterProps) {
 
   function handleCloseCartDrawer() {
     if (isCartOpen.right === true) {
-      dispatch(setIsCartOpen({ ...isCartOpen, right: false }));
+      dispatch(setIsCartOpen(false));
     }
   }
 
@@ -126,7 +126,7 @@ export default function CartDrawer() {
   const cartCount = selectCartCount(cartItems);
 
   function handleToggleCart() {
-    dispatch(setIsCartOpen({ ...isCartOpen, right: !isCartOpen.right }));
+    dispatch(setIsCartOpen(!isCartOpen.right));
   }
 
   return (

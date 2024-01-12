@@ -226,7 +226,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     if (itemExists && itemExists.size === itemSize) {
       dispatch(setCartItemQuantity({ id: itemExists.cartItemId, value: itemQuantity }));
 
-      dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
+      dispatch(setIsCartOpen(true));
 
       const { success, message } = await updateCartItemQuantity({
         cartItemId: itemExists.cartItemId,
@@ -253,7 +253,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         ])
       );
 
-      dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
+      dispatch(setIsCartOpen(true));
 
       const { success, message } = await addItemToCart({
         productId: product.productId,
@@ -270,7 +270,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       router.refresh();
     }
 
-    dispatch(setIsCartOpen({ ...isCartOpen, right: true }));
+    dispatch(setIsCartOpen(true));
     setIsAddingToCart(false);
   }
 

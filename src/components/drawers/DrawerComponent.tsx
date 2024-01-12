@@ -20,7 +20,7 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const { isCartOpen, cartItemToEditId } = useAppSelector((state) => state.cart);
 
-  const handleCloseNavDrawer = (anchor: DrawerAnchor, open: boolean) => (event: KeyboardEvent | MouseEvent) => {
+  const handleCloseNavDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
     if (
       event.type === 'keydown' &&
       ((event as KeyboardEvent).key === 'Tab' || (event as KeyboardEvent).key === 'Shift')
@@ -29,11 +29,11 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
     }
 
     if (isNavDrawerOpen.left) {
-      dispatch(setIsNavDrawerOpen({ [anchor]: open }));
+      dispatch(setIsNavDrawerOpen(open));
     }
 
     if (isCartOpen.right) {
-      dispatch(setIsCartOpen({ [anchor]: open }));
+      dispatch(setIsCartOpen(open));
     }
 
     if (cartItemToEditId) {
@@ -55,7 +55,7 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
             }}
             anchor={anchor}
             open={isOpen ? isOpen[anchor] : false}
-            onClose={handleCloseNavDrawer(anchor, false)}>
+            onClose={handleCloseNavDrawer(false)}>
             {children}
           </Drawer>
         </Fragment>

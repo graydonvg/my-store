@@ -19,15 +19,15 @@ export default function NavDrawer() {
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
-    isBelowMedium ? dispatch(setIsNavDrawerOpen({ left: false })) : null;
+    isBelowMedium ? dispatch(setIsNavDrawerOpen(false)) : null;
   }, [isBelowMedium, dispatch]);
 
   function handleOpenNavDrawer() {
-    dispatch(setIsNavDrawerOpen({ left: true }));
+    dispatch(setIsNavDrawerOpen(true));
   }
 
   function handleCloseNavDrawer() {
-    dispatch(setIsNavDrawerOpen({ left: false }));
+    dispatch(setIsNavDrawerOpen(false));
   }
 
   return (
