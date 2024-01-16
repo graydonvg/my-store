@@ -381,12 +381,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               paddingY: 4,
             }}>
             <ContainedButton
-              isDisabled={isAddingToCart}
               onClick={handleAddToCart}
               fullWidth
-              label={isAddingToCart ? '' : 'add to cart'}
+              label="add to cart"
               backgroundColor="blue"
-              isLoading={isAddingToCart}
               startIcon={<AddShoppingCart />}
             />
             <ContainedButton

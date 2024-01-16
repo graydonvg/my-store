@@ -58,12 +58,17 @@ function CartItems({ show, cartItems }: CartItemsProps) {
 
   return (
     <>
-      {cartItems.map((item) => (
-        <CartItemLarge
-          key={item?.cartItemId}
-          item={item}
-        />
-      ))}
+      {cartItems.map((item, index) => {
+        const isLastItem = cartItems.length - 1 === index;
+
+        return (
+          <Box
+            key={item?.cartItemId}
+            sx={{ marginBottom: isLastItem ? 0 : 2 }}>
+            <CartItemLarge item={item} />
+          </Box>
+        );
+      })}
     </>
   );
 }

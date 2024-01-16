@@ -98,22 +98,19 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
         itemOfSelectedSizeExists.quantity,
         cartItem?.quantity!
       );
+
       await handleRemoveCartItem();
     } else {
-      try {
-        const { success, message } = await updateCartItemSize({
-          cartItemId: cartItem?.cartItemId!,
-          size,
-        });
-        if (success === true) {
-          router.refresh();
-        } else {
-          setIsUpdatingCartItemSize(false);
-          toast.error(message);
-        }
-      } catch (error) {
+      const { success, message } = await updateCartItemSize({
+        cartItemId: cartItem?.cartItemId!,
+        size,
+      });
+
+      if (success === true) {
+        router.refresh();
+      } else {
         setIsUpdatingCartItemSize(false);
-        toast.error(`Failed to update size. Please try again later.`);
+        toast.error(message);
       }
     }
   }
@@ -145,36 +142,32 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
 
   async function handleUpdateCartItemQuantity(cartItemId: string, previousQuantity: number, quantityToAdd: number) {
     const newQuantity = previousQuantity + quantityToAdd;
+
     setIsUpdatingCartItemQuantity(true);
-    try {
-      const { success, message } = await updateCartItemQuantity({
-        cartItemId: cartItemId,
-        quantity: newQuantity,
-      });
-      if (success === false) {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error(`Failed to update quantity. Please try again later.`);
-    } finally {
-      router.refresh();
-      setIsUpdatingCartItemQuantity(false);
+
+    const { success, message } = await updateCartItemQuantity({
+      cartItemId: cartItemId,
+      quantity: newQuantity,
+    });
+
+    if (success === false) {
+      toast.error(message);
     }
+
+    router.refresh();
+    setIsUpdatingCartItemQuantity(false);
   }
 
   async function handleRemoveCartItem() {
     setIsRemovingCartItem(true);
-    try {
-      const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
-      if (success === true) {
-        router.refresh();
-      } else {
-        setIsRemovingCartItem(false);
-        toast.error(message);
-      }
-    } catch (error) {
+
+    const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
+
+    if (success === true) {
+      router.refresh();
+    } else {
       setIsRemovingCartItem(false);
-      toast.error(`Failed to remove product from cart. Please try again later.`);
+      toast.error(message);
     }
   }
 
