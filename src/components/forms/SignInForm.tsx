@@ -5,7 +5,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignInDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
+import { setIsSignInDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -46,7 +46,7 @@ export default function SignInForm({ children }: Props) {
 
     setIsLoading(true);
 
-    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
 
     try {
       const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
@@ -62,12 +62,12 @@ export default function SignInForm({ children }: Props) {
       toast.error('Sign in failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      dispatch(setShowDialogLoadingBar(false));
+      dispatch(setIsDialogLoading(false));
     }
   }
 
   async function handleSignInWithGoogle() {
-    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
 
     try {
       // Remember Supabase redirect url for google sign in
@@ -88,7 +88,7 @@ export default function SignInForm({ children }: Props) {
     } catch (error) {
       toast.error('Sign in failed. Please try again later.');
     } finally {
-      dispatch(setShowDialogLoadingBar(false));
+      dispatch(setIsDialogLoading(false));
     }
   }
 

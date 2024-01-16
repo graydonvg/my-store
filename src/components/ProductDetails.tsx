@@ -30,7 +30,23 @@ import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPric
 import { borderRadius } from '@/constants/styles';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
 import { updateCartItemQuantity } from '@/services/cart/update';
-import { setCartItemQuantity, setCartItems } from '@/lib/redux/cart/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+
+function OpenCartDrawerToastButton() {
+  const dispatch = useAppDispatch();
+
+  function handleOpenCart() {
+    dispatch(setIsCartOpen(true));
+  }
+
+  return (
+    <Typography
+      component="p"
+      onClick={handleOpenCart}>
+      Added to cart. Click to open cart.
+    </Typography>
+  );
+}
 
 type PreviousPriceAndPercentageProps = {
   show: boolean;
@@ -170,11 +186,11 @@ type ProductDetailsProps = {
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const colorPalette = useColorPalette();
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { userData } = useAppSelector((state) => state.user);
-  const { cartItems, isCartOpen } = useAppSelector((state) => state.cart);
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [itemQuantity, setItemQuantity] = useState(1);
   const [itemSize, setItemSize] = useState<string | null>(null);
   const isOnSale = product.isOnSale === 'Yes';
@@ -224,33 +240,20 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     const itemExists = cartItems.find((item) => item?.product?.productId === product.productId);
 
     if (itemExists && itemExists.size === itemSize) {
-      dispatch(setCartItemQuantity({ id: itemExists.cartItemId, value: itemQuantity }));
-
       const { success, message } = await updateCartItemQuantity({
         cartItemId: itemExists.cartItemId,
         quantity: itemExists.quantity + itemQuantity,
       });
 
-      if (success === false) {
+      if (success === true) {
+        router.refresh();
+        toast.success(<OpenCartDrawerToastButton />);
+      } else {
         toast.error(message);
       }
 
       setItemQuantity(1);
-      router.refresh();
     } else {
-      dispatch(
-        setCartItems([
-          {
-            createdAt: '',
-            cartItemId: '',
-            quantity: itemQuantity,
-            size: itemSize,
-            product: product,
-          },
-          ...cartItems,
-        ])
-      );
-
       const { success, message } = await addItemToCart({
         productId: product.productId,
         quantity: itemQuantity,
@@ -258,12 +261,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         userId: userData?.userId!,
       });
 
-      if (success === false) {
+      if (success === true) {
+        router.refresh();
+        toast.success(<OpenCartDrawerToastButton />);
+      } else {
         toast.error(message);
       }
 
       setItemQuantity(1);
-      router.refresh();
     }
 
     setIsAddingToCart(false);
@@ -382,8 +387,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             }}>
             <ContainedButton
               onClick={handleAddToCart}
+              isDisabled={isAddingToCart}
+              isLoading={isAddingToCart}
               fullWidth
-              label="add to cart"
+              label={isAddingToCart ? '' : 'add to cart'}
               backgroundColor="blue"
               startIcon={<AddShoppingCart />}
             />

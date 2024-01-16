@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsUpdateDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
+import { setIsUpdateDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -35,7 +35,7 @@ export default function UpdateUserData() {
   async function handleUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
-    dispatch(setShowDialogLoadingBar(true));
+    dispatch(setIsDialogLoading(true));
 
     const { firstName, lastName } = formData;
 
@@ -53,7 +53,7 @@ export default function UpdateUserData() {
       toast.error('Update user failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      dispatch(setShowDialogLoadingBar(false));
+      dispatch(setIsDialogLoading(false));
     }
   }
 

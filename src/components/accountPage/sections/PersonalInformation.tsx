@@ -9,7 +9,7 @@ import {
   setPersonalInformation,
   setPersonalInformationOnChange,
 } from '@/lib/redux/account/accountSlice';
-import { ChangeEvent, ReactNode, useEffect } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -85,6 +85,13 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
   function handleCancelUpdateField() {
     dispatch(setFieldToEdit(null));
+    dispatch(
+      setPersonalInformation({
+        firstName: userData?.firstName ?? '',
+        lastName: userData?.lastName ?? '',
+        contactNumber: userData?.contactNumber ?? '',
+      })
+    );
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -93,12 +100,11 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
   }
 
   async function handleUpdatePersonalInformation() {
-    if (
-      personalInformation.firstName === userData?.firstName &&
-      personalInformation.lastName === userData.lastName &&
-      personalInformation.contactNumber === userData.contactNumber
-    )
-      return;
+    const isFirstNameChanged = personalInformation.firstName !== userData?.firstName;
+    const isLastNameChanged = personalInformation.lastName !== userData?.lastName;
+    const iscontactNumberChanged = personalInformation.contactNumber !== userData?.contactNumber;
+
+    if (!isFirstNameChanged && !isLastNameChanged && !iscontactNumberChanged) return;
 
     dispatch(setIsUpdatingAccount(true));
 
@@ -108,19 +114,27 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
       contactNumber: personalInformation?.contactNumber,
     };
 
-    dispatch(setUserData({ ...(userData as UserDataType), ...userInfo }));
-
-    dispatch(setFieldToEdit(null));
-
     const { success, message } = await updateUserPersonalInformation(userInfo);
 
-    if (success === false) {
+    if (success === true) {
+      router.refresh();
+      if (isFirstNameChanged) {
+        toast.success('Name updated succssfully');
+      } else if (isLastNameChanged) {
+        toast.success('Surname updated succssfully');
+      } else {
+        toast.success('Contact number updated succssfully');
+      }
+    } else {
       toast.error(message);
+      dispatch(setIsUpdatingAccount(false));
     }
-
-    router.refresh();
-    dispatch(setIsUpdatingAccount(false));
   }
+
+  useEffect(() => {
+    dispatch(setFieldToEdit(null));
+    dispatch(setIsUpdatingAccount(false));
+  }, [dispatch, userData]);
 
   return (
     <>

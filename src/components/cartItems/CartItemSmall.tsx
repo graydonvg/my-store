@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, IconButton, ListItem, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, ListItem, Typography } from '@mui/material';
 import Image from 'next/image';
 import { Spinner } from '../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
@@ -8,13 +8,11 @@ import { CartItemType } from '@/types';
 import useColorPalette from '@/hooks/useColorPalette';
 import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 import { deleteItemFromCart } from '@/services/cart/delete';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { removeItemFromCart } from '@/lib/redux/cart/cartSlice';
 
 type LoadingSpinnerProps = {
   show: boolean;
@@ -36,30 +34,39 @@ function LoadingSpinner({ show }: LoadingSpinnerProps) {
   );
 }
 
-// type DeleteCartItemButtonProps = {
-//   show: boolean;
-//   disabled: boolean;
-//   onClick: () => void;
-// };
-
-// function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
-//   const colorPalette = useColorPalette();
-
-//   if (!show) return null;
-
-//   return (
-
-//   );
-// }
-
-type CartItemButtonsProps = {
-  showButtons: boolean;
+type DeleteCartItemButtonProps = {
+  show: boolean;
+  disabled: boolean;
   onClick: () => void;
 };
 
-function CartItemButtons({ showButtons, onClick }: CartItemButtonsProps) {
+function DeleteCartItemButton({ show, disabled, onClick }: DeleteCartItemButtonProps) {
   const colorPalette = useColorPalette();
 
+  if (!show) return null;
+
+  return (
+    <IconButton
+      disabled={disabled}
+      onClick={onClick}
+      sx={{ padding: 0, width: 1, height: 1 }}>
+      <Close
+        fontSize="small"
+        sx={{ color: colorPalette.typographyVariants.grey }}
+      />
+    </IconButton>
+  );
+}
+
+type CartItemButtonsProps = {
+  showButtons: boolean;
+  showSpinner: boolean;
+  showDeleteButton: boolean;
+  disabled: boolean;
+  onClick: () => void;
+};
+
+function CartItemButtons({ showButtons, showSpinner, showDeleteButton, disabled, onClick }: CartItemButtonsProps) {
   if (!showButtons) return null;
 
   return (
@@ -73,14 +80,12 @@ function CartItemButtons({ showButtons, onClick }: CartItemButtonsProps) {
         width: '20px',
         height: '20px',
       }}>
-      <IconButton
+      <LoadingSpinner show={showSpinner} />
+      <DeleteCartItemButton
+        show={showDeleteButton}
+        disabled={disabled}
         onClick={onClick}
-        sx={{ padding: 0, width: 1, height: 1 }}>
-        <Close
-          fontSize="small"
-          sx={{ color: colorPalette.typographyVariants.grey }}
-        />
-      </IconButton>
+      />
     </Box>
   );
 }
@@ -152,7 +157,6 @@ type CartItemSmallProps = {
 };
 
 export default function CartItemSmall({ item }: CartItemSmallProps) {
-  const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const pathname = usePathname();
   const router = useRouter();
@@ -160,19 +164,22 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
   const isShippingView = pathname.includes('/checkout/shipping');
+  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
+
+  useEffect(() => {
+    setIsRemovingCartItem(false);
+  }, [item]);
 
   async function handleRemoveCartItem(cartItemId: string) {
-    dispatch(removeItemFromCart({ id: cartItemId }));
+    setIsRemovingCartItem(true);
 
     const { success, message } = await deleteItemFromCart(cartItemId);
 
-    if (success === false) {
+    if (success === true) {
+      router.refresh();
+    } else {
       toast.error(message);
     }
-
-    console.log('refresh');
-
-    router.refresh();
   }
 
   return (
@@ -185,6 +192,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
         gap: 2,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
+        opacity: isRemovingCartItem ? '50%' : null,
         paddingY: 2,
       }}>
       <Box
@@ -216,6 +224,9 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
         }}>
         <CartItemButtons
           showButtons={!isShippingView}
+          showSpinner={isRemovingCartItem}
+          showDeleteButton={!isRemovingCartItem}
+          disabled={isRemovingCartItem}
           onClick={() => handleRemoveCartItem(item?.cartItemId!)}
         />
         <Box

@@ -11,10 +11,6 @@ function handleSetCartItemQuantity(cartItemId: string, value: number, cartItems:
   );
 }
 
-function handleRemoveItemFromCart(cartItemId: string, cartItems: CartItemType[]) {
-  return cartItems.filter((item) => item.cartItemId !== cartItemId);
-}
-
 type CartItemToEditIdType = string | null;
 
 type CartState = {
@@ -55,10 +51,6 @@ export const cartSlice = createSlice({
       const { id, value } = action.payload;
       state.cartItems = handleSetCartItemQuantity(id, value, state.cartItems);
     },
-    removeItemFromCart(state, action: PayloadAction<{ id: string }>) {
-      const { id } = action.payload;
-      state.cartItems = handleRemoveItemFromCart(id, state.cartItems);
-    },
     clearCart(state) {
       state.cartItems = initialState.cartItems;
     },
@@ -67,14 +59,7 @@ export const cartSlice = createSlice({
 
 const { actions, reducer } = cartSlice;
 
-export const {
-  setIsCartOpen,
-  setCartItems,
-  setCartItemToEditId,
-  setCartItemSize,
-  setCartItemQuantity,
-  removeItemFromCart,
-  clearCart,
-} = actions;
+export const { setIsCartOpen, setCartItems, setCartItemToEditId, setCartItemSize, setCartItemQuantity, clearCart } =
+  actions;
 
 export const cartReducer = reducer;

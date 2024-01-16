@@ -14,15 +14,18 @@ import {
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
+import { clearAddressFormData, setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
 import { AddressType, UpdateAddressTypeStore } from '@/types';
-import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete';
 import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddressDialog from '../../dialogs/AddressDialog';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { borderRadius } from '@/constants/styles';
+import { useEffect, useState } from 'react';
+import { PulseLoader } from 'react-spinners';
+import { setAddressToDeleteId } from '@/lib/redux/account/accountSlice';
 
 type NoAddressFoundProps = {
   show: boolean;
@@ -112,6 +115,64 @@ function AddressButton({ label, onClick }: AddressButtonProps) {
   );
 }
 
+type AddressButtonsProps = {
+  show: boolean;
+  editAddress: () => Promise<void>;
+  deleteAddress: () => Promise<void>;
+};
+
+function AddressButtons({ show, editAddress, deleteAddress }: AddressButtonsProps) {
+  const colorPalette = useColorPalette();
+
+  if (!show) return null;
+
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
+      <AddressButton
+        label="edit"
+        onClick={editAddress}
+      />
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderColor: colorPalette.border }}
+      />
+      <AddressButton
+        label="delete"
+        onClick={deleteAddress}
+      />
+    </Box>
+  );
+}
+
+type LoaderProps = {
+  showLoader: boolean;
+};
+
+function Loader({ showLoader }: LoaderProps) {
+  const colorPalette = useColorPalette();
+
+  if (!showLoader) return null;
+
+  return (
+    <Box
+      sx={{
+        minWidth: '108.16px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 0,
+        borderBottom: 0,
+      }}>
+      <PulseLoader
+        loading={showLoader}
+        color={colorPalette.typography}
+        size={10}
+      />
+    </Box>
+  );
+}
+
 type AddressDataProps = {
   show: boolean;
 };
@@ -120,6 +181,7 @@ function AddressData({ show }: AddressDataProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { userData } = useAppSelector((state) => state.user);
+  const addressToDeleteId = useAppSelector((state) => state.account.addressToDeleteId);
   const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
@@ -136,14 +198,7 @@ function AddressData({ show }: AddressDataProps) {
   }
 
   async function handleDeleteAddress(addressId: string) {
-    const updatedAddresses = userData?.addresses.filter((address) => address.addressId !== addressId);
-
-    dispatch(
-      setUserData({
-        ...userData!,
-        addresses: updatedAddresses!,
-      })
-    );
+    dispatch(setAddressToDeleteId(addressId));
 
     const { success, message } = await deleteAddress(addressId);
 
@@ -202,21 +257,12 @@ function AddressData({ show }: AddressDataProps) {
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: 0, borderBottom: 0 }}>
-              <AddressButton
-                label="edit"
-                onClick={() => handleSetAddressToEdit(address.addressId!)}
-              />
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{ borderColor: colorPalette.border }}
-              />
-              <AddressButton
-                label="delete"
-                onClick={() => handleDeleteAddress(address.addressId!)}
-              />
-            </Box>
+            <Loader showLoader={addressToDeleteId === address.addressId} />
+            <AddressButtons
+              show={addressToDeleteId !== address.addressId}
+              editAddress={() => handleSetAddressToEdit(address.addressId!)}
+              deleteAddress={() => handleDeleteAddress(address.addressId!)}
+            />
           </TableCell>
         </TableRow>
       ))}
@@ -225,8 +271,16 @@ function AddressData({ show }: AddressDataProps) {
 }
 
 export default function Addresses() {
+  const dispatch = useAppDispatch();
   const { userData } = useAppSelector((state) => state.user);
   const colorPalette = useColorPalette();
+
+  useEffect(() => {
+    dispatch(setIsAddressDialogOpen(false));
+    dispatch(setIsDialogLoading(false));
+    dispatch(clearAddressFormData());
+    dispatch(setAddressToDeleteId(null));
+  }, [dispatch, userData?.addresses]);
 
   return (
     <Box>

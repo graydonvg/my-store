@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignUpDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
+import { setIsSignUpDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -58,7 +58,7 @@ export default function SignUpForm({ children }: Props) {
 
     setIsLoading(true);
 
-    !isWelcomePath ? dispatch(setShowDialogLoadingBar(true)) : null;
+    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
 
     const { email, password, firstName, lastName } = formData;
 
@@ -90,7 +90,7 @@ export default function SignUpForm({ children }: Props) {
       toast.error('Sign up failed. Please try again later.');
     } finally {
       setIsLoading(false);
-      !isWelcomePath ? dispatch(setShowDialogLoadingBar(false)) : null;
+      !isWelcomePath ? dispatch(setIsDialogLoading(false)) : null;
     }
   }
 

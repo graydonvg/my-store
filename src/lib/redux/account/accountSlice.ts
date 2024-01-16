@@ -6,6 +6,7 @@ type State = {
   isUpdatingAccount: boolean;
   accountData: AccountType;
   personalInformation: PersonalInformationType;
+  addressToDeleteId: string | null;
 };
 
 const initialState: State = {
@@ -21,6 +22,7 @@ const initialState: State = {
     lastName: '',
     contactNumber: '',
   },
+  addressToDeleteId: null,
 };
 
 export const accountSlice = createSlice({
@@ -59,6 +61,9 @@ export const accountSlice = createSlice({
     clearPasswordFields(state) {
       state.accountData = initialState.accountData;
     },
+    setAddressToDeleteId(state, action: PayloadAction<string | null>) {
+      state.addressToDeleteId = action.payload;
+    },
   },
 });
 
@@ -71,6 +76,7 @@ export const {
   setPersonalInformation,
   setPersonalInformationOnChange,
   clearPasswordFields,
+  setAddressToDeleteId,
 } = actions;
 
 export const userReducer = reducer;

@@ -5,7 +5,7 @@ type DialogState = {
   isSignUpDialogOpen: boolean;
   isUpdateDialogOpen: boolean;
   isAddAddressDialogOpen: boolean;
-  showDialogLoadingBar: boolean;
+  isDialogLoading: boolean;
 };
 
 const initialState: DialogState = {
@@ -13,7 +13,7 @@ const initialState: DialogState = {
   isSignUpDialogOpen: false,
   isUpdateDialogOpen: false,
   isAddAddressDialogOpen: false,
-  showDialogLoadingBar: false,
+  isDialogLoading: false,
 };
 
 export const dialogSlice = createSlice({
@@ -38,8 +38,8 @@ export const dialogSlice = createSlice({
       state.isUpdateDialogOpen = false;
       state.isAddAddressDialogOpen = false;
     },
-    setShowDialogLoadingBar(state, action: PayloadAction<boolean>) {
-      state.showDialogLoadingBar = action.payload;
+    setIsDialogLoading(state, action: PayloadAction<boolean>) {
+      state.isDialogLoading = action.payload;
     },
   },
 });
@@ -52,7 +52,7 @@ export const {
   setIsUpdateDialogOpen,
   setIsAddressDialogOpen,
   closeDialog,
-  setShowDialogLoadingBar,
+  setIsDialogLoading,
 } = actions;
 
 export const userReducer = reducer;

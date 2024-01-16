@@ -4,18 +4,17 @@ import { Box, Divider, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Add } from '@mui/icons-material';
 import { addNewAddress } from '@/services/users/add';
 import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
-import { setIsAddressDialogOpen, setShowDialogLoadingBar } from '@/lib/redux/dialog/dialogSlice';
+import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
 import { updateAddress } from '@/services/users/update';
-import { setUserData } from '@/lib/redux/user/userSlice';
 
 const contactDetailsFormFields = [
   { name: 'recipientFirstName', label: 'First Name', type: 'text', placeholder: 'e.g. John' },
@@ -41,8 +40,8 @@ export default function AddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user.userData);
-  const [isLoading, setIsLoading] = useState(false);
   const addressFormData = useAppSelector((state) => state.addressForm);
+  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -59,27 +58,7 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
-    // dispatch(setShowDialogLoadingBar(true));
-    // setIsLoading(true);
-
-    dispatch(
-      setUserData({
-        ...userData!,
-        addresses: [
-          {
-            ...restOfAddressData,
-            postalCode: Number(postalCode),
-            userId: userData?.userId!,
-            complexOrBuilding: restOfAddressData.complexOrBuilding ?? null,
-            addressId: '',
-            createdAt: '',
-          },
-          ...userData?.addresses!,
-        ],
-      })
-    );
-
-    dispatch(setIsAddressDialogOpen(false));
+    dispatch(setIsDialogLoading(true));
 
     const { success, message } = await addNewAddress({
       ...restOfAddressData,
@@ -87,17 +66,13 @@ export default function AddressForm() {
       userId: userData?.userId!,
     } as InsertAddressType);
 
-    if (success === false) {
-      toast.error(message);
-    } else {
-      // dispatch(setIsAddressDialogOpen(false));
-      dispatch(clearAddressFormData());
+    if (success === true) {
+      router.refresh();
       toast.success(message);
+    } else {
+      toast.error(message);
+      dispatch(setIsDialogLoading(false));
     }
-
-    router.refresh();
-    // dispatch(setShowDialogLoadingBar(false));
-    // setIsLoading(false);
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -105,46 +80,20 @@ export default function AddressForm() {
 
     // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
 
-    // dispatch(setShowDialogLoadingBar(true));
-
-    const updatedAddresses = userData?.addresses.map((address) =>
-      address.addressId === addressFormData.addressId
-        ? {
-            ...addressFormData,
-            postalCode: Number(addressFormData.postalCode),
-            complexOrBuilding: addressFormData.complexOrBuilding,
-            addressId: addressFormData.addressId!,
-            userId: address.userId,
-            createdAt: address.createdAt,
-          }
-        : address
-    );
-
-    dispatch(
-      setUserData({
-        ...userData!,
-        addresses: updatedAddresses!,
-      })
-    );
-
-    dispatch(setIsAddressDialogOpen(false));
+    dispatch(setIsDialogLoading(true));
 
     const { success, message } = await updateAddress({
       ...addressFormData,
       postalCode: Number(addressFormData.postalCode),
     } as UpdateAddressTypeDb);
 
-    if (success === false) {
-      toast.error(message);
-    } else {
-      // dispatch(setIsAddressDialogOpen(false));
-      dispatch(clearAddressFormData());
+    if (success === true) {
+      router.refresh();
       toast.success(message);
+    } else {
+      toast.error(message);
+      dispatch(setIsDialogLoading(false));
     }
-
-    router.refresh();
-    // dispatch(setShowDialogLoadingBar(false));
-    // setIsLoading(false);
   }
 
   return (
@@ -231,11 +180,11 @@ export default function AddressForm() {
         </Box>
         <ContainedButton
           label={addressFormData.addressId ? 'save' : 'add'}
-          isDisabled={isLoading}
+          isDisabled={isDialogLoading}
           type="submit"
           fullWidth
           backgroundColor="blue"
-          startIcon={!addressFormData.addressId && !isLoading ? <Add /> : null}
+          startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
         />
       </Box>
     </Box>

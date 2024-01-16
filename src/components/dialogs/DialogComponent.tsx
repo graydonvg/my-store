@@ -16,7 +16,7 @@ type Props = {
 
 export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
-  const showDialogLoadingBar = useAppSelector((state) => state.dialog.showDialogLoadingBar);
+  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
   const colorPalette = useColorPalette();
 
   function handleCloseDialog() {
@@ -43,7 +43,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           backgroundColor: colorPalette.dialog.background,
         }}>
         <LoadingBar
-          isLoading={showDialogLoadingBar}
+          isLoading={isDialogLoading}
           style={{ borderTopRightRadius: '4px', borderTopLeftRadius: '4px' }}
         />
         <Box sx={{ position: 'absolute', right: 4, top: 4 }}>
