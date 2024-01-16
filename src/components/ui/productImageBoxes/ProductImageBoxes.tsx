@@ -15,9 +15,9 @@ function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
 
   if (!show) return null;
 
-  // return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
-  //   <SmallProductImageBox key={`placeholder-${index}`} />
-  // ));
+  return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
+    <SmallProductImageBox key={`placeholder-${index}`} />
+  ));
 }
 
 type SmallImageAdminViewProps = {

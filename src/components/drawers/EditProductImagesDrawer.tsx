@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   deleteImage,
   resetImageData,
-  setImageData,
   setIsDeletingImage,
   setIsEditImageDrawerOpen,
   setUpdatedImageData,
