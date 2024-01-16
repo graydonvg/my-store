@@ -6,6 +6,7 @@ import { DrawerAnchor, DrawerState } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
 
 type Props = {
   elevation?: number;
@@ -18,6 +19,7 @@ type Props = {
 export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, children }: Props) {
   const dispatch = useAppDispatch();
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
+  const isEditImageDrawerOpen = useAppSelector((state) => state.productForm.isEditImageDrawerOpen);
   const { isCartOpen, cartItemToEditId } = useAppSelector((state) => state.cart);
 
   const handleCloseNavDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
@@ -34,6 +36,10 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
 
     if (isCartOpen.right) {
       dispatch(setIsCartOpen(open));
+    }
+
+    if (isEditImageDrawerOpen.right) {
+      dispatch(setIsEditImageDrawerOpen(open));
     }
 
     if (cartItemToEditId) {

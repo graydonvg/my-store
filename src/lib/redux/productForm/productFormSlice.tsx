@@ -1,4 +1,4 @@
-import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType } from '@/types';
+import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType, DrawerState } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
@@ -45,7 +45,7 @@ function handleSetImageUploadProgress(
 }
 
 type State = {
-  isEditMode: boolean;
+  isEditImageDrawerOpen: DrawerState;
   isDeletingImage: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: InsertProductImageDataTypeStore[];
@@ -53,7 +53,12 @@ type State = {
 };
 
 const initialState: State = {
-  isEditMode: false,
+  isEditImageDrawerOpen: {
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  },
   isDeletingImage: false,
   imageUploadProgress: [],
   imageData: [],
@@ -75,18 +80,19 @@ export const productFormSlice = createSlice({
   name: 'productForm',
   initialState,
   reducers: {
-    setProductFormData(state, action: PayloadAction<InsertProductTypeStore>) {
-      state.productFormData = action.payload;
-    },
-    setProductFormDataOnChange(
+    setProductFormData(
       state,
-      action: PayloadAction<{
-        field: keyof InsertProductTypeStore;
-        value: InsertProductTypeStore[keyof InsertProductTypeStore];
-      }>
+      action: PayloadAction<
+        | InsertProductTypeStore
+        | { field: keyof InsertProductTypeStore; value: InsertProductTypeStore[keyof InsertProductTypeStore] }
+      >
     ) {
-      const { field, value } = action.payload;
-      state.productFormData = handleSetProductDataOnChange(field, value, state.productFormData, initialState);
+      if ('field' in action.payload && 'value' in action.payload) {
+        const { field, value } = action.payload;
+        state.productFormData = handleSetProductDataOnChange(field, value, state.productFormData, initialState);
+      } else {
+        state.productFormData = action.payload;
+      }
     },
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
       state.imageUploadProgress = handleSetImageUploadProgress(action.payload, state.imageUploadProgress);
@@ -100,8 +106,8 @@ export const productFormSlice = createSlice({
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
-    setIsEditMode(state, action) {
-      state.isEditMode = action.payload;
+    setIsEditImageDrawerOpen(state, action: PayloadAction<boolean>) {
+      state.isEditImageDrawerOpen.right = action.payload;
     },
     resetImageData(state) {
       state.imageData = initialState.imageData;
@@ -122,7 +128,6 @@ const { actions, reducer } = productFormSlice;
 
 export const {
   setProductFormData,
-  setProductFormDataOnChange,
   setImageUploadProgress,
   setImageData,
   deleteImage,
@@ -130,7 +135,7 @@ export const {
   resetImageData,
   resetImageUploadProgess,
   resetProductFormData,
-  setIsEditMode,
+  setIsEditImageDrawerOpen,
   resetAllProductData,
 } = actions;
 

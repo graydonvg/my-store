@@ -23,10 +23,9 @@ function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
 type SmallImageAdminViewProps = {
   show: boolean;
   selectImage: (index: number) => void;
-  selectedImageIndex: number;
 };
 
-function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallImageAdminViewProps) {
+function SmallImageAdminView({ show, selectImage }: SmallImageAdminViewProps) {
   const { imageData, productFormData } = useAppSelector((state) => state.productForm);
 
   if (!show) return;
@@ -38,9 +37,7 @@ function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallIma
           key={data.fileName}
           productName={productFormData.name}
           productImageData={data}
-          imageIndex={index}
           selectImage={() => selectImage(index)}
-          selectedImageIndex={selectedImageIndex}
         />
       ))}
     </>
@@ -51,10 +48,9 @@ type SmallImageClientViewProps = {
   show: boolean;
   product: ProductType;
   selectImage: (index: number) => void;
-  selectedImageIndex: number;
 };
 
-function SmallImageClientView({ show, product, selectImage, selectedImageIndex }: SmallImageClientViewProps) {
+function SmallImageClientView({ show, product, selectImage }: SmallImageClientViewProps) {
   if (!show) return;
 
   return (
@@ -64,9 +60,7 @@ function SmallImageClientView({ show, product, selectImage, selectedImageIndex }
           key={data.fileName}
           productName={product?.name}
           productImageData={data}
-          imageIndex={index}
           selectImage={() => selectImage(index)}
-          selectedImageIndex={selectedImageIndex}
         />
       ))}
     </>
@@ -100,7 +94,7 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { imageData, productFormData, imageUploadProgress, isEditMode } = useAppSelector((state) => state.productForm);
+  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
 
   useEffect(() => {
     if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
@@ -137,14 +131,12 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
             <SmallImageAdminView
               show={isAdminView}
               selectImage={handleSelectedImage}
-              selectedImageIndex={selectedImageIndex}
             />
             {/* Gets image from db */}
             <SmallImageClientView
               show={!isAdminView && !!product}
               product={product!}
               selectImage={handleSelectedImage}
-              selectedImageIndex={selectedImageIndex}
             />
             <BoxWithUploadProgress
               show={isAdminView && imageUploadProgress.length > 0}

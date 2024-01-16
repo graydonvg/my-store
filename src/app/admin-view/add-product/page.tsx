@@ -9,11 +9,7 @@ import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  resetProductFormData,
-  resetImageData,
-  setProductFormDataOnChange,
-} from '@/lib/redux/productForm/productFormSlice';
+import { resetProductFormData, resetImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
@@ -42,7 +38,7 @@ const formFields = [
 
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
-  const { productFormData, imageData, imageUploadProgress, isEditMode } = useAppSelector((state) => state.productForm);
+  const { productFormData, imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
@@ -53,12 +49,12 @@ export default function AdminViewAddNewProduct() {
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    dispatch(setProductFormDataOnChange({ field: 'sizes', value: selectedSize }));
+    dispatch(setProductFormData({ field: 'sizes', value: selectedSize }));
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setProductFormDataOnChange({ field: name as keyof InsertProductTypeStore, value }));
+    dispatch(setProductFormData({ field: name as keyof InsertProductTypeStore, value }));
   }
 
   async function handleClearAllFormFields() {
@@ -253,7 +249,6 @@ export default function AdminViewAddNewProduct() {
       <ContainedButton
         type="submit"
         isDisabled={
-          isEditMode ||
           uploadInProgress ||
           isSubmitting ||
           isClearingAllFields ||

@@ -30,7 +30,7 @@ import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPric
 import { borderRadius } from '@/constants/styles';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
 import { updateCartItemQuantity } from '@/services/cart/update';
-import { setCartItemQuantity, setCartItems, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setCartItemQuantity, setCartItems } from '@/lib/redux/cart/cartSlice';
 
 type PreviousPriceAndPercentageProps = {
   show: boolean;

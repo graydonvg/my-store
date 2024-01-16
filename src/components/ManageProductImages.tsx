@@ -1,16 +1,14 @@
 'use client';
 
-import { Check, CloudUpload, DeleteForever, Edit } from '@mui/icons-material';
+import { CloudUpload } from '@mui/icons-material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import {
-  resetImageData,
   resetImageUploadProgess,
   setImageData,
   setImageUploadProgress,
-  setIsEditMode,
 } from '@/lib/redux/productForm/productFormSlice';
 import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
@@ -18,7 +16,7 @@ import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
-import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
+import EditProductImagesDrawer from './drawers/EditProductImagesDrawer';
 
 type Props = {
   isSubmitting: boolean;
@@ -26,18 +24,9 @@ type Props = {
 
 export default function ManageProductImages({ isSubmitting }: Props) {
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData, isDeletingImage, isEditMode, productFormData } = useAppSelector(
-    (state) => state.productForm
-  );
-  const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
+  const { imageUploadProgress, imageData } = useAppSelector((state) => state.productForm);
   const colorPalette = useColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-
-  useEffect(() => {
-    if (imageData.length === 0) {
-      dispatch(setIsEditMode(false));
-    }
-  }, [imageData, dispatch]);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -88,53 +77,13 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     dispatch(resetImageUploadProgess());
   }
 
-  function handleToggleEditMode() {
-    isEditMode ? dispatch(setIsEditMode(false)) : dispatch(setIsEditMode(true));
-  }
-
-  async function handleDeleteAllImages() {
-    setIsDeletingAllImages(true);
-
-    await deleteAllProductImages(imageData, productFormData.productId);
-
-    dispatch(resetImageData());
-    setIsDeletingAllImages(false);
-  }
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
       <ProductImageBoxes />
-      {isEditMode ? (
-        <ContainedButton
-          onClick={handleDeleteAllImages}
-          fullWidth
-          label={isDeletingAllImages ? '' : 'delete all'}
-          backgroundColor="red"
-          isDisabled={!isEditMode || isDeletingAllImages}
-          isLoading={isDeletingAllImages}
-          startIcon={<DeleteForever />}
-        />
-      ) : null}
-      <ContainedButton
-        isDisabled={
-          isDeletingAllImages || isDeletingImage || uploadInProgress || isSubmitting || imageData.length === 0
-        }
-        onClick={() => handleToggleEditMode()}
-        fullWidth
-        label={isDeletingImage ? '' : isEditMode ? 'done' : 'edit'}
-        styles={{
-          backgroundColor: isEditMode ? colorPalette.green.dark : colorPalette.shade.medium,
-          '&:hover': {
-            backgroundColor: isEditMode ? colorPalette.green.dark : colorPalette.shade.medium,
-            filter: 'brightness(1.2)',
-            transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-          },
-        }}
-        startIcon={isEditMode ? <Check /> : <Edit />}
-      />
+      <EditProductImagesDrawer isSubmitting={isSubmitting} />
       <ContainedButton
         backgroundColor="blue"
-        isDisabled={uploadInProgress || isSubmitting || isEditMode}
+        isDisabled={uploadInProgress || isSubmitting}
         styles={{
           '&:hover': { backgroundColor: colorPalette.primary.light },
         }}

@@ -1,80 +1,12 @@
 'use client';
 
 import useColorPalette from '@/hooks/useColorPalette';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { DeleteForever } from '@mui/icons-material';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { deleteImageFromStorage } from '@/lib/firebase';
-import { toast } from 'react-toastify';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
-import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
-import { Spinner } from '../progress/Spinner';
 import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';
 import { borderRadius } from '@/constants/styles';
-
-type DeleteButtonProps = {
-  show: boolean;
-  productImageData?: InsertProductImageDataTypeStore;
-};
-
-function DeleteButton({ show, productImageData }: DeleteButtonProps) {
-  const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
-  const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
-
-  if (!show || !productImageData) return null;
-
-  async function handleDeleteImage(fileName: string, productImageId: string) {
-    dispatch(setIsDeletingImage(true));
-    try {
-      if (fileName.length > 0) {
-        await deleteImageFromStorage(fileName);
-      }
-      if (productFormData.productId && productImageId) {
-        const { success, message } = await deleteProductImageDataFromDb(productImageId);
-
-        if (success === false) {
-          toast.error(message);
-        }
-      }
-    } catch (error) {
-      toast.error('Error deleting image from storage.');
-    } finally {
-      dispatch(deleteImage({ fileName }));
-      dispatch(setIsDeletingImage(false));
-    }
-  }
-
-  return (
-    <IconButton
-      onClick={() => handleDeleteImage(productImageData.fileName, productImageData.productImageId ?? '')}
-      disabled={isDeletingImage}
-      sx={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        color: 'white',
-        padding: 0,
-        borderRadius: borderRadius,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        '&:hover': {
-          backgroundColor: 'unset',
-        },
-      }}>
-      {!isDeletingImage ? (
-        <DeleteForever sx={{ fontSize: '26px' }} />
-      ) : (
-        <Spinner
-          spinnerColor="white"
-          size={26}
-        />
-      )}
-    </IconButton>
-  );
-}
 
 type ProductImageProps = {
   show: boolean;
@@ -83,10 +15,6 @@ type ProductImageProps = {
 };
 
 function ProductImage({ show, productName, productImageData }: ProductImageProps) {
-  const isEditMode = useAppSelector((state) => state.productForm.isEditMode);
-  const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
-
   if (!show || !productImageData) return null;
 
   return (
@@ -100,10 +28,9 @@ function ProductImage({ show, productName, productImageData }: ProductImageProps
         fill
         sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
         src={productImageData.imageUrl}
-        alt={`${productName}`}
+        alt={`Image for ${!!productName ? productName : productImageData.fileName}`}
         priority
       />
-      <DeleteButton show={isAdminView && isEditMode!} />
     </>
   );
 }
@@ -111,21 +38,16 @@ function ProductImage({ show, productName, productImageData }: ProductImageProps
 type SmallProductImageBoxProps = {
   productName?: string;
   productImageData?: InsertProductImageDataTypeStore;
-  imageIndex?: number;
-  selectedImageIndex?: number;
   uploadProgressData?: ImageUploadProgressType;
   selectImage?: () => void;
 };
 
-export default function SmallProductImageBoxProps({
+export default function SmallProductImageBox({
   productName,
   productImageData,
-  imageIndex,
-  selectedImageIndex,
   uploadProgressData,
   selectImage,
 }: SmallProductImageBoxProps) {
-  const isEditMode = useAppSelector((state) => state.productForm.isEditMode);
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const colorPalette = useColorPalette();
@@ -157,7 +79,6 @@ export default function SmallProductImageBoxProps({
           aspectRatio: 3 / 4,
           outline: `1px solid ${boxBorderColor}`,
           borderRadius: borderRadius,
-          opacity: productImageData && !isEditMode ? (imageIndex !== selectedImageIndex ? '50%' : null) : null,
         }}>
         <ProductImage
           show={!!productImageData}

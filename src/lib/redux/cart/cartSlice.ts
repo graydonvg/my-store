@@ -1,4 +1,4 @@
-import { CartItemType } from '@/types';
+import { CartItemType, DrawerState } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function handleSetCartItemSize(cartItemId: string, size: string, cartItems: CartItemType[]) {
@@ -18,12 +18,7 @@ function handleRemoveItemFromCart(cartItemId: string, cartItems: CartItemType[])
 type CartItemToEditIdType = string | null;
 
 type CartState = {
-  isCartOpen: {
-    top: boolean;
-    left: boolean;
-    bottom: boolean;
-    right: boolean;
-  };
+  isCartOpen: DrawerState;
   cartItemToEditId: CartItemToEditIdType;
   cartItems: CartItemType[];
 };

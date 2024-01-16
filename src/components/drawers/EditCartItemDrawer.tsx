@@ -51,11 +51,11 @@ const isDrawerOpen = {
   right: false,
 };
 
-type Props = {
+type EditCartItemDrawerProps = {
   cartItem: CartItemType;
 };
 
-export default function EditCartItemDrawer({ cartItem }: Props) {
+export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps) {
   const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
