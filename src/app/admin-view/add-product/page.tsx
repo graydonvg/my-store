@@ -23,6 +23,7 @@ import { orderedSizesForToggleButtons } from '@/constants/sizes';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
+import updateProductImageData from '@/services/product-image-data/update';
 
 const formFields = [
   { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
@@ -64,31 +65,28 @@ export default function AdminViewAddNewProduct() {
   }
 
   async function handleAddImageData(productId: string) {
-    try {
-      const newData = imageData.filter((data) => !data.productImageId);
-      const dataToInsert = newData.map((data) => {
-        const { productImageId, ...restOfData } = data;
-        return { ...restOfData, productId };
-      });
+    const newData = imageData.filter((data) => !data.productImageId);
 
-      if (dataToInsert.length === 0) {
-        return { success: true, message: 'No new images added' };
-      }
+    const dataToInsert = newData.map((data) => {
+      const { productImageId, ...restOfData } = data;
+      return { ...restOfData, productId };
+    });
 
-      const { success, message } = await addProductImageData(dataToInsert);
-
-      return { success, message };
-    } catch (error) {
-      throw error;
+    if (dataToInsert.length === 0) {
+      return { success: true, message: 'No new images added' };
     }
+
+    const { success, message } = await addProductImageData(dataToInsert);
+
+    return { success, message };
   }
 
   async function handleRevalidate() {
     const data = await revalidate('/');
 
     if (data.success === true) {
-      toast.success(data.message);
       router.refresh();
+      toast.success(data.message);
     } else {
       toast.error(data.message);
     }
@@ -148,7 +146,11 @@ export default function AdminViewAddNewProduct() {
         productFormData.productId!
       );
 
-      if (addImageDataSuccess === true) {
+      const { success: updateImageDataSuccess, message: updateImageDataMessage } = await updateProductImageData(
+        imageData
+      );
+
+      if (addImageDataSuccess === true && updateImageDataSuccess === true) {
         await handleRevalidate();
         dispatch(resetProductFormData());
         dispatch(resetImageData());
@@ -156,6 +158,11 @@ export default function AdminViewAddNewProduct() {
         router.push('/admin-view/all-products');
       } else if (addImageDataSuccess === false) {
         toast.error(addImageDataMessage);
+      } else if (updateImageDataSuccess === false) {
+        toast.error(updateImageDataMessage);
+      } else {
+        toast.error(addImageDataMessage);
+        toast.error(updateImageDataMessage);
       }
     } else {
       toast.error(updateProductMessage);

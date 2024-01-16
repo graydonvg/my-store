@@ -13,11 +13,11 @@ type EmptySmallBoxWithBorderProps = {
 function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
 
-  if (!show) return;
+  if (!show) return null;
 
-  return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
-    <SmallProductImageBox key={`placeholder-${index}`} />
-  ));
+  // return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
+  //   <SmallProductImageBox key={`placeholder-${index}`} />
+  // ));
 }
 
 type SmallImageAdminViewProps = {
@@ -28,7 +28,7 @@ type SmallImageAdminViewProps = {
 function SmallImageAdminView({ show, selectImage }: SmallImageAdminViewProps) {
   const { imageData, productFormData } = useAppSelector((state) => state.productForm);
 
-  if (!show) return;
+  if (!show) return null;
 
   return (
     <>
@@ -51,18 +51,20 @@ type SmallImageClientViewProps = {
 };
 
 function SmallImageClientView({ show, product, selectImage }: SmallImageClientViewProps) {
-  if (!show) return;
+  if (!show) return null;
 
   return (
     <>
-      {product.productImageData.map((data, index) => (
-        <SmallProductImageBox
-          key={data.fileName}
-          productName={product?.name}
-          productImageData={data}
-          selectImage={() => selectImage(index)}
-        />
-      ))}
+      {product.productImageData
+        .sort((a, b) => a.index - b.index)
+        .map((data, index) => (
+          <SmallProductImageBox
+            key={data.fileName}
+            productName={product?.name}
+            productImageData={data}
+            selectImage={() => selectImage(index)}
+          />
+        ))}
     </>
   );
 }
@@ -74,7 +76,7 @@ type BoxWithUploadProgressProps = {
 function BoxWithUploadProgress({ show }: BoxWithUploadProgressProps) {
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
 
-  if (!show) return;
+  if (!show) return null;
 
   return (
     <>

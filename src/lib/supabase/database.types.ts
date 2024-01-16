@@ -196,6 +196,7 @@ export interface Database {
           createdAt: string;
           fileName: string;
           imageUrl: string;
+          index: number;
           productId: string;
           productImageId: string;
         };
@@ -203,6 +204,7 @@ export interface Database {
           createdAt?: string;
           fileName: string;
           imageUrl: string;
+          index: number;
           productId: string;
           productImageId?: string;
         };
@@ -210,6 +212,7 @@ export interface Database {
           createdAt?: string;
           fileName?: string;
           imageUrl?: string;
+          index?: number;
           productId?: string;
           productImageId?: string;
         };
@@ -368,13 +371,6 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      updateCartItemQuantity: {
-        Args: {
-          item_id: string;
-          item_quantity: number;
-        };
-        Returns: undefined;
-      };
       verifyUserPassword: {
         Args: {
           password: string;

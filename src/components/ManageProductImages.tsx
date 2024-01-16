@@ -49,15 +49,6 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         dispatch(setImageUploadProgress({ fileName: image.uniqueFileName, progress }));
-
-        switch (snapshot.state) {
-          case 'paused':
-            // console.log('Upload is paused');
-            break;
-          case 'running':
-            // console.log('Upload is running');
-            break;
-        }
       })
     );
 
@@ -66,10 +57,10 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     const uploadPromiseResults = imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { fileName, imageUrl } = result.value;
-        return { fileName, imageUrl };
+        return { fileName, imageUrl, index };
       } else {
         toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
-        return { fileName: '', imageUrl: '' };
+        return { fileName: '', imageUrl: '', index };
       }
     });
 

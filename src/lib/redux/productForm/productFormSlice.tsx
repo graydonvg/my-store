@@ -100,6 +100,9 @@ export const productFormSlice = createSlice({
     setImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
       state.imageData = [...state.imageData, ...action.payload];
     },
+    setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
+      state.imageData = action.payload.sort((a, b) => a.index - b.index);
+    },
     deleteImage(state, action: PayloadAction<{ fileName: string }>) {
       state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
     },
@@ -130,6 +133,7 @@ export const {
   setProductFormData,
   setImageUploadProgress,
   setImageData,
+  setUpdatedImageData,
   deleteImage,
   setIsDeletingImage,
   resetImageData,

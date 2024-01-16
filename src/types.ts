@@ -70,6 +70,7 @@ export type InsertProductImageDataTypeStore = {
   imageUrl: string;
   fileName: string;
   productImageId?: string;
+  index: number;
 };
 
 export type InsertProductImageDataTypeDb = Database['public']['Tables']['productImageData']['Insert'];
@@ -97,6 +98,7 @@ export type ProductType = {
     fileName: string;
     imageUrl: string;
     productImageId: string;
+    index: number;
   }[];
 };
 

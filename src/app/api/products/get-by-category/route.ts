@@ -13,9 +13,11 @@ export async function GET(request: NextRequest): Promise<NextResponse<CustomResp
   try {
     const { data: products, error } = await supabase
       .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId)')
+      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
       .eq('category', category)
-      .order('createdAt', { ascending: false });
+      .order('createdAt', { ascending: false })
+      .order('index', { referencedTable: 'productImageData', ascending: true });
+
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to get all products. ${error.message}.` });
     }

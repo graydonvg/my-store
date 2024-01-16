@@ -9,8 +9,10 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import {
   deleteImage,
   resetImageData,
+  setImageData,
   setIsDeletingImage,
   setIsEditImageDrawerOpen,
+  setUpdatedImageData,
 } from '@/lib/redux/productForm/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
@@ -69,6 +71,36 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
     dispatch(setIsDeletingImage(false));
   }
 
+  function getNewImageIndexes(currentIndex: number, newIndex: number) {
+    return imageData.map((data) =>
+      data.index === newIndex
+        ? { ...data, index: currentIndex }
+        : data.index === currentIndex
+        ? { ...data, index: newIndex }
+        : data
+    );
+  }
+
+  function handleDecrementImageIndex(currentIndex: number) {
+    if (currentIndex === 0) return;
+
+    const newIndex = currentIndex - 1;
+
+    const updatedImageIndexes = getNewImageIndexes(currentIndex, newIndex);
+
+    dispatch(setUpdatedImageData(updatedImageIndexes));
+  }
+
+  function handleIncrementImageIndex(currentIndex: number) {
+    if (currentIndex === imageData.length - 1) return;
+
+    const newIndex = currentIndex + 1;
+
+    const updatedImageIndexes = getNewImageIndexes(currentIndex, newIndex);
+
+    dispatch(setUpdatedImageData(updatedImageIndexes));
+  }
+
   return (
     <>
       <ContainedButton
@@ -123,7 +155,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           <Grid
             container
             rowSpacing={4}>
-            {imageData.map((image, index) => (
+            {imageData.map((image) => (
               <Grid
                 key={`${image.fileName}`}
                 item
@@ -146,7 +178,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
                           cursor: 'pointer',
                         }}
                         fill
-                        // sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
+                        sizes="(min-width: 600px) 100px, calc(35vw - 25px)"
                         src={image.imageUrl}
                         alt={`Image for ${image.fileName}`}
                         priority
@@ -166,12 +198,14 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
                         paddingLeft: 2,
                       }}>
                       <IconButton
+                        onClick={() => handleDecrementImageIndex(image.index)}
                         disabled={isDeletingImage}
                         size="small">
                         <ArrowDropUp fontSize="large" />
                       </IconButton>
-                      <Typography fontSize={24}>{index + 1}</Typography>
+                      <Typography fontSize={24}>{image.index + 1}</Typography>
                       <IconButton
+                        onClick={() => handleIncrementImageIndex(image.index)}
                         disabled={isDeletingImage}
                         size="small">
                         <ArrowDropDown fontSize="large" />
