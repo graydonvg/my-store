@@ -93,7 +93,6 @@ function UpdatePassword({ show }: UpdatePasswordProps) {
     if (success === false) {
       toast.error(message);
     } else {
-      router.refresh();
       toast.success(message);
       dispatch(setFieldToEdit(null));
       dispatch(clearPasswordFields());

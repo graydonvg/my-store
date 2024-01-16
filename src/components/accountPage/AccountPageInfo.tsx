@@ -3,18 +3,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
 import useColorPalette from '@/hooks/useColorPalette';
 
-type UserDataWithLabelProps = {
+type UserInfoWithLabelProps = {
   label: string;
   children: ReactNode;
 };
 
-function UserDataWithLabel({ label, children }: UserDataWithLabelProps) {
+function UserInfoWithLabel({ label, children }: UserInfoWithLabelProps) {
   const colorPalette = useColorPalette();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', paddingBottom: 2 }}>
       <Typography
-        component="label"
+        component="span"
         fontSize={12}
         color={colorPalette.textField.label}>
         {label}
@@ -45,7 +45,7 @@ function EditableField({ show, label, onClick, children }: EditableFieldProps) {
         alignItems: 'center',
         paddingBottom: 2,
       }}>
-      <UserDataWithLabel label={label}>{children}</UserDataWithLabel>
+      <UserInfoWithLabel label={label}>{children}</UserInfoWithLabel>
       <EditIcon />
     </Box>
   );
@@ -60,7 +60,7 @@ type NonEditableFieldProps = {
 function NonEditableField({ show, label, children }: NonEditableFieldProps) {
   if (!show) return null;
 
-  return <UserDataWithLabel label={label}>{children}</UserDataWithLabel>;
+  return <UserInfoWithLabel label={label}>{children}</UserInfoWithLabel>;
 }
 
 type EditableProps = {

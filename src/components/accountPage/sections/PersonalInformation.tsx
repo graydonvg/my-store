@@ -116,8 +116,6 @@ export default function PersonalInformation({ renderUserInfo }: PersonalInformat
 
     if (success === false) {
       toast.error(message);
-    } else {
-      toast.success(message);
     }
 
     router.refresh();
