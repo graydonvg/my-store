@@ -57,7 +57,10 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     const uploadPromiseResults = imageDataArray.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { fileName, imageUrl } = result.value;
-        return { fileName, imageUrl, index };
+
+        const imageIndex = imageData.length > 0 ? imageData.length + index : index;
+
+        return { fileName, imageUrl, index: imageIndex };
       } else {
         toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
         return { fileName: '', imageUrl: '', index };
@@ -67,6 +70,8 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     dispatch(setImageData(uploadPromiseResults));
     dispatch(resetImageUploadProgess());
   }
+
+  console.log(imageData);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>

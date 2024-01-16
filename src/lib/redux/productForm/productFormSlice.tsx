@@ -44,6 +44,16 @@ function handleSetImageUploadProgress(
   return [...imageUploadProgress];
 }
 
+function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTypeStore[]) {
+  const filteredImageData = imageData.filter((image) => image.fileName !== fileName);
+
+  const updatedImageData = filteredImageData.map((data, newIndex) =>
+    data.index === newIndex ? data : { ...data, index: newIndex }
+  );
+
+  return updatedImageData;
+}
+
 type State = {
   isEditImageDrawerOpen: DrawerState;
   isDeletingImage: boolean;
@@ -104,7 +114,8 @@ export const productFormSlice = createSlice({
       state.imageData = action.payload.sort((a, b) => a.index - b.index);
     },
     deleteImage(state, action: PayloadAction<{ fileName: string }>) {
-      state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
+      state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
+      // state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;

@@ -17,8 +17,7 @@ import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import { toast } from 'react-toastify';
-import SmallProductImageBox from '../ui/productImageBoxes/SmallProductImageBox';
-import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { borderRadius } from '@/constants/styles';
 import Image from 'next/image';
 
@@ -255,7 +254,9 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           }}>
           <ContainedButton
             onClick={handleDeleteAllImages}
-            label="Delete all"
+            isDisabled={isDeletingAllImages}
+            isLoading={isDeletingAllImages}
+            label={isDeletingAllImages ? '' : 'Delete all'}
             backgroundColor="red"
             fullWidth
             startIcon={<DeleteForever />}
