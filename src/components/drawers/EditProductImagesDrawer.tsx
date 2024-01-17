@@ -40,6 +40,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
 
     dispatch(resetImageData());
     setIsDeletingAllImages(false);
+    dispatch(setIsEditImageDrawerOpen(false));
   }
 
   return (
