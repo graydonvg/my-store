@@ -84,7 +84,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             <Close />
           </IconButton>
         </Box>
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: 'auto', height: 1, opacity: isDeletingAllImages ? '50%' : null }}>
           <DraggableListContainer />
         </Box>
         <Box

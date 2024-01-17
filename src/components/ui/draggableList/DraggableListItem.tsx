@@ -23,6 +23,7 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
   const colorPalette = useColorPalette();
   const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
   const [imageToDeleteIndex, setImageToDeleteIndex] = useState<number | null>(null);
+  const isDeletingCurrentImage = isDeletingImage && imageToDeleteIndex === index;
 
   async function handleDeleteImage() {
     dispatch(setIsDeletingImage(true));
@@ -55,8 +56,12 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
             disablePadding
             ref={provided.innerRef}
             {...provided.draggableProps}
-            // {...provided.dragHandleProps}
-            sx={{ backgroundColor: snapshot.isDragging ? colorPalette.boxShadow : '', borderRadius, paddingY: 2 }}>
+            sx={{
+              backgroundColor: snapshot.isDragging ? colorPalette.boxShadow : '',
+              borderRadius,
+              paddingY: 2,
+              opacity: isDeletingCurrentImage ? '50%' : null,
+            }}>
             <Grid container>
               <Grid
                 item
@@ -104,10 +109,10 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
                     alignItems: 'center',
                   }}>
                   <TextButton
-                    label={isDeletingImage && imageToDeleteIndex === index ? '' : 'delete'}
+                    label={isDeletingCurrentImage ? '' : 'delete'}
                     onClick={handleDeleteImage}
-                    isLoading={isDeletingImage && imageToDeleteIndex === index}
-                    disabled={isDeletingImage && imageToDeleteIndex === index}
+                    isLoading={isDeletingCurrentImage}
+                    disabled={isDeletingCurrentImage}
                     labelColor={colorPalette.typography}
                     startIcon={<DeleteForever />}
                   />
