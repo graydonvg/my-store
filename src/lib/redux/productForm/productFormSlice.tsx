@@ -44,14 +44,16 @@ function handleSetImageUploadProgress(
   return [...imageUploadProgress];
 }
 
+function handleUpdateImageIndexesAndSort(imageData: InsertProductImageDataTypeStore[]) {
+  return imageData
+    .map((data, newIndex) => (data.index === newIndex ? data : { ...data, index: newIndex }))
+    .sort((a, b) => a.index - b.index);
+}
+
 function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTypeStore[]) {
   const filteredImageData = imageData.filter((image) => image.fileName !== fileName);
 
-  const updatedImageData = filteredImageData.map((data, newIndex) =>
-    data.index === newIndex ? data : { ...data, index: newIndex }
-  );
-
-  return updatedImageData;
+  return handleUpdateImageIndexesAndSort(filteredImageData);
 }
 
 type State = {
@@ -111,11 +113,10 @@ export const productFormSlice = createSlice({
       state.imageData = [...state.imageData, ...action.payload];
     },
     setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
-      state.imageData = action.payload.sort((a, b) => a.index - b.index);
+      state.imageData = handleUpdateImageIndexesAndSort(action.payload);
     },
     deleteImage(state, action: PayloadAction<{ fileName: string }>) {
       state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
-      // state.imageData = state.imageData.filter((image) => image.fileName !== action.payload.fileName);
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;

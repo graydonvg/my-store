@@ -40,6 +40,8 @@ type SmallProductImageBoxProps = {
   productImageData?: InsertProductImageDataTypeStore;
   uploadProgressData?: ImageUploadProgressType;
   selectImage?: () => void;
+  imageIndex?: number;
+  selectedImageIndex?: number;
 };
 
 export default function SmallProductImageBox({
@@ -47,6 +49,8 @@ export default function SmallProductImageBox({
   productImageData,
   uploadProgressData,
   selectImage,
+  imageIndex,
+  selectedImageIndex,
 }: SmallProductImageBoxProps) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
@@ -79,6 +83,7 @@ export default function SmallProductImageBox({
           aspectRatio: 3 / 4,
           outline: `1px solid ${boxBorderColor}`,
           borderRadius: borderRadius,
+          opacity: productImageData && imageIndex !== selectedImageIndex ? '50%' : null,
         }}>
         <ProductImage
           show={!!productImageData}

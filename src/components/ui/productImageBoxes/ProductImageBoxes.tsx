@@ -23,9 +23,10 @@ function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
 type SmallImageAdminViewProps = {
   show: boolean;
   selectImage: (index: number) => void;
+  selectedImageIndex: number;
 };
 
-function SmallImageAdminView({ show, selectImage }: SmallImageAdminViewProps) {
+function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallImageAdminViewProps) {
   const { imageData, productFormData } = useAppSelector((state) => state.productForm);
 
   if (!show) return null;
@@ -38,6 +39,8 @@ function SmallImageAdminView({ show, selectImage }: SmallImageAdminViewProps) {
           productName={productFormData.name}
           productImageData={data}
           selectImage={() => selectImage(index)}
+          imageIndex={index}
+          selectedImageIndex={selectedImageIndex}
         />
       ))}
     </>
@@ -48,9 +51,10 @@ type SmallImageClientViewProps = {
   show: boolean;
   product: ProductType;
   selectImage: (index: number) => void;
+  selectedImageIndex: number;
 };
 
-function SmallImageClientView({ show, product, selectImage }: SmallImageClientViewProps) {
+function SmallImageClientView({ show, product, selectImage, selectedImageIndex }: SmallImageClientViewProps) {
   if (!show) return null;
 
   return (
@@ -63,6 +67,8 @@ function SmallImageClientView({ show, product, selectImage }: SmallImageClientVi
             productName={product?.name}
             productImageData={data}
             selectImage={() => selectImage(index)}
+            imageIndex={index}
+            selectedImageIndex={selectedImageIndex}
           />
         ))}
     </>
@@ -133,12 +139,14 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
             <SmallImageAdminView
               show={isAdminView}
               selectImage={handleSelectedImage}
+              selectedImageIndex={selectedImageIndex}
             />
             {/* Gets image from db */}
             <SmallImageClientView
               show={!isAdminView && !!product}
               product={product!}
               selectImage={handleSelectedImage}
+              selectedImageIndex={selectedImageIndex}
             />
             <BoxWithUploadProgress
               show={isAdminView && imageUploadProgress.length > 0}

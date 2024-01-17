@@ -71,8 +71,6 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     dispatch(resetImageUploadProgess());
   }
 
-  console.log(imageData);
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
       <ProductImageBoxes />
