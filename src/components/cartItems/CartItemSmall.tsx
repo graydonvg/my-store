@@ -13,6 +13,8 @@ import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelecto
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 import { deleteItemFromCart } from '@/services/cart/delete';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 type LoadingSpinnerProps = {
   show: boolean;
@@ -160,11 +162,13 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
   const isShippingView = pathname.includes('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
+  const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   useEffect(() => {
     setIsRemovingCartItem(false);
@@ -182,6 +186,11 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
     }
   }
 
+  function handleNavigateToProductPage() {
+    router.push(`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`);
+    dispatch(setIsCartOpen(false));
+  }
+
   return (
     <ListItem
       disableGutters
@@ -196,18 +205,20 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
         paddingY: 2,
       }}>
       <Box
+        onClick={!isShippingView ? handleNavigateToProductPage : undefined}
         sx={{
           display: 'flex',
           position: 'relative',
           aspectRatio: 3 / 4,
           width: '60px',
           flexShrink: 0,
+          cursor: !isShippingView ? 'pointer' : 'default',
         }}>
         <Image
           style={{ objectFit: 'cover', borderRadius: borderRadius }}
           fill
           sizes="60px"
-          src={item?.product?.productImageData[0].imageUrl ?? ''}
+          src={imageUrl!}
           alt={`${item?.product?.name}`}
           priority
         />
@@ -233,6 +244,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           component="header"
           sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
           <Typography
+            onClick={!isShippingView ? handleNavigateToProductPage : undefined}
             lineHeight={1}
             component="h4"
             fontWeight={600}
@@ -244,6 +256,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
               WebkitLineClamp: '1',
               WebkitBoxOrient: 'vertical',
               paddingRight: 3,
+              cursor: !isShippingView ? 'pointer' : 'default',
             }}>
             {item?.product?.name}
           </Typography>

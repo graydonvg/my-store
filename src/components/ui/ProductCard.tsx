@@ -185,7 +185,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
   const { productImageData } = product;
-  const imageUrl = productImageData[0] ? productImageData[0].imageUrl : '';
+  const imageUrl = productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
     <Box sx={{ borderRadius: borderRadius, height: 1 }}>
@@ -214,7 +214,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
                   fill
                   sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
-                  src={imageUrl}
+                  src={imageUrl!}
                   alt={`${product.name}`}
                   priority
                 />

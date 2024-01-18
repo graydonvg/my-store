@@ -33,13 +33,13 @@ function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallIma
 
   return (
     <>
-      {imageData.map((data, index) => (
+      {imageData.map((data) => (
         <SmallProductImageBox
           key={data.fileName}
           productName={productFormData.name}
           productImageData={data}
-          selectImage={() => selectImage(index)}
-          imageIndex={index}
+          selectImage={() => selectImage(data.index)}
+          imageIndex={data.index}
           selectedImageIndex={selectedImageIndex}
         />
       ))}
@@ -61,13 +61,13 @@ function SmallImageClientView({ show, product, selectImage, selectedImageIndex }
     <>
       {product.productImageData
         .sort((a, b) => a.index - b.index)
-        .map((data, index) => (
+        .map((data) => (
           <SmallProductImageBox
             key={data.fileName}
             productName={product?.name}
             productImageData={data}
-            selectImage={() => selectImage(index)}
-            imageIndex={index}
+            selectImage={() => selectImage(data.index)}
+            imageIndex={data.index}
             selectedImageIndex={selectedImageIndex}
           />
         ))}

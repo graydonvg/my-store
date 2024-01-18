@@ -45,6 +45,7 @@ export type CartItemType = {
     productImageData:
       | {
           imageUrl: string;
+          index: number;
         }[];
   } | null;
 };

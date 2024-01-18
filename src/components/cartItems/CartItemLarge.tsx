@@ -148,6 +148,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
     <Box
@@ -192,7 +193,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 style={{ objectFit: 'cover', borderRadius: borderRadius }}
                 fill
                 sizes="180px 60px"
-                src={item?.product?.productImageData[0].imageUrl ?? ''}
+                src={imageUrl!}
                 alt={`${item?.product?.name}`}
                 priority
               />
