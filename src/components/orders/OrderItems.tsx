@@ -48,6 +48,7 @@ export default function OrderItems({ borderColor, order }: Props) {
             const isSecondItem = index === 1;
             const isSecondLastItem = numberOfItems - 2 === index;
             const isLastItem = numberOfItems - 1 === index;
+            const imageUrl = item.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
             return (
               <Grid
@@ -80,7 +81,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                           }}
                           fill
                           priority
-                          src={item.product?.productImageData[0].imageUrl!}
+                          src={imageUrl!}
                           alt={`Image of ${item.product?.name}`}
                           sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
                         />

@@ -188,6 +188,7 @@ export type OrderType = {
       returnInfo: string;
       productImageData: {
         imageUrl: string | undefined;
+        index: number;
       }[];
     } | null;
   }[];
