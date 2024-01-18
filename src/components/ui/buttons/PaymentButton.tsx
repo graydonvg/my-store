@@ -50,7 +50,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   if (showContainedButton)
     return (
       <ContainedButton
-        isDisabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
+        disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
         onClick={handlePayWithStripe}
         label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
         fullWidth

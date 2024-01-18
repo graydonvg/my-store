@@ -77,7 +77,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       <EditProductImagesDrawer isSubmitting={isSubmitting} />
       <ContainedButton
         backgroundColor="blue"
-        isDisabled={uploadInProgress || isSubmitting}
+        disabled={uploadInProgress || isSubmitting}
         styles={{
           '&:hover': { backgroundColor: colorPalette.primary.light },
         }}

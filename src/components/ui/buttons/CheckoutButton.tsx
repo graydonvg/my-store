@@ -71,7 +71,7 @@ export default function CheckoutButton({
 
   return (
     <ContainedButton
-      isDisabled={disabled}
+      disabled={disabled}
       onClick={handleCheckout}
       label={label}
       fullWidth={fullWidth}

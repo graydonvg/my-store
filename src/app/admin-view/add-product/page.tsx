@@ -244,7 +244,7 @@ export default function AdminViewAddNewProduct() {
       <ContainedButton
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
-        isDisabled={
+        disabled={
           uploadInProgress || isSubmitting || isClearingAllFields || emptyFormFields.length === numberOfFormFields
         }
         fullWidth
@@ -255,7 +255,7 @@ export default function AdminViewAddNewProduct() {
       />
       <ContainedButton
         type="submit"
-        isDisabled={
+        disabled={
           uploadInProgress ||
           isSubmitting ||
           isClearingAllFields ||

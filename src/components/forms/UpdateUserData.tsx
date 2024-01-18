@@ -91,7 +91,7 @@ export default function UpdateUserData() {
         ))}
         <ContainedButton
           label="submit"
-          isDisabled={isLoading}
+          disabled={isLoading}
           type="submit"
           styles={{ marginTop: 3 }}
           fullWidth

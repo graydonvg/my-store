@@ -44,7 +44,6 @@ type ContainedButtonProps = ButtonProps & {
   backgroundColor?: ContainedButtonButtonBackgroundColorType;
   startIcon?: ReactNode;
   styles?: any;
-  isDisabled?: boolean;
 };
 
 export default function ContainedButton({
@@ -55,7 +54,6 @@ export default function ContainedButton({
   backgroundColor,
   startIcon,
   styles,
-  isDisabled,
   ...props
 }: ContainedButtonProps) {
   const colorPalette = useColorPalette();
@@ -64,7 +62,6 @@ export default function ContainedButton({
   return (
     <Button
       variant="contained"
-      disabled={isDisabled}
       startIcon={
         isLoading ? (
           <PulseLoader

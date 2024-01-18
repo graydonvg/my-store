@@ -122,7 +122,7 @@ export default function SignInForm({ children }: Props) {
         ))}
         <ContainedButton
           label={isWelcomePath && isLoading ? '' : 'sign in'}
-          isDisabled={isLoading}
+          disabled={isLoading}
           isLoading={isWelcomePath && isLoading}
           type="submit"
           styles={{
@@ -142,7 +142,7 @@ export default function SignInForm({ children }: Props) {
         {/* Remember Supabase redirect url for google sign in */}
         <ContainedButton
           onClick={handleSignInWithGoogle}
-          isDisabled={isLoading}
+          disabled={isLoading}
           label="sign in with google"
           type="button"
           styles={{

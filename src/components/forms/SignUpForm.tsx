@@ -132,7 +132,7 @@ export default function SignUpForm({ children }: Props) {
         </Grid>
         <ContainedButton
           label={isWelcomePath && isLoading ? '' : 'sign up'}
-          isDisabled={isLoading}
+          disabled={isLoading}
           isLoading={isWelcomePath && isLoading}
           type="submit"
           styles={{

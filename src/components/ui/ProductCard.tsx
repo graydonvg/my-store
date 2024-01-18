@@ -154,7 +154,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
         gap: 1,
       }}>
       <ContainedButton
-        isDisabled={isDeletingProduct}
+        disabled={isDeletingProduct}
         onClick={handleDeleteProduct}
         fullWidth
         label={isDeletingProduct ? '' : 'delete'}
@@ -163,7 +163,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
         backgroundColor="red"
       />
       <ContainedButton
-        isDisabled={isLoading}
+        disabled={isLoading}
         onClick={handleSetProductDataForUpdate}
         fullWidth
         label={isLoading ? '' : 'update'}

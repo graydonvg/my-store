@@ -397,7 +397,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             }}>
             <ContainedButton
               onClick={handleAddToCart}
-              isDisabled={isAddingToCart}
+              disabled={isAddingToCart}
               isLoading={isAddingToCart}
               fullWidth
               label={isAddingToCart ? '' : 'add to cart'}

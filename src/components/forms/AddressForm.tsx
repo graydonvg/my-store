@@ -180,7 +180,7 @@ export default function AddressForm() {
         </Box>
         <ContainedButton
           label={addressFormData.addressId ? 'save' : 'add'}
-          isDisabled={isDialogLoading}
+          disabled={isDialogLoading}
           type="submit"
           fullWidth
           backgroundColor="blue"

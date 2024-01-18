@@ -108,7 +108,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           }}>
           <ContainedButton
             onClick={handleDeleteAllImages}
-            isDisabled={isDeletingAllImages}
+            disabled={isDeletingAllImages}
             isLoading={isDeletingAllImages}
             label={isDeletingAllImages ? '' : 'Delete all'}
             backgroundColor="red"
