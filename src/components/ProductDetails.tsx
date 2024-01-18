@@ -15,7 +15,15 @@ import {
 } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { Add, AddShoppingCart, ExpandMore, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
+import {
+  Add,
+  AddShoppingCart,
+  ExpandMore,
+  Favorite,
+  LocalShippingOutlined,
+  Remove,
+  ShoppingCart,
+} from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -43,7 +51,7 @@ function OpenCartDrawerToastButton() {
     <Typography
       component="p"
       onClick={handleOpenCart}>
-      Added to cart. Click to open cart.
+      Item added to cart.
     </Typography>
   );
 }
@@ -277,15 +285,17 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   function handleAddToWishlist() {
     // check if item already added!!!
 
-    if (!userData) {
-      handleOpenSignInDialog();
-      return;
-    }
+    toast.info('Coming soon!');
 
-    if (!itemSize) {
-      handleSelectSizeToast();
-      return;
-    }
+    // if (!userData) {
+    //   handleOpenSignInDialog();
+    //   return;
+    // }
+
+    // if (!itemSize) {
+    //   handleSelectSizeToast();
+    //   return;
+    // }
   }
 
   return (

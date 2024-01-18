@@ -6,7 +6,7 @@ type Props = {};
 export default function Wishlist() {
   return (
     <Box>
-      <PageHeaderWithBorder label="Wishlist" />
+      <PageHeaderWithBorder label="Wishlist coming soon!" />
     </Box>
   );
 }
