@@ -2,7 +2,7 @@
 
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
@@ -81,7 +81,7 @@ export default function LargeProductImageBox({
   const colorPalette = useColorPalette();
   let boxBorderColor;
 
-  // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
+  // Only show borders when in admin view and no image exists. Highlight the box if it contains a loading spinner.
   if (isAdminView) {
     if (!!imageUploadProgress[selectedImageIndex] && !productImageData) {
       boxBorderColor = colorPalette.textField.focused;

@@ -39,22 +39,18 @@ export default function UpdateUserData() {
 
     const { firstName, lastName } = formData;
 
-    try {
-      const { success, message } = await updateUserPersonalInformation({ firstName, lastName, contactNumber: null });
+    const { success, message } = await updateUserPersonalInformation({ firstName, lastName, contactNumber: null });
 
-      if (success) {
-        dispatch(setIsUpdateDialogOpen(false));
-        setFormData(defaultFormData);
-        router.refresh();
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Update user failed. Please try again later.');
-    } finally {
-      setIsLoading(false);
-      dispatch(setIsDialogLoading(false));
+    if (success) {
+      dispatch(setIsUpdateDialogOpen(false));
+      setFormData(defaultFormData);
+      router.refresh();
+    } else {
+      toast.error(message);
     }
+
+    setIsLoading(false);
+    dispatch(setIsDialogLoading(false));
   }
 
   return (

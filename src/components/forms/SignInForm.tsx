@@ -14,8 +14,8 @@ import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
 
 const formFields = [
-  { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
-  { name: 'password', label: 'Password', type: 'password', autoComplete: 'current-password' },
+  { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email' },
+  { label: 'Password', name: 'password', type: 'password', autoComplete: 'current-password' },
 ];
 
 const defaultFormData = {
@@ -48,48 +48,40 @@ export default function SignInForm({ children }: Props) {
 
     !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
 
-    try {
-      const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
+    const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
-      if (success === true) {
-        router.refresh();
-        dispatch(setIsSignInDialogOpen(false));
-        setFormData(defaultFormData);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error('Sign in failed. Please try again later.');
-    } finally {
-      setIsLoading(false);
-      dispatch(setIsDialogLoading(false));
+    if (success === true) {
+      router.refresh();
+      dispatch(setIsSignInDialogOpen(false));
+      setFormData(defaultFormData);
+    } else {
+      toast.error(message);
     }
+
+    setIsLoading(false);
+    dispatch(setIsDialogLoading(false));
   }
 
   async function handleSignInWithGoogle() {
     !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
 
-    try {
-      // Remember Supabase redirect url for google sign in
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${location.origin}/api/auth/callback`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+    // Remember Supabase redirect url for google sign in
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/api/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
         },
-      });
+      },
+    });
 
-      if (error) {
-        toast.error(error.message);
-      }
-    } catch (error) {
-      toast.error('Sign in failed. Please try again later.');
-    } finally {
-      dispatch(setIsDialogLoading(false));
+    if (error) {
+      toast.error(error.message);
     }
+
+    dispatch(setIsDialogLoading(false));
   }
 
   return (

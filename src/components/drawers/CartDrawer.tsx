@@ -18,7 +18,7 @@ type DrawerFooterProps = {
   show: boolean;
 };
 
-function DrawerFooter({ show }: DrawerFooterProps) {
+function CartFooter({ show }: DrawerFooterProps) {
   const router = useRouter();
   const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
@@ -163,7 +163,7 @@ export default function CartDrawer() {
           }}
         />
         <SmallCartItemList paddingX={2} />
-        <DrawerFooter show={cartItems.length > 0} />
+        <CartFooter show={cartItems.length > 0} />
       </DrawerComponent>
     </>
   );

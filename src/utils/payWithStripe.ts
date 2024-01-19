@@ -12,7 +12,9 @@ export default async function payWithStripe(cartItems: CartItemType[]) {
       const unitAmount =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price!;
       const roundedAmount = Math.round(unitAmount) * 100;
-      const images = item?.product?.productImageData.map((data) => data.imageUrl);
+      const images = [...item?.product?.productImageData!]
+        .sort((a, b) => a.index - b.index)
+        .map((image) => image.imageUrl);
 
       return {
         price_data: {

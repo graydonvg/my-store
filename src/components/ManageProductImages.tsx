@@ -4,7 +4,7 @@ import { CloudUpload } from '@mui/icons-material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import {
   resetImageUploadProgess,
   setImageData,

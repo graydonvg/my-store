@@ -13,7 +13,6 @@ import {
 } from '@/lib/redux/account/accountSlice';
 import { toast } from 'react-toastify';
 import { AccountType } from '@/types';
-import { useRouter } from 'next/navigation';
 import { updateUserPassword } from '@/services/users/update';
 
 type PasswordPlaceholderProps = {
@@ -58,7 +57,6 @@ type UpdatePasswordProps = {
 };
 
 function UpdatePassword({ show }: UpdatePasswordProps) {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const { accountData, isUpdatingAccount } = useAppSelector((state) => state.account);
 

@@ -308,9 +308,8 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
             />
             <TextButton
               disabled={isRemovingCartItem}
-              isLoading={isRemovingCartItem}
               onClick={handleRemoveCartItem}
-              label={!isRemovingCartItem ? 'remove' : ''}
+              label={'remove'}
               labelColor={colorPalette.typography}
               startIcon={<Delete />}
             />

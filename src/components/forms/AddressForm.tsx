@@ -4,36 +4,36 @@ import { Box, Divider, Typography } from '@mui/material';
 import FormTitle from './FormTitle';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { Add } from '@mui/icons-material';
 import { addNewAddress } from '@/services/users/add';
 import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '../ui/inputFields/NumberField';
-import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
+import { setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
+import { setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
 import { updateAddress } from '@/services/users/update';
 
 const contactDetailsFormFields = [
-  { name: 'recipientFirstName', label: 'First Name', type: 'text', placeholder: 'e.g. John' },
-  { name: 'recipientLastName', label: 'Last Name', type: 'text', placeholder: 'e.g. Doe' },
-  { name: 'recipientContactNumber', label: 'Contact Number', type: 'text', placeholder: 'e.g. 0721234567' },
+  { label: 'First Name', name: 'recipientFirstName', type: 'text', placeholder: 'e.g. John' },
+  { label: 'Last Name', name: 'recipientLastName', type: 'text', placeholder: 'e.g. Doe' },
+  { label: 'Contact Number', name: 'recipientContactNumber', type: 'text', placeholder: 'e.g. 0721234567' },
 ];
 
 const deliveryAddressFormFields = [
   {
-    name: 'complexOrBuilding',
     label: 'Complex / Building',
+    name: 'complexOrBuilding',
     type: 'text',
     placeholder: 'Name, unit number or floor',
   },
-  { name: 'streetAddress', label: 'Street address', type: 'text', placeholder: 'e.g. 14 Christiaan Barnard Street' },
-  { name: 'suburb', label: 'Suburb', type: 'text', placeholder: 'e.g. Foreshore' },
-  { name: 'province', label: 'Province', type: 'text', placeholder: 'e.g. Western Cape' },
-  { name: 'city', label: 'City', type: 'text', placeholder: 'e.g. Cape Town' },
-  { name: 'postalCode', label: 'Postal Code', type: 'number', placeholder: 'e.g. 8000' },
+  { label: 'Street address', name: 'streetAddress', type: 'text', placeholder: 'e.g. 14 Christiaan Barnard Street' },
+  { label: 'Suburb', name: 'suburb', type: 'text', placeholder: 'e.g. Foreshore' },
+  { label: 'Province', name: 'province', type: 'text', placeholder: 'e.g. Western Cape' },
+  { label: 'City', name: 'city', type: 'text', placeholder: 'e.g. Cape Town' },
+  { label: 'Postal Code', name: 'postalCode', type: 'number', placeholder: 'e.g. 8000' },
 ];
 
 export default function AddressForm() {
@@ -56,7 +56,7 @@ export default function AddressForm() {
 
     const { addressId, postalCode, ...restOfAddressData } = addressFormData;
 
-    // if (formData.postal_code.length < 4) return toast.error('Min. 4 characters required');
+    // if (postalCode.length < 4) return toast.error('Min. 4 characters required');
 
     dispatch(setIsDialogLoading(true));
 

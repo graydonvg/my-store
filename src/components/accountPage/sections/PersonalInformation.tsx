@@ -9,11 +9,10 @@ import {
   setPersonalInformation,
   setPersonalInformationOnChange,
 } from '@/lib/redux/account/accountSlice';
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
-import { setUserData } from '@/lib/redux/user/userSlice';
+import { ChangeEvent, ReactNode, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { AccountTextFieldDataType, PersonalInformationType, UserDataType } from '@/types';
+import { AccountTextFieldDataType, PersonalInformationType } from '@/types';
 import { updateUserPersonalInformation } from '@/services/users/update';
 
 type UserDataProps = {

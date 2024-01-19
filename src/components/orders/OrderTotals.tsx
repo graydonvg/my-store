@@ -44,7 +44,7 @@ function Total({ label, price, fontSize, fontWeight, backgroundColor }: TotalPro
   );
 }
 
-type Props = {
+type OrderTotalsProps = {
   cartTotal: number;
   discountTotal: number;
   deliveryFee: number;
@@ -52,7 +52,13 @@ type Props = {
   totalToPay?: number;
 };
 
-export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
+export default function OrderTotals({
+  orderTotal,
+  discountTotal,
+  deliveryFee,
+  totalToPay,
+  cartTotal,
+}: OrderTotalsProps) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

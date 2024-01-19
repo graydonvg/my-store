@@ -15,15 +15,7 @@ import {
 } from '@mui/material';
 import ToggleButtons from './ui/buttons/ToggleButtons';
 import ContainedButton from './ui/buttons/ContainedButton';
-import {
-  Add,
-  AddShoppingCart,
-  ExpandMore,
-  Favorite,
-  LocalShippingOutlined,
-  Remove,
-  ShoppingCart,
-} from '@mui/icons-material';
+import { Add, AddShoppingCart, ExpandMore, Favorite, LocalShippingOutlined, Remove } from '@mui/icons-material';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { MouseEvent, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';

@@ -14,6 +14,7 @@ import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
+import { toast } from 'react-toastify';
 
 function CustomDivider() {
   const colorPalette = useColorPalette();
@@ -44,9 +45,15 @@ function FavoriteButton({ show }: FavoriteButtonProps) {
 
   if (!show) return null;
 
+  function handleNavigateToWishlist() {
+    toast.info('Wishlist coming soon!');
+  }
+
   return (
     <ListItem disablePadding>
-      <UpperNavIconButton backgroundColor={colorPalette.navBar.upper.background}>
+      <UpperNavIconButton
+        onClick={handleNavigateToWishlist}
+        backgroundColor={colorPalette.navBar.upper.background}>
         <Favorite
           aria-label="Wishlist"
           sx={{ color: colorPalette.typographyVariants.white, opacity: '50%' }}

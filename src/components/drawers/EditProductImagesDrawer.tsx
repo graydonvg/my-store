@@ -1,16 +1,17 @@
 'use client';
 
 import DrawerComponent from './DrawerComponent';
-import { Close, DeleteForever, Edit } from '@mui/icons-material';
+import { DeleteForever, Edit } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import DraggableListContainer from '../ui/draggableList/DraggableListContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
+import DrawerHeader from './DrawerHeader';
 
 type Props = {
   isSubmitting: boolean;
@@ -57,34 +58,10 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         width={{ xs: '100vw', sm: '350px' }}
         isOpen={isEditImageDrawerOpen}
         zIndex={(theme) => theme.zIndex.appBar + 1}>
-        <Box
-          sx={{
-            backgroundColor: colorPalette.navBar.upper.background,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexShrink: 0,
-            padding: 2,
-          }}>
-          <Typography
-            color={colorPalette.navBar.upper.text}
-            variant="h5"
-            component="span">
-            Edit images
-          </Typography>
-          <IconButton
-            size="small"
-            sx={{
-              cursor: 'pointer',
-              padding: 0,
-              color: colorPalette.navBar.upper.text,
-              '&:hover': { backgroundColor: colorPalette.navBar.upper.background },
-            }}
-            aria-label="close navigation drawer"
-            onClick={handleCloseEditImageDrawer}>
-            <Close />
-          </IconButton>
-        </Box>
+        <DrawerHeader
+          label="Edit images"
+          onClick={handleCloseEditImageDrawer}
+        />
         <Box sx={{ overflow: 'auto', height: 1, opacity: isDeletingAllImages ? '50%' : null }}>
           <DraggableListContainer />
         </Box>

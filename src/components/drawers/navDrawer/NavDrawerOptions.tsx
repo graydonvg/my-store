@@ -3,14 +3,12 @@
 import { List, Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } from '@mui/material';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from './NavDrawerOption';
-import { toast } from 'react-toastify';
 import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
-import signOut from '@/services/auth/sign-out';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
 
 type OptionsType = {

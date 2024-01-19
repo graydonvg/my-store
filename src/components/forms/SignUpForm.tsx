@@ -62,36 +62,32 @@ export default function SignUpForm({ children }: Props) {
 
     const { email, password, firstName, lastName } = formData;
 
-    try {
-      const { success: signUpSuccess, message: signUpMessage } = await signUpNewUser({
-        email,
-        password,
+    const { success: signUpSuccess, message: signUpMessage } = await signUpNewUser({
+      email,
+      password,
+    });
+
+    if (signUpSuccess === true) {
+      const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
+        firstName,
+        lastName,
+        contactNumber: null,
       });
 
-      if (signUpSuccess === true) {
-        const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
-          firstName,
-          lastName,
-          contactNumber: null,
-        });
-
-        if (updateSuccess === true) {
-          router.refresh();
-          dispatch(setIsSignUpDialogOpen(false));
-          setFormData(defaultFormData);
-          toast.success(`Welcome, ${firstName}!`);
-        } else {
-          toast.error(updateMessage);
-        }
+      if (updateSuccess === true) {
+        router.refresh();
+        dispatch(setIsSignUpDialogOpen(false));
+        setFormData(defaultFormData);
+        toast.success(`Welcome, ${firstName}!`);
       } else {
-        toast.error(signUpMessage);
+        toast.error(updateMessage);
       }
-    } catch (error) {
-      toast.error('Sign up failed. Please try again later.');
-    } finally {
-      setIsLoading(false);
-      !isWelcomePath ? dispatch(setIsDialogLoading(false)) : null;
+    } else {
+      toast.error(signUpMessage);
     }
+
+    setIsLoading(false);
+    !isWelcomePath ? dispatch(setIsDialogLoading(false)) : null;
   }
 
   return (

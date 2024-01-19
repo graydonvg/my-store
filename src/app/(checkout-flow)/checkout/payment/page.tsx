@@ -46,7 +46,9 @@ export default function PaymentSuccessPage() {
           dispatch(resetCheckoutData());
         }
 
-        router.push('/orders');
+        setTimeout(() => {
+          router.push('/orders');
+        }, 1000);
       };
 
       handleUpdateOrderPaymentStatus();
