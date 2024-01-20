@@ -135,6 +135,7 @@ export default function AdminViewAddNewProduct() {
         dispatch(resetProductFormData());
         dispatch(resetImageData());
         toast.success('Successfully added product.');
+        setIsSubmitting(false);
         router.push('/admin-view/all-products');
       } else {
         const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
@@ -174,6 +175,7 @@ export default function AdminViewAddNewProduct() {
         dispatch(resetProductFormData());
         dispatch(resetImageData());
         toast.success('Successfully updated product.');
+        setIsSubmitting(false);
         router.push('/admin-view/all-products');
       } else if (addImageDataSuccess === false) {
         toast.error(addImageDataMessage);
