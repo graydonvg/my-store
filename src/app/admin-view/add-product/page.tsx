@@ -2,7 +2,7 @@
 
 import { Box, Grid, Typography } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { InsertProductTypeDb, InsertProductTypeStore, UpdateProductType } from '@/types';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
@@ -48,6 +48,25 @@ export default function AdminViewAddNewProduct() {
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+
+  useEffect(() => {
+    function handler(e: BeforeUnloadEvent) {
+      if (
+        !isSubmitting &&
+        emptyFormFields.length === numberOfFormFields &&
+        imageData.length === 0 &&
+        imageUploadProgress.length === 0
+      )
+        return;
+      e.preventDefault();
+    }
+
+    window.addEventListener('beforeunload', handler);
+
+    return () => {
+      window.removeEventListener('beforeunload', handler);
+    };
+  }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormData({ field: 'sizes', value: selectedSize }));
