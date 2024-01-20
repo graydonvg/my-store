@@ -8,7 +8,7 @@ import { deleteAllCartItems } from '@/services/cart/delete';
 import updateOrderPaymentStatus from '@/services/orders/update';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 
@@ -21,6 +21,8 @@ export default function PaymentSuccessPage() {
   const paymentStatus = searchParams.get('payment-status');
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const [showRedirectMessage, setShowRedirectMessage] = useState(false);
+  const [showUpdatingPaymentMessage, setShowUpdatingPaymentMessage] = useState(false);
 
   useEffect(() => {
     if (paymentStatus === 'success' && checkoutData.isProcessing === true) {
@@ -37,6 +39,8 @@ export default function PaymentSuccessPage() {
       handleClearAllCartItems();
 
       const handleUpdateOrderPaymentStatus = async () => {
+        setShowUpdatingPaymentMessage(true);
+
         const { success, message } = await updateOrderPaymentStatus({ orderId: checkoutData.orderId!, isPaid: true });
 
         if (success === false) {
@@ -46,9 +50,11 @@ export default function PaymentSuccessPage() {
           dispatch(resetCheckoutData());
         }
 
+        setShowUpdatingPaymentMessage(false);
+        setShowRedirectMessage(true);
         setTimeout(() => {
           router.push('/orders');
-        }, 1000);
+        }, 3000);
       };
 
       handleUpdateOrderPaymentStatus();
@@ -85,6 +91,12 @@ export default function PaymentSuccessPage() {
         color={colorPalette.typography}
         loading={true}
       />
+      <Box sx={{ height: { xs: '18px', sm: '30px' } }}>
+        <Typography fontSize={{ xs: 12, sm: 16 }}>
+          {!showUpdatingPaymentMessage ? '' : 'Updating payment status.'}
+          {!showRedirectMessage ? null : 'Redirecting you to orders page in 3 seconds.'}
+        </Typography>
+      </Box>
     </Box>
   );
 }
