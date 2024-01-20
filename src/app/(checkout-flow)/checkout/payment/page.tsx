@@ -23,6 +23,7 @@ export default function PaymentSuccessPage() {
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const [showRedirectMessage, setShowRedirectMessage] = useState(false);
   const [showUpdatingPaymentMessage, setShowUpdatingPaymentMessage] = useState(false);
+  const redirectCountdown = 2;
 
   useEffect(() => {
     if (paymentStatus === 'success' && checkoutData.isProcessing === true) {
@@ -54,7 +55,7 @@ export default function PaymentSuccessPage() {
         setShowRedirectMessage(true);
         setTimeout(() => {
           router.push('/orders');
-        }, 3000);
+        }, redirectCountdown * 1000);
       };
 
       handleUpdateOrderPaymentStatus();
@@ -94,7 +95,7 @@ export default function PaymentSuccessPage() {
       <Box sx={{ height: { xs: '18px', sm: '30px' } }}>
         <Typography fontSize={{ xs: 12, sm: 16 }}>
           {!showUpdatingPaymentMessage ? '' : 'Updating payment status.'}
-          {!showRedirectMessage ? null : 'Redirecting you to orders page in 3 seconds.'}
+          {!showRedirectMessage ? null : `Redirecting you to orders page in ${redirectCountdown} seconds.`}
         </Typography>
       </Box>
     </Box>
