@@ -94,7 +94,7 @@ export default function PaymentSuccessPage() {
       />
       <Box sx={{ height: { xs: '18px', sm: '30px' } }}>
         <Typography fontSize={{ xs: 12, sm: 16 }}>
-          {!showUpdatingPaymentMessage ? '' : 'Updating payment status.'}
+          {!showUpdatingPaymentMessage ? null : 'Updating payment status.'}
           {!showRedirectMessage ? null : `Redirecting you to orders page in ${redirectCountdown} seconds.`}
         </Typography>
       </Box>
