@@ -192,7 +192,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
               <Image
                 style={{ objectFit: 'cover', borderRadius: borderRadius }}
                 fill
-                sizes="180px 60px"
+                sizes="160px 60px"
                 src={imageUrl!}
                 alt={`${item?.product?.name}`}
                 priority
