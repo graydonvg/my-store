@@ -5,6 +5,7 @@ import Link from 'next/link';
 import useColorPalette from '@/hooks/useColorPalette';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { usePathname, useSelectedLayoutSegments } from 'next/navigation';
 
 type LowerNavbarOptionProps = {
   path: string;
@@ -16,6 +17,27 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
   const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('/admin-view');
+  const segments = useSelectedLayoutSegments();
+  const segment = segments[1];
+  let labelToUnderline;
+
+  if (!isAdminView) {
+    if (segment === undefined) {
+      labelToUnderline = 'Home';
+    } else if (segment.split('-').join(' ') === label.toLowerCase()) {
+      labelToUnderline = label;
+    }
+  } else {
+    if (segment === 'all-products') {
+      labelToUnderline = 'Manage All Products';
+    } else if (segment === 'add-product') {
+      labelToUnderline = 'Add New Product';
+    } else {
+      return;
+    }
+  }
 
   function handleClearAddProductStoreData() {
     if (path === '/admin-view/add-product') {
@@ -36,6 +58,10 @@ export default function LowerNavbarOption({ path, label, isLastNavOption }: Lowe
             sx={{
               textTransform: 'none',
               color: colorPalette.navBar.lower.text,
+              textDecoration: label === labelToUnderline ? 'underline' : 'none',
+              textDecorationColor: colorPalette.navBar.lower.text,
+              textDecorationThickness: 1,
+              textUnderlineOffset: 6,
               '&:hover': {
                 color: colorPalette.typography,
                 textDecoration: 'underline',
