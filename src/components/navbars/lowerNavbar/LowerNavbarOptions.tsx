@@ -8,6 +8,8 @@ type AdminNavOptionsProps = {
 };
 
 function AdminNavOptions({ show }: AdminNavOptionsProps) {
+  const pathname = usePathname();
+
   if (!show) return null;
 
   return (
@@ -21,6 +23,7 @@ function AdminNavOptions({ show }: AdminNavOptionsProps) {
             label={option.label}
             path={option.path}
             isLastNavOption={isLastNavOption}
+            underline={option.path === pathname}
           />
         );
       })}
@@ -33,6 +36,8 @@ type ClientNavOptionsProps = {
 };
 
 function ClientNavOptions({ show }: ClientNavOptionsProps) {
+  const pathname = usePathname();
+
   if (!show) return null;
 
   return (
@@ -46,6 +51,7 @@ function ClientNavOptions({ show }: ClientNavOptionsProps) {
             label={option.label}
             path={option.path}
             isLastNavOption={isLastNavOption}
+            underline={option.path === pathname}
           />
         );
       })}
@@ -58,6 +64,8 @@ type AccountNavOptionsProps = {
 };
 
 function AccountNavOptions({ show }: AccountNavOptionsProps) {
+  const pathname = usePathname();
+
   if (!show) return null;
 
   return (
@@ -71,6 +79,7 @@ function AccountNavOptions({ show }: AccountNavOptionsProps) {
             label={option.label}
             path={option.path}
             isLastNavOption={isLastNavOption}
+            underline={option.path === pathname}
           />
         );
       })}
