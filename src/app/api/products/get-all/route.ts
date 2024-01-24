@@ -9,7 +9,6 @@ export async function GET(): Promise<NextResponse<CustomResponseType<ProductType
     const { data: products, error } = await supabase
       .from('products')
       .select('*, productImageData(fileName, imageUrl, productImageId, index)')
-      .order('createdAt', { ascending: false })
       .order('index', { referencedTable: 'productImageData', ascending: true });
 
     if (error) {
