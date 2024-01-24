@@ -6,6 +6,7 @@ import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import useColorPalette from '@/hooks/useColorPalette';
+import { usePathname } from 'next/navigation';
 
 type IconProps = {
   label: string | 'Sign Out';
@@ -30,6 +31,7 @@ type ButtonWithLinkProps = {
 function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
+  const pathname = usePathname();
 
   if (!showButtonWithLink) return null;
 
@@ -48,7 +50,14 @@ function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps
       <ListItemButton sx={{ height: '100%' }}>
         <ListItemText
           primary={label}
-          sx={{ color: colorPalette.navBar.lower.text, width: 1 }}
+          sx={{
+            color: colorPalette.navBar.lower.text,
+            width: 1,
+            textDecoration: pathname === path ? 'underline' : 'none',
+            textDecorationColor: colorPalette.navBar.lower.text,
+            textDecorationThickness: 1,
+            textUnderlineOffset: 6,
+          }}
         />
         <Icon label={label} />
       </ListItemButton>

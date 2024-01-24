@@ -7,7 +7,7 @@ export default async function KidsAllProducts() {
 
   return (
     <>
-      <PageHeaderWithBorder label="kids" />
+      <PageHeaderWithBorder label="Kids" />
       <Products
         show={!!products}
         products={products!}
