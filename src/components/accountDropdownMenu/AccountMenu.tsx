@@ -60,7 +60,7 @@ function AdminMenuItem({ show }: AdminMenuItemProps) {
   if (!show) return null;
 
   return (
-    <Link href={isAdminView ? '/' : '/admin-view'}>
+    <Link href={isAdminView ? '/' : '/admin-view/all-products'}>
       <AccountMenuItem
         text={isAdminView ? 'Client View' : 'Admin View'}
         icon={<AdminViewToggleIcon isAdminView={isAdminView} />}

@@ -28,11 +28,6 @@ export const navOptions = [
 
 export const adminNavOptions = [
   {
-    id: 'adminViewHome',
-    label: 'Home',
-    path: '/admin-view',
-  },
-  {
     id: 'adminListing',
     label: 'Manage All Products',
     path: '/admin-view/all-products',

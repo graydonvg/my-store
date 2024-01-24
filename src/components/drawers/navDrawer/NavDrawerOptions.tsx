@@ -142,7 +142,7 @@ export default function NavDraweOptions() {
             {
               id: 'adminView',
               label: isAdminView ? 'Client View' : 'Admin View',
-              path: isAdminView ? '/' : '/admin-view',
+              path: isAdminView ? '/' : '/admin-view/all-products',
             },
           ]}
           onClick={handleCloseDrawer}
