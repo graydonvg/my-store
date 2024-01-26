@@ -12,17 +12,17 @@ import ProductCard from './ui/ProductCard';
 const categories = [
   {
     label: 'men',
-    imageSrc: '/portrait-handsome-fashion-businessman-model-dressed-elegant-checkered-suit.jpg',
+    imageSrc: '/portrait-handsome-fashion-businessman-model-dressed-elegant-checkered-suit.webp',
     path: '/products/men',
   },
   {
     label: 'women',
-    imageSrc: '/vladimir-yelizarov-xmtEdCeBsww-unsplash.jpg',
+    imageSrc: '/vladimir-yelizarov-xmtEdCeBsww-unsplash.webp',
     path: '/products/women',
   },
   {
     label: 'kids',
-    imageSrc: '/terricks-noah-n9R0MN3XGvY-unsplash.jpg',
+    imageSrc: '/terricks-noah-n9R0MN3XGvY-unsplash.webp',
     path: '/products/kids',
   },
 ];
@@ -62,7 +62,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
           <Image
             style={{ objectFit: 'cover', borderRadius: borderRadius }}
             fill
-            src="/stylish-woman-with-shopping-bags.jpg"
+            src="/stylish-woman-with-shopping-bags-long.webp"
             alt="Stylish woman with shopping bags"
             priority
           />
