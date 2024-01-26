@@ -62,6 +62,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
           <Image
             style={{ objectFit: 'cover', borderRadius: borderRadius }}
             fill
+            sizes="(min-width: 1280px) 1152px, 92.08vw"
             src="/stylish-woman-with-shopping-bags-long.webp"
             alt="Stylish woman with shopping bags"
             priority
@@ -151,7 +152,10 @@ export default function HomePageClient({ products }: HomePageClientProps) {
                   key={product.productId}
                   xs={6}
                   sm={3}>
-                  <ProductCard product={product} />
+                  <ProductCard
+                    product={product}
+                    imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 28px)"
+                  />
                 </Grid>
               ))
             : null}
@@ -199,6 +203,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
                 <Image
                   style={{ objectFit: 'cover', borderRadius: borderRadius, objectPosition: '50% 0%' }}
                   fill
+                  sizes="(min-width: 1280px) 368px, (min-width: 600px) 29.55vw, calc(100vw - 32px)"
                   src={category.imageSrc}
                   alt={`Image for category ${category.label}`}
                   priority

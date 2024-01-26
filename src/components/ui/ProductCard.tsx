@@ -176,9 +176,10 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
 
 type ProductCardProps = {
   product: ProductType;
+  imageSizes: string;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, imageSizes }: ProductCardProps) {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
@@ -213,7 +214,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <Image
                   style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
                   fill
-                  sizes="(min-width: 1540px) 181px, (min-width: 1200px) 280px, (min-width: 900px) calc(33.21vw - 20px), (min-width: 600px) calc(50vw - 24px), 50vw"
+                  sizes={imageSizes}
                   src={imageUrl!}
                   alt={`${product.name}`}
                   priority
