@@ -12,10 +12,12 @@ export default function Products({ show, products }: Props) {
 
   return (
     <Grid
+      component="ul"
       container
       spacing={{ xs: 2, sm: 3 }}>
       {products.map((product, index) => (
         <Grid
+          component="li"
           key={index}
           item
           xs={6}

@@ -3,7 +3,7 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { getProductsByCategory } from '@/services/products/get';
 
 export default async function KidsAllProducts() {
-  const { data: products } = await getProductsByCategory('kids');
+  const { data: products } = await getProductsByCategory('Kids');
 
   return (
     <>

@@ -236,7 +236,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                paddingY: 2,
+                paddingY: 1,
               }}>
               <Typography
                 component="h4"

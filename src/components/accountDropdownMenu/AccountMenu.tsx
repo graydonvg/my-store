@@ -82,16 +82,6 @@ export default function AccountMenu() {
     dispatch(toggleTheme());
   }
 
-  async function handleSignOut() {
-    const { success, message } = await signOut();
-    if (success === false) {
-      toast.error(message);
-    } else {
-      toast.success(message);
-      router.refresh();
-    }
-  }
-
   return (
     <HoverDropdownMenu
       buttonBackgroundColor={colorPalette.navBar.upper.background}

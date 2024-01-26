@@ -26,7 +26,7 @@ import revalidate from '@/services/revalidate';
 import updateProductImageData from '@/services/product-image-data/update';
 
 const formFields = [
-  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'kids'] },
+  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'Kids'] },
   { label: 'Name', name: 'name' },
   { label: 'Brand', name: 'brand' },
   { label: 'Product Details', name: 'details', multiline: true, placeholder: 'e.g. Black, Regular fit, ...' },

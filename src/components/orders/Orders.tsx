@@ -1,7 +1,7 @@
 'use client';
 
 import { OrderType } from '@/types';
-import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import OrderDetails from './OrderDetails';
 import OrderItems from './OrderItems';
@@ -19,10 +19,11 @@ export default function Orders({ show, orders }: Props) {
   if (!show) return null;
 
   return (
-    <>
+    <Box component="ul">
       {orders?.map((order) => {
         return (
           <Grid
+            component="li"
             key={order.orderId}
             container
             spacing={3}
@@ -39,6 +40,6 @@ export default function Orders({ show, orders }: Props) {
           </Grid>
         );
       })}
-    </>
+    </Box>
   );
 }
