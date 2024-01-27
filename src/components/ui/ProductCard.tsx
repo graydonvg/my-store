@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import { toast } from 'react-toastify';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
@@ -210,16 +210,14 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 alignItems: 'center',
                 aspectRatio: 25 / 36,
               }}>
-              <Suspense fallback={<Box sx={{ backgroundColor: 'green', width: 1, height: 1 }}>loading...</Box>}>
-                <Image
-                  style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
-                  fill
-                  sizes={imageSizes}
-                  src={imageUrl!}
-                  alt={`${product.name}`}
-                  priority
-                />
-              </Suspense>
+              <Image
+                style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
+                fill
+                sizes={imageSizes}
+                src={imageUrl!}
+                alt={`${product.name}`}
+                priority
+              />
             </Box>
             <Box
               sx={{

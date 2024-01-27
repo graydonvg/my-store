@@ -63,7 +63,8 @@ export default function HomePageClient({ products }: HomePageClientProps) {
             style={{ objectFit: 'cover', borderRadius: borderRadius }}
             fill
             sizes="(min-width: 1280px) 1152px, 92.08vw"
-            src="/stylish-woman-with-shopping-bags-long.webp"
+            src="/stylish-woman-with-shopping-bags1.webp"
+            // src="/stylish-woman-with-shopping-bags.webp"
             alt="Stylish woman with shopping bags"
             priority
           />
@@ -75,15 +76,18 @@ export default function HomePageClient({ products }: HomePageClientProps) {
               gap: { xs: 1, md: 2 },
               justifyContent: 'center',
               width: 1,
-              top: { xs: '55px', md: '100px' },
+              // top: { xs: '50px', md: '100px' },
               paddingX: { xs: '20px', sm: '50px' },
+              height: 1,
+              background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
+              borderRadius,
             }}>
             <Typography
               component="h1"
               fontWeight={800}
               fontSize={{ xs: 32, sm: 48, md: 64, lg: 64 }}
               lineHeight={1.1}
-              sx={{ color: colorPalette.typographyVariants.black, maxWidth: { xs: '40%', lg: '50%' } }}>
+              sx={{ color: colorPalette.typographyVariants.black, maxWidth: { xs: '40%', sm: '45%', lg: '50%' } }}>
               Where Fashion Meets Passion
             </Typography>
             <Typography
@@ -91,7 +95,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
               fontWeight={500}
               fontSize={{ xs: 14, sm: 14, md: 16 }}
               sx={{
-                color: colorPalette.typographyVariants.black,
+                color: colorPalette.shade.dark,
                 maxWidth: { sm: '35%', lg: '40%' },
                 display: { xs: 'none', sm: 'block' },
               }}>
@@ -101,8 +105,9 @@ export default function HomePageClient({ products }: HomePageClientProps) {
             <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
               <ContainedButton
                 label="explore the collection"
-                backgroundColor="grey"
+                backgroundColor="blue"
                 onClick={handleNavigateToAllProducts}
+                styles={{ boxShadow: 15 }}
               />
             </Box>
           </Box>
