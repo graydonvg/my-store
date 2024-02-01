@@ -152,6 +152,8 @@ export default function AdminViewAddNewProduct() {
     setIsSubmitting(false);
   }
 
+  console.log(imageData);
+
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
@@ -162,13 +164,20 @@ export default function AdminViewAddNewProduct() {
     } as UpdateProductType);
 
     if (updateProductSuccess === true) {
+      let updateImageDataSuccess = true;
+      let updateImageDataMessage = null;
+      const imageDataToUpdate = imageData.find((data) => !!data.productImageId);
+
       const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
         productFormData.productId!
       );
 
-      const { success: updateImageDataSuccess, message: updateImageDataMessage } = await updateProductImageData(
-        imageData
-      );
+      if (!!imageDataToUpdate) {
+        const { success, message } = await updateProductImageData(imageData);
+
+        updateImageDataSuccess = success;
+        updateImageDataMessage = message;
+      }
 
       if (addImageDataSuccess === true && updateImageDataSuccess === true) {
         await handleRevalidate();
@@ -177,9 +186,9 @@ export default function AdminViewAddNewProduct() {
         toast.success('Successfully updated product.');
         setIsSubmitting(false);
         router.push('/admin-view/all-products');
-      } else if (addImageDataSuccess === false) {
+      } else if (addImageDataSuccess === false && updateImageDataSuccess === true) {
         toast.error(addImageDataMessage);
-      } else if (updateImageDataSuccess === false) {
+      } else if (updateImageDataSuccess === false && addImageDataSuccess === true) {
         toast.error(updateImageDataMessage);
       } else {
         toast.error(addImageDataMessage);

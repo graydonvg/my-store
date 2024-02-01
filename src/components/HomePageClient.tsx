@@ -36,7 +36,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const mensSaleProduct = products?.filter((product) => product.category === 'Men' && product.isOnSale === 'Yes')[2];
+  const mensSaleProduct = products?.filter((product) => product.category === 'Men' && product.isOnSale === 'Yes')[1];
   const womensSaleProduct = products?.filter(
     (product) => product.category === 'Women' && product.isOnSale === 'Yes'
   )[2];
@@ -76,7 +76,6 @@ export default function HomePageClient({ products }: HomePageClientProps) {
               gap: { xs: 1, md: 2 },
               justifyContent: 'center',
               width: 1,
-              // top: { xs: '50px', md: '100px' },
               paddingX: { xs: '20px', sm: '50px' },
               height: 1,
               background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
