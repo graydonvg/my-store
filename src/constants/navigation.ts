@@ -24,6 +24,11 @@ export const navOptions = [
     label: 'Kids',
     path: '/products/kids',
   },
+  {
+    id: 'listingSale',
+    label: 'SALE',
+    path: '/products/sale',
+  },
 ];
 
 export const adminNavOptions = [

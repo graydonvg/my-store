@@ -27,6 +27,75 @@ const categories = [
   },
 ];
 
+type ProductPreviewPros = {
+  title: string;
+  products: ProductType[] | undefined;
+  onClick: () => void;
+};
+
+function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
+  const colorPalette = useColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+
+  return (
+    <Grid
+      component="ul"
+      container
+      spacing={3}>
+      <Grid
+        component="li"
+        item
+        xs={6}
+        sm={3}>
+        <Box
+          sx={{
+            backgroundColor: mode === 'dark' ? colorPalette.shade.dark : colorPalette.shade.light,
+            borderRadius,
+            padding: { xs: 2, lg: 4 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 2,
+            height: 1,
+          }}>
+          <Typography
+            component="h2"
+            fontSize={{ xs: 24, sm: 20, md: 36 }}
+            fontWeight={500}
+            lineHeight={1.1}>
+            {title}
+          </Typography>
+          <Box>
+            <ContainedButton
+              onClick={onClick}
+              label="shop all"
+              backgroundColor="blue"
+            />
+          </Box>
+        </Box>
+      </Grid>
+      {!!products && products.length > 0
+        ? products.map((product, index) => (
+            <Grid
+              component="li"
+              item
+              key={index}
+              xs={6}
+              sm={3}>
+              {!!product && (
+                <ProductCard
+                  product={product}
+                  imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 28px)"
+                />
+              )}
+            </Grid>
+          ))
+        : null}
+    </Grid>
+  );
+}
+
 type HomePageClientProps = {
   products: ProductType[] | undefined;
 };
@@ -34,14 +103,17 @@ type HomePageClientProps = {
 export default function HomePageClient({ products }: HomePageClientProps) {
   const router = useRouter();
   const colorPalette = useColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
   const mensSaleProduct = products?.filter((product) => product.category === 'Men' && product.isOnSale === 'Yes')[1];
   const womensSaleProduct = products?.filter(
     (product) => product.category === 'Women' && product.isOnSale === 'Yes'
   )[2];
   const kidsSaleProduct = products?.filter((product) => product.category === 'Kids' && product.isOnSale === 'Yes')[1];
   const productsOnSale = [mensSaleProduct!, womensSaleProduct!, kidsSaleProduct!];
+  const latestArrivals = products?.filter((product) => product.isOnSale === 'No').slice(0, 3);
+
+  function handleNavigateToSale() {
+    router.push('/products/sale');
+  }
 
   function handleNavigateToAllProducts() {
     router.push('/products/all-products');
@@ -52,7 +124,7 @@ export default function HomePageClient({ products }: HomePageClientProps) {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, paddingTop: 1 }}>
       <Box component="section">
         <Box
           sx={{
@@ -111,58 +183,20 @@ export default function HomePageClient({ products }: HomePageClientProps) {
           </Box>
         </Box>
       </Box>
-      <Box component="section">
-        <Grid
-          component="ul"
-          container
-          spacing={3}>
-          <Grid
-            component="li"
-            item
-            xs={6}
-            sm={3}>
-            <Box
-              sx={{
-                backgroundColor: mode === 'dark' ? colorPalette.shade.dark : colorPalette.shade.light,
-                borderRadius,
-                padding: { xs: 2, lg: 4 },
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: 2,
-                height: 1,
-              }}>
-              <Typography
-                component="h2"
-                fontSize={{ xs: 24, sm: 20, md: 36 }}
-                fontWeight={500}
-                lineHeight={1.1}>
-                Summer Sale Collection
-              </Typography>
-              <Box>
-                <ContainedButton
-                  label="shop all"
-                  backgroundColor="blue"
-                />
-              </Box>
-            </Box>
-          </Grid>
-          {!!productsOnSale
-            ? productsOnSale.map((product) => (
-                <Grid
-                  component="li"
-                  item
-                  key={product.productId}
-                  xs={6}
-                  sm={3}>
-                  <ProductCard
-                    product={product}
-                    imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 28px)"
-                  />
-                </Grid>
-              ))
-            : null}
-        </Grid>
+      <Box
+        component="section"
+        sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {[
+          { title: 'The Biggest Sale', products: productsOnSale, onClick: handleNavigateToSale },
+          { title: 'Latest Arrivals', products: latestArrivals, onClick: handleNavigateToAllProducts },
+        ].map((preview, index) => (
+          <ProductPreview
+            key={index}
+            title={preview.title}
+            products={preview.products}
+            onClick={preview.onClick}
+          />
+        ))}
       </Box>
       <Box component="section">
         <Divider sx={{ paddingBottom: { xs: 2, md: 4 } }}>

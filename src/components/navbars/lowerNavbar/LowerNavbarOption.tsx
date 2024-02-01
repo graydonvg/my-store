@@ -16,6 +16,7 @@ type LowerNavbarOptionProps = {
 export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: LowerNavbarOptionProps) {
   const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
+  const isSaleOption = label.toLowerCase() === 'sale';
   const { productFormData } = useAppSelector((state) => state.productForm);
 
   function handleClearAddProductStoreData() {
@@ -36,18 +37,11 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
             component="span"
             sx={{
               textTransform: 'none',
-              color: colorPalette.navBar.lower.text,
+              color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
               textDecoration: underline ? 'underline' : 'none',
-              textDecorationColor: colorPalette.navBar.lower.text,
+              textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.navBar.lower.text,
               textDecorationThickness: 1,
               textUnderlineOffset: 6,
-              '&:hover': {
-                color: colorPalette.typography,
-                textDecoration: 'underline',
-                textDecorationColor: colorPalette.typography,
-                textDecorationThickness: 1,
-                textUnderlineOffset: 6,
-              },
             }}>
             <Link
               onClick={handleClearAddProductStoreData}

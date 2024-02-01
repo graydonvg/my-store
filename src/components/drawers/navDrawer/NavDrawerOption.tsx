@@ -32,6 +32,7 @@ function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const pathname = usePathname();
+  const isSaleOption = label.toLowerCase() === 'sale';
 
   if (!showButtonWithLink) return null;
 
@@ -51,10 +52,10 @@ function ButtonWithLink({ showButtonWithLink, path, label }: ButtonWithLinkProps
         <ListItemText
           primary={label}
           sx={{
-            color: colorPalette.navBar.lower.text,
+            color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
             width: 1,
             textDecoration: pathname === path ? 'underline' : 'none',
-            textDecorationColor: colorPalette.navBar.lower.text,
+            textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.navBar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
           }}
