@@ -77,6 +77,11 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
             card: {
               background: '#fff',
             },
+            button: {
+              disabled: {
+                backgroundColor: 'rgba(0, 0, 0, 0.12)',
+              },
+            },
             border: 'rgba(0, 0, 0, 0.3)',
             boxShadow: 'rgba(0,0,0,0.15)',
           },
@@ -132,6 +137,11 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
             },
             card: {
               background: grey[900],
+            },
+            button: {
+              disabled: {
+                backgroundColor: 'rgba(255, 255, 255, 0.12)',
+              },
             },
             border: 'rgba(255, 255, 255, 0.3)',
             boxShadow: 'rgba(255,255,255,0.15)',

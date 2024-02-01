@@ -14,6 +14,9 @@ function getButtonBackgroundColor(
       '&:hover': {
         backgroundColor: colorPalette.primary.dark,
       },
+      '&:disabled': {
+        backgroundColor: colorPalette.button.disabled.backgroundColor,
+      },
       '@media (hover: hover)': {
         '&:hover': {
           backgroundColor: colorPalette.primary.light,
@@ -24,6 +27,9 @@ function getButtonBackgroundColor(
       backgroundColor: colorPalette.warning.dark,
       '&:hover': {
         backgroundColor: colorPalette.warning.dark,
+      },
+      '&:disabled': {
+        backgroundColor: colorPalette.button.disabled.backgroundColor,
       },
       '@media (hover: hover)': {
         '&:hover': {
