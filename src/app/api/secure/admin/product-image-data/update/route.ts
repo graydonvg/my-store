@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, InsertProductImageDataTypeStore } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -15,10 +15,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const imageData: InsertProductImageDataTypeStore[] = await request.json();
 
     if (!session)
-      return NextResponse.json({ success: false, message: `Failed to update image data. ${notAuthenticatedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to update image data. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
 
     if (!imageData)
-      return NextResponse.json({ success: false, message: `Failed to update image data. ${noDataReceivedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to update image data. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+      });
 
     const updatePromises = imageData.map((data) =>
       supabase.from('productImageData').update(data).eq('productImageId', data.productImageId!)

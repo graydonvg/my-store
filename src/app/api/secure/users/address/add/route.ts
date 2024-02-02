@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { CustomResponseType, InsertAddressType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -14,10 +14,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const addressData: InsertAddressType = await request.json();
 
     if (!session)
-      return NextResponse.json({ success: false, message: `Failed to add address. ${notAuthenticatedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to add address. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
 
     if (!addressData)
-      return NextResponse.json({ success: false, message: `Failed to add address. ${noDataReceivedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to add address. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+      });
 
     const { error } = await supabase.from('addresses').insert(addressData);
 

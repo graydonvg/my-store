@@ -1,6 +1,6 @@
 'use client';
 
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -23,7 +23,7 @@ function Total({ label, price, fontSize, fontWeight, backgroundColor }: TotalPro
         width: 1,
         padding: 1,
         backgroundColor,
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
       }}>
       <Typography
         paddingRight={2}

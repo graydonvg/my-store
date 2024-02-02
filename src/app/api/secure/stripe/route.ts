@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createURL from '@/utils/createURL';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
@@ -22,7 +22,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!supabaseSession)
       return NextResponse.json({
         success: false,
-        message: `Failed to create a Stripe session. ${notAuthenticatedError}`,
+        message: `Failed to create a Stripe session. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
     const session = await stripe.checkout.sessions.create({

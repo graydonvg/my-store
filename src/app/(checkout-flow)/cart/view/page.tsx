@@ -1,7 +1,7 @@
 'use client';
 
 import CartItemLarge from '@/components/cartItems/CartItemLarge';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { CartItemType } from '@/types';
@@ -27,7 +27,7 @@ function CartEmpty({ show }: CartEmptyProps) {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colorPalette.card.background,
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         paddingX: 2,
         paddingY: 4,
       }}>

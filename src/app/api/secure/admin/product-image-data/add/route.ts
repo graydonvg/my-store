@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { InsertProductImageDataTypeDb, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -17,13 +17,13 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!session)
       return NextResponse.json({
         success: false,
-        message: `Failed to add image data to database. ${notAuthenticatedError}`,
+        message: `Failed to add image data to database. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
     if (!imageData)
       return NextResponse.json({
         success: false,
-        message: `Failed to add image data to database. ${noDataReceivedError}`,
+        message: `Failed to add image data to database. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
     const { error } = await supabase.from('productImageData').insert(imageData);

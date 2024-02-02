@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, UserAuthType } from '@/types';
 import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-server-auth';
-import { noDataReceivedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClientForAuth();
@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!signInData)
       return NextResponse.json({
         success: false,
-        message: `Sign in failed. ${noDataReceivedError}`,
+        message: `Sign in failed. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
     const { error } = await supabase.auth.signInWithPassword({

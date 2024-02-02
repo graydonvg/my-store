@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, UpdateAddressTypeDb } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!addressData)
       return NextResponse.json({
         success: false,
-        message: `Failed to update address. ${noDataReceivedError}`,
+        message: `Failed to update address. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
     const { error } = await supabase.from('addresses').update(addressData).eq('addressId', addressData.addressId!);

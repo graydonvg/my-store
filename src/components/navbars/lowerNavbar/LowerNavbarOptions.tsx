@@ -1,4 +1,4 @@
-import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
+import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, NAV_OPTIONS } from '@/config';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -14,8 +14,8 @@ function AdminNavOptions({ show }: AdminNavOptionsProps) {
 
   return (
     <>
-      {adminNavOptions.map((option, index) => {
-        const isLastNavOption = adminNavOptions.length - 1 === index;
+      {ADMIN_NAV_OPTIONS.map((option, index) => {
+        const isLastNavOption = ADMIN_NAV_OPTIONS.length - 1 === index;
 
         return (
           <LowerNavbarOption
@@ -42,8 +42,8 @@ function ClientNavOptions({ show }: ClientNavOptionsProps) {
 
   return (
     <>
-      {navOptions.map((option, index) => {
-        const isLastNavOption = navOptions.length - 1 === index;
+      {NAV_OPTIONS.map((option, index) => {
+        const isLastNavOption = NAV_OPTIONS.length - 1 === index;
 
         return (
           <LowerNavbarOption
@@ -70,8 +70,8 @@ function AccountNavOptions({ show }: AccountNavOptionsProps) {
 
   return (
     <>
-      {accountNavOptions.map((option, index) => {
-        const isLastNavOption = accountNavOptions.length - 1 === index;
+      {ACCOUNT_NAV_OPTIONS.map((option, index) => {
+        const isLastNavOption = ACCOUNT_NAV_OPTIONS.length - 1 === index;
 
         return (
           <LowerNavbarOption

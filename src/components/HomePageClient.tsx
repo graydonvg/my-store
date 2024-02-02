@@ -6,7 +6,7 @@ import { Box, Divider, Grid, Skeleton, Typography, useTheme } from '@mui/materia
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import ProductCard from './ui/ProductCard';
 import { Suspense, useState } from 'react';
 
@@ -54,7 +54,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
         <Box
           sx={{
             backgroundColor: mode === 'dark' ? colorPalette.shade.dark : colorPalette.shade.light,
-            borderRadius,
+            borderRadius: BORDER_RADIUS,
             padding: { xs: 2, lg: 4 },
             display: 'flex',
             flexDirection: 'column',
@@ -133,7 +133,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
             height: { xs: '300px', sm: '500px', md: '700px' },
           }}>
           <Image
-            style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isHeroImageLoaded ? 0 : 100 }}
+            style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: !isHeroImageLoaded ? 0 : 100 }}
             fill
             sizes="(min-width: 1280px) 1152px, 92.08vw"
             src="/stylish-woman-with-shopping-bags.jpg"
@@ -152,7 +152,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
               paddingX: { xs: '20px', sm: '50px' },
               height: 1,
               background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
-              borderRadius,
+              borderRadius: BORDER_RADIUS,
             }}>
             <Typography
               component="h1"
@@ -242,14 +242,14 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
                     width: 1,
                     height: 1,
                     background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.6))',
-                    borderRadius: borderRadius,
+                    borderRadius: BORDER_RADIUS,
                     zIndex: 1,
                   },
                 }}>
                 <Image
                   style={{
                     objectFit: 'cover',
-                    borderRadius: borderRadius,
+                    borderRadius: BORDER_RADIUS,
                     objectPosition: '50% 0%',
                     opacity: !isCategoryImageLoaded ? 0 : 100,
                   }}

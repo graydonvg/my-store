@@ -19,7 +19,7 @@ import deleteProduct from '@/services/products/delete';
 import updateProduct from '@/services/products/update';
 import ManageProductImages from '@/components/ManageProductImages';
 import NumberField from '@/components/ui/inputFields/NumberField';
-import { orderedSizesForToggleButtons } from '@/constants/sizes';
+import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
@@ -219,7 +219,7 @@ export default function AdminViewAddNewProduct() {
           aria-label="select size"
           selection={productFormData.sizes}
           onChange={handleSelectSize}
-          buttons={orderedSizesForToggleButtons}
+          buttons={ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
           disabled={isSubmitting || isClearingAllFields}
         />
       </Box>

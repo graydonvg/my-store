@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, UpdateOrderType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -17,13 +17,13 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!session)
       return NextResponse.json({
         success: false,
-        message: `Failed to update order payment status. ${notAuthenticatedError}`,
+        message: `Failed to update order payment status. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
     if (!orderData)
       return NextResponse.json({
         success: false,
-        message: `Failed to update order payment status. ${noDataReceivedError}`,
+        message: `Failed to update order payment status. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
     const { error } = await supabase

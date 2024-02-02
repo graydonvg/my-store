@@ -7,7 +7,7 @@ import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
 import { closeDialog } from '@/lib/redux/dialog/dialogSlice';
 import { Close } from '@mui/icons-material';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 
 type Props = {
   isOpen: boolean;
@@ -39,7 +39,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           margin: '0 auto',
           maxWidth: 400,
           boxShadow: 24,
-          borderRadius: borderRadius,
+          borderRadius: BORDER_RADIUS,
           backgroundColor: colorPalette.dialog.background,
         }}>
         <LoadingBar

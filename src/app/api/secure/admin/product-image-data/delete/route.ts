@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noIdReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function DELETE(request: NextRequest): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -18,13 +18,13 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
     if (!session)
       return NextResponse.json({
         success: false,
-        message: `Failed to delete image data from database. ${notAuthenticatedError}`,
+        message: `Failed to delete image data from database. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
     if (!productImageId)
       return NextResponse.json({
         success: false,
-        message: `Failed to delete image data from database. ${noIdReceivedError}`,
+        message: `Failed to delete image data from database. ${ERROR_MESSAGES.NO_ID_RECEIVED}`,
       });
 
     const { error } = await supabase.from('productImageData').delete().eq('productImageId', productImageId);

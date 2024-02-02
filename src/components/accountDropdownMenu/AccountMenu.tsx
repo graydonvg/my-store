@@ -11,9 +11,8 @@ import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import useColorPalette from '@/hooks/useColorPalette';
 import AccountMenuItem from './AccountMenuItem';
-import { accountMenuIconColor, accountMenuIconSize } from '@/constants/styles';
+import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import SignOutButton from '../ui/buttons/SignOutButton';
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 const accountMenuOptions = [
   {
@@ -21,8 +20,8 @@ const accountMenuOptions = [
     href: '/account',
     icon: (
       <AccountCircle
-        fontSize={accountMenuIconSize}
-        sx={{ color: accountMenuIconColor }}
+        fontSize={ACCOUNT_MENU_ICON_SIZE}
+        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
       />
     ),
   },
@@ -31,8 +30,8 @@ const accountMenuOptions = [
     href: '/orders',
     icon: (
       <ViewList
-        fontSize={accountMenuIconSize}
-        sx={{ color: accountMenuIconColor }}
+        fontSize={ACCOUNT_MENU_ICON_SIZE}
+        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
       />
     ),
   },
@@ -41,8 +40,8 @@ const accountMenuOptions = [
     href: '/wishlist',
     icon: (
       <Favorite
-        fontSize={accountMenuIconSize}
-        sx={{ color: accountMenuIconColor }}
+        fontSize={ACCOUNT_MENU_ICON_SIZE}
+        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
       />
     ),
   },
@@ -109,8 +108,8 @@ export default function AccountMenu() {
         text={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
         icon={
           <ThemeToggleIcon
-            color={accountMenuIconColor}
-            size={accountMenuIconSize}
+            color={ACCOUNT_MENU_ICON_COLOR}
+            size={ACCOUNT_MENU_ICON_SIZE}
           />
         }
         onClick={handleToggleTheme}

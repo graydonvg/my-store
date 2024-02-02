@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { Database } from './lib/supabase/database.types';
-import { notAuthenticatedError } from './constants/api';
+import { ERROR_MESSAGES } from './config';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -84,7 +84,7 @@ export async function middleware(request: NextRequest) {
 
   if (authRequiredPath && !session) {
     if (checkPathStartsWith('/api')) {
-      return NextResponse.json({ success: false, message: notAuthenticatedError });
+      return NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
     } else {
       return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
     }

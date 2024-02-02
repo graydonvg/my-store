@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { AddOrderType, AddOrderResponseType, CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddOrderResponseType>>> {
   const supabase = await createSupabaseServerClient();
@@ -15,10 +15,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const orderData: AddOrderType = await request.json();
 
     if (!session)
-      return NextResponse.json({ success: false, message: `Failed to create order. ${notAuthenticatedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to create order. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
 
     if (!orderData)
-      return NextResponse.json({ success: false, message: `Failed to create order. ${noDataReceivedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to create order. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+      });
 
     const { error, data } = await supabase
       .from('orders')

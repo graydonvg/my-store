@@ -1,6 +1,6 @@
 'use client';
 
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
 
@@ -33,7 +33,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
                 color: colorPalette.textField.label,
                 border: `1px solid ${colorPalette.textField.border} !important`,
-                borderRadius: `${borderRadius} !important`,
+                borderRadius: `${BORDER_RADIUS} !important`,
                 '@media (hover: hover)': {
                   '&:hover': {
                     backgroundColor: 'transparent',

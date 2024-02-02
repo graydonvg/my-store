@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -13,7 +13,10 @@ export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
     } = await supabase.auth.getSession();
 
     if (!session)
-      return NextResponse.json({ success: false, message: `Failed to clear cart. ${notAuthenticatedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to clear cart. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
 
     const { error } = await supabase.from('cart').delete().eq('userId', session.user.id);
 

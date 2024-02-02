@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { CustomResponseType, UpdateProductType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noDataReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -15,10 +15,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const productData: UpdateProductType = await request.json();
 
     if (!session)
-      return NextResponse.json({ success: false, message: `Failed to update product. ${notAuthenticatedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to update product. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
 
     if (!productData)
-      return NextResponse.json({ success: false, message: `Failed to update product. ${noDataReceivedError}` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to update product. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+      });
 
     const { error } = await supabase.from('products').update(productData).eq('productId', productData.productId!);
 

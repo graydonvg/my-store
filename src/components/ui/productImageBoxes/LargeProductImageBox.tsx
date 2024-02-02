@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
 import { usePathname } from 'next/navigation';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import { useState } from 'react';
 
 type NoFileChosenMessageProps = {
@@ -45,7 +45,7 @@ function ProductImage({ show, productImageData, productName }: ProductImageProps
   return (
     <>
       <Image
-        style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isImageLoaded ? 0 : 100 }}
+        style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: !isImageLoaded ? 0 : 100 }}
         fill
         sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
         src={productImageData.imageUrl}
@@ -111,7 +111,7 @@ export default function LargeProductImageBox({
         aspectRatio: 3 / 4,
         border: `1px solid ${boxBorderColor}`,
         position: 'relative',
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         display: 'grid',
         placeItems: 'center',
       }}>

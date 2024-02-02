@@ -6,7 +6,7 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 
 export default function Shipping() {
   const { cartItems } = useAppSelector((state) => state.cart);
@@ -23,7 +23,7 @@ export default function Shipping() {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
       }}>
       <AccordionComponent
         title="Select your address"

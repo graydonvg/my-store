@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import revalidate from '@/services/revalidate';
 
 type SalePercentageBadgeProps = {
@@ -34,7 +34,7 @@ function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         paddingX: 0.5,
         backgroundColor: colorPalette.primary.dark,
         width: 'min-content',
@@ -190,7 +190,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
-    <Box sx={{ borderRadius: borderRadius, height: 1 }}>
+    <Box sx={{ borderRadius: BORDER_RADIUS, height: 1 }}>
       <Box
         sx={{
           display: 'flex',

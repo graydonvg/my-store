@@ -8,7 +8,7 @@ import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../drawers/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS, FREE_DELIVERY_THRESHOLD } from '@/config';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -60,89 +60,31 @@ function ProductNameAndBrand({ show, name, brand, productId, category }: Product
   );
 }
 
-type FreeDeliveryTextProps = {
-  show: boolean;
-};
+// type FreeDeliveryTextProps = {
+//   show: boolean;
+// };
 
-function FreeDeliveryText({ show }: FreeDeliveryTextProps) {
-  if (!show) return null;
+// function FreeDeliveryText({ show }: FreeDeliveryTextProps) {
+//   if (!show) return null;
 
-  return (
-    <>
-      Delivery Free
-      <Divider
-        component="span"
-        sx={{ marginX: 1 }}
-        variant="fullWidth"
-        orientation="vertical"
-      />
-    </>
-  );
-}
+//   return (
+//     <>
+//       Delivery Free
+//       <Divider
+//         component="span"
+//         sx={{ marginX: 1 }}
+//         variant="fullWidth"
+//         orientation="vertical"
+//       />
+//     </>
+//   );
+// }
 
-type SalePercentageBadgeProps = {
-  show: boolean;
-  percentage: number;
-};
-
-function SalePercentageBadge({ show, percentage }: SalePercentageBadgeProps) {
-  const colorPalette = useColorPalette();
-
-  if (!show) return null;
-
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        borderRadius: borderRadius,
-        paddingX: 1,
-        marginRight: 1,
-        backgroundColor: colorPalette.primary.dark,
-        width: 'fit-content',
-        height: 'fit-content',
-      }}>
-      <Typography
-        lineHeight={1.6}
-        component="span"
-        sx={{
-          color: colorPalette.typographyVariants.white,
-        }}
-        fontSize={{ xs: 14, sm: 16 }}
-        fontWeight={600}>
-        {`-${percentage}%`}
-      </Typography>
-    </Box>
-  );
-}
-
-type SalePriceProps = {
-  show: boolean;
-  price: number;
-};
-
-function SalePrice({ show, price }: SalePriceProps) {
-  const colorPalette = useColorPalette();
-
-  if (!show) return null;
-
-  return (
-    <Typography
-      lineHeight={1}
-      component="span"
-      fontSize={{ xs: 20, sm: 24 }}
-      fontWeight={400}
-      color={colorPalette.typographyVariants.grey}
-      sx={{ textDecoration: 'line-through' }}>
-      {formatCurrency(price)}
-    </Typography>
-  );
-}
-
-type CartItemLargeProps = {
+type Props = {
   item: CartItemType;
 };
 
-export default function CartItemLarge({ item }: CartItemLargeProps) {
+export default function CartItemLarge({ item }: Props) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const isOnSale = item?.product?.isOnSale === 'Yes';
@@ -157,7 +99,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
       sx={{
         padding: 2,
         backgroundColor: colorPalette.card.background,
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         position: 'relative',
       }}>
       <Box
@@ -192,7 +134,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 flexShrink: 0,
               }}>
               <Image
-                style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isImageLoaded ? 0 : 100 }}
+                style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: !isImageLoaded ? 0 : 100 }}
                 fill
                 sizes="160px 60px"
                 src={imageUrl!}
@@ -267,7 +209,17 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
             component="p"
             fontSize={{ xs: 14, sm: 16 }}
             color={colorPalette.typographyVariants.grey}>
-            <FreeDeliveryText show={discountedPrice > 500} />
+            {discountedPrice > FREE_DELIVERY_THRESHOLD ? (
+              <>
+                Delivery Free
+                <Divider
+                  component="span"
+                  sx={{ marginX: 1 }}
+                  variant="fullWidth"
+                  orientation="vertical"
+                />
+              </>
+            ) : null}
             {item?.product?.returnInfo}
           </Typography>
           <Box
@@ -279,10 +231,29 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            <SalePercentageBadge
-              show={isOnSale}
-              percentage={item?.product?.salePercentage!}
-            />
+            {isOnSale ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  borderRadius: BORDER_RADIUS,
+                  paddingX: 1,
+                  marginRight: 1,
+                  backgroundColor: colorPalette.primary.dark,
+                  width: 'fit-content',
+                  height: 'fit-content',
+                }}>
+                <Typography
+                  lineHeight={1.6}
+                  component="span"
+                  sx={{
+                    color: colorPalette.typographyVariants.white,
+                  }}
+                  fontSize={{ xs: 14, sm: 16 }}
+                  fontWeight={600}>
+                  {`-${item?.product?.salePercentage!}%`}
+                </Typography>
+              </Box>
+            ) : null}
             <Box
               sx={{
                 display: 'flex',
@@ -290,10 +261,17 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 alignItems: 'center',
                 flexWrap: 'nowrap',
               }}>
-              <SalePrice
-                show={isOnSale}
-                price={price}
-              />
+              {isOnSale ? (
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  fontSize={{ xs: 20, sm: 24 }}
+                  fontWeight={400}
+                  color={colorPalette.typographyVariants.grey}
+                  sx={{ textDecoration: 'line-through' }}>
+                  {formatCurrency(price)}
+                </Typography>
+              ) : null}
               <Typography
                 lineHeight={1}
                 component="span"

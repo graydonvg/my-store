@@ -1,6 +1,6 @@
 import AccountMenuItem from '@/components/accountDropdownMenu/AccountMenuItem';
 import NavDrawerOption from '@/components/drawers/navDrawer/NavDrawerOption';
-import { accountMenuIconColor, accountMenuIconSize } from '@/constants/styles';
+import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
@@ -37,8 +37,8 @@ export default function SignOutButton({ showAccountMenuButton = false, showNavDr
         text={'Sign Out'}
         icon={
           <Logout
-            fontSize={accountMenuIconSize}
-            sx={{ color: accountMenuIconColor }}
+            fontSize={ACCOUNT_MENU_ICON_SIZE}
+            sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
           />
         }
         onClick={handleSignOut}

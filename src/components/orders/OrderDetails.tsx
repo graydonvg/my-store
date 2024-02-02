@@ -1,7 +1,7 @@
 import { OrderType } from '@/types';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from './OrderTotals';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 
 type AddressFieldProps = {
   label: string;
@@ -41,9 +41,9 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
         sx={{
           border: `1px solid ${borderColor}`,
           padding: 2,
-          borderRadius: isBelowMedium ? 'none' : borderRadius,
-          borderTopLeftRadius: borderRadius,
-          borderTopRightRadius: borderRadius,
+          borderRadius: isBelowMedium ? 'none' : BORDER_RADIUS,
+          borderTopLeftRadius: BORDER_RADIUS,
+          borderTopRightRadius: BORDER_RADIUS,
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box>

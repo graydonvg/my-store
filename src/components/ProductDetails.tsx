@@ -24,10 +24,10 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { setIsSignInDialogOpen } from '@/lib/redux/dialog/dialogSlice';
-import { orderedSizesForToggleButtons } from '@/constants/sizes';
+import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
 import { updateCartItemQuantity } from '@/services/cart/update';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
@@ -198,7 +198,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   function getItemSizeToggleButtonOptions() {
     const availableSizes = product.sizes
-      .map((size) => orderedSizesForToggleButtons.filter((option) => option.value === size)[0])
+      .map((size) => ORDERED_SIZES_FOR_TOGGLE_BUTTONS.filter((option) => option.value === size)[0])
       .sort(sortItemSizesArrayForToggleButtons);
 
     return availableSizes;
@@ -444,7 +444,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             elevation={0}
             disableGutters
             defaultExpanded={true}
-            sx={{ borderRadius: borderRadius, backgroundColor: 'transparent' }}>
+            sx={{ borderRadius: BORDER_RADIUS, backgroundColor: 'transparent' }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
               sx={{

@@ -2,7 +2,7 @@
 
 import { Box, Divider, Grid, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { OrderType } from '@/types';
 import OrderDetails from './OrderDetails';
@@ -37,9 +37,9 @@ export default function OrderItems({ borderColor, order }: Props) {
           border: `1px solid ${borderColor}`,
           borderTop: isBelowMedium ? 'none' : `1px solid ${borderColor}`,
           padding: 2,
-          borderRadius: isBelowMedium ? 'none' : borderRadius,
-          borderBottomLeftRadius: borderRadius,
-          borderBottomRightRadius: borderRadius,
+          borderRadius: isBelowMedium ? 'none' : BORDER_RADIUS,
+          borderBottomLeftRadius: BORDER_RADIUS,
+          borderBottomRightRadius: BORDER_RADIUS,
         }}>
         <Grid
           container
@@ -79,7 +79,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                           priority
                           style={{
                             objectFit: 'cover',
-                            borderRadius: borderRadius,
+                            borderRadius: BORDER_RADIUS,
                             cursor: 'pointer',
                             opacity: !isImageLoaded ? 0 : 100,
                           }}

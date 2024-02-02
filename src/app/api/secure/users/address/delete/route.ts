@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { CustomResponseType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { noIdReceivedError, notAuthenticatedError } from '@/constants/api';
+import { ERROR_MESSAGES } from '@/config';
 
 export async function DELETE(request: NextRequest): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -18,13 +18,13 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
     if (!session)
       return NextResponse.json({
         success: false,
-        message: `Failed to delete address. ${notAuthenticatedError}`,
+        message: `Failed to delete address. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
     if (!addressId)
       return NextResponse.json({
         success: false,
-        message: `Failed to delete address. ${noIdReceivedError}`,
+        message: `Failed to delete address. ${ERROR_MESSAGES.NO_ID_RECEIVED}`,
       });
 
     const { error } = await supabase.from('addresses').delete().eq('addressId', addressId);

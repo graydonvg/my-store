@@ -2,7 +2,7 @@ import { Draggable } from '@hello-pangea/dnd';
 import { Box, Divider, Grid, IconButton, ListItem, Skeleton } from '@mui/material';
 import { InsertProductImageDataTypeStore } from '@/types';
 import Image from 'next/image';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { DeleteForever, DragHandle, DragIndicator } from '@mui/icons-material';
 import TextButton from '../buttons/TextButton';
@@ -59,7 +59,7 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
             {...provided.draggableProps}
             sx={{
               backgroundColor: snapshot.isDragging ? colorPalette.boxShadow : '',
-              borderRadius,
+              borderRadius: BORDER_RADIUS,
               paddingY: 2,
               opacity: isDeletingCurrentImage ? '50%' : null,
             }}>
@@ -89,7 +89,7 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
                     priority
                     style={{
                       objectFit: 'cover',
-                      borderRadius: borderRadius,
+                      borderRadius: BORDER_RADIUS,
                       opacity: !isImageLoaded ? 0 : 100,
                     }}
                     fill

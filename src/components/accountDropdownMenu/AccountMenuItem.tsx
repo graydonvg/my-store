@@ -1,6 +1,6 @@
 'use client';
 
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { ListItemIcon, MenuItem } from '@mui/material';
 import { ReactNode } from 'react';
@@ -17,7 +17,7 @@ export default function AccountMenuItem({ icon, text, onClick }: Props) {
   return (
     <MenuItem
       sx={{
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         color: 'white',
         '&:hover': { backgroundColor: colorPalette.primary.dark },
       }}

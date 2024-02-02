@@ -12,7 +12,7 @@ import {
   selectOrderTotal,
 } from '@/lib/redux/cart/cartSelectors';
 import useColorPalette from '@/hooks/useColorPalette';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import OrderTotals from '@/components/orders/OrderTotals';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
@@ -67,7 +67,7 @@ function YourOrderTotals({ show }: YourOrderTotalsProps) {
           paddingX: 3,
           paddingY: 4,
           backgroundColor: colorPalette.card.background,
-          borderRadius: borderRadius,
+          borderRadius: BORDER_RADIUS,
         }}>
         <Typography
           component="h1"

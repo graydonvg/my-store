@@ -5,7 +5,7 @@ import { Box, Divider, List, Typography, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import CartItemSmall from './CartItemSmall';
 import useColorPalette from '@/hooks/useColorPalette';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import { usePathname } from 'next/navigation';
 
 type CartEmptyMessageProps = {
@@ -22,7 +22,7 @@ function CartEmptyMessage({ show }: CartEmptyMessageProps) {
       sx={{
         padding: 1,
         marginTop: 2,
-        borderRadius: borderRadius,
+        borderRadius: BORDER_RADIUS,
         backgroundColor: colorPalette.navBar.lower.background,
       }}>
       <Typography

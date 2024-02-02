@@ -8,8 +8,8 @@ import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from './NavDrawerOption';
-import { accountNavOptions, adminNavOptions, navOptions } from '@/constants/navigation';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
+import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, NAV_OPTIONS } from '@/config';
 
 type OptionsType = {
   id: string;
@@ -63,7 +63,7 @@ function ClientViewNavOptions({ show, onClick }: ClientViewNavOptionsProps) {
 
   return (
     <NavOptions
-      options={navOptions}
+      options={NAV_OPTIONS}
       onClick={onClick}
     />
   );
@@ -80,7 +80,7 @@ function UserSignedInOptions({ show, handleCloseDrawer }: UserSignedInOptionsPro
   return (
     <>
       <NavOptions
-        options={accountNavOptions}
+        options={ACCOUNT_NAV_OPTIONS}
         onClick={handleCloseDrawer}
       />
       <SignOutButton showNavDrawerButton={true} />
@@ -148,7 +148,7 @@ export default function NavDraweOptions() {
           onClick={handleCloseDrawer}
         />
         <AdminNavOptions
-          options={adminNavOptions}
+          options={ADMIN_NAV_OPTIONS}
           show={!!userData && userData?.isAdmin && isAdminView}
           onClick={handleCloseDrawer}
         />

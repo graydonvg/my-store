@@ -22,7 +22,7 @@ import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddressDialog from '../../dialogs/AddressDialog';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
-import { borderRadius } from '@/constants/styles';
+import { BORDER_RADIUS } from '@/config';
 import { useEffect, useState } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { setAddressToDeleteId } from '@/lib/redux/account/accountSlice';
@@ -284,7 +284,7 @@ export default function Addresses() {
 
   return (
     <Box>
-      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${colorPalette.border}`, borderRadius: borderRadius }}>
+      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${colorPalette.border}`, borderRadius: BORDER_RADIUS }}>
         <Table>
           <TableBody>
             <NoAddressFound show={!!userData?.addresses && userData?.addresses.length === 0} />
