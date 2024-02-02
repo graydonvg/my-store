@@ -1,6 +1,6 @@
 'use client';
 
-import SmallCartItemList from '@/components/cartItems/SmallCartItemList';
+import SmallCartItemList from '@/components/cartItems/smallCartItemList/SmallCartItemList';
 import Addresses from '@/components/accountPage/sections/Addresses';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';

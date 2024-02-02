@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { selectCartCount, selectCartTotal, selectDiscountTotal } from '@/lib/redux/cart/cartSelectors';
 import UpperNavIconButton from '../ui/buttons/upperNavIconButton';
-import SmallCartItemList from '../cartItems/SmallCartItemList';
+import SmallCartItemList from '../cartItems/smallCartItemList/SmallCartItemList';
 import { formatCurrency } from '@/utils/formatCurrency';
 import CheckoutButton from '../ui/buttons/CheckoutButton';
 

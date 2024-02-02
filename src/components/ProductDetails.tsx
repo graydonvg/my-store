@@ -293,7 +293,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   return (
     <Grid
       container
-      spacing={4}
+      columnSpacing={4}
+      rowSpacing={2}
       sx={{ height: 1 }}>
       <Grid
         item

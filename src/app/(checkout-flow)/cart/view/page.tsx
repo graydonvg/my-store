@@ -1,6 +1,6 @@
 'use client';
 
-import CartItemLarge from '@/components/cartItems/CartItemLarge';
+import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
 import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
@@ -65,7 +65,7 @@ function CartItems({ show, cartItems }: CartItemsProps) {
           <Box
             key={item?.cartItemId}
             sx={{ marginBottom: isLastItem ? 0 : 2 }}>
-            <CartItemLarge item={item} />
+            <LargeCartItem item={item} />
           </Box>
         );
       })}
