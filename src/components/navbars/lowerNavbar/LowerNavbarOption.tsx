@@ -19,7 +19,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
   const isSaleOption = label.toLowerCase() === 'sale';
   const { productFormData } = useAppSelector((state) => state.productForm);
 
-  function handleClearAddProductStoreData() {
+  function handleClick() {
     if (path === '/admin-view/add-product') {
       if (productFormData.productId) {
         dispatch(resetAllProductData());
@@ -39,12 +39,16 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
               textTransform: 'none',
               color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
               textDecoration: underline ? 'underline' : 'none',
-              textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.navBar.lower.text,
+              textDecorationColor: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
               textDecorationThickness: 1,
               textUnderlineOffset: 6,
+              '&:hover': {
+                color: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
+                textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
+              },
             }}>
             <Link
-              onClick={handleClearAddProductStoreData}
+              onClick={handleClick}
               href={path}>
               {label}
             </Link>

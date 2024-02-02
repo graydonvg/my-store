@@ -141,13 +141,6 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
             priority
             onLoad={() => setIsHeroImageLoaded(true)}
           />
-          {!isHeroImageLoaded ? (
-            <Skeleton
-              height="100%"
-              width="100%"
-              variant="rectangular"
-            />
-          ) : null}
           <Box
             sx={{
               position: 'absolute',
@@ -190,6 +183,13 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
               />
             </Box>
           </Box>
+          {!isHeroImageLoaded ? (
+            <Skeleton
+              height="100%"
+              width="100%"
+              variant="rectangular"
+            />
+          ) : null}
         </Box>
       </Box>
       <Box

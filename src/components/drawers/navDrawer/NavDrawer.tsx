@@ -9,11 +9,13 @@ import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
 import DrawerHeader from '../DrawerHeader';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
+  const { isCartOpen } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
   const navbarHeight = document.getElementById('navbar')?.offsetHeight;
@@ -24,6 +26,9 @@ export default function NavDrawer() {
 
   function handleOpenNavDrawer() {
     dispatch(setIsNavDrawerOpen(true));
+    if (isCartOpen.right) {
+      dispatch(setIsCartOpen(false));
+    }
   }
 
   function handleCloseNavDrawer() {

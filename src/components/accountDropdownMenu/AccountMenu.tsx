@@ -1,20 +1,19 @@
 'use client';
 
 import { useTheme, Typography } from '@mui/material';
-import { ArrowDropDown, AccountCircle, ViewList, Logout, Favorite } from '@mui/icons-material';
+import { ArrowDropDown, AccountCircle, ViewList, Favorite } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import HoverDropdownMenu from '../ui/HoverDropdownMenu';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import useColorPalette from '@/hooks/useColorPalette';
-import { toast } from 'react-toastify';
-import signOut from '@/services/auth/sign-out';
 import AccountMenuItem from './AccountMenuItem';
 import { accountMenuIconColor, accountMenuIconSize } from '@/constants/styles';
 import SignOutButton from '../ui/buttons/SignOutButton';
+import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 
 const accountMenuOptions = [
   {
@@ -75,8 +74,6 @@ export default function AccountMenu() {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
-
-  const router = useRouter();
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
