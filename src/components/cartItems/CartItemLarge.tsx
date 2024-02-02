@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, ListItem, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { Divider } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -10,6 +10,7 @@ import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelecto
 import { formatCurrency } from '@/utils/formatCurrency';
 import { borderRadius } from '@/constants/styles';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type ProductNameAndBrandProps = {
   show: boolean;
@@ -149,6 +150,7 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
   const discountedPrice = selectDiscountedPrice(item);
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <Box
@@ -190,13 +192,21 @@ export default function CartItemLarge({ item }: CartItemLargeProps) {
                 flexShrink: 0,
               }}>
               <Image
-                style={{ objectFit: 'cover', borderRadius: borderRadius }}
+                style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isImageLoaded ? 0 : 100 }}
                 fill
                 sizes="160px 60px"
                 src={imageUrl!}
                 alt={`${item?.product?.name}`}
                 priority
+                onLoad={() => setIsImageLoaded(true)}
               />
+              {!isImageLoaded ? (
+                <Skeleton
+                  height="100%"
+                  width="100%"
+                  variant="rectangular"
+                />
+              ) : null}
             </Box>
           </Link>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>

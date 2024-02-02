@@ -2,12 +2,13 @@
 
 import useColorPalette from '@/hooks/useColorPalette';
 import { ProductType } from '@/types';
-import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Grid, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { borderRadius } from '@/constants/styles';
 import ProductCard from './ui/ProductCard';
+import { Suspense, useState } from 'react';
 
 const categories = [
   {
@@ -105,6 +106,8 @@ type HomePageClientProps = {
 
 export default function HomePageClient({ allProducts, saleProducts }: HomePageClientProps) {
   const router = useRouter();
+  const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
+  const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
   const colorPalette = useColorPalette();
   const productsOnSale = saleProducts?.slice(0, 3);
   const latestArrivals = allProducts?.filter((product) => product.isOnSale === 'No').slice(0, 3);
@@ -130,13 +133,21 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
             height: { xs: '300px', sm: '500px', md: '700px' },
           }}>
           <Image
-            style={{ objectFit: 'cover', borderRadius: borderRadius }}
+            style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isHeroImageLoaded ? 0 : 100 }}
             fill
             sizes="(min-width: 1280px) 1152px, 92.08vw"
             src="/stylish-woman-with-shopping-bags.jpg"
             alt="Stylish woman with shopping bags"
             priority
+            onLoad={() => setIsHeroImageLoaded(true)}
           />
+          {!isHeroImageLoaded ? (
+            <Skeleton
+              height="100%"
+              width="100%"
+              variant="rectangular"
+            />
+          ) : null}
           <Box
             sx={{
               position: 'absolute',
@@ -236,13 +247,25 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
                   },
                 }}>
                 <Image
-                  style={{ objectFit: 'cover', borderRadius: borderRadius, objectPosition: '50% 0%' }}
+                  style={{
+                    objectFit: 'cover',
+                    borderRadius: borderRadius,
+                    objectPosition: '50% 0%',
+                    opacity: !isCategoryImageLoaded ? 0 : 100,
+                  }}
                   fill
                   sizes="(min-width: 1280px) 368px, (min-width: 600px) 29.55vw, calc(100vw - 32px)"
                   src={category.imageSrc}
                   alt={`Image for category ${category.label}`}
-                  priority
+                  onLoad={() => setIsCategoryImageLoaded(true)}
                 />
+                {!isCategoryImageLoaded ? (
+                  <Skeleton
+                    height="100%"
+                    width="100%"
+                    variant="rectangular"
+                  />
+                ) : null}
                 <Box
                   sx={{
                     position: 'absolute',

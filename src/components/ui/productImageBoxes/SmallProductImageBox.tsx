@@ -1,12 +1,13 @@
 'use client';
 
 import useColorPalette from '@/hooks/useColorPalette';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { ImageUploadProgressType, InsertProductImageDataTypeStore } from '@/types';
 import { borderRadius } from '@/constants/styles';
+import { useState } from 'react';
 
 type ProductImageProps = {
   show: boolean;
@@ -15,6 +16,8 @@ type ProductImageProps = {
 };
 
 function ProductImage({ show, productName, productImageData }: ProductImageProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   if (!show || !productImageData) return null;
 
   return (
@@ -24,13 +27,22 @@ function ProductImage({ show, productName, productImageData }: ProductImageProps
           objectFit: 'cover',
           borderRadius: borderRadius,
           cursor: 'pointer',
+          opacity: !isImageLoaded ? 0 : 100,
         }}
         fill
         sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
         src={productImageData.imageUrl}
         alt={`Image for ${productName ? productName : productImageData.fileName}`}
         priority
+        onLoad={() => setIsImageLoaded(true)}
       />
+      {!isImageLoaded ? (
+        <Skeleton
+          height="100%"
+          width="100%"
+          variant="rectangular"
+        />
+      ) : null}
     </>
   );
 }

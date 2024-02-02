@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, IconButton, ListItem, Typography } from '@mui/material';
+import { Box, IconButton, ListItem, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { Spinner } from '../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
@@ -169,6 +169,7 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
   const isShippingView = pathname.includes('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     setIsRemovingCartItem(false);
@@ -215,13 +216,21 @@ export default function CartItemSmall({ item }: CartItemSmallProps) {
           cursor: !isShippingView ? 'pointer' : 'default',
         }}>
         <Image
-          style={{ objectFit: 'cover', borderRadius: borderRadius }}
+          style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isImageLoaded ? 0 : 100 }}
           fill
           sizes="60px"
           src={imageUrl!}
           alt={`${item?.product?.name}`}
           priority
+          onLoad={() => setIsImageLoaded(true)}
         />
+        {!isImageLoaded ? (
+          <Skeleton
+            height="100%"
+            width="100%"
+            variant="rectangular"
+          />
+        ) : null}
       </Box>
       <Box
         sx={{

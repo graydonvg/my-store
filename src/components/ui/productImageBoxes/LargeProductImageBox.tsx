@@ -2,12 +2,13 @@
 
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
 import { usePathname } from 'next/navigation';
 import { borderRadius } from '@/constants/styles';
+import { useState } from 'react';
 
 type NoFileChosenMessageProps = {
   show: boolean;
@@ -37,17 +38,29 @@ type ProductImageProps = {
 };
 
 function ProductImage({ show, productImageData, productName }: ProductImageProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   if (!show || !productImageData) return null;
 
   return (
-    <Image
-      style={{ objectFit: 'cover', borderRadius: borderRadius }}
-      fill
-      sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
-      src={productImageData.imageUrl}
-      alt={`${productName}`}
-      priority
-    />
+    <>
+      <Image
+        style={{ objectFit: 'cover', borderRadius: borderRadius, opacity: !isImageLoaded ? 0 : 100 }}
+        fill
+        sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
+        src={productImageData.imageUrl}
+        alt={`${productName}`}
+        priority
+        onLoad={() => setIsImageLoaded(true)}
+      />
+      {!isImageLoaded ? (
+        <Skeleton
+          height="100%"
+          width="100%"
+          variant="rectangular"
+        />
+      ) : null}
+    </>
   );
 }
 

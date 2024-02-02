@@ -1,5 +1,5 @@
 import { Draggable } from '@hello-pangea/dnd';
-import { Box, Divider, Grid, IconButton, ListItem } from '@mui/material';
+import { Box, Divider, Grid, IconButton, ListItem, Skeleton } from '@mui/material';
 import { InsertProductImageDataTypeStore } from '@/types';
 import Image from 'next/image';
 import { borderRadius } from '@/constants/styles';
@@ -24,6 +24,7 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
   const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
   const [imageToDeleteIndex, setImageToDeleteIndex] = useState<number | null>(null);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteIndex === index;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   async function handleDeleteImage() {
     dispatch(setIsDeletingImage(true));
@@ -85,16 +86,25 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
                     alignSelf: 'center',
                   }}>
                   <Image
+                    priority
                     style={{
                       objectFit: 'cover',
                       borderRadius: borderRadius,
+                      opacity: !isImageLoaded ? 0 : 100,
                     }}
                     fill
                     sizes="(min-width: 600px) 100px, calc(35vw - 25px)"
                     src={imageData.imageUrl}
                     alt={`Image for ${imageData.fileName}`}
-                    priority
+                    onLoad={() => setIsImageLoaded(true)}
                   />
+                  {!isImageLoaded ? (
+                    <Skeleton
+                      height="100%"
+                      width="100%"
+                      variant="rectangular"
+                    />
+                  ) : null}
                 </Box>
               </Grid>
               <Grid

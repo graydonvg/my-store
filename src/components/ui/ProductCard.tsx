@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from './buttons/ContainedButton';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
@@ -187,6 +187,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
   const discountedPrice = calculateDiscountedProductPrice(product);
   const { productImageData } = product;
   const imageUrl = productImageData.find((image) => image.index === 0)?.imageUrl;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <Box sx={{ borderRadius: borderRadius, height: 1 }}>
@@ -211,13 +212,26 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 aspectRatio: 25 / 36,
               }}>
               <Image
-                style={{ objectFit: 'cover', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
+                style={{
+                  objectFit: 'cover',
+                  borderTopLeftRadius: '4px',
+                  borderTopRightRadius: '4px',
+                  opacity: !isImageLoaded ? 0 : 100,
+                }}
                 fill
                 sizes={imageSizes}
                 src={imageUrl!}
                 alt={`${product.name}`}
                 priority
+                onLoad={() => setIsImageLoaded(true)}
               />
+              {!isImageLoaded ? (
+                <Skeleton
+                  height="100%"
+                  width="100%"
+                  variant="rectangular"
+                />
+              ) : null}
             </Box>
             <Box
               sx={{

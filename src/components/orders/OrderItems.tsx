@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Grid, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { borderRadius } from '@/constants/styles';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -8,6 +8,7 @@ import { OrderType } from '@/types';
 import OrderDetails from './OrderDetails';
 import Link from 'next/link';
 import useColorPalette from '@/hooks/useColorPalette';
+import { useState } from 'react';
 
 type Props = {
   order: OrderType;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export default function OrderItems({ borderColor, order }: Props) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
@@ -74,17 +76,26 @@ export default function OrderItems({ borderColor, order }: Props) {
                     <Link href={`/products/${item.product?.category.toLowerCase()}/${item.product?.productId}`}>
                       <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
                         <Image
+                          priority
                           style={{
                             objectFit: 'cover',
                             borderRadius: borderRadius,
                             cursor: 'pointer',
+                            opacity: !isImageLoaded ? 0 : 100,
                           }}
                           fill
-                          priority
                           src={imageUrl!}
                           alt={`Image of ${item.product?.name}`}
                           sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
+                          onLoad={() => setIsImageLoaded(true)}
                         />
+                        {!isImageLoaded ? (
+                          <Skeleton
+                            height="100%"
+                            width="100%"
+                            variant="rectangular"
+                          />
+                        ) : null}
                       </Box>
                     </Link>
                   </Grid>
