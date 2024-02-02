@@ -15,13 +15,13 @@ export default function UserStateSetter({ session, userData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!!userData && !!userData.userId) {
+    if (userData && userData.userId) {
       dispatch(setUserData(userData));
     } else {
       dispatch(setUserData(null));
     }
 
-    if (!!session && session.user.app_metadata.provider !== 'email') {
+    if (session && session.user.app_metadata.provider !== 'email') {
       dispatch(setIsOAuthSignIn(true));
     } else {
       dispatch(setIsOAuthSignIn(false));

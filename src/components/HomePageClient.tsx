@@ -38,6 +38,8 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
   const theme = useTheme();
   const mode = theme.palette.mode;
 
+  if (products?.length === 0) return null;
+
   return (
     <Grid
       component="ul"
@@ -75,7 +77,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
           </Box>
         </Box>
       </Grid>
-      {!!products && products.length > 0
+      {products && products.length > 0
         ? products.map((product, index) => (
             <Grid
               component="li"
@@ -83,7 +85,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
               key={index}
               xs={6}
               sm={3}>
-              {!!product && (
+              {product && (
                 <ProductCard
                   product={product}
                   imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 28px)"
@@ -97,19 +99,15 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
 }
 
 type HomePageClientProps = {
-  products: ProductType[] | undefined;
+  allProducts: ProductType[] | undefined;
+  saleProducts: ProductType[] | undefined;
 };
 
-export default function HomePageClient({ products }: HomePageClientProps) {
+export default function HomePageClient({ allProducts, saleProducts }: HomePageClientProps) {
   const router = useRouter();
   const colorPalette = useColorPalette();
-  const mensSaleProduct = products?.filter((product) => product.category === 'Men' && product.isOnSale === 'Yes')[1];
-  const womensSaleProduct = products?.filter(
-    (product) => product.category === 'Women' && product.isOnSale === 'Yes'
-  )[2];
-  const kidsSaleProduct = products?.filter((product) => product.category === 'Kids' && product.isOnSale === 'Yes')[1];
-  const productsOnSale = [mensSaleProduct!, womensSaleProduct!, kidsSaleProduct!];
-  const latestArrivals = products?.filter((product) => product.isOnSale === 'No').slice(0, 3);
+  const productsOnSale = saleProducts?.slice(0, 3);
+  const latestArrivals = allProducts?.filter((product) => product.isOnSale === 'No').slice(0, 3);
 
   function handleNavigateToSale() {
     router.push('/products/sale');

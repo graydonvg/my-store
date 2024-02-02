@@ -28,7 +28,7 @@ function ProductImage({ show, productName, productImageData }: ProductImageProps
         fill
         sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
         src={productImageData.imageUrl}
-        alt={`Image for ${!!productName ? productName : productImageData.fileName}`}
+        alt={`Image for ${productName ? productName : productImageData.fileName}`}
         priority
       />
     </>
@@ -59,7 +59,7 @@ export default function SmallProductImageBox({
 
   // Only show borders when in admin view and no image exists. Highlight boxes that contain a loading spinner.
   if (isAdminView) {
-    if (!!uploadProgressData && !productImageData) {
+    if (uploadProgressData && !productImageData) {
       boxBorderColor = colorPalette.textField.focused;
     } else if (!productImageData) {
       boxBorderColor = colorPalette.textField.border;
@@ -90,7 +90,7 @@ export default function SmallProductImageBox({
           productName={productName}
           productImageData={productImageData}
         />
-        {!!uploadProgressData && isAdminView ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
+        {uploadProgressData && isAdminView ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
       </Box>
     </Grid>
   );

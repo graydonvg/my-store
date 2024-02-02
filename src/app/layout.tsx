@@ -12,7 +12,7 @@ import './globals.css';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { CartItemType } from '@/types';
+import { CartItemType, UserDataType } from '@/types';
 
 export const metadata: Metadata = {
   title: 'MyStore',
@@ -31,9 +31,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     .select('*, addresses(*)')
     .order('createdAt', { ascending: false, referencedTable: 'addresses' });
 
-  const userData = !!user ? user[0] : null;
+  const userData = user ? user[0] : null;
 
-  let cartItems: CartItemType[] | null = null;
+  let cartItems = null;
 
   if (user) {
     const { data: cart } = await supabase

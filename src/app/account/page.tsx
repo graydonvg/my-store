@@ -7,6 +7,7 @@ import PersonalInformation from '@/components/accountPage/sections/PersonalInfor
 import Addresses from '@/components/accountPage/sections/Addresses';
 import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import { UserDataType } from '@/types';
 
 function PageHeaderWithFullName() {
   const { userData } = useAppSelector((state) => state.user);

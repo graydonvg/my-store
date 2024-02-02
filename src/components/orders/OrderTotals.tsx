@@ -91,7 +91,7 @@ export default function OrderTotals({
           fontSize={14}
         />
       </Box>
-      {!!totalToPay ? (
+      {totalToPay ? (
         <Box
           sx={{
             marginBottom: 1,

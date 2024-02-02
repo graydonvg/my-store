@@ -191,7 +191,7 @@ function AddressData({ show }: AddressDataProps) {
   async function handleSetAddressToEdit(addressId: string) {
     const addressToEdit = userData?.addresses.filter((address) => address.addressId === addressId)[0];
 
-    if (!!addressToEdit) {
+    if (addressToEdit) {
       dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
       dispatch(setIsAddressDialogOpen(true));
     }

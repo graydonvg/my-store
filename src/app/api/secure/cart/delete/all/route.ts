@@ -17,7 +17,7 @@ export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
 
     const { error } = await supabase.from('cart').delete().eq('userId', session.user.id);
 
-    if (!!error) {
+    if (error) {
       return NextResponse.json({ success: false, message: `Failed to clear cart. ${error.message}.` });
     }
 

@@ -117,7 +117,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
     } else if (paymentStatus === 'cancel' && checkoutData.isProcessing) {
       dispatch(setCheckoutData({ isProcessing: false }));
 
-      if (!!checkoutData.orderId) {
+      if (checkoutData.orderId) {
         const handleDeleteOrder = async () => {
           await deleteOrder(checkoutData.orderId!);
         };

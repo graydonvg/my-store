@@ -26,7 +26,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
 
     const { error } = await supabase.from('orders').delete().eq('orderId', orderId).eq('userId', session.user.id);
 
-    if (!!error) {
+    if (error) {
       return NextResponse.json({ success: false, message: `Failed to delete order. ${error.message}.` });
     }
 

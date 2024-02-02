@@ -83,7 +83,7 @@ export default function LargeProductImageBox({
 
   // Only show borders when in admin view and no image exists. Highlight the box if it contains a loading spinner.
   if (isAdminView) {
-    if (!!imageUploadProgress[selectedImageIndex] && !productImageData) {
+    if (imageUploadProgress[selectedImageIndex] && !productImageData) {
       boxBorderColor = colorPalette.textField.focused;
     } else if (!productImageData) {
       boxBorderColor = colorPalette.textField.border;

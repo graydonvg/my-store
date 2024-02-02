@@ -10,6 +10,7 @@ export async function GET(): Promise<NextResponse<CustomResponseType<ProductType
       .from('products')
       .select('*, productImageData(fileName, imageUrl, productImageId, index)')
       .eq('isOnSale', 'Yes')
+      .order('salePercentage', { ascending: false })
       .order('index', { referencedTable: 'productImageData', ascending: true });
 
     if (error) {

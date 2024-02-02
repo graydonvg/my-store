@@ -1,8 +1,14 @@
 import HomePageClient from '@/components/HomePageClient';
-import { getAllProducts } from '@/services/products/get';
+import { getAllProducts, getProductsOnSale } from '@/services/products/get';
 
 export default async function Home() {
-  const { data: products } = await getAllProducts();
+  const { data: allProducts } = await getAllProducts();
+  const { data: saleProducts } = await getProductsOnSale();
 
-  return <HomePageClient products={products} />;
+  return (
+    <HomePageClient
+      allProducts={allProducts}
+      saleProducts={saleProducts}
+    />
+  );
 }

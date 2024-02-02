@@ -166,13 +166,13 @@ export default function AdminViewAddNewProduct() {
     if (updateProductSuccess === true) {
       let updateImageDataSuccess = true;
       let updateImageDataMessage = null;
-      const imageDataToUpdate = imageData.find((data) => !!data.productImageId);
+      const imageDataToUpdate = imageData.find((data) => data.productImageId);
 
       const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
         productFormData.productId!
       );
 
-      if (!!imageDataToUpdate) {
+      if (imageDataToUpdate) {
         const { success, message } = await updateProductImageData(imageData);
 
         updateImageDataSuccess = success;

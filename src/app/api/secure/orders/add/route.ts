@@ -25,7 +25,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       .insert({ ...orderData.orderDetails, userId: session.user.id })
       .select('orderId');
 
-    if (!!error) {
+    if (error) {
       return NextResponse.json({ success: false, message: `Failed to create order. ${error.message}.` });
     }
 
@@ -49,17 +49,17 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       insertShippingDetailsPromise,
     ]);
 
-    if (!!insertOrderItemsResponse.error || !!insertShippingDetailsResponse.error) {
+    if (insertOrderItemsResponse.error || insertShippingDetailsResponse.error) {
       return NextResponse.json({
         success: false,
         message: 'Failed to create order. Failed to add order items and shipping details.',
       });
-    } else if (!!insertOrderItemsResponse.error) {
+    } else if (insertOrderItemsResponse.error) {
       return NextResponse.json({
         success: false,
         message: 'Failed to create order. Failed to add order items.',
       });
-    } else if (!!insertShippingDetailsResponse.error) {
+    } else if (insertShippingDetailsResponse.error) {
       return NextResponse.json({
         success: false,
         message: 'Failed to create order. Failed to add shipping details.',
