@@ -1,5 +1,5 @@
 import AccountDropdownMenuItem from '@/components/accountDropdownMenu/AccountDropdownMenuItem';
-import NavDrawerOption from '@/components/drawers/navDrawer/NavDrawerOption';
+import NavDrawerOption from '@/components/drawers/navDrawer/navDrawerOption/NavDrawerOption';
 import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';

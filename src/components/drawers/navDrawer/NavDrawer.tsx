@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
-import NavDraweOptions from './NavDrawerOptions';
+import NavDrawerOptions from './navDrawerOptions/NavDrawerOptions';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
@@ -63,7 +63,7 @@ export default function NavDrawer() {
           height={navbarHeight}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: 1 }}>
-          <NavDraweOptions />
+          <NavDrawerOptions />
         </Box>
       </DrawerComponent>
     </>
