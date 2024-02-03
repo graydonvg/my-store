@@ -4,7 +4,7 @@ import { Box, ListItem, Typography } from '@mui/material';
 import { CartItemType } from '@/types';
 import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteItemFromCart } from '@/services/cart/delete';
@@ -35,7 +35,9 @@ export default function SmallCartItem({ item }: Props) {
     setIsRemovingCartItem(false);
   }, [item]);
 
-  async function handleRemoveCartItem(cartItemId: string) {
+  async function handleRemoveCartItem(event: MouseEvent, cartItemId: string) {
+    event.stopPropagation();
+
     setIsRemovingCartItem(true);
 
     const { success, message } = await deleteItemFromCart(cartItemId);
@@ -83,7 +85,7 @@ export default function SmallCartItem({ item }: Props) {
         {!isShippingView ? (
           <DeleteCartItemButton
             isLoading={isRemovingCartItem}
-            onClick={() => handleRemoveCartItem(item?.cartItemId!)}
+            onClick={(e: MouseEvent<HTMLButtonElement>) => handleRemoveCartItem(e, item?.cartItemId!)}
           />
         ) : null}
         <Box

@@ -4,10 +4,11 @@ import { Box, IconButton } from '@mui/material';
 import { Spinner } from '../../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
 import useColorPalette from '@/hooks/useColorPalette';
+import { MouseEvent } from 'react';
 
 type Props = {
   isLoading: boolean;
-  onClick: () => void;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
 };
 
 export default function SmallCartItemDeleteButton({ isLoading, onClick }: Props) {
