@@ -10,7 +10,7 @@ type Props = {
   setCartItemSizeOnClick: (size: string) => Promise<void>;
 };
 
-export default function EditCartItemDrawerSizeSelection({
+export default function SizeSelectionEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
   setCartItemSizeOnClick,

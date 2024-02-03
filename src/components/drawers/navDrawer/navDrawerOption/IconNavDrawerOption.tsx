@@ -7,7 +7,7 @@ type Props = {
   label: string;
 };
 
-export default function NavDrawerOptionIcon({ label }: Props) {
+export default function IconNavDrawerOption({ label }: Props) {
   const colorPalette = useColorPalette();
 
   if (label === 'Sign Out') {

@@ -5,7 +5,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
-import EditCartItemDrawerQuantitySelection from './EditCartItemDrawerQuantitySelection';
+import QuantitySelectionEditCartItemDrawer from './QuantitySelectionEditCartItemDrawer';
 
 type Props = {
   cartItem: CartItemType;
@@ -15,7 +15,7 @@ type Props = {
   removeCartItemOnClick: () => void;
 };
 
-export default function EditCartItemDrawerFooter({
+export default function FooterEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
   isRemovingCartItem,
@@ -45,7 +45,7 @@ export default function EditCartItemDrawerFooter({
           height: '4px',
         },
       }}>
-      <EditCartItemDrawerQuantitySelection
+      <QuantitySelectionEditCartItemDrawer
         cartItem={cartItem}
         setCartItemQuantityOnClick={setCartItemQuantityOnClick}
       />

@@ -10,7 +10,7 @@ import { selectCartTotal, selectDiscountTotal } from '@/lib/redux/cart/cartSelec
 import { formatCurrency } from '@/utils/formatCurrency';
 import CheckoutButton from '../../ui/buttons/CheckoutButton';
 
-export default function CartDrawerFooter() {
+export default function FooterCartDrawer() {
   const router = useRouter();
   const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);

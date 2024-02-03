@@ -6,7 +6,7 @@ import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 
-export default function NavDrawerOptionsThemeButton() {
+export default function ThemeButtonNavDrawerOptions() {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const theme = useTheme();

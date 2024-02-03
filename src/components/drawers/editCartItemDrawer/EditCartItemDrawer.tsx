@@ -13,8 +13,8 @@ import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { PulseLoader } from 'react-spinners';
 import { deleteItemFromCart } from '@/services/cart/delete';
-import EditCartItemDrawerSizeSelection from './EditCartItemDrawerSizeSelection';
-import EditCartItemDrawerFooter from './EditCartItemDrawerFooter';
+import SizeSelectionEditCartItemDrawer from './SizeSelectionEditCartItemDrawer';
+import FooterEditCartItemDrawer from './FooterEditCartItemDrawer';
 
 const isDrawerOpen = {
   top: false,
@@ -190,12 +190,12 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
               />
             </Box>
           ) : null}
-          <EditCartItemDrawerSizeSelection
+          <SizeSelectionEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             setCartItemSizeOnClick={handleUpdateCartItemSize}
           />
-          <EditCartItemDrawerFooter
+          <FooterEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             isRemovingCartItem={isRemovingCartItem}

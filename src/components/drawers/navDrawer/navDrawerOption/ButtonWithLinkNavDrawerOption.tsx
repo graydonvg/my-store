@@ -6,14 +6,14 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
-import NavDrawerOptionIcon from './NavDrawerOptionIcon';
+import IconNavDrawerOption from './IconNavDrawerOption';
 
 type Props = {
   path: string;
   label: string;
 };
 
-export default function NavDrawerOptionButtonWithLink({ path, label }: Props) {
+export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const pathname = usePathname();
@@ -43,7 +43,7 @@ export default function NavDrawerOptionButtonWithLink({ path, label }: Props) {
             textUnderlineOffset: 6,
           }}
         />
-        <NavDrawerOptionIcon label={label} />
+        <IconNavDrawerOption label={label} />
       </ListItemButton>
     </Link>
   );

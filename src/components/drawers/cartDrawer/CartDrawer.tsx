@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { selectCartCount } from '@/lib/redux/cart/cartSelectors';
 import SmallCartItemList from '../../cartItems/smallCartItemList/SmallCartItemList';
-import CartDrawerFooter from './CartDrawerFooter';
+import FooterCartDrawer from './FooterCartDrawer';
 import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 
 export default function CartDrawer() {
@@ -60,7 +60,7 @@ export default function CartDrawer() {
           }}
         />
         <SmallCartItemList paddingX={2} />
-        {cartItems.length > 0 ? <CartDrawerFooter /> : null}
+        {cartItems.length > 0 ? <FooterCartDrawer /> : null}
       </DrawerComponent>
     </>
   );

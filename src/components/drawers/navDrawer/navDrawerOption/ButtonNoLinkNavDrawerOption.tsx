@@ -2,14 +2,14 @@
 
 import { ListItemButton, ListItemText } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
-import NavDrawerOptionIcon from './NavDrawerOptionIcon';
+import IconNavDrawerOption from './IconNavDrawerOption';
 
-type ButtonNoLinkProps = {
+type Props = {
   path: string;
   label: string;
 };
 
-export default function NavDrawerOptionButtonNoLink({ label }: ButtonNoLinkProps) {
+export default function ButtonNoLinkNavDrawerOption({ label }: Props) {
   const colorPalette = useColorPalette();
 
   return (
@@ -18,7 +18,7 @@ export default function NavDrawerOptionButtonNoLink({ label }: ButtonNoLinkProps
         primary={label}
         sx={{ color: colorPalette.navBar.lower.text }}
       />
-      <NavDrawerOptionIcon label={label} />
+      <IconNavDrawerOption label={label} />
     </ListItemButton>
   );
 }

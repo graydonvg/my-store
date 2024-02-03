@@ -8,7 +8,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
 import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
-import NavDrawerOptionsThemeButton from './NavDrawerOptionsThemeButton';
+import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 
 export default function NavDrawerOptions() {
   const colorPalette = useColorPalette();
@@ -71,7 +71,7 @@ export default function NavDrawerOptions() {
             <SignOutButton showNavDrawerButton={true} />
           </>
         ) : null}
-        <NavDrawerOptionsThemeButton />
+        <ThemeButtonNavDrawerOptions />
       </List>
     </Box>
   );
