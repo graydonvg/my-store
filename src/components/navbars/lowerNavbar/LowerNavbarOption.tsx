@@ -28,33 +28,31 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
   }
 
   return (
-    <>
-      <ListItem
-        disablePadding
-        disableGutters>
-        <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
-          <Typography
-            component="span"
-            sx={{
-              textTransform: 'none',
-              color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
-              textDecoration: underline ? 'underline' : 'none',
-              textDecorationColor: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
-              textDecorationThickness: 1,
-              textUnderlineOffset: 6,
-              '&:hover': {
-                color: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
-                textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
-              },
-            }}>
-            <Link
-              onClick={handleClick}
-              href={path}>
-              {label}
-            </Link>
-          </Typography>
-        </Box>
-      </ListItem>
+    <ListItem
+      disablePadding
+      disableGutters>
+      <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
+        <Typography
+          component="span"
+          sx={{
+            textTransform: 'none',
+            color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
+            textDecoration: underline ? 'underline' : 'none',
+            textDecorationColor: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
+            textDecorationThickness: 1,
+            textUnderlineOffset: 6,
+            '&:hover': {
+              color: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
+              textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
+            },
+          }}>
+          <Link
+            onClick={handleClick}
+            href={path}>
+            {label}
+          </Link>
+        </Typography>
+      </Box>
       {!isLastNavOption ? (
         <Divider
           orientation="vertical"
@@ -62,6 +60,6 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
           flexItem
         />
       ) : null}
-    </>
+    </ListItem>
   );
 }
