@@ -9,7 +9,7 @@ import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
-import UpperNavbarIconButton from '@/components/navbars/upperNavbar/upperNavbarIconButton';
+import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
@@ -51,14 +51,14 @@ function FavoriteButton({ show }: FavoriteButtonProps) {
 
   return (
     <ListItem disablePadding>
-      <upperNavbarIconButton
+      <UpperNavbarIconButton
         onClick={handleNavigateToWishlist}
         backgroundColor={colorPalette.navBar.upper.background}>
         <Favorite
           aria-label="Wishlist"
           sx={{ color: colorPalette.typographyVariants.white, opacity: '50%' }}
         />
-      </upperNavbarIconButton>
+      </UpperNavbarIconButton>
     </ListItem>
   );
 }

@@ -7,9 +7,9 @@ import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { selectCartCount } from '@/lib/redux/cart/cartSelectors';
-import UpperNavbarIconButton from '../../navbars/upperNavbar/upperNavbarIconButton';
 import SmallCartItemList from '../../cartItems/smallCartItemList/SmallCartItemList';
 import CartDrawerFooter from './CartDrawerFooter';
+import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 
 export default function CartDrawer() {
   const colorPalette = useColorPalette();
