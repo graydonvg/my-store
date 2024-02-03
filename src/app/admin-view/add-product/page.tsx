@@ -25,18 +25,6 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
 import updateProductImageData from '@/services/product-image-data/update';
 
-const formFields = [
-  { label: 'Category', name: 'category', type: 'select', options: ['Men', 'Women', 'Kids'] },
-  { label: 'Name', name: 'name' },
-  { label: 'Brand', name: 'brand' },
-  { label: 'Product Details', name: 'details', multiline: true, placeholder: 'e.g. Black, Regular fit, ...' },
-  { label: 'Delivery info', name: 'deliveryInfo', multiline: true },
-  { label: 'Return info', name: 'returnInfo', multiline: true },
-  { label: 'Price', name: 'price', placeholder: 'e.g. 199' },
-  { label: 'On sale', name: 'isOnSale', type: 'select', options: ['No', 'Yes'] },
-  { label: 'Sale %', name: 'salePercentage', placeholder: 'e.g. 20' },
-];
-
 export default function AdminViewAddNewProduct() {
   const router = useRouter();
   const { productFormData, imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
@@ -223,54 +211,86 @@ export default function AdminViewAddNewProduct() {
           disabled={isSubmitting || isClearingAllFields}
         />
       </Box>
-      {formFields.map((field) => {
-        return field.type === 'select' ? (
-          <SelectField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            onChange={handleInputChange}
-            value={productFormData[field.name as keyof typeof productFormData]}
-            options={field.options ?? []}
-            disabled={isSubmitting || isClearingAllFields}
-            required
-          />
-        ) : field.name === 'price' ? (
-          <NumberField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            value={productFormData[field.name as keyof typeof productFormData]}
-            onChange={handleInputChange}
-            disabled={isSubmitting || isClearingAllFields}
-            placeholder={field.placeholder}
-            required
-          />
-        ) : field.name === 'salePercentage' ? (
-          <NumberField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            value={productFormData[field.name as keyof typeof productFormData]}
-            onChange={handleInputChange}
-            disabled={(!isOnSale && field.name === 'salePercentage') || isSubmitting || isClearingAllFields}
-            placeholder={field.placeholder}
-            required
-          />
-        ) : (
-          <CustomTextField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            value={productFormData[field.name as keyof typeof productFormData]}
-            onChange={handleInputChange}
-            multiline={field.multiline ?? false}
-            disabled={isSubmitting || isClearingAllFields}
-            placeholder={field.placeholder}
-            required
-          />
-        );
-      })}
+      <SelectField
+        label={'Category'}
+        name={'category'}
+        onChange={handleInputChange}
+        value={productFormData['category']}
+        options={['Men', 'Women', 'Kids']}
+        disabled={isSubmitting || isClearingAllFields}
+        required
+      />
+      <CustomTextField
+        label={'Name'}
+        name={'name'}
+        value={productFormData['name']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        required
+      />
+      <CustomTextField
+        label={'Brand'}
+        name={'brand'}
+        value={productFormData['brand']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        required
+      />
+      <CustomTextField
+        label={'Product details'}
+        name={'details'}
+        value={productFormData['details']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        multiline
+        placeholder="e.g. Black, Regular fit, ..."
+        required
+      />
+      <CustomTextField
+        label={'Delivery info'}
+        name={'deliveryInfo'}
+        value={productFormData['deliveryInfo']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        multiline
+        required
+      />
+      <CustomTextField
+        label={'Return info'}
+        name={'returnInfo'}
+        value={productFormData['returnInfo']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        multiline
+        required
+      />
+      <NumberField
+        label={'Price'}
+        name={'price'}
+        value={productFormData['price']}
+        onChange={handleInputChange}
+        disabled={isSubmitting || isClearingAllFields}
+        placeholder="e.g. 199"
+        required
+      />
+      <SelectField
+        label={'On sale'}
+        name={'isOnSale'}
+        onChange={handleInputChange}
+        value={productFormData['category']}
+        options={['No', 'Yes']}
+        disabled={isSubmitting || isClearingAllFields}
+        required
+      />
+      <NumberField
+        label={'Sale %'}
+        name={'salePercentage'}
+        value={productFormData['salePercentage']}
+        onChange={handleInputChange}
+        disabled={!isOnSale || isSubmitting || isClearingAllFields}
+        placeholder="e.g. 20"
+        required
+      />
       <ContainedButton
         label={isClearingAllFields ? '' : 'clear all'}
         onClick={handleClearAllFormFields}
