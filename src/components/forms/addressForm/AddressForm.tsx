@@ -15,8 +15,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { setAddressFormDataOnChange } from '@/lib/redux/addressForm/addressFormSlice';
 import { updateAddress } from '@/services/users/update';
-import AddressFormContactDetailsFields from './AddressFormContactDetailsFields';
-import AddressFormDeliveryAddressFields from './AddressFormDeliveryAddressFields';
+import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
+import DeliveryAddressFieldsAddressForm from './AddressFormDeliveryAddressFields';
 
 export default function AddressForm() {
   const router = useRouter();
@@ -89,13 +89,13 @@ export default function AddressForm() {
         component="form"
         onSubmit={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <AddressFormContactDetailsFields
+        <ContactDetailsFieldsAddressForm
           addressFormData={addressFormData}
           submitAddressOnEnterKeyDown={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
           onInputChange={handleInputChange}
         />
         <Divider />
-        <AddressFormDeliveryAddressFields
+        <DeliveryAddressFieldsAddressForm
           addressFormData={addressFormData}
           submitAddressOnEnterKeyDown={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
           onInputChange={handleInputChange}

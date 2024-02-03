@@ -26,7 +26,7 @@ type Props = {
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function AddressFormDeliveryAddressFields({
+export default function DeliveryAddressFieldsAddressForm({
   addressFormData,
   submitAddressOnEnterKeyDown,
   onInputChange,
