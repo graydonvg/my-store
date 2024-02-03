@@ -6,7 +6,7 @@ type Props = ButtonProps & {
   children: ReactNode;
 };
 
-export default function UpperNavIconButton({ backgroundColor, children, ...props }: Props) {
+export default function UpperNavbarIconButton({ backgroundColor, children, ...props }: Props) {
   return (
     <IconButton
       sx={{

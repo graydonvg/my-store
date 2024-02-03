@@ -3,7 +3,7 @@
 import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Menu } from '@mui/material';
 import { ReactNode, useState } from 'react';
-import UpperNavIconButton from './buttons/upperNavIconButton';
+import UpperNavbarIconButton from '../navbars/upperNavbar/upperNavbarIconButton';
 
 type HoverDropdownMenuProps = {
   buttonBackgroundColor: string;
@@ -49,7 +49,7 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
         onClick={handleMenuOpen}
         onMouseEnter={handleMenuOpen}
         onMouseLeave={handleMenuCloseAfterTimeout}>
-        <UpperNavIconButton backgroundColor={buttonBackgroundColor}>{label}</UpperNavIconButton>
+        <upperNavbarIconButton backgroundColor={buttonBackgroundColor}>{label}</upperNavbarIconButton>
       </Box>
       <Menu
         disableScrollLock

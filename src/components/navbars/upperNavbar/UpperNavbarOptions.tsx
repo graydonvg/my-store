@@ -2,14 +2,14 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
-import CartDrawer from '../../drawers/CartDrawer';
+import CartDrawer from '../../drawers/cartDrawer/CartDrawer';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import AccountDropdownMenu from '@/components/accountDropdownMenu/AccountDropdownMenu';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../drawers/navDrawer/NavDrawer';
 import { Favorite } from '@mui/icons-material';
-import UpperNavIconButton from '@/components/ui/buttons/upperNavIconButton';
+import UpperNavbarIconButton from '@/components/navbars/upperNavbar/upperNavbarIconButton';
 import { toggleTheme } from '@/lib/redux/theme/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
@@ -51,14 +51,14 @@ function FavoriteButton({ show }: FavoriteButtonProps) {
 
   return (
     <ListItem disablePadding>
-      <UpperNavIconButton
+      <upperNavbarIconButton
         onClick={handleNavigateToWishlist}
         backgroundColor={colorPalette.navBar.upper.background}>
         <Favorite
           aria-label="Wishlist"
           sx={{ color: colorPalette.typographyVariants.white, opacity: '50%' }}
         />
-      </UpperNavIconButton>
+      </upperNavbarIconButton>
     </ListItem>
   );
 }
