@@ -4,7 +4,7 @@ import { Box, ListItem, Typography, useMediaQuery, useTheme } from '@mui/materia
 import { Divider } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { CartItemType } from '@/types';
-import EditCartItemDrawer from '../../drawers/EditCartItemDrawer';
+import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { BORDER_RADIUS } from '@/config';

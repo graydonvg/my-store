@@ -2,12 +2,11 @@
 
 import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect } from 'react';
 import Drawer from '@mui/material/Drawer';
-import { DrawerAnchor, DrawerState } from '@/types';
+import { DrawerState } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
 import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import { setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
-import { usePathname } from 'next/navigation';
 
 type Props = {
   elevation?: number;
