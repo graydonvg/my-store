@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box } from '@mui/material';
-import DraggableProductImagesContainer from '../ui/draggableProductImages/DraggableProductImagesContainer';
+import DraggableProductImagesContainer from '../draggableProductImages/DraggableProductImagesContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
 

@@ -3,90 +3,6 @@ import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
 
-type AdminNavOptionsProps = {
-  show: boolean;
-};
-
-function AdminNavOptions({ show }: AdminNavOptionsProps) {
-  const pathname = usePathname();
-
-  if (!show) return null;
-
-  return (
-    <>
-      {ADMIN_NAV_OPTIONS.map((option, index) => {
-        const isLastNavOption = ADMIN_NAV_OPTIONS.length - 1 === index;
-
-        return (
-          <LowerNavbarOption
-            key={option.id}
-            label={option.label}
-            path={option.path}
-            isLastNavOption={isLastNavOption}
-            underline={option.path === pathname}
-          />
-        );
-      })}
-    </>
-  );
-}
-
-type ClientNavOptionsProps = {
-  show: boolean;
-};
-
-function ClientNavOptions({ show }: ClientNavOptionsProps) {
-  const pathname = usePathname();
-
-  if (!show) return null;
-
-  return (
-    <>
-      {NAV_OPTIONS.map((option, index) => {
-        const isLastNavOption = NAV_OPTIONS.length - 1 === index;
-
-        return (
-          <LowerNavbarOption
-            key={option.id}
-            label={option.label}
-            path={option.path}
-            isLastNavOption={isLastNavOption}
-            underline={option.path === pathname}
-          />
-        );
-      })}
-    </>
-  );
-}
-
-type AccountNavOptionsProps = {
-  show: boolean;
-};
-
-function AccountNavOptions({ show }: AccountNavOptionsProps) {
-  const pathname = usePathname();
-
-  if (!show) return null;
-
-  return (
-    <>
-      {ACCOUNT_NAV_OPTIONS.map((option, index) => {
-        const isLastNavOption = ACCOUNT_NAV_OPTIONS.length - 1 === index;
-
-        return (
-          <LowerNavbarOption
-            key={option.id}
-            label={option.label}
-            path={option.path}
-            isLastNavOption={isLastNavOption}
-            underline={option.path === pathname}
-          />
-        );
-      })}
-    </>
-  );
-}
-
 export default function LowerNavbarOptions() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
@@ -99,9 +15,53 @@ export default function LowerNavbarOptions() {
       <List
         disablePadding
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <AdminNavOptions show={isAdminView} />
-        <ClientNavOptions show={!isAdminView && !isAccountView} />
-        <AccountNavOptions show={isAccountView} />
+        {!isAdminView && !isAccountView
+          ? NAV_OPTIONS.map((option, index) => {
+              const isLastNavOption = NAV_OPTIONS.length - 1 === index;
+
+              return (
+                <LowerNavbarOption
+                  key={option.id}
+                  label={option.label}
+                  path={option.path}
+                  isLastNavOption={isLastNavOption}
+                  underline={option.path === pathname}
+                />
+              );
+            })
+          : null}
+
+        {isAdminView
+          ? ADMIN_NAV_OPTIONS.map((option, index) => {
+              const isLastNavOption = ADMIN_NAV_OPTIONS.length - 1 === index;
+
+              return (
+                <LowerNavbarOption
+                  key={option.id}
+                  label={option.label}
+                  path={option.path}
+                  isLastNavOption={isLastNavOption}
+                  underline={option.path === pathname}
+                />
+              );
+            })
+          : null}
+
+        {isAccountView
+          ? ACCOUNT_NAV_OPTIONS.map((option, index) => {
+              const isLastNavOption = ACCOUNT_NAV_OPTIONS.length - 1 === index;
+
+              return (
+                <LowerNavbarOption
+                  key={option.id}
+                  label={option.label}
+                  path={option.path}
+                  isLastNavOption={isLastNavOption}
+                  underline={option.path === pathname}
+                />
+              );
+            })
+          : null}
       </List>
     </Box>
   );

@@ -6,14 +6,14 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
-type LowerNavbarOptionProps = {
+type Props = {
   path: string;
   label: string;
   isLastNavOption: boolean;
   underline: boolean;
 };
 
-export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: LowerNavbarOptionProps) {
+export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: Props) {
   const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const isSaleOption = label.toLowerCase() === 'sale';

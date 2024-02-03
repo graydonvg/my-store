@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
-import TextButton from '../buttons/TextButton';
+import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';
 import { deleteImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
