@@ -66,8 +66,7 @@ export default function LargeCartItem({ item }: Props) {
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {isBelowSmall ? (
               <LargeCartItemProductNameAndBrand
-                productId={item?.product?.productId!}
-                category={item?.product?.category!}
+                productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
               />
@@ -85,8 +84,7 @@ export default function LargeCartItem({ item }: Props) {
           <Box>
             {!isBelowSmall ? (
               <LargeCartItemProductNameAndBrand
-                productId={item?.product?.productId!}
-                category={item?.product?.category!}
+                productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
               />

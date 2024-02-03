@@ -7,16 +7,15 @@ import Link from 'next/link';
 type Props = {
   name: string;
   brand: string;
-  productId: string;
-  category: string;
+  productHref: string;
 };
 
-export default function LargeCartItemProductNameAndBrand({ name, brand, productId, category }: Props) {
+export default function LargeCartItemProductNameAndBrand({ name, brand, productHref }: Props) {
   const colorPalette = useColorPalette();
 
   return (
     <>
-      <Link href={`/products/${category.toLowerCase()}/${productId}`}>
+      <Link href={productHref}>
         <Typography
           lineHeight={1}
           component="p"
