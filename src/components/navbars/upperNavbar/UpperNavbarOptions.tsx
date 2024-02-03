@@ -104,6 +104,8 @@ function AccountDropdownMenu({ show }: AccountDropdownMenuProps) {
 function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
 
   if (!show) return null;
 
@@ -117,8 +119,9 @@ function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
       disablePadding>
       <ListItem
         disablePadding
-        sx={{ display: { xs: 'none', md: 'flex', marginRight: 16 } }}>
+        sx={{ display: { xs: 'none', md: 'flex' }, gap: '11px' }}>
         <IconButton
+          aria-label={`Toggle theme. Current mode is ${mode}.`}
           onClick={handleToggleTheme}
           size="small">
           <ThemeToggleIcon
@@ -126,18 +129,18 @@ function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
             color={colorPalette.navBar.upper.text}
           />
         </IconButton>
+        <CustomDivider />
       </ListItem>
-      <CustomDivider />
       <ListItem disablePadding>
         <SignInDialog />
+        <CustomDivider />
       </ListItem>
-      <CustomDivider />
       <ListItem
         disablePadding
         sx={{ display: { xs: 'none', md: 'flex' } }}>
         <SignUpDialog />
+        <CustomDivider />
       </ListItem>
-      <CustomDivider />
     </List>
   );
 }
