@@ -33,7 +33,6 @@ function ProductImage({ show, productName, productImageData }: ProductImageProps
         sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
         src={productImageData.imageUrl}
         alt={`Image for ${productName ? productName : productImageData.fileName}`}
-        priority
         onLoad={() => setIsImageLoaded(true)}
       />
       {!isImageLoaded ? (

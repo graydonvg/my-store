@@ -222,7 +222,6 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 sizes={imageSizes}
                 src={imageUrl!}
                 alt={`${product.name}`}
-                priority
                 onLoad={() => setIsImageLoaded(true)}
               />
               {!isImageLoaded ? (

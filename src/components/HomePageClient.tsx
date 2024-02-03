@@ -45,7 +45,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
     <Grid
       component="ul"
       container
-      spacing={3}>
+      spacing={{ xs: 1, sm: 2 }}>
       <Grid
         component="li"
         item
@@ -89,7 +89,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
               {product && (
                 <ProductCard
                   product={product}
-                  imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 28px)"
+                  imageSizes="(min-width: 1280px) 276px, (min-width: 600px) calc(22.73vw - 10px), calc(50vw - 20px)"
                 />
               )}
             </Grid>
@@ -125,7 +125,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, paddingTop: 1 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
       <Box component="section">
         <Box
           sx={{
@@ -194,7 +194,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
       </Box>
       <Box
         component="section"
-        sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {[
           { title: 'The Biggest Sale', products: productsOnSale, onClick: handleNavigateToSale },
           { title: 'Latest Arrivals', products: latestArrivals, onClick: handleNavigateToAllProducts },
@@ -208,7 +208,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
         ))}
       </Box>
       <Box component="section">
-        <Divider sx={{ paddingBottom: { xs: 2, md: 4 } }}>
+        <Divider sx={{ paddingBottom: { xs: 2, sm: 3 } }}>
           <Typography
             component="h2"
             fontSize={{ xs: 20, md: 28, lg: 36 }}
@@ -220,7 +220,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
         <Grid
           component="ul"
           container
-          spacing={{ xs: 2, md: 3 }}>
+          spacing={{ xs: 2, sm: 3 }}>
           {categories.map((category) => (
             <Grid
               component="li"
@@ -254,7 +254,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
                     opacity: !isCategoryImageLoaded ? 0 : 100,
                   }}
                   fill
-                  sizes="(min-width: 1280px) 368px, (min-width: 600px) 29.55vw, calc(100vw - 32px)"
+                  sizes="(min-width: 1280px) 368px, (min-width: 600px) calc(30.3vw - 14px), calc(100vw - 32px)"
                   src={category.imageSrc}
                   alt={`Image for category ${category.label}`}
                   onLoad={() => setIsCategoryImageLoaded(true)}
