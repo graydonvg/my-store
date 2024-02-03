@@ -7,11 +7,11 @@ import { ReactNode } from 'react';
 
 type Props = {
   icon: ReactNode;
-  text: ReactNode;
+  label: ReactNode;
   onClick?: () => void;
 };
 
-export default function AccountMenuItem({ icon, text, onClick }: Props) {
+export default function AccountDropdownMenuItem({ icon, label, onClick }: Props) {
   const colorPalette = useColorPalette();
 
   return (
@@ -23,7 +23,7 @@ export default function AccountMenuItem({ icon, text, onClick }: Props) {
       }}
       onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
-      {text}
+      {label}
     </MenuItem>
   );
 }

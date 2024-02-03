@@ -1,4 +1,4 @@
-import AccountMenuItem from '@/components/accountDropdownMenu/AccountMenuItem';
+import AccountDropdownMenuItem from '@/components/accountDropdownMenu/AccountDropdownMenuItem';
 import NavDrawerOption from '@/components/drawers/navDrawer/NavDrawerOption';
 import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -33,8 +33,8 @@ export default function SignOutButton({ showAccountMenuButton = false, showNavDr
 
   if (showAccountMenuButton)
     return (
-      <AccountMenuItem
-        text={'Sign Out'}
+      <AccountDropdownMenuItem
+        label={'Sign Out'}
         icon={
           <Logout
             fontSize={ACCOUNT_MENU_ICON_SIZE}

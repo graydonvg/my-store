@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, IconButton, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../drawers/CartDrawer';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
-import AccountMenu from '@/components/accountDropdownMenu/AccountMenu';
+import AccountDropdownMenu from '@/components/accountDropdownMenu/AccountDropdownMenu';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../drawers/navDrawer/NavDrawer';
@@ -87,20 +87,6 @@ function GoToCheckoutButton({ show }: CheckoutButtonProps) {
   );
 }
 
-type AccountDropdownMenuProps = {
-  show: boolean;
-};
-
-function AccountDropdownMenu({ show }: AccountDropdownMenuProps) {
-  if (!show) return null;
-
-  return (
-    <ListItem disablePadding>
-      <AccountMenu />
-    </ListItem>
-  );
-}
-
 function UserSignedOutOptions({ show }: UserSignedOutOptionsProps) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
@@ -169,7 +155,8 @@ function UserSignedInOptions({ show }: UserSignedInOptionsProps) {
         </ListItem>
         <GoToCheckoutButton show={!isBelowMedium && cartItems.length > 0} />
         <CustomDivider />
-        <AccountDropdownMenu show={!isBelowMedium} />
+        {!isBelowMedium ? <AccountDropdownMenu /> : null}
+
         <CustomDivider />
       </List>
     </>

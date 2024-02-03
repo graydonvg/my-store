@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import useColorPalette from '@/hooks/useColorPalette';
-import AccountMenuItem from './AccountMenuItem';
+import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import SignOutButton from '../ui/buttons/SignOutButton';
 
@@ -47,32 +47,14 @@ const accountMenuOptions = [
   },
 ];
 
-type AdminMenuItemProps = {
-  show: boolean;
-};
-
-function AdminMenuItem({ show }: AdminMenuItemProps) {
-  const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
-
-  if (!show) return null;
-
-  return (
-    <Link href={isAdminView ? '/' : '/admin-view/all-products'}>
-      <AccountMenuItem
-        text={isAdminView ? 'Client View' : 'Admin View'}
-        icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
-      />
-    </Link>
-  );
-}
-
-export default function AccountMenu() {
+export default function AccountDropdownMenu() {
   const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('/admin-view');
 
   function handleToggleTheme() {
     dispatch(toggleTheme());
@@ -93,19 +75,28 @@ export default function AccountMenu() {
           <ArrowDropDown sx={{ color: colorPalette.primary.dark, marginLeft: 2 }} />
         </>
       }>
-      <AdminMenuItem show={!!userData && userData?.isAdmin} />
+      {userData && userData?.isAdmin ? (
+        <Link href={isAdminView ? '/' : '/admin-view/all-products'}>
+          <AccountDropdownMenuItem
+            label={isAdminView ? 'Client View' : 'Admin View'}
+            icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
+          />
+        </Link>
+      ) : null}
+
       {accountMenuOptions.map((item) => (
         <Link
           key={item.label}
           href={item.href}>
-          <AccountMenuItem
-            text={item.label}
+          <AccountDropdownMenuItem
+            label={item.label}
             icon={item.icon}
           />
         </Link>
       ))}
-      <AccountMenuItem
-        text={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
+
+      <AccountDropdownMenuItem
+        label={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
         icon={
           <ThemeToggleIcon
             color={ACCOUNT_MENU_ICON_COLOR}
