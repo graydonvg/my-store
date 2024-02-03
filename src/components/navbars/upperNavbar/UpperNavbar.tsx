@@ -1,7 +1,7 @@
 'use client';
 
 import { Box } from '@mui/material';
-import UpperNavbarOptions from './UpperNavbarOptions';
+import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
 import useColorPalette from '@/hooks/useColorPalette';
 import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
 

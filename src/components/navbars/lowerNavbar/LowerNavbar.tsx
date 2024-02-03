@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';
 import useColorPalette from '@/hooks/useColorPalette';
