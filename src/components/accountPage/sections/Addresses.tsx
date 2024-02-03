@@ -18,12 +18,11 @@ import { clearAddressFormData, setAddressFormData } from '@/lib/redux/addressFor
 import { AddressType, UpdateAddressTypeStore } from '@/types';
 import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
 import { deleteAddress } from '@/services/users/delete';
-import { setUserData } from '@/lib/redux/user/userSlice';
 import { toast } from 'react-toastify';
 import AddressDialog from '../../dialogs/AddressDialog';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import { BORDER_RADIUS } from '@/config';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { setAddressToDeleteId } from '@/lib/redux/account/accountSlice';
 
