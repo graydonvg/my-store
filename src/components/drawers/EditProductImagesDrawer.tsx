@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box } from '@mui/material';
-import DraggableListContainer from '../ui/draggableList/DraggableListContainer';
+import DraggableProductImagesContainer from '../ui/draggableProductImages/DraggableProductImagesContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
 
@@ -63,7 +63,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           onClick={handleCloseEditImageDrawer}
         />
         <Box sx={{ overflow: 'auto', height: 1, opacity: isDeletingAllImages ? '50%' : null }}>
-          <DraggableListContainer />
+          <DraggableProductImagesContainer />
         </Box>
         <Box
           sx={{

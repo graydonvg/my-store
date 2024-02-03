@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { DragDropContext, Droppable, OnDragEndResponder } from '@hello-pangea/dnd';
-import DraggableListItem from './DraggableListItem';
+import DraggableProductImage from './DraggableProductImage';
 import { Box } from '@mui/material';
 import { InsertProductImageDataTypeStore } from '@/types';
 
@@ -9,7 +9,7 @@ export type DraggableListProps = {
   onDragEnd: OnDragEndResponder;
 };
 
-const DraggableList = memo(({ imageData, onDragEnd }: DraggableListProps) => {
+const DraggableProductImages = memo(({ imageData, onDragEnd }: DraggableListProps) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable-list">
@@ -18,7 +18,7 @@ const DraggableList = memo(({ imageData, onDragEnd }: DraggableListProps) => {
             ref={provided.innerRef}
             {...provided.droppableProps}>
             {imageData.map((data, index) => (
-              <DraggableListItem
+              <DraggableProductImage
                 key={data.fileName}
                 imageData={data}
                 index={index}
@@ -32,6 +32,6 @@ const DraggableList = memo(({ imageData, onDragEnd }: DraggableListProps) => {
   );
 });
 
-DraggableList.displayName = 'DraggableList';
+DraggableProductImages.displayName = 'DraggableProductImages';
 
-export default DraggableList;
+export default DraggableProductImages;

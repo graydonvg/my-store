@@ -4,7 +4,7 @@ import { InsertProductImageDataTypeStore } from '@/types';
 import Image from 'next/image';
 import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
-import { DeleteForever, DragHandle, DragIndicator } from '@mui/icons-material';
+import { DeleteForever, DragHandle } from '@mui/icons-material';
 import TextButton from '../buttons/TextButton';
 import { toast } from 'react-toastify';
 import { deleteImageFromStorage } from '@/lib/firebase';
@@ -13,12 +13,12 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
 import { useState } from 'react';
 
-export type DraggableListItemProps = {
+export type Props = {
   imageData: InsertProductImageDataTypeStore;
   index: number;
 };
 
-const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
+export default function DraggableProductImage({ imageData, index }: Props) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const { isDeletingImage, productFormData } = useAppSelector((state) => state.productForm);
@@ -86,7 +86,6 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
                     alignSelf: 'center',
                   }}>
                   <Image
-                    priority
                     style={{
                       objectFit: 'cover',
                       borderRadius: BORDER_RADIUS,
@@ -135,6 +134,4 @@ const DraggableListItem = ({ imageData, index }: DraggableListItemProps) => {
       )}
     </Draggable>
   );
-};
-
-export default DraggableListItem;
+}

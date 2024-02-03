@@ -1,10 +1,10 @@
 import { DropResult } from '@hello-pangea/dnd';
-import DraggableList from './DraggableList';
+import DraggableProductImages from './DraggableProductImages';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setUpdatedImageData } from '@/lib/redux/productForm/productFormSlice';
 
-export default function DraggableListContainer() {
+export default function DraggableProductImagesContainer() {
   const dispatch = useAppDispatch();
   const imageData = useAppSelector((state) => state.productForm.imageData);
 
@@ -27,7 +27,7 @@ export default function DraggableListContainer() {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
       <Box sx={{ flex: 1 }}>
-        <DraggableList
+        <DraggableProductImages
           imageData={imageData}
           onDragEnd={onDragEnd}
         />
