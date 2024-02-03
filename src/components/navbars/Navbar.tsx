@@ -4,35 +4,8 @@ import { AppBar, Box } from '@mui/material';
 import LowerNavbar from './lowerNavbar/LowerNavbar';
 import UpperNavbar from './upperNavbar/UpperNavbar';
 import { usePathname } from 'next/navigation';
-import CheckoutNavbar from './CheckoutNavbar';
 import { ElevationScroll } from '../ui/ElevationScroll';
-
-type MainNavBarProps = {
-  show: boolean;
-};
-
-function MainNavBar({ show }: MainNavBarProps) {
-  if (!show) return null;
-
-  return (
-    <>
-      <UpperNavbar />
-      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <LowerNavbar />
-      </Box>
-    </>
-  );
-}
-
-type CheckoutFlowNavBarProps = {
-  show: boolean;
-};
-
-function CheckoutFlowNavBar({ show }: CheckoutFlowNavBarProps) {
-  if (!show) return null;
-
-  return <CheckoutNavbar />;
-}
+import CheckoutNavbar from './CheckoutNavbar';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -46,8 +19,15 @@ export default function Navbar() {
           color="transparent"
           elevation={0}
           position="sticky">
-          <MainNavBar show={!isCheckoutFlow} />
-          <CheckoutFlowNavBar show={isCheckoutFlow} />
+          {!isCheckoutFlow ? (
+            <>
+              <UpperNavbar />
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <LowerNavbar />
+              </Box>
+            </>
+          ) : null}
+          {isCheckoutFlow ? <CheckoutNavbar /> : null}
         </AppBar>
       </ElevationScroll>
     </>
