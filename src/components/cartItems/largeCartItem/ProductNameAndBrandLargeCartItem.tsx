@@ -10,7 +10,7 @@ type Props = {
   productHref: string;
 };
 
-export default function LargeCartItemProductNameAndBrand({ name, brand, productHref }: Props) {
+export default function ProductNameAndBrandLargeCartItem({ name, brand, productHref }: Props) {
   const colorPalette = useColorPalette();
 
   return (

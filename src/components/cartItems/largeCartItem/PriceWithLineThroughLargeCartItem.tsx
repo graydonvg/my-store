@@ -8,7 +8,7 @@ type Props = {
   price: number;
 };
 
-export default function LargeCartItemPriceWithLineThrough({ price }: Props) {
+export default function PriceWithLineThroughLargeCartItem({ price }: Props) {
   const colorPalette = useColorPalette();
 
   return (

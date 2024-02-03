@@ -8,7 +8,7 @@ type Props = {
   percentage: number;
 };
 
-export default function LargeCartItemSalePercentageBadge({ percentage }: Props) {
+export default function SalePercentageBadgeLargeCartItem({ percentage }: Props) {
   const colorPalette = useColorPalette();
 
   return (

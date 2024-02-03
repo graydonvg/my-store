@@ -8,12 +8,12 @@ import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDra
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { BORDER_RADIUS } from '@/config';
-import LargeCartItemPriceWithLineThrough from './LargeCartItemPriceWithLineThrough';
-import LargeCartItemSalePercentageBadge from './LargeCartItemSalePercentageBadge';
-import LargeCartItemDeliveryAndReturnInfo from './LargeCartItemDeliveryReturnAndInfo';
-import LargeCartItemSelectionDetails from './LargeCartItemSelectionDetails';
-import LargeCartItemProductNameAndBrand from './LargeCartItemProductNameAndBrand';
-import LargeCartItemImage from './LargeCartItemImage';
+import PriceWithLineThroughLargeCartItem from './PriceWithLineThroughLargeCartItem';
+import SalePercentageBadgeLargeCartItem from './SalePercentageBadgeLargeCartItem';
+import DeliveryAndReturnInfoLargeCartItem from './DeliveryAndReturnInfoLargeCartItem';
+import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
+import ProductNameAndBrandLargeCartItem from './ProductNameAndBrandLargeCartItem';
+import ImageLargeCartItem from './ImageLargeCartItem';
 
 type Props = {
   item: CartItemType;
@@ -58,14 +58,14 @@ export default function LargeCartItem({ item }: Props) {
           justifyContent: 'flex-start',
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-          <LargeCartItemImage
+          <ImageLargeCartItem
             productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
             imageUrl={imageUrl!}
             productName={item?.product?.name!}
           />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {isBelowSmall ? (
-              <LargeCartItemProductNameAndBrand
+              <ProductNameAndBrandLargeCartItem
                 productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
@@ -83,18 +83,18 @@ export default function LargeCartItem({ item }: Props) {
           }}>
           <Box>
             {!isBelowSmall ? (
-              <LargeCartItemProductNameAndBrand
+              <ProductNameAndBrandLargeCartItem
                 productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
               />
             ) : null}
           </Box>
-          <LargeCartItemSelectionDetails
+          <SelectionDetailsLargeCartItem
             quantity={item.quantity}
             size={item.size}
           />
-          <LargeCartItemDeliveryAndReturnInfo
+          <DeliveryAndReturnInfoLargeCartItem
             discountedPrice={discountedPrice}
             returnInfo={item.product?.returnInfo!}
           />
@@ -107,7 +107,7 @@ export default function LargeCartItem({ item }: Props) {
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            {isOnSale ? <LargeCartItemSalePercentageBadge percentage={item?.product?.salePercentage!} /> : null}
+            {isOnSale ? <SalePercentageBadgeLargeCartItem percentage={item?.product?.salePercentage!} /> : null}
             <Box
               sx={{
                 display: 'flex',
@@ -115,7 +115,7 @@ export default function LargeCartItem({ item }: Props) {
                 alignItems: 'center',
                 flexWrap: 'nowrap',
               }}>
-              {isOnSale ? <LargeCartItemPriceWithLineThrough price={price} /> : null}
+              {isOnSale ? <PriceWithLineThroughLargeCartItem price={price} /> : null}
               <Typography
                 lineHeight={1}
                 component="span"

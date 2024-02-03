@@ -12,7 +12,7 @@ type Props = {
   productHref: string;
 };
 
-export default function LargeCartItemImage({ imageUrl, productName, productHref }: Props) {
+export default function ImageLargeCartItem({ imageUrl, productName, productHref }: Props) {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   return (
