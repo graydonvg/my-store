@@ -11,7 +11,7 @@ type Props = {
   onClick: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
 };
 
-export default function SmallCartItemDeleteButton({ isLoading, onClick }: Props) {
+export default function DeleteButtonSmallCartItem({ isLoading, onClick }: Props) {
   const colorPalette = useColorPalette();
 
   return (

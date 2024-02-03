@@ -10,11 +10,11 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
-import DeleteCartItemButton from './SmallCartItemDeleteButton';
-import SmallCartItemPriceWithLineThrough from './SmallCartItemPriceWithLineThrough';
-import SmallCartItemSalePercentageBadge from './SmallCartItemSalePercentageBadge';
-import SmallCartItemSelectionDetails from './SmallCartItemSelectionDetails';
-import SmallCartItemImage from './SmallCartItemImage';
+import DeleteCartItemButton from './DeleteButtonSmallCartItem';
+import PriceWithLineThroughSmallCartItem from './PriceWithLineThroughSmallCartItem';
+import SalePercentageBadgeSmallCartItem from './SalePercentageBadgeSmallCartItem';
+import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
+import ImageSmallCartItem from './ImageSmallCartItem';
 
 type Props = {
   item: CartItemType;
@@ -67,7 +67,7 @@ export default function SmallCartItem({ item }: Props) {
         opacity: isRemovingCartItem ? '50%' : null,
         paddingY: 2,
       }}>
-      <SmallCartItemImage
+      <ImageSmallCartItem
         imageUrl={imageUrl!}
         onClick={handleNavigateToProductPage}
         productName={item.product?.name!}
@@ -108,7 +108,7 @@ export default function SmallCartItem({ item }: Props) {
             }}>
             {item?.product?.name}
           </Typography>
-          <SmallCartItemSelectionDetails
+          <SelectionDetailsSmallCartItem
             quantity={item.quantity}
             size={item.size}
           />
@@ -116,7 +116,7 @@ export default function SmallCartItem({ item }: Props) {
         <Box
           component="footer"
           sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
-          {isOnSale ? <SmallCartItemSalePercentageBadge percentage={item?.product?.salePercentage!} /> : null}
+          {isOnSale ? <SalePercentageBadgeSmallCartItem percentage={item?.product?.salePercentage!} /> : null}
           <Box
             sx={{
               display: 'flex',
@@ -126,7 +126,7 @@ export default function SmallCartItem({ item }: Props) {
               flexWrap: 'wrap',
               width: 1,
             }}>
-            {isOnSale ? <SmallCartItemPriceWithLineThrough price={price} /> : null}
+            {isOnSale ? <PriceWithLineThroughSmallCartItem price={price} /> : null}
             <Typography
               lineHeight={1}
               component="span"

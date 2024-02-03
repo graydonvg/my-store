@@ -8,7 +8,7 @@ type Props = {
   size: string;
 };
 
-export default function SmallCartItemSelectionDetails({ quantity, size }: Props) {
+export default function SelectionDetailsSmallCartItem({ quantity, size }: Props) {
   const colorPalette = useColorPalette();
 
   return (

@@ -12,7 +12,7 @@ type Props = {
   onClick: () => void;
 };
 
-export default function SmallCartItemImage({ imageUrl, productName, onClick }: Props) {
+export default function ImageSmallCartItem({ imageUrl, productName, onClick }: Props) {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
