@@ -23,7 +23,7 @@ export const ERROR_MESSAGES = {
   NO_ID_RECEIVED: 'Please provide a valid ID.',
 };
 
-export const NAV_OPTIONS = [
+export const DEFAULT_NAV_OPTIONS = [
   {
     id: 'home',
     label: 'Home',

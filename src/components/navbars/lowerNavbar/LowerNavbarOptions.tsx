@@ -1,4 +1,4 @@
-import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, NAV_OPTIONS } from '@/config';
+import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -7,6 +7,7 @@ export default function LowerNavbarOptions() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
+  const showDefaultNavOptions = !isAdminView && !isAccountView;
 
   return (
     <Box
@@ -15,9 +16,9 @@ export default function LowerNavbarOptions() {
       <List
         disablePadding
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {!isAdminView && !isAccountView
-          ? NAV_OPTIONS.map((option, index) => {
-              const isLastNavOption = NAV_OPTIONS.length - 1 === index;
+        {showDefaultNavOptions
+          ? DEFAULT_NAV_OPTIONS.map((option, index) => {
+              const isLastNavOption = DEFAULT_NAV_OPTIONS.length - 1 === index;
 
               return (
                 <LowerNavbarOption

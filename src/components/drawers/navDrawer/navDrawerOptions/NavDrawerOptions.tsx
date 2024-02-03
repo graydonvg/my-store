@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
-import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, NAV_OPTIONS } from '@/config';
+import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
 import NavDrawerOptionsThemeButton from './NavDrawerOptionsThemeButton';
 
 export default function NavDrawerOptions() {
@@ -46,7 +46,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {!isAdminView
-          ? NAV_OPTIONS.map((option) => (
+          ? DEFAULT_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={handleCloseDrawer}
                 key={option.id}
