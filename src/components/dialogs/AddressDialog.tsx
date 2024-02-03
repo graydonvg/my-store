@@ -1,6 +1,6 @@
 import DialogComponent from './DialogComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import AddressForm from '../forms/AddressForm';
+import AddressForm from '../forms/addressForm/AddressForm';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
 import { setIsAddressDialogOpen } from '@/lib/redux/dialog/dialogSlice';

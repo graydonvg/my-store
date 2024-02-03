@@ -99,24 +99,23 @@ export default function SignInForm({ children }: Props) {
         {formFields.map((field) => (
           <CustomTextField
             key={field.name}
-            margin="normal"
-            required={true}
-            fullWidth={true}
-            id={field.name}
             label={field.label}
             name={field.name}
             type={field.type}
-            autoComplete={field.autoComplete}
             value={formData[field.name as keyof typeof formData]}
-            onChange={handleInputChange}
+            autoComplete={field.autoComplete}
             autoFocus={field.name === 'email'}
+            margin="normal"
+            required={true}
+            fullWidth={true}
+            onChange={handleInputChange}
           />
         ))}
         <ContainedButton
+          type="submit"
           label={isWelcomePath && isLoading ? '' : 'sign in'}
           disabled={isLoading}
           isLoading={isWelcomePath && isLoading}
-          type="submit"
           styles={{
             marginTop: 3,
             marginBottom: 2,

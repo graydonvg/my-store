@@ -112,16 +112,15 @@ export default function SignUpForm({ children }: Props) {
               sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
               key={field.name}>
               <CustomTextField
-                required={true}
-                fullWidth={true}
-                id={field.name}
                 label={field.label}
                 name={field.name}
-                type={field.type || 'text'}
-                autoComplete={field.autoComplete}
+                type={field.type ?? 'text'}
                 value={formData[field.name as keyof typeof formData]}
-                onChange={handleInputChange}
+                autoComplete={field.autoComplete}
                 autoFocus={field.name === 'firstName'}
+                required={true}
+                fullWidth={true}
+                onChange={handleInputChange}
               />
             </Grid>
           ))}

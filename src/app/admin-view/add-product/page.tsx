@@ -212,8 +212,8 @@ export default function AdminViewAddNewProduct() {
         />
       </Box>
       <SelectField
-        label={'Category'}
-        name={'category'}
+        label="Category"
+        name="category"
         onChange={handleInputChange}
         value={productFormData['category']}
         options={['Men', 'Women', 'Kids']}
@@ -221,24 +221,24 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <CustomTextField
-        label={'Name'}
-        name={'name'}
+        label="Name"
+        name="name"
         value={productFormData['name']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
         required
       />
       <CustomTextField
-        label={'Brand'}
-        name={'brand'}
+        label="Brand"
+        name="brand"
         value={productFormData['brand']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
         required
       />
       <CustomTextField
-        label={'Product details'}
-        name={'details'}
+        label="Product details"
+        name="details"
         value={productFormData['details']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
@@ -247,8 +247,8 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <CustomTextField
-        label={'Delivery info'}
-        name={'deliveryInfo'}
+        label="Delivery info"
+        name="deliveryInfo"
         value={productFormData['deliveryInfo']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
@@ -256,8 +256,8 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <CustomTextField
-        label={'Return info'}
-        name={'returnInfo'}
+        label="Return info"
+        name="returnInfo"
         value={productFormData['returnInfo']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
@@ -265,8 +265,8 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <NumberField
-        label={'Price'}
-        name={'price'}
+        label="Price"
+        name="price"
         value={productFormData['price']}
         onChange={handleInputChange}
         disabled={isSubmitting || isClearingAllFields}
@@ -274,8 +274,8 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <SelectField
-        label={'On sale'}
-        name={'isOnSale'}
+        label="On sale"
+        name="isOnSale"
         onChange={handleInputChange}
         value={productFormData['category']}
         options={['No', 'Yes']}
@@ -283,8 +283,8 @@ export default function AdminViewAddNewProduct() {
         required
       />
       <NumberField
-        label={'Sale %'}
-        name={'salePercentage'}
+        label="Sale %"
+        name="salePercentage"
         value={productFormData['salePercentage']}
         onChange={handleInputChange}
         disabled={!isOnSale || isSubmitting || isClearingAllFields}
