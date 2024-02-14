@@ -9,19 +9,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
 
 const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
-  // components: {
-  //   MuiToolbar: {
-  //     styleOverrides: {
-  //       regular: {
-  //         minHeight: 'unset',
-  //         '@media (min-width: 600px)': {
-  //           minHeight: 'unset',
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
-
   palette: {
     mode,
     ...(mode === 'light'
@@ -29,7 +16,6 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
           // palette values for light mode
           background: {
             default: isCheckoutFlow ? grey[200] : '#fff',
-            // paper: grey[200],
           },
           custom: {
             green: {

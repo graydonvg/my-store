@@ -148,10 +148,7 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
               selectImage={handleSelectedImage}
               selectedImageIndex={selectedImageIndex}
             />
-            <BoxWithUploadProgress
-              show={isAdminView && imageUploadProgress.length > 0}
-              // boxBorderColor={boxBorderColor}
-            />
+            <BoxWithUploadProgress show={isAdminView && imageUploadProgress.length > 0} />
             <EmptySmallBoxWithBorder show={isAdminView} />
           </Grid>
         </Grid>

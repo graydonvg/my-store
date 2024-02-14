@@ -1,36 +1,18 @@
 import { OrderType } from '@/types';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
-import OrderTotals from './OrderTotals';
+import OrderTotals from '../orderTotals/OrderTotals';
 import { BORDER_RADIUS } from '@/config';
-
-type AddressFieldProps = {
-  label: string;
-  value: string | number | null;
-};
-
-function AddressField({ label, value }: AddressFieldProps) {
-  return (
-    <Typography
-      id={label}
-      component="h3"
-      fontSize={14}>
-      {value}
-    </Typography>
-  );
-}
+import OrderShippingDetails from './OrderShippingDetails';
 
 type Props = {
-  show: boolean;
   order: OrderType;
   borderColor: string;
 };
 
-export default function OrderDetails({ show, order, borderColor }: Props) {
+export default function OrderDetails({ order, borderColor }: Props) {
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const shippingDetails = { ...order.shippingDetails[0] };
-
-  if (!show) return null;
 
   return (
     <Grid
@@ -74,49 +56,7 @@ export default function OrderDetails({ show, order, borderColor }: Props) {
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            <Typography
-              component="h4"
-              fontSize={14}
-              fontWeight={500}
-              textTransform="uppercase">
-              Shipping Details:
-            </Typography>
-            <Box>
-              <AddressField
-                label="Full Name"
-                value={`${shippingDetails.recipientFirstName} ${shippingDetails.recipientLastName}`}
-              />
-              <AddressField
-                label="Contact Number"
-                value={shippingDetails.recipientContactNumber}
-              />
-              <AddressField
-                label="Complex or Building"
-                value={shippingDetails.complexOrBuilding}
-              />
-              <AddressField
-                label="Street Address"
-                value={shippingDetails.streetAddress}
-              />
-              <AddressField
-                label="Suburb"
-                value={shippingDetails.suburb}
-              />
-              <AddressField
-                label="Province"
-                value={shippingDetails.province}
-              />
-              <AddressField
-                label="City"
-                value={shippingDetails.city}
-              />
-              <AddressField
-                label="Postal Code"
-                value={shippingDetails.postalCode}
-              />
-            </Box>
-          </Box>
+          <OrderShippingDetails shippingDetails={shippingDetails} />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography
               component="h3"

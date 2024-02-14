@@ -16,10 +16,7 @@ export default async function OrdersPage() {
   return (
     <Box>
       <PageHeaderWithBorder label="Orders" />
-      <Orders
-        show={!!orders && orders.length > 0}
-        orders={orders!}
-      />
+      <Orders orders={orders} />
     </Box>
   );
 }

@@ -168,6 +168,23 @@ export type ShippingDetailsType = {
   postalCode: number;
 };
 
+export type OrderItemType = {
+  orderItemId: string;
+  quantity: number;
+  size: string;
+  pricePaid: number;
+  product: {
+    productId: string;
+    name: string;
+    category: string;
+    returnInfo: string;
+    productImageData: {
+      imageUrl: string | undefined;
+      index: number;
+    }[];
+  } | null;
+};
+
 export type OrderType = {
   createdAt: string;
   orderId: string;
@@ -177,22 +194,7 @@ export type OrderType = {
   orderTotal: number;
   isPaid: boolean;
   shippingDetails: ShippingDetailsType[];
-  orderItems: {
-    orderItemId: string;
-    quantity: number;
-    size: string;
-    pricePaid: number;
-    product: {
-      productId: string;
-      name: string;
-      category: string;
-      returnInfo: string;
-      productImageData: {
-        imageUrl: string | undefined;
-        index: number;
-      }[];
-    } | null;
-  }[];
+  orderItems: OrderItemType[];
 };
 
 export type AddOrderType = {

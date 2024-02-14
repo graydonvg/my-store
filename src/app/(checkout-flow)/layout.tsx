@@ -13,7 +13,7 @@ import {
 } from '@/lib/redux/cart/cartSelectors';
 import useColorPalette from '@/hooks/useColorPalette';
 import { BORDER_RADIUS } from '@/config';
-import OrderTotals from '@/components/orders/OrderTotals';
+import OrderTotals from '@/components/orders/orderTotals/OrderTotals';
 import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import PaymentButton from '@/components/ui/buttons/PaymentButton';
