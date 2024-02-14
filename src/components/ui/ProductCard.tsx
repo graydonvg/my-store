@@ -160,7 +160,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
         label={isDeletingProduct ? '' : 'delete'}
         isLoading={isDeletingProduct}
         startIcon={<DeleteForever />}
-        backgroundColor="red"
+        backgroundColor="warning"
       />
       <ContainedButton
         disabled={isLoading || isDeletingProduct}
@@ -168,7 +168,7 @@ function AdminButtons({ show, product }: AdminButtonsProps) {
         fullWidth
         label={isLoading ? '' : 'update'}
         isLoading={isLoading}
-        backgroundColor="blue"
+        backgroundColor="primary"
       />
     </Box>
   );

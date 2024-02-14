@@ -73,7 +73,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
             <ContainedButton
               onClick={onClick}
               label="shop all"
-              backgroundColor="blue"
+              backgroundColor="primary"
             />
           </Box>
         </Box>
@@ -177,7 +177,7 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
             <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
               <ContainedButton
                 label="explore the collection"
-                backgroundColor="blue"
+                backgroundColor="primary"
                 onClick={handleNavigateToAllProducts}
                 styles={{ boxShadow: 15 }}
               />

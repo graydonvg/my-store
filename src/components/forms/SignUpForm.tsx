@@ -135,7 +135,7 @@ export default function SignUpForm({ children }: Props) {
             marginBottom: 3,
           }}
           fullWidth
-          backgroundColor="blue"
+          backgroundColor="primary"
         />
         {children}
       </Box>

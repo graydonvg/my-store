@@ -121,7 +121,7 @@ export default function SignInForm({ children }: Props) {
             marginBottom: 2,
           }}
           fullWidth
-          backgroundColor="blue"
+          backgroundColor="primary"
         />
         <Divider>
           <Typography
@@ -142,7 +142,7 @@ export default function SignInForm({ children }: Props) {
           }}
           fullWidth
           startIcon={<GoogleIcon />}
-          backgroundColor="blue"
+          backgroundColor="primary"
         />
         {children}
       </Box>

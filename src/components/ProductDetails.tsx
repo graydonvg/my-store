@@ -394,14 +394,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               isLoading={isAddingToCart}
               fullWidth
               label={isAddingToCart ? '' : 'add to cart'}
-              backgroundColor="blue"
+              backgroundColor="primary"
               startIcon={<AddShoppingCart />}
             />
             <ContainedButton
               onClick={handleAddToWishlist}
               fullWidth
               label="add to wishlist"
-              backgroundColor="red"
+              backgroundColor="warning"
               startIcon={<Favorite />}
             />
           </Box>

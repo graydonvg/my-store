@@ -26,7 +26,7 @@ export default function AddressDialog() {
         styles={{ width: 'fit-content' }}
         fullWidth={false}
         startIcon={<Add />}
-        backgroundColor="blue"
+        backgroundColor="primary"
       />
       <DialogComponent isOpen={isAddAddressDialogOpen}>
         <AddressForm />

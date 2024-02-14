@@ -54,7 +54,7 @@ export default function UserSignedInUpperNavbarOptions() {
                   height={'30px'}
                   minHeight={1}
                   label="checkout"
-                  backgroundColor="blue"
+                  backgroundColor="primary"
                 />
               </Box>
             </ListItem>

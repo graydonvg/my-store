@@ -96,7 +96,7 @@ export default function FooterCartDrawer() {
           label="view cart"
         />
         <CheckoutButton
-          backgroundColor="blue"
+          backgroundColor="primary"
           fullWidth
           label="checkout"
         />

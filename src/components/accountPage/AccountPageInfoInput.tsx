@@ -38,7 +38,7 @@ export default function AccountPageInfoInput({ textFieldData, isUpdating, disabl
           disabled={disableSave || isUpdating}
           isLoading={isUpdating}
           fullWidth={false}
-          backgroundColor="blue"
+          backgroundColor="primary"
           style={{ minWidth: '96px' }}
           onClick={onSave}
         />

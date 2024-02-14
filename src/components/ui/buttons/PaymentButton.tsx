@@ -54,7 +54,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         onClick={handlePayWithStripe}
         label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
         fullWidth
-        backgroundColor={'red'}
+        backgroundColor={'warning'}
         isLoading={checkoutData.isProcessing}
       />
     );

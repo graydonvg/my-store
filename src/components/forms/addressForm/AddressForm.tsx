@@ -103,7 +103,7 @@ export default function AddressForm() {
           disabled={isDialogLoading}
           type="submit"
           fullWidth
-          backgroundColor="blue"
+          backgroundColor="primary"
           startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
         />
       </Box>

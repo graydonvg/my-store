@@ -301,7 +301,7 @@ export default function AdminViewAddNewProduct() {
         component="button"
         isLoading={isClearingAllFields}
         startIcon={<DeleteForever />}
-        backgroundColor="red"
+        backgroundColor="warning"
       />
       <ContainedButton
         type="submit"
@@ -316,7 +316,7 @@ export default function AdminViewAddNewProduct() {
         fullWidth
         isLoading={isSubmitting}
         startIcon={<Add />}
-        backgroundColor="blue"
+        backgroundColor="primary"
       />
     </Box>
   );

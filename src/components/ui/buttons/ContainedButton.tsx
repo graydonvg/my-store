@@ -9,7 +9,7 @@ function getButtonBackgroundColor(
   colorPalette: ColorPaletteReturnType
 ) {
   const colorOptions = {
-    blue: {
+    primary: {
       backgroundColor: colorPalette.primary.dark,
       '&:hover': {
         backgroundColor: colorPalette.primary.dark,
@@ -23,7 +23,7 @@ function getButtonBackgroundColor(
         },
       },
     },
-    red: {
+    warning: {
       backgroundColor: colorPalette.warning.dark,
       '&:hover': {
         backgroundColor: colorPalette.warning.dark,

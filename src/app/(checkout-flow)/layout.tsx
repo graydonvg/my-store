@@ -33,7 +33,7 @@ function NavButton({ showCheckoutButton, showPaymentButton }: NavButtonProps) {
         disabled={cartItems.length === 0}
         label={'checkout now'}
         fullWidth={true}
-        backgroundColor={'blue'}
+        backgroundColor={'primary'}
       />
     );
 
