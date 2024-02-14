@@ -45,7 +45,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
     <Grid
       component="ul"
       container
-      spacing={{ xs: 1, sm: 2 }}>
+      spacing={{ xs: 2, sm: 3 }}>
       <Grid
         component="li"
         item
@@ -89,7 +89,7 @@ function ProductPreview({ title, products, onClick }: ProductPreviewPros) {
               {product && (
                 <ProductCard
                   product={product}
-                  imageSizes="(min-width: 1280px) 276px, (min-width: 600px) calc(22.73vw - 10px), calc(50vw - 20px)"
+                  imageSizes="(min-width: 1260px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 24px)"
                 />
               )}
             </Grid>
