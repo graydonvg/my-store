@@ -21,6 +21,9 @@ export default function TextButton({ label, labelColor, startIcon, isLoading, ..
         '&:hover': {
           backgroundColor: 'transparent',
         },
+        '&:active': {
+          backgroundColor: 'transparent',
+        },
       }}
       startIcon={
         isLoading ? (
