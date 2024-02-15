@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import { toast } from 'react-toastify';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';

@@ -1,17 +1,25 @@
 import { memo } from 'react';
-import { DragDropContext, Droppable, OnDragEndResponder } from '@hello-pangea/dnd';
+import { DragDropContext, DragStart, Droppable, OnDragEndResponder } from '@hello-pangea/dnd';
 import DraggableProductImage from './DraggableProductImage';
 import { Box } from '@mui/material';
 import { InsertProductImageDataTypeStore } from '@/types';
 
-export type DraggableListProps = {
+export type Props = {
   imageData: InsertProductImageDataTypeStore[];
   onDragEnd: OnDragEndResponder;
 };
 
-const DraggableProductImages = memo(({ imageData, onDragEnd }: DraggableListProps) => {
+const DraggableProductImages = memo(({ imageData, onDragEnd }: Props) => {
+  function handleDragStart() {
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100);
+    }
+  }
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragStart={handleDragStart}
+      onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable-list">
         {(provided) => (
           <Box
