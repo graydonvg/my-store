@@ -140,8 +140,6 @@ export default function AdminViewAddNewProduct() {
     setIsSubmitting(false);
   }
 
-  console.log(imageData);
-
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
@@ -277,7 +275,7 @@ export default function AdminViewAddNewProduct() {
         label="On sale"
         name="isOnSale"
         onChange={handleInputChange}
-        value={productFormData['category']}
+        value={productFormData['isOnSale']}
         options={['No', 'Yes']}
         disabled={isSubmitting || isClearingAllFields}
         required

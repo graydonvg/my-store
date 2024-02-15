@@ -328,7 +328,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 component="span"
                 fontSize={16}
                 color={colorPalette.typographyVariants.grey}>
-                {product.brand}
+                {product.brand.toUpperCase()}
               </Typography>
             </Box>
             <Box

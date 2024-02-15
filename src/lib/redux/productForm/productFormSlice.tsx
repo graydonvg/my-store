@@ -10,8 +10,6 @@ function handleSetProductDataOnChange(
 ) {
   if (field === 'sizes') {
     return handleSizesChange(value as string, productFormData);
-  } else if (field === 'brand') {
-    return { ...productFormData, [field]: (value as string).toUpperCase() };
   } else if (field === 'isOnSale' && value === 'No') {
     return { ...productFormData, [field]: value, salePercentage: 0 };
   } else if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {

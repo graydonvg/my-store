@@ -14,7 +14,7 @@ import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
-import { uploadImageToStorage } from '@/lib/firebase';
+import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
 import EditProductImagesDrawer from './drawers/EditProductImagesDrawer';
 
@@ -45,7 +45,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     }
 
     const uploadPromises = imagesToUpload.map((image) =>
-      uploadImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
+      uploadProductImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         dispatch(setImageUploadProgress({ fileName: image.uniqueFileName, progress }));

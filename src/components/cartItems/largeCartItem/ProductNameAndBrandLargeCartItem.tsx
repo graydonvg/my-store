@@ -42,7 +42,7 @@ export default function ProductNameAndBrandLargeCartItem({ name, brand, productH
           display: '-webkit-box',
           marginTop: '6px',
         }}>
-        {brand}
+        {brand.toUpperCase()}
       </Typography>
     </>
   );

@@ -21,7 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, 'gs://my-shop-7cfcc.appspot.com/');
 
-export async function uploadImageToStorage(
+export async function uploadProductImageToStorage(
   file: Blob | Uint8Array | ArrayBuffer,
   fileName: string,
   observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
@@ -41,7 +41,7 @@ export async function uploadImageToStorage(
   });
 }
 
-export async function deleteImageFromStorage(fileName: string) {
+export async function deleteProductImageFromStorage(fileName: string) {
   const imageRef = ref(storage, `product-images/${fileName}`);
 
   try {

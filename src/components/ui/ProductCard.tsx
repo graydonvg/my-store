@@ -269,7 +269,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 fontSize={14}
                 lineHeight={'22px'}
                 color={colorPalette.typographyVariants.grey}>
-                {product.brand}
+                {product.brand.toUpperCase()}
               </Typography>
               <Box
                 sx={{

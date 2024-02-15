@@ -7,7 +7,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';
-import { deleteImageFromStorage } from '@/lib/firebase';
+import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
@@ -31,7 +31,7 @@ export default function DraggableProductImage({ imageData, index }: Props) {
     setImageToDeleteIndex(imageData.index);
 
     if (imageData.fileName.length > 0) {
-      await deleteImageFromStorage(imageData.fileName);
+      await deleteProductImageFromStorage(imageData.fileName);
     }
     if (productFormData.productId && imageData.productImageId) {
       const { success, message } = await deleteProductImageDataFromDb(imageData.productImageId);
