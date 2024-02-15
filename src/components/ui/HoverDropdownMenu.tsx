@@ -5,13 +5,13 @@ import { Box, Menu } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import UpperNavbarIconButton from '../navbars/upperNavbar/UpperNavbarIconButton';
 
-type HoverDropdownMenuProps = {
+type Props = {
   buttonBackgroundColor: string;
   children: ReactNode;
   label: ReactNode;
 };
 
-export default function HoverDropdownMenu({ buttonBackgroundColor, children, label }: HoverDropdownMenuProps) {
+export default function HoverDropdownMenu({ buttonBackgroundColor, children, label }: Props) {
   const colorPalette = useColorPalette();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

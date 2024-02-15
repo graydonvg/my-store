@@ -1,104 +1,19 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
-import SmallProductImageBox from './SmallProductImageBox';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
 import { ProductType } from '@/types';
-
-type EmptySmallBoxWithBorderProps = {
-  show: boolean;
-};
-
-function EmptySmallBoxWithBorder({ show }: EmptySmallBoxWithBorderProps) {
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
-
-  if (!show) return null;
-
-  return Array.from(Array(5 - imageData.length - imageUploadProgress.length)).map((_, index) => (
-    <SmallProductImageBox key={`placeholder-${index}`} />
-  ));
-}
-
-type SmallImageAdminViewProps = {
-  show: boolean;
-  selectImage: (index: number) => void;
-  selectedImageIndex: number;
-};
-
-function SmallImageAdminView({ show, selectImage, selectedImageIndex }: SmallImageAdminViewProps) {
-  const { imageData, productFormData } = useAppSelector((state) => state.productForm);
-
-  if (!show) return null;
-
-  return (
-    <>
-      {imageData.map((data) => (
-        <SmallProductImageBox
-          key={data.fileName}
-          productName={productFormData.name}
-          productImageData={data}
-          selectImage={() => selectImage(data.index)}
-          imageIndex={data.index}
-          selectedImageIndex={selectedImageIndex}
-        />
-      ))}
-    </>
-  );
-}
-
-type SmallImageClientViewProps = {
-  show: boolean;
-  product: ProductType;
-  selectImage: (index: number) => void;
-  selectedImageIndex: number;
-};
-
-function SmallImageClientView({ show, product, selectImage, selectedImageIndex }: SmallImageClientViewProps) {
-  if (!show) return null;
-
-  return (
-    <>
-      {product.productImageData
-        .sort((a, b) => a.index - b.index)
-        .map((data) => (
-          <SmallProductImageBox
-            key={data.fileName}
-            productName={product?.name}
-            productImageData={data}
-            selectImage={() => selectImage(data.index)}
-            imageIndex={data.index}
-            selectedImageIndex={selectedImageIndex}
-          />
-        ))}
-    </>
-  );
-}
-
-type BoxWithUploadProgressProps = {
-  show: boolean;
-};
-
-function BoxWithUploadProgress({ show }: BoxWithUploadProgressProps) {
-  const { imageUploadProgress } = useAppSelector((state) => state.productForm);
-
-  if (!show) return null;
-
-  return (
-    <>
-      {imageUploadProgress.map((data, index) => (
-        <SmallProductImageBox
-          key={index}
-          uploadProgressData={data}
-        />
-      ))}
-    </>
-  );
-}
+import useColorPalette from '@/hooks/useColorPalette';
+import ClientViewSmallProductImageBox from './smallProductImageBox/ClientViewSmallProductImageBox';
+import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSmallProductImageBoxes';
+import EmptySmallBoxWithBorder from './smallProductImageBox/EmptySmallBoxWithBorder';
+import SmallBoxWithUploadProgress from './smallProductImageBox/SmallBoxWithUploadProgress';
 
 type ProductImageBoxesProps = { product?: ProductType };
 
 export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
+  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -120,6 +35,16 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
     setSelectedImageIndex(index);
   }
 
+  function getBoxBorderColor({ defaultBorderColor = false, focusedBorderColor = false }) {
+    if (focusedBorderColor) {
+      return colorPalette.textField.focused;
+    } else if (defaultBorderColor) {
+      return colorPalette.textField.border;
+    } else {
+      return 'transparent';
+    }
+  }
+
   return (
     <Container
       maxWidth={isAdminView ? 'xs' : 'sm'}
@@ -135,21 +60,30 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
           <Grid
             container
             spacing={{ xs: 1, sm: 1.32 }}>
-            {/* Gets image from store */}
-            <SmallImageAdminView
-              show={isAdminView}
-              selectImage={handleSelectedImage}
-              selectedImageIndex={selectedImageIndex}
-            />
-            {/* Gets image from db */}
-            <SmallImageClientView
-              show={!isAdminView && !!product}
-              product={product!}
-              selectImage={handleSelectedImage}
-              selectedImageIndex={selectedImageIndex}
-            />
-            <BoxWithUploadProgress show={isAdminView && imageUploadProgress.length > 0} />
-            <EmptySmallBoxWithBorder show={isAdminView} />
+            {!isAdminView && product ? (
+              <ClientViewSmallProductImageBox
+                product={product}
+                selectImage={handleSelectedImage}
+                selectedImageIndex={selectedImageIndex}
+                boxBorderColor="transparent"
+              />
+            ) : null}
+
+            {isAdminView ? (
+              <AdminViewSmallProductImageBoxes
+                selectImage={handleSelectedImage}
+                selectedImageIndex={selectedImageIndex}
+                boxBorderColor="transparent"
+              />
+            ) : null}
+
+            {isAdminView && imageUploadProgress.length > 0 ? (
+              <SmallBoxWithUploadProgress boxBorderColor={getBoxBorderColor({ focusedBorderColor: true })} />
+            ) : null}
+
+            {isAdminView ? (
+              <EmptySmallBoxWithBorder boxBorderColor={getBoxBorderColor({ defaultBorderColor: true })} />
+            ) : null}
           </Grid>
         </Grid>
         <Grid
@@ -158,20 +92,25 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
           sm={10}
           sx={{ order: { xs: 1, sm: 2 } }}>
           {isAdminView ? (
-            // Gets image from store
             <LargeProductImageBox
               productName={productFormData.name}
               productImageData={imageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
+              boxBorderColor={getBoxBorderColor({
+                defaultBorderColor: !imageData[selectedImageIndex],
+                focusedBorderColor: imageUploadProgress[selectedImageIndex] && !imageData[selectedImageIndex],
+              })}
             />
-          ) : (
-            // Gets image from db
+          ) : null}
+
+          {!isAdminView ? (
             <LargeProductImageBox
               productName={product?.name ?? ''}
               productImageData={product?.productImageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
+              boxBorderColor="transparent"
             />
-          )}
+          ) : null}
         </Grid>
       </Grid>
     </Container>
