@@ -11,16 +11,17 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
 import DeleteCartItemButton from './DeleteButtonSmallCartItem';
-import PriceWithLineThroughSmallCartItem from './PriceWithLineThroughSmallCartItem';
 import SalePercentageBadgeSmallCartItem from './SalePercentageBadgeSmallCartItem';
 import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
 import ImageSmallCartItem from './ImageSmallCartItem';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   item: CartItemType;
 };
 
 export default function SmallCartItem({ item }: Props) {
+  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -88,6 +89,7 @@ export default function SmallCartItem({ item }: Props) {
             onClick={(e: MouseEvent<HTMLButtonElement>) => handleRemoveCartItem(e, item?.cartItemId!)}
           />
         ) : null}
+
         <Box
           component="header"
           sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
@@ -126,7 +128,24 @@ export default function SmallCartItem({ item }: Props) {
               flexWrap: 'wrap',
               width: 1,
             }}>
-            {isOnSale ? <PriceWithLineThroughSmallCartItem price={price} /> : null}
+            {isOnSale ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                }}>
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  fontSize={16}
+                  fontWeight={700}
+                  color={colorPalette.typographyVariants.grey}
+                  sx={{ textDecoration: 'line-through' }}>
+                  {formatCurrency(price)}
+                </Typography>
+              </Box>
+            ) : null}
+
             <Typography
               lineHeight={1}
               component="span"

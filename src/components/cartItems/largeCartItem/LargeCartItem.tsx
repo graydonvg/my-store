@@ -8,7 +8,6 @@ import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDra
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { BORDER_RADIUS } from '@/config';
-import PriceWithLineThroughLargeCartItem from './PriceWithLineThroughLargeCartItem';
 import SalePercentageBadgeLargeCartItem from './SalePercentageBadgeLargeCartItem';
 import DeliveryAndReturnInfoLargeCartItem from './DeliveryAndReturnInfoLargeCartItem';
 import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
@@ -115,7 +114,18 @@ export default function LargeCartItem({ item }: Props) {
                 alignItems: 'center',
                 flexWrap: 'nowrap',
               }}>
-              {isOnSale ? <PriceWithLineThroughLargeCartItem price={price} /> : null}
+              {isOnSale ? (
+                <Typography
+                  lineHeight={1}
+                  component="span"
+                  fontSize={{ xs: 20, sm: 24 }}
+                  fontWeight={400}
+                  color={colorPalette.typographyVariants.grey}
+                  sx={{ textDecoration: 'line-through' }}>
+                  {formatCurrency(price)}
+                </Typography>
+              ) : null}
+
               <Typography
                 lineHeight={1}
                 component="span"

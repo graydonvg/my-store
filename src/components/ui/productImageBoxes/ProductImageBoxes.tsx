@@ -10,7 +10,7 @@ import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSma
 
 type Props = {
   product?: ProductType;
-  maxImageCount: number;
+  maxImageCount?: number;
 };
 
 export default function ProductImageBoxes({ product, maxImageCount }: Props) {
@@ -75,7 +75,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
                 selectImage={handleSelectedImage}
                 selectedImageIndex={selectedImageIndex}
                 getBoxBorderColor={getBoxBorderColor}
-                maxImageCount={maxImageCount}
+                maxImageCount={maxImageCount!}
               />
             ) : null}
           </Grid>
