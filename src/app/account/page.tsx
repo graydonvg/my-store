@@ -7,27 +7,10 @@ import PersonalInformation from '@/components/accountPage/sections/PersonalInfor
 import Addresses from '@/components/accountPage/sections/Addresses';
 import AccountPageSectionContainer from '@/components/accountPage/AccountPageSectionContainer';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
-import { UserDataType } from '@/types';
-
-function PageHeaderWithFullName() {
-  const { userData } = useAppSelector((state) => state.user);
-
-  if (!userData?.firstName && !userData?.lastName) return null;
-
-  const fullName = `${userData?.firstName} ${userData?.lastName}`;
-
-  return <PageHeaderWithBorder label={fullName} />;
-}
-
-function PageHeaderWithEmail() {
-  const { userData } = useAppSelector((state) => state.user);
-
-  if (!userData || userData?.firstName) return null;
-
-  return <PageHeaderWithBorder label={userData.email} />;
-}
 
 export default function AccountPage() {
+  const { userData } = useAppSelector((state) => state.user);
+
   function renderUserInfo(value: string) {
     return (
       <Typography
@@ -40,8 +23,13 @@ export default function AccountPage() {
 
   return (
     <Box>
-      <PageHeaderWithFullName />
-      <PageHeaderWithEmail />
+      {userData && (userData?.firstName || userData?.lastName) ? (
+        <PageHeaderWithBorder label={`${userData?.firstName} ${userData?.lastName}`} />
+      ) : null}
+
+      {userData && !userData?.firstName && !userData?.lastName ? (
+        <PageHeaderWithBorder label={userData?.email} />
+      ) : null}
       <Grid
         container
         rowGap={2}>

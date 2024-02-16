@@ -12,7 +12,6 @@ import './globals.css';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { CartItemType, UserDataType } from '@/types';
 
 export const metadata: Metadata = {
   title: 'MyStore',
