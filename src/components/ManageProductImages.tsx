@@ -1,7 +1,6 @@
 'use client';
 
 import { CloudUpload } from '@mui/icons-material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
@@ -23,9 +22,9 @@ type Props = {
 };
 
 export default function ManageProductImages({ isSubmitting }: Props) {
+  const maxImageCount = 5;
   const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData } = useAppSelector((state) => state.productForm);
-  const colorPalette = useColorPalette();
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -33,7 +32,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
 
     if (!files) return;
 
-    if (files.length + imageData.length > 5) return toast.error('Max. 5 images allowed');
+    if (files.length + imageData.length > maxImageCount) return toast.error(`Max. ${maxImageCount} images allowed`);
 
     const imagesToUpload = [];
 
@@ -73,14 +72,11 @@ export default function ManageProductImages({ isSubmitting }: Props) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
-      <ProductImageBoxes />
+      <ProductImageBoxes maxImageCount={maxImageCount} />
       <EditProductImagesDrawer isSubmitting={isSubmitting} />
       <ContainedButton
         backgroundColor="primary"
         disabled={uploadInProgress || isSubmitting}
-        styles={{
-          '&:hover': { backgroundColor: colorPalette.primary.light },
-        }}
         label={
           <>
             {uploadInProgress ? '' : 'upload images'}

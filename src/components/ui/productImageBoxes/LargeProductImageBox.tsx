@@ -9,11 +9,12 @@ import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@
 import { BORDER_RADIUS } from '@/config';
 import { useState } from 'react';
 
-type LargeProductImageBoxProps = {
+type Props = {
   selectedImageIndex: number;
   productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
   productName: string;
   boxBorderColor: string;
+  maxImageCount?: number;
 };
 
 export default function LargeProductImageBox({
@@ -21,7 +22,8 @@ export default function LargeProductImageBox({
   productImageData,
   productName,
   boxBorderColor,
-}: LargeProductImageBoxProps) {
+  maxImageCount,
+}: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { imageUploadProgress } = useAppSelector((state) => state.productForm);
   const colorPalette = useColorPalette();
@@ -67,7 +69,7 @@ export default function LargeProductImageBox({
           <Typography
             variant="body2"
             color={colorPalette.textField.label}>
-            (Max. 5 images)
+            {`(Max. ${maxImageCount} images)`}
           </Typography>
         </Box>
       ) : null}

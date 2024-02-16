@@ -7,12 +7,13 @@ import { ProductType } from '@/types';
 import useColorPalette from '@/hooks/useColorPalette';
 import ClientViewSmallProductImageBox from './smallProductImageBox/ClientViewSmallProductImageBox';
 import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSmallProductImageBoxes';
-import EmptySmallBoxWithBorder from './smallProductImageBox/EmptySmallBoxWithBorder';
-import SmallBoxWithUploadProgress from './smallProductImageBox/SmallBoxWithUploadProgress';
 
-type ProductImageBoxesProps = { product?: ProductType };
+type Props = {
+  product?: ProductType;
+  maxImageCount: number;
+};
 
-export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
+export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
@@ -73,16 +74,9 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
               <AdminViewSmallProductImageBoxes
                 selectImage={handleSelectedImage}
                 selectedImageIndex={selectedImageIndex}
-                boxBorderColor="transparent"
+                getBoxBorderColor={getBoxBorderColor}
+                maxImageCount={maxImageCount}
               />
-            ) : null}
-
-            {isAdminView && imageUploadProgress.length > 0 ? (
-              <SmallBoxWithUploadProgress boxBorderColor={getBoxBorderColor({ focusedBorderColor: true })} />
-            ) : null}
-
-            {isAdminView ? (
-              <EmptySmallBoxWithBorder boxBorderColor={getBoxBorderColor({ defaultBorderColor: true })} />
             ) : null}
           </Grid>
         </Grid>
@@ -91,6 +85,15 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
           xs={12}
           sm={10}
           sx={{ order: { xs: 1, sm: 2 } }}>
+          {!isAdminView && product ? (
+            <LargeProductImageBox
+              productName={product?.name ?? ''}
+              productImageData={product?.productImageData[selectedImageIndex]}
+              selectedImageIndex={selectedImageIndex}
+              boxBorderColor="transparent"
+            />
+          ) : null}
+
           {isAdminView ? (
             <LargeProductImageBox
               productName={productFormData.name}
@@ -100,15 +103,7 @@ export default function ProductImageBoxes({ product }: ProductImageBoxesProps) {
                 defaultBorderColor: !imageData[selectedImageIndex],
                 focusedBorderColor: imageUploadProgress[selectedImageIndex] && !imageData[selectedImageIndex],
               })}
-            />
-          ) : null}
-
-          {!isAdminView ? (
-            <LargeProductImageBox
-              productName={product?.name ?? ''}
-              productImageData={product?.productImageData[selectedImageIndex]}
-              selectedImageIndex={selectedImageIndex}
-              boxBorderColor="transparent"
+              maxImageCount={maxImageCount}
             />
           ) : null}
         </Grid>
