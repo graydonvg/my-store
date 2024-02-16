@@ -18,7 +18,7 @@ export default function NavDrawerOption({ onClick, path, label }: Props) {
         sx={{ height: '56px' }}
         disablePadding
         onClick={onClick}>
-        {!!path ? (
+        {path ? (
           <ButtonWithLinkNavDrawerOption
             label={label}
             path={path!}

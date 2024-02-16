@@ -52,7 +52,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 display: 'flex',
                 flexDirection: 'column',
               }}>
-              <SalePercentageBadgeProductCard percentage={product.salePercentage} />
+              {isOnSale ? <SalePercentageBadgeProductCard percentage={product.salePercentage} /> : null}
             </Box>
             <Box
               sx={{

@@ -86,3 +86,21 @@ export const ACCOUNT_NAV_OPTIONS = [
     path: '/wishlist',
   },
 ];
+
+export const HOME_PAGE_CATEGORIES = [
+  {
+    label: 'men',
+    imageSrc: '/portrait-handsome-fashion-businessman-model-dressed-elegant-checkered-suit.jpg',
+    path: '/products/men',
+  },
+  {
+    label: 'women',
+    imageSrc: '/vladimir-yelizarov-xmtEdCeBsww-unsplash.jpg',
+    path: '/products/women',
+  },
+  {
+    label: 'kids',
+    imageSrc: '/terricks-noah-n9R0MN3XGvY-unsplash.jpg',
+    path: '/products/kids',
+  },
+];

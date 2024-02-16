@@ -1,4 +1,4 @@
-import HomePageClient from '@/components/HomePageClient';
+import HomePageClient from '@/components/homePageClient/HomePageClient';
 import { getAllProducts, getProductsOnSale } from '@/services/products/get';
 
 export default async function Home() {
