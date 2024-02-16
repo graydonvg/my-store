@@ -3,19 +3,16 @@ import ProductCard from './ui/productCard/ProductCard';
 import { ProductType } from '@/types';
 
 type Props = {
-  show: boolean;
-  products: ProductType[];
+  products: ProductType[] | undefined;
 };
 
-export default function Products({ show, products }: Props) {
-  if (!show) return null;
-
+export default function Products({ products }: Props) {
   return (
     <Grid
       component="ul"
       container
       spacing={{ xs: 2, sm: 3 }}>
-      {products.map((product, index) => (
+      {products?.map((product, index) => (
         <Grid
           component="li"
           key={index}

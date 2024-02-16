@@ -9,10 +9,7 @@ export default async function AdminViewAllProducts() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <RevalidateButton />
-      <Products
-        show={!!products}
-        products={products!}
-      />
+      {products ? <Products products={products} /> : null}
     </Box>
   );
 }

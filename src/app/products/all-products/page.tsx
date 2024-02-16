@@ -8,10 +8,7 @@ export default async function AllProducts() {
   return (
     <>
       <PageHeaderWithBorder label="All Products" />
-      <Products
-        show={!!products}
-        products={products!}
-      />
+      {products ? <Products products={products} /> : null}
     </>
   );
 }

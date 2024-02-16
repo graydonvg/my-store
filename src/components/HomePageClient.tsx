@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import ContainedButton from './ui/buttons/ContainedButton';
 import { BORDER_RADIUS } from '@/config';
 import ProductCard from './ui/productCard/ProductCard';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 
 const categories = [
   {
