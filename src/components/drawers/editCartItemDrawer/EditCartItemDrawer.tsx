@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -16,27 +16,23 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
 import FooterEditCartItemDrawer from './FooterEditCartItemDrawer';
 
-const isDrawerOpen = {
-  top: false,
-  left: false,
-  bottom: false,
-  right: false,
-};
-
 type EditCartItemDrawerProps = {
   cartItem: CartItemType;
 };
 
 export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps) {
+  const theme = useTheme();
   const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const router = useRouter();
   const colorPalette = useColorPalette();
-  const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
+  const { cartItems } = useAppSelector((state) => state.cart);
+  // const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
+  const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsUpdatingCartItemSize(false);
@@ -46,8 +42,10 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
     setIsRemovingCartItem(false);
   }, [cartItem]);
 
-  function handleSetCartItemToEdit() {
-    dispatch(setCartItemToEditId(cartItem?.cartItemId));
+  function handleSetCartItemToEdit(id: string | null) {
+    console.log(id === cartItem?.cartItemId);
+
+    setCartItemToEditId(id);
   }
 
   async function handleUpdateCartItemSize(size: string) {
@@ -145,7 +143,7 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
 
   return (
     <>
-      <IconButton onClick={handleSetCartItemToEdit}>
+      <IconButton onClick={() => handleSetCartItemToEdit(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
           sx={{ color: colorPalette.typographyVariants.grey }}
@@ -154,15 +152,11 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
       <DrawerComponent
         elevation={1}
         width={{ xs: '80vw', sm: '350px' }}
-        isOpen={
-          cartItemToEditId === cartItem?.cartItemId
-            ? {
-                ...isDrawerOpen,
-                right: true,
-              }
-            : isDrawerOpen
-        }
-        zIndex={(theme) => theme.zIndex.appBar + 1}>
+        isOpen={{
+          right: cartItemToEditId === cartItem?.cartItemId,
+        }}
+        zIndex={theme.zIndex.appBar + 1}
+        closeDrawer={() => handleSetCartItemToEdit(null)}>
         <Box
           sx={{
             position: 'relative',

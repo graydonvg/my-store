@@ -1,4 +1,4 @@
-import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType, DrawerState } from '@/types';
+import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
@@ -57,7 +57,6 @@ function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTy
 }
 
 type State = {
-  isEditImageDrawerOpen: DrawerState;
   isDeletingImage: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: InsertProductImageDataTypeStore[];
@@ -65,12 +64,6 @@ type State = {
 };
 
 const initialState: State = {
-  isEditImageDrawerOpen: {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  },
   isDeletingImage: false,
   imageUploadProgress: [],
   imageData: [],
@@ -121,9 +114,6 @@ const productFormSlice = createSlice({
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
-    setIsEditImageDrawerOpen(state, action: PayloadAction<boolean>) {
-      state.isEditImageDrawerOpen.right = action.payload;
-    },
     resetImageData(state) {
       state.imageData = initialState.imageData;
     },
@@ -151,7 +141,6 @@ export const {
   resetImageData,
   resetImageUploadProgess,
   resetProductFormData,
-  setIsEditImageDrawerOpen,
   resetAllProductData,
 } = actions;
 

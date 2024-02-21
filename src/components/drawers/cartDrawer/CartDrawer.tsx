@@ -22,15 +22,19 @@ export default function CartDrawer() {
     : document.getElementById('navbar')?.offsetHeight;
   const cartCount = selectCartCount(cartItems);
 
-  function handleToggleCart() {
-    dispatch(setIsCartOpen(!isCartOpen.right));
+  function handleToggleCartDrawer() {
+    dispatch(setIsCartOpen(!isCartOpen));
+  }
+
+  function handleCloseCartDrawer() {
+    dispatch(setIsCartOpen(false));
   }
 
   return (
     <>
       <UpperNavbarIconButton
         backgroundColor={colorPalette.navBar.upper.background}
-        onClick={handleToggleCart}>
+        onClick={handleToggleCartDrawer}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
           sx={{ color: colorPalette.navBar.upper.text }}
@@ -52,8 +56,9 @@ export default function CartDrawer() {
       <DrawerComponent
         elevation={1}
         width={{ xs: '90vw', sm: '400px' }}
-        isOpen={isCartOpen}
-        zIndex={(theme) => theme.zIndex.appBar - 1}>
+        isOpen={{ right: isCartOpen }}
+        zIndex={theme.zIndex.appBar - 1}
+        closeDrawer={handleCloseCartDrawer}>
         <Box
           sx={{
             paddingTop: `${navbarHeight}px`,

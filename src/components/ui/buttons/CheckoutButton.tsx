@@ -62,7 +62,7 @@ export default function CheckoutButton({
       })
     );
 
-    if (isCartOpen.right === true) {
+    if (isCartOpen === true) {
       dispatch(setIsCartOpen(false));
     }
 

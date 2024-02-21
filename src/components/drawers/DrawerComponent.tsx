@@ -1,27 +1,37 @@
-'use client';
-
 import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect } from 'react';
 import Drawer from '@mui/material/Drawer';
-import { DrawerState } from '@/types';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
-import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/slices/cartSlice';
-import { setIsEditImageDrawerOpen } from '@/lib/redux/slices/productFormSlice';
+
+type DrawerState = {
+  top?: boolean;
+  left?: boolean;
+  bottom?: boolean;
+  right?: boolean;
+};
+
+const initialState: DrawerState = {
+  top: false,
+  bottom: false,
+  left: false,
+  right: false,
+};
 
 type Props = {
   elevation?: number;
   width: string | Record<string, string>;
-  isOpen: DrawerState;
-  zIndex: (theme: any) => number;
+  zIndex: number;
   children: ReactNode;
+  isOpen: DrawerState;
+  closeDrawer: () => void;
 };
 
-export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, children }: Props) {
-  const dispatch = useAppDispatch();
-  const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
-  const isEditImageDrawerOpen = useAppSelector((state) => state.productForm.isEditImageDrawerOpen);
-  const { isCartOpen, cartItemToEditId } = useAppSelector((state) => state.cart);
-
+export default function DrawerComponent({
+  elevation = 0,
+  isOpen = initialState,
+  zIndex,
+  width,
+  children,
+  closeDrawer,
+}: Props) {
   const handleCloseDrawer = useCallback(
     (event: KeyboardEvent | MouseEvent) => {
       if (
@@ -31,23 +41,9 @@ export default function DrawerComponent({ elevation = 0, isOpen, zIndex, width, 
         return;
       }
 
-      if (isNavDrawerOpen.left) {
-        dispatch(setIsNavDrawerOpen(false));
-      }
-
-      if (isCartOpen.right) {
-        dispatch(setIsCartOpen(false));
-      }
-
-      if (isEditImageDrawerOpen.right) {
-        dispatch(setIsEditImageDrawerOpen(false));
-      }
-
-      if (cartItemToEditId) {
-        dispatch(setCartItemToEditId(null));
-      }
+      closeDrawer();
     },
-    [isNavDrawerOpen, isCartOpen, isEditImageDrawerOpen, cartItemToEditId, dispatch]
+    [closeDrawer]
   );
 
   useEffect(() => {

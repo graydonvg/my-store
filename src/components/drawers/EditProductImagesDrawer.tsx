@@ -6,9 +6,9 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/slices/productFormSlice';
+import { resetImageData } from '@/lib/redux/slices/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import DraggableProductImagesContainer from '../draggableProductImages/DraggableProductImagesContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
@@ -18,20 +18,20 @@ type Props = {
 };
 
 export default function EditProductImagesDrawer({ isSubmitting }: Props) {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const { imageData, productFormData, imageUploadProgress, isEditImageDrawerOpen } = useAppSelector(
-    (state) => state.productForm
-  );
+  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+  const [isEditImagesDrawerOpen, setIsEditImagesDrawerOpen] = useState(false);
 
   function handleOpenEditImageDrawer() {
-    dispatch(setIsEditImageDrawerOpen(true));
+    setIsEditImagesDrawerOpen(true);
   }
 
   function handleCloseEditImageDrawer() {
-    dispatch(setIsEditImageDrawerOpen(false));
+    setIsEditImagesDrawerOpen(false);
   }
 
   async function handleDeleteAllImages() {
@@ -41,7 +41,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
 
     dispatch(resetImageData());
     setIsDeletingAllImages(false);
-    dispatch(setIsEditImageDrawerOpen(false));
+    setIsEditImagesDrawerOpen(false);
   }
 
   return (
@@ -56,8 +56,9 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
       <DrawerComponent
         elevation={1}
         width={{ xs: '100vw', sm: '350px' }}
-        isOpen={isEditImageDrawerOpen}
-        zIndex={(theme) => theme.zIndex.appBar + 1}>
+        isOpen={{ right: isEditImagesDrawerOpen }}
+        zIndex={theme.zIndex.appBar + 1}
+        closeDrawer={handleCloseEditImageDrawer}>
         <DrawerHeader
           label="Edit images"
           onClick={handleCloseEditImageDrawer}

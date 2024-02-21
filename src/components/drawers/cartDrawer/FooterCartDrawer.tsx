@@ -19,7 +19,7 @@ export default function FooterCartDrawer() {
   const discountTotal = selectDiscountTotal(cartItems);
 
   function handleCloseCartDrawer() {
-    if (isCartOpen.right === true) {
+    if (isCartOpen === true) {
       dispatch(setIsCartOpen(false));
     }
   }

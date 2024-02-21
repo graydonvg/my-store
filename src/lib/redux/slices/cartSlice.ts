@@ -1,4 +1,4 @@
-import { CartItemType, DrawerState } from '@/types';
+import { CartItemType } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 function handleSetCartItemSize(cartItemId: string, size: string, cartItems: CartItemType[]) {
@@ -14,18 +14,13 @@ function handleSetCartItemQuantity(cartItemId: string, value: number, cartItems:
 type CartItemToEditIdType = string | null;
 
 type CartState = {
-  isCartOpen: DrawerState;
+  isCartOpen: boolean;
   cartItemToEditId: CartItemToEditIdType;
   cartItems: CartItemType[];
 };
 
 export const initialState: CartState = {
-  isCartOpen: {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  },
+  isCartOpen: false,
   cartItemToEditId: null,
   cartItems: [],
 };
@@ -35,7 +30,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     setIsCartOpen(state, action: PayloadAction<boolean>) {
-      state.isCartOpen.right = action.payload;
+      state.isCartOpen = action.payload;
     },
     setCartItems(state, action: PayloadAction<CartItemType[]>) {
       state.cartItems = action.payload;

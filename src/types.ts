@@ -5,13 +5,6 @@ export type ContainedButtonButtonBackgroundColorType = 'primary' | 'warning';
 
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
-export type DrawerState = {
-  top: boolean;
-  left: boolean;
-  bottom: boolean;
-  right: boolean;
-};
-
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
 export type PersonalInformationType = {

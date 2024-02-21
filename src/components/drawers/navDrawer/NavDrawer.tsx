@@ -26,7 +26,7 @@ export default function NavDrawer() {
 
   function handleOpenNavDrawer() {
     dispatch(setIsNavDrawerOpen(true));
-    if (isCartOpen.right) {
+    if (isCartOpen) {
       dispatch(setIsCartOpen(false));
     }
   }
@@ -55,8 +55,9 @@ export default function NavDrawer() {
       </IconButton>
       <DrawerComponent
         width="100vw"
-        isOpen={isNavDrawerOpen}
-        zIndex={(theme) => theme.zIndex.appBar + 1}>
+        isOpen={{ left: isNavDrawerOpen }}
+        zIndex={theme.zIndex.appBar + 1}
+        closeDrawer={handleCloseNavDrawer}>
         <DrawerHeader
           label="Menu"
           onClick={handleCloseNavDrawer}
