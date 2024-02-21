@@ -10,11 +10,7 @@ type Props = {
   setCartItemSizeOnClick: (size: string) => Promise<void>;
 };
 
-export default function SizeSelectionEditCartItemDrawer({
-  cartItem,
-  isUpdatingCartItem,
-  setCartItemSizeOnClick,
-}: Props) {
+export default function SizePickerEditCartItemDrawer({ cartItem, isUpdatingCartItem, setCartItemSizeOnClick }: Props) {
   return (
     <Box>
       <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>

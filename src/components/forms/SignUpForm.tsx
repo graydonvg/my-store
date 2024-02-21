@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignUpDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
+import { setIsSignUpDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';

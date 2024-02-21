@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ListItemButton, ListItemText } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
+import { resetAllProductData } from '@/lib/redux/slices/productFormSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 import IconNavDrawerOption from './IconNavDrawerOption';

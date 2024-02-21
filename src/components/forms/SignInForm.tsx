@@ -5,7 +5,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormTitle from './FormTitle';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignInDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
+import { setIsSignInDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';

@@ -14,17 +14,17 @@ import {
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { clearAddressFormData, setAddressFormData } from '@/lib/redux/addressForm/addressFormSlice';
+import { clearAddressFormData, setAddressFormData } from '@/lib/redux/slices/addressFormSlice';
 import { AddressType, UpdateAddressTypeStore } from '@/types';
-import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/dialog/dialogSlice';
+import { setIsAddressDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { deleteAddress } from '@/services/users/delete';
 import { toast } from 'react-toastify';
 import AddressDialog from '../../dialogs/AddressDialog';
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import { BORDER_RADIUS } from '@/config';
 import { useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
-import { setAddressToDeleteId } from '@/lib/redux/account/accountSlice';
+import { setAddressToDeleteId } from '@/lib/redux/slices/accountSlice';
 
 type NoAddressFoundProps = {
   show: boolean;

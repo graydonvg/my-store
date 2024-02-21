@@ -16,7 +16,7 @@ const initialState: DialogState = {
   isDialogLoading: false,
 };
 
-export const dialogSlice = createSlice({
+const dialogSlice = createSlice({
   name: 'dialog',
   initialState,
   reducers: {
@@ -55,4 +55,4 @@ export const {
   setIsDialogLoading,
 } = actions;
 
-export const userReducer = reducer;
+export const dialogReducer = reducer;

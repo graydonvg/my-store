@@ -8,7 +8,7 @@ import {
   setIsUpdatingAccount,
   setPersonalInformation,
   setPersonalInformationOnChange,
-} from '@/lib/redux/account/accountSlice';
+} from '@/lib/redux/slices/accountSlice';
 import { ChangeEvent, ReactNode, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';

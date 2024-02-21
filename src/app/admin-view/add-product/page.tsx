@@ -9,7 +9,7 @@ import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetProductFormData, resetImageData, setProductFormData } from '@/lib/redux/productForm/productFormSlice';
+import { resetProductFormData, resetImageData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { toast } from 'react-toastify';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';

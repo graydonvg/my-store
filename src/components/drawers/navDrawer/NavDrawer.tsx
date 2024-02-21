@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import { Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
 import NavDrawerOptions from './navDrawerOptions/NavDrawerOptions';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -9,7 +9,7 @@ import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
 import DrawerHeader from '../DrawerHeader';
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();

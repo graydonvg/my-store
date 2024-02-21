@@ -1,8 +1,8 @@
 'use client';
 
 import useColorPalette from '@/hooks/useColorPalette';
-import { clearCart } from '@/lib/redux/cart/cartSlice';
-import { resetCheckoutData, setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { clearCart } from '@/lib/redux/slices/cartSlice';
+import { resetCheckoutData, setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteAllCartItems } from '@/services/cart/delete';
 import updateOrderPaymentStatus from '@/services/orders/update';

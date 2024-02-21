@@ -3,7 +3,7 @@
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
 import useColorPalette from '@/hooks/useColorPalette';
-import { resetAllProductData } from '@/lib/redux/productForm/productFormSlice';
+import { resetAllProductData } from '@/lib/redux/slices/productFormSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type Props = {

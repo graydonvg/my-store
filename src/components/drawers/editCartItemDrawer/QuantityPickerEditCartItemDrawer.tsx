@@ -9,7 +9,7 @@ type Props = {
   setCartItemQuantityOnClick: (cartItemId: string, value: number) => void;
 };
 
-export default function QuantitySelectionEditCartItemDrawer({ cartItem, setCartItemQuantityOnClick }: Props) {
+export default function QuantityPickerEditCartItemDrawer({ cartItem, setCartItemQuantityOnClick }: Props) {
   return (
     <Box
       sx={{

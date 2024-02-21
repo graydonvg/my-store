@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/productForm/productFormSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/slices/productFormSlice';
 import { useState } from 'react';
 
 export type Props = {

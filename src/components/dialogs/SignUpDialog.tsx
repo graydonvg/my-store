@@ -2,7 +2,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsSignInDialogOpen, setIsSignUpDialogOpen } from '@/lib/redux/dialog/dialogSlice';
+import { closeDialog, setIsSignInDialogOpen, setIsSignUpDialogOpen } from '@/lib/redux/slices/dialogSlice';
 import SignUpForm from '../forms/SignUpForm';
 import MuiLink from '../ui/MuiLink';
 

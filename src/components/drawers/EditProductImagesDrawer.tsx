@@ -6,7 +6,7 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
+import { resetImageData, setIsEditImageDrawerOpen } from '@/lib/redux/slices/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box } from '@mui/material';
 import DraggableProductImagesContainer from '../draggableProductImages/DraggableProductImagesContainer';

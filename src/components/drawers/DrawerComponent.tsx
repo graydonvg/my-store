@@ -4,9 +4,9 @@ import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect } from 'reac
 import Drawer from '@mui/material/Drawer';
 import { DrawerState } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
-import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/cart/cartSlice';
-import { setIsEditImageDrawerOpen } from '@/lib/redux/productForm/productFormSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
+import { setCartItemToEditId, setIsCartOpen } from '@/lib/redux/slices/cartSlice';
+import { setIsEditImageDrawerOpen } from '@/lib/redux/slices/productFormSlice';
 
 type Props = {
   elevation?: number;

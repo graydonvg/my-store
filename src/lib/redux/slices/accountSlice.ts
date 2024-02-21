@@ -25,7 +25,7 @@ const initialState: State = {
   addressToDeleteId: null,
 };
 
-export const accountSlice = createSlice({
+const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
@@ -79,4 +79,4 @@ export const {
   setAddressToDeleteId,
 } = actions;
 
-export const userReducer = reducer;
+export const accountReducer = reducer;

@@ -5,7 +5,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
-import QuantitySelectionEditCartItemDrawer from './QuantitySelectionEditCartItemDrawer';
+import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
 
 type Props = {
   cartItem: CartItemType;
@@ -45,7 +45,7 @@ export default function FooterEditCartItemDrawer({
           height: '4px',
         },
       }}>
-      <QuantitySelectionEditCartItemDrawer
+      <QuantityPickerEditCartItemDrawer
         cartItem={cartItem}
         setCartItemQuantityOnClick={setCartItemQuantityOnClick}
       />

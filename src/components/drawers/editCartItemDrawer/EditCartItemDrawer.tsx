@@ -4,7 +4,7 @@ import { Box, IconButton } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemQuantity, setCartItemToEditId } from '@/lib/redux/cart/cartSlice';
+import { setCartItemQuantity, setCartItemToEditId } from '@/lib/redux/slices/cartSlice';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
 import { CartItemType } from '@/types';
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { PulseLoader } from 'react-spinners';
 import { deleteItemFromCart } from '@/services/cart/delete';
-import SizeSelectionEditCartItemDrawer from './SizeSelectionEditCartItemDrawer';
+import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
 import FooterEditCartItemDrawer from './FooterEditCartItemDrawer';
 
 const isDrawerOpen = {
@@ -190,7 +190,7 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
               />
             </Box>
           ) : null}
-          <SizeSelectionEditCartItemDrawer
+          <SizePickerEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             setCartItemSizeOnClick={handleUpdateCartItemSize}

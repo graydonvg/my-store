@@ -1,4 +1,4 @@
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import payWithStripe from '@/utils/payWithStripe';
 import { toast } from 'react-toastify';

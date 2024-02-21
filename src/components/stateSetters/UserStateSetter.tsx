@@ -3,7 +3,7 @@
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
 import { UserDataType } from '@/types';
-import { setUserData, setIsOAuthSignIn } from '@/lib/redux/user/userSlice';
+import { setUserData, setIsOAuthSignIn } from '@/lib/redux/slices/userSlice';
 import { Session } from '@supabase/supabase-js';
 
 type Props = {

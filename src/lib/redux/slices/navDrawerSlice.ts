@@ -14,7 +14,7 @@ const initialState: InitialStateType = {
   },
 };
 
-export const navDrawerSlice = createSlice({
+const navDrawerSlice = createSlice({
   name: 'navDrawer',
   initialState,
   reducers: {
@@ -28,4 +28,4 @@ const { actions, reducer } = navDrawerSlice;
 
 export const { setIsNavDrawerOpen } = actions;
 
-export const userReducer = reducer;
+export const navDrawerReducer = reducer;

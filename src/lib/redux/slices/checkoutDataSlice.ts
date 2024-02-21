@@ -16,7 +16,7 @@ const initialState: CheckoutDataType = {
   userId: null,
 };
 
-export const checkoutDataSlice = createSlice({
+const checkoutDataSlice = createSlice({
   name: 'checkoutData',
   initialState,
   reducers: {
@@ -33,4 +33,4 @@ const { actions, reducer } = checkoutDataSlice;
 
 export const { setCheckoutData, resetCheckoutData } = actions;
 
-export const userReducer = reducer;
+export const checkoutDataReducer = reducer;

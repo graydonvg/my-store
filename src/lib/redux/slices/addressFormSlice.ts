@@ -14,7 +14,7 @@ const initialState: UpdateAddressTypeStore = {
   postalCode: '',
 };
 
-export const addressFormSlice = createSlice({
+const addressFormSlice = createSlice({
   name: 'addressForm',
   initialState,
   reducers: {
@@ -41,4 +41,4 @@ const { actions, reducer } = addressFormSlice;
 
 export const { setAddressFormData, setAddressFormDataOnChange, clearAddressFormData } = actions;
 
-export const userReducer = reducer;
+export const addressFormReducer = reducer;

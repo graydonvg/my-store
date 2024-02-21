@@ -1,19 +1,19 @@
 'use client';
 
-import { setIsCartOpen } from '@/lib/redux/cart/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ContainedButton';
 import { ContainedButtonButtonBackgroundColorType } from '@/types';
 import { calculateDiscountedCartItemPrice } from '@/utils/calculateDiscountedPrice';
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import {
   selectCartTotal,
   selectDeliveryFee,
   selectOrderTotal,
   selectDiscountTotal,
-} from '@/lib/redux/cart/cartSelectors';
+} from '@/lib/redux/selectors/cartSelectors';
 
 type CheckoutButtonProps = ButtonProps & {
   disabled?: boolean;

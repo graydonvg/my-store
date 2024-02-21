@@ -4,11 +4,7 @@ import { CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
-import {
-  resetImageUploadProgess,
-  setImageData,
-  setImageUploadProgress,
-} from '@/lib/redux/productForm/productFormSlice';
+import { resetImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productFormSlice';
 import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';

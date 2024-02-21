@@ -5,7 +5,7 @@ import { Box, IconButton, Dialog } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
-import { closeDialog } from '@/lib/redux/dialog/dialogSlice';
+import { closeDialog } from '@/lib/redux/slices/dialogSlice';
 import { Close } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/config';
 

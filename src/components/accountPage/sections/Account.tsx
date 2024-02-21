@@ -10,7 +10,7 @@ import {
   setAccountDataOnChange,
   setFieldToEdit,
   setIsUpdatingAccount,
-} from '@/lib/redux/account/accountSlice';
+} from '@/lib/redux/slices/accountSlice';
 import { toast } from 'react-toastify';
 import { AccountType } from '@/types';
 import { updateUserPassword } from '@/services/users/update';
@@ -19,7 +19,7 @@ type PasswordPlaceholderProps = {
   show: boolean;
 };
 
-function PasswordPlaceholder({ show }: PasswordPlaceholderProps) {
+function PasswordMask({ show }: PasswordPlaceholderProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -159,7 +159,7 @@ export default function Account({ renderUserInfo }: AccountProps) {
         onClick={null}>
         {renderUserInfo(userData?.email!)}
       </AccountPageInfo>
-      <PasswordPlaceholder show={!isOAuthSignIn && fieldToEdit !== 'password'} />
+      <PasswordMask show={!isOAuthSignIn && fieldToEdit !== 'password'} />
       <UpdatePassword show={!isOAuthSignIn && fieldToEdit === 'password'} />
     </>
   );

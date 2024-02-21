@@ -4,7 +4,7 @@ import { useTheme, Typography } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Favorite } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';

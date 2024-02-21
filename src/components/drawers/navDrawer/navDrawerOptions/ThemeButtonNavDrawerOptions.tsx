@@ -3,7 +3,7 @@
 import { Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
-import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 
 export default function ThemeButtonNavDrawerOptions() {

@@ -5,7 +5,7 @@ import { Divider } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
-import { selectDiscountedPrice, selectPrice } from '@/lib/redux/cart/cartSelectors';
+import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { BORDER_RADIUS } from '@/config';
 import SalePercentageBadgeLargeCartItem from './SalePercentageBadgeLargeCartItem';

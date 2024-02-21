@@ -4,7 +4,7 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { IconButton, List, ListItem, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import useColorPalette from '@/hooks/useColorPalette';
-import { toggleTheme } from '@/lib/redux/theme/themeSlice';
+import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';

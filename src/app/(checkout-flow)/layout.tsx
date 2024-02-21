@@ -10,11 +10,11 @@ import {
   selectCartTotal,
   selectDiscountTotal,
   selectOrderTotal,
-} from '@/lib/redux/cart/cartSelectors';
+} from '@/lib/redux/selectors/cartSelectors';
 import useColorPalette from '@/hooks/useColorPalette';
 import { BORDER_RADIUS } from '@/config';
 import OrderTotals from '@/components/orders/orderTotals/OrderTotals';
-import { setCheckoutData } from '@/lib/redux/checkoutData/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import PaymentButton from '@/components/ui/buttons/PaymentButton';
 import deleteOrder from '@/services/orders/delete';

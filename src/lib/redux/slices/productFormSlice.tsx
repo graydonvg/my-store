@@ -88,7 +88,7 @@ const initialState: State = {
   },
 };
 
-export const productFormSlice = createSlice({
+const productFormSlice = createSlice({
   name: 'productForm',
   initialState,
   reducers: {
@@ -155,4 +155,4 @@ export const {
   resetAllProductData,
 } = actions;
 
-export const userReducer = reducer;
+export const productFormReducer = reducer;

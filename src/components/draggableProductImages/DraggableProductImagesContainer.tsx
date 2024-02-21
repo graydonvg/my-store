@@ -2,7 +2,7 @@ import { DropResult } from '@hello-pangea/dnd';
 import DraggableProductImages from './DraggableProductImages';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setUpdatedImageData } from '@/lib/redux/productForm/productFormSlice';
+import { setUpdatedImageData } from '@/lib/redux/slices/productFormSlice';
 
 export default function DraggableProductImagesContainer() {
   const dispatch = useAppDispatch();

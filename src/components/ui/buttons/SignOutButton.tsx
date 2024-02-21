@@ -3,7 +3,7 @@ import NavDrawerOption from '@/components/drawers/navDrawer/navDrawerOption/NavD
 import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsNavDrawerOpen } from '@/lib/redux/navDrawer/navDrawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import signOut from '@/services/auth/sign-out';
 import { Logout } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
