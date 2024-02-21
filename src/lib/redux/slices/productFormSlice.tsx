@@ -1,4 +1,4 @@
-import { InsertProductImageDataTypeStore, InsertProductTypeStore, ImageUploadProgressType } from '@/types';
+import { InsertProductTypeStore } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
@@ -30,43 +30,11 @@ function handleSizesChange(value: string, productFormData: InsertProductTypeStor
   }
 }
 
-function handleSetImageUploadProgress(
-  payload: ImageUploadProgressType,
-  imageUploadProgress: ImageUploadProgressType[]
-) {
-  const existingIndex = imageUploadProgress.findIndex((upload) => upload.fileName === payload.fileName);
-  if (existingIndex !== -1) {
-    imageUploadProgress[existingIndex] = payload;
-  } else {
-    imageUploadProgress.push(payload);
-  }
-
-  return [...imageUploadProgress];
-}
-
-function handleUpdateImageIndexesAndSort(imageData: InsertProductImageDataTypeStore[]) {
-  return imageData
-    .map((data, newIndex) => (data.index === newIndex ? data : { ...data, index: newIndex }))
-    .sort((a, b) => a.index - b.index);
-}
-
-function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTypeStore[]) {
-  const filteredImageData = imageData.filter((image) => image.fileName !== fileName);
-
-  return handleUpdateImageIndexesAndSort(filteredImageData);
-}
-
 type State = {
-  isDeletingImage: boolean;
-  imageUploadProgress: ImageUploadProgressType[];
-  imageData: InsertProductImageDataTypeStore[];
   productFormData: InsertProductTypeStore;
 };
 
 const initialState: State = {
-  isDeletingImage: false,
-  imageUploadProgress: [],
-  imageData: [],
   productFormData: {
     category: '',
     deliveryInfo: '',
@@ -99,49 +67,14 @@ const productFormSlice = createSlice({
         state.productFormData = action.payload;
       }
     },
-    setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
-      state.imageUploadProgress = handleSetImageUploadProgress(action.payload, state.imageUploadProgress);
-    },
-    setImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
-      state.imageData = [...state.imageData, ...action.payload];
-    },
-    setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
-      state.imageData = handleUpdateImageIndexesAndSort(action.payload);
-    },
-    deleteImage(state, action: PayloadAction<{ fileName: string }>) {
-      state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
-    },
-    setIsDeletingImage(state, action: PayloadAction<boolean>) {
-      state.isDeletingImage = action.payload;
-    },
-    resetImageData(state) {
-      state.imageData = initialState.imageData;
-    },
-    resetImageUploadProgess(state) {
-      state.imageUploadProgress = initialState.imageUploadProgress;
-    },
-    resetProductFormData(state) {
+    clearProductFormData(state) {
       state.productFormData = initialState.productFormData;
-    },
-    resetAllProductData() {
-      return initialState;
     },
   },
 });
 
 const { actions, reducer } = productFormSlice;
 
-export const {
-  setProductFormData,
-  setImageUploadProgress,
-  setImageData,
-  setUpdatedImageData,
-  deleteImage,
-  setIsDeletingImage,
-  resetImageData,
-  resetImageUploadProgess,
-  resetProductFormData,
-  resetAllProductData,
-} = actions;
+export const { setProductFormData, clearProductFormData } = actions;
 
 export const productFormReducer = reducer;

@@ -4,12 +4,12 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetImageData } from '@/lib/redux/slices/productFormSlice';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box, useTheme } from '@mui/material';
 import DraggableProductImagesContainer from '../draggableProductImages/DraggableProductImagesContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
+import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
   isSubmitting: boolean;
@@ -20,7 +20,8 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { productFormData } = useAppSelector((state) => state.productForm);
+  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
   const [isEditImagesDrawerOpen, setIsEditImagesDrawerOpen] = useState(false);
 
@@ -37,7 +38,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
 
     await deleteAllProductImages(imageData, productFormData.productId);
 
-    dispatch(resetImageData());
+    dispatch(clearImageData());
     setIsDeletingAllImages(false);
     setIsEditImagesDrawerOpen(false);
   }

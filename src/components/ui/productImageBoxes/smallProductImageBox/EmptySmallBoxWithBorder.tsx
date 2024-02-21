@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function EmptySmallBoxWithBorder({ boxBorderColor, maxImageCount }: Props) {
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
 
   return Array.from(Array(maxImageCount - imageData.length - imageUploadProgress.length)).map((_, index) => (
     <SmallProductImageBox

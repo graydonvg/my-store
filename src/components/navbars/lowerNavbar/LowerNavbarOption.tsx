@@ -1,8 +1,6 @@
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
 import useColorPalette from '@/hooks/useColorPalette';
-import { resetAllProductData } from '@/lib/redux/slices/productFormSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type Props = {
   path: string;
@@ -13,17 +11,7 @@ type Props = {
 
 export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: Props) {
   const colorPalette = useColorPalette();
-  const dispatch = useAppDispatch();
   const isSaleOption = label.toLowerCase() === 'sale';
-  const { productFormData } = useAppSelector((state) => state.productForm);
-
-  function handleClick() {
-    if (path === '/admin-view/add-product') {
-      if (productFormData.productId) {
-        dispatch(resetAllProductData());
-      }
-    }
-  }
 
   return (
     <ListItem
@@ -44,11 +32,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
               textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
             },
           }}>
-          <Link
-            onClick={handleClick}
-            href={path}>
-            {label}
-          </Link>
+          <Link href={path}>{label}</Link>
         </Typography>
       </Box>
       {!isLastNavOption ? (

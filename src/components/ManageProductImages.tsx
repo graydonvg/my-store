@@ -2,7 +2,6 @@ import { CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
-import { resetImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productFormSlice';
 import { Box } from '@mui/material';
 import ContainedButton from './ui/buttons/ContainedButton';
 import ImageInput from './ui/inputFields/ImageInput';
@@ -10,6 +9,7 @@ import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
 import EditProductImagesDrawer from './drawers/EditProductImagesDrawer';
+import { clearImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
   isSubmitting: boolean;
@@ -18,7 +18,7 @@ type Props = {
 export default function ManageProductImages({ isSubmitting }: Props) {
   const maxImageCount = 5;
   const dispatch = useAppDispatch();
-  const { imageUploadProgress, imageData } = useAppSelector((state) => state.productForm);
+  const { imageUploadProgress, imageData } = useAppSelector((state) => state.productImages);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -61,7 +61,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
     });
 
     dispatch(setImageData(uploadPromiseResults));
-    dispatch(resetImageUploadProgess());
+    dispatch(clearImageUploadProgess());
   }
 
   return (

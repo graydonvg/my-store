@@ -1,8 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
+import { ReactNode } from 'react';
 
-export default function AddProductLayout({ children }: { children: ReactNode }) {
+export default function ManageProductsLayout({ children }: { children: ReactNode }) {
   return <CommonLayoutContainer>{children}</CommonLayoutContainer>;
 }

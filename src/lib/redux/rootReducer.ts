@@ -9,9 +9,11 @@ import { accountReducer } from './slices/accountSlice';
 import { checkoutDataReducer } from './slices/checkoutDataSlice';
 import { productSelectionDetailsReducer } from './slices/productSelectionDetailsSlice';
 import { userReducer } from './slices/userSlice';
+import { productImagesReducer } from './slices/productImagesSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormReducer,
+  productImages: productImagesReducer,
   navDrawer: navDrawerReducer,
   theme: themeReducer,
   dialog: dialogReducer,

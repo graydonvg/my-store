@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { clearProductFormData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import revalidate from '@/services/revalidate';
 import { ProductType } from '@/types';
@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import ContainedButton from '../buttons/ContainedButton';
 import { DeleteForever } from '@mui/icons-material';
+import { clearAllProductImagesData, setImageData } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
   product: ProductType;
@@ -18,12 +19,12 @@ type Props = {
 export default function AdminButtonsProductCard({ product }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { imageData } = useAppSelector((state) => state.productForm);
+  const { imageData } = useAppSelector((state) => state.productImages);
   const { productImageData, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSetProductDataForUpdate() {
+  async function handleGoToUpdateProduct() {
     setIsLoading(true);
 
     if (imageData && !product.productId) {
@@ -33,11 +34,12 @@ export default function AdminButtonsProductCard({ product }: Props) {
       }
     }
 
-    dispatch(resetAllProductData());
+    dispatch(clearProductFormData());
+    dispatch(clearAllProductImagesData());
     dispatch(setImageData(product.productImageData));
     dispatch(setProductFormData(restOfProductData));
     setIsLoading(false);
-    router.push('/admin-view/add-product');
+    router.push('/admin-view/update-product');
   }
 
   async function handleRevalidate() {
@@ -95,7 +97,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
       />
       <ContainedButton
         disabled={isLoading || isDeletingProduct}
-        onClick={handleSetProductDataForUpdate}
+        onClick={handleGoToUpdateProduct}
         fullWidth
         label={isLoading ? '' : 'update'}
         isLoading={isLoading}

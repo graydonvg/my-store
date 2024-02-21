@@ -22,7 +22,8 @@ export default function AdminViewSmallProductImageBoxes({
   selectedImageIndex,
   getBoxBorderColor,
 }: Props) {
-  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { productFormData } = useAppSelector((state) => state.productForm);
+  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
 
   return (
     <>

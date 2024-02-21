@@ -2,11 +2,11 @@ import { DropResult } from '@hello-pangea/dnd';
 import DraggableProductImages from './DraggableProductImages';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setUpdatedImageData } from '@/lib/redux/slices/productFormSlice';
+import { setUpdatedImageData } from '@/lib/redux/slices/productImagesSlice';
 
 export default function DraggableProductImagesContainer() {
   const dispatch = useAppDispatch();
-  const imageData = useAppSelector((state) => state.productForm.imageData);
+  const imageData = useAppSelector((state) => state.productImages.imageData);
 
   function onDragEnd({ destination, source }: DropResult) {
     // dropped outside the list

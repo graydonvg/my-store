@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { ListItemButton, ListItemText } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { resetAllProductData } from '@/lib/redux/slices/productFormSlice';
+import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 import IconNavDrawerOption from './IconNavDrawerOption';
+import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
   path: string;
@@ -18,8 +19,9 @@ export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
   const isSaleOption = label.toLowerCase() === 'sale';
 
   function handleClearAddProductStoreData() {
-    if (path === '/admin-view/add-product') {
-      dispatch(resetAllProductData());
+    if (path === '/admin-view/add-new-product') {
+      dispatch(clearProductFormData());
+      dispatch(clearAllProductImagesData());
     }
   }
 

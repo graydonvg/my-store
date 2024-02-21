@@ -23,7 +23,7 @@ export default function LargeProductImageBox({
   maxImageCount,
 }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const { imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { imageUploadProgress } = useAppSelector((state) => state.productImages);
   const colorPalette = useColorPalette();
 
   return (

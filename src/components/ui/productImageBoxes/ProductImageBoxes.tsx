@@ -18,7 +18,8 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { imageData, productFormData, imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { productFormData } = useAppSelector((state) => state.productForm);
+  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
 
   useEffect(() => {
     if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
