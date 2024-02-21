@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function SmallBoxWithUploadProgress({ boxBorderColor }: Props) {
-  const { imageUploadProgress } = useAppSelector((state) => state.productForm);
+  const { imageUploadProgress } = useAppSelector((state) => state.productImages);
 
   return (
     <>
