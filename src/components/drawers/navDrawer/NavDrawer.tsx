@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import { Box, useTheme, useMediaQuery, IconButton } from '@mui/material';

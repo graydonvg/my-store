@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../../drawers/cartDrawer/CartDrawer';

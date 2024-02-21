@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Typography, useTheme } from '@mui/material';
 import AccountPageInfo from '../AccountPageInfo';
 import AccountPageInfoInput from '../AccountPageInfoInput';

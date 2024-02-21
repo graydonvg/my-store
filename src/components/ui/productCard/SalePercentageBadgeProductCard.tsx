@@ -1,5 +1,3 @@
-'use client';
-
 import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Typography } from '@mui/material';

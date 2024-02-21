@@ -1,5 +1,3 @@
-'use client';
-
 import DrawerComponent from './DrawerComponent';
 import { DeleteForever, Edit } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/ContainedButton';

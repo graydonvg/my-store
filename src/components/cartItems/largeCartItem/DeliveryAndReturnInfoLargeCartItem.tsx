@@ -1,5 +1,3 @@
-'use client';
-
 import { FREE_DELIVERY_THRESHOLD } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { Divider, Typography } from '@mui/material';

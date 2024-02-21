@@ -1,5 +1,3 @@
-'use client';
-
 import { ListItem, Divider } from '@mui/material';
 import ButtonNoLinkNavDrawerOption from './ButtonNoLinkNavDrawerOption';
 import ButtonWithLinkNavDrawerOption from './ButtonWithLinkNavDrawerOption';

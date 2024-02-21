@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';

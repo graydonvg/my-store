@@ -1,5 +1,3 @@
-'use client';
-
 import { BORDER_RADIUS, HOME_PAGE_CATEGORIES } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';

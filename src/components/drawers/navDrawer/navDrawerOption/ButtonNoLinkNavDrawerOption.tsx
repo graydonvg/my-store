@@ -1,5 +1,3 @@
-'use client';
-
 import { ListItemButton, ListItemText } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import IconNavDrawerOption from './IconNavDrawerOption';

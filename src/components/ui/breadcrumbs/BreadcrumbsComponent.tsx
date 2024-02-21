@@ -1,5 +1,3 @@
-'use client';
-
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { NavigateNext } from '@mui/icons-material';
 import { Box } from '@mui/material';

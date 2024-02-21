@@ -1,5 +1,3 @@
-'use client';
-
 import { ProductType } from '@/types';
 import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../ui/buttons/ToggleButtons';

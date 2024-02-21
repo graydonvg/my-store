@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { OrderItemType } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';

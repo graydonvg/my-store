@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Divider } from '@mui/material';
 import { Fragment } from 'react';

@@ -1,5 +1,3 @@
-'use client';
-
 import { Box } from '@mui/material';
 import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
 import useColorPalette from '@/hooks/useColorPalette';

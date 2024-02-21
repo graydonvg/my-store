@@ -1,8 +1,5 @@
 export const BORDER_RADIUS = '4px';
 
-export const ACCOUNT_MENU_ICON_COLOR = 'white';
-export const ACCOUNT_MENU_ICON_SIZE = 'small';
-
 export const FREE_DELIVERY_THRESHOLD = 500;
 
 // Used to display buttons when adding a product and order buttons XS ---> XL on the product's page

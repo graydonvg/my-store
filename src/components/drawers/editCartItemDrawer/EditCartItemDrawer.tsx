@@ -1,10 +1,8 @@
-'use client';
-
 import { Box, IconButton, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemQuantity, setCartItemToEditId } from '@/lib/redux/slices/cartSlice';
+import { setCartItemQuantity } from '@/lib/redux/slices/cartSlice';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
 import { CartItemType } from '@/types';

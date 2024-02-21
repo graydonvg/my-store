@@ -1,5 +1,3 @@
-'use client';
-
 import { CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';

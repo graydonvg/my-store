@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { IconButton, List, ListItem, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';

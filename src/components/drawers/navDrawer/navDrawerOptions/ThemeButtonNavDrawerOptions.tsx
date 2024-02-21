@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';

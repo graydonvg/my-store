@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, IconButton } from '@mui/material';
 import { Spinner } from '../../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';

@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';

@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box } from '@mui/material';
 import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';

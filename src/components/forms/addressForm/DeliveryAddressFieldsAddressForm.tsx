@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Typography } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';

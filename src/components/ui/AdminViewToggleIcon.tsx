@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { AdminPanelSettings, Store } from '@mui/icons-material';
 

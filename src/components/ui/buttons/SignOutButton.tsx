@@ -1,6 +1,5 @@
 import AccountDropdownMenuItem from '@/components/accountDropdownMenu/AccountDropdownMenuItem';
 import NavDrawerOption from '@/components/drawers/navDrawer/navDrawerOption/NavDrawerOption';
-import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
@@ -12,9 +11,16 @@ import { toast } from 'react-toastify';
 type Props = {
   showNavDrawerButton?: boolean;
   showAccountMenuButton?: boolean;
+  accountMenuIconColor?: string;
+  accountMenuIconSize?: 'small' | 'inherit' | 'large' | 'medium' | undefined;
 };
 
-export default function SignOutButton({ showAccountMenuButton = false, showNavDrawerButton = false }: Props) {
+export default function SignOutButton({
+  showAccountMenuButton = false,
+  showNavDrawerButton = false,
+  accountMenuIconColor,
+  accountMenuIconSize,
+}: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const colorPalette = useColorPalette();
@@ -31,26 +37,28 @@ export default function SignOutButton({ showAccountMenuButton = false, showNavDr
     dispatch(setIsNavDrawerOpen(false));
   }
 
-  if (showAccountMenuButton)
-    return (
-      <AccountDropdownMenuItem
-        label={'Sign Out'}
-        icon={
-          <Logout
-            fontSize={ACCOUNT_MENU_ICON_SIZE}
-            sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
-          />
-        }
-        onClick={handleSignOut}
-      />
-    );
+  return (
+    <>
+      {showAccountMenuButton ? (
+        <AccountDropdownMenuItem
+          label={'Sign Out'}
+          icon={
+            <Logout
+              fontSize={accountMenuIconSize}
+              sx={{ color: accountMenuIconColor }}
+            />
+          }
+          onClick={handleSignOut}
+        />
+      ) : null}
 
-  if (showNavDrawerButton)
-    return (
-      <NavDrawerOption
-        onClick={handleSignOut}
-        label="Sign Out"
-        bodyTextColor={colorPalette.navBar.lower.text}
-      />
-    );
+      {showNavDrawerButton ? (
+        <NavDrawerOption
+          onClick={handleSignOut}
+          label="Sign Out"
+          bodyTextColor={colorPalette.navBar.lower.text}
+        />
+      ) : null}
+    </>
+  );
 }

@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
 import useColorPalette from '@/hooks/useColorPalette';

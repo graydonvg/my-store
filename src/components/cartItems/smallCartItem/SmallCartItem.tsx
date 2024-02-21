@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, ListItem, Typography } from '@mui/material';
 import { CartItemType } from '@/types';
 import { toast } from 'react-toastify';

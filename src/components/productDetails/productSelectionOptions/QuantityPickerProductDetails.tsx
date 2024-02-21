@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';

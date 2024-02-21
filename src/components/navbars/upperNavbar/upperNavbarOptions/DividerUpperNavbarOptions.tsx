@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { Divider } from '@mui/material';
 

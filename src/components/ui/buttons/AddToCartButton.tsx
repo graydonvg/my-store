@@ -1,5 +1,3 @@
-'use client';
-
 import { toast } from 'react-toastify';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';

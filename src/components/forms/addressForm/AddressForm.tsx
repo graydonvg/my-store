@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Divider } from '@mui/material';
 import FormTitle from '../FormTitle';
 import ContainedButton from '../../ui/buttons/ContainedButton';

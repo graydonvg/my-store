@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Skeleton, Typography } from '@mui/material';

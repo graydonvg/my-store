@@ -1,5 +1,3 @@
-'use client';
-
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
 import useColorPalette from '@/hooks/useColorPalette';
 

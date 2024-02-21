@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { resetAllProductData, setImageData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import deleteProduct from '@/services/products/delete';

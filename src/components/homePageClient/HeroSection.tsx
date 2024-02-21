@@ -1,5 +1,3 @@
-'use client';
-
 import { BORDER_RADIUS } from '@/config';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';

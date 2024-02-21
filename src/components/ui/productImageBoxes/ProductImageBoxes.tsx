@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';

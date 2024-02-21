@@ -1,5 +1,3 @@
-'use client';
-
 import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, List, ListItem, Typography } from '@mui/material';
 import { ExpandMore, LocalShippingOutlined } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/config';

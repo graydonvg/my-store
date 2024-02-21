@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '@/lib/redux/hooks';
 import SmallProductImageBox from './SmallProductImageBox';
 

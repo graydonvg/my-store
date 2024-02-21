@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { BORDER_RADIUS } from '@/config';
 import { OrderType } from '@/types';

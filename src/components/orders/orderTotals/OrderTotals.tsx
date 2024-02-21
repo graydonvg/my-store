@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, useTheme } from '@mui/material';

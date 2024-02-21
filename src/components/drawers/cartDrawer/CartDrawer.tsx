@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useColorPalette from '@/hooks/useColorPalette';

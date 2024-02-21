@@ -1,5 +1,3 @@
-'use client';
-
 import { Typography } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import Link from 'next/link';

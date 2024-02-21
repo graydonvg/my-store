@@ -1,5 +1,3 @@
-'use client';
-
 import useColorPalette from '@/hooks/useColorPalette';
 import { Typography } from '@mui/material';
 import { ReactNode } from 'react';

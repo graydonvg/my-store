@@ -1,5 +1,3 @@
-'use client';
-
 import { useTheme, Typography } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Favorite } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
@@ -11,8 +9,10 @@ import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import useColorPalette from '@/hooks/useColorPalette';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
-import { ACCOUNT_MENU_ICON_COLOR, ACCOUNT_MENU_ICON_SIZE } from '@/config';
 import SignOutButton from '../ui/buttons/SignOutButton';
+
+export const ICON_COLOR = 'white';
+export const ICON_SIZE = 'small';
 
 const accountMenuOptions = [
   {
@@ -20,8 +20,8 @@ const accountMenuOptions = [
     href: '/account',
     icon: (
       <AccountCircle
-        fontSize={ACCOUNT_MENU_ICON_SIZE}
-        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
+        fontSize={ICON_SIZE}
+        sx={{ color: ICON_COLOR }}
       />
     ),
   },
@@ -30,8 +30,8 @@ const accountMenuOptions = [
     href: '/orders',
     icon: (
       <ViewList
-        fontSize={ACCOUNT_MENU_ICON_SIZE}
-        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
+        fontSize={ICON_SIZE}
+        sx={{ color: ICON_COLOR }}
       />
     ),
   },
@@ -40,8 +40,8 @@ const accountMenuOptions = [
     href: '/wishlist',
     icon: (
       <Favorite
-        fontSize={ACCOUNT_MENU_ICON_SIZE}
-        sx={{ color: ACCOUNT_MENU_ICON_COLOR }}
+        fontSize={ICON_SIZE}
+        sx={{ color: ICON_COLOR }}
       />
     ),
   },
@@ -99,13 +99,17 @@ export default function AccountDropdownMenu() {
         label={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
         icon={
           <ThemeToggleIcon
-            color={ACCOUNT_MENU_ICON_COLOR}
-            size={ACCOUNT_MENU_ICON_SIZE}
+            color={ICON_COLOR}
+            size={ICON_SIZE}
           />
         }
         onClick={handleToggleTheme}
       />
-      <SignOutButton showAccountMenuButton={true} />
+      <SignOutButton
+        showAccountMenuButton={true}
+        accountMenuIconColor={ICON_COLOR}
+        accountMenuIconSize={ICON_SIZE}
+      />
     </HoverDropdownMenu>
   );
 }

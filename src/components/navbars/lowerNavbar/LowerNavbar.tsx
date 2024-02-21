@@ -1,5 +1,3 @@
-'use client';
-
 import { Box } from '@mui/material';
 import LowerNavbarOptions from './LowerNavbarOptions';
 import NavbarTitleAndLogo from '../../ui/NavbarTitleAndLogo';

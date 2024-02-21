@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Grid, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';

@@ -1,3 +1,5 @@
+'use client';
+
 import { ProductType } from '@/types';
 import { Box, Divider, Grid } from '@mui/material';
 import ProductImageBoxes from '../ui/productImageBoxes/ProductImageBoxes';

@@ -2,7 +2,7 @@
 
 import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Props = {

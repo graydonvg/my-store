@@ -1,29 +1,5 @@
-'use client';
-
 import { ProductType } from '@/types';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-} from '@mui/material';
-import ToggleButtons from '../../ui/buttons/ToggleButtons';
-import ContainedButton from '../../ui/buttons/ContainedButton';
-import { ExpandMore, Favorite, LocalShippingOutlined } from '@mui/icons-material';
-import ProductImageBoxes from '../../ui/productImageBoxes/ProductImageBoxes';
-import { MouseEvent, ReactNode, useState } from 'react';
-import { toast } from 'react-toastify';
-import useColorPalette from '@/hooks/useColorPalette';
-import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
-import { formatCurrency } from '@/utils/formatCurrency';
-import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
-import { BORDER_RADIUS } from '@/config';
-import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
+import { Box } from '@mui/material';
 import QuantityPickerProductDetails from './QuantityPickerProductDetails';
 import AddToCartButton from '../../ui/buttons/AddToCartButton';
 import { useAppSelector } from '@/lib/redux/hooks';

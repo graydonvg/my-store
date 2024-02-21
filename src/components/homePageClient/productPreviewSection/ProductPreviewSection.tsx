@@ -1,5 +1,3 @@
-'use client';
-
 import { Box } from '@mui/material';
 import ProductPreviewList from './ProductPreviewList';
 import { useRouter } from 'next/navigation';

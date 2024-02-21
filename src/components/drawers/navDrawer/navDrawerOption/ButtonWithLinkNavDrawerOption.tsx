@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { ListItemButton, ListItemText } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';

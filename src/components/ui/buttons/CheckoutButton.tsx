@@ -1,5 +1,3 @@
-'use client';
-
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps } from '@mui/material';
