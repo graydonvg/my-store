@@ -1,5 +1,5 @@
 import { Box, Divider } from '@mui/material';
-import FormTitle from '../FormTitle';
+import FormHeading from '../FormHeading';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { ChangeEvent, FormEvent } from 'react';
 import { Add } from '@mui/icons-material';
@@ -79,7 +79,7 @@ export default function AddressForm() {
         gap: 1,
       }}>
       <Box sx={{ textAlign: 'center', paddingBottom: 1 }}>
-        <FormTitle text={addressFormData.addressId ? 'Edit Address' : 'Add Address'} />
+        <FormHeading text={addressFormData.addressId ? 'Edit Address' : 'Add Address'} />
       </Box>
       <Box
         component="form"

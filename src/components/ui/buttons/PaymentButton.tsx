@@ -34,7 +34,8 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
 
     if (success === false) {
       dispatch(setCheckoutData({ isProcessing: false }));
-      return toast.error(message);
+      toast.error(message);
+      return;
     }
 
     dispatch(setCheckoutData({ orderId: data?.orderId }));

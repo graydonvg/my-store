@@ -26,7 +26,10 @@ export default function ManageProductImages({ isSubmitting }: Props) {
 
     if (!files) return;
 
-    if (files.length + imageData.length > maxImageCount) return toast.error(`Max. ${maxImageCount} images allowed`);
+    if (files.length + imageData.length > maxImageCount) {
+      toast.error(`Max. ${maxImageCount} images allowed`);
+      return;
+    }
 
     const imagesToUpload = [];
 

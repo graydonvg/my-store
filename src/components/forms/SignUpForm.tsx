@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
-import FormTitle from './FormTitle';
+import FormHeading from './FormHeading';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsSignUpDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -53,7 +53,8 @@ export default function SignUpForm({ children }: Props) {
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      return toast.error('Passwords do not match.');
+      toast.error('Passwords do not match.');
+      return;
     }
 
     setIsLoading(true);
@@ -71,7 +72,6 @@ export default function SignUpForm({ children }: Props) {
       const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
         firstName,
         lastName,
-        contactNumber: null,
       });
 
       if (updateSuccess === true) {
@@ -98,7 +98,7 @@ export default function SignUpForm({ children }: Props) {
         alignItems: 'center',
         gap: 3,
       }}>
-      <FormTitle text="Sign up" />
+      <FormHeading text="Sign up" />
       <Box
         component="form"
         onSubmit={handleSignUp}>

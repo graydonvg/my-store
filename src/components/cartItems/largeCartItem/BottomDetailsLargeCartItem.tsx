@@ -7,7 +7,7 @@ type Props = {
   returnInfo: string;
 };
 
-export default function DeliveryAndReturnInfoLargeCartItem({ discountedPrice, returnInfo }: Props) {
+export default function BottomDetailsLargeCartItem({ discountedPrice, returnInfo }: Props) {
   const colorPalette = useColorPalette();
 
   return (

@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import FormTitle from './FormTitle';
+import FormHeading from './FormHeading';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsSignInDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -92,7 +92,7 @@ export default function SignInForm({ children }: Props) {
         alignItems: 'center',
         gap: 1,
       }}>
-      <FormTitle text="Sign in" />
+      <FormHeading text="Sign in" />
       <Box
         component="form"
         onSubmit={handleSignInWithPassword}>

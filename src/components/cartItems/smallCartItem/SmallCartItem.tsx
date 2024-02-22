@@ -9,7 +9,7 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import DeleteCartItemButton from './DeleteButtonSmallCartItem';
-import SalePercentageBadgeSmallCartItem from './SalePercentageBadgeSmallCartItem';
+import SaleBadgeSmallCartItem from './SaleBadgeSmallCartItem';
 import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
 import ImageSmallCartItem from './ImageSmallCartItem';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -88,9 +88,7 @@ export default function SmallCartItem({ item }: Props) {
           />
         ) : null}
 
-        <Box
-          component="header"
-          sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
           <Typography
             onClick={!isShippingView ? handleNavigateToProductPage : undefined}
             lineHeight={1}
@@ -113,10 +111,8 @@ export default function SmallCartItem({ item }: Props) {
             size={item.size}
           />
         </Box>
-        <Box
-          component="footer"
-          sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
-          {isOnSale ? <SalePercentageBadgeSmallCartItem percentage={item?.product?.salePercentage!} /> : null}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
+          {isOnSale ? <SaleBadgeSmallCartItem percentage={item?.product?.salePercentage!} /> : null}
           <Box
             sx={{
               display: 'flex',

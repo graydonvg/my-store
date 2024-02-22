@@ -7,12 +7,6 @@ export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
-export type PersonalInformationType = {
-  firstName: string;
-  lastName: string;
-  contactNumber: string;
-};
-
 export type AccountType = {
   currentPassword: string;
   newPassword: string;
@@ -69,11 +63,7 @@ export type InsertProductImageDataTypeStore = {
 
 export type InsertProductImageDataTypeDb = Database['public']['Tables']['productImageData']['Insert'];
 
-export type userPersonalInformationType = {
-  contactNumber: string | null;
-  firstName: string | null;
-  lastName: string | null;
-};
+export type UpdateUserPersonalInformationType = Database['public']['Tables']['users']['Update'];
 
 export type ProductType = {
   brand: string;

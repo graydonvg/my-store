@@ -1,4 +1,4 @@
-import { CustomResponseType, UpdateAddressTypeDb, userPasswordType, userPersonalInformationType } from '@/types';
+import { CustomResponseType, UpdateAddressTypeDb, UpdateUserPersonalInformationType, userPasswordType } from '@/types';
 
 export async function updateAddress(addressData: UpdateAddressTypeDb): Promise<CustomResponseType> {
   try {
@@ -19,7 +19,7 @@ export async function updateAddress(addressData: UpdateAddressTypeDb): Promise<C
 }
 
 export async function updateUserPersonalInformation(
-  personalData: userPersonalInformationType
+  personalData: UpdateUserPersonalInformationType
 ): Promise<CustomResponseType> {
   try {
     const response = await fetch('/api/secure/users/personal/update', {

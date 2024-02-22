@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material';
 
-type FormTitleProps = {
+type Props = {
   text: string;
 };
 
-export default function FormTitle({ text }: FormTitleProps) {
+export default function FormHeading({ text }: Props) {
   return (
     <Typography
       component="h1"

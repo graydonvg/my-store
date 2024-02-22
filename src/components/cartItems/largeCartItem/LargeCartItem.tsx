@@ -6,10 +6,10 @@ import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDra
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { BORDER_RADIUS } from '@/config';
-import SalePercentageBadgeLargeCartItem from './SalePercentageBadgeLargeCartItem';
-import DeliveryAndReturnInfoLargeCartItem from './DeliveryAndReturnInfoLargeCartItem';
+import SaleBadgeLargeCartItem from './SaleBadgeLargeCartItem';
+import BottomDetailsLargeCartItem from './BottomDetailsLargeCartItem';
 import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
-import ProductNameAndBrandLargeCartItem from './ProductNameAndBrandLargeCartItem';
+import TopDetailsLargeCartItem from './TopDetailsLargeCartItem';
 import ImageLargeCartItem from './ImageLargeCartItem';
 
 type Props = {
@@ -62,7 +62,7 @@ export default function LargeCartItem({ item }: Props) {
           />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {isBelowSmall ? (
-              <ProductNameAndBrandLargeCartItem
+              <TopDetailsLargeCartItem
                 productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
@@ -80,7 +80,7 @@ export default function LargeCartItem({ item }: Props) {
           }}>
           <Box>
             {!isBelowSmall ? (
-              <ProductNameAndBrandLargeCartItem
+              <TopDetailsLargeCartItem
                 productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
@@ -91,7 +91,7 @@ export default function LargeCartItem({ item }: Props) {
             quantity={item.quantity}
             size={item.size}
           />
-          <DeliveryAndReturnInfoLargeCartItem
+          <BottomDetailsLargeCartItem
             discountedPrice={discountedPrice}
             returnInfo={item.product?.returnInfo!}
           />
@@ -104,7 +104,7 @@ export default function LargeCartItem({ item }: Props) {
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            {isOnSale ? <SalePercentageBadgeLargeCartItem percentage={item?.product?.salePercentage!} /> : null}
+            {isOnSale ? <SaleBadgeLargeCartItem percentage={item?.product?.salePercentage!} /> : null}
             <Box
               sx={{
                 display: 'flex',
