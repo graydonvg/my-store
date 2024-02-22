@@ -44,11 +44,11 @@ export default function PaymentSuccessPage() {
 
         const { success, message } = await updateOrderPaymentStatus({ orderId: checkoutData.orderId!, isPaid: true });
 
-        if (success === false) {
+        if (success === true) {
+          dispatch(resetCheckoutData());
+        } else {
           toast.error(message);
           dispatch(setCheckoutData({ isProcessing: false }));
-        } else {
-          dispatch(resetCheckoutData());
         }
 
         setShowUpdatingPaymentMessage(false);

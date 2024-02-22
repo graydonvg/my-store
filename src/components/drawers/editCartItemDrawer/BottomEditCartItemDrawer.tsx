@@ -4,21 +4,24 @@ import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
 import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
+import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
   cartItem: CartItemType;
   isUpdatingCartItem: boolean;
+  setCartItemQuantityWillUpdate: Dispatch<SetStateAction<boolean>>;
   isRemovingCartItem: boolean;
-  setCartItemQuantityOnClick: (cartItemId: string, value: number) => void;
+  updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   removeCartItemOnClick: () => void;
 };
 
-export default function FooterEditCartItemDrawer({
+export default function BottomEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
+  setCartItemQuantityWillUpdate,
   isRemovingCartItem,
   removeCartItemOnClick,
-  setCartItemQuantityOnClick,
+  updateCartItemQuantity,
 }: Props) {
   const colorPalette = useColorPalette();
 
@@ -29,8 +32,7 @@ export default function FooterEditCartItemDrawer({
         flexDirection: 'column',
         alignItems: 'flex-start',
         position: 'relative',
-        padding: 2,
-        paddingTop: 0,
+        paddingY: 2,
         gap: 2,
         opacity: isUpdatingCartItem ? 0.5 : 1,
         '&::before': {
@@ -45,7 +47,8 @@ export default function FooterEditCartItemDrawer({
       }}>
       <QuantityPickerEditCartItemDrawer
         cartItem={cartItem}
-        setCartItemQuantityOnClick={setCartItemQuantityOnClick}
+        updateCartItemQuantity={updateCartItemQuantity}
+        setCartItemQuantityWillUpdate={setCartItemQuantityWillUpdate}
       />
       <TextButton
         label="move to wishlist"

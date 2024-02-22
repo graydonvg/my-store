@@ -105,6 +105,7 @@ export default function AdminViewAddNewProductPage() {
         if (deleteProductSuccess === false) {
           toast.error(deleteProductMessage);
         }
+
         toast.error(addImageDataMessage);
       }
     } else {

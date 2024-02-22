@@ -1,36 +1,33 @@
 import { Box, IconButton, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCartItemQuantity } from '@/lib/redux/slices/cartSlice';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
-import { PulseLoader } from 'react-spinners';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
-import FooterEditCartItemDrawer from './FooterEditCartItemDrawer';
+import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
+import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
 
 type EditCartItemDrawerProps = {
   cartItem: CartItemType;
 };
 
 export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps) {
-  const theme = useTheme();
-  const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
-  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
-  const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
-  const router = useRouter();
   const colorPalette = useColorPalette();
+  const router = useRouter();
+  const theme = useTheme();
   const { cartItems } = useAppSelector((state) => state.cart);
-  // const { cartItemToEditId, cartItems } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch();
-  const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
   const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
+  const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
+  const [cartItemQuantityWillUpdate, setCartItemQuantityWillUpdate] = useState(false);
+  const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
+  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
+  const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
 
   useEffect(() => {
     setIsUpdatingCartItemSize(false);
@@ -40,10 +37,13 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
     setIsRemovingCartItem(false);
   }, [cartItem]);
 
-  function handleSetCartItemToEdit(id: string | null) {
-    console.log(id === cartItem?.cartItemId);
-
+  function handleOpenDrawer(id: string | null) {
     setCartItemToEditId(id);
+  }
+
+  function handleCloseDrawer() {
+    if (isUpdatingCartItem || cartItemQuantityWillUpdate) return;
+    setCartItemToEditId(null);
   }
 
   async function handleUpdateCartItemSize(size: string) {
@@ -61,11 +61,9 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
     );
 
     if (itemOfSelectedSizeExists) {
-      await handleUpdateCartItemQuantity(
-        itemOfSelectedSizeExists.cartItemId,
-        itemOfSelectedSizeExists.quantity,
-        cartItem?.quantity!
-      );
+      const newQuantity = itemOfSelectedSizeExists.quantity + cartItem?.quantity!;
+
+      await handleUpdateCartItemQuantity(itemOfSelectedSizeExists.cartItemId, newQuantity);
 
       await handleRemoveCartItem();
     } else {
@@ -83,35 +81,9 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
     }
   }
 
-  function handleSetCartItemQuantity(cartItemId: string, value: number) {
-    if (cartItem?.quantity! === 1 && value === -1) return;
-    dispatch(setCartItemQuantity({ id: cartItemId, value }));
-    scheduleUpdateCartItemQuantityWithDelay(cartItemId, value);
-  }
-
-  function scheduleUpdateCartItemQuantityWithDelay(cartItemId: string, value: number) {
-    // Add a delay before updating the quantity in case the use presses the button multiple times.
-    if (updateCartItemQuantityTimer) {
-      clearTimeout(updateCartItemQuantityTimer);
-    }
-    const newTimer = setTimeout(async () => {
-      await handleUpdateCartItemQuantity(cartItemId, cartItem?.quantity!, value);
-    }, 1000);
-    setUpdateCartItemQuantityTimer(newTimer);
-  }
-
-  useEffect(() => {
-    return () => {
-      if (updateCartItemQuantityTimer) {
-        clearTimeout(updateCartItemQuantityTimer);
-      }
-    };
-  }, [updateCartItemQuantityTimer]);
-
-  async function handleUpdateCartItemQuantity(cartItemId: string, previousQuantity: number, quantityToAdd: number) {
-    const newQuantity = previousQuantity + quantityToAdd;
-
+  async function handleUpdateCartItemQuantity(cartItemId: string, newQuantity: number) {
     setIsUpdatingCartItemQuantity(true);
+    setCartItemQuantityWillUpdate(false);
 
     const { success, message } = await updateCartItemQuantity({
       cartItemId: cartItemId,
@@ -141,7 +113,7 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
 
   return (
     <>
-      <IconButton onClick={() => handleSetCartItemToEdit(cartItem?.cartItemId)}>
+      <IconButton onClick={() => handleOpenDrawer(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
           sx={{ color: colorPalette.typographyVariants.grey }}
@@ -154,7 +126,7 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
           right: cartItemToEditId === cartItem?.cartItemId,
         }}
         zIndex={theme.zIndex.appBar + 1}
-        closeDrawer={() => handleSetCartItemToEdit(null)}>
+        closeDrawer={handleCloseDrawer}>
         <Box
           sx={{
             position: 'relative',
@@ -163,36 +135,20 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
             flex: 1,
             justifyContent: 'space-between',
           }}>
-          {isUpdatingCartItem ? (
-            <Box
-              sx={{
-                position: 'absolute',
-                display: 'flex',
-                height: 1,
-                width: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: (theme) => theme.zIndex.appBar + 2,
-                backgroundColor: 'transparent',
-              }}>
-              <PulseLoader
-                color={colorPalette.typography}
-                loading={isUpdatingCartItem}
-                size={30}
-              />
-            </Box>
-          ) : null}
+          {isUpdatingCartItem ? <LoaderEditCartItemDrawer isUpdatingCartItem={isUpdatingCartItem} /> : null}
+
           <SizePickerEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             setCartItemSizeOnClick={handleUpdateCartItemSize}
           />
-          <FooterEditCartItemDrawer
+          <BottomEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             isRemovingCartItem={isRemovingCartItem}
-            setCartItemQuantityOnClick={handleSetCartItemQuantity}
+            updateCartItemQuantity={handleUpdateCartItemQuantity}
             removeCartItemOnClick={handleRemoveCartItem}
+            setCartItemQuantityWillUpdate={setCartItemQuantityWillUpdate}
           />
         </Box>
       </DrawerComponent>

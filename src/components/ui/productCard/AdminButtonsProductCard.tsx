@@ -29,6 +29,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
 
     if (imageData && !product.productId) {
       const { success, message } = await deleteAllProductImages(imageData);
+
       if (success === false) {
         toast.error(message);
       }

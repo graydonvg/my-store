@@ -199,10 +199,10 @@ function AddressData({ show }: AddressDataProps) {
 
     const { success, message } = await deleteAddress(addressId);
 
-    if (success === false) {
-      toast.error(message);
-    } else {
+    if (success === true) {
       toast.success(message);
+    } else {
+      toast.error(message);
     }
 
     router.refresh();

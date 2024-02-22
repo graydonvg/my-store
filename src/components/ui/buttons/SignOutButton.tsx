@@ -27,11 +27,10 @@ export default function SignOutButton({
 
   async function handleSignOut() {
     const { success, message } = await signOut();
-    if (success === false) {
-      toast.error(message);
-    } else {
-      toast.success(message);
+    if (success === true) {
       router.refresh();
+    } else {
+      toast.error(message);
     }
 
     dispatch(setIsNavDrawerOpen(false));

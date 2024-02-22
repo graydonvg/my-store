@@ -1,13 +1,56 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 type Props = {
   cartItem: CartItemType;
-  setCartItemQuantityOnClick: (cartItemId: string, value: number) => void;
+  setCartItemQuantityWillUpdate: Dispatch<SetStateAction<boolean>>;
+  updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
 };
 
-export default function QuantityPickerEditCartItemDrawer({ cartItem, setCartItemQuantityOnClick }: Props) {
+export default function QuantityPickerEditCartItemDrawer({
+  cartItem,
+  setCartItemQuantityWillUpdate,
+  updateCartItemQuantity,
+}: Props) {
+  const [cartItemQuantity, setCartItemQuantity] = useState(cartItem.quantity);
+  const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
+
+  function handleIncrementCartItemQuantity() {
+    setCartItemQuantityWillUpdate(true);
+    const newQuantity = cartItemQuantity + 1;
+    setCartItemQuantity(newQuantity);
+    scheduleUpdateCartItemQuantityWithDelay(newQuantity);
+  }
+
+  function handleDecrementCartItemQuantity() {
+    if (cartItemQuantity === 1) return;
+    setCartItemQuantityWillUpdate(true);
+    const newQuantity = cartItemQuantity - 1;
+    setCartItemQuantity(newQuantity);
+    scheduleUpdateCartItemQuantityWithDelay(newQuantity);
+  }
+
+  function scheduleUpdateCartItemQuantityWithDelay(newQuantity: number) {
+    // Add a delay before updating the quantity in case the use presses the button multiple times.
+    if (updateCartItemQuantityTimer) {
+      clearTimeout(updateCartItemQuantityTimer);
+    }
+    const newTimer = setTimeout(async () => {
+      await updateCartItemQuantity(cartItem.cartItemId, newQuantity);
+    }, 1000);
+    setUpdateCartItemQuantityTimer(newTimer);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (updateCartItemQuantityTimer) {
+        clearTimeout(updateCartItemQuantityTimer);
+      }
+    };
+  }, [updateCartItemQuantityTimer]);
+
   return (
     <Box
       sx={{
@@ -15,6 +58,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, setCartItem
         alignItems: 'center',
         justifyContent: 'space-between',
         width: 1,
+        paddingX: 2,
       }}>
       <Typography
         component="span"
@@ -30,7 +74,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, setCartItem
           alignItems: 'center',
         }}>
         <IconButton
-          onClick={() => setCartItemQuantityOnClick(cartItem.cartItemId, -1)}
+          onClick={handleDecrementCartItemQuantity}
           sx={{
             color: 'inherit',
             height: '48px',
@@ -46,10 +90,10 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, setCartItem
           fontWeight={600}
           fontSize={16}
           sx={{ width: '4ch', display: 'grid', placeItems: 'center' }}>
-          {cartItem?.quantity}
+          {cartItemQuantity}
         </Typography>
         <IconButton
-          onClick={() => setCartItemQuantityOnClick(cartItem.cartItemId, 1)}
+          onClick={handleIncrementCartItemQuantity}
           sx={{
             color: 'inherit',
             height: '48px',

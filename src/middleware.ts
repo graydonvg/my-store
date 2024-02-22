@@ -29,6 +29,11 @@ export async function middleware(request: NextRequest) {
               headers: request.headers,
             },
           });
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          });
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({
@@ -41,19 +46,24 @@ export async function middleware(request: NextRequest) {
               headers: request.headers,
             },
           });
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          });
         },
       },
     }
   );
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data } = await supabase
     .from('users')
     .select('isAdmin')
-    .eq('userId', session?.user.id ?? '');
+    .eq('userId', user?.id ?? '');
 
   const isAdmin = data ? data[0].isAdmin : false;
 
@@ -74,7 +84,7 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/cart') ||
     checkPathStartsWith('/checkout');
 
-  if (adminOnlyPath && (!session || isAdmin === false)) {
+  if (adminOnlyPath && (!user || isAdmin === false)) {
     if (checkPathStartsWith('/api')) {
       return NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else {
@@ -82,7 +92,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (authRequiredPath && !session) {
+  if (authRequiredPath && !user) {
     if (checkPathStartsWith('/api')) {
       return NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
     } else {
