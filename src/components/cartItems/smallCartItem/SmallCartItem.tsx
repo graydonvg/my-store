@@ -13,6 +13,7 @@ import SaleBadgeSmallCartItem from './SaleBadgeSmallCartItem';
 import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
 import ImageSmallCartItem from './ImageSmallCartItem';
 import useColorPalette from '@/hooks/useColorPalette';
+import PriceSmallCartItem from './PriceSmallCartItem';
 
 type Props = {
   item: CartItemType;
@@ -113,42 +114,11 @@ export default function SmallCartItem({ item }: Props) {
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           {isOnSale ? <SaleBadgeSmallCartItem percentage={item?.product?.salePercentage!} /> : null}
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1,
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexWrap: 'wrap',
-              width: 1,
-            }}>
-            {isOnSale ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                }}>
-                <Typography
-                  lineHeight={1}
-                  component="span"
-                  fontSize={16}
-                  fontWeight={700}
-                  color={colorPalette.typographyVariants.grey}
-                  sx={{ textDecoration: 'line-through' }}>
-                  {formatCurrency(price)}
-                </Typography>
-              </Box>
-            ) : null}
-
-            <Typography
-              lineHeight={1}
-              component="span"
-              variant="h6"
-              fontSize={16}
-              fontWeight={700}>
-              {formatCurrency(isOnSale ? discountedPrice : price)}
-            </Typography>
-          </Box>
+          <PriceSmallCartItem
+            price={price}
+            discountedPrice={discountedPrice}
+            isOnSale={isOnSale}
+          />
         </Box>
       </Box>
     </ListItem>

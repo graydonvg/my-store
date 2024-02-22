@@ -11,6 +11,7 @@ import BottomDetailsLargeCartItem from './BottomDetailsLargeCartItem';
 import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
 import TopDetailsLargeCartItem from './TopDetailsLargeCartItem';
 import ImageLargeCartItem from './ImageLargeCartItem';
+import PriceLargeCartItem from './PriceLargeCartItem';
 
 type Props = {
   item: CartItemType;
@@ -105,34 +106,11 @@ export default function LargeCartItem({ item }: Props) {
               paddingBottom: 2,
             }}>
             {isOnSale ? <SaleBadgeLargeCartItem percentage={item?.product?.salePercentage!} /> : null}
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 1,
-                alignItems: 'center',
-                flexWrap: 'nowrap',
-              }}>
-              {isOnSale ? (
-                <Typography
-                  lineHeight={1}
-                  component="span"
-                  fontSize={{ xs: 20, sm: 24 }}
-                  fontWeight={400}
-                  color={colorPalette.typographyVariants.grey}
-                  sx={{ textDecoration: 'line-through' }}>
-                  {formatCurrency(price)}
-                </Typography>
-              ) : null}
-
-              <Typography
-                lineHeight={1}
-                component="span"
-                variant="h6"
-                fontSize={{ xs: 20, sm: 24 }}
-                fontWeight={700}>
-                {formatCurrency(isOnSale ? discountedPrice : price)}
-              </Typography>
-            </Box>
+            <PriceLargeCartItem
+              price={price}
+              discountedPrice={discountedPrice}
+              isOnSale={isOnSale}
+            />
           </Box>
         </Box>
       </ListItem>
