@@ -9,16 +9,16 @@ export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!session)
+    if (!user)
       return NextResponse.json({
         success: false,
         message: `Failed to clear cart. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
-    const { error } = await supabase.from('cart').delete().eq('userId', session.user.id);
+    const { error } = await supabase.from('cart').delete().eq('userId', user.id);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to clear cart. ${error.message}.` });

@@ -8,12 +8,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const addressData: InsertAddressType = await request.json();
 
-    if (!session)
+    if (!user)
       return NextResponse.json({
         success: false,
         message: `Failed to add address. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

@@ -9,12 +9,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const signUpData: UserAuthType = await request.json();
 
-    if (session)
+    if (user)
       return NextResponse.json({
         success: false,
         message: 'Sign up failed. Please sign out before creating a new account.',

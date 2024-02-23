@@ -9,12 +9,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const orderData: UpdateOrderType = await request.json();
 
-    if (!session)
+    if (!user)
       return NextResponse.json({
         success: false,
         message: `Failed to update order payment status. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

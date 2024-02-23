@@ -9,12 +9,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const orderData: AddOrderType = await request.json();
 
-    if (!session)
+    if (!user)
       return NextResponse.json({
         success: false,
         message: `Failed to create order. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
@@ -28,7 +28,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const { error, data } = await supabase
       .from('orders')
-      .insert({ ...orderData.orderDetails, userId: session.user.id })
+      .insert({ ...orderData.orderDetails, userId: user.id })
       .select('orderId');
 
     if (error) {
@@ -40,7 +40,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const createOrderItems = orderData.orderItems.map((item) => {
       return {
         ...item,
-        userId: session.user.id,
+        userId: user.id,
         orderId: orderId,
       };
     });
@@ -48,7 +48,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const insertOrderItemsPromise = supabase.from('orderItems').insert(createOrderItems);
     const insertShippingDetailsPromise = supabase
       .from('shippingDetails')
-      .insert({ ...orderData.shippingDetails, userId: session.user.id, orderId: orderId });
+      .insert({ ...orderData.shippingDetails, userId: user.id, orderId: orderId });
 
     const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
       insertOrderItemsPromise,

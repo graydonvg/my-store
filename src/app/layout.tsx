@@ -22,19 +22,19 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const supabase = await createSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const { data: user } = await supabase
+  const { data: userDataArray } = await supabase
     .from('users')
     .select('*, addresses(*)')
     .order('createdAt', { ascending: false, referencedTable: 'addresses' });
 
-  const userData = user ? user[0] : null;
+  const userData = userDataArray ? userDataArray[0] : null;
 
   let cartItems = null;
 
-  if (user) {
+  if (userData) {
     const { data: cart } = await supabase
       .from('cart')
       .select(
@@ -51,7 +51,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Providers>
           <UserStateSetter
             userData={userData}
-            session={session}
+            user={user}
           />
           <CartItemsStateSetter cartItems={cartItems} />
           <Navbar />

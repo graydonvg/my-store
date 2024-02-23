@@ -9,13 +9,13 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
 
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const searchParams = request.nextUrl.searchParams;
     const addressId = searchParams.get('address_id');
 
-    if (!session)
+    if (!user)
       return NextResponse.json({
         success: false,
         message: `Failed to delete address. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

@@ -6,10 +6,10 @@ import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContai
 export default async function WelcomeLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (session) {
+  if (user) {
     redirect('/');
   }
 

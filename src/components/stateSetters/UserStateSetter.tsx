@@ -4,14 +4,14 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
 import { UserDataType } from '@/types';
 import { setUserData, setIsOAuthSignIn } from '@/lib/redux/slices/userSlice';
-import { Session } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 
 type Props = {
-  session: Session | null;
+  user: User | null;
   userData: UserDataType | null;
 };
 
-export default function UserStateSetter({ session, userData }: Props) {
+export default function UserStateSetter({ user, userData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,12 +21,12 @@ export default function UserStateSetter({ session, userData }: Props) {
       dispatch(setUserData(null));
     }
 
-    if (session && session.user.app_metadata.provider !== 'email') {
+    if (user && user.app_metadata.provider !== 'email') {
       dispatch(setIsOAuthSignIn(true));
     } else {
       dispatch(setIsOAuthSignIn(false));
     }
-  }, [userData, session, dispatch]);
+  }, [userData, user, dispatch]);
 
   return null;
 }
