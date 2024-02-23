@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import UserDataAccountPage from '../UserDataAccountPage';
 import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/slices/accountSlice';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import UpdateFirstNameForm from '@/components/forms/accountPageForms/UpdateFirstNameForm';
 import UpdateLastNameForm from '@/components/forms/accountPageForms/UpdateLastNameForm';
 import UpdateContactNumberForm from '@/components/forms/accountPageForms/UpdateContactNumberForm';
@@ -38,7 +38,7 @@ export default function PersonalInformation() {
   return (
     <>
       {Object.entries(fieldInfoMap).map(([fieldName, fieldInfo]) => (
-        <>
+        <Fragment key={fieldName}>
           {fieldToEdit !== fieldName ? (
             <UserDataAccountPage
               label={fieldInfo.label}
@@ -48,7 +48,7 @@ export default function PersonalInformation() {
           ) : null}
 
           {fieldToEdit === fieldName ? fieldInfo.form : null}
-        </>
+        </Fragment>
       ))}
     </>
   );

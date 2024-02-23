@@ -1,21 +1,21 @@
-import DialogComponent from './DialogComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import AddressForm from '../forms/addressForm/AddressForm';
-import ContainedButton from '../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
-import { setIsAddressDialogOpen } from '@/lib/redux/slices/dialogSlice';
+import { setIsAddNewAddressDialogOpen } from '@/lib/redux/slices/dialogSlice';
 import { clearAddressFormData } from '@/lib/redux/slices/addressFormSlice';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import DialogComponent from '../DialogComponent';
+import AddNewAddressForm from '@/components/forms/addressForm/addressForm/AddNewAddressForm';
 
-export default function AddressDialog() {
+export default function AddNewAddressDialog() {
   const dispatch = useAppDispatch();
-  const { isAddAddressDialogOpen } = useAppSelector((state) => state.dialog);
+  const isAddNewAddressDialogOpen = useAppSelector((state) => state.dialog.isAddNewAddressDialogOpen);
   const addressFormData = useAppSelector((state) => state.addressForm);
 
   function handleOpenAddAddressDialog() {
     if (addressFormData.addressId) {
       dispatch(clearAddressFormData());
     }
-    dispatch(setIsAddressDialogOpen(true));
+    dispatch(setIsAddNewAddressDialogOpen(true));
   }
 
   return (
@@ -28,8 +28,8 @@ export default function AddressDialog() {
         startIcon={<Add />}
         backgroundColor="primary"
       />
-      <DialogComponent isOpen={isAddAddressDialogOpen}>
-        <AddressForm />
+      <DialogComponent isOpen={isAddNewAddressDialogOpen}>
+        <AddNewAddressForm />
       </DialogComponent>
     </>
   );

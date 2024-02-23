@@ -1,6 +1,4 @@
 import { Box, Divider } from '@mui/material';
-import FormHeading from '../FormHeading';
-import ContainedButton from '../../ui/buttons/ContainedButton';
 import { ChangeEvent, FormEvent } from 'react';
 import { Add } from '@mui/icons-material';
 import { addNewAddress } from '@/services/users/add';
@@ -11,13 +9,14 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
 import { updateAddress } from '@/services/users/update';
-import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
-import DeliveryAddressFieldsAddressForm from './DeliveryAddressFieldsAddressForm';
+import FormHeading from '../../FormHeading';
+import ContactDetailsFieldsAddressForm from '../ContactDetailsFieldsAddressForm';
+import DeliveryAddressFieldsAddressForm from '../DeliveryAddressFieldsAddressForm';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
-export default function AddressForm() {
+export default function UpdateAddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
   const addressFormData = useAppSelector((state) => state.addressForm);
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
@@ -27,28 +26,6 @@ export default function AddressForm() {
     if (name === 'postalCode' && value.length > 4) return;
 
     dispatch(setAddressFormDataOnChange({ field: name as keyof UpdateAddressTypeStore, value }));
-  }
-
-  async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const { addressId, postalCode, ...restOfAddressData } = addressFormData;
-
-    dispatch(setIsDialogLoading(true));
-
-    const { success, message } = await addNewAddress({
-      ...restOfAddressData,
-      postalCode: Number(postalCode),
-      userId: userData?.userId!,
-    } as InsertAddressType);
-
-    if (success === true) {
-      router.refresh();
-      toast.success(message);
-    } else {
-      toast.error(message);
-      dispatch(setIsDialogLoading(false));
-    }
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -79,25 +56,28 @@ export default function AddressForm() {
         gap: 1,
       }}>
       <Box sx={{ textAlign: 'center', paddingBottom: 1 }}>
-        <FormHeading text={addressFormData.addressId ? 'Edit Address' : 'Add Address'} />
+        <FormHeading text={'Edit Address'} />
       </Box>
       <Box
         component="form"
-        onSubmit={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
+        onSubmit={handleUpdateAddress}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            handleUpdateAddress;
+          }
+        }}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <ContactDetailsFieldsAddressForm
           addressFormData={addressFormData}
-          submitAddressOnEnterKeyDown={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
           onInputChange={handleInputChange}
         />
         <Divider />
         <DeliveryAddressFieldsAddressForm
           addressFormData={addressFormData}
-          submitAddressOnEnterKeyDown={!addressFormData.addressId ? handleAddNewAddress : handleUpdateAddress}
           onInputChange={handleInputChange}
         />
         <ContainedButton
-          label={addressFormData.addressId ? 'save' : 'add'}
+          label={'save'}
           disabled={isDialogLoading}
           type="submit"
           fullWidth

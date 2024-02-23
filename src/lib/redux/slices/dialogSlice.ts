@@ -3,16 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type DialogState = {
   isSignInDialogOpen: boolean;
   isSignUpDialogOpen: boolean;
-  isUpdateDialogOpen: boolean;
-  isAddAddressDialogOpen: boolean;
+  isAddNewAddressDialogOpen: boolean;
+  isUpdateAddressDialogOpen: boolean;
   isDialogLoading: boolean;
 };
 
 const initialState: DialogState = {
   isSignInDialogOpen: false,
   isSignUpDialogOpen: false,
-  isUpdateDialogOpen: false,
-  isAddAddressDialogOpen: false,
+  isAddNewAddressDialogOpen: false,
+  isUpdateAddressDialogOpen: false,
   isDialogLoading: false,
 };
 
@@ -26,17 +26,17 @@ const dialogSlice = createSlice({
     setIsSignUpDialogOpen(state, action: PayloadAction<boolean>) {
       state.isSignUpDialogOpen = action.payload;
     },
-    setIsUpdateDialogOpen(state, action: PayloadAction<boolean>) {
-      state.isUpdateDialogOpen = action.payload;
+    setIsAddNewAddressDialogOpen(state, action: PayloadAction<boolean>) {
+      state.isAddNewAddressDialogOpen = action.payload;
     },
-    setIsAddressDialogOpen(state, action: PayloadAction<boolean>) {
-      state.isAddAddressDialogOpen = action.payload;
+    setIsUpdateAddressDialogOpen(state, action: PayloadAction<boolean>) {
+      state.isUpdateAddressDialogOpen = action.payload;
     },
     closeDialog(state) {
       state.isSignInDialogOpen = false;
       state.isSignUpDialogOpen = false;
-      state.isUpdateDialogOpen = false;
-      state.isAddAddressDialogOpen = false;
+      state.isAddNewAddressDialogOpen = false;
+      state.isUpdateAddressDialogOpen = false;
     },
     setIsDialogLoading(state, action: PayloadAction<boolean>) {
       state.isDialogLoading = action.payload;
@@ -49,8 +49,8 @@ const { actions, reducer } = dialogSlice;
 export const {
   setIsSignInDialogOpen,
   setIsSignUpDialogOpen,
-  setIsUpdateDialogOpen,
-  setIsAddressDialogOpen,
+  setIsAddNewAddressDialogOpen,
+  setIsUpdateAddressDialogOpen,
   closeDialog,
   setIsDialogLoading,
 } = actions;

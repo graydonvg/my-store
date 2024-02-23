@@ -20,21 +20,10 @@ const deliveryAddressFormFields = [
 
 type Props = {
   addressFormData: UpdateAddressTypeStore;
-  submitAddressOnEnterKeyDown: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function DeliveryAddressFieldsAddressForm({
-  addressFormData,
-  submitAddressOnEnterKeyDown,
-  onInputChange,
-}: Props) {
-  function handleOnEnterKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Enter') {
-      submitAddressOnEnterKeyDown;
-    }
-  }
-
+export default function DeliveryAddressFieldsAddressForm({ addressFormData, onInputChange }: Props) {
   function getInputField(field: { label: string; name: string; placeholder: string; required: boolean }) {
     if (field.name === 'postalCode') {
       return (
@@ -49,7 +38,6 @@ export default function DeliveryAddressFieldsAddressForm({
           margin="normal"
           styles={{ maxWidth: '130px' }}
           onChange={onInputChange}
-          onKeyDown={(event) => handleOnEnterKeyDown(event)}
         />
       );
     } else {
@@ -64,7 +52,6 @@ export default function DeliveryAddressFieldsAddressForm({
           fullWidth={true}
           margin="normal"
           onChange={onInputChange}
-          onKeyDown={(event) => handleOnEnterKeyDown(event)}
         />
       );
     }

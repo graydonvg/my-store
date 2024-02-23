@@ -11,15 +11,10 @@ const contactDetailsFormFields = [
 
 type Props = {
   addressFormData: UpdateAddressTypeStore;
-  submitAddressOnEnterKeyDown: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ContactDetailsFieldsAddressForm({
-  submitAddressOnEnterKeyDown,
-  addressFormData,
-  onInputChange,
-}: Props) {
+export default function ContactDetailsFieldsAddressForm({ addressFormData, onInputChange }: Props) {
   return (
     <Box>
       <Typography fontSize={18}>Contact Details</Typography>
@@ -34,11 +29,6 @@ export default function ContactDetailsFieldsAddressForm({
           fullWidth={true}
           margin="normal"
           onChange={onInputChange}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              submitAddressOnEnterKeyDown;
-            }
-          }}
         />
       ))}
     </Box>

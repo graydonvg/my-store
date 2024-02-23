@@ -4,7 +4,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Grid } from '@mui/material';
 import Account from '@/components/accountPage/sections/account/Account';
 import PersonalInformation from '@/components/accountPage/sections/PersonalInformation';
-import Addresses from '@/components/accountPage/sections/Addresses';
+import Addresses from '@/components/addresses/Addresses';
 import SectionContainerAccountPage from '@/components/accountPage/SectionContainerAccountPage';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 

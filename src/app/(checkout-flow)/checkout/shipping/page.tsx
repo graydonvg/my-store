@@ -1,7 +1,7 @@
 'use client';
 
 import SmallCartItemList from '@/components/cartItems/smallCartItemList/SmallCartItemList';
-import Addresses from '@/components/accountPage/sections/Addresses';
+import Addresses from '@/components/addresses/Addresses';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
