@@ -23,7 +23,7 @@ export default function ContactDetailsFieldsAddressForm({ addressFormData, onInp
           key={field.name}
           label={field.label}
           name={field.name}
-          value={addressFormData[field.name as keyof typeof addressFormData]}
+          value={addressFormData[field.name as keyof UpdateAddressTypeStore]}
           placeholder={field.placeholder ?? ''}
           required={field.required}
           fullWidth={true}

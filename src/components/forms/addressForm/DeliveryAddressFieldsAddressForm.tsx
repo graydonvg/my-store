@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
-import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { UpdateAddressTypeStore } from '@/types';
 import NumberField from '../../ui/inputFields/NumberField';
 
@@ -31,7 +31,7 @@ export default function DeliveryAddressFieldsAddressForm({ addressFormData, onIn
           key={field.name}
           label={field.label}
           name={field.name}
-          value={addressFormData[field.name as keyof typeof addressFormData]}
+          value={addressFormData[field.name as keyof UpdateAddressTypeStore]}
           placeholder={field.placeholder ?? ''}
           required={field.required}
           fullWidth={false}
@@ -46,7 +46,7 @@ export default function DeliveryAddressFieldsAddressForm({ addressFormData, onIn
           key={field.name}
           label={field.label}
           name={field.name}
-          value={addressFormData[field.name as keyof typeof addressFormData]}
+          value={addressFormData[field.name as keyof UpdateAddressTypeStore]}
           placeholder={field.placeholder ?? ''}
           required={field.required}
           fullWidth={true}

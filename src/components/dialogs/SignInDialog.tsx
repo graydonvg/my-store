@@ -2,22 +2,22 @@ import useColorPalette from '@/hooks/useColorPalette';
 import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsSignInDialogOpen, setIsSignUpDialogOpen } from '@/lib/redux/slices/dialogSlice';
+import { openDialog, closeDialog } from '@/lib/redux/slices/dialogSlice';
 import SignInForm from '../forms/SignInForm';
 import MuiLink from '../ui/MuiLink';
 
 export default function SignInDialog() {
   const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
-  const { isSignInDialogOpen } = useAppSelector((state) => state.dialog);
+  const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
 
   function handleOpenSignInDialog() {
-    dispatch(setIsSignInDialogOpen(true));
+    dispatch(openDialog('signInDialog'));
   }
 
   function handleOpenSignUpDialog() {
     dispatch(closeDialog());
-    dispatch(setIsSignUpDialogOpen(true));
+    dispatch(openDialog('signUpDialog'));
   }
 
   return (

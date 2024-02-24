@@ -2,17 +2,12 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography 
 import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearAddressFormData } from '@/lib/redux/slices/addressFormSlice';
-import {
-  setIsAddNewAddressDialogOpen,
-  setIsUpdateAddressDialogOpen,
-  setIsDialogLoading,
-} from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { BORDER_RADIUS } from '@/config';
 import { useEffect } from 'react';
 import AddressData from './AddressData';
 import { setAddressToDeleteId } from '@/lib/redux/slices/accountSlice';
 import AddNewAddressDialog from '../dialogs/addressDialog/AddNewAddressDialog';
-import UpdateAddressDialog from '../dialogs/addressDialog/UpdateAddressDialog';
 
 export default function Addresses() {
   const dispatch = useAppDispatch();
@@ -20,8 +15,7 @@ export default function Addresses() {
   const colorPalette = useColorPalette();
 
   useEffect(() => {
-    dispatch(setIsAddNewAddressDialogOpen(false));
-    dispatch(setIsUpdateAddressDialogOpen(false));
+    dispatch(closeDialog());
     dispatch(setIsDialogLoading(false));
     dispatch(clearAddressFormData());
     dispatch(setAddressToDeleteId(null));

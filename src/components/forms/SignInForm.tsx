@@ -5,7 +5,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormHeading from './FormHeading';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setIsSignInDialogOpen, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { openDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -52,7 +52,7 @@ export default function SignInForm({ children }: Props) {
 
     if (success === true) {
       router.refresh();
-      dispatch(setIsSignInDialogOpen(false));
+      dispatch(openDialog('signInDialog'));
       setFormData(defaultFormData);
     } else {
       toast.error(message);
