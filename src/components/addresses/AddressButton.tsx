@@ -3,7 +3,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   label: string;
-  onClick: () => Promise<void>;
+  onClick: () => void;
 };
 
 export default function AddressButton({ label, onClick }: Props) {

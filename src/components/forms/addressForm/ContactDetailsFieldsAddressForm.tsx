@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { UpdateAddressTypeStore } from '@/types';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 const contactDetailsFormFields = [
   { label: 'First Name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true },

@@ -3,8 +3,8 @@
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
 import FormHeading from './FormHeading';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { openDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -33,12 +33,11 @@ type Props = {
 };
 
 export default function SignUpForm({ children }: Props) {
-  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const isSignUpDialogOpen = useAppSelector((state) => state.dialog.signUpDialog);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-  const isWelcomePath = pathname.includes('/welcome');
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -59,7 +58,9 @@ export default function SignUpForm({ children }: Props) {
 
     setIsLoading(true);
 
-    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
+    if (isSignUpDialogOpen) {
+      dispatch(setIsDialogLoading(true));
+    }
 
     const { email, password, firstName, lastName } = formData;
 
@@ -76,9 +77,8 @@ export default function SignUpForm({ children }: Props) {
 
       if (updateSuccess === true) {
         router.refresh();
-        dispatch(openDialog('signUpDialog'));
+        dispatch(closeDialog());
         setFormData(defaultFormData);
-        toast.success(`Welcome, ${firstName}!`);
       } else {
         toast.error(updateMessage);
       }
@@ -87,7 +87,10 @@ export default function SignUpForm({ children }: Props) {
     }
 
     setIsLoading(false);
-    !isWelcomePath ? dispatch(setIsDialogLoading(false)) : null;
+
+    if (isSignUpDialogOpen) {
+      dispatch(setIsDialogLoading(false));
+    }
   }
 
   return (
@@ -126,9 +129,9 @@ export default function SignUpForm({ children }: Props) {
           ))}
         </Grid>
         <ContainedButton
-          label={isWelcomePath && isLoading ? '' : 'sign up'}
+          label={!isSignUpDialogOpen && isLoading ? '' : 'sign up'}
           disabled={isLoading}
-          isLoading={isWelcomePath && isLoading}
+          isLoading={!isSignUpDialogOpen && isLoading}
           type="submit"
           styles={{
             marginTop: 3,

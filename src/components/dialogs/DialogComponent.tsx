@@ -3,9 +3,9 @@ import { Box, IconButton, Dialog } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
-import { closeDialog } from '@/lib/redux/slices/dialogSlice';
 import { Close } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/config';
+import { closeDialog } from '@/lib/redux/slices/dialogSlice';
 
 type Props = {
   isOpen: boolean;
@@ -14,10 +14,11 @@ type Props = {
 
 export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
-  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
   const colorPalette = useColorPalette();
+  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
   function handleCloseDialog() {
+    if (isDialogLoading) return;
     dispatch(closeDialog());
   }
 

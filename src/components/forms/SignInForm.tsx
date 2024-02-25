@@ -4,8 +4,8 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Divider, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FormHeading from './FormHeading';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { openDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { closeDialog, openDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -29,12 +29,11 @@ type Props = {
 
 export default function SignInForm({ children }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
+  const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-  const isWelcomePath = pathname.includes('/welcome');
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -46,24 +45,31 @@ export default function SignInForm({ children }: Props) {
 
     setIsLoading(true);
 
-    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(true));
+    }
 
     const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
     if (success === true) {
       router.refresh();
-      dispatch(openDialog('signInDialog'));
+      dispatch(closeDialog());
       setFormData(defaultFormData);
     } else {
       toast.error(message);
     }
 
     setIsLoading(false);
-    dispatch(setIsDialogLoading(false));
+
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(false));
+    }
   }
 
   async function handleSignInWithGoogle() {
-    !isWelcomePath ? dispatch(setIsDialogLoading(true)) : null;
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(true));
+    }
 
     // Remember Supabase redirect url for google sign in
     const { error } = await supabase.auth.signInWithOAuth({
@@ -81,7 +87,9 @@ export default function SignInForm({ children }: Props) {
       toast.error(error.message);
     }
 
-    dispatch(setIsDialogLoading(false));
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(false));
+    }
   }
 
   return (
@@ -113,9 +121,9 @@ export default function SignInForm({ children }: Props) {
         ))}
         <ContainedButton
           type="submit"
-          label={isWelcomePath && isLoading ? '' : 'sign in'}
+          label={!isSignInDialogOpen && isLoading ? '' : 'sign in'}
           disabled={isLoading}
-          isLoading={isWelcomePath && isLoading}
+          isLoading={!isSignInDialogOpen && isLoading}
           styles={{
             marginTop: 3,
             marginBottom: 2,
