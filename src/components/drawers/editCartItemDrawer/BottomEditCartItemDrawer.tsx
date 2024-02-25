@@ -32,7 +32,7 @@ export default function BottomEditCartItemDrawer({
         flexDirection: 'column',
         alignItems: 'flex-start',
         position: 'relative',
-        paddingY: 2,
+        padding: 2,
         gap: 2,
         opacity: isUpdatingCartItem ? 0.5 : 1,
         '&::before': {

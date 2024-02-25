@@ -58,7 +58,6 @@ export default function QuantityPickerEditCartItemDrawer({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: 1,
-        paddingX: 2,
       }}>
       <Typography
         component="span"

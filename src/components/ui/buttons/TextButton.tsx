@@ -15,7 +15,7 @@ export default function TextButton({ label, labelColor, startIcon, isLoading, ..
       variant="text"
       sx={{
         height: '48px',
-        paddingX: { xs: 0, md: 2 },
+        paddingX: 0,
         color: labelColor,
         whiteSpace: 'nowrap',
         '&:hover': {
