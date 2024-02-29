@@ -53,7 +53,7 @@ export default function CartDrawer() {
       </UpperNavbarIconButton>
       <DrawerComponent
         elevation={1}
-        width={{ xs: '85vw', sm: '400px' }}
+        width={{ xs: '90vw', sm: '400px' }}
         isOpen={{ right: isCartOpen }}
         zIndex={theme.zIndex.appBar - 1}
         closeDrawer={handleCloseCartDrawer}>
