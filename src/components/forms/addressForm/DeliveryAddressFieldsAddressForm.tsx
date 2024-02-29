@@ -4,63 +4,86 @@ import { ChangeEvent } from 'react';
 import { UpdateAddressTypeStore } from '@/types';
 import NumberField from '../../ui/inputFields/NumberField';
 
-const deliveryAddressFormFields = [
-  {
-    label: 'Complex / Building',
-    name: 'complexOrBuilding',
-    placeholder: 'Name, unit number or floor',
-    required: false,
-  },
-  { label: 'Street address', name: 'streetAddress', placeholder: 'e.g. 14 Christiaan Barnard Street', required: true },
-  { label: 'Suburb', name: 'suburb', placeholder: 'e.g. Foreshore', required: true },
-  { label: 'Province', name: 'province', placeholder: 'e.g. Western Cape', required: true },
-  { label: 'City', name: 'city', placeholder: 'e.g. Cape Town', required: true },
-  { label: 'Postal Code', name: 'postalCode', placeholder: 'e.g. 8000', required: true },
-];
-
 type Props = {
   addressFormData: UpdateAddressTypeStore;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function DeliveryAddressFieldsAddressForm({ addressFormData, onInputChange }: Props) {
-  function getInputField(field: { label: string; name: string; placeholder: string; required: boolean }) {
-    if (field.name === 'postalCode') {
-      return (
-        <NumberField
-          key={field.name}
-          label={field.label}
-          name={field.name}
-          value={addressFormData[field.name as keyof UpdateAddressTypeStore]}
-          placeholder={field.placeholder ?? ''}
-          required={field.required}
-          fullWidth={false}
-          margin="normal"
-          styles={{ maxWidth: '130px' }}
-          onChange={onInputChange}
-        />
-      );
-    } else {
-      return (
-        <CustomTextField
-          key={field.name}
-          label={field.label}
-          name={field.name}
-          value={addressFormData[field.name as keyof UpdateAddressTypeStore]}
-          placeholder={field.placeholder ?? ''}
-          required={field.required}
-          fullWidth={true}
-          margin="normal"
-          onChange={onInputChange}
-        />
-      );
-    }
-  }
-
   return (
     <Box>
       <Typography fontSize={18}>Delivery Address</Typography>
-      {deliveryAddressFormFields.map((field) => getInputField(field))}
+      <CustomTextField
+        label="Complex / Building"
+        name="complexOrBuilding"
+        value={addressFormData['complexOrBuilding']}
+        placeholder="Name, unit number or floor"
+        required={false}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <CustomTextField
+        label="Street address"
+        name="streetAddress"
+        value={addressFormData['streetAddress']}
+        placeholder="e.g. 14 Christiaan Barnard Street"
+        required={true}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <CustomTextField
+        label="Street address"
+        name="streetAddress"
+        value={addressFormData['streetAddress']}
+        placeholder="e.g. 14 Christiaan Barnard Street"
+        required={true}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <CustomTextField
+        label="Suburb"
+        name="suburb"
+        value={addressFormData['suburb']}
+        placeholder="e.g. Foreshore"
+        required={true}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <CustomTextField
+        label="Province"
+        name="province"
+        value={addressFormData['province']}
+        placeholder="e.g. Western Cape"
+        required={true}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <CustomTextField
+        label="City"
+        name="city"
+        value={addressFormData['city']}
+        placeholder="e.g. Cape Town"
+        required={true}
+        fullWidth={true}
+        margin="normal"
+        onChange={onInputChange}
+      />
+      <NumberField
+        label="Postal Code"
+        name="postalCode"
+        value={addressFormData['postalCode']}
+        placeholder="e.g. 8000"
+        required={true}
+        fullWidth={false}
+        margin="normal"
+        styles={{ maxWidth: '130px' }}
+        onChange={onInputChange}
+      />
     </Box>
   );
 }
