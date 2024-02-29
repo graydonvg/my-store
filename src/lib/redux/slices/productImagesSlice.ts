@@ -28,11 +28,13 @@ function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTy
 }
 
 type State = {
+  isDeletingImage: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: InsertProductImageDataTypeStore[];
 };
 
 const initialState: State = {
+  isDeletingImage: false,
   imageUploadProgress: [],
   imageData: [],
 };
@@ -53,6 +55,9 @@ const productImagesSlice = createSlice({
     deleteImage(state, action: PayloadAction<{ fileName: string }>) {
       state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
     },
+    setIsDeletingImage(state, action: PayloadAction<boolean>) {
+      state.isDeletingImage = action.payload;
+    },
     clearImageData(state) {
       state.imageData = initialState.imageData;
     },
@@ -72,6 +77,7 @@ export const {
   setImageData,
   setUpdatedImageData,
   deleteImage,
+  setIsDeletingImage,
   clearImageData,
   clearImageUploadProgess,
   clearAllProductImagesData,

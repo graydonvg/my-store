@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box, useTheme } from '@mui/material';
-import DraggableProductImagesContainer from '../draggableProductImages/DraggableProductImagesContainer';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
 import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
+import DraggableProductImages from '../draggableProductImages/DraggableProductImages';
 
 type Props = {
   isSubmitting: boolean;
@@ -21,7 +21,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   const colorPalette = useColorPalette();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const { imageData, imageUploadProgress, isDeletingImage } = useAppSelector((state) => state.productImages);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
   const [isEditImagesDrawerOpen, setIsEditImagesDrawerOpen] = useState(false);
 
@@ -30,6 +30,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   }
 
   function handleCloseEditImageDrawer() {
+    if (isDeletingAllImages || isDeletingImage) return;
     setIsEditImagesDrawerOpen(false);
   }
 
@@ -63,7 +64,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           onClick={handleCloseEditImageDrawer}
         />
         <Box sx={{ overflow: 'auto', height: 1, opacity: isDeletingAllImages ? '50%' : null }}>
-          <DraggableProductImagesContainer />
+          <DraggableProductImages />
         </Box>
         <Box
           sx={{

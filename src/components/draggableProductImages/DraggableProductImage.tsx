@@ -11,7 +11,7 @@ import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useState } from 'react';
-import { deleteImage } from '@/lib/redux/slices/productImagesSlice';
+import { deleteImage, setIsDeletingImage } from '@/lib/redux/slices/productImagesSlice';
 
 export type Props = {
   imageData: InsertProductImageDataTypeStore;
@@ -22,13 +22,13 @@ export default function DraggableProductImage({ imageData, index }: Props) {
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const { productFormData } = useAppSelector((state) => state.productForm);
+  const isDeletingImage = useAppSelector((state) => state.productImages.isDeletingImage);
   const [imageToDeleteIndex, setImageToDeleteIndex] = useState<number | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isDeletingImage, setIsDeletingImage] = useState(false);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteIndex === index;
 
   async function handleDeleteImage() {
-    setIsDeletingImage(true);
+    dispatch(setIsDeletingImage(true));
     setImageToDeleteIndex(imageData.index);
 
     if (imageData.fileName.length > 0) {
@@ -44,7 +44,7 @@ export default function DraggableProductImage({ imageData, index }: Props) {
 
     dispatch(deleteImage({ fileName: imageData.fileName }));
     setImageToDeleteIndex(null);
-    setIsDeletingImage(false);
+    dispatch(setIsDeletingImage(false));
   }
 
   return (
