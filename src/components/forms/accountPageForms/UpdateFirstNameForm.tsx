@@ -12,7 +12,6 @@ export default function UpdateFirstNameForm() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user.userData);
   const [firstName, setFirstName] = useState(userData?.firstName ?? '');
-  // const [isSubmitting, setIsSubmitting] = useState(false);
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
   function handleCancelUpdateField() {

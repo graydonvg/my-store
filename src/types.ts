@@ -5,6 +5,8 @@ export type ContainedButtonButtonBackgroundColorType = 'primary' | 'warning';
 
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
+export type AccountFieldToEditType = 'password' | 'firstName' | 'lastName' | 'contactNumber';
+
 export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
 
 export type AccountType = {

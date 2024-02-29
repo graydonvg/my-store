@@ -2,13 +2,14 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { setFieldToEdit } from '@/lib/redux/slices/accountSlice';
 import { Box, Typography, useTheme } from '@mui/material';
 import UserDataAccountPage from '../../UserDataAccountPage';
+import { AccountFieldToEditType } from '@/types';
 
 export default function PasswordMask() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  function handleSetFieldToEdit(field: string) {
+  function handleSetFieldToEdit(field: AccountFieldToEditType) {
     dispatch(setFieldToEdit(field));
   }
 

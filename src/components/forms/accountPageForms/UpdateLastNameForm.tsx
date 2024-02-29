@@ -13,7 +13,6 @@ export default function UpdateLastNameForm() {
   const userData = useAppSelector((state) => state.user.userData);
   const [lastName, setLastName] = useState(userData?.lastName ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
-  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleCancelUpdateField() {
     dispatch(setFieldToEdit(null));

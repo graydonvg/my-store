@@ -1,7 +1,8 @@
+import { AccountFieldToEditType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
-  fieldToEdit: string | null;
+  fieldToEdit: AccountFieldToEditType | null;
   isUpdatingAccount: boolean;
   addressToDeleteId: string | null;
 };
@@ -16,7 +17,7 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setFieldToEdit(state, action: PayloadAction<string | null>) {
+    setFieldToEdit(state, action: PayloadAction<AccountFieldToEditType | null>) {
       state.fieldToEdit = action.payload;
     },
     setIsUpdatingAccount(state, action: PayloadAction<boolean>) {

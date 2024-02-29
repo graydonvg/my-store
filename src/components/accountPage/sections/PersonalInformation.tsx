@@ -5,6 +5,7 @@ import { Fragment, useEffect } from 'react';
 import UpdateFirstNameForm from '@/components/forms/accountPageForms/UpdateFirstNameForm';
 import UpdateLastNameForm from '@/components/forms/accountPageForms/UpdateLastNameForm';
 import UpdateContactNumberForm from '@/components/forms/accountPageForms/UpdateContactNumberForm';
+import { AccountFieldToEditType } from '@/types';
 
 const fieldInfoMap = {
   firstName: {
@@ -31,7 +32,7 @@ export default function PersonalInformation() {
     dispatch(setIsUpdatingAccount(false));
   }, [dispatch, userData]);
 
-  function handleSetFieldToEdit(field: string) {
+  function handleSetFieldToEdit(field: AccountFieldToEditType) {
     dispatch(setFieldToEdit(field));
   }
 
@@ -42,7 +43,7 @@ export default function PersonalInformation() {
           {fieldToEdit !== fieldName ? (
             <UserDataAccountPage
               label={fieldInfo.label}
-              onClick={() => handleSetFieldToEdit(fieldName)}>
+              onClick={() => handleSetFieldToEdit(fieldName as keyof typeof fieldInfoMap)}>
               {userData?.[fieldName as keyof typeof fieldInfoMap] ?? ''}
             </UserDataAccountPage>
           ) : null}
