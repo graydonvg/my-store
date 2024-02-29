@@ -12,9 +12,10 @@ import './globals.css';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { STORE_NAME } from '@/config';
 
 export const metadata: Metadata = {
-  title: 'MyStore',
+  title: STORE_NAME,
   description: 'Ecommerce',
 };
 

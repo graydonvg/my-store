@@ -43,7 +43,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
         }}>
         <LoadingBar
           isLoading={isDialogLoading}
-          style={{ borderTopRightRadius: '4px', borderTopLeftRadius: '4px' }}
+          style={{ borderTopRightRadius: BORDER_RADIUS, borderTopLeftRadius: BORDER_RADIUS }}
         />
         <Box sx={{ position: 'absolute', right: 3, top: 3 }}>
           <IconButton

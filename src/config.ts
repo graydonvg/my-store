@@ -1,3 +1,5 @@
+export const STORE_NAME = 'BestStoreEver';
+
 export const BORDER_RADIUS = '4px';
 
 export const FREE_DELIVERY_THRESHOLD = 500;

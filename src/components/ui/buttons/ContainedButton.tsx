@@ -1,3 +1,4 @@
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette, { ColorPaletteReturnType } from '@/hooks/useColorPalette';
 import { ContainedButtonButtonBackgroundColorType } from '@/types';
 import { Button, ButtonProps } from '@mui/material';

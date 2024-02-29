@@ -1,6 +1,7 @@
 import { IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import { STORE_NAME } from '@/config';
 
 type Props = {
   display: 'flex' | { xs: 'flex'; md: 'none' };
@@ -44,7 +45,7 @@ export default function NavbarTitleAndLogo({ display, variant, color, hideText =
             color,
             textDecoration: 'none',
           }}>
-          MyStore
+          {STORE_NAME}
         </Typography>
       ) : null}
     </IconButton>

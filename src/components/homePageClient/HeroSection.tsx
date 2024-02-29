@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS, STORE_NAME } from '@/config';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -59,8 +59,8 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
-            Immerse yourself in a world of self-expression at MyStore, where each piece tells a story and every outfit
-            is a statement.
+            Immerse yourself in a world of self-expression at {STORE_NAME}, where each piece tells a story and every
+            outfit is a statement.
           </Typography>
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton

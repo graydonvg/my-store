@@ -1,3 +1,4 @@
+import { BORDER_RADIUS } from '@/config';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -23,8 +24,8 @@ export default function ImageProductCard({ imageUrl, imageSizes, productName }: 
       <Image
         style={{
           objectFit: 'cover',
-          borderTopLeftRadius: '4px',
-          borderTopRightRadius: '4px',
+          borderTopLeftRadius: BORDER_RADIUS,
+          borderTopRightRadius: BORDER_RADIUS,
           opacity: !isImageLoaded ? 0 : 100,
         }}
         fill
