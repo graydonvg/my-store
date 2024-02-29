@@ -4,7 +4,6 @@ import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
 import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
-import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
   cartItem: CartItemType;

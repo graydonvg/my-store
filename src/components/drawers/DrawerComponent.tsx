@@ -47,8 +47,7 @@ export default function DrawerComponent({
   );
 
   useEffect(() => {
-    // Function to handle click outside the drawer
-    const handleClickOutside = (event: MouseEvent) => {
+    function handleClickOutside(event: MouseEvent) {
       const drawerElements = document.querySelectorAll('.MuiDrawer-root');
       const isClickInsideDrawer = Array.from(drawerElements).some((drawerElement) =>
         drawerElement.contains(event.target as Node)
@@ -57,7 +56,7 @@ export default function DrawerComponent({
       if (!isClickInsideDrawer) {
         handleCloseDrawer(event);
       }
-    };
+    }
 
     document.addEventListener('click', handleClickOutside);
 
