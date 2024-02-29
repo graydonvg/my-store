@@ -1,10 +1,10 @@
 import { ProductType } from '@/types';
 import { Box } from '@mui/material';
 import QuantityPickerProductDetails from './QuantityPickerProductDetails';
-import AddToCartButton from '../../ui/buttons/AddToCartButton';
+import AddToCartButton from './AddToCartButton';
 import { useAppSelector } from '@/lib/redux/hooks';
 import SizePickerProductDetails from './SizePickerProductDetails';
-import AddToWishlistButton from '../../ui/buttons/AddToWishlistButton';
+import AddToWishlistButton from './AddToWishlistButton';
 
 type Props = {
   product: ProductType;

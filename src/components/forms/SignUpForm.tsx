@@ -8,7 +8,7 @@ import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice'
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import { updateUserPersonalInformation } from '@/services/users/update';
 

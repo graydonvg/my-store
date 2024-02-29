@@ -2,103 +2,18 @@
 
 import { ReactNode, useEffect } from 'react';
 import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  selectDeliveryFee,
-  selectCartTotal,
-  selectDiscountTotal,
-  selectOrderTotal,
-} from '@/lib/redux/selectors/cartSelectors';
-import useColorPalette from '@/hooks/useColorPalette';
-import { BORDER_RADIUS } from '@/config';
-import OrderTotals from '@/components/orders/orderTotals/OrderTotals';
 import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
-import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
-import PaymentButton from '@/components/ui/buttons/PaymentButton';
 import deleteOrder from '@/services/orders/delete';
+import CheckoutOrderTotals from '@/components/CheckoutOrderTotals';
 
-type NavButtonProps = {
-  showCheckoutButton: boolean;
-  showPaymentButton: boolean;
-};
-
-function NavButton({ showCheckoutButton, showPaymentButton }: NavButtonProps) {
-  const { cartItems } = useAppSelector((state) => state.cart);
-
-  if (showCheckoutButton)
-    return (
-      <CheckoutButton
-        disabled={cartItems.length === 0}
-        label={'checkout now'}
-        fullWidth={true}
-        backgroundColor={'primary'}
-      />
-    );
-
-  if (showPaymentButton) return <PaymentButton showContainedButton={true} />;
-}
-
-type YourOrderTotalsProps = {
-  show: boolean;
-};
-
-function YourOrderTotals({ show }: YourOrderTotalsProps) {
-  const pathname = usePathname();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const cartTotal = selectCartTotal(cartItems);
-  const discountTotal = selectDiscountTotal(cartItems);
-  const deliveryFee = selectDeliveryFee(cartItems);
-  const orderTotal = selectOrderTotal(cartItems);
-  const colorPalette = useColorPalette();
-  const isCartView = pathname.includes('/cart/view');
-  const isShippingView = pathname.includes('/checkout/shipping');
-
-  if (!show) return null;
-
-  return (
-    <Grid
-      item
-      xs={12}
-      md={3}>
-      <Box
-        sx={{
-          paddingX: 3,
-          paddingY: 4,
-          backgroundColor: colorPalette.card.background,
-          borderRadius: BORDER_RADIUS,
-        }}>
-        <Typography
-          component="h1"
-          fontFamily="Source Sans Pro,sans-serif"
-          fontSize={30}
-          lineHeight={1}>
-          Your Order
-        </Typography>
-        <Box sx={{ paddingY: 2 }}>
-          <OrderTotals
-            cartTotal={cartTotal}
-            discountTotal={discountTotal}
-            deliveryFee={deliveryFee}
-            orderTotal={orderTotal}
-            totalToPay={orderTotal}
-          />
-        </Box>
-        <NavButton
-          showCheckoutButton={isCartView}
-          showPaymentButton={isShippingView}
-        />
-      </Box>
-    </Grid>
-  );
-}
-
-type CheckoutFlowLayoutProps = {
+type Props = {
   children: ReactNode;
 };
 
-export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps) {
+export default function CheckoutFlowLayout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
@@ -124,6 +39,8 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
 
         handleDeleteOrder();
       }
+    } else {
+      return;
     }
   }, [
     dispatch,
@@ -149,7 +66,7 @@ export default function CheckoutFlowLayout({ children }: CheckoutFlowLayoutProps
           md={!isPaymentView ? 9 : 12}>
           {children}
         </Grid>
-        <YourOrderTotals show={!isPaymentView} />
+        {!isPaymentView ? <CheckoutOrderTotals /> : null}
       </Grid>
     </CommonLayoutContainer>
   );

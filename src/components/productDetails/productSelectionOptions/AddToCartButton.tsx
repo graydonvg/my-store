@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { Typography } from '@mui/material';
-import ContainedButton from './ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { ProductType } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';

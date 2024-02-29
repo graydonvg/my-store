@@ -13,7 +13,7 @@ import {
   selectDiscountTotal,
 } from '@/lib/redux/selectors/cartSelectors';
 
-type CheckoutButtonProps = ButtonProps & {
+type Props = ButtonProps & {
   disabled?: boolean;
   label: string;
   fullWidth?: boolean;
@@ -30,7 +30,7 @@ export default function CheckoutButton({
   height,
   minHeight,
   ...props
-}: CheckoutButtonProps) {
+}: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);

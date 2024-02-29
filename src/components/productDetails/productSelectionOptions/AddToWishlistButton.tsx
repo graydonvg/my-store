@@ -1,5 +1,5 @@
 import { Favorite } from '@mui/icons-material';
-import ContainedButton from './ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import { toast } from 'react-toastify';
 
 type Props = {};

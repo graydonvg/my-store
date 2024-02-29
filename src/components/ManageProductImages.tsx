@@ -76,7 +76,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
         disabled={uploadInProgress || isSubmitting}
         label={
           <>
-            {uploadInProgress ? '' : 'upload images'}
+            {!uploadInProgress ? 'upload images' : ''}
             <ImageInput onChange={handleImageUpload} />
           </>
         }

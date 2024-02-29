@@ -10,7 +10,7 @@ type Props = {
   orders: OrderType[] | null;
 };
 
-export default function Orders({ orders }: Props) {
+export default function OrdersPageClient({ orders }: Props) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));

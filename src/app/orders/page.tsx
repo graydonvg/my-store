@@ -1,4 +1,4 @@
-import Orders from '@/components/orders/Orders';
+import OrdersPageClient from '@/components/ordersPageClient/OrdersPageClient';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Box } from '@mui/material';
@@ -16,7 +16,7 @@ export default async function OrdersPage() {
   return (
     <Box>
       <PageHeaderWithBorder label="Orders" />
-      <Orders orders={orders} />
+      <OrdersPageClient orders={orders} />
     </Box>
   );
 }
