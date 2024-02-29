@@ -3,11 +3,12 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { getProductsByCategory } from '@/services/products/get';
 
 export default async function WomensProducts() {
-  const { data: products } = await getProductsByCategory('Women');
+  const category = 'Women';
+  const { data: products } = await getProductsByCategory(category);
 
   return (
     <>
-      <PageHeaderWithBorder label="Women" />
+      <PageHeaderWithBorder label={category} />
       {products ? <Products products={products} /> : null}
     </>
   );
