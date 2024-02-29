@@ -48,25 +48,27 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
     }
   }
 
-  if (showContainedButton)
-    return (
-      <ContainedButton
-        disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
-        onClick={handlePayWithStripe}
-        label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
-        fullWidth
-        backgroundColor={'warning'}
-        isLoading={checkoutData.isProcessing}
-      />
-    );
+  return (
+    <>
+      {showContainedButton ? (
+        <ContainedButton
+          disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
+          onClick={handlePayWithStripe}
+          label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
+          fullWidth
+          backgroundColor={'warning'}
+          isLoading={checkoutData.isProcessing}
+        />
+      ) : null}
 
-  if (showBreadcrumbButton)
-    return (
-      <BreadcrumbItem
-        href="/checkout/payment"
-        icon={<Payment />}
-        label="payment"
-        onLinkClick={handlePayWithStripe}
-      />
-    );
+      {showBreadcrumbButton ? (
+        <BreadcrumbItem
+          href="/checkout/payment"
+          icon={<Payment />}
+          label="payment"
+          onLinkClick={handlePayWithStripe}
+        />
+      ) : null}
+    </>
+  );
 }
