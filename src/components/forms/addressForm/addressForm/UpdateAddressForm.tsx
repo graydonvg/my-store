@@ -1,8 +1,7 @@
 import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
 import { Add } from '@mui/icons-material';
-import { addNewAddress } from '@/services/users/add';
-import { InsertAddressType, UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
+import { UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';

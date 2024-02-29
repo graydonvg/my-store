@@ -11,7 +11,7 @@ import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
 import updateProductImageData from '@/services/product-image-data/update';
-import ProductForm from '@/components/forms/ProductForm';
+import ProductForm from '@/components/forms/productForm/ProductForm';
 import { Box } from '@mui/material';
 import ManageProductImages from '@/components/ManageProductImages';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';

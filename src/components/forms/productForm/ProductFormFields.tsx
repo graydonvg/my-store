@@ -20,6 +20,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
   const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
+  const isFieldDisabled = isSubmitting || isClearingAllFields;
 
   function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormData({ field: 'sizes', value: selectedSize }));
@@ -39,7 +40,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
           onChange={handleSelectSize}
           selection={productFormData.sizes}
           buttons={ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
-          disabled={isSubmitting || isClearingAllFields}
+          disabled={isFieldDisabled}
         />
       </Box>
       <SelectField
@@ -48,7 +49,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         onChange={handleInputChange}
         value={productFormData['category']}
         options={['Men', 'Women', 'Kids']}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         required
       />
       <CustomTextField
@@ -56,7 +57,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="name"
         value={productFormData['name']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         required
       />
       <CustomTextField
@@ -64,7 +65,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="brand"
         value={productFormData['brand']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         required
       />
       <CustomTextField
@@ -72,7 +73,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="details"
         value={productFormData['details']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         multiline
         placeholder="e.g. Black, Regular fit, ..."
         required
@@ -82,7 +83,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="deliveryInfo"
         value={productFormData['deliveryInfo']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         multiline
         required
       />
@@ -91,7 +92,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="returnInfo"
         value={productFormData['returnInfo']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         multiline
         required
       />
@@ -100,7 +101,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="price"
         value={productFormData['price']}
         onChange={handleInputChange}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         placeholder="e.g. 199"
         required
       />
@@ -110,7 +111,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         value={productFormData['isOnSale']}
         onChange={handleInputChange}
         options={['No', 'Yes']}
-        disabled={isSubmitting || isClearingAllFields}
+        disabled={isFieldDisabled}
         required
       />
       <NumberField
@@ -118,7 +119,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="salePercentage"
         onChange={handleInputChange}
         value={productFormData['salePercentage']}
-        disabled={!isOnSale || isSubmitting || isClearingAllFields}
+        disabled={!isOnSale || isFieldDisabled}
         placeholder="e.g. 20"
         required
       />

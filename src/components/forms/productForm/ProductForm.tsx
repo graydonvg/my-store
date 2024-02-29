@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DeleteForever } from '@mui/icons-material';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
-import ProductFormFields from '@/components/ProductFormFields';
+import ProductFormFields from '@/components/forms/productForm/ProductFormFields';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 

@@ -11,7 +11,7 @@ import deleteProduct from '@/services/products/delete';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
-import ProductForm from '@/components/forms/ProductForm';
+import ProductForm from '@/components/forms/productForm/ProductForm';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/ManageProductImages';
 import { Box } from '@mui/material';
