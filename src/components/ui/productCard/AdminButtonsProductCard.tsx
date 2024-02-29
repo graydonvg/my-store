@@ -9,8 +9,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import ContainedButton from '../buttons/ContainedButton';
-import { DeleteForever } from '@mui/icons-material';
+import { DeleteForever, Edit } from '@mui/icons-material';
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/slices/productImagesSlice';
+import OutlinedButton from '../buttons/OutlinedButton';
 
 type Props = {
   product: ProductType;
@@ -20,14 +21,15 @@ export default function AdminButtonsProductCard({ product }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { imageData } = useAppSelector((state) => state.productImages);
+  const { productId } = useAppSelector((state) => state.productForm.productFormData);
   const { productImageData, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleGoToUpdateProduct() {
+  async function handleEditProduct() {
     setIsLoading(true);
 
-    if (imageData && !product.productId) {
+    if (imageData.length > 0 && !productId) {
       const { success, message } = await deleteAllProductImages(imageData);
 
       if (success === false) {
@@ -39,8 +41,8 @@ export default function AdminButtonsProductCard({ product }: Props) {
     dispatch(clearAllProductImagesData());
     dispatch(setImageData(product.productImageData));
     dispatch(setProductFormData(restOfProductData));
+    router.push('/admin-view/edit-product');
     setIsLoading(false);
-    router.push('/admin-view/update-product');
   }
 
   async function handleRevalidate() {
@@ -96,13 +98,13 @@ export default function AdminButtonsProductCard({ product }: Props) {
         startIcon={<DeleteForever />}
         backgroundColor="warning"
       />
-      <ContainedButton
+      <OutlinedButton
         disabled={isLoading || isDeletingProduct}
-        onClick={handleGoToUpdateProduct}
+        onClick={handleEditProduct}
         fullWidth
-        label={isLoading ? '' : 'update'}
+        label={!isLoading ? 'edit' : ''}
         isLoading={isLoading}
-        backgroundColor="primary"
+        startIcon={<Edit />}
       />
     </Box>
   );

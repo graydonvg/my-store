@@ -1,5 +1,5 @@
 import useColorPalette from '@/hooks/useColorPalette';
-import { Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
@@ -20,6 +20,8 @@ export default function OutlinedButton({
   ...props
 }: CustomButtonProps) {
   const colorPalette = useColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
 
   return (
     <Button
@@ -28,7 +30,7 @@ export default function OutlinedButton({
       startIcon={
         isLoading ? (
           <PulseLoader
-            color="white"
+            color={mode === 'dark' ? 'white' : 'black'}
             loading={isLoading}
             size={10}
           />

@@ -52,8 +52,6 @@ export type ImageUploadProgressType = {
   progress: number;
 };
 
-export type UpdateProductType = Database['public']['Tables']['products']['Update'];
-
 export type InsertProductImageDataTypeStore = {
   imageUrl: string;
   fileName: string;
@@ -85,6 +83,8 @@ export type ProductType = {
     index: number;
   }[];
 };
+
+export type UpdateProductType = Database['public']['Tables']['products']['Update'];
 
 export type InsertProductTypeDb = Database['public']['Tables']['products']['Insert'];
 

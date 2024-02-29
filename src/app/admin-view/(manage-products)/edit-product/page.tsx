@@ -126,7 +126,7 @@ export default function AdminViewUpdateProductPage() {
       <ProductForm
         onSubmit={handleUpdateProduct}
         isSubmitting={isSubmitting}
-        submitButtonLabel={isSubmitting ? '' : 'update product'}
+        submitButtonLabel={!isSubmitting ? 'update product' : ''}
       />
     </Box>
   );

@@ -23,8 +23,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
   const isAdminView = pathname.includes('/admin-view');
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
-  const { productImageData } = product;
-  const imageUrl = productImageData.find((image) => image.index === 0)?.imageUrl;
+  const imageUrl = product.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
     <Box sx={{ borderRadius: BORDER_RADIUS, height: 1 }}>

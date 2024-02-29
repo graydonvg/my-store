@@ -28,9 +28,11 @@ export default function AdminViewAddNewProductPage() {
   const numberOfFormFields = getNumberOfFormFields(productFormData);
 
   useEffect(() => {
-    dispatch(clearProductFormData());
-    dispatch(clearAllProductImagesData());
-  }, [dispatch]);
+    if (productFormData.productId) {
+      dispatch(clearProductFormData());
+      dispatch(clearAllProductImagesData());
+    }
+  }, [dispatch, productFormData.productId]);
 
   useEffect(() => {
     function handler(e: BeforeUnloadEvent) {
@@ -121,7 +123,7 @@ export default function AdminViewAddNewProductPage() {
       <ProductForm
         onSubmit={handleAddProduct}
         isSubmitting={isSubmitting}
-        submitButtonLabel={isSubmitting ? '' : 'add product'}
+        submitButtonLabel={!isSubmitting ? 'add product' : ''}
         submitButtonStartIcon={!isSubmitting ? <Add /> : null}
       />
     </Box>
