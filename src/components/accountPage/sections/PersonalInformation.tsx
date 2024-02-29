@@ -7,7 +7,7 @@ import UpdateLastNameForm from '@/components/forms/accountPageForms/UpdateLastNa
 import UpdateContactNumberForm from '@/components/forms/accountPageForms/UpdateContactNumberForm';
 import { AccountFieldToEditType } from '@/types';
 
-const fieldInfoMap = {
+const fieldDataMap = {
   firstName: {
     label: 'Name',
     form: <UpdateFirstNameForm />,
@@ -38,17 +38,17 @@ export default function PersonalInformation() {
 
   return (
     <>
-      {Object.entries(fieldInfoMap).map(([fieldName, fieldInfo]) => (
+      {Object.entries(fieldDataMap).map(([fieldName, fieldData]) => (
         <Fragment key={fieldName}>
           {fieldToEdit !== fieldName ? (
             <UserDataAccountPage
-              label={fieldInfo.label}
-              onClick={() => handleSetFieldToEdit(fieldName as keyof typeof fieldInfoMap)}>
-              {userData?.[fieldName as keyof typeof fieldInfoMap] ?? ''}
+              label={fieldData.label}
+              onClick={() => handleSetFieldToEdit(fieldName as keyof typeof fieldDataMap)}>
+              {userData?.[fieldName as keyof typeof fieldDataMap] ?? ''}
             </UserDataAccountPage>
           ) : null}
 
-          {fieldToEdit === fieldName ? fieldInfo.form : null}
+          {fieldToEdit === fieldName ? fieldData.form : null}
         </Fragment>
       ))}
     </>

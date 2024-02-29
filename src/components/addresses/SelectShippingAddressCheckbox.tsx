@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { AddressType } from '@/types';
 import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 
-type SelectShippingAddressCheckboxProps = {
+type Props = {
   address: AddressType;
 };
 
-export default function SelectShippingAddressCheckbox({ address }: SelectShippingAddressCheckboxProps) {
+export default function SelectShippingAddressCheckbox({ address }: Props) {
   const dispatch = useAppDispatch();
   const selectedAddressId = useAppSelector((state) => state.checkoutData.selectedAddressId);
   const colorPalette = useColorPalette();

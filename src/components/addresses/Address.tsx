@@ -10,8 +10,7 @@ export default function Address({ address }: Props) {
     <Typography fontSize={16}>
       {address.complexOrBuilding ? `${address.complexOrBuilding}, ` : null}
 
-      {`${address.streetAddress}, ${address.suburb}, ${address.province},
-											${address.city}, ${address.postalCode}`}
+      {`${address.streetAddress}, ${address.suburb}, ${address.province}, ${address.city}, ${address.postalCode}`}
     </Typography>
   );
 }
