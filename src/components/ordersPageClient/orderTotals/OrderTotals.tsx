@@ -3,7 +3,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
 
-type OrderTotalsProps = {
+type Props = {
   cartTotal: number;
   discountTotal: number;
   deliveryFee: number;
@@ -11,13 +11,7 @@ type OrderTotalsProps = {
   totalToPay?: number;
 };
 
-export default function OrderTotals({
-  orderTotal,
-  discountTotal,
-  deliveryFee,
-  totalToPay,
-  cartTotal,
-}: OrderTotalsProps) {
+export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;

@@ -11,12 +11,12 @@ export default function AddToWishlistButton() {
     toast.info('Coming soon!');
 
     // if (!userData) {
-    //   handleOpenSignInDialog();
+    //   dispatch(openDialog('signInDialog'));
     //   return;
     // }
 
-    // if (!itemSize) {
-    //   handleSelectSizeToast();
+    // if (!size) {
+    //   toast.error('Select a size first.');
     //   return;
     // }
   }

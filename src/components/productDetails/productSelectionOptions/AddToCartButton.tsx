@@ -5,28 +5,10 @@ import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectio
 import { openDialog } from '@/lib/redux/slices/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
-import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
-import { Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { ProductType } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
-
-function OpenCartDrawerToastButton() {
-  const dispatch = useAppDispatch();
-
-  function handleOpenCart() {
-    dispatch(setIsCartOpen(true));
-  }
-
-  return (
-    <Typography
-      component="p"
-      onClick={handleOpenCart}>
-      Item added to cart.
-    </Typography>
-  );
-}
 
 type Props = {
   product: ProductType;
@@ -39,6 +21,7 @@ export default function AddToCartButton({ product }: Props) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const { quantity, size } = useAppSelector((state) => state.productSelectionDetails);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const addedToCartToastMessage = 'Item added to cart.';
 
   async function handleAddToCart() {
     if (!userData) {
@@ -63,7 +46,7 @@ export default function AddToCartButton({ product }: Props) {
 
       if (success === true) {
         router.refresh();
-        toast.success(<OpenCartDrawerToastButton />);
+        toast.success(addedToCartToastMessage);
       } else {
         toast.error(message);
       }
@@ -79,7 +62,7 @@ export default function AddToCartButton({ product }: Props) {
 
       if (success === true) {
         router.refresh();
-        toast.success(<OpenCartDrawerToastButton />);
+        toast.success(addedToCartToastMessage);
       } else {
         toast.error(message);
       }
