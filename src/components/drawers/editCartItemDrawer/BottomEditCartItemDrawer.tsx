@@ -9,7 +9,6 @@ import { Dispatch, SetStateAction } from 'react';
 type Props = {
   cartItem: CartItemType;
   isUpdatingCartItem: boolean;
-  setCartItemQuantityWillUpdate: Dispatch<SetStateAction<boolean>>;
   isRemovingCartItem: boolean;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   removeCartItemOnClick: () => void;
@@ -18,7 +17,6 @@ type Props = {
 export default function BottomEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
-  setCartItemQuantityWillUpdate,
   isRemovingCartItem,
   removeCartItemOnClick,
   updateCartItemQuantity,
@@ -48,7 +46,6 @@ export default function BottomEditCartItemDrawer({
       <QuantityPickerEditCartItemDrawer
         cartItem={cartItem}
         updateCartItemQuantity={updateCartItemQuantity}
-        setCartItemQuantityWillUpdate={setCartItemQuantityWillUpdate}
       />
       <TextButton
         label="move to wishlist"

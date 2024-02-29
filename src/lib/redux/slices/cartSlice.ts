@@ -11,18 +11,16 @@ function handleSetCartItemQuantity(cartItemId: string, value: number, cartItems:
   );
 }
 
-type CartItemToEditIdType = string | null;
-
 type CartState = {
   isCartOpen: boolean;
-  cartItemToEditId: CartItemToEditIdType;
   cartItems: CartItemType[];
+  cartItemQuantityWillUpdate: boolean;
 };
 
 export const initialState: CartState = {
   isCartOpen: false,
-  cartItemToEditId: null,
   cartItems: [],
+  cartItemQuantityWillUpdate: false,
 };
 
 const cartSlice = createSlice({
@@ -35,9 +33,6 @@ const cartSlice = createSlice({
     setCartItems(state, action: PayloadAction<CartItemType[]>) {
       state.cartItems = action.payload;
     },
-    setCartItemToEditId(state, action: PayloadAction<CartItemToEditIdType>) {
-      state.cartItemToEditId = action.payload;
-    },
     setCartItemSize(state, action: PayloadAction<{ id: string; size: string }>) {
       const { id, size } = action.payload;
       state.cartItems = handleSetCartItemSize(id, size, state.cartItems);
@@ -45,6 +40,9 @@ const cartSlice = createSlice({
     setCartItemQuantity(state, action: PayloadAction<{ id: string; value: number }>) {
       const { id, value } = action.payload;
       state.cartItems = handleSetCartItemQuantity(id, value, state.cartItems);
+    },
+    setCartItemQuantityWillUpdate(state, action: PayloadAction<boolean>) {
+      state.cartItemQuantityWillUpdate = action.payload;
     },
     clearCart(state) {
       state.cartItems = initialState.cartItems;
@@ -54,7 +52,13 @@ const cartSlice = createSlice({
 
 const { actions, reducer } = cartSlice;
 
-export const { setIsCartOpen, setCartItems, setCartItemToEditId, setCartItemSize, setCartItemQuantity, clearCart } =
-  actions;
+export const {
+  setIsCartOpen,
+  setCartItems,
+  setCartItemSize,
+  setCartItemQuantity,
+  setCartItemQuantityWillUpdate,
+  clearCart,
+} = actions;
 
 export const cartReducer = reducer;

@@ -1,7 +1,7 @@
 import { Box, IconButton, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
 import { CartItemType } from '@/types';
@@ -12,26 +12,27 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
 import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
 import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
+import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
 
-type EditCartItemDrawerProps = {
+type Props = {
   cartItem: CartItemType;
 };
 
-export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps) {
+export default function EditCartItemDrawer({ cartItem }: Props) {
+  const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const router = useRouter();
   const theme = useTheme();
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
   const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
-  const [cartItemQuantityWillUpdate, setCartItemQuantityWillUpdate] = useState(false);
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
 
   useEffect(() => {
     setIsUpdatingCartItemSize(false);
-  }, [cartItem?.size]);
+  }, [dispatch, cartItem?.size]);
 
   useEffect(() => {
     setIsRemovingCartItem(false);
@@ -44,6 +45,23 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
   function handleCloseDrawer() {
     if (isUpdatingCartItem || cartItemQuantityWillUpdate) return;
     setCartItemToEditId(null);
+  }
+
+  async function handleUpdateCartItemQuantity(cartItemId: string, newQuantity: number) {
+    setIsUpdatingCartItemQuantity(true);
+    dispatch(setCartItemQuantityWillUpdate(false));
+
+    const { success, message } = await updateCartItemQuantity({
+      cartItemId: cartItemId,
+      quantity: newQuantity,
+    });
+
+    if (success === false) {
+      toast.error(message);
+    }
+
+    router.refresh();
+    setIsUpdatingCartItemQuantity(false);
   }
 
   async function handleUpdateCartItemSize(size: string) {
@@ -79,23 +97,6 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
         toast.error(message);
       }
     }
-  }
-
-  async function handleUpdateCartItemQuantity(cartItemId: string, newQuantity: number) {
-    setIsUpdatingCartItemQuantity(true);
-    setCartItemQuantityWillUpdate(false);
-
-    const { success, message } = await updateCartItemQuantity({
-      cartItemId: cartItemId,
-      quantity: newQuantity,
-    });
-
-    if (success === false) {
-      toast.error(message);
-    }
-
-    router.refresh();
-    setIsUpdatingCartItemQuantity(false);
   }
 
   async function handleRemoveCartItem() {
@@ -148,7 +149,6 @@ export default function EditCartItemDrawer({ cartItem }: EditCartItemDrawerProps
             isRemovingCartItem={isRemovingCartItem}
             updateCartItemQuantity={handleUpdateCartItemQuantity}
             removeCartItemOnClick={handleRemoveCartItem}
-            setCartItemQuantityWillUpdate={setCartItemQuantityWillUpdate}
           />
         </Box>
       </DrawerComponent>

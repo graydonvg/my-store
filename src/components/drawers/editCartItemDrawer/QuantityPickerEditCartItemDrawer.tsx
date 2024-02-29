@@ -1,24 +1,23 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { CartItemType } from '@/types';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
+import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {
   cartItem: CartItemType;
-  setCartItemQuantityWillUpdate: Dispatch<SetStateAction<boolean>>;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
 };
 
-export default function QuantityPickerEditCartItemDrawer({
-  cartItem,
-  setCartItemQuantityWillUpdate,
-  updateCartItemQuantity,
-}: Props) {
+export default function QuantityPickerEditCartItemDrawer({ cartItem, updateCartItemQuantity }: Props) {
+  const dispatch = useAppDispatch();
   const [cartItemQuantity, setCartItemQuantity] = useState(cartItem.quantity);
   const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
 
   function handleIncrementCartItemQuantity() {
-    setCartItemQuantityWillUpdate(true);
+    dispatch(setCartItemQuantityWillUpdate(true));
+
     const newQuantity = cartItemQuantity + 1;
     setCartItemQuantity(newQuantity);
     scheduleUpdateCartItemQuantityWithDelay(newQuantity);
@@ -26,7 +25,7 @@ export default function QuantityPickerEditCartItemDrawer({
 
   function handleDecrementCartItemQuantity() {
     if (cartItemQuantity === 1) return;
-    setCartItemQuantityWillUpdate(true);
+    dispatch(setCartItemQuantityWillUpdate(true));
     const newQuantity = cartItemQuantity - 1;
     setCartItemQuantity(newQuantity);
     scheduleUpdateCartItemQuantityWithDelay(newQuantity);
