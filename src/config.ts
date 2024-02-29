@@ -1,4 +1,4 @@
-export const STORE_NAME = 'BestStoreEver';
+export const STORE_NAME = 'MyStore';
 
 export const BORDER_RADIUS = '4px';
 
