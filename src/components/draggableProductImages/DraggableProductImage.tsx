@@ -9,10 +9,10 @@ import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { PointerEvent, useState } from 'react';
-import { deleteImage, setIsDeletingImage } from '@/lib/redux/slices/productImagesSlice';
-
-import { Reorder, useDragControls } from 'framer-motion';
+import { PointerEvent, useEffect, useState } from 'react';
+import { deleteImageData, setIsDeletingImage } from '@/lib/redux/slices/productImagesSlice';
+import { Reorder, animate, useDragControls, useMotionValue } from 'framer-motion';
+import { useBackgroundColorOnDrag } from '@/hooks/useBackgroundColorOnDrag';
 
 export type Props = {
   imageData: InsertProductImageDataTypeStore;
@@ -20,23 +20,59 @@ export type Props = {
 };
 
 export default function DraggableProductImage({ imageData, arrayIndex }: Props) {
+  const y = useMotionValue(1);
   const dragControls = useDragControls();
+  const opacityOnDrag = useBackgroundColorOnDrag(y);
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const { productFormData } = useAppSelector((state) => state.productForm);
   const isDeletingImage = useAppSelector((state) => state.productImages.isDeletingImage);
   const [imageToDeleteIndex, setImageToDeleteIndex] = useState<number | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteIndex === arrayIndex;
+  const inactiveBackgroundColor = 'rgba(0,0,0,0)';
+  const backgroundColor = useMotionValue(inactiveBackgroundColor);
 
-  async function handleDeleteImage() {
+  useEffect(() => {
+    let isActive = false;
+
+    const unsubscribe = y.on('change', (latest) => {
+      const wasActive = isActive;
+
+      if (latest !== 0) {
+        isActive = true;
+
+        if (isActive !== wasActive) {
+          animate(backgroundColor, colorPalette.boxShadow);
+        }
+      } else {
+        isActive = false;
+
+        if (isActive !== wasActive) {
+          animate(backgroundColor, inactiveBackgroundColor);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [y, backgroundColor, colorPalette.boxShadow]);
+
+  function handleDragStart(e: PointerEvent<HTMLButtonElement>) {
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100);
+    }
+
+    dragControls.start(e);
+  }
+
+  async function deleteImage() {
     dispatch(setIsDeletingImage(true));
     setImageToDeleteIndex(imageData.index);
 
     if (imageData.fileName.length > 0) {
       await deleteProductImageFromStorage(imageData.fileName);
     }
+
     if (productFormData.productId && imageData.productImageId) {
       const { success, message } = await deleteProductImageDataFromDb(imageData.productImageId);
 
@@ -45,23 +81,9 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
       }
     }
 
-    dispatch(deleteImage({ fileName: imageData.fileName }));
+    dispatch(deleteImageData({ fileName: imageData.fileName }));
     setImageToDeleteIndex(null);
     dispatch(setIsDeletingImage(false));
-  }
-
-  function handleDragStart(e: PointerEvent<HTMLButtonElement>) {
-    if (window.navigator.vibrate) {
-      window.navigator.vibrate(100);
-    }
-
-    setIsDragging(true);
-
-    dragControls.start(e);
-  }
-
-  function onDragEnd() {
-    setIsDragging(false);
   }
 
   return (
@@ -70,14 +92,13 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
         value={imageData}
         dragListener={false}
         dragControls={dragControls}
-        style={{ position: 'relative' }}>
+        style={{ position: 'relative', backgroundColor: opacityOnDrag, y }}>
         <Grid
           container
           sx={{
-            backgroundColor: isDragging ? colorPalette.boxShadow : '',
             borderRadius: BORDER_RADIUS,
             paddingY: 2,
-            opacity: isDeletingCurrentImage ? '50%' : null,
+            opacity: isDeletingCurrentImage ? 0.5 : 1,
           }}>
           <Grid
             item
@@ -86,7 +107,6 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
             <IconButton
               aria-label="reorder handle"
               onPointerDown={(e) => handleDragStart(e)}
-              onPointerUp={onDragEnd}
               disableRipple
               sx={{ cursor: 'grab', touchAction: 'none' }}>
               <DragHandle fontSize="large" />
@@ -136,7 +156,7 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
               }}>
               <TextButton
                 label={isDeletingCurrentImage ? '' : 'delete'}
-                onClick={handleDeleteImage}
+                onClick={deleteImage}
                 isLoading={isDeletingCurrentImage}
                 disabled={isDeletingCurrentImage}
                 labelColor={colorPalette.typography}

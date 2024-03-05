@@ -52,7 +52,7 @@ const productImagesSlice = createSlice({
     setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
       state.imageData = handleUpdateImageIndexesAndSort(action.payload);
     },
-    deleteImage(state, action: PayloadAction<{ fileName: string }>) {
+    deleteImageData(state, action: PayloadAction<{ fileName: string }>) {
       state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
@@ -76,7 +76,7 @@ export const {
   setImageUploadProgress,
   setImageData,
   setUpdatedImageData,
-  deleteImage,
+  deleteImageData,
   setIsDeletingImage,
   clearImageData,
   clearImageUploadProgess,
