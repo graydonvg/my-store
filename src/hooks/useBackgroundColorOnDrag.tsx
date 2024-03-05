@@ -5,28 +5,32 @@ import useColorPalette from './useColorPalette';
 const inactiveBackgroundColor = 'rgba(0,0,0,0)';
 
 export function useBackgroundColorOnDrag(value: MotionValue<number>) {
-  const backgroundColor = useMotionValue(inactiveBackgroundColor);
   const colorPalette = useColorPalette();
+  const backgroundColorOnDrag = useMotionValue(inactiveBackgroundColor);
 
   useEffect(() => {
     let isActive = false;
-    const unsubscribe = value.on('change', (latest) => {
+
+    const unsubscribe = value.on('change', (value) => {
       const wasActive = isActive;
-      if (latest !== 0) {
+
+      if (value !== 0) {
         isActive = true;
+
         if (isActive !== wasActive) {
-          animate(backgroundColor, colorPalette.boxShadow);
+          animate(backgroundColorOnDrag, colorPalette.boxShadow);
         }
       } else {
         isActive = false;
+
         if (isActive !== wasActive) {
-          animate(backgroundColor, inactiveBackgroundColor);
+          animate(backgroundColorOnDrag, inactiveBackgroundColor);
         }
       }
     });
 
     return () => unsubscribe();
-  }, [value, backgroundColor, colorPalette.boxShadow]);
+  }, [value, backgroundColorOnDrag, colorPalette.boxShadow]);
 
-  return backgroundColor;
+  return backgroundColorOnDrag;
 }

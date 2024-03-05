@@ -9,9 +9,9 @@ import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { PointerEvent, useEffect, useState } from 'react';
+import { PointerEvent, useState } from 'react';
 import { deleteImageData, setIsDeletingImage } from '@/lib/redux/slices/productImagesSlice';
-import { Reorder, animate, useDragControls, useMotionValue } from 'framer-motion';
+import { Reorder, useDragControls, useMotionValue } from 'framer-motion';
 import { useBackgroundColorOnDrag } from '@/hooks/useBackgroundColorOnDrag';
 
 export type Props = {
@@ -21,8 +21,8 @@ export type Props = {
 
 export default function DraggableProductImage({ imageData, arrayIndex }: Props) {
   const y = useMotionValue(1);
+  const backgroundColorOnDrag = useBackgroundColorOnDrag(y);
   const dragControls = useDragControls();
-  const opacityOnDrag = useBackgroundColorOnDrag(y);
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const { productFormData } = useAppSelector((state) => state.productForm);
@@ -30,32 +30,6 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
   const [imageToDeleteIndex, setImageToDeleteIndex] = useState<number | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteIndex === arrayIndex;
-  const inactiveBackgroundColor = 'rgba(0,0,0,0)';
-  const backgroundColor = useMotionValue(inactiveBackgroundColor);
-
-  useEffect(() => {
-    let isActive = false;
-
-    const unsubscribe = y.on('change', (latest) => {
-      const wasActive = isActive;
-
-      if (latest !== 0) {
-        isActive = true;
-
-        if (isActive !== wasActive) {
-          animate(backgroundColor, colorPalette.boxShadow);
-        }
-      } else {
-        isActive = false;
-
-        if (isActive !== wasActive) {
-          animate(backgroundColor, inactiveBackgroundColor);
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, [y, backgroundColor, colorPalette.boxShadow]);
 
   function handleDragStart(e: PointerEvent<HTMLButtonElement>) {
     if (window.navigator.vibrate) {
@@ -92,7 +66,7 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
         value={imageData}
         dragListener={false}
         dragControls={dragControls}
-        style={{ position: 'relative', backgroundColor: opacityOnDrag, y }}>
+        style={{ position: 'relative', backgroundColor: backgroundColorOnDrag, y }}>
         <Grid
           container
           sx={{
