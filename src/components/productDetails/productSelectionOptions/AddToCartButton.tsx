@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { useState } from 'react';
-import { ProductType } from '@/types';
+import { CartItemType, ProductType } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
 
 type Props = {
@@ -23,7 +23,37 @@ export default function AddToCartButton({ product }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addedToCartToastMessage = 'Item added to cart.';
 
-  async function handleAddToCart() {
+  async function incrementItemQuantity(existingItem: CartItemType) {
+    const { success, message } = await updateCartItemQuantity({
+      cartItemId: existingItem.cartItemId,
+      quantity: existingItem.quantity + quantity,
+    });
+
+    if (success === true) {
+      router.refresh();
+      toast.success(addedToCartToastMessage);
+    } else {
+      toast.error(message);
+    }
+  }
+
+  async function addNewItemToCart() {
+    const { success, message } = await addItemToCart({
+      productId: product.productId,
+      quantity: quantity,
+      size: size!,
+      userId: userData?.userId!,
+    });
+
+    if (success === true) {
+      router.refresh();
+      toast.success(addedToCartToastMessage);
+    } else {
+      toast.error(message);
+    }
+  }
+
+  async function addToCart() {
     if (!userData) {
       dispatch(openDialog('signInDialog'));
       return;
@@ -39,42 +69,21 @@ export default function AddToCartButton({ product }: Props) {
     const itemExists = cartItems.find((item) => item?.product?.productId === product.productId);
 
     if (itemExists && itemExists.size === size) {
-      const { success, message } = await updateCartItemQuantity({
-        cartItemId: itemExists.cartItemId,
-        quantity: itemExists.quantity + quantity,
-      });
-
-      if (success === true) {
-        router.refresh();
-        toast.success(addedToCartToastMessage);
-      } else {
-        toast.error(message);
-      }
+      await incrementItemQuantity(itemExists);
 
       dispatch(resetProductSelectionDetails());
     } else {
-      const { success, message } = await addItemToCart({
-        productId: product.productId,
-        quantity: quantity,
-        size: size!,
-        userId: userData?.userId!,
-      });
-
-      if (success === true) {
-        router.refresh();
-        toast.success(addedToCartToastMessage);
-      } else {
-        toast.error(message);
-      }
+      await addNewItemToCart();
 
       dispatch(resetProductSelectionDetails());
     }
 
     setIsAddingToCart(false);
   }
+
   return (
     <ContainedButton
-      onClick={handleAddToCart}
+      onClick={addToCart}
       disabled={isAddingToCart}
       isLoading={isAddingToCart}
       fullWidth

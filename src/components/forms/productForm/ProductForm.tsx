@@ -7,7 +7,6 @@ import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import ProductFormFields from '@/components/forms/productForm/ProductFormFields';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
-import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
   isSubmitting: boolean;
@@ -29,7 +28,6 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
   function handleClearAllFormFields() {
     setIsClearingAllFields(true);
     dispatch(clearProductFormData());
-    dispatch(clearAllProductImagesData());
     setIsClearingAllFields(false);
   }
 

@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
-import { formatCurrency } from '@/utils/formatCurrency';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
@@ -12,7 +11,6 @@ import DeleteCartItemButton from './DeleteButtonSmallCartItem';
 import SaleBadgeSmallCartItem from './SaleBadgeSmallCartItem';
 import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
 import ImageSmallCartItem from './ImageSmallCartItem';
-import useColorPalette from '@/hooks/useColorPalette';
 import PriceSmallCartItem from './PriceSmallCartItem';
 
 type Props = {
@@ -20,7 +18,6 @@ type Props = {
 };
 
 export default function SmallCartItem({ item }: Props) {
-  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();

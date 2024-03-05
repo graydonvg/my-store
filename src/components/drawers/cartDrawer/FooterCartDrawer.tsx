@@ -22,7 +22,7 @@ export default function FooterCartDrawer() {
     }
   }
 
-  function handleGoToCartView() {
+  function handleNavigateToCartView() {
     handleCloseCartDrawer();
     router.push('/cart/view');
   }
@@ -89,7 +89,7 @@ export default function FooterCartDrawer() {
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
         <OutlinedButton
-          onClick={handleGoToCartView}
+          onClick={handleNavigateToCartView}
           fullWidth
           label="view cart"
         />

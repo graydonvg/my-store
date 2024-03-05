@@ -12,6 +12,7 @@ export default async function addItemToCart(cartItemData: InsertCartItemType): P
 
     return data;
   } catch (error) {
-    throw new Error(`@services/cart/add. ${error}`);
+    // throw new Error(`@services/cart/add. ${error}`);
+    return { success: false, message: 'An unexpected error occured.' };
   }
 }

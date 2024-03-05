@@ -100,11 +100,11 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
               productName={productFormData.name}
               productImageData={imageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
+              maxImageCount={maxImageCount}
               boxBorderColor={getBoxBorderColor({
                 defaultBorderColor: !imageData[selectedImageIndex],
                 focusedBorderColor: imageUploadProgress[selectedImageIndex] && !imageData[selectedImageIndex],
               })}
-              maxImageCount={maxImageCount}
             />
           ) : null}
         </Grid>

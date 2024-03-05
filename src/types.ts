@@ -7,7 +7,7 @@ export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type AccountFieldToEditType = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
-export type CustomResponseType<T = undefined> = { success: boolean; message: string; data?: T };
+export type CustomResponseType<T = unknown> = { success: boolean; message: string; data?: T };
 
 export type AccountType = {
   currentPassword: string;
