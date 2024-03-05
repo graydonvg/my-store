@@ -63,9 +63,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
           label="Edit images"
           onClick={handleCloseEditImageDrawer}
         />
-        <Box sx={{ overflowY: 'auto', height: 1, opacity: isDeletingAllImages ? '50%' : null }}>
-          <DraggableProductImages />
-        </Box>
+        <DraggableProductImages isDeletingAllImages={isDeletingAllImages} />
         <Box
           sx={{
             display: 'flex',

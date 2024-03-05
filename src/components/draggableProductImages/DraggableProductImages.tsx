@@ -1,12 +1,14 @@
 import DraggableProductImage from './DraggableProductImage';
-import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setUpdatedImageData } from '@/lib/redux/slices/productImagesSlice';
-
 import { Reorder } from 'framer-motion';
 import { InsertProductImageDataTypeStore } from '@/types';
 
-export default function DraggableProductImages() {
+type Props = {
+  isDeletingAllImages: boolean;
+};
+
+export default function DraggableProductImages({ isDeletingAllImages }: Props) {
   const dispatch = useAppDispatch();
   const imageData = useAppSelector((state) => state.productImages.imageData);
 
@@ -15,22 +17,19 @@ export default function DraggableProductImages() {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <Box sx={{ flex: 1 }}>
-        <Reorder.Group
-          axis="y"
-          layoutScroll
-          values={imageData}
-          onReorder={(reorderedImageData) => handleReorder(reorderedImageData)}>
-          {imageData.map((data, index) => (
-            <DraggableProductImage
-              key={data.fileName}
-              imageData={data}
-              arrayIndex={index}
-            />
-          ))}
-        </Reorder.Group>
-      </Box>
-    </Box>
+    <Reorder.Group
+      axis="y"
+      values={imageData}
+      layoutScroll
+      style={{ overflowY: 'auto', opacity: isDeletingAllImages ? 0.5 : 1, height: '100%' }}
+      onReorder={(reorderedImageData) => handleReorder(reorderedImageData)}>
+      {imageData.map((data, index) => (
+        <DraggableProductImage
+          key={data.fileName}
+          imageData={data}
+          arrayIndex={index}
+        />
+      ))}
+    </Reorder.Group>
   );
 }
