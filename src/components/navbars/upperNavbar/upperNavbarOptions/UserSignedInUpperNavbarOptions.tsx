@@ -49,7 +49,7 @@ export default function UserSignedInUpperNavbarOptions() {
               <DividerUpperNavbarOptions />
               <Box sx={{ padding: 0.5 }}>
                 <CheckoutButton
-                  height={'30px'}
+                  height="30px"
                   minHeight={1}
                   label="checkout"
                   backgroundColor="primary"

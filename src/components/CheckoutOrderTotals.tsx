@@ -55,9 +55,9 @@ export default function CheckoutOrderTotals() {
         {isCartView ? (
           <CheckoutButton
             disabled={cartItems.length === 0}
-            label={'checkout now'}
+            label="checkout now"
             fullWidth={true}
-            backgroundColor={'primary'}
+            backgroundColor="primary"
           />
         ) : null}
 
