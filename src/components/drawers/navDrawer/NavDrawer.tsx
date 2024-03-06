@@ -22,14 +22,14 @@ export default function NavDrawer() {
     isBelowMedium ? dispatch(setIsNavDrawerOpen(false)) : null;
   }, [isBelowMedium, dispatch]);
 
-  function handleOpenNavDrawer() {
+  function openNavDrawer() {
     dispatch(setIsNavDrawerOpen(true));
     if (isCartOpen) {
       dispatch(setIsCartOpen(false));
     }
   }
 
-  function handleCloseNavDrawer() {
+  function closeNavDrawer() {
     dispatch(setIsNavDrawerOpen(false));
   }
 
@@ -48,17 +48,17 @@ export default function NavDrawer() {
           },
         }}
         aria-label="open navigation drawer"
-        onClick={handleOpenNavDrawer}>
+        onClick={openNavDrawer}>
         <Menu />
       </IconButton>
       <DrawerComponent
         width="100vw"
         isOpen={{ left: isNavDrawerOpen }}
         zIndex={theme.zIndex.appBar + 1}
-        closeDrawer={handleCloseNavDrawer}>
+        closeDrawer={closeNavDrawer}>
         <DrawerHeader
           label="Menu"
-          onClick={handleCloseNavDrawer}
+          onClick={closeNavDrawer}
           height={navbarHeight}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: 1 }}>

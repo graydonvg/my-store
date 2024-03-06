@@ -12,11 +12,11 @@ export default function SignInDialog() {
   const dispatch = useAppDispatch();
   const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
 
-  function handleOpenSignInDialog() {
+  function openSignInDialog() {
     dispatch(openDialog('signInDialog'));
   }
 
-  function handleOpenSignUpDialog() {
+  function openSignUpDialog() {
     dispatch(closeDialog());
     dispatch(openDialog('signUpDialog'));
   }
@@ -27,12 +27,12 @@ export default function SignInDialog() {
         <TextButton
           label="sign in"
           labelColor={colorPalette.navBar.upper.text}
-          onClick={handleOpenSignInDialog}
+          onClick={openSignInDialog}
         />
       </Box>
       <DialogComponent isOpen={isSignInDialogOpen}>
         <SignInForm>
-          <MuiLink onClick={handleOpenSignUpDialog}>Don&apos;t have an account? Sign Up</MuiLink>
+          <MuiLink onClick={openSignUpDialog}>Don&apos;t have an account? Sign Up</MuiLink>
         </SignInForm>
       </DialogComponent>
     </>

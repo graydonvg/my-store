@@ -12,7 +12,7 @@ export default function DraggableProductImages({ isDeletingAllImages }: Props) {
   const dispatch = useAppDispatch();
   const imageData = useAppSelector((state) => state.productImages.imageData);
 
-  function handleReorder(reorderedImageData: InsertProductImageDataTypeStore[]) {
+  function setReorderedImageData(reorderedImageData: InsertProductImageDataTypeStore[]) {
     dispatch(setUpdatedImageData(reorderedImageData));
   }
 
@@ -22,7 +22,7 @@ export default function DraggableProductImages({ isDeletingAllImages }: Props) {
       values={imageData}
       layoutScroll
       style={{ overflowY: 'auto', opacity: isDeletingAllImages ? 0.5 : 1, height: '100%' }}
-      onReorder={(reorderedImageData) => handleReorder(reorderedImageData)}>
+      onReorder={(reorderedImageData) => setReorderedImageData(reorderedImageData)}>
       {imageData.map((data, index) => (
         <DraggableProductImage
           key={data.fileName}

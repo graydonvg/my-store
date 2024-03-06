@@ -10,7 +10,7 @@ export default function ShopByCategorySection() {
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
   const colorPalette = useColorPalette();
 
-  function handleNavigateToCategory(path: string) {
+  function navigateToCategory(path: string) {
     router.push(path);
   }
 
@@ -37,7 +37,7 @@ export default function ShopByCategorySection() {
             xs={12}
             sm={4}>
             <Box
-              onClick={() => handleNavigateToCategory(category.path)}
+              onClick={() => navigateToCategory(category.path)}
               sx={{
                 position: 'relative',
                 aspectRatio: 4 / 5,

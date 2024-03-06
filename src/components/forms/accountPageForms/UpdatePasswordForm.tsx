@@ -21,8 +21,9 @@ export default function UpdatePasswordForm() {
     dispatch(setFieldToEdit(null));
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,

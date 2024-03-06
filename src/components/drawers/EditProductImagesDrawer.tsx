@@ -25,16 +25,16 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
   const [isEditImagesDrawerOpen, setIsEditImagesDrawerOpen] = useState(false);
 
-  function handleOpenEditImageDrawer() {
+  function openEditImageDrawer() {
     setIsEditImagesDrawerOpen(true);
   }
 
-  function handleCloseEditImageDrawer() {
+  function closeEditImageDrawer() {
     if (isDeletingAllImages || isDeletingImage) return;
     setIsEditImagesDrawerOpen(false);
   }
 
-  async function handleDeleteAllImages() {
+  async function deleteAllImages() {
     setIsDeletingAllImages(true);
 
     await deleteAllProductImages(imageData, productFormData.productId);
@@ -48,7 +48,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
     <>
       <OutlinedButton
         isDisabled={uploadInProgress || isSubmitting || imageData.length === 0}
-        onClick={handleOpenEditImageDrawer}
+        onClick={openEditImageDrawer}
         fullWidth
         label={'edit'}
         startIcon={<Edit />}
@@ -58,10 +58,10 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         width={{ xs: '100vw', sm: '350px' }}
         isOpen={{ right: isEditImagesDrawerOpen }}
         zIndex={theme.zIndex.appBar + 1}
-        closeDrawer={handleCloseEditImageDrawer}>
+        closeDrawer={closeEditImageDrawer}>
         <DrawerHeader
           label="Edit images"
-          onClick={handleCloseEditImageDrawer}
+          onClick={closeEditImageDrawer}
         />
         <DraggableProductImages isDeletingAllImages={isDeletingAllImages} />
         <Box
@@ -83,7 +83,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             },
           }}>
           <ContainedButton
-            onClick={handleDeleteAllImages}
+            onClick={deleteAllImages}
             disabled={isDeletingAllImages}
             isLoading={isDeletingAllImages}
             label={isDeletingAllImages ? '' : 'Delete all'}

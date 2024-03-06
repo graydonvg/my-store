@@ -29,7 +29,9 @@ export function useBackgroundColorOnDrag(value: MotionValue<number>) {
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [value, backgroundColorOnDrag, colorPalette.boxShadow]);
 
   return backgroundColorOnDrag;

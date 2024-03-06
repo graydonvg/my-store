@@ -38,16 +38,16 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     setIsRemovingCartItem(false);
   }, [cartItem]);
 
-  function handleOpenDrawer(id: string | null) {
+  function openDrawer(id: string | null) {
     setCartItemToEditId(id);
   }
 
-  function handleCloseDrawer() {
+  function closeDrawer() {
     if (isUpdatingCartItem || cartItemQuantityWillUpdate) return;
     setCartItemToEditId(null);
   }
 
-  async function handleUpdateCartItemQuantity(cartItemId: string, newQuantity: number) {
+  async function updateItemQuantity(cartItemId: string, newQuantity: number) {
     setIsUpdatingCartItemQuantity(true);
     dispatch(setCartItemQuantityWillUpdate(false));
 
@@ -64,7 +64,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     setIsUpdatingCartItemQuantity(false);
   }
 
-  async function handleUpdateCartItemSize(size: string) {
+  async function updateItemSize(size: string) {
     // If an item with the selected size already exists, update the quantity of that item appropriately and remove the old item. Else, update the size.
 
     if (size === cartItem?.size) return;
@@ -81,9 +81,9 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     if (itemOfSelectedSizeExists) {
       const newQuantity = itemOfSelectedSizeExists.quantity + cartItem?.quantity!;
 
-      await handleUpdateCartItemQuantity(itemOfSelectedSizeExists.cartItemId, newQuantity);
+      await updateItemQuantity(itemOfSelectedSizeExists.cartItemId, newQuantity);
 
-      await handleRemoveCartItem();
+      await removeCartItem();
     } else {
       const { success, message } = await updateCartItemSize({
         cartItemId: cartItem?.cartItemId!,
@@ -99,7 +99,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     }
   }
 
-  async function handleRemoveCartItem() {
+  async function removeCartItem() {
     setIsRemovingCartItem(true);
 
     const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
@@ -114,7 +114,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
   return (
     <>
-      <IconButton onClick={() => handleOpenDrawer(cartItem?.cartItemId)}>
+      <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
           sx={{ color: colorPalette.typographyVariants.grey }}
@@ -127,7 +127,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           right: cartItemToEditId === cartItem?.cartItemId,
         }}
         zIndex={theme.zIndex.appBar + 1}
-        closeDrawer={handleCloseDrawer}>
+        closeDrawer={closeDrawer}>
         <Box
           sx={{
             position: 'relative',
@@ -141,14 +141,14 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           <SizePickerEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
-            setCartItemSizeOnClick={handleUpdateCartItemSize}
+            setCartItemSizeOnClick={updateItemSize}
           />
           <BottomEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
             isRemovingCartItem={isRemovingCartItem}
-            updateCartItemQuantity={handleUpdateCartItemQuantity}
-            removeCartItemOnClick={handleRemoveCartItem}
+            updateCartItemQuantity={updateItemQuantity}
+            removeCartItemOnClick={removeCartItem}
           />
         </Box>
       </DrawerComponent>

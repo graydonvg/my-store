@@ -17,7 +17,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
   const colorPalette = useColorPalette();
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
-  function handleCloseDialog() {
+  function close() {
     if (isDialogLoading) return;
     dispatch(closeDialog());
   }
@@ -26,7 +26,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
     <Dialog
       scroll="body"
       open={isOpen}
-      onClose={handleCloseDialog}
+      onClose={close}
       sx={{
         '& .MuiPaper-root': {
           margin: 2,
@@ -50,7 +50,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
             disableRipple
             size="small"
             aria-label="close dialog"
-            onClick={handleCloseDialog}
+            onClick={close}
             sx={{ color: colorPalette.typography }}>
             <Close fontSize="large" />
           </IconButton>

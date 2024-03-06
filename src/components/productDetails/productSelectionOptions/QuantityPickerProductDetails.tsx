@@ -7,11 +7,11 @@ export default function QuantityPickerProductDetails() {
   const dispatch = useAppDispatch();
   const quantity = useAppSelector((state) => state.productSelectionDetails.quantity);
 
-  function handleIncrementItemQuantity() {
+  function incrementItemQuantity() {
     dispatch(incrementQuantity());
   }
 
-  function handleDecrementItemQuantity() {
+  function decrementItemQuantity() {
     dispatch(decrementQuantity());
   }
 
@@ -39,7 +39,7 @@ export default function QuantityPickerProductDetails() {
             flexShrink: 1,
           }}>
           <IconButton
-            onClick={handleDecrementItemQuantity}
+            onClick={decrementItemQuantity}
             sx={{
               color: 'inherit',
               height: '56px',
@@ -59,7 +59,7 @@ export default function QuantityPickerProductDetails() {
             {quantity}
           </Typography>
           <IconButton
-            onClick={handleIncrementItemQuantity}
+            onClick={incrementItemQuantity}
             sx={{
               color: 'inherit',
               height: '56px',

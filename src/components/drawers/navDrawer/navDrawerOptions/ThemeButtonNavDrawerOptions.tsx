@@ -10,7 +10,7 @@ export default function ThemeButtonNavDrawerOptions() {
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  function handleToggleTheme() {
+  function changeTheme() {
     dispatch(toggleTheme());
   }
 
@@ -20,7 +20,7 @@ export default function ThemeButtonNavDrawerOptions() {
         disablePadding
         sx={{ height: '56px' }}>
         <ListItemButton
-          onClick={handleToggleTheme}
+          onClick={changeTheme}
           sx={{ width: 1, height: '100%' }}>
           <ListItemText
             primary={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}

@@ -1,11 +1,9 @@
 import { InsertProductImageDataTypeStore, ImageUploadProgressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-function handleSetImageUploadProgress(
-  payload: ImageUploadProgressType,
-  imageUploadProgress: ImageUploadProgressType[]
-) {
+function updateImageUploadProgress(payload: ImageUploadProgressType, imageUploadProgress: ImageUploadProgressType[]) {
   const existingIndex = imageUploadProgress.findIndex((upload) => upload.fileName === payload.fileName);
+
   if (existingIndex !== -1) {
     imageUploadProgress[existingIndex] = payload;
   } else {
@@ -15,16 +13,16 @@ function handleSetImageUploadProgress(
   return [...imageUploadProgress];
 }
 
-function handleUpdateImageIndexesAndSort(imageData: InsertProductImageDataTypeStore[]) {
+function updateImageIndexesAndSort(imageData: InsertProductImageDataTypeStore[]) {
   return imageData
     .map((data, newIndex) => (data.index === newIndex ? data : { ...data, index: newIndex }))
     .sort((a, b) => a.index - b.index);
 }
 
-function handleDeleteImage(fileName: string, imageData: InsertProductImageDataTypeStore[]) {
+function deleteImage(fileName: string, imageData: InsertProductImageDataTypeStore[]) {
   const filteredImageData = imageData.filter((image) => image.fileName !== fileName);
 
-  return handleUpdateImageIndexesAndSort(filteredImageData);
+  return updateImageIndexesAndSort(filteredImageData);
 }
 
 type State = {
@@ -44,16 +42,16 @@ const productImagesSlice = createSlice({
   initialState,
   reducers: {
     setImageUploadProgress(state, action: PayloadAction<ImageUploadProgressType>) {
-      state.imageUploadProgress = handleSetImageUploadProgress(action.payload, state.imageUploadProgress);
+      state.imageUploadProgress = updateImageUploadProgress(action.payload, state.imageUploadProgress);
     },
     setImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
       state.imageData = [...state.imageData, ...action.payload];
     },
     setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataTypeStore[]>) {
-      state.imageData = handleUpdateImageIndexesAndSort(action.payload);
+      state.imageData = updateImageIndexesAndSort(action.payload);
     },
     deleteImageData(state, action: PayloadAction<{ fileName: string }>) {
-      state.imageData = handleDeleteImage(action.payload.fileName, state.imageData);
+      state.imageData = deleteImage(action.payload.fileName, state.imageData);
     },
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;

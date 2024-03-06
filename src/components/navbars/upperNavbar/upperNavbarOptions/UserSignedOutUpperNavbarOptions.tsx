@@ -13,7 +13,7 @@ export default function UserSignedOutUpperNavbarOptions() {
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  function handleToggleTheme() {
+  function changeTheme() {
     dispatch(toggleTheme());
   }
 
@@ -26,7 +26,7 @@ export default function UserSignedOutUpperNavbarOptions() {
         sx={{ display: { xs: 'none', md: 'flex' }, gap: '11px' }}>
         <IconButton
           aria-label={`Toggle theme. Current mode is ${mode}.`}
-          onClick={handleToggleTheme}
+          onClick={changeTheme}
           size="small">
           <ThemeToggleIcon
             size="small"

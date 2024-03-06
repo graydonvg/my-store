@@ -11,7 +11,7 @@ export default function AddNewAddressDialog() {
   const isAddNewAddressDialogOpen = useAppSelector((state) => state.dialog.addNewAddressDialog);
   const addressFormData = useAppSelector((state) => state.addressForm);
 
-  function handleOpenAddAddressDialog() {
+  function openAddAddressDialog() {
     if (addressFormData.addressId) {
       dispatch(clearAddressFormData());
     }
@@ -21,7 +21,7 @@ export default function AddNewAddressDialog() {
   return (
     <>
       <ContainedButton
-        onClick={handleOpenAddAddressDialog}
+        onClick={openAddAddressDialog}
         label="add new address"
         styles={{ width: 'fit-content' }}
         fullWidth={false}

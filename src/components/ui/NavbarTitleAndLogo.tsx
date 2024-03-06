@@ -13,13 +13,13 @@ type Props = {
 export default function NavbarTitleAndLogo({ display, variant, color, hideText = false }: Props) {
   const router = useRouter();
 
-  function handleGoToHome() {
+  function navigateToHome() {
     router.push('/');
   }
 
   return (
     <IconButton
-      onClick={handleGoToHome}
+      onClick={navigateToHome}
       sx={{
         display,
         paddingX: 0,

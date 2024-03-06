@@ -56,7 +56,7 @@ export default function AccountDropdownMenu() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
 
-  function handleToggleTheme() {
+  function changeTheme() {
     dispatch(toggleTheme());
   }
 
@@ -103,7 +103,7 @@ export default function AccountDropdownMenu() {
             size={ICON_SIZE}
           />
         }
-        onClick={handleToggleTheme}
+        onClick={changeTheme}
       />
       <SignOutButton
         showAccountMenuButton={true}

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 type Props = {};
 
 export default function AddToWishlistButton() {
-  function handleAddToWishlist() {
+  function addToWishlist() {
     // check if item already added!!!
 
     toast.info('Coming soon!');
@@ -23,7 +23,7 @@ export default function AddToWishlistButton() {
 
   return (
     <ContainedButton
-      onClick={handleAddToWishlist}
+      onClick={addToWishlist}
       fullWidth
       label="add to wishlist"
       backgroundColor="warning"

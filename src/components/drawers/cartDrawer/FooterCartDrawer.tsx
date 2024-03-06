@@ -16,14 +16,14 @@ export default function FooterCartDrawer() {
   const orderTotal = selectCartTotal(cartItems);
   const discountTotal = selectDiscountTotal(cartItems);
 
-  function handleCloseCartDrawer() {
+  function closeCartDrawer() {
     if (isCartOpen === true) {
       dispatch(setIsCartOpen(false));
     }
   }
 
-  function handleNavigateToCartView() {
-    handleCloseCartDrawer();
+  function navigateToCartView() {
+    closeCartDrawer();
     router.push('/cart/view');
   }
 
@@ -89,7 +89,7 @@ export default function FooterCartDrawer() {
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
         <OutlinedButton
-          onClick={handleNavigateToCartView}
+          onClick={navigateToCartView}
           fullWidth
           label="view cart"
         />

@@ -33,11 +33,11 @@ export default function CheckoutFlowLayout({ children }: Props) {
       dispatch(setCheckoutData({ isProcessing: false }));
 
       if (checkoutData.orderId) {
-        const handleDeleteOrder = async () => {
+        const deleteCanceledOrder = async () => {
           await deleteOrder(checkoutData.orderId!);
         };
 
-        handleDeleteOrder();
+        deleteCanceledOrder();
       }
     } else {
       return;

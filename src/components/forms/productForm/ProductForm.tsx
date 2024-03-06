@@ -25,7 +25,7 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
   const numberOfFormFields = getNumberOfFormFields(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
-  function handleClearAllFormFields() {
+  function clearAllFormFields() {
     setIsClearingAllFields(true);
     dispatch(clearProductFormData());
     setIsClearingAllFields(false);
@@ -43,7 +43,7 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
       />
       <ContainedButton
         label={isClearingAllFields ? '' : 'clear all'}
-        onClick={handleClearAllFormFields}
+        onClick={clearAllFormFields}
         disabled={
           uploadInProgress || isSubmitting || isClearingAllFields || emptyFormFields.length === numberOfFormFields
         }

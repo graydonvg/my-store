@@ -10,7 +10,7 @@ export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  async function handleRevalidate() {
+  async function revalidateAndRefresh() {
     setIsLoading(true);
 
     const data = await revalidate('/');
@@ -28,9 +28,9 @@ export default function RevalidateButton() {
   return (
     <ContainedButton
       disabled={isLoading}
-      onClick={handleRevalidate}
+      onClick={revalidateAndRefresh}
       fullWidth
-      label={isLoading ? '' : 'revalidate'}
+      label={!isLoading ? 'revalidate' : ''}
       isLoading={isLoading}
       backgroundColor="primary"
     />

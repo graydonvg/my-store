@@ -15,7 +15,7 @@ export default function UserSignedInUpperNavbarOptions() {
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const colorPalette = useColorPalette();
 
-  function handleNavigateToWishlist() {
+  function navigateToWishlist() {
     toast.info('Wishlist coming soon!');
   }
 
@@ -28,7 +28,7 @@ export default function UserSignedInUpperNavbarOptions() {
           <ListItem disablePadding>
             <DividerUpperNavbarOptions />
             <UpperNavbarIconButton
-              onClick={handleNavigateToWishlist}
+              onClick={navigateToWishlist}
               backgroundColor={colorPalette.navBar.upper.background}>
               <Favorite
                 aria-label="Wishlist"

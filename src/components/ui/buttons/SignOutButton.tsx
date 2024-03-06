@@ -25,8 +25,9 @@ export default function SignOutButton({
   const router = useRouter();
   const colorPalette = useColorPalette();
 
-  async function handleSignOut() {
+  async function signOutUser() {
     const { success, message } = await signOut();
+
     if (success === true) {
       router.refresh();
     } else {
@@ -47,13 +48,13 @@ export default function SignOutButton({
               sx={{ color: accountMenuIconColor }}
             />
           }
-          onClick={handleSignOut}
+          onClick={signOutUser}
         />
       ) : null}
 
       {showNavDrawerButton ? (
         <NavDrawerOption
-          onClick={handleSignOut}
+          onClick={signOutUser}
           label="Sign Out"
           bodyTextColor={colorPalette.navBar.lower.text}
         />

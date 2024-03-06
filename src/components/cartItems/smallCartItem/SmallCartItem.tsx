@@ -46,7 +46,7 @@ export default function SmallCartItem({ item }: Props) {
     }
   }
 
-  function handleNavigateToProductPage() {
+  function navigateToProductPage() {
     router.push(`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`);
     dispatch(setIsCartOpen(false));
   }
@@ -66,7 +66,7 @@ export default function SmallCartItem({ item }: Props) {
       }}>
       <ImageSmallCartItem
         imageUrl={imageUrl!}
-        onClick={handleNavigateToProductPage}
+        onClick={navigateToProductPage}
         productName={item.product?.name!}
       />
       <Box
@@ -88,7 +88,7 @@ export default function SmallCartItem({ item }: Props) {
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
           <Typography
-            onClick={!isShippingView ? handleNavigateToProductPage : undefined}
+            onClick={!isShippingView ? navigateToProductPage : undefined}
             lineHeight={1}
             component="h4"
             fontWeight={600}

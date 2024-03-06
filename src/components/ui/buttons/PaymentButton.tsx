@@ -17,9 +17,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
 
-  async function handlePayWithStripe() {
-    dispatch(setCheckoutData({ isProcessing: true }));
-
+  async function addNewOrder() {
     const { success, message, data } = await addOrder({
       orderDetails: {
         isPaid: false,
@@ -39,6 +37,12 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
     }
 
     dispatch(setCheckoutData({ orderId: data?.orderId }));
+  }
+
+  async function createOrderAndPayWithStripe() {
+    dispatch(setCheckoutData({ isProcessing: true }));
+
+    await addNewOrder();
 
     const error = await payWithStripe(cartItems);
 
@@ -53,7 +57,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
       {showContainedButton ? (
         <ContainedButton
           disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
-          onClick={handlePayWithStripe}
+          onClick={createOrderAndPayWithStripe}
           label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
           fullWidth
           backgroundColor={'warning'}
@@ -66,7 +70,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
           href="/checkout/payment"
           icon={<Payment />}
           label="payment"
-          onLinkClick={handlePayWithStripe}
+          onLinkClick={createOrderAndPayWithStripe}
         />
       ) : null}
     </>

@@ -19,7 +19,7 @@ export default function AddressButtons({ addressId }: Props) {
   const dispatch = useAppDispatch();
   const addressToDeleteId = useAppSelector((state) => state.account.addressToDeleteId);
 
-  async function handleDeleteAddress() {
+  async function deleteAddressById() {
     dispatch(setAddressToDeleteId(addressId));
 
     const { success, message } = await deleteAddress(addressId);
@@ -45,7 +45,7 @@ export default function AddressButtons({ addressId }: Props) {
           />
           <AddressButton
             label="delete"
-            onClick={handleDeleteAddress}
+            onClick={deleteAddressById}
           />
         </Box>
       ) : null}

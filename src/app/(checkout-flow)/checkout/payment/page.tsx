@@ -27,7 +27,7 @@ export default function PaymentSuccessPage() {
 
   useEffect(() => {
     if (paymentStatus === 'success' && checkoutData.isProcessing === true) {
-      const handleClearAllCartItems = async () => {
+      const clearAllCartItems = async () => {
         dispatch(clearCart());
 
         const { success, message } = await deleteAllCartItems();
@@ -37,9 +37,9 @@ export default function PaymentSuccessPage() {
         }
       };
 
-      handleClearAllCartItems();
+      clearAllCartItems();
 
-      const handleUpdateOrderPaymentStatus = async () => {
+      const updateOrderPaymentStatusToTrue = async () => {
         setShowUpdatingPaymentMessage(true);
 
         const { success, message } = await updateOrderPaymentStatus({ orderId: checkoutData.orderId!, isPaid: true });
@@ -58,7 +58,7 @@ export default function PaymentSuccessPage() {
         }, redirectCountdown * 1000);
       };
 
-      handleUpdateOrderPaymentStatus();
+      updateOrderPaymentStatusToTrue();
     }
   }, [dispatch, checkoutData.userId, checkoutData.isProcessing, checkoutData.orderId, paymentStatus, router]);
 

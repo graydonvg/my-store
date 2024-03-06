@@ -33,7 +33,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
     }
   }, [imageData, selectedImageIndex, isAdminView]);
 
-  function handleSelectedImage(index: number) {
+  function selectedImage(index: number) {
     setSelectedImageIndex(index);
   }
 
@@ -65,7 +65,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
             {!isAdminView && product ? (
               <ClientViewSmallProductImageBox
                 product={product}
-                selectImage={handleSelectedImage}
+                selectImage={selectedImage}
                 selectedImageIndex={selectedImageIndex}
                 boxBorderColor="transparent"
               />
@@ -73,7 +73,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
 
             {isAdminView ? (
               <AdminViewSmallProductImageBoxes
-                selectImage={handleSelectedImage}
+                selectImage={selectedImage}
                 selectedImageIndex={selectedImageIndex}
                 getBoxBorderColor={getBoxBorderColor}
                 maxImageCount={maxImageCount!}

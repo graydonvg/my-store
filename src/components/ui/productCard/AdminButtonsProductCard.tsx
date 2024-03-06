@@ -26,7 +26,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleEditProduct() {
+  async function editProduct() {
     setIsLoading(true);
 
     if (imageData.length > 0 && !productId) {
@@ -45,7 +45,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
     setIsLoading(false);
   }
 
-  async function handleRevalidate() {
+  async function revalidateAndRefresh() {
     const data = await revalidate('/');
 
     if (data.success === true) {
@@ -56,7 +56,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
     }
   }
 
-  async function handleDeleteProduct() {
+  async function permanentlyDeleteProduct() {
     setIsDeletingProduct(true);
 
     const deleteImagesPromise = deleteAllProductImages(productImageData);
@@ -68,7 +68,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
     const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
 
     if (deleteImagesSuccess === true && deleteProductSuccess === true) {
-      await handleRevalidate();
+      await revalidateAndRefresh();
       toast.success('Product deleted successfully.');
     } else if (deleteImagesSuccess === false) {
       toast.error(deleteImagesMessage);
@@ -91,16 +91,16 @@ export default function AdminButtonsProductCard({ product }: Props) {
       }}>
       <ContainedButton
         disabled={isDeletingProduct || isLoading}
-        onClick={handleDeleteProduct}
+        onClick={permanentlyDeleteProduct}
         fullWidth
-        label={isDeletingProduct ? '' : 'delete'}
+        label={!isDeletingProduct ? 'delete' : ''}
         isLoading={isDeletingProduct}
         startIcon={<DeleteForever />}
         backgroundColor="warning"
       />
       <OutlinedButton
         disabled={isLoading || isDeletingProduct}
-        onClick={handleEditProduct}
+        onClick={editProduct}
         fullWidth
         label={!isLoading ? 'edit' : ''}
         isLoading={isLoading}

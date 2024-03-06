@@ -32,7 +32,7 @@ export default function PersonalInformation() {
     dispatch(setIsUpdatingAccount(false));
   }, [dispatch, userData]);
 
-  function handleSetFieldToEdit(field: AccountFieldToEditType) {
+  function selectFieldToEdit(field: AccountFieldToEditType) {
     dispatch(setFieldToEdit(field));
   }
 
@@ -43,7 +43,7 @@ export default function PersonalInformation() {
           {fieldToEdit !== fieldName ? (
             <UserDataAccountPage
               label={fieldData.label}
-              onClick={() => handleSetFieldToEdit(fieldName as keyof typeof fieldDataMap)}>
+              onClick={() => selectFieldToEdit(fieldName as keyof typeof fieldDataMap)}>
               {userData?.[fieldName as keyof typeof fieldDataMap] ?? ''}
             </UserDataAccountPage>
           ) : null}

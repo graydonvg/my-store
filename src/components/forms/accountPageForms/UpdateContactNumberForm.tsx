@@ -14,13 +14,13 @@ export default function UpdateContactNumberForm() {
   const [contactNumber, setContactNumber] = useState(userData?.contactNumber ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
-  function handleCancelUpdateField() {
+  function cancelUpdateField() {
     dispatch(setFieldToEdit(null));
     setContactNumber(userData?.contactNumber ?? '');
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
 
     setContactNumber(value);
   }
@@ -54,7 +54,7 @@ export default function UpdateContactNumberForm() {
       onSubmit={handleUpdateContactNumber}
       disableSubmit={contactNumber.length === 0 || isUpdatingAccount}
       isSubmitting={isUpdatingAccount}
-      onCancel={handleCancelUpdateField}>
+      onCancel={cancelUpdateField}>
       <CustomTextField
         fullWidth={true}
         label={'Contact number'}

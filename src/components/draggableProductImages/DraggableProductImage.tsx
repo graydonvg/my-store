@@ -79,7 +79,7 @@ export default function DraggableProductImage({ imageData, arrayIndex }: Props) 
             xs={2}
             sx={{ display: 'grid', placeItems: 'center' }}>
             <IconButton
-              aria-label="reorder handle"
+              aria-label="drag handle"
               onPointerDown={(e) => handleDragStart(e)}
               disableRipple
               sx={{ cursor: 'grab', touchAction: 'none' }}>

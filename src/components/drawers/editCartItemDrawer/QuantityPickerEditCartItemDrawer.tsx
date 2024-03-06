@@ -15,7 +15,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, updateCartI
   const [cartItemQuantity, setCartItemQuantity] = useState(cartItem.quantity);
   const [updateCartItemQuantityTimer, setUpdateCartItemQuantityTimer] = useState<NodeJS.Timeout | null>(null);
 
-  function handleIncrementCartItemQuantity() {
+  function incrementCartItemQuantity() {
     dispatch(setCartItemQuantityWillUpdate(true));
 
     const newQuantity = cartItemQuantity + 1;
@@ -23,7 +23,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, updateCartI
     scheduleUpdateCartItemQuantityWithDelay(newQuantity);
   }
 
-  function handleDecrementCartItemQuantity() {
+  function decrementCartItemQuantity() {
     if (cartItemQuantity === 1) return;
     dispatch(setCartItemQuantityWillUpdate(true));
     const newQuantity = cartItemQuantity - 1;
@@ -72,7 +72,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, updateCartI
           alignItems: 'center',
         }}>
         <IconButton
-          onClick={handleDecrementCartItemQuantity}
+          onClick={decrementCartItemQuantity}
           sx={{
             color: 'inherit',
             height: '48px',
@@ -91,7 +91,7 @@ export default function QuantityPickerEditCartItemDrawer({ cartItem, updateCartI
           {cartItemQuantity}
         </Typography>
         <IconButton
-          onClick={handleIncrementCartItemQuantity}
+          onClick={incrementCartItemQuantity}
           sx={{
             color: 'inherit',
             height: '48px',

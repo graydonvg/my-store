@@ -9,14 +9,14 @@ export default function PasswordMask() {
   const theme = useTheme();
   const mode = theme.palette.mode;
 
-  function handleSetFieldToEdit(field: AccountFieldToEditType) {
+  function selectFieldToEdit(field: AccountFieldToEditType) {
     dispatch(setFieldToEdit(field));
   }
 
   return (
     <UserDataAccountPage
       label="Password"
-      onClick={() => handleSetFieldToEdit('password')}>
+      onClick={() => selectFieldToEdit('password')}>
       <Typography
         component="div"
         fontSize={3.3}

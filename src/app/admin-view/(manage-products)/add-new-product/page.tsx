@@ -35,7 +35,7 @@ export default function AdminViewAddNewProductPage() {
   }, [dispatch, productFormData.productId]);
 
   useEffect(() => {
-    function handler(e: BeforeUnloadEvent) {
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
       if (
         !isSubmitting &&
         emptyFormFields.length === numberOfFormFields &&
@@ -46,14 +46,14 @@ export default function AdminViewAddNewProductPage() {
       e.preventDefault();
     }
 
-    window.addEventListener('beforeunload', handler);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handler);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
-  async function handleAddImageData(productId: string) {
+  async function addImageData(productId: string) {
     const dataToAdd = imageData.map((data) => {
       const { productImageId, ...restOfData } = data;
       return { ...restOfData, productId };
@@ -64,7 +64,7 @@ export default function AdminViewAddNewProductPage() {
     return { success, message };
   }
 
-  async function handleRevalidate() {
+  async function revalidateAndRefresh() {
     const data = await revalidate('/');
 
     if (data.success === true) {
@@ -90,12 +90,10 @@ export default function AdminViewAddNewProductPage() {
     if (addProductSuccess === true && productData) {
       productId = productData.productId;
 
-      const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
-        productData.productId
-      );
+      const { success: addImageDataSuccess, message: addImageDataMessage } = await addImageData(productData.productId);
 
       if (addImageDataSuccess === true) {
-        await handleRevalidate();
+        await revalidateAndRefresh();
         dispatch(clearProductFormData());
         dispatch(clearAllProductImagesData());
         toast.success('Successfully added product.');

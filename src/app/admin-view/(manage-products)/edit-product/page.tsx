@@ -27,7 +27,7 @@ export default function AdminViewUpdateProductPage() {
   const numberOfFormFields = getNumberOfFormFields(productFormData);
 
   useEffect(() => {
-    function handler(e: BeforeUnloadEvent) {
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
       if (
         !isSubmitting &&
         emptyFormFields.length === numberOfFormFields &&
@@ -38,14 +38,14 @@ export default function AdminViewUpdateProductPage() {
       e.preventDefault();
     }
 
-    window.addEventListener('beforeunload', handler);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handler);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
-  async function handleAddImageData(productId: string) {
+  async function addImageData(productId: string) {
     const newData = imageData.filter((data) => !data.productImageId);
 
     const dataToAdd = newData.map((data) => {
@@ -62,7 +62,7 @@ export default function AdminViewUpdateProductPage() {
     return { success, message };
   }
 
-  async function handleRevalidate() {
+  async function revalidateAndRefresh() {
     const data = await revalidate('/');
 
     if (data.success === true) {
@@ -87,7 +87,7 @@ export default function AdminViewUpdateProductPage() {
       let updateImageDataMessage = null;
       const imageDataToUpdate = imageData.find((data) => data.productImageId);
 
-      const { success: addImageDataSuccess, message: addImageDataMessage } = await handleAddImageData(
+      const { success: addImageDataSuccess, message: addImageDataMessage } = await addImageData(
         productFormData.productId!
       );
 
@@ -99,7 +99,7 @@ export default function AdminViewUpdateProductPage() {
       }
 
       if (addImageDataSuccess === true && updateImageDataSuccess === true) {
-        await handleRevalidate();
+        await revalidateAndRefresh();
         dispatch(clearProductFormData());
         dispatch(clearImageData());
         toast.success('Successfully updated product.');

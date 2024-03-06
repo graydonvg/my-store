@@ -15,7 +15,7 @@ export default function NavDrawerOptions() {
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
 
-  function handleCloseDrawer() {
+  function closeDrawer() {
     dispatch(setIsNavDrawerOpen(false));
   }
 
@@ -24,7 +24,7 @@ export default function NavDrawerOptions() {
       <List disablePadding>
         {userData && userData?.isAdmin ? (
           <NavDrawerOption
-            onClick={handleCloseDrawer}
+            onClick={closeDrawer}
             label={isAdminView ? 'Client View' : 'Admin View'}
             path={isAdminView ? '/' : '/admin-view/all-products'}
             bodyTextColor={colorPalette.navBar.lower.text}
@@ -34,7 +34,7 @@ export default function NavDrawerOptions() {
         {userData && userData?.isAdmin && isAdminView
           ? ADMIN_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
-                onClick={handleCloseDrawer}
+                onClick={closeDrawer}
                 key={option.id}
                 label={option.label}
                 path={option.path}
@@ -46,7 +46,7 @@ export default function NavDrawerOptions() {
         {!isAdminView
           ? DEFAULT_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
-                onClick={handleCloseDrawer}
+                onClick={closeDrawer}
                 key={option.id}
                 label={option.label}
                 path={option.path}
@@ -59,7 +59,7 @@ export default function NavDrawerOptions() {
           <>
             {ACCOUNT_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
-                onClick={handleCloseDrawer}
+                onClick={closeDrawer}
                 key={option.id}
                 label={option.label}
                 path={option.path}

@@ -15,7 +15,7 @@ export default function UpdateAddressDialog({ addressId }: Props) {
   const { userData } = useAppSelector((state) => state.user);
   const isUpdateAddressDialogOpen = useAppSelector((state) => state.dialog.updateAddressDialog);
 
-  async function handleSetAddressToEdit() {
+  async function selectAddressToEdit() {
     const addressToEdit = userData?.addresses.filter((address) => address.addressId === addressId)[0];
 
     dispatch(setAddressFormData(addressToEdit as UpdateAddressTypeStore));
@@ -26,7 +26,7 @@ export default function UpdateAddressDialog({ addressId }: Props) {
     <>
       <AddressButton
         label="edit"
-        onClick={handleSetAddressToEdit}
+        onClick={selectAddressToEdit}
       />
       <DialogComponent isOpen={isUpdateAddressDialogOpen}>
         <UpdateAddressForm />

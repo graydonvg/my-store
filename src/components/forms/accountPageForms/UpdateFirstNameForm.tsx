@@ -14,13 +14,13 @@ export default function UpdateFirstNameForm() {
   const [firstName, setFirstName] = useState(userData?.firstName ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
-  function handleCancelUpdateField() {
+  function cancelUpdateField() {
     dispatch(setFieldToEdit(null));
     setFirstName(userData?.firstName ?? '');
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
 
     setFirstName(value);
   }
@@ -54,7 +54,7 @@ export default function UpdateFirstNameForm() {
       onSubmit={handleUpdateFirstName}
       disableSubmit={firstName.length === 0 || isUpdatingAccount}
       isSubmitting={isUpdatingAccount}
-      onCancel={handleCancelUpdateField}>
+      onCancel={cancelUpdateField}>
       <CustomTextField
         fullWidth={true}
         label={'Name'}

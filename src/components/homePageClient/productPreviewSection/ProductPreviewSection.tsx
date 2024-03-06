@@ -12,7 +12,7 @@ type Props = {
 export default function ProductPreviewSection({ latestArrivals, productsOnSale, navigateToAllProducts }: Props) {
   const router = useRouter();
 
-  function handleNavigateToSale() {
+  function navigateToSale() {
     router.push('/products/sale');
   }
 
@@ -21,7 +21,7 @@ export default function ProductPreviewSection({ latestArrivals, productsOnSale, 
       component="section"
       sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {[
-        { title: 'The Biggest Sale', products: productsOnSale, onClick: handleNavigateToSale },
+        { title: 'The Biggest Sale', products: productsOnSale, onClick: navigateToSale },
         { title: 'Latest Arrivals', products: latestArrivals, onClick: navigateToAllProducts },
       ].map((preview, index) =>
         preview.products ? (

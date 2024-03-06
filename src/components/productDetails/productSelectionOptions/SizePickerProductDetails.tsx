@@ -26,6 +26,7 @@ export default function SizePickerProductDetails({ product }: Props) {
   function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setSize(selectedSize));
   }
+
   return (
     <Box
       sx={{

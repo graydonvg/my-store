@@ -40,7 +40,7 @@ export default function CheckoutButton({
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
 
-  function handleCheckout() {
+  function checkout() {
     const createOrderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
@@ -52,6 +52,7 @@ export default function CheckoutButton({
         pricePaid: pricePaid!,
       };
     });
+
     dispatch(
       setCheckoutData({
         paymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
@@ -70,7 +71,7 @@ export default function CheckoutButton({
   return (
     <ContainedButton
       disabled={disabled}
-      onClick={handleCheckout}
+      onClick={checkout}
       label={label}
       fullWidth={fullWidth}
       backgroundColor={backgroundColor}

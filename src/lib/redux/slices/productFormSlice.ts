@@ -9,7 +9,7 @@ function handleSetProductDataOnChange(
   initialState: State
 ) {
   if (field === 'sizes') {
-    return handleSizesChange(value as string, productFormData);
+    return setAvailableSizes(value as string, productFormData);
   } else if (field === 'isOnSale' && value === 'No') {
     return { ...productFormData, [field]: value, salePercentage: 0 };
   } else if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
@@ -19,13 +19,16 @@ function handleSetProductDataOnChange(
   }
 }
 
-function handleSizesChange(value: string, productFormData: InsertProductTypeStore) {
+function setAvailableSizes(value: string, productFormData: InsertProductTypeStore) {
   if (productFormData.sizes.includes(value)) {
     const filteredSizes = productFormData.sizes.filter((size) => size !== value);
+
     return { ...productFormData, sizes: filteredSizes };
   } else {
     const sizes = [...productFormData.sizes, value];
+
     const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
+
     return { ...productFormData, sizes: sortedSizes };
   }
 }

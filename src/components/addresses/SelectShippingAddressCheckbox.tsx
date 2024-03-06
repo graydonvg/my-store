@@ -13,7 +13,7 @@ export default function SelectShippingAddressCheckbox({ address }: Props) {
   const selectedAddressId = useAppSelector((state) => state.checkoutData.selectedAddressId);
   const colorPalette = useColorPalette();
 
-  function handleSelectShippingAddress() {
+  function selectShippingAddress() {
     const { addressId, userId, createdAt, ...shippingDetails } = address;
 
     if (selectedAddressId === addressId) {
@@ -32,7 +32,7 @@ export default function SelectShippingAddressCheckbox({ address }: Props) {
     <TableCell sx={{ display: 'flex', borderBottom: `1px solid ${colorPalette.border}`, paddingRight: 0 }}>
       <Checkbox
         checked={selectedAddressId === address.addressId}
-        onChange={handleSelectShippingAddress}
+        onChange={selectShippingAddress}
         disableRipple
         sx={{ padding: 0 }}
       />

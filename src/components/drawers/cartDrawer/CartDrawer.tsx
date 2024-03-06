@@ -20,11 +20,11 @@ export default function CartDrawer() {
     : document.getElementById('navbar')?.offsetHeight;
   const cartCount = selectCartCount(cartItems);
 
-  function handleToggleCartDrawer() {
+  function toggleCartDrawer() {
     dispatch(setIsCartOpen(!isCartOpen));
   }
 
-  function handleCloseCartDrawer() {
+  function closeCartDrawer() {
     dispatch(setIsCartOpen(false));
   }
 
@@ -32,7 +32,7 @@ export default function CartDrawer() {
     <>
       <UpperNavbarIconButton
         backgroundColor={colorPalette.navBar.upper.background}
-        onClick={handleToggleCartDrawer}>
+        onClick={toggleCartDrawer}>
         <ShoppingCartIcon
           aria-label="Shopping cart"
           sx={{ color: colorPalette.navBar.upper.text }}
@@ -56,7 +56,7 @@ export default function CartDrawer() {
         width={{ xs: '90vw', sm: '400px' }}
         isOpen={{ right: isCartOpen }}
         zIndex={theme.zIndex.appBar - 1}
-        closeDrawer={handleCloseCartDrawer}>
+        closeDrawer={closeCartDrawer}>
         <Box
           sx={{
             paddingTop: `${navbarHeight}px`,

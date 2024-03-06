@@ -14,13 +14,13 @@ export default function UpdateLastNameForm() {
   const [lastName, setLastName] = useState(userData?.lastName ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
-  function handleCancelUpdateField() {
+  function cancelUpdateField() {
     dispatch(setFieldToEdit(null));
     setLastName(userData?.lastName ?? '');
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
 
     setLastName(value);
   }
@@ -54,7 +54,7 @@ export default function UpdateLastNameForm() {
       onSubmit={handleUpdateLastName}
       disableSubmit={lastName.length === 0 || isUpdatingAccount}
       isSubmitting={isUpdatingAccount}
-      onCancel={handleCancelUpdateField}>
+      onCancel={cancelUpdateField}>
       <CustomTextField
         fullWidth={true}
         label={'Surname'}

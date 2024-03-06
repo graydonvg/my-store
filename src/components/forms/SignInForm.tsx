@@ -66,7 +66,7 @@ export default function SignInForm({ children }: Props) {
     }
   }
 
-  async function handleSignInWithGoogle() {
+  async function signInWithGoogle() {
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(true));
     }
@@ -140,7 +140,7 @@ export default function SignInForm({ children }: Props) {
         </Divider>
         {/* Remember Supabase redirect url for google sign in */}
         <ContainedButton
-          onClick={handleSignInWithGoogle}
+          onClick={signInWithGoogle}
           disabled={isLoading}
           label="sign in with google"
           type="button"

@@ -19,7 +19,7 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
     !open ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   }
 
-  function handleMenuCloseAfterTimeout() {
+  function closeMenuAfterTimeout() {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -28,11 +28,11 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
     }, 0);
   }
 
-  function handleMenuClose() {
+  function closeMenu() {
     setAnchorEl(null);
   }
 
-  function handleMenuEnter() {
+  function clearTimeoutOnMenuEnter() {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -46,7 +46,7 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
         }}
         onClick={handleMenuOpen}
         onMouseEnter={handleMenuOpen}
-        onMouseLeave={handleMenuCloseAfterTimeout}>
+        onMouseLeave={closeMenuAfterTimeout}>
         <UpperNavbarIconButton backgroundColor={buttonBackgroundColor}>{label}</UpperNavbarIconButton>
       </Box>
       <Menu
@@ -68,10 +68,10 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         anchorEl={anchorEl}
         open={open}
-        onClose={handleMenuClose}
+        onClose={closeMenu}
         MenuListProps={{
-          onMouseLeave: handleMenuClose,
-          onMouseEnter: handleMenuEnter,
+          onMouseLeave: closeMenu,
+          onMouseEnter: clearTimeoutOnMenuEnter,
         }}>
         <Box
           tabIndex={-1}

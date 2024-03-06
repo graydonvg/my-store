@@ -17,17 +17,17 @@ export default function HomePageClient({ allProducts, saleProducts }: HomePageCl
   const productsOnSale = saleProducts?.slice(0, 3);
   const latestArrivals = allProducts?.filter((product) => product.isOnSale === 'No').slice(0, 3);
 
-  function handleNavigateToAllProducts() {
+  function navigateToAllProducts() {
     router.push('/products/all-products');
   }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
-      <HeroSection navigateToAllProducts={handleNavigateToAllProducts} />
+      <HeroSection navigateToAllProducts={navigateToAllProducts} />
       <ProductPreviewSection
         latestArrivals={latestArrivals}
         productsOnSale={productsOnSale}
-        navigateToAllProducts={handleNavigateToAllProducts}
+        navigateToAllProducts={navigateToAllProducts}
       />
       <ShopByCategorySection />
     </Box>

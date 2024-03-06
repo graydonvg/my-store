@@ -18,7 +18,7 @@ export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
   const pathname = usePathname();
   const isSaleOption = label.toLowerCase() === 'sale';
 
-  function handleClearAddProductStoreData() {
+  function clearAddNewProductFormData() {
     if (path === '/admin-view/add-new-product') {
       dispatch(clearProductFormData());
       dispatch(clearAllProductImagesData());
@@ -28,7 +28,7 @@ export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
   return (
     <Link
       style={{ height: '100%', width: '100%' }}
-      onClick={handleClearAddProductStoreData}
+      onClick={clearAddNewProductFormData}
       tabIndex={-1}
       href={path}>
       <ListItemButton sx={{ height: '100%' }}>
