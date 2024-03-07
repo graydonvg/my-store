@@ -6,9 +6,11 @@ export default async function HomePage() {
   const { data: saleProducts } = await getProductsOnSale();
 
   return (
-    <HomePageClient
-      allProducts={allProducts}
-      saleProducts={saleProducts}
-    />
+    <main>
+      <HomePageClient
+        allProducts={allProducts}
+        saleProducts={saleProducts}
+      />
+    </main>
   );
 }

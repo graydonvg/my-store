@@ -2,8 +2,11 @@ import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/c
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
+import NavbarTitleAndLogo from '@/components/ui/NavbarTitleAndLogo';
+import useColorPalette from '@/hooks/useColorPalette';
 
 export default function LowerNavbarOptions() {
+  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin-view');
   const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
@@ -12,7 +15,14 @@ export default function LowerNavbarOptions() {
   return (
     <Box
       component="nav"
-      sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1, position: 'relative' }}>
+      <Box sx={{ position: 'absolute', left: 0 }}>
+        <NavbarTitleAndLogo
+          variant="h6"
+          display="flex"
+          color={colorPalette.navBar.lower.text}
+        />
+      </Box>
       <List
         disablePadding
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

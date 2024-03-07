@@ -56,15 +56,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           />
           <CartItemsStateSetter cartItems={cartItems} />
           <Navbar />
-          <main>
-            <Container
-              sx={{
-                paddingY: { xs: 2, sm: 3 },
-              }}
-              maxWidth="lg">
-              {children}
-            </Container>
-          </main>
+          <Container
+            sx={{
+              paddingY: { xs: 2, sm: 3 },
+            }}
+            maxWidth="lg">
+            {children}
+          </Container>
           <Toast />
         </Providers>
       </body>
