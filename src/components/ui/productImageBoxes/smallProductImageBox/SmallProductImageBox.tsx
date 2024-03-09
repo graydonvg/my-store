@@ -27,7 +27,7 @@ export default function SmallProductImageBox({
 }: SmallProductImageBoxProps) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
 
   return (
     <Grid

@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import revalidate from '@/services/revalidate';
+import { Refresh } from '@mui/icons-material';
+import OutlinedButton from './OutlinedButton';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,13 +28,14 @@ export default function RevalidateButton() {
   }
 
   return (
-    <ContainedButton
+    <OutlinedButton
       disabled={isLoading}
       onClick={revalidateAndRefresh}
       fullWidth
       label={!isLoading ? 'revalidate' : ''}
       isLoading={isLoading}
-      backgroundColor="primary"
+      // backgroundColor="primary"
+      startIcon={<Refresh />}
     />
   );
 }

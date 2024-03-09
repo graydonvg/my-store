@@ -1,23 +1,24 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { UpdateProductType } from '@/types';
+import { InsertProductTypeDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import addProduct from '@/services/products/add';
 import addProductImageData from '@/services/product-image-data/add';
-import updateProduct from '@/services/products/update';
+import deleteProduct from '@/services/products/delete';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidate from '@/services/revalidate';
-import updateProductImageData from '@/services/product-image-data/update';
 import ProductForm from '@/components/forms/productForm/ProductForm';
-import { Box } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/ManageProductImages';
+import { Box } from '@mui/material';
+import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
-import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
 
-export default function AdminViewUpdateProductPage() {
+export default function AdminViewAddNewProductPage() {
   const router = useRouter();
   const { productFormData } = useAppSelector((state) => state.productForm);
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
@@ -25,6 +26,13 @@ export default function AdminViewUpdateProductPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
+
+  useEffect(() => {
+    if (productFormData.productId) {
+      dispatch(clearProductFormData());
+      dispatch(clearAllProductImagesData());
+    }
+  }, [dispatch, productFormData.productId]);
 
   useEffect(() => {
     function handleBeforeUnload(e: BeforeUnloadEvent) {
@@ -46,16 +54,10 @@ export default function AdminViewUpdateProductPage() {
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
   async function addImageData(productId: string) {
-    const newData = imageData.filter((data) => !data.productImageId);
-
-    const dataToAdd = newData.map((data) => {
+    const dataToAdd = imageData.map((data) => {
       const { productImageId, ...restOfData } = data;
       return { ...restOfData, productId };
     });
-
-    if (dataToAdd.length === 0) {
-      return { success: true, message: 'No new images added' };
-    }
 
     const { success, message } = await addProductImageData(dataToAdd);
 
@@ -73,48 +75,41 @@ export default function AdminViewUpdateProductPage() {
     }
   }
 
-  async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
+  async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
-      ...productFormData,
-      productId: productFormData.productId!,
-    } as UpdateProductType);
+    let productId = '';
 
-    if (updateProductSuccess === true) {
-      let updateImageDataSuccess = true;
-      let updateImageDataMessage = null;
-      const imageDataToUpdate = imageData.find((data) => data.productImageId);
+    const {
+      success: addProductSuccess,
+      message: addProductMessage,
+      data: productData,
+    } = await addProduct(productFormData as InsertProductTypeDb);
 
-      const { success: addImageDataSuccess, message: addImageDataMessage } = await addImageData(
-        productFormData.productId!
-      );
+    if (addProductSuccess === true && productData) {
+      productId = productData.productId;
 
-      if (imageDataToUpdate) {
-        const { success, message } = await updateProductImageData(imageData);
+      const { success: addImageDataSuccess, message: addImageDataMessage } = await addImageData(productData.productId);
 
-        updateImageDataSuccess = success;
-        updateImageDataMessage = message;
-      }
-
-      if (addImageDataSuccess === true && updateImageDataSuccess === true) {
+      if (addImageDataSuccess === true) {
         await revalidateAndRefresh();
         dispatch(clearProductFormData());
-        dispatch(clearImageData());
-        toast.success('Successfully updated product.');
+        dispatch(clearAllProductImagesData());
+        toast.success('Successfully added product.');
         setIsSubmitting(false);
-        router.push('/admin-view/all-products');
-      } else if (addImageDataSuccess === false && updateImageDataSuccess === true) {
-        toast.error(addImageDataMessage);
-      } else if (updateImageDataSuccess === false && addImageDataSuccess === true) {
-        toast.error(updateImageDataMessage);
+        router.push('/admin/products');
       } else {
+        const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
+
+        if (deleteProductSuccess === false) {
+          toast.error(deleteProductMessage);
+        }
+
         toast.error(addImageDataMessage);
-        toast.error(updateImageDataMessage);
       }
     } else {
-      toast.error(updateProductMessage);
+      toast.error(addProductMessage);
     }
 
     setIsSubmitting(false);
@@ -124,9 +119,10 @@ export default function AdminViewUpdateProductPage() {
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
       <ManageProductImages isSubmitting={isSubmitting} />
       <ProductForm
-        onSubmit={handleUpdateProduct}
+        onSubmit={handleAddProduct}
         isSubmitting={isSubmitting}
-        submitButtonLabel={!isSubmitting ? 'update product' : ''}
+        submitButtonLabel={!isSubmitting ? 'add product' : ''}
+        submitButtonStartIcon={!isSubmitting ? <Add /> : null}
       />
     </Box>
   );

@@ -41,7 +41,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
     dispatch(clearAllProductImagesData());
     dispatch(setImageData(product.productImageData));
     dispatch(setProductFormData(restOfProductData));
-    router.push('/admin-view/edit-product');
+    router.push('/admin/edit-product');
     setIsLoading(false);
   }
 

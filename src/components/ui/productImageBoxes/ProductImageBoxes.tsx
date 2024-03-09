@@ -16,7 +16,7 @@ type Props = {
 export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { productFormData } = useAppSelector((state) => state.productForm);
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);

@@ -20,7 +20,7 @@ type ProductCardProps = {
 export default function ProductCard({ product, imageSizes }: ProductCardProps) {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
   const imageUrl = product.productImageData.find((image) => image.index === 0)?.imageUrl;

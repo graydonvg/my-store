@@ -9,15 +9,7 @@ export default function UpperNavbar() {
   return (
     <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
       <CommonNavbarContainer>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: { xs: 'space-between', md: 'flex-end' },
-            height: { xs: '64px', md: '40px' },
-          }}>
-          <UpperNavbarOptions />
-        </Box>
+        <UpperNavbarOptions />
       </CommonNavbarContainer>
     </Box>
   );

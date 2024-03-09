@@ -32,7 +32,9 @@ export default function CheckoutNavbar() {
             display="flex"
             color={colorPalette.navBar.upper.text}
           />
-          <Box sx={{ margin: '0 auto' }}>
+          <Box
+            sx={{ margin: '0 auto' }}
+            component="nav">
             <BreadcrumbsComponent>
               {breadcrumbData.map((item, index) => (
                 <BreadcrumbItem

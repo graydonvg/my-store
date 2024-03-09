@@ -1,13 +1,13 @@
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setFieldToEdit } from '@/lib/redux/slices/accountSlice';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import UserDataAccountPage from '../../UserDataAccountPage';
 import { AccountFieldToEditType } from '@/types';
+import useColorPalette from '@/hooks/useColorPalette';
 
 export default function PasswordMask() {
   const dispatch = useAppDispatch();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
+  const colorPalette = useColorPalette();
 
   function selectFieldToEdit(field: AccountFieldToEditType) {
     dispatch(setFieldToEdit(field));
@@ -22,12 +22,13 @@ export default function PasswordMask() {
         fontSize={3.3}
         sx={{ paddingTop: 1 }}>
         {Array.from(Array(16)).map((_, index) => (
-          <Box
-            component="span"
+          <Typography
             key={index}
-            sx={{ paddingRight: 0.12 }}>
-            {mode === 'dark' ? '⚪' : '⚫'}
-          </Box>
+            component="span"
+            letterSpacing={1}
+            sx={{ color: colorPalette.typography }}>
+            •
+          </Typography>
         ))}
       </Typography>
     </UserDataAccountPage>

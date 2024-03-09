@@ -1,9 +1,7 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
-import { Container } from '@mui/material';
 import Toast from '@/components/ui/Toast';
-import Navbar from '@/components/navbars/Navbar';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -55,14 +53,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             user={user}
           />
           <CartItemsStateSetter cartItems={cartItems} />
-          <Navbar />
-          <Container
-            sx={{
-              paddingY: { xs: 2, sm: 3 },
-            }}
-            maxWidth="lg">
-            {children}
-          </Container>
+          {children}
           <Toast />
         </Providers>
       </body>

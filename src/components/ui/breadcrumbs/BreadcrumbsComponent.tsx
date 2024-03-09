@@ -12,7 +12,7 @@ export default function BreadcrumbsComponent({ children }: Props) {
   const customColor = useColorPalette();
 
   return (
-    <Box role="presentation">
+    <Box role="navigation">
       <Breadcrumbs
         separator={
           <NavigateNext

@@ -19,7 +19,7 @@ export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
   const isSaleOption = label.toLowerCase() === 'sale';
 
   function clearAddNewProductFormData() {
-    if (path === '/admin-view/add-new-product') {
+    if (path === '/admin/add-new-product') {
       dispatch(clearProductFormData());
       dispatch(clearAllProductImagesData());
     }
