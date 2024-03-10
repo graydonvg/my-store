@@ -6,10 +6,11 @@ import Paper from '@mui/material/Paper';
 import Chart from '@/components/adminView/Chart';
 import Deposits from '@/components/adminView/Deposits';
 import OrdersAdminView from '@/components/adminView/OrdersAdminView';
+import useColorPalette from '@/hooks/useColorPalette';
 
 export default function Dashboard() {
   return (
-    <Container>
+    <Container sx={{}}>
       <Grid
         container
         spacing={3}>

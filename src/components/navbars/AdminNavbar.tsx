@@ -1,9 +1,10 @@
-'use client';
-
 import MuiDrawer from '@mui/material/Drawer';
 import { ChevronLeft, Dashboard, LocalShipping, Logout, Menu, People, ShoppingCart, Store } from '@mui/icons-material';
 import {
+  AppBar,
+  Box,
   Divider,
+  Drawer,
   IconButton,
   List,
   ListItemButton,
@@ -52,78 +53,37 @@ const mainListItems = [
 
 const drawerWidth: number = 240;
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
+type Props = {
+  open: boolean;
+  toggleDrawer: () => void;
+};
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
-  '& .MuiDrawer-paper': {
-    position: 'fixed',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    boxSizing: 'border-box',
-    ...(!open && {
-      overflowX: 'hidden',
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9),
-      },
-    }),
-  },
-}));
-
-export default function AdminNavbar() {
-  const [open, setOpen] = useState(true);
+export default function AdminNavbar({ open, toggleDrawer }: Props) {
+  // const [open, setOpen] = useState(true);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
-  const router = useRouter();
+  // const router = useRouter();
 
-  function toggleDrawer() {
-    setOpen(!open);
-  }
+  // function toggleDrawer() {
+  //   setOpen(!open);
+  // }
 
   function changeTheme() {
     dispatch(toggleTheme());
   }
 
-  async function signOutUser() {
-    const { success, message } = await signOut();
+  // async function signOutUser() {
+  //   const { success, message } = await signOut();
 
-    if (success === true) {
-      dispatch(setUserData(null));
-      router.push('/');
-    } else {
-      toast.error(message);
-    }
-  }
+  //   if (success === true) {
+  //     dispatch(setUserData(null));
+  //     router.push('/');
+  //   } else {
+  //     toast.error(message);
+  //   }
+  // }
 
   return (
     <>
@@ -132,45 +92,82 @@ export default function AdminNavbar() {
           position="fixed"
           elevation={0}
           open={open}
-          sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
-          <Toolbar
-            sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
+          sx={{
+            backgroundColor: 'transparent',
+            zIndex: theme.zIndex.drawer + 1,
+            transition: theme.transitions.create(['width', 'margin'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+            ...(open && {
+              marginLeft: drawerWidth,
+              width: `calc(100% - ${drawerWidth}px)`,
+              transition: theme.transitions.create(['width', 'margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+            }),
+          }}>
+          <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
+            <Toolbar
               sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
+                pr: '24px', // keep right padding when drawer closed
               }}>
-              <Menu />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}>
-              Dashboard
-            </Typography>
-            <IconButton
-              aria-label={`Toggle theme. Current mode is ${mode}.`}
-              onClick={changeTheme}
-              size="small">
-              <ThemeToggleIcon
-                size="small"
-                color={colorPalette.navBar.upper.text}
-              />
-            </IconButton>
-          </Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleDrawer}
+                sx={{
+                  marginRight: '36px',
+                  ...(open && { display: 'none' }),
+                }}>
+                <Menu />
+              </IconButton>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}>
+                Dashboard
+              </Typography>
+              <IconButton
+                aria-label={`Toggle theme. Current mode is ${mode}.`}
+                onClick={changeTheme}
+                size="small">
+                <ThemeToggleIcon
+                  size="small"
+                  color={colorPalette.navBar.upper.text}
+                />
+              </IconButton>
+            </Toolbar>
+          </Box>
         </AppBar>
       </ElevationScroll>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
-        open={open}>
+        anchor="left"
+        open={open}
+        sx={{
+          '& .MuiDrawer-paper': {
+            position: 'fixed',
+            whiteSpace: 'nowrap',
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            ...(!open && {
+              overflowX: 'hidden',
+              transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
+            }),
+          },
+        }}>
         <Toolbar
           sx={{
             display: 'flex',
@@ -210,7 +207,7 @@ export default function AdminNavbar() {
             <ListItemText primary="Sign Out" />
           </ListItemButton>
         </List>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }
