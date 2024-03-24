@@ -6,7 +6,6 @@ import UpperNavbar from './upperNavbar/UpperNavbar';
 import { usePathname } from 'next/navigation';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import CheckoutNavbar from './CheckoutNavbar';
-import AdminNavbar from './AdminNavbar';
 
 export default function Navbar() {
   const pathname = usePathname();

@@ -1,55 +1,10 @@
-import MuiDrawer from '@mui/material/Drawer';
-import { ChevronLeft, Dashboard, LocalShipping, Logout, Menu, People, ShoppingCart, Store } from '@mui/icons-material';
-import {
-  AppBar,
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-  styled,
-  useTheme,
-} from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { useState } from 'react';
+import { Menu } from '@mui/icons-material';
+import { AppBar, Box, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import useColorPalette from '@/hooks/useColorPalette';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
-import Link from 'next/link';
-import signOut from '@/services/auth/sign-out';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import { setUserData } from '@/lib/redux/slices/userSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
-
-const mainListItems = [
-  {
-    label: 'Dashboard',
-    icon: <Dashboard />,
-    path: '/admin',
-  },
-  {
-    label: 'Products',
-    icon: <ShoppingCart />,
-    path: '/admin/products',
-  },
-  {
-    label: 'Users',
-    icon: <People />,
-    path: '/admin/users',
-  },
-  {
-    label: 'Orders',
-    icon: <LocalShipping />,
-    path: '/admin/orders',
-  },
-];
 
 const drawerWidth: number = 240;
 
@@ -59,31 +14,14 @@ type Props = {
 };
 
 export default function AdminNavbar({ open, toggleDrawer }: Props) {
-  // const [open, setOpen] = useState(true);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
-  // const router = useRouter();
-
-  // function toggleDrawer() {
-  //   setOpen(!open);
-  // }
 
   function changeTheme() {
     dispatch(toggleTheme());
   }
-
-  // async function signOutUser() {
-  //   const { success, message } = await signOut();
-
-  //   if (success === true) {
-  //     dispatch(setUserData(null));
-  //     router.push('/');
-  //   } else {
-  //     toast.error(message);
-  //   }
-  // }
 
   return (
     <>
@@ -91,7 +29,6 @@ export default function AdminNavbar({ open, toggleDrawer }: Props) {
         <AppBar
           position="fixed"
           elevation={0}
-          open={open}
           sx={{
             backgroundColor: 'transparent',
             zIndex: theme.zIndex.drawer + 1,
@@ -109,10 +46,7 @@ export default function AdminNavbar({ open, toggleDrawer }: Props) {
             }),
           }}>
           <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
-            <Toolbar
-              sx={{
-                pr: '24px', // keep right padding when drawer closed
-              }}>
+            <Toolbar>
               <IconButton
                 edge="start"
                 color="inherit"
@@ -145,69 +79,6 @@ export default function AdminNavbar({ open, toggleDrawer }: Props) {
           </Box>
         </AppBar>
       </ElevationScroll>
-      {/* <Drawer
-        variant="permanent"
-        anchor="left"
-        open={open}
-        sx={{
-          '& .MuiDrawer-paper': {
-            position: 'fixed',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-            ...(!open && {
-              overflowX: 'hidden',
-              transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-              }),
-              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
-            }),
-          },
-        }}>
-        <Toolbar
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
-          }}>
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeft />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List component="nav">
-          {mainListItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.path}>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </Link>
-          ))}
-          <Divider sx={{ my: 1 }} />
-          <Link href={'/'}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Store />
-              </ListItemIcon>
-              <ListItemText primary="Client View" />
-            </ListItemButton>
-          </Link>
-          <ListItemButton onClick={signOutUser}>
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            <ListItemText primary="Sign Out" />
-          </ListItemButton>
-        </List>
-      </Drawer> */}
     </>
   );
 }

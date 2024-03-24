@@ -17,7 +17,6 @@ import {
 import Link from 'next/link';
 import AdminNavbar from '@/components/navbars/AdminNavbar';
 import { ReactNode, useState } from 'react';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { setUserData } from '@/lib/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import signOut from '@/services/auth/sign-out';
@@ -74,7 +73,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <AdminNavbar
         toggleDrawer={toggleDrawer}
         open={open}
@@ -143,18 +142,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
       <Container
-        disableGutters
         maxWidth="lg"
+        disableGutters
         sx={{
           height: '100vh',
           backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
           paddingY: 2,
           paddingX: 4,
-          marginLeft: `calc(0px + ${drawerWidth}px)`,
+          marginRight: 'unset !important',
+          marginLeft: `${drawerWidth}px !important`,
           transition: 'margin-left 225ms cubic-bezier(0.4, 0, 0.6, 1)',
           ...(!open && {
-            overflowX: 'hidden',
-            marginLeft: { xs: `calc(0px + ${theme.spacing(7)})`, sm: `calc(0px + ${theme.spacing(9)})` },
+            marginLeft: { xs: theme.spacing(7), sm: theme.spacing(9) },
           }),
         }}>
         <Toolbar />
