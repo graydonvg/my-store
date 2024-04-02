@@ -1,4 +1,4 @@
-import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
+import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -42,7 +42,7 @@ export default function LowerNavbarOptions() {
             })
           : null}
 
-        {isAdminView
+        {/* {isAdminView
           ? ADMIN_NAV_OPTIONS.map((option, index) => {
               const isLastNavOption = ADMIN_NAV_OPTIONS.length - 1 === index;
 
@@ -56,7 +56,7 @@ export default function LowerNavbarOptions() {
                 />
               );
             })
-          : null}
+          : null} */}
 
         {isAccountView
           ? ACCOUNT_NAV_OPTIONS.map((option, index) => {

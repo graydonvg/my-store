@@ -55,18 +55,18 @@ export const DEFAULT_NAV_OPTIONS = [
   },
 ];
 
-export const ADMIN_NAV_OPTIONS = [
-  {
-    id: 'adminListing',
-    label: 'Manage All Products',
-    path: '/admin/products',
-  },
-  {
-    id: 'adminNewProduct',
-    label: 'Add New Product',
-    path: '/admin/add-new-product',
-  },
-];
+// export const ADMIN_NAV_OPTIONS = [
+//   {
+//     id: 'adminListing',
+//     label: 'Manage All Products',
+//     path: '/admin/products',
+//   },
+//   {
+//     id: 'adminNewProduct',
+//     label: 'Add New Product',
+//     path: '/admin/add-new-product',
+//   },
+// ];
 
 export const ACCOUNT_NAV_OPTIONS = [
   {

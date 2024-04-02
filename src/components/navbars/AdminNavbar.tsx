@@ -1,26 +1,84 @@
-import { Menu } from '@mui/icons-material';
-import { AppBar, Box, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
+import { ChevronLeft, Dashboard, LocalShipping, Logout, Menu, People, ShoppingCart, Store } from '@mui/icons-material';
+import {
+  AppBar,
+  Box,
+  Container,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import useColorPalette from '@/hooks/useColorPalette';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import signOut from '@/services/auth/sign-out';
+import { setUserData } from '@/lib/redux/slices/userSlice';
+import { toast } from 'react-toastify';
+import { ReactNode } from 'react';
+import { useSelectedLayoutSegment } from 'next/navigation';
 
 const drawerWidth: number = 240;
+
+const mainListItems = [
+  {
+    label: 'Dashboard',
+    icon: <Dashboard />,
+    path: '/admin/dashboard',
+  },
+  {
+    label: 'Products',
+    icon: <ShoppingCart />,
+    path: '/admin/products',
+  },
+  {
+    label: 'Users',
+    icon: <People />,
+    path: '/admin/users',
+  },
+  {
+    label: 'Orders',
+    icon: <LocalShipping />,
+    path: '/admin/orders',
+  },
+];
 
 type Props = {
   open: boolean;
   toggleDrawer: () => void;
+  children: ReactNode;
 };
 
-export default function AdminNavbar({ open, toggleDrawer }: Props) {
+export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
+  const segment = useSelectedLayoutSegment();
 
   function changeTheme() {
     dispatch(toggleTheme());
+  }
+
+  async function signOutUser() {
+    const { success, message } = await signOut();
+
+    if (success === true) {
+      dispatch(setUserData(null));
+      router.push('/');
+    } else {
+      toast.error(message);
+    }
   }
 
   return (
@@ -63,8 +121,8 @@ export default function AdminNavbar({ open, toggleDrawer }: Props) {
                 variant="h6"
                 color="inherit"
                 noWrap
-                sx={{ flexGrow: 1 }}>
-                Dashboard
+                sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
+                {segment}
               </Typography>
               <IconButton
                 aria-label={`Toggle theme. Current mode is ${mode}.`}
@@ -79,6 +137,94 @@ export default function AdminNavbar({ open, toggleDrawer }: Props) {
           </Box>
         </AppBar>
       </ElevationScroll>
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        open={open}
+        sx={{
+          '& .MuiDrawer-paper': {
+            position: 'fixed',
+            whiteSpace: 'nowrap',
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            ...(!open && {
+              overflowX: 'hidden',
+              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
+              transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+            }),
+          },
+        }}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            px: [1],
+          }}>
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeft />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav">
+          {mainListItems.map((item, index) => (
+            <Link
+              key={index}
+              href={item.path}>
+              <ListItemButton>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </Link>
+          ))}
+          <Divider sx={{ my: 1 }} />
+          <Link href={'/'}>
+            <ListItemButton>
+              <ListItemIcon>
+                <Store />
+              </ListItemIcon>
+              <ListItemText primary="Client View" />
+            </ListItemButton>
+          </Link>
+          <ListItemButton onClick={signOutUser}>
+            <ListItemIcon>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Sign Out" />
+          </ListItemButton>
+        </List>
+      </Drawer>
+      <Container
+        maxWidth="lg"
+        disableGutters
+        sx={{
+          height: '100vh',
+          backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
+          paddingY: 2,
+          paddingX: 4,
+          marginRight: 0,
+          marginLeft: `${drawerWidth}px`,
+          transition: theme.transitions.create('margin-left', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+          ...(!open && {
+            marginLeft: { xs: theme.spacing(7), sm: theme.spacing(9) },
+            transition: theme.transitions.create('margin-left', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          }),
+        }}>
+        <Toolbar />
+        {children}
+      </Container>
     </>
   );
 }
