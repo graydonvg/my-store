@@ -93,11 +93,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             }),
             ...(!open && {
               overflowX: 'hidden',
+              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
               transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
               }),
-              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
             }),
           },
         }}>
@@ -149,11 +149,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
           paddingY: 2,
           paddingX: 4,
-          marginRight: 'unset !important',
-          marginLeft: `${drawerWidth}px !important`,
-          transition: 'margin-left 225ms cubic-bezier(0.4, 0, 0.6, 1)',
+          marginRight: 0,
+          marginLeft: `${drawerWidth}px`,
+          transition: theme.transitions.create('margin-left', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
           ...(!open && {
             marginLeft: { xs: theme.spacing(7), sm: theme.spacing(9) },
+            transition: theme.transitions.create('margin-left', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           }),
         }}>
         <Toolbar />

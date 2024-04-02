@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
     .select('isAdmin')
     .eq('userId', user?.id ?? '');
 
-  const isAdmin = data ? data[0].isAdmin : false;
+  const isAdmin = data && data[0].isAdmin ? data[0].isAdmin : false;
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);

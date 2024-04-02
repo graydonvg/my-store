@@ -5,8 +5,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Chart from '@/components/adminView/Chart';
 import Deposits from '@/components/adminView/Deposits';
-import OrdersAdminView from '@/components/adminView/OrdersAdminView';
-import useColorPalette from '@/hooks/useColorPalette';
+import OrdersTable from '@/components/adminView/OrdersTable';
 
 export default function Dashboard() {
   return (
@@ -51,7 +50,7 @@ export default function Dashboard() {
           item
           xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <OrdersAdminView />
+            <OrdersTable />
           </Paper>
         </Grid>
       </Grid>
