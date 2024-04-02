@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
-import { ACCOUNT_NAV_OPTIONS, ADMIN_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
+import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
+import { ADMIN_NAV_OPTIONS } from '@/components/adminNavOptions';
 
 export default function NavDrawerOptions() {
   const colorPalette = useColorPalette();

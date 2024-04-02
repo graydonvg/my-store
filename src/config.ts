@@ -1,5 +1,3 @@
-import { Dashboard, LocalShipping, People, ShoppingCart } from '@mui/icons-material';
-
 export const STORE_NAME = 'MyStore';
 
 export const BORDER_RADIUS = '4px';
@@ -23,6 +21,8 @@ export const ERROR_MESSAGES = {
   NOT_AUTHENTICATED: 'Not authenticated.',
   NO_ID_RECEIVED: 'Please provide a valid ID.',
 };
+
+// Admin nav options in components/adminNavOptions.tsx because of icons
 
 export const DEFAULT_NAV_OPTIONS = [
   {
@@ -48,29 +48,6 @@ export const DEFAULT_NAV_OPTIONS = [
   {
     label: 'SALE',
     path: '/products/sale',
-  },
-];
-
-export const ADMIN_NAV_OPTIONS = [
-  {
-    label: 'Dashboard',
-    icon: <Dashboard />,
-    path: '/admin/dashboard',
-  },
-  {
-    label: 'Products',
-    icon: <ShoppingCart />,
-    path: '/admin/products',
-  },
-  {
-    label: 'Users',
-    icon: <People />,
-    path: '/admin/users',
-  },
-  {
-    label: 'Orders',
-    icon: <LocalShipping />,
-    path: '/admin/orders',
   },
 ];
 

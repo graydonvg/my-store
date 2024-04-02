@@ -26,7 +26,7 @@ import { setUserData } from '@/lib/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import { ADMIN_NAV_OPTIONS } from '@/config';
+import { ADMIN_NAV_OPTIONS } from '@/components/adminNavOptions';
 
 const drawerWidth: number = 240;
 
