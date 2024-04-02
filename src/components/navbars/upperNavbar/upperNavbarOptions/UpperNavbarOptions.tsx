@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box } from '@mui/material';
-import NavbarTitleAndLogo from '../../../ui/NavbarTitleAndLogo';
+import NavbarTitle from '../../../ui/NavbarTitle';
 import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../../drawers/navDrawer/NavDrawer';
 import UserSignedOutUpperNavbarOptions from './UserSignedOutUpperNavbarOptions';
@@ -24,11 +24,13 @@ export default function UpperNavbarOptions() {
         }}>
         <NavDrawer />
       </Box>
-      <NavbarTitleAndLogo
+
+      <NavbarTitle
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
         color={colorPalette.navBar.upper.text}
       />
+
       <Box
         component="nav"
         sx={{ height: 1 }}>

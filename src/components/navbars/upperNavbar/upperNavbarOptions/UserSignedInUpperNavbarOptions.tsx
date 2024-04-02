@@ -8,12 +8,16 @@ import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarI
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import { toast } from 'react-toastify';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
+import { usePathname } from 'next/navigation';
+import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 
 export default function UserSignedInUpperNavbarOptions() {
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const colorPalette = useColorPalette();
+  const pathname = usePathname();
+  const isAdminView = pathname.includes('/admin');
 
   function navigateToWishlist() {
     toast.info('Wishlist coming soon!');
@@ -38,10 +42,16 @@ export default function UserSignedInUpperNavbarOptions() {
           </ListItem>
         ) : null}
 
-        <ListItem disablePadding>
-          <DividerUpperNavbarOptions />
-          <CartDrawer />
-        </ListItem>
+        {!isAdminView ? (
+          <ListItem disablePadding>
+            <DividerUpperNavbarOptions />
+            <CartDrawer />
+          </ListItem>
+        ) : (
+          <ListItem disablePadding>
+            <ThemeToggleButton />
+          </ListItem>
+        )}
 
         {!isBelowMedium && cartItems.length > 0 ? (
           <>

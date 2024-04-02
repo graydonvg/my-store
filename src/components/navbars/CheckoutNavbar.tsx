@@ -1,6 +1,6 @@
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
-import NavbarTitleAndLogo from '../ui/NavbarTitleAndLogo';
+import NavbarTitle from '../ui/NavbarTitle';
 import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
 import { LocalShippingOutlined, ShoppingCart } from '@mui/icons-material';
@@ -26,7 +26,7 @@ export default function CheckoutNavbar() {
             alignItems: 'center',
             height: { xs: '64px', md: '48px' },
           }}>
-          <NavbarTitleAndLogo
+          <NavbarTitle
             hideText={isBelowSmall ? true : false}
             variant="h5"
             display="flex"

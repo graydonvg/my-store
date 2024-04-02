@@ -2,7 +2,7 @@ import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import NavbarTitleAndLogo from '@/components/ui/NavbarTitleAndLogo';
+import NavbarTitle from '@/components/ui/NavbarTitle';
 import useColorPalette from '@/hooks/useColorPalette';
 
 export default function LowerNavbarOptions() {
@@ -17,7 +17,7 @@ export default function LowerNavbarOptions() {
       component="nav"
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1, position: 'relative' }}>
       <Box sx={{ position: 'absolute', left: 0 }}>
-        <NavbarTitleAndLogo
+        <NavbarTitle
           variant="h6"
           display="flex"
           color={colorPalette.navBar.lower.text}
@@ -32,7 +32,7 @@ export default function LowerNavbarOptions() {
 
               return (
                 <LowerNavbarOption
-                  key={option.id}
+                  key={option.label}
                   label={option.label}
                   path={option.path}
                   isLastNavOption={isLastNavOption}
@@ -64,7 +64,7 @@ export default function LowerNavbarOptions() {
 
               return (
                 <LowerNavbarOption
-                  key={option.id}
+                  key={option.label}
                   label={option.label}
                   path={option.path}
                   isLastNavOption={isLastNavOption}

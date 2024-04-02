@@ -26,31 +26,9 @@ import { setUserData } from '@/lib/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 import { useSelectedLayoutSegment } from 'next/navigation';
+import { ADMIN_NAV_OPTIONS } from '@/config';
 
 const drawerWidth: number = 240;
-
-const mainListItems = [
-  {
-    label: 'Dashboard',
-    icon: <Dashboard />,
-    path: '/admin/dashboard',
-  },
-  {
-    label: 'Products',
-    icon: <ShoppingCart />,
-    path: '/admin/products',
-  },
-  {
-    label: 'Users',
-    icon: <People />,
-    path: '/admin/users',
-  },
-  {
-    label: 'Orders',
-    icon: <LocalShipping />,
-    path: '/admin/orders',
-  },
-];
 
 type Props = {
   open: boolean;
@@ -173,7 +151,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
         </Toolbar>
         <Divider />
         <List component="nav">
-          {mainListItems.map((item, index) => (
+          {ADMIN_NAV_OPTIONS.map((item, index) => (
             <Link
               key={index}
               href={item.path}>

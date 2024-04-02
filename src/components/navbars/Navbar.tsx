@@ -14,24 +14,22 @@ export default function Navbar() {
 
   return (
     <>
-      {!isAdminView ? (
-        <ElevationScroll>
-          <AppBar
-            color="transparent"
-            elevation={0}
-            position="sticky">
-            {!isCheckoutFlow ? (
-              <>
-                <UpperNavbar />
-                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                  <LowerNavbar />
-                </Box>
-              </>
-            ) : null}
-            {isCheckoutFlow ? <CheckoutNavbar /> : null}
-          </AppBar>
-        </ElevationScroll>
-      ) : null}
+      <ElevationScroll>
+        <AppBar
+          color="transparent"
+          elevation={0}
+          position="sticky">
+          {!isCheckoutFlow ? (
+            <>
+              <UpperNavbar />
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <LowerNavbar />
+              </Box>
+            </>
+          ) : null}
+          {isCheckoutFlow ? <CheckoutNavbar /> : null}
+        </AppBar>
+      </ElevationScroll>
     </>
   );
 }

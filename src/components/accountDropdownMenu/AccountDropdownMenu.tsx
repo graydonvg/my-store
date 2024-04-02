@@ -76,7 +76,7 @@ export default function AccountDropdownMenu() {
         </>
       }>
       {userData && userData?.isAdmin ? (
-        <Link href={isAdminView ? '/' : '/admin'}>
+        <Link href={isAdminView ? '/' : '/admin/dashboard'}>
           <AccountDropdownMenuItem
             label={isAdminView ? 'Client View' : 'Admin View'}
             icon={<AdminViewToggleIcon isAdminView={isAdminView} />}

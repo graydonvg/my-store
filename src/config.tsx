@@ -1,3 +1,5 @@
+import { Dashboard, LocalShipping, People, ShoppingCart } from '@mui/icons-material';
+
 export const STORE_NAME = 'MyStore';
 
 export const BORDER_RADIUS = '4px';
@@ -24,63 +26,64 @@ export const ERROR_MESSAGES = {
 
 export const DEFAULT_NAV_OPTIONS = [
   {
-    id: 'home',
     label: 'Home',
     path: '/',
   },
   {
-    id: 'listing',
     label: 'All Products',
     path: '/products/all-products',
   },
   {
-    id: 'listingMen',
     label: 'Men',
     path: '/products/men',
   },
   {
-    id: 'listingWomen',
     label: 'Women',
     path: '/products/women',
   },
   {
-    id: 'listingKids',
     label: 'Kids',
     path: '/products/kids',
   },
   {
-    id: 'listingSale',
     label: 'SALE',
     path: '/products/sale',
   },
 ];
 
-// export const ADMIN_NAV_OPTIONS = [
-//   {
-//     id: 'adminListing',
-//     label: 'Manage All Products',
-//     path: '/admin/products',
-//   },
-//   {
-//     id: 'adminNewProduct',
-//     label: 'Add New Product',
-//     path: '/admin/add-new-product',
-//   },
-// ];
+export const ADMIN_NAV_OPTIONS = [
+  {
+    label: 'Dashboard',
+    icon: <Dashboard />,
+    path: '/admin/dashboard',
+  },
+  {
+    label: 'Products',
+    icon: <ShoppingCart />,
+    path: '/admin/products',
+  },
+  {
+    label: 'Users',
+    icon: <People />,
+    path: '/admin/users',
+  },
+  {
+    label: 'Orders',
+    icon: <LocalShipping />,
+    path: '/admin/orders',
+  },
+];
 
 export const ACCOUNT_NAV_OPTIONS = [
   {
-    id: 'myAccount',
     label: 'My Account',
     path: '/account',
   },
   {
-    id: 'orders',
     label: 'Orders',
     path: '/orders',
   },
   {
-    id: 'wishlist',
     label: 'Wishlist',
     path: '/wishlist',
   },

@@ -6,6 +6,7 @@ import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
+import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 
 export default function UserSignedOutUpperNavbarOptions() {
   const dispatch = useAppDispatch();
@@ -24,15 +25,7 @@ export default function UserSignedOutUpperNavbarOptions() {
       <ListItem
         disablePadding
         sx={{ display: { xs: 'none', md: 'flex' }, gap: '11px' }}>
-        <IconButton
-          aria-label={`Toggle theme. Current mode is ${mode}.`}
-          onClick={changeTheme}
-          size="small">
-          <ThemeToggleIcon
-            size="small"
-            color={colorPalette.navBar.upper.text}
-          />
-        </IconButton>
+        <ThemeToggleButton />
         <DividerUpperNavbarOptions />
       </ListItem>
       <ListItem disablePadding>
