@@ -59,12 +59,12 @@ export const ADMIN_NAV_OPTIONS = [
   {
     id: 'adminListing',
     label: 'Manage All Products',
-    path: '/admin-view/all-products',
+    path: '/admin/products',
   },
   {
     id: 'adminNewProduct',
     label: 'Add New Product',
-    path: '/admin-view/add-new-product',
+    path: '/admin/add-new-product',
   },
 ];
 

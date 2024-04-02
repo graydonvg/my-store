@@ -8,7 +8,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 export default function LowerNavbarOptions() {
   const colorPalette = useColorPalette();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
   const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
   const showDefaultNavOptions = !isAdminView && !isAccountView;
 

@@ -11,7 +11,13 @@ export default function UpperNavbarOptions() {
   const colorPalette = useColorPalette();
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: { xs: 'space-between', md: 'flex-end' },
+        height: { xs: '64px', md: '40px' },
+      }}>
       <Box
         sx={{
           display: { xs: 'block', md: 'none' },
@@ -29,6 +35,6 @@ export default function UpperNavbarOptions() {
         {!userData ? <UserSignedOutUpperNavbarOptions /> : null}
         {userData ? <UserSignedInUpperNavbarOptions /> : null}
       </Box>
-    </>
+    </Box>
   );
 }

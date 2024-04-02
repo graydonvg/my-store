@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
     .select('isAdmin')
     .eq('userId', user?.id ?? '');
 
-  const isAdmin = data ? data[0].isAdmin : false;
+  const isAdmin = data && data[0].isAdmin ? data[0].isAdmin : false;
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);
@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
   //								!!!IMPORTANT!!!
   // Make sure the path is included in the matcher below
 
-  const adminOnlyPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin-view');
+  const adminOnlyPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin');
 
   const authRequiredPath =
     checkPathStartsWith('/api/secure') ||
@@ -106,7 +106,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/api/secure/:path*',
-    '/admin-view/:path*',
+    '/admin/:path*',
     '/account',
     '/orders',
     '/wishlist',

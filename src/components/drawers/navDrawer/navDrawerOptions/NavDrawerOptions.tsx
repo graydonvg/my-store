@@ -13,7 +13,7 @@ export default function NavDrawerOptions() {
   const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
 
   function closeDrawer() {
     dispatch(setIsNavDrawerOpen(false));
@@ -26,7 +26,7 @@ export default function NavDrawerOptions() {
           <NavDrawerOption
             onClick={closeDrawer}
             label={isAdminView ? 'Client View' : 'Admin View'}
-            path={isAdminView ? '/' : '/admin-view/all-products'}
+            path={isAdminView ? '/' : '/admin'}
             bodyTextColor={colorPalette.navBar.lower.text}
           />
         ) : null}

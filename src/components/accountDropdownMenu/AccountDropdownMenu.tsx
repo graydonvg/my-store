@@ -54,7 +54,7 @@ export default function AccountDropdownMenu() {
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin-view');
+  const isAdminView = pathname.includes('/admin');
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -76,7 +76,7 @@ export default function AccountDropdownMenu() {
         </>
       }>
       {userData && userData?.isAdmin ? (
-        <Link href={isAdminView ? '/' : '/admin-view/all-products'}>
+        <Link href={isAdminView ? '/' : '/admin'}>
           <AccountDropdownMenuItem
             label={isAdminView ? 'Client View' : 'Admin View'}
             icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
