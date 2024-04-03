@@ -1,3 +1,4 @@
+import { BORDER_RADIUS } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 import { Button, ButtonProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
@@ -51,6 +52,7 @@ export default function OutlinedButton({
           backgroundColor: 'transparent',
           borderColor: colorPalette.typography,
         },
+        borderRadius: BORDER_RADIUS,
         ...styles,
       }}
       {...props}>

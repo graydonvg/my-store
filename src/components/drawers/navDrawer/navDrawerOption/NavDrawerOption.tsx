@@ -6,7 +6,6 @@ type Props = {
   onClick?: () => void;
   path?: string;
   label: string;
-  bodyTextColor: string;
 };
 
 export default function NavDrawerOption({ onClick, path, label }: Props) {

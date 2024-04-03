@@ -2,7 +2,6 @@ import { List, Box } from '@mui/material';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
-import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
 import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
@@ -10,7 +9,6 @@ import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { ADMIN_NAV_OPTIONS } from '@/components/AdminNavOptions';
 
 export default function NavDrawerOptions() {
-  const colorPalette = useColorPalette();
   const userData = useAppSelector((state) => state.user.userData);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
@@ -30,7 +28,6 @@ export default function NavDrawerOptions() {
                 key={option.label}
                 label={option.label}
                 path={option.path}
-                bodyTextColor={colorPalette.navBar.lower.text}
               />
             ))
           : null}
@@ -42,7 +39,6 @@ export default function NavDrawerOptions() {
                 key={option.label}
                 label={option.label}
                 path={option.path}
-                bodyTextColor={colorPalette.navBar.lower.text}
               />
             ))
           : null}
@@ -54,7 +50,6 @@ export default function NavDrawerOptions() {
                 key={option.label}
                 label={option.label}
                 path={option.path}
-                bodyTextColor={colorPalette.navBar.lower.text}
               />
             ))
           : null}
@@ -64,7 +59,6 @@ export default function NavDrawerOptions() {
             onClick={closeDrawer}
             label={isAdminView ? 'Client View' : 'Admin View'}
             path={isAdminView ? '/' : '/admin/dashboard'}
-            bodyTextColor={colorPalette.navBar.lower.text}
           />
         ) : null}
 

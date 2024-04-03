@@ -157,7 +157,10 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
               href={item.path}>
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText
+                  primary={item.label}
+                  sx={{ color: colorPalette.navBar.lower.text }}
+                />
               </ListItemButton>
             </Link>
           ))}
@@ -167,14 +170,20 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
               <ListItemIcon>
                 <Store />
               </ListItemIcon>
-              <ListItemText primary="Client View" />
+              <ListItemText
+                primary="Client View"
+                sx={{ color: colorPalette.navBar.lower.text }}
+              />
             </ListItemButton>
           </Link>
           <ListItemButton onClick={signOutUser}>
             <ListItemIcon>
               <Logout />
             </ListItemIcon>
-            <ListItemText primary="Sign Out" />
+            <ListItemText
+              primary="Sign Out"
+              sx={{ color: colorPalette.navBar.lower.text }}
+            />
           </ListItemButton>
         </List>
       </Drawer>

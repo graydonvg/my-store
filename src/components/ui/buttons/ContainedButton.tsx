@@ -88,6 +88,7 @@ export default function ContainedButton({
       }
       sx={{
         color: 'white',
+        borderRadius: BORDER_RADIUS,
         height,
         minHeight,
         ...buttonBackgroundColor,
