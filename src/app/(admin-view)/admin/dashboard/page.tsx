@@ -9,7 +9,7 @@ import OrdersTable from '@/components/adminView/OrdersTable';
 
 export default function Dashboard() {
   return (
-    <Container sx={{}}>
+    <>
       <Grid
         container
         spacing={3}>
@@ -21,7 +21,7 @@ export default function Dashboard() {
           lg={9}>
           <Paper
             sx={{
-              p: 2,
+              padding: 2,
               display: 'flex',
               flexDirection: 'column',
               height: 240,
@@ -37,7 +37,7 @@ export default function Dashboard() {
           lg={3}>
           <Paper
             sx={{
-              p: 2,
+              padding: 2,
               display: 'flex',
               flexDirection: 'column',
               height: 240,
@@ -49,11 +49,11 @@ export default function Dashboard() {
         <Grid
           item
           xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+          <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column' }}>
             <OrdersTable />
           </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 }

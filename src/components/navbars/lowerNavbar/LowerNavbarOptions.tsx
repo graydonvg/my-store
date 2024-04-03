@@ -42,22 +42,6 @@ export default function LowerNavbarOptions() {
             })
           : null}
 
-        {/* {isAdminView
-          ? ADMIN_NAV_OPTIONS.map((option, index) => {
-              const isLastNavOption = ADMIN_NAV_OPTIONS.length - 1 === index;
-
-              return (
-                <LowerNavbarOption
-                  key={option.id}
-                  label={option.label}
-                  path={option.path}
-                  isLastNavOption={isLastNavOption}
-                  underline={option.path === pathname}
-                />
-              );
-            })
-          : null} */}
-
         {isAccountView
           ? ACCOUNT_NAV_OPTIONS.map((option, index) => {
               const isLastNavOption = ACCOUNT_NAV_OPTIONS.length - 1 === index;

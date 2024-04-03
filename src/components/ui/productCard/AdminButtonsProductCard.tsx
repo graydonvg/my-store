@@ -89,6 +89,14 @@ export default function AdminButtonsProductCard({ product }: Props) {
         paddingY: 1,
         gap: 1,
       }}>
+      <OutlinedButton
+        disabled={isLoading || isDeletingProduct}
+        onClick={editProduct}
+        fullWidth
+        label={!isLoading ? 'edit' : ''}
+        isLoading={isLoading}
+        startIcon={<Edit />}
+      />
       <ContainedButton
         disabled={isDeletingProduct || isLoading}
         onClick={permanentlyDeleteProduct}
@@ -97,14 +105,6 @@ export default function AdminButtonsProductCard({ product }: Props) {
         isLoading={isDeletingProduct}
         startIcon={<DeleteForever />}
         backgroundColor="warning"
-      />
-      <OutlinedButton
-        disabled={isLoading || isDeletingProduct}
-        onClick={editProduct}
-        fullWidth
-        label={!isLoading ? 'edit' : ''}
-        isLoading={isLoading}
-        startIcon={<Edit />}
       />
     </Box>
   );

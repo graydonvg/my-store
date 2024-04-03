@@ -1,4 +1,4 @@
-import { ChevronLeft, Dashboard, LocalShipping, Logout, Menu, People, ShoppingCart, Store } from '@mui/icons-material';
+import { ChevronLeft, Logout, Menu, Store } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -26,7 +26,7 @@ import { setUserData } from '@/lib/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import { ADMIN_NAV_OPTIONS } from '@/components/adminNavOptions';
+import { ADMIN_NAV_OPTIONS } from '../AdminNavOptions';
 
 const drawerWidth: number = 240;
 
@@ -183,7 +183,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
         disableGutters
         sx={{
           height: '100vh',
-          backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
+
           paddingY: 2,
           paddingX: 4,
           marginRight: 0,

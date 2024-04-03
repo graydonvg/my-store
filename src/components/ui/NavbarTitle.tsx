@@ -2,6 +2,7 @@ import { IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import { usePathname, useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import { STORE_NAME } from '@/config';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   display: 'flex' | { xs: 'flex'; md: 'none' };
@@ -14,6 +15,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
   const router = useRouter();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
+  const colorPalette = useColorPalette();
   const segment = useSelectedLayoutSegment();
 
   function navigateToHome() {
@@ -60,7 +62,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
           variant="h6"
           color="inherit"
           noWrap
-          sx={{ textTransform: 'capitalize' }}>
+          sx={{ textTransform: 'capitalize', color: colorPalette.typographyVariants.white }}>
           {segment}
         </Typography>
       )}

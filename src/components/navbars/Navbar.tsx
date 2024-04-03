@@ -10,7 +10,6 @@ import CheckoutNavbar from './CheckoutNavbar';
 export default function Navbar() {
   const pathname = usePathname();
   const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
-  const isAdminView = pathname.includes('admin');
 
   return (
     <>

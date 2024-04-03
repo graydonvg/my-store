@@ -45,17 +45,12 @@ export default function OutlinedButton({
         backgroundColor: 'transparent',
         '&:hover': {
           backgroundColor: 'transparent',
+          borderColor: colorPalette.typography,
         },
         '&:active': {
           backgroundColor: 'transparent',
+          borderColor: colorPalette.typography,
         },
-        '@media (hover: hover)': {
-          '&:hover': {
-            backgroundColor: 'transparent',
-            borderColor: colorPalette.typography,
-          },
-        },
-
         ...styles,
       }}
       {...props}>
