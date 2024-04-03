@@ -23,12 +23,17 @@ export default function LargeProductImageBox({
   maxImageCount,
 }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const { imageUploadProgress } = useAppSelector((state) => state.productImages);
   const colorPalette = useColorPalette();
 
   useEffect(() => {
+    if (selectedIndexes.includes(selectedImageIndex)) return;
+
+    setSelectedIndexes((prevIndexes) => [...prevIndexes, selectedImageIndex]);
+
     setIsImageLoaded(false);
-  }, [selectedImageIndex]);
+  }, [selectedImageIndex, selectedIndexes]);
 
   return (
     <Box
