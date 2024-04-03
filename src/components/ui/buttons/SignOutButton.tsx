@@ -56,7 +56,6 @@ export default function SignOutButton({
         <NavDrawerOption
           onClick={signOutUser}
           label="Sign Out"
-          bodyTextColor={colorPalette.navBar.lower.text}
         />
       ) : null}
     </>
