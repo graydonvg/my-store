@@ -3,26 +3,34 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from './Title';
+import CardTitleAdminView from './CardTitleAdminView';
 import { Box } from '@mui/material';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 // Generate Order Data
 function createData(id: number, date: string, name: string, shipTo: string, paymentMethod: string, amount: number) {
   return { id, date, name, shipTo, paymentMethod, amount };
 }
 
+function getCurrentDateFormatted() {
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+  const parts = formattedDate.split(' ');
+  return `${parts[1]} ${parts[0]} ${parts[2]}`.replace(',', '');
+}
+
 const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
+  createData(0, getCurrentDateFormatted(), 'Sophia Smith', 'Johannesburg, GT', 'Stripe', 3496),
+  createData(1, getCurrentDateFormatted(), 'Ethan Johnson', 'Cape Town, WC', 'Stripe', 2749),
+  createData(2, getCurrentDateFormatted(), 'Isabella Brown', 'Durban, KZN', 'Stripe', 489),
+  createData(3, getCurrentDateFormatted(), 'Liam Davis', 'Bloemfontein, FS', 'Stripe', 3199),
+  createData(4, getCurrentDateFormatted(), 'Olivia Wilson', 'Port Elizabeth, EC', 'Stripe', 1580),
 ];
 
 export default function OrdersTable() {
   return (
     <>
-      <Title>Recent Orders</Title>
+      <CardTitleAdminView>Recent Orders</CardTitleAdminView>
       <Box sx={{ overflowX: 'auto' }}>
         <Table size="small">
           <TableHead>
@@ -41,7 +49,7 @@ export default function OrdersTable() {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.shipTo}</TableCell>
                 <TableCell>{row.paymentMethod}</TableCell>
-                <TableCell align="right">{`$${row.amount}`}</TableCell>
+                <TableCell align="right">{formatCurrency(row.amount)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

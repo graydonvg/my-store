@@ -1,10 +1,9 @@
 'use client';
 
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Chart from '@/components/adminView/Chart';
-import Deposits from '@/components/adminView/Deposits';
+import TotalSales from '@/components/adminView/TotalSales';
 import OrdersTable from '@/components/adminView/OrdersTable';
 
 export default function Dashboard() {
@@ -29,7 +28,7 @@ export default function Dashboard() {
             <Chart />
           </Paper>
         </Grid>
-        {/* Recent Deposits */}
+        {/* Weekly Sales*/}
         <Grid
           item
           xs={12}
@@ -42,7 +41,7 @@ export default function Dashboard() {
               flexDirection: 'column',
               height: 240,
             }}>
-            <Deposits />
+            <TotalSales />
           </Paper>
         </Grid>
         {/* Recent Orders */}
