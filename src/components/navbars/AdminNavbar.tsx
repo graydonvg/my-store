@@ -20,12 +20,11 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
 import signOut from '@/services/auth/sign-out';
 import { setUserData } from '@/lib/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
-import { useSelectedLayoutSegment } from 'next/navigation';
 import { ADMIN_NAV_OPTIONS } from '../AdminNavOptions';
 
 const drawerWidth: number = 240;
@@ -42,7 +41,8 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
-  const segment = useSelectedLayoutSegment();
+  const segments = useSelectedLayoutSegments();
+  const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -100,7 +100,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
                 color="inherit"
                 noWrap
                 sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
-                {segment}
+                {currentPath}
               </Typography>
               <IconButton
                 aria-label={`Toggle theme. Current mode is ${mode}.`}

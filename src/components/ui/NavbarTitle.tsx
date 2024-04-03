@@ -1,6 +1,6 @@
 import { IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
-import { usePathname, useRouter, useSelectedLayoutSegment } from 'next/navigation';
+import { usePathname, useRouter, useSelectedLayoutSegments } from 'next/navigation';
 import { STORE_NAME } from '@/config';
 import useColorPalette from '@/hooks/useColorPalette';
 
@@ -16,7 +16,8 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
   const colorPalette = useColorPalette();
-  const segment = useSelectedLayoutSegment();
+  const segments = useSelectedLayoutSegments();
+  const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
 
   function navigateToHome() {
     router.push('/');
@@ -63,7 +64,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
           color="inherit"
           noWrap
           sx={{ textTransform: 'capitalize', color: colorPalette.typographyVariants.white }}>
-          {segment}
+          {currentPath}
         </Typography>
       )}
     </>
