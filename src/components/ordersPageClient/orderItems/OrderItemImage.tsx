@@ -35,6 +35,7 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
             height="100%"
             width="100%"
             variant="rectangular"
+            style={{ borderRadius: BORDER_RADIUS }}
           />
         ) : null}
       </Box>

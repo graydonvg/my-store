@@ -66,6 +66,7 @@ export default function SmallProductImageBox({
                 height="100%"
                 width="100%"
                 variant="rectangular"
+                style={{ borderRadius: BORDER_RADIUS }}
               />
             ) : null}
           </>

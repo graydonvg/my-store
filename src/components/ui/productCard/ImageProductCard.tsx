@@ -40,6 +40,7 @@ export default function ImageProductCard({ imageUrl, imageSizes, productName }: 
           height="100%"
           width="100%"
           variant="rectangular"
+          style={{ borderTopLeftRadius: BORDER_RADIUS, borderTopRightRadius: BORDER_RADIUS }}
         />
       ) : null}
     </Box>

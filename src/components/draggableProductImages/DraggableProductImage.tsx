@@ -111,6 +111,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
                 height="100%"
                 width="100%"
                 variant="rectangular"
+                style={{ borderRadius: BORDER_RADIUS }}
               />
             ) : null}
           </Box>

@@ -37,6 +37,7 @@ export default function ImageLargeCartItem({ imageUrl, productName, productHref 
             height="100%"
             width="100%"
             variant="rectangular"
+            style={{ borderRadius: BORDER_RADIUS }}
           />
         ) : null}
       </Box>

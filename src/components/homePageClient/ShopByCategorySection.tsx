@@ -73,6 +73,7 @@ export default function ShopByCategorySection() {
                   height="100%"
                   width="100%"
                   variant="rectangular"
+                  style={{ borderRadius: BORDER_RADIUS }}
                 />
               ) : null}
               <Box
