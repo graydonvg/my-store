@@ -6,12 +6,12 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { Favorite } from '@mui/icons-material';
 import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
-import { toast } from 'react-toastify';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 
 export default function UserSignedInUpperNavbarOptions() {
+  const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
@@ -20,7 +20,7 @@ export default function UserSignedInUpperNavbarOptions() {
   const isAdminView = pathname.includes('/admin');
 
   function navigateToWishlist() {
-    toast.info('Wishlist coming soon!');
+    router.push('/wishlist');
   }
 
   return (

@@ -1,12 +1,27 @@
+import Wishlist from '@/components/Wishlist';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Box } from '@mui/material';
 
-type Props = {};
+export default async function WishlistPage() {
+  const supabase = await createSupabaseServerClient();
 
-export default function Wishlist() {
+  const { data } = await supabase
+    .from('wishlist')
+    .select('size, product: products!inner(*, productImageData!inner(fileName, imageUrl, productImageId, index))')
+    .order('createdAt', { ascending: true });
+
+  const wishlist = data?.map((item) => {
+    return {
+      size: item.size,
+      product: item.product!,
+    };
+  });
+
   return (
     <Box>
-      <PageHeaderWithBorder label="Wishlist coming soon!" />
+      <PageHeaderWithBorder label="Wishlist" />
+      {wishlist ? <Wishlist wishlist={wishlist} /> : null}
     </Box>
   );
 }

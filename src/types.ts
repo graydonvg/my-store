@@ -104,6 +104,11 @@ export type InsertProductTypeStore = {
   salePercentage: '' | number;
 };
 
+export type WishlistItemType = {
+  size: string;
+  product: ProductType;
+};
+
 export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
 
 export type userPasswordType = {

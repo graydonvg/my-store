@@ -9,7 +9,7 @@ export default async function OrdersPage() {
   const { data: orders } = await supabase
     .from('orders')
     .select(
-      'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems!inner(orderItemId, quantity, size, pricePaid, product: products!inner(productId, name, category, returnInfo, productImageData!inner(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
+      'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems!inner(orderItemId, quantity, size, pricePaid, product: products!inner(productId, name, category, returnInfo, productImageData!inner(imageUrl, index))), shippingDetails!inner(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
     )
     .order('createdAt', { ascending: false });
 

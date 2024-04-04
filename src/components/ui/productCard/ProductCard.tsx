@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 import { ProductType } from '@/types';
@@ -11,19 +11,25 @@ import { BORDER_RADIUS } from '@/config';
 import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
 import AdminButtonsProductCard from './AdminButtonsProductCard';
 import ImageProductCard from './ImageProductCard';
+import MoveToCartButton from '../buttons/MoveToCartButton';
 
 type ProductCardProps = {
   product: ProductType;
   imageSizes: string;
+  wishlistSize?: string;
 };
 
-export default function ProductCard({ product, imageSizes }: ProductCardProps) {
+export default function ProductCard({ product, imageSizes, wishlistSize }: ProductCardProps) {
   const colorPalette = useColorPalette();
+  const theme = useTheme();
+  const mode = theme.palette.mode;
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
+  const isWishlistView = pathname.includes('/wishlist');
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
-  const imageUrl = product.productImageData.find((image) => image.index === 0)?.imageUrl;
+  const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
+  const isInStock = product.sizes.includes(wishlistSize ?? '');
 
   return (
     <Box sx={{ borderRadius: BORDER_RADIUS, height: 1 }}>
@@ -33,7 +39,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
           flexDirection: 'column',
           height: 1,
         }}>
-        <Link href={`/products/${product.category.toLowerCase()}/${product.productId}`}>
+        <Link href={`/products/${product.category?.toLowerCase()}/${product.productId}`}>
           <Box
             sx={{
               display: 'flex',
@@ -58,6 +64,7 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 display: 'flex',
                 flexDirection: 'column',
                 paddingY: 1,
+                position: 'relative',
               }}>
               <Typography
                 component="h4"
@@ -78,8 +85,31 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                 fontSize={14}
                 lineHeight={'22px'}
                 color={colorPalette.typographyVariants.grey}>
-                {product.brand.toUpperCase()}
+                {product.brand?.toUpperCase()}
               </Typography>
+
+              {isWishlistView ? (
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Typography
+                    component="span"
+                    fontSize={14}
+                    lineHeight={'18px'}
+                    color={colorPalette.typographyVariants.grey}>
+                    Size: {wishlistSize}
+                  </Typography>
+
+                  {!isInStock ? (
+                    <Typography
+                      component="span"
+                      fontSize={14}
+                      lineHeight={'18px'}
+                      color={mode === 'dark' ? colorPalette.warning.light : colorPalette.warning.dark}>
+                      Out of stock
+                    </Typography>
+                  ) : null}
+                </Box>
+              ) : null}
+
               <Box
                 sx={{
                   display: 'flex',
@@ -109,6 +139,13 @@ export default function ProductCard({ product, imageSizes }: ProductCardProps) {
                   </Typography>
                 ) : null}
               </Box>
+
+              {isWishlistView && isInStock ? (
+                <MoveToCartButton
+                  product={product}
+                  wishlistSize={wishlistSize ?? ''}
+                />
+              ) : null}
             </Box>
           </Box>
         </Link>
