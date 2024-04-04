@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, List, ListItem, useMediaQuery, useTheme } from '@mui/material';
+import { Box, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../../drawers/cartDrawer/CartDrawer';
 import AccountDropdownMenu from '@/components/accountDropdownMenu/AccountDropdownMenu';
 import useColorPalette from '@/hooks/useColorPalette';
@@ -34,9 +34,15 @@ export default function UserSignedInUpperNavbarOptions() {
             <UpperNavbarIconButton
               onClick={navigateToWishlist}
               backgroundColor={colorPalette.navBar.upper.background}>
+              <Typography
+                component="span"
+                fontSize={16}
+                sx={{ color: colorPalette.typographyVariants.white, marginLeft: 1 }}>
+                Wishlist
+              </Typography>
               <Favorite
                 aria-label="Wishlist"
-                sx={{ color: colorPalette.typographyVariants.white, opacity: '50%' }}
+                sx={{ color: colorPalette.typographyVariants.white, opacity: '50%', marginLeft: 1 }}
               />
             </UpperNavbarIconButton>
           </ListItem>

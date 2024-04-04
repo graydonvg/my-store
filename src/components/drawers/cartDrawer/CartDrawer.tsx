@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Toolbar, Typography, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
@@ -12,13 +12,10 @@ import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarI
 export default function CartDrawer() {
   const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
+  const cartCount = selectCartCount(cartItems);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const navbarHeight = isBelowMedium
-    ? document.getElementById('navbar')?.offsetHeight
-    : document.getElementById('navbar')?.offsetHeight;
-  const cartCount = selectCartCount(cartItems);
+  const navbarHeight = document.getElementById('navbar')?.offsetHeight;
 
   function toggleCartDrawer() {
     dispatch(setIsCartOpen(!isCartOpen));
@@ -33,9 +30,14 @@ export default function CartDrawer() {
       <UpperNavbarIconButton
         backgroundColor={colorPalette.navBar.upper.background}
         onClick={toggleCartDrawer}>
+        <Typography
+          component="span"
+          sx={{ display: { xs: 'none', md: 'inline' }, color: colorPalette.typographyVariants.white }}>
+          Cart
+        </Typography>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: colorPalette.navBar.upper.text }}
+          sx={{ color: colorPalette.navBar.upper.text, marginLeft: 1 }}
         />
         <Box
           sx={{
@@ -46,7 +48,7 @@ export default function CartDrawer() {
             height: 20,
             display: 'grid',
             placeContent: 'center',
-            marginLeft: { xs: 1, md: 2 },
+            marginLeft: 1,
           }}>
           <Typography fontSize={12}>{cartCount}</Typography>
         </Box>

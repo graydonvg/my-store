@@ -72,7 +72,7 @@ export default function AccountDropdownMenu() {
             }}>
             {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
           </Typography>
-          <ArrowDropDown sx={{ color: colorPalette.primary.dark, marginLeft: 2 }} />
+          <ArrowDropDown sx={{ color: colorPalette.primary.dark, marginLeft: 1 }} />
         </>
       }>
       {userData && userData?.isAdmin ? (
