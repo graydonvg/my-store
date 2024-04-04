@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
 import { BORDER_RADIUS } from '@/config';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Props = {
   selectedImageIndex: number;
@@ -23,17 +23,8 @@ export default function LargeProductImageBox({
   maxImageCount,
 }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const { imageUploadProgress } = useAppSelector((state) => state.productImages);
   const colorPalette = useColorPalette();
-
-  useEffect(() => {
-    if (selectedIndexes.includes(selectedImageIndex)) return;
-
-    setSelectedIndexes((prevIndexes) => [...prevIndexes, selectedImageIndex]);
-
-    setIsImageLoaded(false);
-  }, [selectedImageIndex, selectedIndexes]);
 
   return (
     <Box
