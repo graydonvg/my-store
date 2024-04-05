@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data } = await supabase
+  const { data: userDataArray } = await supabase
     .from('users')
     .select(
       '*, addresses(*), cart!inner(createdAt, cartItemId, quantity, size, product: products!inner(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData!inner(imageUrl, index)))'
@@ -34,8 +34,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
-  if (data && data[0]) {
-    const { cart, ...restOfData } = data[0];
+  if (userDataArray && userDataArray[0]) {
+    const { cart, ...restOfData } = userDataArray[0];
 
     userData = restOfData;
     cartItems = cart;
