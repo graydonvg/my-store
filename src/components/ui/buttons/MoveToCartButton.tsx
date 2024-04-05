@@ -20,7 +20,7 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const { userData } = useAppSelector((state) => state.user);
-  const [isMovingToCart, setIsMovingToCart] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const addedToCartToastMessage = 'Item added to cart.';
 
   async function incrementItemQuantity(existingItem: CartItemType) {
@@ -56,7 +56,7 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
   async function moveToCart(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    setIsMovingToCart(true);
+    setIsLoading(true);
 
     const itemExists = cartItems.find((item) => item?.product?.productId === product.productId);
 
@@ -66,15 +66,15 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
       await addNewItemToCart();
     }
 
-    setIsMovingToCart(false);
+    setIsLoading(false);
   }
 
   return (
     <>
-      {!isMovingToCart ? (
+      {!isLoading ? (
         <IconButton
           onClick={(e) => moveToCart(e)}
-          disabled={isMovingToCart}
+          disabled={isLoading}
           disableRipple
           sx={{
             width: 'fit-content',
@@ -82,13 +82,15 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
             bottom: 0,
             right: 0,
             color: colorPalette.typography,
+            padding: 0,
+            paddingBottom: 1,
           }}>
           <AddShoppingCart />
         </IconButton>
       ) : (
         <PulseLoader
           color={colorPalette.typography}
-          loading={isMovingToCart}
+          loading={isLoading}
           size={10}
           style={{
             position: 'absolute',

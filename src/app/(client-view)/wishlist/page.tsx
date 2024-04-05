@@ -8,11 +8,14 @@ export default async function WishlistPage() {
 
   const { data } = await supabase
     .from('wishlist')
-    .select('size, product: products!inner(*, productImageData!inner(fileName, imageUrl, productImageId, index))')
+    .select(
+      'wishlistItemId, size, product: products!inner(*, productImageData!inner(fileName, imageUrl, productImageId, index))'
+    )
     .order('createdAt', { ascending: true });
 
   const wishlist = data?.map((item) => {
     return {
+      wishlistItemId: item.wishlistItemId,
       size: item.size,
       product: item.product!,
     };

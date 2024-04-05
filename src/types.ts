@@ -105,9 +105,12 @@ export type InsertProductTypeStore = {
 };
 
 export type WishlistItemType = {
+  wishlistItemId: string;
   size: string;
   product: ProductType;
 };
+
+export type InsertWishlistItemType = Database['public']['Tables']['wishlist']['Insert'];
 
 export type InsertCartItemType = Database['public']['Tables']['cart']['Insert'];
 

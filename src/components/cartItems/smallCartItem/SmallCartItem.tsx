@@ -1,10 +1,8 @@
 import { Box, ListItem, Typography } from '@mui/material';
 import { CartItemType } from '@/types';
-import { toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
-import { deleteItemFromCart } from '@/services/cart/delete';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import DeleteCartItemButton from './DeleteButtonSmallCartItem';
@@ -27,24 +25,6 @@ export default function SmallCartItem({ item }: Props) {
   const isShippingView = pathname.includes('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
-
-  useEffect(() => {
-    setIsRemovingCartItem(false);
-  }, [item]);
-
-  async function handleRemoveCartItem(event: MouseEvent, cartItemId: string) {
-    event.stopPropagation();
-
-    setIsRemovingCartItem(true);
-
-    const { success, message } = await deleteItemFromCart(cartItemId);
-
-    if (success === true) {
-      router.refresh();
-    } else {
-      toast.error(message);
-    }
-  }
 
   function navigateToProductPage() {
     router.push(`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`);
@@ -81,8 +61,9 @@ export default function SmallCartItem({ item }: Props) {
         }}>
         {!isShippingView ? (
           <DeleteCartItemButton
-            isLoading={isRemovingCartItem}
-            onClick={(e: MouseEvent<HTMLButtonElement>) => handleRemoveCartItem(e, item?.cartItemId!)}
+            item={item}
+            setIsRemovingCartItem={setIsRemovingCartItem}
+            isRemovingCartItem={isRemovingCartItem}
           />
         ) : null}
 

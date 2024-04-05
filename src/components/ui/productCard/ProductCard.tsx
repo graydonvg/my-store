@@ -12,14 +12,17 @@ import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
 import AdminButtonsProductCard from './AdminButtonsProductCard';
 import ImageProductCard from './ImageProductCard';
 import MoveToCartButton from '../buttons/MoveToCartButton';
+import RemoveFromWishlistButton from '../buttons/RemoveFromWishlistButton';
+import { useState } from 'react';
 
 type ProductCardProps = {
   product: ProductType;
   imageSizes: string;
   wishlistSize?: string;
+  wishlistItemId?: string;
 };
 
-export default function ProductCard({ product, imageSizes, wishlistSize }: ProductCardProps) {
+export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
   const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -30,9 +33,10 @@ export default function ProductCard({ product, imageSizes, wishlistSize }: Produ
   const discountedPrice = calculateDiscountedProductPrice(product);
   const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
   const isInStock = product.sizes.includes(wishlistSize ?? '');
+  const [isRemovingWishlistItem, setIsRemovingWishlistItem] = useState(false);
 
   return (
-    <Box sx={{ borderRadius: BORDER_RADIUS, height: 1 }}>
+    <Box sx={{ borderRadius: BORDER_RADIUS, height: 1, opacity: isRemovingWishlistItem ? '50%' : null }}>
       <Box
         sx={{
           display: 'flex',
@@ -50,15 +54,32 @@ export default function ProductCard({ product, imageSizes, wishlistSize }: Produ
               imageUrl={imageUrl!}
               imageSizes={imageSizes}
             />
-            <Box
-              sx={{
-                position: 'absolute',
-                alignSelf: 'flex-start',
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-              {isOnSale ? <SalePercentageBadgeProductCard percentage={product.salePercentage} /> : null}
-            </Box>
+
+            {isOnSale ? (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  alignSelf: 'flex-start',
+                }}>
+                <SalePercentageBadgeProductCard percentage={product.salePercentage} />
+              </Box>
+            ) : null}
+
+            {isWishlistView ? (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  alignSelf: 'flex-end',
+                  paddingTop: '5px',
+                  paddingRight: '10px',
+                }}>
+                <RemoveFromWishlistButton
+                  wishlistItemId={wishlistItemId ?? ''}
+                  isRemovingWishlistItem={isRemovingWishlistItem}
+                  setIsRemovingWishlistItem={setIsRemovingWishlistItem}
+                />
+              </Box>
+            ) : null}
             <Box
               sx={{
                 display: 'flex',
@@ -89,11 +110,12 @@ export default function ProductCard({ product, imageSizes, wishlistSize }: Produ
               </Typography>
 
               {isWishlistView ? (
-                <Box sx={{ display: 'flex', gap: 1 }}>
+                <Box sx={{ display: 'flex', columnGap: 1, flexWrap: 'wrap' }}>
                   <Typography
                     component="span"
                     fontSize={14}
                     lineHeight={'18px'}
+                    noWrap
                     color={colorPalette.typographyVariants.grey}>
                     Size: {wishlistSize}
                   </Typography>
@@ -103,6 +125,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize }: Produ
                       component="span"
                       fontSize={14}
                       lineHeight={'18px'}
+                      noWrap
                       color={mode === 'dark' ? colorPalette.warning.light : colorPalette.warning.dark}>
                       Out of stock
                     </Typography>
@@ -116,6 +139,9 @@ export default function ProductCard({ product, imageSizes, wishlistSize }: Produ
                   alignItems: 'center',
                   flexWrap: 'wrap',
                   columnGap: 1,
+                  paddingRight: isWishlistView ? 4 : 0,
+                  overflow: 'hidden',
+                  height: '24px',
                 }}>
                 <Typography
                   lineHeight={'24px'}

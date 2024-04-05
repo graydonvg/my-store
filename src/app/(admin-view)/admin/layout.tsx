@@ -9,7 +9,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('md'));
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const mode = theme.palette.mode;
   const colorPalette = useColorPalette();
 
@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {!isBelowSmall ? (
+      {!isBelowMedium ? (
         <Box
           sx={{
             display: 'flex',

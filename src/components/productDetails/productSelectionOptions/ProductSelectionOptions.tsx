@@ -25,7 +25,10 @@ export default function ProductSelectionOptions({ product }: Props) {
           paddingY: 4,
         }}>
         <AddToCartButton product={product} />
-        <AddToWishlistButton />
+        <AddToWishlistButton
+          product={product}
+          size={size}
+        />
       </Box>
     </>
   );

@@ -1,64 +1,67 @@
 import { Box, IconButton } from '@mui/material';
-import { Spinner } from '../../ui/progress/Spinner';
+import { Spinner } from '../progress/Spinner';
 import { Close } from '@mui/icons-material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
-import { deleteItemFromCart } from '@/services/cart/delete';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { CartItemType } from '@/types';
+import { deleteItemFromWishlist } from '@/services/wishlist/delete';
 
 type Props = {
-  item: CartItemType;
-  isRemovingCartItem: boolean;
-  setIsRemovingCartItem: Dispatch<SetStateAction<boolean>>;
+  wishlistItemId: string;
+  isRemovingWishlistItem: boolean;
+  setIsRemovingWishlistItem: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, setIsRemovingCartItem }: Props) {
+export default function RemoveFromWishlistButton({
+  wishlistItemId,
+  isRemovingWishlistItem,
+  setIsRemovingWishlistItem,
+}: Props) {
   const router = useRouter();
   const colorPalette = useColorPalette();
 
   useEffect(() => {
-    setIsRemovingCartItem(false);
-  }, [item, setIsRemovingCartItem]);
+    setIsRemovingWishlistItem(false);
+  }, [wishlistItemId, setIsRemovingWishlistItem]);
 
-  async function handleRemoveCartItem(event: MouseEvent) {
-    event.stopPropagation();
+  async function handleRemoveWishlistItem(event: MouseEvent) {
+    event.preventDefault();
 
-    setIsRemovingCartItem(true);
+    setIsRemovingWishlistItem(true);
 
-    const { success, message } = await deleteItemFromCart(item.cartItemId);
+    const { success, message } = await deleteItemFromWishlist(wishlistItemId);
 
     if (success === true) {
       router.refresh();
+      toast.success('Item removed from wishlist');
     } else {
       toast.error(message);
-      setIsRemovingCartItem(false);
+      setIsRemovingWishlistItem(false);
     }
   }
 
   return (
     <Box
       sx={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
         display: 'grid',
         placeItems: 'center',
         width: '20px',
         height: '20px',
       }}>
-      {!isRemovingCartItem ? (
+      {!isRemovingWishlistItem ? (
         <IconButton
-          disabled={isRemovingCartItem}
-          onClick={handleRemoveCartItem}
+          onClick={handleRemoveWishlistItem}
+          disableRipple
+          disabled={isRemovingWishlistItem}
           sx={{
+            position: 'relative',
             padding: 0,
             width: 1,
             height: 1,
-            color: colorPalette.typographyVariants.grey,
+            color: colorPalette.shade.dark,
             stroke: colorPalette.typographyVariants.grey,
-            strokeWidth: 1,
+            strokeWidth: 2,
             '@media (hover: hover)': {
               '&:hover': {
                 color: colorPalette.warning.dark,
@@ -71,8 +74,8 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
       ) : (
         <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
           <Spinner
-            thickness={5}
-            size={12}
+            thickness={8}
+            size={16}
             spinnerColor={colorPalette.typographyVariants.grey}
           />
         </Box>

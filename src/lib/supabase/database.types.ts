@@ -368,25 +368,25 @@ export type Database = {
       };
       wishlist: {
         Row: {
-          created_at: string;
+          createdAt: string;
           productId: string;
           size: string;
           userId: string;
-          wishlistId: string;
+          wishlistItemId: string;
         };
         Insert: {
-          created_at?: string;
+          createdAt?: string;
           productId?: string;
           size: string;
           userId?: string;
-          wishlistId?: string;
+          wishlistItemId?: string;
         };
         Update: {
-          created_at?: string;
+          createdAt?: string;
           productId?: string;
           size?: string;
           userId?: string;
-          wishlistId?: string;
+          wishlistItemId?: string;
         };
         Relationships: [
           {

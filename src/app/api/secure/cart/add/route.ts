@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     if (!cartItemData)
       return NextResponse.json({
         success: false,
-        message: `Failed to update cart. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+        message: `Failed to add item to cart. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
     const { error } = await supabase.from('cart').insert(cartItemData);
