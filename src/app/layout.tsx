@@ -19,28 +19,25 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
+  let userData = null;
+  let cartItems = null;
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: userDataArray } = await supabase
+  const { data } = await supabase
     .from('users')
-    .select('*, addresses(*)')
-    .order('createdAt', { ascending: false, referencedTable: 'addresses' });
+    .select(
+      '*, addresses(*), cart!inner(createdAt, cartItemId, quantity, size, product: products!inner(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData!inner(imageUrl, index)))'
+    )
+    .order('createdAt', { ascending: false, referencedTable: 'addresses' })
+    .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
-  const userData = userDataArray ? userDataArray[0] : null;
+  if (data && data[0]) {
+    const { cart, ...restOfData } = data[0];
 
-  let cartItems = null;
-
-  if (userData) {
-    const { data: cart } = await supabase
-      .from('cart')
-      .select(
-        'createdAt, cartItemId, quantity, size, product: products!inner(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData!inner(imageUrl, index))'
-      )
-      .order('createdAt', { ascending: false });
-
+    userData = restOfData;
     cartItems = cart;
   }
 
@@ -49,8 +46,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <Providers>
           <UserStateSetter
-            userData={userData}
             user={user}
+            userData={userData}
           />
           <CartItemsStateSetter cartItems={cartItems} />
           {children}
