@@ -7,6 +7,7 @@ import { openDialog } from '@/lib/redux/slices/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { setWishlistItems } from '@/lib/redux/slices/wishlistSlice';
 
 type Props = {
   size: string | null;
@@ -41,6 +42,8 @@ export default function AddToWishlistButton({ product, size }: Props) {
     });
 
     if (success === true) {
+      // dispatch new item to keep button disabled. refresh takes too long to check itemExists.
+      dispatch(setWishlistItems([...wishlistItems, { size, productId: product.productId }]));
       router.refresh();
       toast.success('Added to wishlist');
     } else {
