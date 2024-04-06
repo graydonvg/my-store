@@ -34,8 +34,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
-  console.log(userDataArray);
-
   if (userDataArray && userDataArray[0]) {
     const { cart, ...restOfData } = userDataArray[0];
 
