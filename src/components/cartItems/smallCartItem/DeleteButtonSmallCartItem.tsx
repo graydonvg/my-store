@@ -71,8 +71,8 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
       ) : (
         <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
           <Spinner
-            thickness={5}
-            size={12}
+            thickness={6}
+            size={14}
             spinnerColor={colorPalette.typographyVariants.grey}
           />
         </Box>
