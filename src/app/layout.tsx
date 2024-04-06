@@ -29,10 +29,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const { data: userDataArray } = await supabase
     .from('users')
     .select(
-      '*, addresses(*), cart!inner(createdAt, cartItemId, quantity, size, product: products!inner(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData!inner(imageUrl, index)))'
+      '*, addresses(*), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
     )
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
+
+  console.log(userDataArray);
 
   if (userDataArray && userDataArray[0]) {
     const { cart, ...restOfData } = userDataArray[0];
