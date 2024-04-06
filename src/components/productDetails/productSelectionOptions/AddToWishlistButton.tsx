@@ -14,10 +14,12 @@ type Props = {
 };
 
 export default function AddToWishlistButton({ product, size }: Props) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { userData } = useAppSelector((state) => state.user);
+  const wishlistItems = useAppSelector((state) => state.wishlist.wishlistItems);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
-  const router = useRouter();
+  const itemExists = wishlistItems.some((item) => item.productId === product.productId && item.size === size);
 
   async function addToWishlist() {
     if (!userData) {
@@ -31,8 +33,6 @@ export default function AddToWishlistButton({ product, size }: Props) {
     }
 
     setIsAddingToWishlist(true);
-
-    // check if item already added!!!
 
     const { success, message } = await addItemToWishlist({
       size,
@@ -53,7 +53,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
   return (
     <ContainedButton
       onClick={addToWishlist}
-      disabled={isAddingToWishlist}
+      disabled={isAddingToWishlist || itemExists}
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}

@@ -11,6 +11,7 @@ import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { STORE_NAME } from '@/config';
+import WishlistStateSetter from '@/components/stateSetters/WishlistStateSetter';
 
 export const metadata: Metadata = {
   title: STORE_NAME,
@@ -21,6 +22,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const supabase = await createSupabaseServerClient();
   let userData = null;
   let cartItems = null;
+  let wishlistItems = null;
 
   const {
     data: { user },
@@ -29,16 +31,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const { data: userDataArray } = await supabase
     .from('users')
     .select(
-      '*, addresses(*), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
+      '*, addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
     )
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
   if (userDataArray && userDataArray[0]) {
-    const { cart, ...restOfData } = userDataArray[0];
+    const { cart, wishlist, ...restOfData } = userDataArray[0];
 
     userData = restOfData;
     cartItems = cart;
+    wishlistItems = wishlist;
   }
 
   return (
@@ -50,6 +53,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             userData={userData}
           />
           <CartItemsStateSetter cartItems={cartItems} />
+          <WishlistStateSetter wishlistItems={wishlistItems} />
           {children}
           <Toast />
         </Providers>

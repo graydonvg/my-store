@@ -10,6 +10,7 @@ import { checkoutDataReducer } from './slices/checkoutDataSlice';
 import { productSelectionDetailsReducer } from './slices/productSelectionDetailsSlice';
 import { userReducer } from './slices/userSlice';
 import { productImagesReducer } from './slices/productImagesSlice';
+import { wishlistReducer } from './slices/wishlistSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormReducer,
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
   dialog: dialogReducer,
   user: userReducer,
   cart: cartReducer,
+  wishlist: wishlistReducer,
   addressForm: addressFormReducer,
   account: accountReducer,
   checkoutData: checkoutDataReducer,

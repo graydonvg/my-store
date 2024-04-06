@@ -104,6 +104,11 @@ export type InsertProductTypeStore = {
   salePercentage: '' | number;
 };
 
+export type WishlistStoreType = {
+  size: string;
+  productId: string;
+};
+
 export type WishlistItemType = {
   wishlistItemId: string;
   size: string;
