@@ -43,7 +43,7 @@ export default function UpdateContactNumberForm() {
 
     if (success === true) {
       router.refresh();
-      toast.success('Contact number updated succssfully');
+      toast.success('Contact number updated');
     } else {
       toast.error(message);
     }

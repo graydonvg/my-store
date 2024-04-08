@@ -38,6 +38,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Container
             sx={{
               paddingY: { xs: 2, sm: 3 },
+              backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
             }}>
             {children}
           </Container>

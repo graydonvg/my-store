@@ -23,7 +23,6 @@ export default function AddNewAddressDialog() {
       <ContainedButton
         onClick={openAddAddressDialog}
         label="add new address"
-        styles={{ width: 'fit-content' }}
         fullWidth={false}
         startIcon={<Add />}
         backgroundColor="primary"

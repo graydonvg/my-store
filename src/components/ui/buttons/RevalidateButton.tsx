@@ -34,7 +34,6 @@ export default function RevalidateButton() {
       fullWidth
       label={!isLoading ? 'revalidate' : ''}
       isLoading={isLoading}
-      // backgroundColor="primary"
       startIcon={<Refresh />}
     />
   );

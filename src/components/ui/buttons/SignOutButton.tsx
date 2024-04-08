@@ -1,8 +1,8 @@
 import AccountDropdownMenuItem from '@/components/accountDropdownMenu/AccountDropdownMenuItem';
 import NavDrawerOption from '@/components/drawers/navDrawer/navDrawerOption/NavDrawerOption';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
+import { setUserData } from '@/lib/redux/slices/userSlice';
 import signOut from '@/services/auth/sign-out';
 import { Logout } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
@@ -23,7 +23,6 @@ export default function SignOutButton({
 }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const colorPalette = useColorPalette();
 
   async function signOutUser() {
     const { success, message } = await signOut();

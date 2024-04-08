@@ -34,7 +34,7 @@ export default function UpdatePasswordForm() {
     e.preventDefault();
 
     if (formData.newPassword !== formData.confirmPassword) {
-      toast.error('Passwords do not match.');
+      toast.error('Passwords do not match');
       return;
     }
 

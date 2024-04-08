@@ -102,7 +102,7 @@ export default function AdminViewUpdateProductPage() {
         await revalidateAndRefresh();
         dispatch(clearProductFormData());
         dispatch(clearImageData());
-        toast.success('Successfully updated product.');
+        toast.success('Product updated');
         setIsSubmitting(false);
         router.push('/admin/products');
       } else if (addImageDataSuccess === false && updateImageDataSuccess === true) {

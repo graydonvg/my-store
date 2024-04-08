@@ -1,3 +1,5 @@
+'use client';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,7 +9,6 @@ import CardTitleAdminView from './CardTitleAdminView';
 import { Box } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 
-// Generate Order Data
 function createData(id: number, date: string, name: string, shipTo: string, paymentMethod: string, amount: number) {
   return { id, date, name, shipTo, paymentMethod, amount };
 }
@@ -27,10 +28,20 @@ const rows = [
   createData(4, getCurrentDateFormatted(), 'Olivia Wilson', 'Port Elizabeth, EC', 'Stripe', 1580),
 ];
 
-export default function OrdersTable() {
+type Props = {
+  rows: {
+    id: number;
+    date: string;
+    name: string;
+    shipTo: string;
+    paymentMethod: string;
+    amount: number;
+  }[];
+};
+
+export default function OrdersTable({ rows }: Props) {
   return (
     <>
-      <CardTitleAdminView>Recent Orders</CardTitleAdminView>
       <Box sx={{ overflowX: 'auto' }}>
         <Table size="small">
           <TableHead>

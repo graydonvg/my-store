@@ -96,7 +96,7 @@ export default function AdminViewAddNewProductPage() {
         await revalidateAndRefresh();
         dispatch(clearProductFormData());
         dispatch(clearAllProductImagesData());
-        toast.success('Successfully added product.');
+        toast.success('Product added');
         setIsSubmitting(false);
         router.push('/admin/products');
       } else {

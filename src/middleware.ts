@@ -86,17 +86,18 @@ export async function middleware(request: NextRequest) {
 
   if (adminOnlyPath && (!user || isAdmin === false)) {
     if (checkPathStartsWith('/api')) {
-      return NextResponse.json({ success: false, message: 'Not Authorized.' });
+      response = NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else {
-      return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
+      response = NextResponse.redirect(new URL('/welcome/sign-in', request.url));
     }
   }
 
   if (authRequiredPath && !user) {
     if (checkPathStartsWith('/api')) {
-      return NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
+      response = NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
     } else {
-      return NextResponse.redirect(new URL('/welcome/sign-in', request.url));
+      const redirectUrl = new URL('/welcome/sign-in', request.url);
+      response = NextResponse.redirect(redirectUrl);
     }
   }
 

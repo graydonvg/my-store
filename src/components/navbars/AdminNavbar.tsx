@@ -192,7 +192,6 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
         disableGutters
         sx={{
           height: '100vh',
-
           paddingY: 2,
           paddingX: 4,
           marginRight: 0,

@@ -1,13 +1,9 @@
-import Link from '@mui/material/Link';
+'use client';
+
 import Typography from '@mui/material/Typography';
 import CardTitleAdminView from './CardTitleAdminView';
-import { Box } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import useColorPalette from '@/hooks/useColorPalette';
-
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
 
 function getFirstDayOfWeek() {
   const currentDate = new Date();
@@ -57,7 +53,7 @@ export default function TotalSales() {
 
   return (
     <>
-      <CardTitleAdminView>Sales This Week</CardTitleAdminView>
+      <CardTitleAdminView>Weekly Sales</CardTitleAdminView>
       <Typography
         component="p"
         variant="h4">
@@ -68,14 +64,6 @@ export default function TotalSales() {
         sx={{ flex: 1 }}>
         {`${formattedFirstDay} - ${formattedLastDay}`}
       </Typography>
-      {/* <Box>
-        <Link
-          color="primary"
-          href="#"
-          onClick={preventDefault}>
-          View balance
-        </Link>
-      </Box> */}
     </>
   );
 }

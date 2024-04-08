@@ -43,7 +43,7 @@ export default function UpdateFirstNameForm() {
 
     if (success === true) {
       router.refresh();
-      toast.success('Name updated succssfully');
+      toast.success('Name updated');
     } else {
       toast.error(message);
     }

@@ -31,7 +31,7 @@ export default function AddToCartButton({ product }: Props) {
 
     if (success === true) {
       router.refresh();
-      toast.success(addedToCartToastMessage);
+      toast.success(message);
     } else {
       toast.error(message);
     }
@@ -47,7 +47,7 @@ export default function AddToCartButton({ product }: Props) {
 
     if (success === true) {
       router.refresh();
-      toast.success(addedToCartToastMessage);
+      toast.success(message);
     } else {
       toast.error(message);
     }
@@ -60,7 +60,7 @@ export default function AddToCartButton({ product }: Props) {
     }
 
     if (!size) {
-      toast.error('Select a size first.');
+      toast.error('Select a size first');
       return;
     }
 

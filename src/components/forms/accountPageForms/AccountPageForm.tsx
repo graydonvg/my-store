@@ -28,7 +28,7 @@ export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isS
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 4 }}>
         <ContainedButton
           type="submit"
-          label={isSubmitting ? '' : 'save'}
+          label={!isSubmitting ? 'save' : ''}
           disabled={disableSubmit}
           isLoading={isSubmitting}
           fullWidth={false}

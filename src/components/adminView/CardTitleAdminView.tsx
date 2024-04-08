@@ -1,3 +1,5 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 import useColorPalette from '@/hooks/useColorPalette';
 import { useTheme } from '@mui/material';
@@ -17,7 +19,8 @@ export default function CardTitleAdminView({ children }: Props) {
       component="h2"
       variant="h6"
       color={mode === 'dark' ? colorPalette.primary.light : colorPalette.primary.dark}
-      gutterBottom>
+      gutterBottom
+      sx={{ textTransform: 'capitalize' }}>
       {children}
     </Typography>
   );

@@ -29,7 +29,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
     }
 
     if (!size) {
-      toast.error('Select a size first.');
+      toast.error('Select a size first');
       return;
     }
 
