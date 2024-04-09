@@ -3,7 +3,7 @@
 import CartViewEmptyMessage from '@/components/CartViewEmptyMessage';
 import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 export default function CartView() {
   const { cartItems } = useAppSelector((state) => state.cart);
@@ -12,19 +12,24 @@ export default function CartView() {
     <>
       {cartItems.length === 0 ? <CartViewEmptyMessage /> : null}
 
-      {cartItems.length !== 0
-        ? cartItems.map((item, index) => {
-            const isLastItem = cartItems.length - 1 === index;
-
+      {cartItems.length !== 0 ? (
+        <Grid
+          component="ul"
+          container
+          rowSpacing={2}>
+          {cartItems.map((item) => {
             return (
-              <Box
+              <Grid
+                component="li"
                 key={item?.cartItemId}
-                sx={{ marginBottom: isLastItem ? 0 : 2 }}>
+                item
+                xs={12}>
                 <LargeCartItem item={item} />
-              </Box>
+              </Grid>
             );
-          })
-        : null}
+          })}
+        </Grid>
+      ) : null}
     </>
   );
 }

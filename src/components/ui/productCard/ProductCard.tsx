@@ -93,11 +93,9 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 fontWeight={600}
                 lineHeight={'20px'}
                 sx={{
+                  whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  display: '-webkit-box',
-                  WebkitLineClamp: '1',
-                  WebkitBoxOrient: 'vertical',
                 }}>
                 {product.name}
               </Typography>

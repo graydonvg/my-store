@@ -1,6 +1,8 @@
+'use client';
+
 import OrdersTable from '@/components/adminView/OrdersTable';
 import { BORDER_RADIUS } from '@/config';
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery, useTheme } from '@mui/material';
 
 function createData(id: number, date: string, name: string, shipTo: string, paymentMethod: string, amount: number) {
   return { id, date, name, shipTo, paymentMethod, amount };
@@ -24,26 +26,28 @@ const rows = [
   createData(7, getCurrentDateFormatted(), 'Noah Martinez', 'East London, EC', 'Stripe', 410),
   createData(8, getCurrentDateFormatted(), 'Ava Thompson', 'Kimberley, NC', 'Stripe', 2950),
   createData(9, getCurrentDateFormatted(), 'William Garcia', 'Nelspruit, MP', 'Stripe', 3820),
-  createData(10, getCurrentDateFormatted(), 'Sophia Johnson', 'Durban, KZN', 'Stripe', 2200),
-  createData(11, getCurrentDateFormatted(), 'Ethan Brown', 'Cape Town, WC', 'Stripe', 1750),
-  createData(12, getCurrentDateFormatted(), 'Isabella Davis', 'Bloemfontein, FS', 'Stripe', 410),
-  createData(13, getCurrentDateFormatted(), 'Liam Wilson', 'Port Elizabeth, EC', 'Stripe', 2950),
-  createData(14, getCurrentDateFormatted(), 'Olivia Martinez', 'East London, EC', 'Stripe', 3820),
-  createData(15, getCurrentDateFormatted(), 'Emma Thompson', 'Kimberley, NC', 'Stripe', 2200),
-  createData(16, getCurrentDateFormatted(), 'James Garcia', 'Nelspruit, MP', 'Stripe', 1750),
-  createData(17, getCurrentDateFormatted(), 'Noah Smith', 'Johannesburg, GT', 'Stripe', 410),
-  createData(18, getCurrentDateFormatted(), 'Ava Johnson', 'Pretoria, GT', 'Stripe', 2950),
-  createData(19, getCurrentDateFormatted(), 'William Brown', 'Polokwane, LP', 'Stripe', 3820),
-  createData(20, getCurrentDateFormatted(), 'Sophia Davis', 'Cape Town, WC', 'Stripe', 2200),
-  createData(21, getCurrentDateFormatted(), 'Ethan Wilson', 'Bloemfontein, FS', 'Stripe', 1750),
-  createData(22, getCurrentDateFormatted(), 'Isabella Martinez', 'Port Elizabeth, EC', 'Stripe', 410),
-  createData(23, getCurrentDateFormatted(), 'Liam Thompson', 'East London, EC', 'Stripe', 2950),
-  createData(24, getCurrentDateFormatted(), 'Olivia Garcia', 'Kimberley, NC', 'Stripe', 3820),
+  // createData(10, getCurrentDateFormatted(), 'Sophia Johnson', 'Durban, KZN', 'Stripe', 2200),
+  // createData(11, getCurrentDateFormatted(), 'Ethan Brown', 'Cape Town, WC', 'Stripe', 1750),
+  // createData(12, getCurrentDateFormatted(), 'Isabella Davis', 'Bloemfontein, FS', 'Stripe', 410),
+  // createData(13, getCurrentDateFormatted(), 'Liam Wilson', 'Port Elizabeth, EC', 'Stripe', 2950),
+  // createData(14, getCurrentDateFormatted(), 'Olivia Martinez', 'East London, EC', 'Stripe', 3820),
+  // createData(15, getCurrentDateFormatted(), 'Emma Thompson', 'Kimberley, NC', 'Stripe', 2200),
+  // createData(16, getCurrentDateFormatted(), 'James Garcia', 'Nelspruit, MP', 'Stripe', 1750),
+  // createData(17, getCurrentDateFormatted(), 'Noah Smith', 'Johannesburg, GT', 'Stripe', 410),
+  // createData(18, getCurrentDateFormatted(), 'Ava Johnson', 'Pretoria, GT', 'Stripe', 2950),
+  // createData(19, getCurrentDateFormatted(), 'William Brown', 'Polokwane, LP', 'Stripe', 3820),
+  // createData(20, getCurrentDateFormatted(), 'Sophia Davis', 'Cape Town, WC', 'Stripe', 2200),
+  // createData(21, getCurrentDateFormatted(), 'Ethan Wilson', 'Bloemfontein, FS', 'Stripe', 1750),
+  // createData(22, getCurrentDateFormatted(), 'Isabella Martinez', 'Port Elizabeth, EC', 'Stripe', 410),
+  // createData(23, getCurrentDateFormatted(), 'Liam Thompson', 'East London, EC', 'Stripe', 2950),
+  // createData(24, getCurrentDateFormatted(), 'Olivia Garcia', 'Kimberley, NC', 'Stripe', 3820),
 ];
 
 type Props = {};
 
 export default function AdminOrdersPage() {
+  const theme = useTheme();
+  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Paper
       sx={{
@@ -52,7 +56,10 @@ export default function AdminOrdersPage() {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
       }}>
-      <OrdersTable rows={rows} />
+      <OrdersTable
+        rows={rows}
+        tableSize={isBelowSmall ? 'small' : 'medium'}
+      />
     </Paper>
   );
 }

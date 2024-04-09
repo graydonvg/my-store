@@ -27,54 +27,91 @@ const rows = [
 
 export default function Dashboard() {
   return (
-    <>
+    <Grid
+      container
+      spacing={{ xs: 2, md: 3 }}>
       <Grid
-        container
-        spacing={3}>
-        {/* Chart */}
-        <Grid
-          item
-          xs={12}
-          md={8}
-          lg={9}>
-          <Paper
-            sx={{
-              padding: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 240,
-              borderRadius: BORDER_RADIUS,
-            }}>
-            <Chart />
-          </Paper>
-        </Grid>
-        {/* Weekly Sales*/}
-        <Grid
-          item
-          xs={12}
-          md={4}
-          lg={3}>
-          <Paper
-            sx={{
-              padding: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 240,
-              borderRadius: BORDER_RADIUS,
-            }}>
-            <TotalSales />
-          </Paper>
-        </Grid>
-        {/* Recent Orders */}
-        <Grid
-          item
-          xs={12}>
-          <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', borderRadius: BORDER_RADIUS }}>
-            <CardTitleAdminView>Recent Orders</CardTitleAdminView>
-            <OrdersTable rows={rows} />
-          </Paper>
-        </Grid>
+        item
+        xs={12}>
+        <Paper
+          sx={{
+            padding: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: { xs: 240, sm: 360 },
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <Chart />
+        </Paper>
       </Grid>
-    </>
+      <Grid
+        item
+        xs={12}
+        sm={4}>
+        <Paper
+          sx={{
+            padding: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: { xs: 180, sm: 240 },
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <TotalSales
+            title="Daily Sales"
+            type="daily"
+            amount={96000}
+          />
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={4}>
+        <Paper
+          sx={{
+            padding: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: { xs: 180, sm: 240 },
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <TotalSales
+            title="Weekly Sales"
+            type="weekly"
+            amount={872000}
+          />
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={4}>
+        <Paper
+          sx={{
+            padding: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: { xs: 180, sm: 240 },
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <TotalSales
+            title="Monthly Sales"
+            type="monthly"
+            amount={1682000}
+          />
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={12}>
+        <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', borderRadius: BORDER_RADIUS }}>
+          <CardTitleAdminView>Recent Orders</CardTitleAdminView>
+          <OrdersTable
+            rows={rows}
+            tableSize="small"
+          />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }

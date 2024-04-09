@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import Link from 'next/link';
 
@@ -12,7 +12,7 @@ export default function TopDetailsLargeCartItem({ name, brand, productHref }: Pr
   const colorPalette = useColorPalette();
 
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Link href={productHref}>
         <Typography
           lineHeight={1}
@@ -37,11 +37,15 @@ export default function TopDetailsLargeCartItem({ name, brand, productHref }: Pr
         fontSize={14}
         color={colorPalette.typographyVariants.grey}
         sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
           display: '-webkit-box',
+          WebkitLineClamp: '1',
+          WebkitBoxOrient: 'vertical',
           marginTop: '6px',
         }}>
         {brand.toUpperCase()}
       </Typography>
-    </>
+    </Box>
   );
 }

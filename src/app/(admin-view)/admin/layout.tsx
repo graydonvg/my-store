@@ -18,13 +18,16 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
+        minHeight: '100vh',
+      }}>
       {!isBelowMedium ? (
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
           }}>
           <AdminNavbar
             toggleDrawer={toggleDrawer}
@@ -36,14 +39,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <>
           <Navbar />
           <Container
+            disableGutters
             sx={{
-              paddingY: { xs: 2, sm: 3 },
-              backgroundColor: mode === 'dark' ? 'black' : colorPalette.shade.light,
+              padding: 2,
             }}>
             {children}
           </Container>
         </>
       )}
-    </>
+    </Box>
   );
 }

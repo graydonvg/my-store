@@ -32,7 +32,11 @@ export default function OrderItemDetails({ orderItem }: Props) {
               color={colorPalette.typographyVariants.grey}>
               {item.label}:
             </Typography>
-            <Typography fontSize={13}>{item.value}</Typography>
+            <Typography
+              fontSize={13}
+              fontWeight={600}>
+              {item.value}
+            </Typography>
           </Box>
         ))}
       </Box>

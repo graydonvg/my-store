@@ -44,9 +44,7 @@ export default function LargeCartItem({ item }: Props) {
         }}>
         <EditCartItemDrawer cartItem={item} />
       </Box>
-      <ListItem
-        disableGutters
-        disablePadding
+      <Box
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
@@ -60,15 +58,14 @@ export default function LargeCartItem({ item }: Props) {
             imageUrl={imageUrl!}
             productName={item?.product?.name!}
           />
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {isBelowSmall ? (
-              <TopDetailsLargeCartItem
-                productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
-                name={item?.product?.name!}
-                brand={item?.product?.brand!}
-              />
-            ) : null}
-          </Box>
+
+          {isBelowSmall ? (
+            <TopDetailsLargeCartItem
+              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
+              name={item?.product?.name!}
+              brand={item?.product?.brand!}
+            />
+          ) : null}
         </Box>
         <Box
           sx={{
@@ -112,7 +109,7 @@ export default function LargeCartItem({ item }: Props) {
             />
           </Box>
         </Box>
-      </ListItem>
+      </Box>
       <Divider
         variant="fullWidth"
         flexItem
