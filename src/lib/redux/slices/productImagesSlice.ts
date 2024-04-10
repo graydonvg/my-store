@@ -27,12 +27,14 @@ function deleteImage(fileName: string, imageData: InsertProductImageDataTypeStor
 
 type State = {
   isDeletingImage: boolean;
+  isEditImagesDrawerOpen: boolean;
   imageUploadProgress: ImageUploadProgressType[];
   imageData: InsertProductImageDataTypeStore[];
 };
 
 const initialState: State = {
   isDeletingImage: false,
+  isEditImagesDrawerOpen: false,
   imageUploadProgress: [],
   imageData: [],
 };
@@ -56,6 +58,9 @@ const productImagesSlice = createSlice({
     setIsDeletingImage(state, action: PayloadAction<boolean>) {
       state.isDeletingImage = action.payload;
     },
+    setIsEditImagesDrawerOpen(state, action: PayloadAction<boolean>) {
+      state.isEditImagesDrawerOpen = action.payload;
+    },
     clearImageData(state) {
       state.imageData = initialState.imageData;
     },
@@ -76,6 +81,7 @@ export const {
   setUpdatedImageData,
   deleteImageData,
   setIsDeletingImage,
+  setIsEditImagesDrawerOpen,
   clearImageData,
   clearImageUploadProgess,
   clearAllProductImagesData,

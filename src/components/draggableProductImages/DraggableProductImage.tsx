@@ -10,7 +10,7 @@ import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useState } from 'react';
-import { deleteImageData, setIsDeletingImage } from '@/lib/redux/slices/productImagesSlice';
+import { deleteImageData, setIsDeletingImage, setIsEditImagesDrawerOpen } from '@/lib/redux/slices/productImagesSlice';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
@@ -24,7 +24,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
   const dispatch = useAppDispatch();
   const colorPalette = useColorPalette();
   const { productFormData } = useAppSelector((state) => state.productForm);
-  const isDeletingImage = useAppSelector((state) => state.productImages.isDeletingImage);
+  const { isDeletingImage, imageData: imageDataArray } = useAppSelector((state) => state.productImages);
   const [imageToDeleteId, setImageToDeleteId] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageData.id;
@@ -57,6 +57,10 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
     dispatch(deleteImageData({ fileName: imageData.fileName }));
     setImageToDeleteId(null);
     dispatch(setIsDeletingImage(false));
+
+    if (imageDataArray.length === 1) {
+      dispatch(setIsEditImagesDrawerOpen(false));
+    }
   }
 
   return (

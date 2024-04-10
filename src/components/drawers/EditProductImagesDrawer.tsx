@@ -8,7 +8,7 @@ import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box, useTheme } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
-import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
+import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/slices/productImagesSlice';
 import DraggableProductImages from '../draggableProductImages/DraggableProductImages';
 
 type Props = {
@@ -21,17 +21,18 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   const colorPalette = useColorPalette();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress, isDeletingImage } = useAppSelector((state) => state.productImages);
+  const { imageData, imageUploadProgress, isDeletingImage, isEditImagesDrawerOpen } = useAppSelector(
+    (state) => state.productImages
+  );
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-  const [isEditImagesDrawerOpen, setIsEditImagesDrawerOpen] = useState(false);
 
   function openEditImageDrawer() {
-    setIsEditImagesDrawerOpen(true);
+    dispatch(setIsEditImagesDrawerOpen(true));
   }
 
   function closeEditImageDrawer() {
     if (isDeletingAllImages || isDeletingImage) return;
-    setIsEditImagesDrawerOpen(false);
+    dispatch(setIsEditImagesDrawerOpen(false));
   }
 
   async function deleteAllImages() {
@@ -41,7 +42,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
 
     dispatch(clearImageData());
     setIsDeletingAllImages(false);
-    setIsEditImagesDrawerOpen(false);
+    dispatch(setIsEditImagesDrawerOpen(false));
   }
 
   return (
