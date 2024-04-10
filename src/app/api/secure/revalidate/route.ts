@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const secret = request.nextUrl.searchParams.get('secret');
 
     if (secret !== process.env.NEXT_PUBLIC_ON_DEMAND_REVALIDATION_SECRET_TOKEN) {
-      return NextResponse.json({ success: false, message: 'Revalidation failed. Invalid token' });
+      return NextResponse.json({ success: false, message: 'Revalidation failed. Invalid token.' });
     }
 
     if (!path)
