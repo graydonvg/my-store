@@ -1,10 +1,9 @@
 'use client';
 
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import revalidate from '@/services/revalidate';
+import revalidateAllData from '@/services/revalidateAllData';
 import { Refresh } from '@mui/icons-material';
 import OutlinedButton from './OutlinedButton';
 
@@ -15,7 +14,7 @@ export default function RevalidateButton() {
   async function revalidateAndRefresh() {
     setIsLoading(true);
 
-    const data = await revalidate('/');
+    const data = await revalidateAllData();
 
     if (data.success === true) {
       toast.success(data.message);

@@ -9,7 +9,7 @@ import addProductImageData from '@/services/product-image-data/add';
 import updateProduct from '@/services/products/update';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
-import revalidate from '@/services/revalidate';
+import revalidateAllData from '@/services/revalidateAllData';
 import updateProductImageData from '@/services/product-image-data/update';
 import ProductForm from '@/components/forms/productForm/ProductForm';
 import { Box } from '@mui/material';
@@ -63,7 +63,7 @@ export default function AdminViewUpdateProductPage() {
   }
 
   async function revalidateAndRefresh() {
-    const data = await revalidate('/');
+    const data = await revalidateAllData();
 
     if (data.success === true) {
       router.refresh();

@@ -10,7 +10,7 @@ import addProductImageData from '@/services/product-image-data/add';
 import deleteProduct from '@/services/products/delete';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
-import revalidate from '@/services/revalidate';
+import revalidateAllData from '@/services/revalidateAllData';
 import ProductForm from '@/components/forms/productForm/ProductForm';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/ManageProductImages';
@@ -65,7 +65,7 @@ export default function AdminViewAddNewProductPage() {
   }
 
   async function revalidateAndRefresh() {
-    const data = await revalidate('/');
+    const data = await revalidateAllData();
 
     if (data.success === true) {
       router.refresh();

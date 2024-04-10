@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearProductFormData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import deleteProduct from '@/services/products/delete';
-import revalidate from '@/services/revalidate';
+import revalidateAllData from '@/services/revalidateAllData';
 import { ProductType } from '@/types';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box } from '@mui/material';
@@ -46,7 +46,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
   }
 
   async function revalidateAndRefresh() {
-    const data = await revalidate('/');
+    const data = await revalidateAllData();
 
     if (data.success === true) {
       toast.success(data.message);
