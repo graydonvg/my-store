@@ -40,13 +40,13 @@ export type CartItemType = {
 };
 
 export type UserDataType = {
-  contactNumber: string | null;
+  userId: string;
   email: string;
   firstName: string | null;
-  isAdmin: boolean;
   lastName: string | null;
-  userId: string;
+  contactNumber: string | null;
   addresses: AddressType[];
+  isAdmin: boolean;
 };
 
 export type ImageUploadProgressType = {

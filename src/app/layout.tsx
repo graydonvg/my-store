@@ -31,15 +31,20 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const { data: userDataArray } = await supabase
     .from('users')
     .select(
-      '*, addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
+      '*, admins(userId), addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
     )
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
   if (userDataArray && userDataArray[0]) {
-    const { cart, wishlist, ...restOfData } = userDataArray[0];
+    const { cart, wishlist, admins, ...restOfUserData } = userDataArray[0];
 
-    userData = restOfData;
+    if (admins && admins[0] && admins[0].userId === user?.id) {
+      userData = { ...restOfUserData, isAdmin: true };
+    } else {
+      userData = { ...restOfUserData, isAdmin: false };
+    }
+
     cartItems = cart;
     wishlistItems = wishlist;
   }

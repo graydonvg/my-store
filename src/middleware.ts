@@ -9,12 +9,12 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data } = await supabase
-    .from('users')
-    .select('isAdmin')
+  const { data: adminData } = await supabase
+    .from('admins')
+    .select('userId')
     .eq('userId', user?.id ?? '');
 
-  const isAdmin = data && data[0].isAdmin ? data[0].isAdmin : false;
+  const isAdmin = adminData && adminData[0] && adminData[0].userId ? true : false;
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);
