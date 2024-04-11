@@ -27,17 +27,7 @@ export default function DeliveryAddressFieldsAddressForm({ addressFormData, onIn
         label="Street address"
         name="streetAddress"
         value={addressFormData['streetAddress']}
-        placeholder="e.g. 14 Christiaan Barnard Street"
-        required={true}
-        fullWidth={true}
-        margin="normal"
-        onChange={onInputChange}
-      />
-      <CustomTextField
-        label="Street address"
-        name="streetAddress"
-        value={addressFormData['streetAddress']}
-        placeholder="e.g. 14 Christiaan Barnard Street"
+        placeholder="e.g. 24 Kingfisher Walk"
         required={true}
         fullWidth={true}
         margin="normal"
@@ -47,7 +37,7 @@ export default function DeliveryAddressFieldsAddressForm({ addressFormData, onIn
         label="Suburb"
         name="suburb"
         value={addressFormData['suburb']}
-        placeholder="e.g. Foreshore"
+        placeholder="e.g. Pinelands"
         required={true}
         fullWidth={true}
         margin="normal"
@@ -77,7 +67,7 @@ export default function DeliveryAddressFieldsAddressForm({ addressFormData, onIn
         label="Postal Code"
         name="postalCode"
         value={addressFormData['postalCode']}
-        placeholder="e.g. 8000"
+        placeholder="e.g. 7405"
         required={true}
         fullWidth={false}
         margin="normal"

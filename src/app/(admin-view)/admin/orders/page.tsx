@@ -1,7 +1,8 @@
-'use client';
+// 'use client';
 
 import OrdersTable from '@/components/adminView/OrdersTable';
 import { BORDER_RADIUS } from '@/config';
+import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
 import { Paper, useMediaQuery, useTheme } from '@mui/material';
 
 function createData(id: number, date: string, name: string, shipTo: string, paymentMethod: string, amount: number) {
@@ -45,9 +46,19 @@ const rows = [
 
 type Props = {};
 
-export default function AdminOrdersPage() {
-  const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+export default async function AdminOrdersPage() {
+  const supabase = getServiceSupabase();
+  const { data: orders } = await supabase
+    .from('orders')
+    .select(
+      'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
+    )
+    .order('createdAt', { ascending: false });
+  // const theme = useTheme();
+  // const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // console.log(orders);
+
   return (
     <Paper
       sx={{
@@ -56,10 +67,10 @@ export default function AdminOrdersPage() {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
       }}>
-      <OrdersTable
+      {/* <OrdersTable
         rows={rows}
         tableSize={isBelowSmall ? 'small' : 'medium'}
-      />
+      /> */}
     </Paper>
   );
 }

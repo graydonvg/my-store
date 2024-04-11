@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createSupabaseServerClientForAuth } from '@/lib/supabase/supabase-server-auth';
+import { createSupabaseRouteHandlerClient } from '@/lib/supabase/supabase-route-handler';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const next = searchParams.get('next') ?? '/';
 
   if (code) {
-    const supabase = await createSupabaseServerClientForAuth();
+    const supabase = await createSupabaseRouteHandlerClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {

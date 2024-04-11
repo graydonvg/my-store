@@ -1,9 +1,9 @@
-import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { createSupabaseRouteHandlerClient } from '@/lib/supabase/supabase-route-handler';
 import { CustomResponseType, ProductType } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest): Promise<NextResponse<CustomResponseType<ProductType[]>>> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseRouteHandlerClient();
   const searchParams = request.nextUrl.searchParams;
   const category = searchParams.get('category');
 
