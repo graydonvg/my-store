@@ -1,10 +1,10 @@
 import OrdersPageClient from '@/components/ordersPageClient/OrdersPageClient';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
-import getOrders from '@/lib/db/queries/getOrders';
+import { getOrdersForUser } from '@/lib/db/queries/getOrders';
 import { Box } from '@mui/material';
 
 export default async function OrdersPage() {
-  const orders = await getOrders();
+  const orders = await getOrdersForUser();
 
   return (
     <Box>

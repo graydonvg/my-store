@@ -1,12 +1,12 @@
 import { Box, Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { BORDER_RADIUS } from '@/config';
-import { OrderType } from '@/types';
+import { CustomerOrderType } from '@/types';
 import OrderDetails from '../orderDetails/OrderDetails';
 import OrderItemImage from './OrderItemImage';
 import OrderItemDetails from './OrderItemDetails';
 
 type Props = {
-  order: OrderType;
+  order: CustomerOrderType;
   borderColor: string;
 };
 

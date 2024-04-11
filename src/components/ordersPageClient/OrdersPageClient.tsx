@@ -1,13 +1,13 @@
 'use client';
 
-import { OrderType } from '@/types';
+import { CustomerOrderType } from '@/types';
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
+import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
-  orders: OrderType[] | null;
+  orders: CustomerOrderType[] | null;
 };
 
 export default function OrdersPageClient({ orders }: Props) {

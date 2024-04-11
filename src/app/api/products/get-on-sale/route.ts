@@ -1,9 +1,9 @@
-import { createSupabaseRouteHandlerClient } from '@/lib/supabase/supabase-route-handler';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { CustomResponseType, ProductType } from '@/types';
 import { NextResponse } from 'next/server';
 
 export async function GET(): Promise<NextResponse<CustomResponseType<ProductType[]>>> {
-  const supabase = await createSupabaseRouteHandlerClient();
+  const supabase = await createSupabaseServerClient();
 
   try {
     const { data: products, error } = await supabase

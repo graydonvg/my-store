@@ -183,7 +183,7 @@ export type OrderItemType = {
   } | null;
 };
 
-export type OrderType = {
+export type CustomerOrderType = {
   createdAt: string;
   orderId: string;
   cartTotal: number;
@@ -193,6 +193,20 @@ export type OrderType = {
   isPaid: boolean;
   shippingDetails: ShippingDetailsType[];
   orderItems: OrderItemType[];
+};
+
+export type AdminOrderType = {
+  createdAt: string;
+  orderId: string;
+  orderTotal: number;
+  user: {
+    firstName: string | null;
+    lastName: string | null;
+  } | null;
+  shippingDetails: {
+    province: string;
+    city: string;
+  }[];
 };
 
 export type AddOrderType = {
