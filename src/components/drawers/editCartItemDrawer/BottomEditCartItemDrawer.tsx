@@ -10,15 +10,17 @@ type Props = {
   isUpdatingCartItem: boolean;
   isRemovingCartItem: boolean;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
-  removeCartItemOnClick: () => void;
+  removeCartItem: () => void;
+  moveToWishlist: () => void;
 };
 
 export default function BottomEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
   isRemovingCartItem,
-  removeCartItemOnClick,
+  removeCartItem,
   updateCartItemQuantity,
+  moveToWishlist,
 }: Props) {
   const colorPalette = useColorPalette();
 
@@ -47,13 +49,13 @@ export default function BottomEditCartItemDrawer({
         updateCartItemQuantity={updateCartItemQuantity}
       />
       <TextButton
+        onClick={moveToWishlist}
         label="move to wishlist"
         labelColor={colorPalette.typography}
         startIcon={<FavoriteBorder />}
       />
       <TextButton
-        disabled={isRemovingCartItem}
-        onClick={removeCartItemOnClick}
+        onClick={removeCartItem}
         label={'remove'}
         labelColor={colorPalette.typography}
         startIcon={<Delete />}

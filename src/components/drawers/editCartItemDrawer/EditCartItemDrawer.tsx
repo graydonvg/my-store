@@ -13,6 +13,7 @@ import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
 import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
 import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
 import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
+import addItemToWishlist from '@/services/wishlist/add';
 
 type Props = {
   cartItem: CartItemType;
@@ -23,12 +24,15 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const colorPalette = useColorPalette();
   const router = useRouter();
   const theme = useTheme();
+  const userId = useAppSelector((state) => state.user.userData?.userId);
   const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
   const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const isUpdatingCartItem = isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize;
+  const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
+  const isUpdatingCartItem =
+    isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize || isMovingToWishlist;
 
   useEffect(() => {
     setIsUpdatingCartItemSize(false);
@@ -65,7 +69,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   }
 
   async function updateItemSize(size: string) {
-    // If an item with the selected size already exists, update the quantity of that item appropriately and remove the old item. Else, update the size.
+    // If an item with the selected size already exists, update the quantity of that item and remove the old item. Else, update the size.
 
     if (size === cartItem?.size) return;
 
@@ -112,6 +116,25 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     }
   }
 
+  async function moveToWishlist() {
+    setIsMovingToWishlist(true);
+
+    const { success, message } = await addItemToWishlist({
+      size: cartItem.size,
+      productId: cartItem.product?.productId,
+      userId,
+    });
+
+    if (success === true) {
+      await removeCartItem();
+      toast.success('Moved to wishlist');
+    } else {
+      toast.error(message);
+    }
+
+    setIsMovingToWishlist(false);
+  }
+
   return (
     <>
       <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
@@ -148,7 +171,8 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             isUpdatingCartItem={isUpdatingCartItem}
             isRemovingCartItem={isRemovingCartItem}
             updateCartItemQuantity={updateItemQuantity}
-            removeCartItemOnClick={removeCartItem}
+            removeCartItem={removeCartItem}
+            moveToWishlist={moveToWishlist}
           />
         </Box>
       </DrawerComponent>

@@ -59,7 +59,7 @@ export default function RemoveFromWishlistButton({
             padding: 0,
             width: 1,
             height: 1,
-            color: colorPalette.shade.dark,
+            color: colorPalette.typographyVariants.grey,
             stroke: colorPalette.typographyVariants.grey,
             strokeWidth: 2,
             '@media (hover: hover)': {

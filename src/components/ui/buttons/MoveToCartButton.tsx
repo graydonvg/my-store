@@ -23,7 +23,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
   const { cartItems } = useAppSelector((state) => state.cart);
   const { userData } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const addedToCartToastMessage = 'Item added to cart';
+  const addedToCartToastMessage = 'Moved to cart';
 
   async function removeWishlistItem() {
     const { success, message } = await deleteItemFromWishlist(wishlistItemId);

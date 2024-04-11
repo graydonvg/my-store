@@ -8,7 +8,7 @@ import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
 import TopProductDetails from './TopProductDetails';
 import { useEffect } from 'react';
 import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectionDetailsSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {
   product: ProductType;
@@ -16,13 +16,10 @@ type Props = {
 
 export default function ProductDetails({ product }: Props) {
   const dispatch = useAppDispatch();
-  const size = useAppSelector((state) => state.productSelectionDetails.size);
 
   useEffect(() => {
-    if (size === null) return;
-
     dispatch(resetProductSelectionDetails());
-  }, [dispatch, size]);
+  }, [dispatch]);
 
   return (
     <Grid
