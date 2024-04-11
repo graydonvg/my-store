@@ -71,6 +71,13 @@ export default function TotalSales({ title, type, amount }: Props) {
   const formattedLastDay = formatDay(lastDayOfWeek);
   const currentDate = formatDay(new Date());
   const currentMonth = getMonth();
+  let amountFontSize = { xs: 32, sm: 28, md: 30, lg: 36 };
+
+  if (amount >= 100000000) {
+    amountFontSize = { xs: 32, sm: 22, md: 22, lg: 36 };
+  } else if (amount >= 10000000) {
+    amountFontSize = { xs: 32, sm: 24, md: 26, lg: 36 };
+  }
 
   return (
     <>
@@ -78,7 +85,7 @@ export default function TotalSales({ title, type, amount }: Props) {
       <Typography
         component="p"
         variant="h4"
-        fontSize={{ xs: 26, sm: 22, md: 32 }}>
+        fontSize={amountFontSize}>
         {formatCurrency(amount)}
       </Typography>
       <Typography
