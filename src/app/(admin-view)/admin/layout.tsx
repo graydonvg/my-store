@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             sx={{
               padding: 2,
             }}>
-            {children}
+            <main>{children}</main>
           </Container>
         </>
       )}

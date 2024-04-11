@@ -168,6 +168,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 <MoveToCartButton
                   product={product}
                   wishlistSize={wishlistSize ?? ''}
+                  wishlistItemId={wishlistItemId ?? ''}
                 />
               ) : null}
             </Box>

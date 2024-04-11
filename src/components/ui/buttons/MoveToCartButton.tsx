@@ -2,6 +2,7 @@ import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
+import { deleteItemFromWishlist } from '@/services/wishlist/delete';
 import { CartItemType, ProductType } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
@@ -13,15 +14,24 @@ import { toast } from 'react-toastify';
 type Props = {
   product: ProductType;
   wishlistSize: string;
+  wishlistItemId: string;
 };
 
-export default function MoveToCartButton({ product, wishlistSize }: Props) {
+export default function MoveToCartButton({ product, wishlistSize, wishlistItemId }: Props) {
   const colorPalette = useColorPalette();
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const { userData } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const addedToCartToastMessage = 'Item added to cart.';
+  const addedToCartToastMessage = 'Item added to cart';
+
+  async function removeWishlistItem() {
+    const { success, message } = await deleteItemFromWishlist(wishlistItemId);
+
+    if (success === false) {
+      toast.error(message);
+    }
+  }
 
   async function incrementItemQuantity(existingItem: CartItemType) {
     const { success, message } = await updateCartItemQuantity({
@@ -30,6 +40,7 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
     });
 
     if (success === true) {
+      await removeWishlistItem();
       router.refresh();
       toast.success(addedToCartToastMessage);
     } else {
@@ -46,6 +57,7 @@ export default function MoveToCartButton({ product, wishlistSize }: Props) {
     });
 
     if (success === true) {
+      await removeWishlistItem();
       router.refresh();
       toast.success(addedToCartToastMessage);
     } else {

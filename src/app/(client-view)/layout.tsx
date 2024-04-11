@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Container } from '@mui/material';
 import Navbar from '@/components/navbars/Navbar';
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <Navbar />
@@ -11,7 +11,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           paddingY: { xs: 2, sm: 3 },
         }}
         maxWidth="lg">
-        {children}
+        <main>{children}</main>
       </Container>
     </>
   );

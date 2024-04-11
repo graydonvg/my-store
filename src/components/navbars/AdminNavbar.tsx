@@ -208,7 +208,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
           }),
         }}>
         <Toolbar />
-        {children}
+        <main>{children}</main>
       </Container>
     </>
   );
