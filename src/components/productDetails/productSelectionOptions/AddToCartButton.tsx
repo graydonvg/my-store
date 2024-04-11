@@ -21,7 +21,7 @@ export default function AddToCartButton({ product }: Props) {
   const { cartItems } = useAppSelector((state) => state.cart);
   const { quantity, size } = useAppSelector((state) => state.productSelectionDetails);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const addedToCartToastMessage = 'Item added to cart.';
+  const addedToCartToastMessage = 'Added to cart';
 
   async function incrementItemQuantity(existingItem: CartItemType) {
     const { success, message } = await updateCartItemQuantity({
@@ -31,7 +31,7 @@ export default function AddToCartButton({ product }: Props) {
 
     if (success === true) {
       router.refresh();
-      toast.success(message);
+      toast.success(addedToCartToastMessage);
     } else {
       toast.error(message);
     }
@@ -47,7 +47,7 @@ export default function AddToCartButton({ product }: Props) {
 
     if (success === true) {
       router.refresh();
-      toast.success(message);
+      toast.success(addedToCartToastMessage);
     } else {
       toast.error(message);
     }

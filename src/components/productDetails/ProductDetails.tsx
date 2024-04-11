@@ -6,12 +6,24 @@ import ProductImageBoxes from '../ui/productImageBoxes/ProductImageBoxes';
 import ProductSelectionOptions from './productSelectionOptions/ProductSelectionOptions';
 import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
 import TopProductDetails from './TopProductDetails';
+import { useEffect } from 'react';
+import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectionDetailsSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 
 type Props = {
   product: ProductType;
 };
 
 export default function ProductDetails({ product }: Props) {
+  const dispatch = useAppDispatch();
+  const size = useAppSelector((state) => state.productSelectionDetails.size);
+
+  useEffect(() => {
+    if (size === null) return;
+
+    dispatch(resetProductSelectionDetails());
+  }, [dispatch, size]);
+
   return (
     <Grid
       container
