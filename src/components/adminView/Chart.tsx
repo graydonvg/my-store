@@ -14,13 +14,13 @@ function createData(time: string, amount?: number): { time: string; amount: numb
 
 const data = [
   createData('00:00', 0),
-  createData('03:00', 6000),
-  createData('06:00', 12000),
-  createData('09:00', 24000),
-  createData('12:00', 60000),
-  createData('15:00', 82000),
-  createData('18:00', 96000),
-  createData('21:00', 96000),
+  createData('03:00', 12000),
+  createData('06:00', 64000),
+  createData('09:00', 184000),
+  createData('12:00', 360000),
+  createData('15:00', 582000),
+  createData('18:00', 796000),
+  createData('21:00', 842000),
   createData('24:00'),
 ];
 
@@ -56,7 +56,7 @@ export default function Chart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 100000,
+              max: 1000000,
               tickNumber: 4,
             },
           ]}

@@ -16,20 +16,6 @@ export default async function Dashboard() {
       spacing={{ xs: 2, md: 3 }}>
       <Grid
         item
-        xs={12}>
-        <Paper
-          sx={{
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            height: { xs: 240, sm: 360 },
-            borderRadius: BORDER_RADIUS,
-          }}>
-          <Chart />
-        </Paper>
-      </Grid>
-      <Grid
-        item
         xs={12}
         sm={4}>
         <Paper
@@ -43,7 +29,7 @@ export default async function Dashboard() {
           <TotalSales
             title="Daily Sales"
             type="daily"
-            amount={96000}
+            amount={842000}
           />
         </Paper>
       </Grid>
@@ -62,7 +48,7 @@ export default async function Dashboard() {
           <TotalSales
             title="Weekly Sales"
             type="weekly"
-            amount={872000}
+            amount={5863000}
           />
         </Paper>
       </Grid>
@@ -81,8 +67,22 @@ export default async function Dashboard() {
           <TotalSales
             title="Monthly Sales"
             type="monthly"
-            amount={1682000}
+            amount={162745000}
           />
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={12}>
+        <Paper
+          sx={{
+            padding: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: { xs: 240, sm: 360 },
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <Chart />
         </Paper>
       </Grid>
       <Grid

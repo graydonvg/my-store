@@ -1,11 +1,6 @@
 'use client';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import MuiLink from '../ui/MuiLink';
 import { AdminOrderType } from '@/types';
@@ -17,8 +12,10 @@ type Props = {
 
 export default function OrdersTable({ orders, tableSize }: Props) {
   return (
-    <Box sx={{ overflowX: 'auto' }}>
-      <Table size={tableSize}>
+    <TableContainer>
+      <Table
+        size={tableSize}
+        stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
@@ -44,6 +41,6 @@ export default function OrdersTable({ orders, tableSize }: Props) {
           ))}
         </TableBody>
       </Table>
-    </Box>
+    </TableContainer>
   );
 }
