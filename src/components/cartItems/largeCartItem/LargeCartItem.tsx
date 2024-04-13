@@ -1,4 +1,4 @@
-import { Box, ListItem, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { Divider } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { CartItemType } from '@/types';
