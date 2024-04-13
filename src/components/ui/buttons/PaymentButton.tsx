@@ -44,11 +44,11 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
 
     await addNewOrder();
 
-    const error = await payWithStripe(cartItems);
+    const response = await payWithStripe(cartItems);
 
-    if (error?.success === false) {
+    if (response.success === false) {
       dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error(error.message);
+      toast.error(response.message);
     }
   }
 
