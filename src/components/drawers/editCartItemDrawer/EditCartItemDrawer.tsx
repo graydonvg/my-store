@@ -169,7 +169,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           <BottomEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}
-            isRemovingCartItem={isRemovingCartItem}
             updateCartItemQuantity={updateItemQuantity}
             removeCartItem={removeCartItem}
             moveToWishlist={moveToWishlist}

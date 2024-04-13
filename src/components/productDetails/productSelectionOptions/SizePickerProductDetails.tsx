@@ -23,7 +23,7 @@ export default function SizePickerProductDetails({ product }: Props) {
     return availableSizes;
   }
 
-  function handleSelectSize(e: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+  function handleSelectSize(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setSize(selectedSize));
   }
 

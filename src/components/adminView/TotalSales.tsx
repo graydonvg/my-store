@@ -71,13 +71,15 @@ export default function TotalSales({ title, type, amount }: Props) {
   const formattedLastDay = formatDay(lastDayOfWeek);
   const currentDate = formatDay(new Date());
   const currentMonth = getMonth();
-  let amountFontSize = { xs: 32, sm: 28, md: 30, lg: 36 };
+  // const ONE_HUNDRED_MILLION = 100000000;
+  // const TEN_MILLION = 10000000;
+  // let amountFontSize = { xs: 32, sm: 28, md: 30, lg: 36 };
 
-  if (amount >= 100000000) {
-    amountFontSize = { xs: 32, sm: 22, md: 22, lg: 36 };
-  } else if (amount >= 10000000) {
-    amountFontSize = { xs: 32, sm: 24, md: 26, lg: 36 };
-  }
+  // if (amount >= ONE_HUNDRED_MILLION) {
+  //   amountFontSize = { xs: 32, sm: 22, md: 22, lg: 36 };
+  // } else if (amount >= TEN_MILLION) {
+  //   amountFontSize = { xs: 32, sm: 24, md: 26, lg: 36 };
+  // }
 
   return (
     <>
@@ -85,12 +87,23 @@ export default function TotalSales({ title, type, amount }: Props) {
       <Typography
         component="p"
         variant="h4"
-        fontSize={amountFontSize}>
+        fontSize={{ xs: 32, sm: 22, md: 22, lg: 36 }}
+        noWrap
+        sx={{
+          fontSize: 36,
+          '@container (max-width: 231px)': {
+            fontSize: 30,
+          },
+          '@container (max-width: 195px)': {
+            fontSize: 24,
+          },
+          '@container (max-width: 155px)': {
+            fontSize: 22,
+          },
+        }}>
         {formatCurrency(amount)}
       </Typography>
-      <Typography
-        color={colorPalette.typographyVariants.grey}
-        sx={{ flex: 1 }}>
+      <Typography color={colorPalette.typographyVariants.grey}>
         {type === 'daily' ? currentDate : null}
         {type === 'weekly' ? `${formattedFirstDay} - ${formattedLastDay}` : null}
         {type === 'monthly' ? currentMonth : null}

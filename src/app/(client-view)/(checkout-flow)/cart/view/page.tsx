@@ -3,7 +3,7 @@
 import CartViewEmptyMessage from '@/components/CartViewEmptyMessage';
 import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 export default function CartView() {
   const { cartItems } = useAppSelector((state) => state.cart);

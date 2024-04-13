@@ -1,5 +1,8 @@
 import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { OrdersSortByOptions } from '@/types';
+import getOrdersSortBy from '@/utils/getOrdersSortBy';
+import getOrdersSortOptions from '@/utils/getOrdersSortOptions';
 
 export async function getOrdersForUser() {
   const supabase = await createSupabaseServerClient();
@@ -14,14 +17,21 @@ export async function getOrdersForUser() {
   return orders;
 }
 
-export async function getOrdersForAdmin(start: number, end: number) {
+export async function getOrdersForAdmin(
+  start: number,
+  end: number,
+  sortBy: OrdersSortByOptions,
+  sortDirection: 'asc' | 'desc'
+) {
   const supabase = getServiceSupabase();
+  const sortOrdersBy = getOrdersSortBy(sortBy);
+  const sortOptions = getOrdersSortOptions(sortBy, sortDirection);
 
   const { data: orders, count } = await supabase
     .from('orders')
     .select('*', { count: 'exact' })
     .select('createdAt, orderId, orderTotal, user: users(firstName, lastName), shippingDetails(province, city)')
-    .order('createdAt', { ascending: false })
+    .order(sortOrdersBy, sortOptions)
     .range(start, end);
 
   const totalCount = count ?? 0;

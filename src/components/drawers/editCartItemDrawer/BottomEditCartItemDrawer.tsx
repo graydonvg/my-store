@@ -8,7 +8,6 @@ import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer
 type Props = {
   cartItem: CartItemType;
   isUpdatingCartItem: boolean;
-  isRemovingCartItem: boolean;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   removeCartItem: () => void;
   moveToWishlist: () => void;
@@ -17,7 +16,6 @@ type Props = {
 export default function BottomEditCartItemDrawer({
   cartItem,
   isUpdatingCartItem,
-  isRemovingCartItem,
   removeCartItem,
   updateCartItemQuantity,
   moveToWishlist,

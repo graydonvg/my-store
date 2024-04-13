@@ -1,4 +1,4 @@
-import { Box, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, TableCell, TableRow } from '@mui/material';
 import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';

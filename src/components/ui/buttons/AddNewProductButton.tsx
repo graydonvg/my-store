@@ -5,8 +5,6 @@ import { Add } from '@mui/icons-material';
 import { Fab } from '@mui/material';
 import Link from 'next/link';
 
-type Props = {};
-
 export default function AddNewProductButton() {
   const colorPalette = useColorPalette();
 

@@ -272,3 +272,5 @@ export type AddProductResponseType = {
 export type StripeResponseType = {
   sessionId: string;
 };
+
+export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'sale_amount';

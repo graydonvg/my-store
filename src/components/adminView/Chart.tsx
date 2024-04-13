@@ -37,7 +37,7 @@ export default function Chart() {
           margin={{
             top: 16,
             right: 20,
-            left: 80,
+            left: 100,
             bottom: 30,
           }}
           xAxis={[
@@ -71,7 +71,7 @@ export default function Chart() {
             [`.${axisClasses.root} line`]: { stroke: colorPalette.typographyVariants.grey },
             [`.${axisClasses.root} text`]: { fill: colorPalette.typographyVariants.grey },
             [`& .${axisClasses.left} .${axisClasses.label}`]: {
-              transform: 'translateX(-35px)',
+              transform: 'translateX(-60px)',
             },
           }}
         />

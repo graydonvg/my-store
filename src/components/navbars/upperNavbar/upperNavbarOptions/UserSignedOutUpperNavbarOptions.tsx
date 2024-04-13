@@ -1,23 +1,10 @@
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { IconButton, List, ListItem, useTheme } from '@mui/material';
-import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
-import useColorPalette from '@/hooks/useColorPalette';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
+import { List, ListItem } from '@mui/material';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
 import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 
 export default function UserSignedOutUpperNavbarOptions() {
-  const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-
-  function changeTheme() {
-    dispatch(toggleTheme());
-  }
-
   return (
     <List
       sx={{ display: 'flex', height: '100%' }}

@@ -22,7 +22,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
   const { productFormData } = useAppSelector((state) => state.productForm);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
 
-  function handleSelectSize(event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+  function handleSelectSize(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormData({ field: 'sizes', value: selectedSize }));
   }
 

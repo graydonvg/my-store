@@ -8,7 +8,7 @@ import CardTitleAdminView from '@/components/adminView/CardTitleAdminView';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 
 export default async function Dashboard() {
-  const { orders } = await getOrdersForAdmin(0, 4);
+  const { orders } = await getOrdersForAdmin(0, 4, 'date', 'desc');
 
   return (
     <Grid
@@ -25,6 +25,7 @@ export default async function Dashboard() {
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
             borderRadius: BORDER_RADIUS,
+            containerType: 'inline-size',
           }}>
           <TotalSales
             title="Daily Sales"
@@ -44,6 +45,7 @@ export default async function Dashboard() {
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
             borderRadius: BORDER_RADIUS,
+            containerType: 'inline-size',
           }}>
           <TotalSales
             title="Weekly Sales"
@@ -63,6 +65,7 @@ export default async function Dashboard() {
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
             borderRadius: BORDER_RADIUS,
+            containerType: 'inline-size',
           }}>
           <TotalSales
             title="Monthly Sales"
@@ -90,10 +93,7 @@ export default async function Dashboard() {
         xs={12}>
         <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', borderRadius: BORDER_RADIUS }}>
           <CardTitleAdminView>Recent Orders</CardTitleAdminView>
-          <OrdersTable
-            orders={orders}
-            tableSize="small"
-          />
+          <OrdersTable orders={orders} />
         </Paper>
       </Grid>
     </Grid>

@@ -1,6 +1,7 @@
 import AdminOrdersPageClient from '@/components/adminView/AdminOrdersPageClient';
 import { BORDER_RADIUS } from '@/config';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
+import { OrdersSortByOptions } from '@/types';
 import { Paper } from '@mui/material';
 
 type Props = {
@@ -8,13 +9,15 @@ type Props = {
 };
 
 export default async function AdminOrdersPage({ searchParams }: Props) {
-  const page = searchParams['page'] ?? 1;
-  const rowsPerPage = searchParams['per_page'] ?? 5;
+  const page = searchParams['page'] ?? '1';
+  const rowsPerPage = searchParams['per_page'] ?? '5';
+  const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
+  const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
 
   const start = (Number(page) - 1) * Number(rowsPerPage);
   const end = start + (Number(rowsPerPage) - 1);
 
-  const { orders, totalCount } = await getOrdersForAdmin(start, end);
+  const { orders, totalCount } = await getOrdersForAdmin(start, end, sortBy, sortDirection);
 
   const ordersLength = orders?.length ?? 0;
   const isEndOfData = start + ordersLength >= totalCount;

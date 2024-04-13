@@ -1,9 +1,9 @@
 'use client';
 
-import { LabelDisplayedRowsArgs, TablePagination, useMediaQuery, useTheme } from '@mui/material';
+import { LabelDisplayedRowsArgs, TablePagination } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, MouseEvent } from 'react';
 
 type Props = {
@@ -13,46 +13,50 @@ type Props = {
 };
 
 export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage }: Props) {
-  const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = searchParams.get('page') ?? 1;
-  const rowsPerPage = searchParams.get('per_page') ?? 5;
+  const currentSearchParams = new URLSearchParams(searchParams.toString());
+  const pathname = usePathname();
+  const page = searchParams.get('page') ?? '1';
+  const rowsPerPage = searchParams.get('per_page') ?? '5';
 
-  function handleChangePage(event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
-    router.push(`/admin/orders?page=${newPage + 1}&per_page=${rowsPerPage}`);
+  function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
+    currentSearchParams.set('page', `${newPage + 1}`);
+
+    const updatedSearchParams = currentSearchParams.toString();
+
+    router.push(pathname + '?' + updatedSearchParams);
   }
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    router.push(`/admin/orders?page=${page}&per_page=${parseInt(event.target.value, 10)}`);
+    currentSearchParams.set('per_page', `${parseInt(event.target.value, 10)}`);
+
+    const updatedSearchParams = currentSearchParams.toString();
+
+    router.push(pathname + '?' + updatedSearchParams);
   }
 
   function handleGoToLastPage() {
-    router.push(`/admin/orders?page=${lastPage}&per_page=${rowsPerPage}`);
-    router.refresh();
-  }
+    currentSearchParams.set('page', `${lastPage}`);
 
-  function defaultLabelDisplayedRows({ from, to, count }: LabelDisplayedRowsArgs) {
-    return `${from}–${to}`;
+    const updatedSearchParams = currentSearchParams.toString();
+
+    router.push(pathname + '?' + updatedSearchParams);
   }
 
   return (
     <>
-      <OrdersTable
-        orders={orders}
-        tableSize={isBelowSmall ? 'small' : 'medium'}
-      />
+      <OrdersTable orders={orders} />
       <TablePagination
         component="div"
-        labelDisplayedRows={defaultLabelDisplayedRows}
+        labelDisplayedRows={({ from, to }: LabelDisplayedRowsArgs) => `${from} – ${to}`}
         count={-1}
-        rowsPerPageOptions={[5, 10, 15, 20]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
         page={Number(page) - 1}
         rowsPerPage={Number(rowsPerPage)}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleRowsPerPageChange}
-        labelRowsPerPage={isBelowSmall ? 'Rows:' : 'Rows per page:'}
+        labelRowsPerPage="Rows:"
         showFirstButton
         showLastButton
         slotProps={{
