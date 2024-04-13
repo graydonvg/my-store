@@ -1,6 +1,6 @@
 'use client';
 
-import { LabelDisplayedRowsArgs, Pagination, TablePagination, useMediaQuery, useTheme } from '@mui/material';
+import { LabelDisplayedRowsArgs, TablePagination, useMediaQuery, useTheme } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,9 +8,11 @@ import { ChangeEvent, MouseEvent } from 'react';
 
 type Props = {
   orders: AdminOrderType[] | null;
+  isEndOfData: boolean;
+  lastPage: number;
 };
 
-export default function AdminOrdersPageClient({ orders }: Props) {
+export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage }: Props) {
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
@@ -20,11 +22,14 @@ export default function AdminOrdersPageClient({ orders }: Props) {
 
   function handleChangePage(event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
     router.push(`/admin/orders?page=${newPage + 1}&per_page=${rowsPerPage}`);
-    router.refresh();
   }
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     router.push(`/admin/orders?page=${page}&per_page=${parseInt(event.target.value, 10)}`);
+  }
+
+  function handleGoToLastPage() {
+    router.push(`/admin/orders?page=${lastPage}&per_page=${rowsPerPage}`);
     router.refresh();
   }
 
@@ -48,6 +53,19 @@ export default function AdminOrdersPageClient({ orders }: Props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleRowsPerPageChange}
         labelRowsPerPage={isBelowSmall ? 'Rows:' : 'Rows per page:'}
+        showFirstButton
+        showLastButton
+        slotProps={{
+          actions: {
+            nextButton: {
+              disabled: isEndOfData,
+            },
+            lastButton: {
+              disabled: isEndOfData,
+              onClick: handleGoToLastPage,
+            },
+          },
+        }}
         sx={{
           '& .MuiTablePagination-input': {
             marginRight: { xs: 2, sm: 4 },

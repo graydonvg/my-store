@@ -8,7 +8,7 @@ import CardTitleAdminView from '@/components/adminView/CardTitleAdminView';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 
 export default async function Dashboard() {
-  const orders = await getOrdersForAdmin(0, 4);
+  const { orders } = await getOrdersForAdmin(0, 4);
 
   return (
     <Grid

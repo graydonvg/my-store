@@ -14,7 +14,11 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
   const start = (Number(page) - 1) * Number(rowsPerPage);
   const end = start + (Number(rowsPerPage) - 1);
 
-  const orders = await getOrdersForAdmin(start, end);
+  const { orders, totalCount } = await getOrdersForAdmin(start, end);
+
+  const ordersLength = orders?.length ?? 0;
+  const isEndOfData = start + ordersLength >= totalCount;
+  const lastPage = Math.ceil(totalCount / Number(rowsPerPage));
 
   return (
     <Paper
@@ -24,7 +28,11 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
       }}>
-      <AdminOrdersPageClient orders={orders} />
+      <AdminOrdersPageClient
+        orders={orders}
+        isEndOfData={isEndOfData}
+        lastPage={lastPage}
+      />
     </Paper>
   );
 }

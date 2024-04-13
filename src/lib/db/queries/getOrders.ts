@@ -17,11 +17,14 @@ export async function getOrdersForUser() {
 export async function getOrdersForAdmin(start: number, end: number) {
   const supabase = getServiceSupabase();
 
-  const { data: orders } = await supabase
+  const { data: orders, count } = await supabase
     .from('orders')
+    .select('*', { count: 'exact' })
     .select('createdAt, orderId, orderTotal, user: users(firstName, lastName), shippingDetails(province, city)')
     .order('createdAt', { ascending: false })
     .range(start, end);
 
-  return orders;
+  const totalCount = count ?? 0;
+
+  return { orders, totalCount };
 }
