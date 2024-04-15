@@ -27,14 +27,14 @@ export async function getOrdersForAdmin(
   const sortOrdersBy = getOrdersSortBy(sortBy);
   const sortOptions = getOrdersSortOptions(sortBy, sortDirection);
 
-  const { data: orders, count } = await supabase
+  const { data: selectedOrders, count } = await supabase
     .from('orders')
     .select('*', { count: 'exact' })
     .select('createdAt, orderId, orderTotal, user: users(firstName, lastName), shippingDetails(province, city)')
     .order(sortOrdersBy, sortOptions)
     .range(start, end);
 
-  const totalCount = count ?? 0;
+  const totalRowCount = count ?? 0;
 
-  return { orders, totalCount };
+  return { selectedOrders, totalRowCount };
 }

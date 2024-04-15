@@ -6,9 +6,17 @@ import OrdersTable from '@/components/adminView/OrdersTable';
 import { BORDER_RADIUS } from '@/config';
 import CardTitleAdminView from '@/components/adminView/CardTitleAdminView';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
+import { OrdersSortByOptions } from '@/types';
 
-export default async function Dashboard() {
-  const { orders } = await getOrdersForAdmin(0, 4, 'date', 'desc');
+type Props = {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export default async function Dashboard({ searchParams }: Props) {
+  const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
+  const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
+
+  const { selectedOrders } = await getOrdersForAdmin(0, 4, sortBy, sortDirection);
 
   return (
     <Grid
@@ -93,7 +101,7 @@ export default async function Dashboard() {
         xs={12}>
         <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', borderRadius: BORDER_RADIUS }}>
           <CardTitleAdminView>Recent Orders</CardTitleAdminView>
-          <OrdersTable orders={orders} />
+          <OrdersTable orders={selectedOrders} />
         </Paper>
       </Grid>
     </Grid>

@@ -19,10 +19,6 @@ import { AdminOrderType } from '@/types';
 import { visuallyHidden } from '@mui/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type Props = {
-  orders: AdminOrderType[] | null;
-};
-
 const sortableHeadCells = [
   {
     id: 'date',
@@ -46,6 +42,10 @@ const sortableHeadCells = [
   },
 ];
 
+type Props = {
+  orders: AdminOrderType[] | null;
+};
+
 export default function OrdersTable({ orders }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,7 +68,7 @@ export default function OrdersTable({ orders }: Props) {
 
     const updatedSearchParams = currentSearchParams.toString();
 
-    router.push(pathname + '?' + updatedSearchParams);
+    router.push(pathname + '?' + updatedSearchParams, { scroll: false });
   }
 
   return (
