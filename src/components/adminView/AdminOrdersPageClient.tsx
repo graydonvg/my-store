@@ -4,18 +4,19 @@ import { LabelDisplayedRowsArgs, TablePagination } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent, MouseEvent, useMemo } from 'react';
 
 type Props = {
   orders: AdminOrderType[] | null;
   isEndOfData: boolean;
   lastPage: number;
+  totalRowCount: number;
 };
 
-export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage }: Props) {
+export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, totalRowCount }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSearchParams = new URLSearchParams(searchParams.toString());
+  const currentSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
   const pathname = usePathname();
   const page = searchParams.get('page') ?? '1';
   const rowsPerPage = searchParams.get('per_page') ?? '5';
@@ -29,11 +30,18 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage }:
   }
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    currentSearchParams.set('per_page', `${parseInt(event.target.value, 10)}`);
+    const newRowsPerPage = parseInt(event.target.value, 10);
 
-    const updatedSearchParams = currentSearchParams.toString();
+    // Check if the newRowsPerPage will result in an empty page
+    if ((Number(page) - 1) * newRowsPerPage >= totalRowCount) {
+      const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
 
-    router.push(pathname + '?' + updatedSearchParams);
+      currentSearchParams.set('page', `${maxValidPage}`);
+    }
+
+    currentSearchParams.set('per_page', `${newRowsPerPage}`);
+
+    router.push(pathname + '?' + currentSearchParams.toString());
   }
 
   function handleGoToLastPage() {

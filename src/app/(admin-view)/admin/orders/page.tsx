@@ -35,6 +35,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
         orders={selectedOrders}
         isEndOfData={isEndOfData}
         lastPage={lastPage}
+        totalRowCount={totalRowCount}
       />
     </Paper>
   );
