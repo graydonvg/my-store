@@ -1,6 +1,6 @@
-import { CustomResponseType, StripeResponseType } from '@/types';
+import { CustomResponseType, StripeLineItem, StripeResponseType } from '@/types';
 
-export async function callStripeSession(lineItems: any): Promise<CustomResponseType<StripeResponseType>> {
+export async function callStripeSession(lineItems: StripeLineItem[]): Promise<CustomResponseType<StripeResponseType>> {
   try {
     const response = await fetch('/api/secure/stripe', {
       method: 'POST',

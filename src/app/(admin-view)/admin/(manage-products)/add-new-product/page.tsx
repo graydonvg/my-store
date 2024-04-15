@@ -35,7 +35,7 @@ export default function AdminViewAddNewProductPage() {
   }, [dispatch, productFormData.productId]);
 
   useEffect(() => {
-    function handleBeforeUnload(e: BeforeUnloadEvent) {
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
       if (
         !isSubmitting &&
         emptyFormFields.length === numberOfFormFields &&
@@ -43,7 +43,7 @@ export default function AdminViewAddNewProductPage() {
         imageUploadProgress.length === 0
       )
         return;
-      e.preventDefault();
+      event.preventDefault();
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload);

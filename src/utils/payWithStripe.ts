@@ -37,6 +37,7 @@ export default async function payWithStripe(cartItems: CartItemType[]) {
 
     if (error) {
       const message = error.error.message ? error.error.message : 'Failed to process payment.';
+
       return { success: false, message: message };
     } else {
       return { success: true, message: 'Payment successful.' };

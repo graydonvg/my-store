@@ -1,6 +1,6 @@
 'use client';
 
-import { LabelDisplayedRowsArgs, TablePagination } from '@mui/material';
+import { TablePagination } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -57,8 +57,7 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
       <OrdersTable orders={orders} />
       <TablePagination
         component="div"
-        labelDisplayedRows={({ from, to }: LabelDisplayedRowsArgs) => `${from} – ${to}`}
-        count={-1}
+        count={totalRowCount}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
         page={Number(page) - 1}
         rowsPerPage={Number(rowsPerPage)}

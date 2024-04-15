@@ -274,3 +274,15 @@ export type StripeResponseType = {
 };
 
 export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'sale_amount';
+
+export type StripeLineItem = {
+  price_data: {
+    currency: string;
+    product_data: {
+      name: string | undefined;
+      images: string[];
+    };
+    unit_amount: number;
+  };
+  quantity: number;
+};

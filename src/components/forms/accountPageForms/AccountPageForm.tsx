@@ -4,7 +4,7 @@ import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
 type Props = {
-  onSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   disableSubmit: boolean;
   onCancel: () => void;
   isSubmitting: boolean;
@@ -12,8 +12,8 @@ type Props = {
 };
 
 export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isSubmitting, children }: Props) {
-  function handleOnKeyDown(e: KeyboardEvent<HTMLFormElement>) {
-    if (e.key === 'Enter') {
+  function handleOnKeyDown(event: KeyboardEvent<HTMLFormElement>) {
+    if (event.key === 'Enter') {
       onSubmit;
     }
   }

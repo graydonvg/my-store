@@ -19,14 +19,14 @@ export default function UpdateFirstNameForm() {
     setFirstName(userData?.firstName ?? '');
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
 
     setFirstName(value);
   }
 
-  async function handleUpdateFirstName(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleUpdateFirstName(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     const isFirstNameChanged = firstName !== userData?.firstName;
 

@@ -19,14 +19,14 @@ export default function UpdateLastNameForm() {
     setLastName(userData?.lastName ?? '');
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
 
     setLastName(value);
   }
 
-  async function handleUpdateLastName(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleUpdateLastName(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     const isLastNameChanged = lastName !== userData?.lastName;
 

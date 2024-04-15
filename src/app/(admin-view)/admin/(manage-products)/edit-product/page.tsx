@@ -27,7 +27,7 @@ export default function AdminViewUpdateProductPage() {
   const numberOfFormFields = getNumberOfFormFields(productFormData);
 
   useEffect(() => {
-    function handleBeforeUnload(e: BeforeUnloadEvent) {
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
       if (
         !isSubmitting &&
         emptyFormFields.length === numberOfFormFields &&
@@ -35,7 +35,7 @@ export default function AdminViewUpdateProductPage() {
         imageUploadProgress.length === 0
       )
         return;
-      e.preventDefault();
+      event.preventDefault();
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload);

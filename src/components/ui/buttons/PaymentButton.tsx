@@ -48,7 +48,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
 
     if (response.success === false) {
       dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error(response.message);
+      toast.error('Failed to process payment. Please try again later.');
     }
   }
 

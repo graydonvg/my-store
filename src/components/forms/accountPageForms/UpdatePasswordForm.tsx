@@ -21,8 +21,8 @@ export default function UpdatePasswordForm() {
     dispatch(setFieldToEdit(null));
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -30,8 +30,8 @@ export default function UpdatePasswordForm() {
     }));
   }
 
-  async function handleUpdatePassword(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleUpdatePassword(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     if (formData.newPassword !== formData.confirmPassword) {
       toast.error('Passwords do not match');

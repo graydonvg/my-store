@@ -19,14 +19,14 @@ export default function UpdateContactNumberForm() {
     setContactNumber(userData?.contactNumber ?? '');
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
 
     setContactNumber(value);
   }
 
-  async function handleUpdateContactNumber(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleUpdateContactNumber(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     const isContactNumberChanged = contactNumber !== userData?.contactNumber;
 
