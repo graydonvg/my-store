@@ -1,6 +1,5 @@
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { Divider } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
@@ -17,7 +16,6 @@ type Props = {
 };
 
 export default function LargeCartItem({ item }: Props) {
-  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
@@ -29,7 +27,7 @@ export default function LargeCartItem({ item }: Props) {
     <Box
       sx={{
         padding: 2,
-        backgroundColor: colorPalette.card.background,
+        backgroundColor: (theme) => theme.palette.custom.card.background,
         borderRadius: BORDER_RADIUS,
         position: 'relative',
       }}>

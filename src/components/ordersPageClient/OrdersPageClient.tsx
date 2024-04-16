@@ -4,14 +4,12 @@ import { CustomerOrderType } from '@/types';
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   orders: CustomerOrderType[] | null;
 };
 
 export default function OrdersPageClient({ orders }: Props) {
-  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -29,12 +27,12 @@ export default function OrdersPageClient({ orders }: Props) {
                 {!isBelowMedium ? (
                   <OrderDetails
                     order={order}
-                    borderColor={colorPalette.border}
+                    borderColor={theme.palette.custom.border}
                   />
                 ) : null}
                 <OrderItems
                   order={order}
-                  borderColor={colorPalette.border}
+                  borderColor={theme.palette.custom.border}
                 />
               </Grid>
             );

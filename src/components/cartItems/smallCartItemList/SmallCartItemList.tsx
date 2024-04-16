@@ -1,6 +1,5 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { BORDER_RADIUS } from '@/config';
 import SmallCartItems from './SmallCartItems';
 
@@ -9,7 +8,6 @@ type Props = {
 };
 
 export default function SmallCartItemList({ paddingX = 0 }: Props) {
-  const colorPalette = useColorPalette();
   const { cartItems } = useAppSelector((state) => state.cart);
 
   return (
@@ -28,7 +26,7 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
             padding: 1,
             marginTop: 2,
             borderRadius: BORDER_RADIUS,
-            backgroundColor: colorPalette.navBar.lower.background,
+            backgroundColor: (theme) => theme.palette.custom.navBar.lower.background,
           }}>
           <Typography
             lineHeight={1}

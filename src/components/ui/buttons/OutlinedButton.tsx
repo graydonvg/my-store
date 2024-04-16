@@ -1,5 +1,4 @@
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Button, ButtonProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -20,7 +19,6 @@ export default function OutlinedButton({
   isDisabled,
   ...props
 }: CustomButtonProps) {
-  const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
 
@@ -40,17 +38,17 @@ export default function OutlinedButton({
         )
       }
       sx={{
-        color: colorPalette.typography,
+        color: theme.palette.custom.typography,
         height: '48px',
-        borderColor: colorPalette.typography,
+        borderColor: theme.palette.custom.typography,
         backgroundColor: 'transparent',
         '&:hover': {
           backgroundColor: 'transparent',
-          borderColor: colorPalette.typography,
+          borderColor: theme.palette.custom.typography,
         },
         '&:active': {
           backgroundColor: 'transparent',
-          borderColor: colorPalette.typography,
+          borderColor: theme.palette.custom.typography,
         },
         borderRadius: BORDER_RADIUS,
         ...styles,

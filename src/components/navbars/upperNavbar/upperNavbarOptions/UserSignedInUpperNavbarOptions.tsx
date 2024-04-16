@@ -2,7 +2,6 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import CartDrawer from '../../../drawers/cartDrawer/CartDrawer';
 import AccountDropdownMenu from '@/components/accountDropdownMenu/AccountDropdownMenu';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Favorite } from '@mui/icons-material';
 import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
@@ -15,7 +14,6 @@ export default function UserSignedInUpperNavbarOptions() {
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
-  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
 
@@ -33,16 +31,16 @@ export default function UserSignedInUpperNavbarOptions() {
             <DividerUpperNavbarOptions />
             <UpperNavbarIconButton
               onClick={navigateToWishlist}
-              backgroundColor={colorPalette.navBar.upper.background}>
+              backgroundColor={theme.palette.custom.navBar.upper.background}>
               <Typography
                 component="span"
                 fontSize={16}
-                sx={{ color: colorPalette.typographyVariants.white, marginLeft: 1 }}>
+                sx={{ color: theme.palette.custom.typographyVariants.white, marginLeft: 1 }}>
                 Wishlist
               </Typography>
               <Favorite
                 aria-label="Wishlist"
-                sx={{ color: colorPalette.typographyVariants.white, opacity: '50%', marginLeft: 1 }}
+                sx={{ color: theme.palette.custom.typographyVariants.white, opacity: '50%', marginLeft: 1 }}
               />
             </UpperNavbarIconButton>
           </ListItem>

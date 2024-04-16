@@ -5,7 +5,6 @@ import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import CardTitleAdminView from './CardTitleAdminView';
 import { Box } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 
 // Generate Sales Data
 function createData(time: string, amount?: number): { time: string; amount: number | null } {
@@ -26,7 +25,6 @@ const data = [
 
 export default function Chart() {
   const theme = useTheme();
-  const colorPalette = useColorPalette();
 
   return (
     <>
@@ -64,12 +62,12 @@ export default function Chart() {
             {
               dataKey: 'amount',
               showMark: false,
-              color: colorPalette.primary.light,
+              color: theme.palette.custom.primary.light,
             },
           ]}
           sx={{
-            [`.${axisClasses.root} line`]: { stroke: colorPalette.typographyVariants.grey },
-            [`.${axisClasses.root} text`]: { fill: colorPalette.typographyVariants.grey },
+            [`.${axisClasses.root} line`]: { stroke: theme.palette.custom.typographyVariants.grey },
+            [`.${axisClasses.root} text`]: { fill: theme.palette.custom.typographyVariants.grey },
             [`& .${axisClasses.left} .${axisClasses.label}`]: {
               transform: 'translateX(-60px)',
             },

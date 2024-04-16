@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { BORDER_RADIUS } from '@/config';
 
 type Props = {
@@ -7,15 +6,13 @@ type Props = {
 };
 
 export default function SaleBadgeSmallCartItem({ percentage }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       sx={{
         display: 'flex',
         borderRadius: BORDER_RADIUS,
         paddingX: 1,
-        backgroundColor: colorPalette.primary.dark,
+        backgroundColor: (theme) => theme.palette.custom.primary.dark,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -23,7 +20,7 @@ export default function SaleBadgeSmallCartItem({ percentage }: Props) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: colorPalette.typographyVariants.white,
+          color: (theme) => theme.palette.custom.typographyVariants.white,
         }}
         fontSize={14}>
         {`-${percentage}%`}

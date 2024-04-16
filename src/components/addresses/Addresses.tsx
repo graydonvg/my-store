@@ -1,5 +1,4 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearAddressFormData } from '@/lib/redux/slices/addressFormSlice';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
@@ -12,7 +11,6 @@ import AddNewAddressDialog from '../dialogs/addressDialog/AddNewAddressDialog';
 export default function Addresses() {
   const dispatch = useAppDispatch();
   const { userData } = useAppSelector((state) => state.user);
-  const colorPalette = useColorPalette();
 
   useEffect(() => {
     dispatch(closeDialog());
@@ -23,7 +21,12 @@ export default function Addresses() {
 
   return (
     <Box>
-      <TableContainer sx={{ marginBottom: 2, border: `1px solid ${colorPalette.border}`, borderRadius: BORDER_RADIUS }}>
+      <TableContainer
+        sx={{
+          marginBottom: 2,
+          border: (theme) => `1px solid ${theme.palette.custom.border}`,
+          borderRadius: BORDER_RADIUS,
+        }}>
         <Table>
           <TableBody>
             <TableRow>

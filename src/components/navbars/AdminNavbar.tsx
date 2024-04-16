@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import useColorPalette from '@/hooks/useColorPalette';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import Link from 'next/link';
@@ -40,7 +39,6 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const colorPalette = useColorPalette();
   const segments = useSelectedLayoutSegments();
   const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
 
@@ -81,7 +79,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
               }),
             }),
           }}>
-          <Box sx={{ backgroundColor: colorPalette.navBar.upper.background }}>
+          <Box sx={{ backgroundColor: theme.palette.custom.navBar.upper.background }}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -108,7 +106,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
                 size="small">
                 <ThemeToggleIcon
                   size="small"
-                  color={colorPalette.navBar.upper.text}
+                  color={theme.palette.custom.navBar.upper.text}
                 />
               </IconButton>
             </Toolbar>
@@ -159,7 +157,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.label}
-                  sx={{ color: colorPalette.navBar.lower.text }}
+                  sx={{ color: theme.palette.custom.navBar.lower.text }}
                 />
               </ListItemButton>
             </Link>
@@ -172,7 +170,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
               </ListItemIcon>
               <ListItemText
                 primary="Client View"
-                sx={{ color: colorPalette.navBar.lower.text }}
+                sx={{ color: theme.palette.custom.navBar.lower.text }}
               />
             </ListItemButton>
           </Link>
@@ -182,7 +180,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
             </ListItemIcon>
             <ListItemText
               primary="Sign Out"
-              sx={{ color: colorPalette.navBar.lower.text }}
+              sx={{ color: theme.palette.custom.navBar.lower.text }}
             />
           </ListItemButton>
         </List>

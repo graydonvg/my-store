@@ -1,5 +1,5 @@
 import { CustomerOrderType } from '@/types';
-import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
 import { BORDER_RADIUS } from '@/config';
 import OrderShippingDetails from './OrderShippingDetails';
@@ -10,8 +10,6 @@ type Props = {
 };
 
 export default function OrderDetails({ order, borderColor }: Props) {
-  const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const shippingDetails = { ...order.shippingDetails[0] };
 
   return (
@@ -23,7 +21,7 @@ export default function OrderDetails({ order, borderColor }: Props) {
         sx={{
           border: `1px solid ${borderColor}`,
           padding: 2,
-          borderRadius: isBelowMedium ? 'none' : BORDER_RADIUS,
+          borderRadius: (theme) => (theme.breakpoints.down('md') ? 'none' : BORDER_RADIUS),
           borderTopLeftRadius: BORDER_RADIUS,
           borderTopRightRadius: BORDER_RADIUS,
         }}>

@@ -1,7 +1,6 @@
 import DrawerComponent from './DrawerComponent';
 import { DeleteForever, Edit } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
@@ -18,7 +17,6 @@ type Props = {
 export default function EditProductImagesDrawer({ isSubmitting }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
   const { productFormData } = useAppSelector((state) => state.productForm);
   const { imageData, imageUploadProgress, isDeletingImage, isEditImagesDrawerOpen } = useAppSelector(
@@ -76,7 +74,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             '&::before': {
               content: '""',
               position: 'absolute',
-              boxShadow: `0 -2px 4px 0 ${colorPalette.boxShadow}`,
+              boxShadow: `0 -2px 4px 0 ${theme.palette.custom.boxShadow}`,
               top: 0,
               right: 0,
               left: 0,

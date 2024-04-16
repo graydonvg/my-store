@@ -7,7 +7,6 @@ import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
-import useColorPalette from '@/hooks/useColorPalette';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import SignOutButton from '../ui/buttons/SignOutButton';
 
@@ -52,7 +51,6 @@ export default function AccountDropdownMenu() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
 
@@ -62,7 +60,7 @@ export default function AccountDropdownMenu() {
 
   return (
     <HoverDropdownMenu
-      buttonBackgroundColor={colorPalette.navBar.upper.background}
+      buttonBackgroundColor={theme.palette.custom.navBar.upper.background}
       label={
         <>
           <Typography
@@ -72,7 +70,7 @@ export default function AccountDropdownMenu() {
             }}>
             {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
           </Typography>
-          <ArrowDropDown sx={{ color: colorPalette.primary.dark, marginLeft: 1 }} />
+          <ArrowDropDown sx={{ color: theme.palette.custom.primary.dark, marginLeft: 1 }} />
         </>
       }>
       {userData && userData?.isAdmin ? (

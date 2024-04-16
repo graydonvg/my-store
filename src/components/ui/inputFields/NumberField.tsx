@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { TextField, TextFieldProps } from '@mui/material';
 
 type Props = TextFieldProps & {
@@ -6,25 +5,23 @@ type Props = TextFieldProps & {
 };
 
 export default function NumberField({ styles, ...props }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <TextField
       type="number"
-      sx={{
+      sx={(theme) => ({
         ...styles,
         '& label': {
-          color: colorPalette.textField.label,
+          color: theme.palette.custom.textField.label,
         },
         '& fieldset': {
-          borderColor: colorPalette.textField.border,
+          borderColor: theme.palette.custom.textField.border,
         },
         '& label.Mui-focused': {
-          color: colorPalette.textField.focused,
+          color: theme.palette.custom.textField.focused,
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': {
-            border: `1px solid ${colorPalette.textField.focused}`,
+            border: `1px solid ${theme.palette.custom.textField.focused}`,
           },
         },
         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
@@ -33,7 +30,7 @@ export default function NumberField({ styles, ...props }: Props) {
         '& input[type=number]': {
           MozAppearance: 'textfield',
         },
-      }}
+      })}
       {...props}
     />
   );

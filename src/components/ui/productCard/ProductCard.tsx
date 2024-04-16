@@ -1,7 +1,6 @@
 'use client';
 
-import { Box, Typography, useTheme } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
+import { Box, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { ProductType } from '@/types';
 import Link from 'next/link';
@@ -23,9 +22,6 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
-  const colorPalette = useColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
   const isWishlistView = pathname.includes('/wishlist');
@@ -103,7 +99,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 component="span"
                 fontSize={14}
                 lineHeight={'22px'}
-                color={colorPalette.typographyVariants.grey}>
+                sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}>
                 {product.brand?.toUpperCase()}
               </Typography>
 
@@ -114,7 +110,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                     fontSize={14}
                     lineHeight={'18px'}
                     noWrap
-                    color={colorPalette.typographyVariants.grey}>
+                    sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}>
                     Size: {wishlistSize}
                   </Typography>
 
@@ -124,7 +120,12 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                       fontSize={14}
                       lineHeight={'18px'}
                       noWrap
-                      color={mode === 'dark' ? colorPalette.warning.light : colorPalette.warning.dark}>
+                      sx={{
+                        color: (theme) =>
+                          theme.palette.mode === 'dark'
+                            ? theme.palette.custom.warning.light
+                            : theme.palette.custom.warning.dark,
+                      }}>
                       Out of stock
                     </Typography>
                   ) : null}
@@ -157,8 +158,10 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                     fontSize={16}
                     fontFamily={'Georgia'}
                     fontStyle="italic"
-                    color={colorPalette.typographyVariants.grey}
-                    sx={{ textDecoration: 'line-through' }}>
+                    sx={{
+                      textDecoration: 'line-through',
+                      color: (theme) => theme.palette.custom.typographyVariants.grey,
+                    }}>
                     {formatCurrency(product.price)}
                   </Typography>
                 ) : null}

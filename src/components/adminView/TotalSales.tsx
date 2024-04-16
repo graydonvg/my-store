@@ -3,7 +3,6 @@
 import Typography from '@mui/material/Typography';
 import CardTitleAdminView from './CardTitleAdminView';
 import { formatCurrency } from '@/utils/formatCurrency';
-import useColorPalette from '@/hooks/useColorPalette';
 
 const monthNames = [
   'January',
@@ -64,7 +63,6 @@ type Props = {
 };
 
 export default function TotalSales({ title, type, amount }: Props) {
-  const colorPalette = useColorPalette();
   const firstDayOfWeek = getFirstDayOfWeek();
   const lastDayOfWeek = getLastDayOfWeek();
   const formattedFirstDay = formatDay(firstDayOfWeek);
@@ -103,7 +101,7 @@ export default function TotalSales({ title, type, amount }: Props) {
         }}>
         {formatCurrency(amount)}
       </Typography>
-      <Typography color={colorPalette.typographyVariants.grey}>
+      <Typography color={(theme) => theme.palette.custom.typographyVariants.grey}>
         {type === 'daily' ? currentDate : null}
         {type === 'weekly' ? `${formattedFirstDay} - ${formattedLastDay}` : null}
         {type === 'monthly' ? currentMonth : null}

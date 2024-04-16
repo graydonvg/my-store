@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { IconButton, useTheme } from '@mui/material';
@@ -8,7 +7,6 @@ export default function ThemeToggleButton() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const colorPalette = useColorPalette();
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -16,13 +14,12 @@ export default function ThemeToggleButton() {
 
   return (
     <IconButton
-      // disableRipple
       aria-label={`Toggle theme. Current mode is ${mode}.`}
       onClick={changeTheme}
       size="small">
       <ThemeToggleIcon
         size="small"
-        color={colorPalette.navBar.upper.text}
+        color={theme.palette.custom.navBar.upper.text}
       />
     </IconButton>
   );

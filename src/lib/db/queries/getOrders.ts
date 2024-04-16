@@ -27,8 +27,9 @@ export async function getOrdersForAdmin(
 
   const { data: selectedOrders, count } = await supabase
     .from('orders')
-    .select('*', { count: 'exact' })
-    .select('createdAt, orderId, orderTotal, user: users(firstName, lastName), shippingDetails(province, city)')
+    .select('createdAt, orderId, orderTotal, user: users(firstName, lastName), shippingDetails(province, city)', {
+      count: 'exact',
+    })
     .order(sortOrdersBy, sortOptions)
     .range(start, end);
 

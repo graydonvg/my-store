@@ -1,6 +1,5 @@
 'use client';
 
-import useColorPalette from '@/hooks/useColorPalette';
 import { clearCart } from '@/lib/redux/slices/cartSlice';
 import { resetCheckoutData, setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -16,7 +15,6 @@ export default function PaymentSuccessPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const checkoutData = useAppSelector((state) => state.checkoutData);
-  const colorPalette = useColorPalette();
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment-status');
   const theme = useTheme();
@@ -89,7 +87,7 @@ export default function PaymentSuccessPage() {
       </Box>
       <PulseLoader
         size={isBelowSmall ? 16 : 24}
-        color={colorPalette.typography}
+        color={theme.palette.custom.typography}
         loading={true}
       />
       <Box sx={{ height: { xs: '18px', sm: '30px' } }}>

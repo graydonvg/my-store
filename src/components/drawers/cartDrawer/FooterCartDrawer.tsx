@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { useRouter } from 'next/navigation';
@@ -10,7 +9,6 @@ import CheckoutButton from '../../ui/buttons/CheckoutButton';
 
 export default function FooterCartDrawer() {
   const router = useRouter();
-  const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const orderTotal = selectCartTotal(cartItems);
@@ -35,7 +33,7 @@ export default function FooterCartDrawer() {
         '&::before': {
           content: '""',
           position: 'absolute',
-          boxShadow: `0 -2px 4px 0 ${colorPalette.boxShadow}`,
+          boxShadow: (theme) => `0 -2px 4px 0 ${theme.palette.custom.boxShadow}`,
           top: 0,
           right: 0,
           left: 0,

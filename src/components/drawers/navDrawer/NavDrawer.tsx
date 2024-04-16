@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import { Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
 import NavDrawerOptions from './navDrawerOptions/NavDrawerOptions';
-import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
@@ -11,7 +10,6 @@ import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
   const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
   const { isCartOpen } = useAppSelector((state) => state.cart);
   const theme = useTheme();
@@ -39,7 +37,7 @@ export default function NavDrawer() {
         size="small"
         sx={{
           padding: 0,
-          color: colorPalette.navBar.upper.text,
+          color: (theme) => theme.palette.custom.navBar.upper.text,
           cursor: 'pointer',
           '@media (hover: hover)': {
             '&:hover': {

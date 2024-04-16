@@ -3,21 +3,19 @@
 import SmallCartItemList from '@/components/cartItems/smallCartItemList/SmallCartItemList';
 import Addresses from '@/components/addresses/Addresses';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
 import { BORDER_RADIUS } from '@/config';
 
 export default function Shipping() {
   const { cartItems } = useAppSelector((state) => state.cart);
-  const colorPalette = useColorPalette();
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box
       sx={{
-        backgroundColor: colorPalette.card.background,
+        backgroundColor: (theme) => theme.palette.custom.card.background,
         paddingX: 2,
         paddingY: 4,
         display: 'flex',

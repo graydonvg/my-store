@@ -1,10 +1,9 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
 import { ProductType } from '@/types';
-import useColorPalette from '@/hooks/useColorPalette';
 import ClientViewSmallProductImageBox from './smallProductImageBox/ClientViewSmallProductImageBox';
 import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSmallProductImageBoxes';
 
@@ -14,7 +13,7 @@ type Props = {
 };
 
 export default function ProductImageBoxes({ product, maxImageCount }: Props) {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -39,9 +38,9 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
 
   function getBoxBorderColor({ defaultBorderColor = false, focusedBorderColor = false }) {
     if (focusedBorderColor) {
-      return colorPalette.textField.focused;
+      return theme.palette.custom.textField.focused;
     } else if (defaultBorderColor) {
-      return colorPalette.textField.border;
+      return theme.palette.custom.textField.border;
     } else {
       return 'transparent';
     }

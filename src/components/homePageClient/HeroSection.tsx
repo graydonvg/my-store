@@ -2,7 +2,6 @@ import { BORDER_RADIUS, STORE_NAME } from '@/config';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';
-import useColorPalette from '@/hooks/useColorPalette';
 import { useState } from 'react';
 
 type Props = {
@@ -10,7 +9,6 @@ type Props = {
 };
 
 export default function HeroSection({ navigateToAllProducts }: Props) {
-  const colorPalette = useColorPalette();
   const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
 
   return (
@@ -47,7 +45,10 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             fontWeight={800}
             fontSize={{ xs: 32, sm: 48, md: 64, lg: 64 }}
             lineHeight={1.1}
-            sx={{ color: colorPalette.typographyVariants.black, maxWidth: { xs: '40%', sm: '45%', lg: '50%' } }}>
+            sx={{
+              color: (theme) => theme.palette.custom.typographyVariants.black,
+              maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
+            }}>
             Where Fashion Meets Passion
           </Typography>
           <Typography
@@ -55,7 +56,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             fontWeight={500}
             fontSize={{ xs: 14, sm: 14, md: 16 }}
             sx={{
-              color: colorPalette.shade.dark,
+              color: (theme) => theme.palette.custom.shade.dark,
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>

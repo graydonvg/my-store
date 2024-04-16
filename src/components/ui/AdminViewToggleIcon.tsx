@@ -1,5 +1,5 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { AdminPanelSettings, Store } from '@mui/icons-material';
+import { useTheme } from '@mui/material';
 
 const iconSize = 'small';
 
@@ -8,8 +8,8 @@ type Props = {
 };
 
 export function AdminViewToggleIcon({ isAdminView }: Props) {
-  const colorPalette = useColorPalette();
-  const iconColor = colorPalette.typographyVariants.white;
+  const theme = useTheme();
+  const iconColor = theme.palette.custom.typographyVariants.white;
 
   return (
     <>

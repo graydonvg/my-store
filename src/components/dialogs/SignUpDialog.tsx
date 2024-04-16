@@ -1,14 +1,13 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { openDialog, closeDialog } from '@/lib/redux/slices/dialogSlice';
 import SignUpForm from '../forms/SignUpForm';
 import MuiLink from '../ui/MuiLink';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 export default function SignUpDialog() {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const isSignUpDialogOpen = useAppSelector((state) => state.dialog.signUpDialog);
 
@@ -26,7 +25,7 @@ export default function SignUpDialog() {
       <Box sx={{ paddingX: 2 }}>
         <TextButton
           label="sign up"
-          labelColor={colorPalette.navBar.upper.text}
+          labelColor={theme.palette.custom.navBar.upper.text}
           onClick={openSignUpDialog}
         />
       </Box>

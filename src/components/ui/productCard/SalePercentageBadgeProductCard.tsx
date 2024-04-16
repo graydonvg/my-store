@@ -1,5 +1,4 @@
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
@@ -7,8 +6,6 @@ type Props = {
 };
 
 export default function SalePercentageBadgeProductCard({ percentage }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       sx={{
@@ -16,7 +13,7 @@ export default function SalePercentageBadgeProductCard({ percentage }: Props) {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
         paddingX: 0.5,
-        backgroundColor: colorPalette.primary.dark,
+        backgroundColor: (theme) => theme.palette.custom.primary.dark,
         width: 'min-content',
       }}>
       <Typography
@@ -24,7 +21,7 @@ export default function SalePercentageBadgeProductCard({ percentage }: Props) {
         variant="caption"
         sx={{
           textAlign: 'center',
-          color: colorPalette.typographyVariants.white,
+          color: (theme) => theme.palette.custom.typographyVariants.white,
           textTransform: 'uppercase',
         }}>
         {`${percentage}% off`}

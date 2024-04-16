@@ -1,6 +1,5 @@
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   path: string;
@@ -10,7 +9,6 @@ type Props = {
 };
 
 export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: Props) {
-  const colorPalette = useColorPalette();
   const isSaleOption = label.toLowerCase() === 'sale';
 
   return (
@@ -20,18 +18,20 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
       <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
         <Typography
           component="span"
-          sx={{
+          sx={(theme) => ({
             textTransform: 'none',
-            color: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
+            color: isSaleOption ? theme.palette.custom.warning.dark : theme.palette.custom.navBar.lower.text,
             textDecoration: underline ? 'underline' : 'none',
-            textDecorationColor: isSaleOption ? colorPalette.warning.dark : colorPalette.navBar.lower.text,
+            textDecorationColor: isSaleOption
+              ? theme.palette.custom.warning.dark
+              : theme.palette.custom.navBar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
             '&:hover': {
-              color: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
-              textDecorationColor: isSaleOption ? colorPalette.warning.light : colorPalette.typography,
+              color: isSaleOption ? theme.palette.custom.warning.light : theme.palette.custom.typography,
+              textDecorationColor: isSaleOption ? theme.palette.custom.warning.light : theme.palette.custom.typography,
             },
-          }}>
+          })}>
           <Link href={path}>{label}</Link>
         </Typography>
       </Box>

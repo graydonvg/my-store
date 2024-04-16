@@ -14,13 +14,13 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
   const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
   const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
 
-  const start = (Number(page) - 1) * Number(rowsPerPage);
-  const end = start + (Number(rowsPerPage) - 1);
+  const queryStart = (Number(page) - 1) * Number(rowsPerPage);
+  const queryEnd = queryStart + (Number(rowsPerPage) - 1);
 
-  const { selectedOrders, totalRowCount } = await getOrdersForAdmin(start, end, sortBy, sortDirection);
+  const { selectedOrders, totalRowCount } = await getOrdersForAdmin(queryStart, queryEnd, sortBy, sortDirection);
 
   const selectedOrdersLength = selectedOrders?.length ?? 0;
-  const isEndOfData = start + selectedOrdersLength >= totalRowCount;
+  const isEndOfData = queryStart + selectedOrdersLength >= totalRowCount;
   const lastPage = Math.ceil(totalRowCount / Number(rowsPerPage));
 
   return (
@@ -31,6 +31,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
       }}>
+      {/* <Seachbar /> */}
       <AdminOrdersPageClient
         orders={selectedOrders}
         isEndOfData={isEndOfData}

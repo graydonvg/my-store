@@ -1,8 +1,6 @@
 'use client';
 
 import Typography from '@mui/material/Typography';
-import useColorPalette from '@/hooks/useColorPalette';
-import { useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface Props {
@@ -10,15 +8,13 @@ interface Props {
 }
 
 export default function CardTitleAdminView({ children }: Props) {
-  const colorPalette = useColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-
   return (
     <Typography
       component="h2"
       variant="h6"
-      color={mode === 'dark' ? colorPalette.primary.light : colorPalette.primary.dark}
+      color={(theme) =>
+        theme.palette.mode === 'dark' ? theme.palette.custom.primary.light : theme.palette.custom.primary.dark
+      }
       gutterBottom
       sx={{ textTransform: 'capitalize' }}>
       {children}

@@ -1,6 +1,5 @@
 'use client';
 
-import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
@@ -8,16 +7,14 @@ type Props = {
 };
 
 export default function PageHeaderWithBorder({ label }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       component="header"
-      sx={{
+      sx={(theme) => ({
         marginBottom: 3,
-        borderTop: `1px solid ${colorPalette.border}`,
-        borderBottom: `1px solid ${colorPalette.border}`,
-      }}>
+        borderTop: `1px solid ${theme.palette.custom.border}`,
+        borderBottom: `1px solid ${theme.palette.custom.border}`,
+      })}>
       <Typography
         component="h1"
         fontSize={{ xs: 26, sm: 30 }}

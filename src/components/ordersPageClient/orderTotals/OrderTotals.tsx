@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
@@ -12,10 +11,9 @@ type Props = {
 };
 
 export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
-  const colorPalette = useColorPalette();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const discountTotalBackgroundColor = mode === 'dark' ? colorPalette.shade.dark : 'rgba(66, 165, 245, 0.09)';
+  const discountTotalBackgroundColor = mode === 'dark' ? theme.palette.custom.shade.dark : 'rgba(66, 165, 245, 0.09)';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -37,7 +35,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
 
       <Box
         sx={{
-          borderBottom: !totalToPay ? `2px solid ${colorPalette.border}` : 'none',
+          borderBottom: !totalToPay ? `2px solid ${theme.palette.custom.border}` : 'none',
           marginBottom: !totalToPay ? 1 : 0,
         }}>
         <OrderTotalsRow
@@ -51,8 +49,8 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
         <Box
           sx={{
             marginBottom: 1,
-            borderTop: `1px solid ${colorPalette.border}`,
-            borderBottom: `2px solid ${colorPalette.border}`,
+            borderTop: `1px solid ${theme.palette.custom.border}`,
+            borderBottom: `2px solid ${theme.palette.custom.border}`,
           }}>
           <OrderTotalsRow
             label="Order total"

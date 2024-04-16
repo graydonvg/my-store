@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Menu } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import UpperNavbarIconButton from '../navbars/upperNavbar/UpperNavbarIconButton';
@@ -10,7 +9,6 @@ type Props = {
 };
 
 export default function HoverDropdownMenu({ buttonBackgroundColor, children, label }: Props) {
-  const colorPalette = useColorPalette();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   let timeoutId: NodeJS.Timeout | null = null;
@@ -57,7 +55,7 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
             padding: 0,
           },
           '& .MuiMenu-paper': {
-            backgroundColor: colorPalette.navBar.upper.background,
+            backgroundColor: (theme) => theme.palette.custom.navBar.upper.background,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             overflow: 'visible',

@@ -1,5 +1,4 @@
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { ListItemIcon, MenuItem } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -10,14 +9,12 @@ type Props = {
 };
 
 export default function AccountDropdownMenuItem({ icon, label, onClick }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <MenuItem
       sx={{
         borderRadius: BORDER_RADIUS,
         color: 'white',
-        '&:hover': { backgroundColor: colorPalette.primary.dark },
+        '&:hover': { backgroundColor: (theme) => theme.palette.custom.primary.dark },
       }}
       onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>

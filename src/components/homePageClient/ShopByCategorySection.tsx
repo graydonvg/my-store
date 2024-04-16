@@ -1,5 +1,4 @@
 import { BORDER_RADIUS, HOME_PAGE_CATEGORIES } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,7 +7,6 @@ import { useState } from 'react';
 export default function ShopByCategorySection() {
   const router = useRouter();
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
-  const colorPalette = useColorPalette();
 
   function navigateToCategory(path: string) {
     router.push(path);
@@ -88,7 +86,7 @@ export default function ShopByCategorySection() {
                   component="h3"
                   fontSize={36}
                   fontWeight={600}
-                  sx={{ color: colorPalette.typographyVariants.white }}>
+                  sx={{ color: (theme) => theme.palette.custom.typographyVariants.white }}>
                   {category.label.toUpperCase()}
                 </Typography>
               </Box>

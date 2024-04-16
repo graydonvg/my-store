@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
@@ -17,7 +16,6 @@ type Props = {
 };
 
 export default function ProductFormFields({ isClearingAllFields, isSubmitting, isOnSale }: Props) {
-  const colorPalette = useColorPalette();
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
@@ -34,7 +32,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Typography color={colorPalette.textField.label}>Available Sizes *</Typography>
+        <Typography color={(theme) => theme.palette.custom.textField.label}>Available Sizes *</Typography>
         <ToggleButtons
           aria-label="select size"
           onChange={handleSelectSize}

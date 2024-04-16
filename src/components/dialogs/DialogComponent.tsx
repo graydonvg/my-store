@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, IconButton, Dialog } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
@@ -14,7 +13,6 @@ type Props = {
 
 export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
   function close() {
@@ -39,7 +37,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           maxWidth: 400,
           boxShadow: 24,
           borderRadius: BORDER_RADIUS,
-          backgroundColor: colorPalette.dialog.background,
+          backgroundColor: (theme) => theme.palette.custom.dialog.background,
         }}>
         <LoadingBar
           isLoading={isDialogLoading}
@@ -51,7 +49,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
             size="small"
             aria-label="close dialog"
             onClick={close}
-            sx={{ color: colorPalette.typography }}>
+            sx={{ color: (theme) => theme.palette.custom.typography }}>
             <Close fontSize="large" />
           </IconButton>
         </Box>

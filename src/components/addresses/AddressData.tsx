@@ -1,5 +1,4 @@
 import { Box, TableCell, TableRow } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import AddressButtons from './AddressButtons';
@@ -9,7 +8,6 @@ import Recipient from './Recipient';
 
 export default function AddressData() {
   const { userData } = useAppSelector((state) => state.user);
-  const colorPalette = useColorPalette();
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
 
@@ -32,7 +30,7 @@ export default function AddressData() {
               flexDirection: { xs: 'column', sm: 'row' },
               rowGap: 2,
               columnGap: 4,
-              borderBottom: `1px solid ${colorPalette.border}`,
+              borderBottom: (theme) => `1px solid ${theme.palette.custom.border}`,
               width: 1,
             }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>

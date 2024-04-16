@@ -1,5 +1,4 @@
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
@@ -8,8 +7,6 @@ type ToggleButtonsProps = ToggleButtonGroupProps & {
 };
 
 export default function ToggleButtons({ buttons, selection, ...props }: ToggleButtonsProps) {
-  const colorPalette = useColorPalette();
-
   return (
     <ToggleButtonGroup
       aria-required
@@ -25,39 +22,39 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
         return (
           <ToggleButton
             key={button.value}
-            sx={{
+            sx={(theme) => ({
               height: '56px',
               aspectRatio: 4 / 3,
               '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
-                color: colorPalette.textField.label,
-                border: `1px solid ${colorPalette.textField.border} !important`,
+                color: theme.palette.custom.textField.label,
+                border: `1px solid ${theme.palette.custom.textField.border} !important`,
                 borderRadius: `${BORDER_RADIUS} !important`,
                 '@media (hover: hover)': {
                   '&:hover': {
                     backgroundColor: 'transparent',
-                    color: colorPalette.textField.label,
-                    border: `1px solid ${colorPalette.textField.hover} !important`,
+                    color: theme.palette.custom.textField.label,
+                    border: `1px solid ${theme.palette.custom.textField.hover} !important`,
                   },
                 },
               },
               '&.MuiToggleButton-root.Mui-selected': {
-                color: colorPalette.typographyVariants.white,
+                color: theme.palette.custom.typographyVariants.white,
                 borderColor: (theme) => `${theme.palette.background.default} !important`,
-                backgroundColor: colorPalette.primary.light,
+                backgroundColor: theme.palette.custom.primary.light,
                 '&:hover': {
-                  backgroundColor: colorPalette.primary.light,
+                  backgroundColor: theme.palette.custom.primary.light,
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: colorPalette.typographyVariants.white,
-                    backgroundColor: colorPalette.primary.light,
+                    color: theme.palette.custom.typographyVariants.white,
+                    backgroundColor: theme.palette.custom.primary.light,
                     border: (theme) => `1px solid ${theme.palette.background.default} !important`,
                     filter: 'brightness(1.1)',
                     transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                   },
                 },
               },
-            }}
+            })}
             value={button.value}
             aria-label={button.value}>
             {button.label}

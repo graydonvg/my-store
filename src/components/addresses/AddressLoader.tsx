@@ -1,5 +1,4 @@
-import { Box } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
+import { Box, useTheme } from '@mui/material';
 import { PulseLoader } from 'react-spinners';
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
 };
 
 export default function AddressLoader({ isLoading }: Props) {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   return (
     <Box
@@ -21,7 +20,7 @@ export default function AddressLoader({ isLoading }: Props) {
       }}>
       <PulseLoader
         loading={isLoading}
-        color={colorPalette.typography}
+        color={theme.palette.custom.typography}
         size={10}
       />
     </Box>

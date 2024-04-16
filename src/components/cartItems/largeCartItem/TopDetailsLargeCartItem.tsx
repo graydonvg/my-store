@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import Link from 'next/link';
 
 type Props = {
@@ -9,8 +8,6 @@ type Props = {
 };
 
 export default function TopDetailsLargeCartItem({ name, brand, productHref }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Link href={productHref}>
@@ -35,7 +32,7 @@ export default function TopDetailsLargeCartItem({ name, brand, productHref }: Pr
         component="span"
         fontWeight={600}
         fontSize={14}
-        color={colorPalette.typographyVariants.grey}
+        color={(theme) => theme.palette.custom.typographyVariants.grey}
         sx={{
           overflow: 'hidden',
           textOverflow: 'ellipsis',

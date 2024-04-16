@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
 
@@ -9,8 +8,6 @@ type Props = {
 };
 
 export default function PriceLargeCartItem({ isOnSale, price, discountedPrice }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       sx={{
@@ -25,7 +22,7 @@ export default function PriceLargeCartItem({ isOnSale, price, discountedPrice }:
           component="span"
           fontSize={{ xs: 20, sm: 24 }}
           fontWeight={400}
-          color={colorPalette.typographyVariants.grey}
+          color={(theme) => theme.palette.custom.typographyVariants.grey}
           sx={{ textDecoration: 'line-through' }}>
           {formatCurrency(price)}
         </Typography>

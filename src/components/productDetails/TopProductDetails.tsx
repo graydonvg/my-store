@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { ProductType } from '@/types';
-import useColorPalette from '@/hooks/useColorPalette';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = {
@@ -9,7 +8,6 @@ type Props = {
 };
 
 export default function TopProductDetails({ product }: Props) {
-  const colorPalette = useColorPalette();
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
 
@@ -24,11 +22,10 @@ export default function TopProductDetails({ product }: Props) {
           {product.name}
         </Typography>
         <Typography
-          sx={{ paddingY: 1 }}
           lineHeight={1}
           component="span"
           fontSize={16}
-          color={colorPalette.typographyVariants.grey}>
+          sx={{ paddingY: 1, color: (theme) => theme.palette.custom }}>
           {product.brand.toUpperCase()}
         </Typography>
       </Box>
@@ -62,8 +59,7 @@ export default function TopProductDetails({ product }: Props) {
               fontFamily={'Georgia'}
               fontStyle="italic"
               fontSize={22}
-              color={colorPalette.typographyVariants.grey}
-              sx={{ textDecoration: 'line-through', paddingRight: 1 }}>
+              sx={{ textDecoration: 'line-through', paddingRight: 1, color: (theme) => theme.palette.custom }}>
               {formatCurrency(product.price)}
             </Typography>
             <Typography
@@ -72,7 +68,7 @@ export default function TopProductDetails({ product }: Props) {
               fontSize={22}
               fontFamily={'Georgia'}
               fontStyle="italic"
-              sx={{ color: colorPalette.primary.light, fontFamily: 'serif' }}>
+              sx={{ color: (theme) => theme.palette.custom.primary.light, fontFamily: 'serif' }}>
               {`-${product.salePercentage}%`}
             </Typography>
           </Box>

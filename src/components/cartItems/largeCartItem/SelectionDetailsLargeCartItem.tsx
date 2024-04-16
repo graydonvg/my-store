@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   quantity: number;
@@ -7,8 +6,6 @@ type Props = {
 };
 
 export default function SelectionDetailsLargeCartItem({ quantity, size }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
       {[
@@ -23,7 +20,7 @@ export default function SelectionDetailsLargeCartItem({ quantity, size }: Props)
             component="span"
             fontSize={{ xs: 14, sm: 16 }}
             fontWeight={600}
-            color={colorPalette.typographyVariants.grey}>
+            color={(theme) => theme.palette.custom.typographyVariants.grey}>
             {item.label}:
           </Typography>
           <Typography

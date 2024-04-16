@@ -20,6 +20,7 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
   const pathname = usePathname();
   const page = searchParams.get('page') ?? '1';
   const rowsPerPage = searchParams.get('per_page') ?? '5';
+  const currentPage = Number(page) - 1;
 
   function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
     currentSearchParams.set('page', `${newPage + 1}`);
@@ -31,9 +32,10 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const newRowsPerPage = parseInt(event.target.value, 10);
+    const queryStart = currentPage * newRowsPerPage;
 
     // Check if the newRowsPerPage will result in an empty page
-    if ((Number(page) - 1) * newRowsPerPage >= totalRowCount) {
+    if (queryStart >= totalRowCount) {
       const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
 
       currentSearchParams.set('page', `${maxValidPage}`);
@@ -59,7 +61,7 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
         component="div"
         count={totalRowCount}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
-        page={Number(page) - 1}
+        page={currentPage}
         rowsPerPage={Number(rowsPerPage)}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleRowsPerPageChange}

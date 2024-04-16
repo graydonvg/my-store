@@ -1,5 +1,4 @@
-import useColorPalette from '@/hooks/useColorPalette';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { PulseLoader } from 'react-spinners';
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
 };
 
 export default function LoaderEditCartItemDrawer({ isUpdatingCartItem }: Props) {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   return (
     <Box
@@ -22,7 +21,7 @@ export default function LoaderEditCartItemDrawer({ isUpdatingCartItem }: Props) 
         backgroundColor: 'transparent',
       }}>
       <PulseLoader
-        color={colorPalette.typography}
+        color={theme.palette.custom.typography}
         loading={isUpdatingCartItem}
         size={30}
       />

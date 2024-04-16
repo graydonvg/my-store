@@ -1,16 +1,13 @@
 import { ArrowForwardIos, Logout } from '@mui/icons-material';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   label: string;
 };
 
 export default function IconNavDrawerOption({ label }: Props) {
-  const colorPalette = useColorPalette();
-
   if (label === 'Sign Out') {
-    return <Logout sx={{ color: colorPalette.navBar.lower.text }} />;
+    return <Logout sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }} />;
   } else {
-    return <ArrowForwardIos sx={{ color: colorPalette.navBar.lower.text }} />;
+    return <ArrowForwardIos sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }} />;
   }
 }

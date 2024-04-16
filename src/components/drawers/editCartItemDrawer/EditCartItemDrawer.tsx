@@ -1,5 +1,4 @@
 import { Box, IconButton, useTheme } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
@@ -21,7 +20,6 @@ type Props = {
 
 export default function EditCartItemDrawer({ cartItem }: Props) {
   const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
   const router = useRouter();
   const theme = useTheme();
   const userId = useAppSelector((state) => state.user.userData?.userId);
@@ -140,7 +138,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
-          sx={{ color: colorPalette.typographyVariants.grey }}
+          sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}
         />
       </IconButton>
       <DrawerComponent

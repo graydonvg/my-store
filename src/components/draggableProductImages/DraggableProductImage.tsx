@@ -1,8 +1,7 @@
-import { Box, Divider, Grid, IconButton, Skeleton } from '@mui/material';
+import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
 import { InsertProductImageDataTypeStore } from '@/types';
 import Image from 'next/image';
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';
@@ -22,7 +21,7 @@ export type Props = {
 
 export default function DraggableProductImage({ imageData, activeItemId }: Props) {
   const dispatch = useAppDispatch();
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
   const { productFormData } = useAppSelector((state) => state.productForm);
   const { isDeletingImage, imageData: imageDataArray } = useAppSelector((state) => state.productImages);
   const [imageToDeleteId, setImageToDeleteId] = useState<string | null>(null);
@@ -72,7 +71,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
           borderRadius: BORDER_RADIUS,
           paddingY: 2,
           opacity: isDeletingCurrentImage ? 0.5 : 1,
-          backgroundColor: imageData.id === activeItemId ? colorPalette.boxShadow : 'transparent',
+          backgroundColor: imageData.id === activeItemId ? (theme) => theme.palette.custom.boxShadow : 'transparent',
           transform: CSS.Translate.toString(transform),
           transition,
         }}>
@@ -134,7 +133,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               onClick={deleteImage}
               isLoading={isDeletingCurrentImage}
               disabled={isDeletingCurrentImage}
-              labelColor={colorPalette.typography}
+              labelColor={theme.palette.custom.typography}
               startIcon={<DeleteForever />}
             />
           </Box>

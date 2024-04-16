@@ -1,5 +1,4 @@
 import { Box, Divider } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 import AddressButton from './AddressButton';
 import { deleteAddress } from '@/services/users/delete';
 import { toast } from 'react-toastify';
@@ -14,7 +13,6 @@ type Props = {
 };
 
 export default function AddressButtons({ addressId }: Props) {
-  const colorPalette = useColorPalette();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const addressToDeleteId = useAppSelector((state) => state.account.addressToDeleteId);
@@ -41,7 +39,7 @@ export default function AddressButtons({ addressId }: Props) {
           <Divider
             orientation="vertical"
             flexItem
-            sx={{ borderColor: colorPalette.border }}
+            sx={{ borderColor: (theme) => theme.palette.custom.border }}
           />
           <AddressButton
             label="delete"

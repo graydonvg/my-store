@@ -1,13 +1,13 @@
+import { GetDesignTokensType } from '@/components/theme/ThemeRegistry';
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette, { ColorPaletteReturnType } from '@/hooks/useColorPalette';
 import { ContainedButtonButtonBackgroundColorType } from '@/types';
-import { Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
 function getButtonBackgroundColor(
   option: ContainedButtonButtonBackgroundColorType,
-  colorPalette: ColorPaletteReturnType
+  colorPalette: GetDesignTokensType['palette']['custom']
 ) {
   const colorOptions = {
     primary: {
@@ -69,8 +69,10 @@ export default function ContainedButton({
   styles,
   ...props
 }: ContainedButtonProps) {
-  const colorPalette = useColorPalette();
-  const buttonBackgroundColor = backgroundColor ? getButtonBackgroundColor(backgroundColor, colorPalette) : null;
+  const theme = useTheme();
+  const buttonBackgroundColor = backgroundColor
+    ? getButtonBackgroundColor(backgroundColor, theme.palette.custom)
+    : null;
 
   return (
     <Button

@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   onClick?: () => void;
@@ -10,8 +9,6 @@ type Props = {
 };
 
 export default function UserDataAccountPage({ label, onClick, children }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       onClick={onClick}
@@ -27,7 +24,7 @@ export default function UserDataAccountPage({ label, onClick, children }: Props)
         <Typography
           component="span"
           fontSize={12}
-          color={colorPalette.textField.label}>
+          color={(theme) => theme.palette.custom.textField.label}>
           {label}
         </Typography>
         <Typography

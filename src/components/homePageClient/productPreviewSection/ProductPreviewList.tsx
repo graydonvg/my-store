@@ -1,7 +1,6 @@
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { ProductType } from '@/types';
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import ProductCard from '../../ui/productCard/ProductCard';
 
@@ -12,10 +11,6 @@ type Props = {
 };
 
 export default function ProductPreviewList({ title, products, onClick }: Props) {
-  const colorPalette = useColorPalette();
-  const theme = useTheme();
-  const mode = theme.palette.mode;
-
   return (
     <Grid
       component="ul"
@@ -28,7 +23,8 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
         sm={3}>
         <Box
           sx={{
-            backgroundColor: mode === 'dark' ? colorPalette.shade.dark : colorPalette.shade.light,
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? theme.palette.custom.shade.dark : theme.palette.custom.shade.light,
             borderRadius: BORDER_RADIUS,
             padding: { xs: 2, lg: 4 },
             display: 'flex',

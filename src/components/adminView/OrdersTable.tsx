@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -51,7 +50,6 @@ export default function OrdersTable({ orders }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const currentSearchParams = new URLSearchParams(searchParams.toString());
   const sortBy = searchParams.get('sort_by') ?? 'date';
   const sortDirection = (searchParams.get('sort') as SortDirection | undefined) ?? 'desc';
@@ -73,7 +71,7 @@ export default function OrdersTable({ orders }: Props) {
 
   return (
     <TableContainer>
-      <Table size={isBelowSmall ? 'small' : 'medium'}>
+      <Table size={theme.breakpoints.down('sm') ? 'small' : 'medium'}>
         <TableHead>
           <TableRow>
             <TableCell sx={{ backgroundColor: 'transparent' }}>ID</TableCell>

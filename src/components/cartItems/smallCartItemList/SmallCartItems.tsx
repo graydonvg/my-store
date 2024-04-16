@@ -2,13 +2,11 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Divider } from '@mui/material';
 import { Fragment } from 'react';
 import SmallCartItem from '../smallCartItem/SmallCartItem';
-import useColorPalette from '@/hooks/useColorPalette';
 import { usePathname } from 'next/navigation';
 
 export default function SmallCartItems() {
   const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const colorPalette = useColorPalette();
   const isShippingView = pathname.includes('/checkout/shipping');
 
   return cartItems.map((item, index) => {
@@ -24,7 +22,7 @@ export default function SmallCartItems() {
     return (
       <Fragment key={item?.cartItemId}>
         <SmallCartItem item={item} />
-        {showDivider ? <Divider sx={{ borderColor: colorPalette.border }} /> : null}
+        {showDivider ? <Divider sx={{ borderColor: (theme) => theme.palette.custom.border }} /> : null}
       </Fragment>
     );
   });

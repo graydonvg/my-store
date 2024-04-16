@@ -1,7 +1,6 @@
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import { Spinner } from '../progress/Spinner';
 import { Close } from '@mui/icons-material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -19,7 +18,7 @@ export default function RemoveFromWishlistButton({
   setIsRemovingWishlistItem,
 }: Props) {
   const router = useRouter();
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   useEffect(() => {
     setIsRemovingWishlistItem(false);
@@ -59,13 +58,13 @@ export default function RemoveFromWishlistButton({
             padding: 0,
             width: 1,
             height: 1,
-            color: colorPalette.typographyVariants.grey,
-            stroke: colorPalette.typographyVariants.grey,
+            color: theme.palette.custom.typographyVariants.grey,
+            stroke: theme.palette.custom.typographyVariants.grey,
             strokeWidth: 2,
             '@media (hover: hover)': {
               '&:hover': {
-                color: colorPalette.warning.dark,
-                stroke: colorPalette.warning.dark,
+                color: theme.palette.custom.warning.dark,
+                stroke: theme.palette.custom.warning.dark,
               },
             },
           }}>
@@ -76,7 +75,7 @@ export default function RemoveFromWishlistButton({
           <Spinner
             thickness={8}
             size={16}
-            spinnerColor={colorPalette.typographyVariants.grey}
+            spinnerColor={theme.palette.custom.typographyVariants.grey}
           />
         </Box>
       )}

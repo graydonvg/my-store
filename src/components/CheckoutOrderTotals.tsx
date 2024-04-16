@@ -7,7 +7,6 @@ import {
   selectDiscountTotal,
   selectOrderTotal,
 } from '@/lib/redux/selectors/cartSelectors';
-import useColorPalette from '@/hooks/useColorPalette';
 import { BORDER_RADIUS } from '@/config';
 import OrderTotals from '@/components/ordersPageClient/orderTotals/OrderTotals';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
@@ -20,7 +19,6 @@ export default function CheckoutOrderTotals() {
   const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
-  const colorPalette = useColorPalette();
   const isCartView = pathname.includes('/cart/view');
   const isShippingView = pathname.includes('/checkout/shipping');
 
@@ -33,7 +31,7 @@ export default function CheckoutOrderTotals() {
         sx={{
           paddingX: 3,
           paddingY: 4,
-          backgroundColor: colorPalette.card.background,
+          backgroundColor: (theme) => theme.palette.custom.card.background,
           borderRadius: BORDER_RADIUS,
         }}>
         <Typography

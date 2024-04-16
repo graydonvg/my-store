@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { OrderItemType } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
@@ -9,8 +8,6 @@ type Props = {
 };
 
 export default function OrderItemDetails({ orderItem }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Link href={`/products/${orderItem.product?.category.toLowerCase()}/${orderItem.product?.productId}`}>
@@ -29,7 +26,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
               fontSize={13}
               textTransform="uppercase"
               fontWeight={500}
-              color={colorPalette.typographyVariants.grey}>
+              color={(theme) => theme.palette.custom.typographyVariants.grey}>
               {item.label}:
             </Typography>
             <Typography
@@ -43,7 +40,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
       <Typography
         fontSize={13}
         textTransform="uppercase"
-        color={colorPalette.typographyVariants.grey}>
+        color={(theme) => theme.palette.custom.typographyVariants.grey}>
         {orderItem.product?.returnInfo}
       </Typography>
     </Box>

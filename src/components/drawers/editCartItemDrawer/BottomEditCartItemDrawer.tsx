@@ -1,5 +1,4 @@
-import { Box } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
+import { Box, useTheme } from '@mui/material';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItemType } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
@@ -20,7 +19,7 @@ export default function BottomEditCartItemDrawer({
   updateCartItemQuantity,
   moveToWishlist,
 }: Props) {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   return (
     <Box
@@ -35,7 +34,7 @@ export default function BottomEditCartItemDrawer({
         '&::before': {
           content: '""',
           position: 'absolute',
-          boxShadow: `0 -2px 4px 0 ${colorPalette.boxShadow}`,
+          boxShadow: `0 -2px 4px 0 ${theme.palette.custom.boxShadow}`,
           top: 0,
           right: 0,
           left: 0,
@@ -49,13 +48,13 @@ export default function BottomEditCartItemDrawer({
       <TextButton
         onClick={moveToWishlist}
         label="move to wishlist"
-        labelColor={colorPalette.typography}
+        labelColor={theme.palette.custom.typography}
         startIcon={<FavoriteBorder />}
       />
       <TextButton
         onClick={removeCartItem}
         label={'remove'}
-        labelColor={colorPalette.typography}
+        labelColor={theme.palette.custom.typography}
         startIcon={<Delete />}
       />
     </Box>

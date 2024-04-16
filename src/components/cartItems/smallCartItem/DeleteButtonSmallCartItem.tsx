@@ -1,7 +1,6 @@
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import { Spinner } from '../../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import { toast } from 'react-toastify';
@@ -16,7 +15,7 @@ type Props = {
 
 export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, setIsRemovingCartItem }: Props) {
   const router = useRouter();
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   useEffect(() => {
     setIsRemovingCartItem(false);
@@ -52,20 +51,20 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
         <IconButton
           disabled={isRemovingCartItem}
           onClick={handleRemoveCartItem}
-          sx={{
+          sx={(theme) => ({
             padding: 0,
             width: 1,
             height: 1,
-            color: colorPalette.typographyVariants.grey,
-            stroke: colorPalette.typographyVariants.grey,
+            color: theme.palette.custom.typographyVariants.grey,
+            stroke: theme.palette.custom.typographyVariants.grey,
             strokeWidth: 1,
             '@media (hover: hover)': {
               '&:hover': {
-                color: colorPalette.warning.dark,
-                stroke: colorPalette.warning.dark,
+                color: theme.palette.custom.warning.dark,
+                stroke: theme.palette.custom.warning.dark,
               },
             },
-          }}>
+          })}>
           <Close fontSize="small" />
         </IconButton>
       ) : (
@@ -73,7 +72,7 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
           <Spinner
             thickness={6}
             size={14}
-            spinnerColor={colorPalette.typographyVariants.grey}
+            spinnerColor={theme.palette.custom.typographyVariants.grey}
           />
         </Box>
       )}

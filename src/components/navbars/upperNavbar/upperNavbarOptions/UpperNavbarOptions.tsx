@@ -1,14 +1,13 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import NavbarTitle from '../../../ui/NavbarTitle';
-import useColorPalette from '@/hooks/useColorPalette';
 import NavDrawer from '../../../drawers/navDrawer/NavDrawer';
 import UserSignedOutUpperNavbarOptions from './UserSignedOutUpperNavbarOptions';
 import UserSignedInUpperNavbarOptions from './UserSignedInUpperNavbarOptions';
 
 export default function UpperNavbarOptions() {
   const userData = useAppSelector((state) => state.user.userData);
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
 
   return (
     <Box
@@ -28,7 +27,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitle
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color={colorPalette.navBar.upper.text}
+        color={theme.palette.custom.navBar.upper.text}
       />
 
       <Box

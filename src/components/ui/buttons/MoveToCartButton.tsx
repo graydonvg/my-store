@@ -1,11 +1,10 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
 import { deleteItemFromWishlist } from '@/services/wishlist/delete';
 import { CartItemType, ProductType } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useState } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -18,7 +17,7 @@ type Props = {
 };
 
 export default function MoveToCartButton({ product, wishlistSize, wishlistItemId }: Props) {
-  const colorPalette = useColorPalette();
+  const theme = useTheme();
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const { userData } = useAppSelector((state) => state.user);
@@ -93,7 +92,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
             position: 'absolute',
             bottom: 0,
             right: 0,
-            color: colorPalette.typography,
+            color: theme.palette.custom.typography,
             padding: 0,
             paddingBottom: 1,
           }}>
@@ -101,14 +100,14 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
         </IconButton>
       ) : (
         <PulseLoader
-          color={colorPalette.typography}
+          color={theme.palette.custom.typography}
           loading={isLoading}
           size={10}
           style={{
             position: 'absolute',
             bottom: 8,
             right: 0,
-            color: colorPalette.typography,
+            color: theme.palette.custom.typography,
           }}
         />
       )}

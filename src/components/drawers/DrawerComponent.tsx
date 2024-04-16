@@ -75,7 +75,7 @@ export default function DrawerComponent({
               elevation: elevation,
               sx: {
                 width: width,
-                backgroundColor: 'background.default',
+                backgroundColor: (theme) => theme.palette.background.default,
               },
             }}
             anchor={anchor}

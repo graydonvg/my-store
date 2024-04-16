@@ -1,4 +1,3 @@
-import useColorPalette from '@/hooks/useColorPalette';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -24,7 +23,6 @@ export default function LargeProductImageBox({
 }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { imageUploadProgress } = useAppSelector((state) => state.productImages);
-  const colorPalette = useColorPalette();
 
   return (
     <Box
@@ -64,10 +62,10 @@ export default function LargeProductImageBox({
 
       {!productImageData && !imageUploadProgress[selectedImageIndex] ? (
         <Box sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography color={colorPalette.textField.label}>Upload an image</Typography>
+          <Typography sx={{ color: (theme) => theme.palette.custom.textField.label }}>Upload an image</Typography>
           <Typography
             variant="body2"
-            color={colorPalette.textField.label}>
+            sx={{ color: (theme) => theme.palette.custom.textField.label }}>
             {`(Max. ${maxImageCount} images)`}
           </Typography>
         </Box>

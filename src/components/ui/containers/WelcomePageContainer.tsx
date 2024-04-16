@@ -1,7 +1,6 @@
 'use client';
 
 import { BORDER_RADIUS } from '@/config';
-import useColorPalette from '@/hooks/useColorPalette';
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -10,8 +9,6 @@ type Props = {
 };
 
 export default function WelcomePageContainer({ children }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Box
       sx={{
@@ -20,7 +17,7 @@ export default function WelcomePageContainer({ children }: Props) {
         borderRadius: BORDER_RADIUS,
         padding: 4,
         maxWidth: 400,
-        backgroundColor: colorPalette.card.background,
+        backgroundColor: (theme) => theme.palette.custom.card.background,
       }}>
       {children}
     </Box>

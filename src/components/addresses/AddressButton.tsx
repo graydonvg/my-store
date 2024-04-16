@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import useColorPalette from '@/hooks/useColorPalette';
 
 type Props = {
   label: string;
@@ -7,8 +6,6 @@ type Props = {
 };
 
 export default function AddressButton({ label, onClick }: Props) {
-  const colorPalette = useColorPalette();
-
   return (
     <Typography
       onClick={onClick}
@@ -16,19 +13,19 @@ export default function AddressButton({ label, onClick }: Props) {
       textTransform="uppercase"
       lineHeight={1}
       fontWeight={700}
-      sx={{
-        color: colorPalette.primary.dark,
+      sx={(theme) => ({
+        color: theme.palette.custom.primary.dark,
         '@media (hover: hover)': {
           '&:hover': {
-            color: colorPalette.primary.light,
+            color: theme.palette.custom.primary.light,
             textDecoration: 'underline',
-            textDecorationColor: colorPalette.primary.light,
+            textDecorationColor: theme.palette.custom.primary.light,
             textDecorationThickness: 1,
             textUnderlineOffset: 2,
             cursor: 'pointer',
           },
         },
-      }}>
+      })}>
       {label}
     </Typography>
   );

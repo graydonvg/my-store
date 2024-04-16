@@ -1,6 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import useColorPalette from '@/hooks/useColorPalette';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
@@ -10,7 +9,6 @@ import FooterCartDrawer from './FooterCartDrawer';
 import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
 
 export default function CartDrawer() {
-  const colorPalette = useColorPalette();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const cartCount = selectCartCount(cartItems);
   const dispatch = useAppDispatch();
@@ -28,21 +26,24 @@ export default function CartDrawer() {
   return (
     <>
       <UpperNavbarIconButton
-        backgroundColor={colorPalette.navBar.upper.background}
+        backgroundColor={theme.palette.custom.navBar.upper.background}
         onClick={toggleCartDrawer}>
         <Typography
           component="span"
-          sx={{ display: { xs: 'none', md: 'inline' }, color: colorPalette.typographyVariants.white }}>
+          sx={{
+            display: { xs: 'none', md: 'inline' },
+            color: theme.palette.custom.typographyVariants.white,
+          }}>
           Cart
         </Typography>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: colorPalette.navBar.upper.text, marginLeft: 1 }}
+          sx={{ color: theme.palette.custom.navBar.upper.text, marginLeft: 1 }}
         />
         <Box
           sx={{
-            color: colorPalette.navBar.upper.text,
-            backgroundColor: colorPalette.primary.dark,
+            color: theme.palette.custom.navBar.upper.text,
+            backgroundColor: theme.palette.custom.primary.dark,
             borderRadius: '50%',
             width: 20,
             height: 20,
