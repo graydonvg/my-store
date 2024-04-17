@@ -86,7 +86,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         flexGrow: 1,
-        paddingY: 1,
+        paddingTop: 1,
         gap: 1,
       }}>
       <OutlinedButton

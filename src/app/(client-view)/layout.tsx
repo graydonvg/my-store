@@ -7,11 +7,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       <Container
+        component="main"
         sx={{
           paddingY: { xs: 2, sm: 3 },
         }}
         maxWidth="lg">
-        <main>{children}</main>
+        {children}
       </Container>
     </>
   );

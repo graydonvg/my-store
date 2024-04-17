@@ -186,11 +186,12 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
         </List>
       </Drawer>
       <Container
+        component="main"
         maxWidth="lg"
         disableGutters
         sx={{
-          paddingY: 4,
-          paddingX: 4,
+          paddingY: 3,
+          paddingX: 3,
           marginRight: 0,
           marginLeft: `${drawerWidth}px`,
           transition: theme.transitions.create('margin-left', {
@@ -206,7 +207,7 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
           }),
         }}>
         <Toolbar />
-        <main>{children}</main>
+        {children}
       </Container>
     </>
   );

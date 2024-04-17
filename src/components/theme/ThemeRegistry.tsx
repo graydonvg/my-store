@@ -1,21 +1,21 @@
 'use client';
 
 import { ReactNode, useMemo } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, darken, lighten } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
 
-const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
+const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
   palette: {
     mode,
     ...(mode === 'light'
       ? {
           // palette values for light mode
           background: {
-            default: isCheckoutFlow ? grey[200] : '#fff',
+            default: hasWhiteBgColor ? '#fff' : grey[200],
           },
           custom: {
             green: {
@@ -70,13 +70,16 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
             },
             border: 'rgba(0, 0, 0, 0.3)',
             boxShadow: 'rgba(0,0,0,0.15)',
+            table: {
+              header: lighten(grey[200], 0.5),
+              footer: lighten(grey[200], 0.5),
+            },
           },
         }
       : {
           // palette values for dark mode
           background: {
             default: 'black',
-            // paper: '#2e3131',
           },
           custom: {
             green: {
@@ -131,6 +134,10 @@ const getDesignTokens = (mode: 'light' | 'dark', isCheckoutFlow: boolean) => ({
             },
             border: 'rgba(255, 255, 255, 0.3)',
             boxShadow: 'rgba(255,255,255,0.15)',
+            table: {
+              header: darken(grey[900], 0.3),
+              footer: darken(grey[900], 0.4),
+            },
           },
         }),
   },
@@ -142,13 +149,15 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
   const pathname = usePathname();
   const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
+  const isAdminView = pathname.includes('/admin');
+  const hasWhiteBgColor = !isCheckoutFlow && !isAdminView;
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode, isCheckoutFlow)), [mode, isCheckoutFlow]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode, hasWhiteBgColor)), [mode, hasWhiteBgColor]);
 
   return (
     <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         {children}
       </ThemeProvider>
     </AppRouterCacheProvider>

@@ -15,11 +15,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Box
-      sx={{
-        backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'black' : theme.palette.custom.shade.light),
-        minHeight: '100vh',
-      }}>
+    <>
       {!isBelowMedium ? (
         <Box
           sx={{
@@ -36,14 +32,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <>
           <Navbar />
           <Container
+            component="main"
             disableGutters
             sx={{
-              padding: 2,
+              padding: { xs: 1, sm: 2 },
             }}>
-            <main>{children}</main>
+            {children}
           </Container>
         </>
       )}
-    </Box>
+    </>
   );
 }

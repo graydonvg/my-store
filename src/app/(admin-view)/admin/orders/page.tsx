@@ -1,8 +1,6 @@
 import AdminOrdersPageClient from '@/components/adminView/AdminOrdersPageClient';
-import { BORDER_RADIUS } from '@/config';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 import { OrdersSortByOptions } from '@/types';
-import { Paper } from '@mui/material';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -24,20 +22,11 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
   const lastPage = Math.ceil(totalRowCount / Number(rowsPerPage));
 
   return (
-    <Paper
-      sx={{
-        padding: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: BORDER_RADIUS,
-      }}>
-      {/* <Seachbar /> */}
-      <AdminOrdersPageClient
-        orders={selectedOrders}
-        isEndOfData={isEndOfData}
-        lastPage={lastPage}
-        totalRowCount={totalRowCount}
-      />
-    </Paper>
+    <AdminOrdersPageClient
+      orders={selectedOrders}
+      isEndOfData={isEndOfData}
+      lastPage={lastPage}
+      totalRowCount={totalRowCount}
+    />
   );
 }

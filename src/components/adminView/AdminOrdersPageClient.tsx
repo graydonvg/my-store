@@ -1,10 +1,11 @@
 'use client';
 
-import { TablePagination } from '@mui/material';
+import { Paper, TablePagination, lighten } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useMemo } from 'react';
+import { BORDER_RADIUS } from '@/config';
 
 type Props = {
   orders: AdminOrderType[] | null;
@@ -55,7 +56,14 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
   }
 
   return (
-    <>
+    <Paper
+      elevation={1}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: BORDER_RADIUS,
+        overflow: 'hidden',
+      }}>
       <OrdersTable orders={orders} />
       <TablePagination
         component="div"
@@ -78,13 +86,34 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
               onClick: handleGoToLastPage,
             },
           },
+          select: {
+            MenuProps: {
+              MenuListProps: {
+                sx: {
+                  '& .MuiTablePagination-menuItem.Mui-selected': {
+                    color: (theme) => theme.palette.custom.typographyVariants.white,
+                    backgroundColor: (theme) => theme.palette.custom.primary.light,
+                    '&:hover': {
+                      backgroundColor: (theme) => lighten(theme.palette.custom.primary.light, 0.1),
+                    },
+                  },
+                },
+              },
+            },
+          },
         }}
-        sx={{
+        sx={(theme) => ({
+          backgroundColor: theme.palette.custom.table.footer,
+          '& .MuiTablePagination-toolbar': {
+            paddingX: 2,
+            paddingY: 1,
+            minHeight: 0,
+          },
           '& .MuiTablePagination-input': {
             marginRight: { xs: 2, sm: 4 },
           },
-        }}
+        })}
       />
-    </>
+    </Paper>
   );
 }

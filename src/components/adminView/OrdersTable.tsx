@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -32,12 +33,12 @@ const sortableHeadCells = [
     label: 'Ship To',
   },
   {
-    id: 'payment_method',
-    label: 'Payment Method',
+    id: 'status',
+    label: 'Status',
   },
   {
-    id: 'sale_amount',
-    label: 'Sale Amount',
+    id: 'order_total',
+    label: 'Order Total',
   },
 ];
 
@@ -50,6 +51,7 @@ export default function OrdersTable({ orders }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const theme = useTheme();
+  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const currentSearchParams = new URLSearchParams(searchParams.toString());
   const sortBy = searchParams.get('sort_by') ?? 'date';
   const sortDirection = (searchParams.get('sort') as SortDirection | undefined) ?? 'desc';
@@ -70,16 +72,27 @@ export default function OrdersTable({ orders }: Props) {
   }
 
   return (
-    <TableContainer>
-      <Table size={theme.breakpoints.down('sm') ? 'small' : 'medium'}>
+    <TableContainer
+      // Subtract navbar height and total paddingY
+      sx={{ maxHeight: { xs: 'calc(100vh - 136px)', sm: 'calc(100vh - 152px)', md: 'calc(100vh - 168px)' } }}>
+      <Table
+        size={isBelowSmall ? 'small' : 'medium'}
+        stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ backgroundColor: 'transparent' }}>ID</TableCell>
+            <TableCell
+              sx={{
+                backgroundColor: theme.palette.custom.table.header,
+              }}>
+              ID
+            </TableCell>
             {sortableHeadCells.map((headCell) => (
               <TableCell
                 key={headCell.id}
                 sortDirection={sortBy === headCell.id ? sortDirection : false}
-                sx={{ backgroundColor: 'transparent' }}>
+                sx={{
+                  backgroundColor: theme.palette.custom.table.header,
+                }}>
                 <TableSortLabel
                   active={sortBy === headCell.id}
                   direction={sortBy === headCell.id && sortDirection ? sortDirection : 'desc'}
@@ -106,7 +119,7 @@ export default function OrdersTable({ orders }: Props) {
               <TableCell>{order?.createdAt.split('T')[0]}</TableCell>
               <TableCell>{`${order.user?.firstName} ${order.user?.lastName}`}</TableCell>
               <TableCell>{`${order?.shippingDetails[0].city}, ${order?.shippingDetails[0].province}`}</TableCell>
-              <TableCell>Stripe</TableCell>
+              <TableCell>{order.isPaid ? 'Paid' : 'Not paid'}</TableCell>
               <TableCell>{formatCurrency(order.orderTotal)}</TableCell>
             </TableRow>
           ))}

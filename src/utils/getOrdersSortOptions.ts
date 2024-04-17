@@ -6,9 +6,10 @@ export default function getOrdersSortOptions(sortBy: OrdersSortByOptions, sortDi
 
   const sortOrdersBy = {
     date: 'createdAt',
-    sale_amount: 'orderTotal',
+    order_total: 'orderTotal',
     name: 'lastName',
     ship_to: 'province',
+    status: 'isPaid',
   };
 
   if (sortBy === 'name') {

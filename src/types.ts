@@ -199,6 +199,7 @@ export type AdminOrderType = {
   createdAt: string;
   orderId: string;
   orderTotal: number;
+  isPaid: boolean;
   user: {
     firstName: string | null;
     lastName: string | null;
@@ -273,7 +274,7 @@ export type StripeResponseType = {
   sessionId: string;
 };
 
-export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'sale_amount';
+export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'order_total' | 'status';
 
 export type StripeLineItem = {
   price_data: {

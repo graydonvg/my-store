@@ -21,7 +21,7 @@ export default async function Dashboard({ searchParams }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 2, md: 3 }}>
+      spacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid
         item
         xs={12}
@@ -99,7 +99,14 @@ export default async function Dashboard({ searchParams }: Props) {
       <Grid
         item
         xs={12}>
-        <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', borderRadius: BORDER_RADIUS }}>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: BORDER_RADIUS,
+            overflow: 'hidden',
+            padding: 2,
+          }}>
           <CardTitleAdminView>Recent Orders</CardTitleAdminView>
           <OrdersTable orders={selectedOrders} />
         </Paper>

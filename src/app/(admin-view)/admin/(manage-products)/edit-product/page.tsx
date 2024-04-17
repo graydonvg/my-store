@@ -12,7 +12,7 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidateAllData from '@/services/revalidateAllData';
 import updateProductImageData from '@/services/product-image-data/update';
 import ProductForm from '@/components/forms/productForm/ProductForm';
-import { Box } from '@mui/material';
+import { Paper } from '@mui/material';
 import ManageProductImages from '@/components/ManageProductImages';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
@@ -121,13 +121,13 @@ export default function AdminViewUpdateProductPage() {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2 }}>
+    <Paper sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
       <ManageProductImages isSubmitting={isSubmitting} />
       <ProductForm
         onSubmit={handleUpdateProduct}
         isSubmitting={isSubmitting}
         submitButtonLabel={!isSubmitting ? 'update product' : ''}
       />
-    </Box>
+    </Paper>
   );
 }

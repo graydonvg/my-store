@@ -11,7 +11,7 @@ export default function Products({ products }: Props) {
     <Grid
       component="ul"
       container
-      spacing={{ xs: 2, sm: 3 }}>
+      spacing={{ xs: 2, md: 3 }}>
       {products?.map((product, index) => (
         <Grid
           component="li"
