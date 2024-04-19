@@ -21,7 +21,8 @@ export default async function Dashboard({ searchParams }: Props) {
   return (
     <Grid
       container
-      spacing={{ xs: 1, sm: 2, md: 3 }}>
+      spacing={{ xs: 1, sm: 2, md: 3 }}
+      sx={{ padding: { xs: 1, sm: 0 } }}>
       <Grid
         item
         xs={12}

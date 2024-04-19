@@ -73,8 +73,7 @@ export default function OrdersTable({ orders }: Props) {
 
   return (
     <TableContainer
-      // Subtract navbar height and total paddingY
-      sx={{ maxHeight: { xs: 'calc(100vh - 136px)', sm: 'calc(100vh - 152px)', md: 'calc(100vh - 168px)' } }}>
+      sx={{ maxHeight: { xs: 'calc(100vh - 120px)', sm: 'calc(100vh - 152px)', md: 'calc(100vh - 168px)' } }}>
       <Table
         size={isBelowSmall ? 'small' : 'medium'}
         stickyHeader>

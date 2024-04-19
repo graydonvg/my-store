@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useMemo } from 'react';
-import { ThemeProvider, createTheme, darken, lighten } from '@mui/material/styles';
+import { ThemeProvider, createTheme, darken } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
@@ -71,8 +71,8 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
             border: 'rgba(0, 0, 0, 0.3)',
             boxShadow: 'rgba(0,0,0,0.15)',
             table: {
-              header: lighten(grey[200], 0.5),
-              footer: lighten(grey[200], 0.5),
+              header: grey[100],
+              footer: grey[100],
             },
           },
         }
@@ -135,7 +135,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
             border: 'rgba(255, 255, 255, 0.3)',
             boxShadow: 'rgba(255,255,255,0.15)',
             table: {
-              header: darken(grey[900], 0.3),
+              header: darken(grey[900], 0.4),
               footer: darken(grey[900], 0.4),
             },
           },

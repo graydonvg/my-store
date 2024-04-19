@@ -57,11 +57,10 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
 
   return (
     <Paper
-      elevation={1}
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: BORDER_RADIUS,
+        borderRadius: { xs: 0, sm: BORDER_RADIUS },
         overflow: 'hidden',
       }}>
       <OrdersTable orders={orders} />

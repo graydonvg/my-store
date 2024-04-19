@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             component="main"
             disableGutters
             sx={{
-              padding: { xs: 1, sm: 2 },
+              padding: { xs: 0, sm: 2 },
             }}>
             {children}
           </Container>
