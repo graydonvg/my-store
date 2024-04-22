@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, STORE_NAME } from '@/config';
+import { BORDER_RADIUS, STORE_DESCRIPTION, STORE_SLOGAN } from '@/config';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -52,7 +52,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
               color: (theme) => theme.palette.custom.typographyVariants.black,
               maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
             }}>
-            Where Fashion Meets Passion
+            {STORE_SLOGAN}
           </Typography>
           <Typography
             component="p"
@@ -63,8 +63,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
-            Immerse yourself in a world of self-expression at {STORE_NAME}, where each piece tells a story and every
-            outfit is a statement.
+            {STORE_DESCRIPTION}
           </Typography>
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton

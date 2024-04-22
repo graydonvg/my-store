@@ -1,5 +1,9 @@
 export const STORE_NAME = 'MyStore';
 
+export const STORE_SLOGAN = 'Where Fashion Meets Passion';
+
+export const STORE_DESCRIPTION = `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`;
+
 export const BORDER_RADIUS = '4px';
 
 export const FREE_DELIVERY_THRESHOLD = 500;

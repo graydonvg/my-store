@@ -61,7 +61,7 @@ export default function UserSignedInUpperNavbarOptions() {
           <>
             <ListItem disablePadding>
               <DividerUpperNavbarOptions />
-              <Box sx={{ padding: 0.5 }}>
+              <Box sx={{ padding: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 1 }}>
                 <CheckoutButton
                   height="30px"
                   minHeight={1}
