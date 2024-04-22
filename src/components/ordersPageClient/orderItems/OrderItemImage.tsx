@@ -15,12 +15,11 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
 
   return (
     <Link href={`/products/${orderItem.product?.category.toLowerCase()}/${orderItem.product?.productId}`}>
-      <Box sx={{ position: 'relative', aspectRatio: 25 / 36 }}>
+      <Box sx={{ position: 'relative', aspectRatio: 25 / 36, borderRadius: BORDER_RADIUS, overflow: 'hidden' }}>
         <Image
           priority
           style={{
             objectFit: 'cover',
-            borderRadius: BORDER_RADIUS,
             cursor: 'pointer',
             opacity: !isImageLoaded ? 0 : 100,
           }}
@@ -30,12 +29,12 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
           sizes="(min-width: 1260px) 124px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
           onLoad={() => setIsImageLoaded(true)}
         />
+
         {!isImageLoaded ? (
           <Skeleton
             height="100%"
             width="100%"
             variant="rectangular"
-            style={{ borderRadius: BORDER_RADIUS }}
           />
         ) : null}
       </Box>

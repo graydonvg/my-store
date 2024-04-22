@@ -96,11 +96,12 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               position: 'relative',
               aspectRatio: 3 / 4,
               alignSelf: 'center',
+              borderRadius: BORDER_RADIUS,
+              overflow: 'hidden',
             }}>
             <Image
               style={{
                 objectFit: 'cover',
-                borderRadius: BORDER_RADIUS,
                 opacity: !isImageLoaded ? 0 : 100,
               }}
               fill
@@ -109,12 +110,12 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               alt={`Image for ${imageData.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
             />
+
             {!isImageLoaded ? (
               <Skeleton
                 height="100%"
                 width="100%"
                 variant="rectangular"
-                style={{ borderRadius: BORDER_RADIUS }}
               />
             ) : null}
           </Box>

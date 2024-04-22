@@ -11,7 +11,7 @@ export default function Wishlist({ wishlist }: Props) {
     <Grid
       component="ul"
       container
-      spacing={{ xs: 2, sm: 3 }}>
+      spacing={{ xs: 2, md: 3 }}>
       {wishlist?.map((item, index) => (
         <Grid
           component="li"

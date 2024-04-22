@@ -22,22 +22,24 @@ export default function ImageLargeCartItem({ imageUrl, productName, productHref 
           aspectRatio: 3 / 4,
           width: { xs: '60px', sm: '160px' },
           flexShrink: 0,
+          borderRadius: BORDER_RADIUS,
+          overflow: 'hidden',
         }}>
         <Image
-          style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: isImageLoading ? 0 : 100 }}
+          style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100 }}
           fill
-          sizes="160px 60px"
+          sizes="(min-width: 600px) 160px, 60px"
           src={imageUrl!}
           alt={`${productName}`}
           priority
           onLoad={() => setIsImageLoading(false)}
         />
+
         {isImageLoading ? (
           <Skeleton
             height="100%"
             width="100%"
             variant="rectangular"
-            style={{ borderRadius: BORDER_RADIUS }}
           />
         ) : null}
       </Box>

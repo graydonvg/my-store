@@ -44,6 +44,7 @@ export default function SmallProductImageBox({
           aspectRatio: 3 / 4,
           outline: `1px solid ${boxBorderColor}`,
           borderRadius: BORDER_RADIUS,
+          overflow: 'hidden',
           opacity: productImageData && imageIndex !== selectedImageIndex ? '50%' : null,
         }}>
         {productImageData ? (
@@ -51,22 +52,22 @@ export default function SmallProductImageBox({
             <Image
               style={{
                 objectFit: 'cover',
-                borderRadius: BORDER_RADIUS,
                 cursor: 'pointer',
                 opacity: !isImageLoaded ? 0 : 100,
               }}
               fill
-              sizes="(min-width: 1280px) 91px, (min-width: 900px) calc(6.94vw + 4px), (min-width: 720px) 93px, (min-width: 600px) calc(7vw + 44px), calc(20vw - 10px)"
+              priority
+              sizes="(min-width: 1280px) 87px, (min-width: 900px) 6.94vw, (min-width: 740px) 93px, (min-width: 600px) calc(6.67vw + 45px), calc(20vw - 13px)"
               src={productImageData.imageUrl}
               alt={`Image for ${productName ? productName : productImageData.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
             />
+
             {!isImageLoaded ? (
               <Skeleton
                 height="100%"
                 width="100%"
                 variant="rectangular"
-                style={{ borderRadius: BORDER_RADIUS }}
               />
             ) : null}
           </>

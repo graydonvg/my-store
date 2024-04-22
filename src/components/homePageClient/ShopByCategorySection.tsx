@@ -39,6 +39,8 @@ export default function ShopByCategorySection() {
               sx={{
                 position: 'relative',
                 aspectRatio: 4 / 5,
+                borderRadius: BORDER_RADIUS,
+                overflow: 'hidden',
                 cursor: 'pointer',
                 '&:before': {
                   content: '""',
@@ -55,7 +57,6 @@ export default function ShopByCategorySection() {
               <Image
                 style={{
                   objectFit: 'cover',
-                  borderRadius: BORDER_RADIUS,
                   objectPosition: '50% 0%',
                   opacity: !isCategoryImageLoaded ? 0 : 100,
                 }}
@@ -71,7 +72,6 @@ export default function ShopByCategorySection() {
                   height="100%"
                   width="100%"
                   variant="rectangular"
-                  style={{ borderRadius: BORDER_RADIUS }}
                 />
               ) : null}
               <Box

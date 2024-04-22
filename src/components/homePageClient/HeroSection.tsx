@@ -3,6 +3,7 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
+import heroImage from '../../../public/stylish-woman-with-shopping-bags.jpg';
 
 type Props = {
   navigateToAllProducts: () => void;
@@ -17,15 +18,17 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
         sx={{
           position: 'relative',
           height: { xs: '300px', sm: '500px', md: '700px' },
+          borderRadius: BORDER_RADIUS,
+          overflow: 'hidden',
         }}>
         <Image
-          style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: !isHeroImageLoaded ? 0 : 100 }}
-          fill
-          sizes="(min-width: 1280px) 1152px, 92.08vw"
-          src="/stylish-woman-with-shopping-bags.jpg"
+          src={heroImage}
           alt="Stylish woman with shopping bags"
+          fill
           priority
           onLoad={() => setIsHeroImageLoaded(true)}
+          sizes="(min-width: 1280px) 1152px, 92.08vw"
+          style={{ objectFit: 'cover', opacity: !isHeroImageLoaded ? 0 : 100 }}
         />
         <Box
           sx={{
@@ -78,7 +81,6 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             height="100%"
             width="100%"
             variant="rectangular"
-            style={{ borderRadius: BORDER_RADIUS }}
           />
         ) : null}
       </Box>

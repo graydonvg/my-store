@@ -31,26 +31,27 @@ export default function LargeProductImageBox({
         border: `1px solid ${boxBorderColor}`,
         position: 'relative',
         borderRadius: BORDER_RADIUS,
+        overflow: 'hidden',
         display: 'grid',
         placeItems: 'center',
       }}>
       {productImageData ? (
         <>
           <Image
-            style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: !isImageLoaded ? 0 : 100 }}
+            style={{ objectFit: 'cover', opacity: !isImageLoaded ? 0 : 100 }}
             fill
-            sizes="(min-width: 1280px) 484px, (min-width: 900px) calc(34.72vw + 47px), (min-width: 760px) 497px, (min-width: 600px) calc(25.71vw + 307px), calc(100vw - 17px)"
+            sizes="(min-width: 1280px) 464px, (min-width: 900px) calc(34.72vw + 27px), (min-width: 760px) 497px, (min-width: 600px) calc(28.57vw + 286px), calc(100vw - 34px)"
             src={productImageData.imageUrl}
             alt={`${productName}`}
             priority
             onLoad={() => setIsImageLoaded(true)}
           />
+
           {!isImageLoaded ? (
             <Skeleton
               height="100%"
               width="100%"
               variant="rectangular"
-              style={{ borderRadius: BORDER_RADIUS }}
             />
           ) : null}
         </>

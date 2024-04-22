@@ -25,9 +25,11 @@ export default function ImageSmallCartItem({ imageUrl, productName, onClick }: P
         width: '60px',
         flexShrink: 0,
         cursor: !isShippingView ? 'pointer' : 'default',
+        borderRadius: BORDER_RADIUS,
+        overflow: 'hidden',
       }}>
       <Image
-        style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS, opacity: isImageLoading ? 0 : 100 }}
+        style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100 }}
         fill
         sizes="60px"
         src={imageUrl!}
@@ -35,12 +37,12 @@ export default function ImageSmallCartItem({ imageUrl, productName, onClick }: P
         priority
         onLoad={() => setIsImageLoading(false)}
       />
+
       {isImageLoading ? (
         <Skeleton
           height="100%"
           width="100%"
           variant="rectangular"
-          style={{ borderRadius: BORDER_RADIUS }}
         />
       ) : null}
     </Box>

@@ -20,12 +20,13 @@ export default function ImageProductCard({ imageUrl, imageSizes, productName }: 
         justifyContent: 'center',
         alignItems: 'center',
         aspectRatio: 25 / 36,
+        borderTopLeftRadius: BORDER_RADIUS,
+        borderTopRightRadius: BORDER_RADIUS,
+        overflow: 'hidden',
       }}>
       <Image
         style={{
           objectFit: 'cover',
-          borderTopLeftRadius: BORDER_RADIUS,
-          borderTopRightRadius: BORDER_RADIUS,
           opacity: !isImageLoaded ? 0 : 100,
         }}
         fill
@@ -40,7 +41,6 @@ export default function ImageProductCard({ imageUrl, imageSizes, productName }: 
           height="100%"
           width="100%"
           variant="rectangular"
-          style={{ borderTopLeftRadius: BORDER_RADIUS, borderTopRightRadius: BORDER_RADIUS }}
         />
       ) : null}
     </Box>
