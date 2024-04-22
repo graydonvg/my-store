@@ -1,60 +1,33 @@
-import { ChevronLeft, Logout, Menu, Store } from '@mui/icons-material';
-import {
-  AppBar,
-  Box,
-  Container,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Menu } from '@mui/icons-material';
+import { AppBar, Box, Container, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
-import Link from 'next/link';
-import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
-import signOut from '@/services/auth/sign-out';
-import { setUserData } from '@/lib/redux/slices/userSlice';
-import { toast } from 'react-toastify';
-import { ReactNode } from 'react';
-import { ADMIN_NAV_OPTIONS } from '../AdminNavOptions';
+import { useSelectedLayoutSegments } from 'next/navigation';
+import { ReactNode, useState } from 'react';
+import AdminNavDrawer from '../drawers/adminNavDrawer/AdminNavDrawer';
 
 const drawerWidth: number = 240;
 
 type Props = {
-  open: boolean;
-  toggleDrawer: () => void;
   children: ReactNode;
 };
 
-export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
-  const router = useRouter();
+export default function AdminNavbar({ children }: Props) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
   const segments = useSelectedLayoutSegments();
   const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
+  const [open, setOpen] = useState(true);
+
+  function toggleDrawer() {
+    setOpen(!open);
+  }
 
   function changeTheme() {
     dispatch(toggleTheme());
-  }
-
-  async function signOutUser() {
-    const { success, message } = await signOut();
-
-    if (success === true) {
-      dispatch(setUserData(null));
-      router.push('/');
-    } else {
-      toast.error(message);
-    }
   }
 
   return (
@@ -113,78 +86,11 @@ export default function AdminNavbar({ open, toggleDrawer, children }: Props) {
           </Box>
         </AppBar>
       </ElevationScroll>
-      <Drawer
-        variant="permanent"
-        anchor="left"
+      <AdminNavDrawer
         open={open}
-        sx={{
-          '& .MuiDrawer-paper': {
-            position: 'fixed',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-            ...(!open && {
-              overflowX: 'hidden',
-              width: { xs: theme.spacing(7), sm: theme.spacing(9) },
-              transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-              }),
-            }),
-          },
-        }}>
-        <Toolbar
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
-          }}>
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeft />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List component="nav">
-          {ADMIN_NAV_OPTIONS.map((item, index) => (
-            <Link
-              key={index}
-              href={item.path}>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  sx={{ color: theme.palette.custom.navBar.lower.text }}
-                />
-              </ListItemButton>
-            </Link>
-          ))}
-          <Divider sx={{ my: 1 }} />
-          <Link href={'/'}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Store />
-              </ListItemIcon>
-              <ListItemText
-                primary="Client View"
-                sx={{ color: theme.palette.custom.navBar.lower.text }}
-              />
-            </ListItemButton>
-          </Link>
-          <ListItemButton onClick={signOutUser}>
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            <ListItemText
-              primary="Sign Out"
-              sx={{ color: theme.palette.custom.navBar.lower.text }}
-            />
-          </ListItemButton>
-        </List>
-      </Drawer>
+        drawerWidth={drawerWidth}
+        toggleDrawer={toggleDrawer}
+      />
       <Container
         component="main"
         maxWidth="lg"

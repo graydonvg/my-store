@@ -10,8 +10,8 @@ import { BORDER_RADIUS } from '@/config';
 import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
 import AdminButtonsProductCard from './AdminButtonsProductCard';
 import ImageProductCard from './ImageProductCard';
-import MoveToCartButton from '../buttons/MoveToCartButton';
-import RemoveFromWishlistButton from '../buttons/RemoveFromWishlistButton';
+import MoveToCartButton from './MoveToCartButton';
+import RemoveFromWishlistButton from './RemoveFromWishlistButton';
 import { useState } from 'react';
 
 type ProductCardProps = {

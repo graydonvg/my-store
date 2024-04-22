@@ -1,8 +1,8 @@
 'use client';
 
 import Products from '@/components/Products';
-import RevalidateButton from '@/components/ui/buttons/RevalidateButton';
-import AddNewProductButton from '@/components/ui/buttons/AddNewProductButton';
+import RevalidateButton from '@/components/adminView/adminProductsPageClient/RevalidateButton';
+import AddNewProductButton from '@/components/adminView/adminProductsPageClient/AddNewProductButton';
 import { Paper, useMediaQuery, useTheme } from '@mui/material';
 import { BORDER_RADIUS } from '@/config';
 import { ProductType } from '@/types';
