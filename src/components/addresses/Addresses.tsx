@@ -34,9 +34,10 @@ export default function Addresses() {
                 <TableCell sx={{ padding: 2, borderBottom: 0 }}>
                   <Typography fontSize={16}>No address found</Typography>
                 </TableCell>
-              ) : null}
+              ) : (
+                <AddressData />
+              )}
             </TableRow>
-            {userData && userData?.addresses.length > 0 ? <AddressData /> : null}
           </TableBody>
         </Table>
       </TableContainer>

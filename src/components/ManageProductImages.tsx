@@ -16,10 +16,10 @@ type Props = {
 };
 
 export default function ManageProductImages({ isSubmitting }: Props) {
-  const maxImageCount = 5;
   const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData } = useAppSelector((state) => state.productImages);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+  const maxImageCount = 5;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;

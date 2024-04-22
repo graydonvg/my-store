@@ -1,4 +1,4 @@
-import { ChevronLeft, Logout, Store } from '@mui/icons-material';
+import { ChevronLeft, Store } from '@mui/icons-material';
 import {
   Divider,
   Drawer,
@@ -11,12 +11,8 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import signOut from '@/services/auth/sign-out';
-import { setUserData } from '@/lib/redux/slices/userSlice';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/lib/redux/hooks';
 import { ADMIN_NAV_OPTIONS } from '@/components/AdminNavOptions';
+import SignOutButton from '../ui/buttons/SignOutButton';
 
 type Props = {
   open: boolean;
@@ -25,20 +21,7 @@ type Props = {
 };
 
 export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Props) {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const theme = useTheme();
-
-  async function signOutUser() {
-    const { success, message } = await signOut();
-
-    if (success === true) {
-      dispatch(setUserData(null));
-      router.push('/');
-    } else {
-      toast.error(message);
-    }
-  }
 
   return (
     <Drawer
@@ -102,15 +85,7 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
             />
           </ListItemButton>
         </Link>
-        <ListItemButton onClick={signOutUser}>
-          <ListItemIcon>
-            <Logout />
-          </ListItemIcon>
-          <ListItemText
-            primary="Sign Out"
-            sx={{ color: theme.palette.custom.navBar.lower.text }}
-          />
-        </ListItemButton>
+        <SignOutButton buttonVariant="adminNavDrawer" />
       </List>
     </Drawer>
   );

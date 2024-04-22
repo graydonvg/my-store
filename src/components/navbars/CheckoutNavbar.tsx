@@ -40,7 +40,7 @@ export default function CheckoutNavbar() {
                   {...item}
                 />
               ))}
-              <PaymentButton showBreadcrumbButton={true} />
+              <PaymentButton buttonVariant="breadcrumb" />
             </BreadcrumbsComponent>
           </Box>
         </Box>

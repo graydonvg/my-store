@@ -104,7 +104,7 @@ export default function AccountDropdownMenu() {
         onClick={changeTheme}
       />
       <SignOutButton
-        showAccountMenuButton={true}
+        buttonVariant="accountDropdownMenu"
         accountMenuIconColor={ICON_COLOR}
         accountMenuIconSize={ICON_SIZE}
       />

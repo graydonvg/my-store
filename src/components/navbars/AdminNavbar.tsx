@@ -6,7 +6,7 @@ import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { ReactNode, useState } from 'react';
-import AdminNavDrawer from '../drawers/adminNavDrawer/AdminNavDrawer';
+import AdminNavDrawer from '../drawers/AdminNavDrawer';
 
 const drawerWidth: number = 240;
 

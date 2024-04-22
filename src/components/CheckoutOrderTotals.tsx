@@ -59,7 +59,7 @@ export default function CheckoutOrderTotals() {
           />
         ) : null}
 
-        {isShippingView ? <PaymentButton showContainedButton={true} /> : null}
+        {isShippingView ? <PaymentButton buttonVariant="contained" /> : null}
       </Box>
     </Grid>
   );

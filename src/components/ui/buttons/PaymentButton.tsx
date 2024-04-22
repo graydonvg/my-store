@@ -8,11 +8,10 @@ import ContainedButton from './ContainedButton';
 import addOrder from '@/services/orders/add';
 
 type Props = {
-  showContainedButton?: boolean;
-  showBreadcrumbButton?: boolean;
+  buttonVariant: 'contained' | 'breadcrumb';
 };
 
-export default function PaymentButton({ showBreadcrumbButton = false, showContainedButton = false }: Props) {
+export default function PaymentButton({ buttonVariant }: Props) {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkoutData);
@@ -54,7 +53,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
 
   return (
     <>
-      {showContainedButton ? (
+      {buttonVariant === 'contained' ? (
         <ContainedButton
           disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
           onClick={createOrderAndPayWithStripe}
@@ -65,7 +64,7 @@ export default function PaymentButton({ showBreadcrumbButton = false, showContai
         />
       ) : null}
 
-      {showBreadcrumbButton ? (
+      {buttonVariant === 'breadcrumb' ? (
         <BreadcrumbItem
           href="/checkout/payment"
           icon={<Payment />}

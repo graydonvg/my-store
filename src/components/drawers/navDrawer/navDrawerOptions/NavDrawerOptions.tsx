@@ -62,7 +62,7 @@ export default function NavDrawerOptions() {
           />
         ) : null}
 
-        {userData ? <SignOutButton showNavDrawerButton={true} /> : null}
+        {userData ? <SignOutButton buttonVariant="navDrawer" /> : null}
 
         {!isAdminView ? <ThemeButtonNavDrawerOptions /> : null}
       </List>
