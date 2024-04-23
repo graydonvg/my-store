@@ -360,6 +360,7 @@ export type Database = {
       users: {
         Row: {
           contactNumber: string | null;
+          createdAt: string;
           email: string;
           firstName: string | null;
           lastName: string | null;
@@ -367,6 +368,7 @@ export type Database = {
         };
         Insert: {
           contactNumber?: string | null;
+          createdAt?: string;
           email: string;
           firstName?: string | null;
           lastName?: string | null;
@@ -374,6 +376,7 @@ export type Database = {
         };
         Update: {
           contactNumber?: string | null;
+          createdAt?: string;
           email?: string;
           firstName?: string | null;
           lastName?: string | null;

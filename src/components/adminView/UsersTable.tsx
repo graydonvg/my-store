@@ -13,40 +13,35 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { formatCurrency } from '@/utils/formatCurrency';
 import MuiLink from '../ui/MuiLink';
-import { AdminOrderType } from '@/types';
+import { AdminUserDataType } from '@/types';
 import { visuallyHidden } from '@mui/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const sortableHeadCells = [
   {
-    id: 'date',
-    label: 'Date',
+    id: 'joined',
+    label: 'Joined',
   },
   {
     id: 'name',
     label: 'Name',
   },
   {
-    id: 'ship_to',
-    label: 'Ship To',
+    id: 'email',
+    label: 'Email',
   },
   {
-    id: 'status',
-    label: 'Status',
-  },
-  {
-    id: 'order_total',
-    label: 'Order Total',
+    id: 'role',
+    label: 'Role',
   },
 ];
 
 type Props = {
-  orders: AdminOrderType[] | null;
+  users: AdminUserDataType[] | null;
 };
 
-export default function OrdersTable({ orders }: Props) {
+export default function UsersTable({ users }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const theme = useTheme();
@@ -107,16 +102,15 @@ export default function OrdersTable({ orders }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {orders?.map((order) => (
-            <TableRow key={order?.orderId}>
+          {users?.map((user) => (
+            <TableRow key={user?.userId}>
               <TableCell>
-                <MuiLink>{order?.orderId}</MuiLink>
+                <MuiLink>{user?.userId}</MuiLink>
               </TableCell>
-              <TableCell>{order?.createdAt.split('T')[0]}</TableCell>
-              <TableCell>{`${order.user?.firstName} ${order.user?.lastName}`}</TableCell>
-              <TableCell>{`${order?.shippingDetails[0].city}, ${order?.shippingDetails[0].province}`}</TableCell>
-              <TableCell>{order.isPaid ? 'Paid' : 'Not paid'}</TableCell>
-              <TableCell>{formatCurrency(order.orderTotal)}</TableCell>
+              <TableCell>{user?.createdAt.split('T')[0]}</TableCell>
+              <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.admin[0] && user.admin[0].userId ? 'Admin' : 'Customer'}</TableCell>
             </TableRow>
           ))}
         </TableBody>

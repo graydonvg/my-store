@@ -1,35 +1,26 @@
 import AdminOrdersPageClient from '@/components/adminView/AdminOrdersPageClient';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
-import { OrdersSortByOptions } from '@/types';
+import calculateTablePagination from '@/utils/calculateTablePagination';
+import { getOrdersQueryDataForAdmin } from '@/utils/getQueryData';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export default async function AdminOrdersPage({ searchParams }: Props) {
-  const page = (searchParams['page'] ?? '1') as string;
-  const pageNumber = Number(page);
-  const rowsPerPage = (searchParams['per_page'] ?? '5') as string;
-  const rowsPerPageNumber = Number(rowsPerPage);
-  const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
-  const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
+  const { page, rowsPerPage, queryStart, queryEnd, sortBy, sortDirection } = getOrdersQueryDataForAdmin(searchParams);
 
-  const queryStart = (pageNumber - 1) * rowsPerPageNumber;
-  const queryEnd = queryStart + (rowsPerPageNumber - 1);
+  const { orders, totalRowCount } = await getOrdersForAdmin(queryStart, queryEnd, sortBy, sortDirection);
 
-  const { selectedOrders, totalRowCount } = await getOrdersForAdmin(queryStart, queryEnd, sortBy, sortDirection);
-
-  const selectedOrdersLength = selectedOrders?.length ?? 0;
-  const isEndOfData = queryStart + selectedOrdersLength >= totalRowCount;
-  const lastPage = Math.ceil(totalRowCount / rowsPerPageNumber);
+  const { isEndOfData, lastPageNumber } = calculateTablePagination(orders, queryStart, rowsPerPage, totalRowCount);
 
   return (
     <AdminOrdersPageClient
-      page={pageNumber}
-      rowsPerPage={rowsPerPageNumber}
-      orders={selectedOrders}
+      page={page}
+      rowsPerPage={rowsPerPage}
+      orders={orders}
       isEndOfData={isEndOfData}
-      lastPage={lastPage}
+      lastPageNumber={lastPageNumber}
       totalRowCount={totalRowCount}
     />
   );

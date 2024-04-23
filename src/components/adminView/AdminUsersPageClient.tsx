@@ -1,14 +1,14 @@
 'use client';
 
 import { Paper, TablePagination, lighten } from '@mui/material';
-import OrdersTable from './OrdersTable';
-import { AdminOrderType } from '@/types';
+import { AdminUserDataType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, MouseEvent } from 'react';
 import { BORDER_RADIUS } from '@/config';
+import UsersTable from './UsersTable';
 
 type Props = {
-  orders: AdminOrderType[] | null;
+  users: AdminUserDataType[] | null;
   isEndOfData: boolean;
   page: number;
   rowsPerPage: number;
@@ -16,8 +16,8 @@ type Props = {
   totalRowCount: number;
 };
 
-export default function AdminOrdersPageClient({
-  orders,
+export default function AdminUsersPageClient({
+  users,
   isEndOfData,
   page,
   rowsPerPage,
@@ -65,7 +65,7 @@ export default function AdminOrdersPageClient({
         borderRadius: { xs: 0, sm: BORDER_RADIUS },
         overflow: 'hidden',
       }}>
-      <OrdersTable orders={orders} />
+      <UsersTable users={users} />
       <TablePagination
         component="div"
         count={totalRowCount}

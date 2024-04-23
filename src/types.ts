@@ -49,6 +49,18 @@ export type UserDataType = {
   isAdmin: boolean;
 };
 
+export type AdminUserDataType = {
+  userId: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  contactNumber: string | null;
+  createdAt: string;
+  admin: {
+    userId: string;
+  }[];
+};
+
 export type ImageUploadProgressType = {
   fileName: string;
   progress: number;
@@ -275,6 +287,8 @@ export type StripeResponseType = {
 };
 
 export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'order_total' | 'status';
+
+export type UsersSortByOptions = 'joined' | 'name' | 'email' | 'role';
 
 export type StripeLineItem = {
   price_data: {
