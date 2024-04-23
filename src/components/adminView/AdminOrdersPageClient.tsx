@@ -3,32 +3,36 @@
 import { Paper, TablePagination, lighten } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent, MouseEvent, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ChangeEvent, MouseEvent } from 'react';
 import { BORDER_RADIUS } from '@/config';
 
 type Props = {
   orders: AdminOrderType[] | null;
   isEndOfData: boolean;
+  page: number;
+  rowsPerPage: number;
   lastPage: number;
   totalRowCount: number;
 };
 
-export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, totalRowCount }: Props) {
+export default function AdminOrdersPageClient({
+  orders,
+  isEndOfData,
+  page,
+  rowsPerPage,
+  lastPage,
+  totalRowCount,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
-  const pathname = usePathname();
-  const page = searchParams.get('page') ?? '1';
-  const rowsPerPage = searchParams.get('per_page') ?? '5';
-  const currentPage = Number(page) - 1;
+  const newSearchParams = new URLSearchParams(searchParams.toString());
+  const currentPage = page - 1;
 
   function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
-    currentSearchParams.set('page', `${newPage + 1}`);
+    newSearchParams.set('page', `${newPage + 1}`);
 
-    const updatedSearchParams = currentSearchParams.toString();
-
-    router.push(pathname + '?' + updatedSearchParams);
+    router.push(`?${newSearchParams}`);
   }
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -39,20 +43,18 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
     if (queryStart >= totalRowCount) {
       const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
 
-      currentSearchParams.set('page', `${maxValidPage}`);
+      newSearchParams.set('page', `${maxValidPage}`);
     }
 
-    currentSearchParams.set('per_page', `${newRowsPerPage}`);
+    newSearchParams.set('per_page', `${newRowsPerPage}`);
 
-    router.push(pathname + '?' + currentSearchParams.toString());
+    router.push(`?${newSearchParams}`);
   }
 
   function handleGoToLastPage() {
-    currentSearchParams.set('page', `${lastPage}`);
+    newSearchParams.set('page', `${lastPage}`);
 
-    const updatedSearchParams = currentSearchParams.toString();
-
-    router.push(pathname + '?' + updatedSearchParams);
+    router.push(`?${newSearchParams}`);
   }
 
   return (
@@ -69,7 +71,7 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
         count={totalRowCount}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
         page={currentPage}
-        rowsPerPage={Number(rowsPerPage)}
+        rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleRowsPerPageChange}
         labelRowsPerPage="Rows:"
@@ -91,7 +93,7 @@ export default function AdminOrdersPageClient({ orders, isEndOfData, lastPage, t
                 sx: {
                   '& .MuiTablePagination-menuItem.Mui-selected': {
                     color: (theme) => theme.palette.custom.typographyVariants.white,
-                    backgroundColor: (theme) => theme.palette.custom.primary.light,
+                    backgroundColor: (theme) => `${theme.palette.custom.primary.light} !important`,
                     '&:hover': {
                       backgroundColor: (theme) => lighten(theme.palette.custom.primary.light, 0.1),
                     },

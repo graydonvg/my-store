@@ -17,7 +17,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import MuiLink from '../ui/MuiLink';
 import { AdminOrderType } from '@/types';
 import { visuallyHidden } from '@mui/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const sortableHeadCells = [
   {
@@ -49,10 +49,9 @@ type Props = {
 export default function OrdersTable({ orders }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const currentSearchParams = new URLSearchParams(searchParams.toString());
+  const newSearchParams = new URLSearchParams(searchParams.toString());
   const sortBy = searchParams.get('sort_by') ?? 'date';
   const sortDirection = (searchParams.get('sort') as SortDirection | undefined) ?? 'desc';
 
@@ -60,15 +59,13 @@ export default function OrdersTable({ orders }: Props) {
     if (cellId === sortBy) {
       const newSortDirection = sortDirection && sortDirection === 'asc' ? 'desc' : 'asc';
 
-      currentSearchParams.set('sort', `${newSortDirection}`);
+      newSearchParams.set('sort', `${newSortDirection}`);
     } else {
-      currentSearchParams.set('sort_by', `${cellId}`);
-      currentSearchParams.set('sort', 'desc');
+      newSearchParams.set('sort_by', `${cellId}`);
+      newSearchParams.set('sort', 'desc');
     }
 
-    const updatedSearchParams = currentSearchParams.toString();
-
-    router.push(pathname + '?' + updatedSearchParams, { scroll: false });
+    router.push(`?${newSearchParams}`, { scroll: false });
   }
 
   return (
