@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
+import { GridSortDirection } from '@mui/x-data-grid';
 
 export type ContainedButtonButtonBackgroundColorType = 'primary' | 'warning';
 
@@ -56,9 +57,7 @@ export type AdminUserDataType = {
   lastName: string | null;
   contactNumber: string | null;
   createdAt: string;
-  admin: {
-    userId: string;
-  }[];
+  role: string;
 };
 
 export type ImageUploadProgressType = {
@@ -286,10 +285,6 @@ export type StripeResponseType = {
   sessionId: string;
 };
 
-export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'order_total' | 'status';
-
-export type UsersSortByOptions = 'joined' | 'name' | 'email' | 'role';
-
 export type StripeLineItem = {
   price_data: {
     currency: string;
@@ -301,3 +296,56 @@ export type StripeLineItem = {
   };
   quantity: number;
 };
+
+export type DataGridFilterOperators =
+  | 'equals'
+  | 'contains'
+  | 'startsWith'
+  | 'endsWith'
+  | 'isEmpty'
+  | 'isNotEmpty'
+  | 'is'
+  | 'not'
+  | '='
+  | '!='
+  | '>'
+  | '>='
+  | '<'
+  | '<=';
+
+export type TableFilter<T> = {
+  column: T | null;
+  operator: DataGridFilterOperators | null;
+  value: string;
+};
+
+export type TableSort<T> = {
+  by: T;
+  direction: GridSortDirection;
+};
+
+export type TableQueryData<T, U> = {
+  page: {
+    number: number;
+    rows: number;
+  };
+  range: {
+    start: number;
+    end: number;
+  };
+  sort: TableSort<U>;
+  filter: TableFilter<T>;
+};
+
+export type OrdersSortByOptions = 'date' | 'name' | 'ship_to' | 'order_total' | 'status';
+
+export type UsersFilterableColumns =
+  | 'userId'
+  | 'createdAt'
+  | 'firstName'
+  | 'lastName'
+  | 'email'
+  | 'contactNumber'
+  | 'role';
+
+export type UsersSortableColumns = 'createdAt' | 'firstName' | 'lastName' | 'email' | 'contactNumber' | 'role';

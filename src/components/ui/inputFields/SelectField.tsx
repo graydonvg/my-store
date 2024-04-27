@@ -1,4 +1,4 @@
-import { MenuItem, TextField, TextFieldProps, lighten } from '@mui/material';
+import { MenuItem, TextField, TextFieldProps } from '@mui/material';
 
 type SelectFieldProps = TextFieldProps & {
   options: string[];
@@ -27,15 +27,6 @@ export default function SelectField({ options, ...textFieldProps }: SelectFieldP
       {...textFieldProps}>
       {options.map((option) => (
         <MenuItem
-          sx={(theme) => ({
-            '&.Mui-selected': {
-              color: theme.palette.custom.typographyVariants.white,
-              backgroundColor: theme.palette.custom.primary.light,
-              '&:hover': {
-                backgroundColor: lighten(theme.palette.custom.primary.light, 0.1),
-              },
-            },
-          })}
           key={option}
           value={option}>
           {option}

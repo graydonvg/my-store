@@ -49,7 +49,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             fontSize={{ xs: 32, sm: 48, md: 64, lg: 64 }}
             lineHeight={1.1}
             sx={{
-              color: (theme) => theme.palette.custom.typographyVariants.black,
+              color: (theme) => theme.palette.custom.typographyVariants.dark,
               maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
             }}>
             {STORE_SLOGAN}

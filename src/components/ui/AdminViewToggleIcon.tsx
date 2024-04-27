@@ -9,7 +9,7 @@ type Props = {
 
 export function AdminViewToggleIcon({ isAdminView }: Props) {
   const theme = useTheme();
-  const iconColor = theme.palette.custom.typographyVariants.white;
+  const iconColor = theme.palette.custom.typographyVariants.light;
 
   return (
     <>

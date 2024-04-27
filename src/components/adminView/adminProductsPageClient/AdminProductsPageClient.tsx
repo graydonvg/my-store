@@ -3,8 +3,7 @@
 import Products from '@/components/Products';
 import RevalidateButton from '@/components/adminView/adminProductsPageClient/RevalidateButton';
 import AddNewProductButton from '@/components/adminView/adminProductsPageClient/AddNewProductButton';
-import { Paper, useMediaQuery, useTheme } from '@mui/material';
-import { BORDER_RADIUS } from '@/config';
+import { Box, useTheme } from '@mui/material';
 import { ProductType } from '@/types';
 
 type Props = {
@@ -13,23 +12,21 @@ type Props = {
 
 export default function AdminProductsPageClient({ products }: Props) {
   const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const darkMode = theme.palette.mode === 'dark';
 
   return (
-    <Paper
-      elevation={isBelowSmall ? 0 : 1}
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         gap: { xs: 2, md: 3 },
         padding: { xs: 2, md: 3 },
-        borderRadius: { xs: 0, sm: BORDER_RADIUS },
-        backgroundColor:
-          theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.background.paper,
+        borderRadius: 0,
+        backgroundColor: darkMode ? theme.palette.background.default : theme.palette.background.paper,
       }}>
       <RevalidateButton />
       <Products products={products} />
       <AddNewProductButton />
-    </Paper>
+    </Box>
   );
 }

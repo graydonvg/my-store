@@ -138,7 +138,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
-          sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}
+          sx={{ color: (theme) => theme.palette.custom.typographyVariants.medium }}
         />
       </IconButton>
       <DrawerComponent

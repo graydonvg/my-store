@@ -1,26 +1,29 @@
 'use client';
 
 import { ReactNode, useMemo } from 'react';
-import { ThemeProvider, createTheme, darken } from '@mui/material/styles';
+import { ThemeProvider, createTheme, darken, lighten } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { green, grey, red } from '@mui/material/colors';
+import { grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
 
-const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
+const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean, hasDarkerNavbar: boolean) => ({
   palette: {
     mode,
     ...(mode === 'light'
       ? {
           // palette values for light mode
+          primary: {
+            // light: '#42a5f5',
+            main: '#1976d2',
+            // dark: '#1976d2',
+            // contrastText: '#fff',
+          },
           background: {
             default: hasWhiteBgColor ? '#fff' : grey[200],
           },
           custom: {
-            green: {
-              dark: green[700],
-            },
             primary: {
               light: '#42a5f5',
               dark: '#1976d2',
@@ -36,9 +39,10 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
             },
             typography: 'rgba(0, 0, 0, 0.87)',
             typographyVariants: {
-              black: 'rgba(0, 0, 0, 0.87)',
-              grey: grey[600],
-              white: '#fff',
+              dark: 'rgba(0, 0, 0, 0.87)',
+              medium: grey[600],
+              light: '#fff',
+              link: '#1976d2',
             },
             textField: {
               label: 'rgba(0, 0, 0, 0.6)',
@@ -50,7 +54,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
               upper: {
                 text: '#fff',
                 background: '#2e3131',
-                divider: 'black',
+                divider: 'rgba(0, 0, 0, 1)',
               },
               lower: {
                 text: grey[600],
@@ -69,22 +73,27 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
               },
             },
             border: 'rgba(0, 0, 0, 0.3)',
-            boxShadow: 'rgba(0,0,0,0.15)',
+            boxShadow: 'rgba(0, 0, 0, 0.15)',
             table: {
-              header: grey[100],
-              footer: grey[100],
+              toolbar: darken(grey[200], 0.02),
+              header: lighten(grey[200], 0.3),
+              footer: lighten(grey[200], 0.3),
+              border: 'rgba(224, 224, 224, 1)',
             },
           },
         }
       : {
           // palette values for dark mode
+          primary: {
+            // light: '#42a5f5',
+            main: '#42a5f5',
+            // dark: '#1976d2',
+            // contrastText: '#fff',
+          },
           background: {
-            default: 'black',
+            default: 'rgba(0, 0, 0, 1)',
           },
           custom: {
-            green: {
-              dark: green[700],
-            },
             primary: {
               light: '#42a5f5',
               dark: '#1976d2',
@@ -100,9 +109,10 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
             },
             typography: '#fff',
             typographyVariants: {
-              black: 'rgba(0, 0, 0, 0.87)',
-              grey: grey[300],
-              white: '#fff',
+              dark: 'rgba(0, 0, 0, 0.87)',
+              medium: grey[300],
+              light: '#fff',
+              link: '#90caf9',
             },
             textField: {
               label: 'rgba(255, 255, 255, 0.7)',
@@ -113,7 +123,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
             navBar: {
               upper: {
                 text: '#fff',
-                background: grey[900],
+                background: hasDarkerNavbar ? '#121212' : grey[900],
                 divider: grey[900],
               },
               lower: {
@@ -133,10 +143,12 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean) => ({
               },
             },
             border: 'rgba(255, 255, 255, 0.3)',
-            boxShadow: 'rgba(255,255,255,0.15)',
+            boxShadow: 'rgba(255, 255, 255, 0.15)',
             table: {
-              header: darken(grey[900], 0.4),
-              footer: darken(grey[900], 0.4),
+              toolbar: lighten('#121212', 0.05),
+              header: lighten('#121212', 0.08),
+              footer: lighten('#121212', 0.08),
+              border: 'rgba(81, 81, 81, 1)',
             },
           },
         }),
@@ -151,8 +163,12 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
   const isAdminView = pathname.includes('/admin');
   const hasWhiteBgColor = !isCheckoutFlow && !isAdminView;
+  const hasDarkerNavbar = isAdminView;
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode, hasWhiteBgColor)), [mode, hasWhiteBgColor]);
+  const theme = useMemo(
+    () => createTheme(getDesignTokens(mode, hasWhiteBgColor, hasDarkerNavbar)),
+    [mode, hasWhiteBgColor, hasDarkerNavbar]
+  );
 
   return (
     <AppRouterCacheProvider>

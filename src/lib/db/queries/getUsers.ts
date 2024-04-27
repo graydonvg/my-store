@@ -1,31 +1,40 @@
-import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
-import { UsersSortByOptions } from '@/types';
-import { getUsersSortOptions } from '@/utils/getTableSortOptions';
+import {
+  CustomResponseType,
+  AdminUserDataType,
+  TableQueryData,
+  UsersFilterableColumns,
+  UsersSortableColumns,
+} from '@/types';
+import buildUsersQueryForAdmin from '@/utils/buildQuery';
 
-export default async function getUsersForAdmin(
-  start: number,
-  end: number,
-  sortBy: UsersSortByOptions,
-  sortDirection: 'asc' | 'desc'
-) {
-  const supabase = getServiceSupabase();
-  const { sortUsersBy, sortOptions } = getUsersSortOptions(sortBy, sortDirection);
+type ResponseData = {
+  users: AdminUserDataType[] | null;
+  totalRowCount: number;
+};
 
-  let usersQuery = supabase.from('users').select('*, admin: admins(userId, createdAt)', {
-    count: 'exact',
-  });
+export default async function getUsersForAdmin({
+  page,
+  sort,
+  filter,
+  range,
+}: TableQueryData<UsersFilterableColumns, UsersSortableColumns>): Promise<CustomResponseType<ResponseData>> {
+  const { success, message, data: usersQuery } = await buildUsersQueryForAdmin({ page, sort, filter, range });
 
-  if (sortUsersBy === 'lastName') {
-    usersQuery = usersQuery.order(sortUsersBy, sortOptions).order('firstName', sortOptions);
+  if (success === true) {
+    const { data: users, count } = await usersQuery!.range(range.start, range.end);
+
+    const totalRowCount = count ?? 0;
+
+    return {
+      success: true,
+      message: `Success!`,
+      data: { users, totalRowCount },
+    };
   } else {
-    usersQuery = usersQuery.order(sortUsersBy, { ...sortOptions, nullsFirst: false });
+    return {
+      success: success,
+      message: message,
+      data: { users: null, totalRowCount: 0 },
+    };
   }
-
-  const { data: users, count } = await usersQuery.range(start, end);
-
-  console.log(users);
-
-  const totalRowCount = count ?? 0;
-
-  return { users, totalRowCount };
 }

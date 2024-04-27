@@ -31,7 +31,7 @@ export default function AddNewProductButton() {
         <Add
           fontSize="large"
           sx={{
-            color: (theme) => theme.palette.custom.typographyVariants.white,
+            color: (theme) => theme.palette.custom.typographyVariants.light,
           }}
         />
       </Fab>

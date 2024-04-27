@@ -38,7 +38,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 },
               },
               '&.MuiToggleButton-root.Mui-selected': {
-                color: theme.palette.custom.typographyVariants.white,
+                color: theme.palette.custom.typographyVariants.light,
                 borderColor: `${theme.palette.background.default} !important`,
                 backgroundColor: theme.palette.custom.primary.light,
                 '&:hover': {
@@ -46,7 +46,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: theme.palette.custom.typographyVariants.white,
+                    color: theme.palette.custom.typographyVariants.light,
                     backgroundColor: theme.palette.custom.primary.light,
                     border: `1px solid ${theme.palette.background.default} !important`,
                     filter: 'brightness(1.1)',

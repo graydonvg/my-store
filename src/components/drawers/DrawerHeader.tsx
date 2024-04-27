@@ -1,5 +1,5 @@
 import { Close } from '@mui/icons-material';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 
 type Props = {
   label: string;
@@ -8,10 +8,12 @@ type Props = {
 };
 
 export default function DrawerHeader({ label, onClick, height }: Props) {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
-        backgroundColor: (theme) => theme.palette.custom.navBar.upper.background,
+        backgroundColor: theme.palette.custom.navBar.upper.background,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -20,20 +22,16 @@ export default function DrawerHeader({ label, onClick, height }: Props) {
         height,
       }}>
       <Typography
-        color={(theme) => theme.palette.custom.navBar.upper.text}
+        color={theme.palette.custom.navBar.upper.text}
         variant="h5"
         component="span">
         {label}
       </Typography>
       <IconButton
-        size="small"
-        sx={(theme) => ({
-          cursor: 'pointer',
-          padding: 0,
+        sx={{
           color: theme.palette.custom.navBar.upper.text,
-          '&:hover': { backgroundColor: theme.palette.custom.navBar.upper.background },
-        })}
-        aria-label="close navigation drawer"
+        }}
+        aria-label="close drawer"
         onClick={onClick}>
         <Close />
       </IconButton>

@@ -7,6 +7,7 @@ import Navbar from '@/components/navbars/Navbar';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
@@ -21,13 +22,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </Box>
       ) : (
         <>
-          <Navbar />
+          <Navbar
+            backgroundColor={darkMode ? theme.palette.background.paper : theme.palette.custom.navBar.upper.background}
+          />
           <Container
             component="main"
-            disableGutters
-            sx={{
-              padding: { xs: 0, sm: 2 },
-            }}>
+            disableGutters>
             {children}
           </Container>
         </>

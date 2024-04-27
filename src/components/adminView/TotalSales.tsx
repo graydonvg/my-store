@@ -101,7 +101,7 @@ export default function TotalSales({ title, type, amount }: Props) {
         }}>
         {formatCurrency(amount)}
       </Typography>
-      <Typography color={(theme) => theme.palette.custom.typographyVariants.grey}>
+      <Typography color={(theme) => theme.palette.custom.typographyVariants.medium}>
         {type === 'daily' ? currentDate : null}
         {type === 'weekly' ? `${formattedFirstDay} - ${formattedLastDay}` : null}
         {type === 'monthly' ? currentMonth : null}

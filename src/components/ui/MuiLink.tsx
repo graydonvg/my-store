@@ -10,7 +10,7 @@ export default function MuiLink({ onClick, children }: Props) {
   return (
     <Link
       onClick={onClick}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'pointer', color: (theme) => theme.palette.custom.typographyVariants.link }}
       component="p"
       variant="body2">
       {children}

@@ -30,29 +30,23 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
       open={open}
       sx={{
         '& .MuiDrawer-paper': {
+          backgroundColor: theme.palette.background.paper,
           position: 'fixed',
           whiteSpace: 'nowrap',
           width: drawerWidth,
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
           ...(!open && {
             overflowX: 'hidden',
             width: { xs: theme.spacing(7), sm: theme.spacing(9) },
-            transition: theme.transitions.create('width', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
           }),
         },
       }}>
       <Toolbar
+        disableGutters
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          px: [1],
+          paddingX: 1,
         }}>
         <IconButton onClick={toggleDrawer}>
           <ChevronLeft />
@@ -73,7 +67,7 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
             </ListItemButton>
           </Link>
         ))}
-        <Divider sx={{ my: 1 }} />
+        <Divider />
         <Link href={'/'}>
           <ListItemButton>
             <ListItemIcon>

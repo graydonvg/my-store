@@ -1,4 +1,4 @@
-import { Box, useTheme, ListItemButton, ListItemText, Divider, ListItem } from '@mui/material';
+import { useTheme, ListItemButton, ListItemText, Divider, ListItem, IconButton } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
@@ -23,12 +23,18 @@ export default function ThemeButtonNavDrawerOptions() {
             primary={`${theme.palette.mode === 'dark' ? 'Light' : 'Dark'} Mode`}
             sx={{ color: theme.palette.custom.navBar.lower.text }}
           />
-          <Box sx={{ width: 24, height: 24, display: 'grid', placeItems: 'center' }}>
+          <IconButton
+            sx={{
+              color: theme.palette.custom.navBar.upper.text,
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+            }}>
             <ThemeToggleIcon
               color={theme.palette.custom.navBar.lower.text}
               size={'small'}
             />
-          </Box>
+          </IconButton>
         </ListItemButton>
       </ListItem>
       <Divider />

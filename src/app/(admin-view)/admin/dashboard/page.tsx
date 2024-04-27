@@ -16,13 +16,13 @@ export default async function Dashboard({ searchParams }: Props) {
   const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
   const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
 
-  const { selectedOrders } = await getOrdersForAdmin(0, 4, sortBy, sortDirection);
+  const { orders } = await getOrdersForAdmin(0, 4, sortBy, sortDirection);
 
   return (
     <Grid
       container
       spacing={{ xs: 1, sm: 2, md: 3 }}
-      sx={{ padding: { xs: 1, sm: 0 } }}>
+      sx={{ padding: { xs: 1, sm: 2, md: 3 } }}>
       <Grid
         item
         xs={12}
@@ -109,7 +109,7 @@ export default async function Dashboard({ searchParams }: Props) {
             padding: 2,
           }}>
           <CardTitleAdminView>Recent Orders</CardTitleAdminView>
-          <OrdersTable orders={selectedOrders} />
+          <OrdersTable orders={orders} />
         </Paper>
       </Grid>
     </Grid>

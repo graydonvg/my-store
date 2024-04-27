@@ -21,6 +21,14 @@ export default function NavDrawerOptions() {
   return (
     <Box component="nav">
       <List disablePadding>
+        {userData && userData?.isAdmin ? (
+          <NavDrawerOption
+            onClick={closeDrawer}
+            label={isAdminView ? 'Client View' : 'Admin View'}
+            path={isAdminView ? '/' : '/admin/dashboard'}
+          />
+        ) : null}
+
         {userData && userData?.isAdmin && isAdminView
           ? ADMIN_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
@@ -53,14 +61,6 @@ export default function NavDrawerOptions() {
               />
             ))
           : null}
-
-        {userData && userData?.isAdmin ? (
-          <NavDrawerOption
-            onClick={closeDrawer}
-            label={isAdminView ? 'Client View' : 'Admin View'}
-            path={isAdminView ? '/' : '/admin/dashboard'}
-          />
-        ) : null}
 
         {userData ? <SignOutButton buttonVariant="navDrawer" /> : null}
 

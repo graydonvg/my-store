@@ -26,7 +26,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
               fontSize={13}
               textTransform="uppercase"
               fontWeight={500}
-              color={(theme) => theme.palette.custom.typographyVariants.grey}>
+              color={(theme) => theme.palette.custom.typographyVariants.medium}>
               {item.label}:
             </Typography>
             <Typography
@@ -40,7 +40,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
       <Typography
         fontSize={13}
         textTransform="uppercase"
-        color={(theme) => theme.palette.custom.typographyVariants.grey}>
+        color={(theme) => theme.palette.custom.typographyVariants.medium}>
         {orderItem.product?.returnInfo}
       </Typography>
     </Box>

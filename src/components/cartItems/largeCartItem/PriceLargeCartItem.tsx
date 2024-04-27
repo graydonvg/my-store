@@ -22,7 +22,7 @@ export default function PriceLargeCartItem({ isOnSale, price, discountedPrice }:
           component="span"
           fontSize={{ xs: 20, sm: 24 }}
           fontWeight={400}
-          color={(theme) => theme.palette.custom.typographyVariants.grey}
+          color={(theme) => theme.palette.custom.typographyVariants.medium}
           sx={{ textDecoration: 'line-through' }}>
           {formatCurrency(price)}
         </Typography>

@@ -1,12 +1,10 @@
 import { Menu } from '@mui/icons-material';
 import { AppBar, Box, Container, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
-import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import AdminNavDrawer from '../drawers/AdminNavDrawer';
+import ThemeToggleButton from '../theme/ThemeToggleButton';
 
 const drawerWidth: number = 240;
 
@@ -15,19 +13,14 @@ type Props = {
 };
 
 export default function AdminNavbar({ children }: Props) {
-  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const mode = theme.palette.mode;
   const segments = useSelectedLayoutSegments();
   const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
   const [open, setOpen] = useState(true);
+  const darkMode = theme.palette.mode === 'dark';
 
   function toggleDrawer() {
     setOpen(!open);
-  }
-
-  function changeTheme() {
-    dispatch(toggleTheme());
   }
 
   return (
@@ -37,22 +30,19 @@ export default function AdminNavbar({ children }: Props) {
           position="fixed"
           elevation={0}
           sx={{
+            // bg color set below to prevent color lightening from elevation scroll
             backgroundColor: 'transparent',
             zIndex: theme.zIndex.drawer + 1,
-            transition: theme.transitions.create(['width', 'margin'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
             ...(open && {
               marginLeft: drawerWidth,
               width: `calc(100% - ${drawerWidth}px)`,
-              transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
             }),
           }}>
-          <Box sx={{ backgroundColor: theme.palette.custom.navBar.upper.background }}>
+          <Box
+            sx={{
+              // bg color set here to prevent color lightening from elevation scroll
+              backgroundColor: darkMode ? theme.palette.background.paper : theme.palette.custom.navBar.upper.background,
+            }}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -73,15 +63,7 @@ export default function AdminNavbar({ children }: Props) {
                 sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
                 {currentPath}
               </Typography>
-              <IconButton
-                aria-label={`Toggle theme. Current mode is ${mode}.`}
-                onClick={changeTheme}
-                size="small">
-                <ThemeToggleIcon
-                  size="small"
-                  color={theme.palette.custom.navBar.upper.text}
-                />
-              </IconButton>
+              <ThemeToggleButton size="medium" />
             </Toolbar>
           </Box>
         </AppBar>
@@ -93,23 +75,14 @@ export default function AdminNavbar({ children }: Props) {
       />
       <Container
         component="main"
-        maxWidth="lg"
         disableGutters
         sx={{
-          paddingY: 3,
-          paddingX: 3,
+          maxWidth: `calc(100vw - ${drawerWidth}px) !important`,
           marginRight: 0,
           marginLeft: `${drawerWidth}px`,
-          transition: theme.transitions.create('margin-left', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
           ...(!open && {
+            maxWidth: { xs: `calc(100vw - ${theme.spacing(7)})`, sm: `calc(100vw - ${theme.spacing(9)})` },
             marginLeft: { xs: theme.spacing(7), sm: theme.spacing(9) },
-            transition: theme.transitions.create('margin-left', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
           }),
         }}>
         <Toolbar />

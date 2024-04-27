@@ -55,8 +55,8 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
             padding: 0,
             width: 1,
             height: 1,
-            color: theme.palette.custom.typographyVariants.grey,
-            stroke: theme.palette.custom.typographyVariants.grey,
+            color: theme.palette.custom.typographyVariants.medium,
+            stroke: theme.palette.custom.typographyVariants.medium,
             strokeWidth: 1,
             '@media (hover: hover)': {
               '&:hover': {
@@ -72,7 +72,7 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
           <Spinner
             thickness={6}
             size={14}
-            spinnerColor={theme.palette.custom.typographyVariants.grey}
+            spinnerColor={theme.palette.custom.typographyVariants.medium}
           />
         </Box>
       )}

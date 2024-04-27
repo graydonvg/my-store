@@ -19,7 +19,7 @@ export default function SelectionDetailsSmallCartItem({ quantity, size }: Props)
             lineHeight={1}
             component="span"
             fontSize={13}
-            color={(theme) => theme.palette.custom.typographyVariants.grey}>
+            color={(theme) => theme.palette.custom.typographyVariants.medium}>
             {item.label}:
           </Typography>
           <Typography

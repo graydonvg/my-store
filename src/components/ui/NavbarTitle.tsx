@@ -61,7 +61,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
           variant="h6"
           color="inherit"
           noWrap
-          sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.custom.typographyVariants.white }}>
+          sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.custom.typographyVariants.light }}>
           {currentPath}
         </Typography>
       )}

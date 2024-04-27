@@ -1,4 +1,4 @@
-import { OrdersSortByOptions, UsersSortByOptions } from '@/types';
+import { OrdersSortByOptions } from '@/types';
 
 export function getOrdersSortOptions(sortBy: OrdersSortByOptions, sortDirection: 'asc' | 'desc') {
   let sortOptions: { referencedTable: 'users' | 'shippingDetails' | null; ascending: boolean };
@@ -19,18 +19,4 @@ export function getOrdersSortOptions(sortBy: OrdersSortByOptions, sortDirection:
   }
 
   return { sortOrdersBy: sortOrdersBy[sortBy], sortOptions };
-}
-
-export function getUsersSortOptions(sortBy: UsersSortByOptions, sortDirection: 'asc' | 'desc') {
-  let sortOptions: { referencedTable: 'admins' | null; ascending: boolean; nullsFirst?: boolean };
-  sortOptions = { referencedTable: null, ascending: sortDirection === 'asc' ? true : false };
-
-  const sortUsersBy = {
-    joined: 'createdAt',
-    name: 'lastName',
-    email: 'email',
-    role: 'role',
-  };
-
-  return { sortUsersBy: sortUsersBy[sortBy], sortOptions };
 }

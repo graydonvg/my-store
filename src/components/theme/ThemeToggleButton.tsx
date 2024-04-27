@@ -3,7 +3,11 @@ import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import { IconButton, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from './ThemeToggleIcon';
 
-export default function ThemeToggleButton() {
+type Props = {
+  size: 'small' | 'medium' | 'large';
+};
+
+export default function ThemeToggleButton({ size }: Props) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
@@ -16,9 +20,9 @@ export default function ThemeToggleButton() {
     <IconButton
       aria-label={`Toggle theme. Current mode is ${mode}.`}
       onClick={changeTheme}
-      size="small">
+      size={size}>
       <ThemeToggleIcon
-        size="small"
+        size={size}
         color={theme.palette.custom.navBar.upper.text}
       />
     </IconButton>

@@ -32,7 +32,7 @@ export default function CartDrawer() {
           component="span"
           sx={{
             display: { xs: 'none', md: 'inline' },
-            color: theme.palette.custom.typographyVariants.white,
+            color: theme.palette.custom.typographyVariants.light,
           }}>
           Cart
         </Typography>

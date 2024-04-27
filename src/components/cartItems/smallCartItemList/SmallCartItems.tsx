@@ -11,7 +11,7 @@ export default function SmallCartItems() {
 
   return cartItems.map((item, index) => {
     const isLastItem = cartItems.length - 1 === index;
-    let showDivider;
+    let showDivider = false;
 
     if (!isShippingView) {
       showDivider = true;
@@ -22,7 +22,7 @@ export default function SmallCartItems() {
     return (
       <Fragment key={item?.cartItemId}>
         <SmallCartItem item={item} />
-        {showDivider ? <Divider sx={{ borderColor: (theme) => theme.palette.custom.border }} /> : null}
+        {showDivider ? <Divider /> : null}
       </Fragment>
     );
   });

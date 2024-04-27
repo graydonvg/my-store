@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import NavbarTitle from '../../../ui/NavbarTitle';
 import NavDrawer from '../../../drawers/navDrawer/NavDrawer';
 import UserSignedOutUpperNavbarOptions from './UserSignedOutUpperNavbarOptions';
@@ -8,6 +8,7 @@ import UserSignedInUpperNavbarOptions from './UserSignedInUpperNavbarOptions';
 export default function UpperNavbarOptions() {
   const userData = useAppSelector((state) => state.user.userData);
   const theme = useTheme();
+  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box
@@ -17,12 +18,7 @@ export default function UpperNavbarOptions() {
         justifyContent: { xs: 'space-between', md: 'flex-end' },
         height: { xs: '64px', md: '40px' },
       }}>
-      <Box
-        sx={{
-          display: { xs: 'block', md: 'none' },
-        }}>
-        <NavDrawer />
-      </Box>
+      {isBelowMedium ? <NavDrawer /> : null}
 
       <NavbarTitle
         variant="h5"

@@ -35,12 +35,12 @@ export default function UserSignedInUpperNavbarOptions() {
               <Typography
                 component="span"
                 fontSize={16}
-                sx={{ color: theme.palette.custom.typographyVariants.white, marginLeft: 1 }}>
+                sx={{ color: theme.palette.custom.typographyVariants.light, marginLeft: 1 }}>
                 Wishlist
               </Typography>
               <Favorite
                 aria-label="Wishlist"
-                sx={{ color: theme.palette.custom.typographyVariants.white, opacity: '50%', marginLeft: 1 }}
+                sx={{ color: theme.palette.custom.typographyVariants.light, opacity: '50%', marginLeft: 1 }}
               />
             </UpperNavbarIconButton>
           </ListItem>
@@ -53,7 +53,7 @@ export default function UserSignedInUpperNavbarOptions() {
           </ListItem>
         ) : (
           <ListItem disablePadding>
-            <ThemeToggleButton />
+            <ThemeToggleButton size="medium" />
           </ListItem>
         )}
 

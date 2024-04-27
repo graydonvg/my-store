@@ -80,7 +80,7 @@ export default function OrderItems({ borderColor, order }: Props) {
                     <OrderItemDetails orderItem={item} />
                   </Grid>
                 </Grid>
-                {isBelowLarge && !isLastItem ? <Divider /> : null}
+                {isBelowLarge && !isLastItem ? <Divider sx={{ borderColor: theme.palette.custom.border }} /> : null}
               </Grid>
             );
           })}

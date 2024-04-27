@@ -5,7 +5,6 @@ import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, MouseEvent } from 'react';
-import { BORDER_RADIUS } from '@/config';
 
 type Props = {
   orders: AdminOrderType[] | null;
@@ -62,7 +61,7 @@ export default function AdminOrdersPageClient({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: { xs: 0, sm: BORDER_RADIUS },
+        borderRadius: 0,
         overflow: 'hidden',
       }}>
       <OrdersTable orders={orders} />
@@ -92,7 +91,7 @@ export default function AdminOrdersPageClient({
               MenuListProps: {
                 sx: {
                   '& .MuiTablePagination-menuItem.Mui-selected': {
-                    color: (theme) => theme.palette.custom.typographyVariants.white,
+                    color: (theme) => theme.palette.custom.typographyVariants.light,
                     backgroundColor: (theme) => `${theme.palette.custom.primary.light} !important`,
                     '&:hover': {
                       backgroundColor: (theme) => lighten(theme.palette.custom.primary.light, 0.1),

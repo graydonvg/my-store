@@ -34,21 +34,15 @@ export default function NavDrawer() {
   return (
     <>
       <IconButton
-        size="small"
+        edge="start"
         sx={{
-          padding: 0,
-          color: (theme) => theme.palette.custom.navBar.upper.text,
-          cursor: 'pointer',
-          '@media (hover: hover)': {
-            '&:hover': {
-              backgroundColor: 'transparent',
-            },
-          },
+          color: theme.palette.custom.navBar.upper.text,
         }}
-        aria-label="open navigation drawer"
+        aria-label="open drawer"
         onClick={openNavDrawer}>
         <Menu />
       </IconButton>
+
       <DrawerComponent
         width="100vw"
         isOpen={{ left: isNavDrawerOpen }}

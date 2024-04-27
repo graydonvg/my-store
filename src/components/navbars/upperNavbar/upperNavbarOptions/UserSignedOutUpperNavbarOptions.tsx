@@ -12,7 +12,7 @@ export default function UserSignedOutUpperNavbarOptions() {
       <ListItem
         disablePadding
         sx={{ display: { xs: 'none', md: 'flex' }, gap: '11px' }}>
-        <ThemeToggleButton />
+        <ThemeToggleButton size="small" />
         <DividerUpperNavbarOptions />
       </ListItem>
       <ListItem disablePadding>

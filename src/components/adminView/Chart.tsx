@@ -66,8 +66,8 @@ export default function Chart() {
             },
           ]}
           sx={{
-            [`.${axisClasses.root} line`]: { stroke: theme.palette.custom.typographyVariants.grey },
-            [`.${axisClasses.root} text`]: { fill: theme.palette.custom.typographyVariants.grey },
+            [`.${axisClasses.root} line`]: { stroke: theme.palette.custom.typographyVariants.medium },
+            [`.${axisClasses.root} text`]: { fill: theme.palette.custom.typographyVariants.medium },
             [`& .${axisClasses.left} .${axisClasses.label}`]: {
               transform: 'translateX(-60px)',
             },

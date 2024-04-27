@@ -80,7 +80,7 @@ export default function Seachbar() {
           <MenuItem
             sx={{
               '&.Mui-selected': {
-                color: (theme) => theme.palette.custom.typographyVariants.white,
+                color: (theme) => theme.palette.custom.typographyVariants.light,
                 backgroundColor: (theme) => theme.palette.custom.primary.light,
                 '&:hover': {
                   backgroundColor: (theme) => theme.palette.custom.primary.light,

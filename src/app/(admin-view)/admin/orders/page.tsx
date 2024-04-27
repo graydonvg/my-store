@@ -1,7 +1,7 @@
 import AdminOrdersPageClient from '@/components/adminView/AdminOrdersPageClient';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 import calculateTablePagination from '@/utils/calculateTablePagination';
-import { getOrdersQueryDataForAdmin } from '@/utils/getQueryData';
+import { getOrdersQueryDataForAdmin } from '@/utils/getTableQueryData';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };

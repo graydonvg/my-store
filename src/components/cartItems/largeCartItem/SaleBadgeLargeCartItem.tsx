@@ -21,7 +21,7 @@ export default function SaleBadgeLargeCartItem({ percentage }: Props) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: (theme) => theme.palette.custom.typographyVariants.white,
+          color: (theme) => theme.palette.custom.typographyVariants.light,
         }}
         fontSize={{ xs: 14, sm: 16 }}
         fontWeight={600}>

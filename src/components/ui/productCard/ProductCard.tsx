@@ -99,7 +99,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 component="span"
                 fontSize={14}
                 lineHeight={'22px'}
-                sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}>
+                sx={{ color: (theme) => theme.palette.custom.typographyVariants.medium }}>
                 {product.brand?.toUpperCase()}
               </Typography>
 
@@ -110,7 +110,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                     fontSize={14}
                     lineHeight={'18px'}
                     noWrap
-                    sx={{ color: (theme) => theme.palette.custom.typographyVariants.grey }}>
+                    sx={{ color: (theme) => theme.palette.custom.typographyVariants.medium }}>
                     Size: {wishlistSize}
                   </Typography>
 
@@ -160,7 +160,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                     fontStyle="italic"
                     sx={{
                       textDecoration: 'line-through',
-                      color: (theme) => theme.palette.custom.typographyVariants.grey,
+                      color: (theme) => theme.palette.custom.typographyVariants.medium,
                     }}>
                     {formatCurrency(product.price)}
                   </Typography>

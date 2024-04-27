@@ -21,7 +21,7 @@ export default function SalePercentageBadgeProductCard({ percentage }: Props) {
         variant="caption"
         sx={{
           textAlign: 'center',
-          color: (theme) => theme.palette.custom.typographyVariants.white,
+          color: (theme) => theme.palette.custom.typographyVariants.light,
           textTransform: 'uppercase',
         }}>
         {`${percentage}% off`}

@@ -12,15 +12,15 @@ export default function BottomDetailsLargeCartItem({ discountedPrice, returnInfo
       lineHeight={1.6}
       component="p"
       fontSize={{ xs: 14, sm: 16 }}
-      color={(theme) => theme.palette.custom.typographyVariants.grey}>
+      color={(theme) => theme.palette.custom.typographyVariants.medium}>
       {discountedPrice > FREE_DELIVERY_THRESHOLD ? (
         <>
           Delivery Free
           <Divider
             component="span"
-            sx={{ marginX: 1 }}
             variant="fullWidth"
             orientation="vertical"
+            sx={{ marginX: 1 }}
           />
         </>
       ) : null}

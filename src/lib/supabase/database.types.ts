@@ -124,6 +124,32 @@ export type Database = {
           }
         ];
       };
+      managers: {
+        Row: {
+          createdAt: string;
+          managerId: string;
+          userId: string;
+        };
+        Insert: {
+          createdAt?: string;
+          managerId?: string;
+          userId?: string;
+        };
+        Update: {
+          createdAt?: string;
+          managerId?: string;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'owners_userId_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['userId'];
+          }
+        ];
+      };
       orderItems: {
         Row: {
           orderId: string;
@@ -364,14 +390,16 @@ export type Database = {
           email: string;
           firstName: string | null;
           lastName: string | null;
+          role: string;
           userId: string;
         };
         Insert: {
           contactNumber?: string | null;
-          createdAt?: string;
+          createdAt: string;
           email: string;
           firstName?: string | null;
           lastName?: string | null;
+          role?: string;
           userId: string;
         };
         Update: {
@@ -380,6 +408,7 @@ export type Database = {
           email?: string;
           firstName?: string | null;
           lastName?: string | null;
+          role?: string;
           userId?: string;
         };
         Relationships: [

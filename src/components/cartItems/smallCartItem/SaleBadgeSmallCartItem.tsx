@@ -20,7 +20,7 @@ export default function SaleBadgeSmallCartItem({ percentage }: Props) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: (theme) => theme.palette.custom.typographyVariants.white,
+          color: (theme) => theme.palette.custom.typographyVariants.light,
         }}
         fontSize={14}>
         {`-${percentage}%`}

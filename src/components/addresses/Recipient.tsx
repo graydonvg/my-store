@@ -9,13 +9,13 @@ export default function Recipient({ address }: Props) {
   return (
     <Box sx={{ display: 'flex', gap: 1 }}>
       <Typography
-        color={(theme) => theme.palette.custom.typographyVariants.grey}
+        color={(theme) => theme.palette.custom.typographyVariants.medium}
         fontSize={14}
         fontWeight={500}>
         Recipient:
       </Typography>
       <Typography
-        color={(theme) => theme.palette.custom.typographyVariants.grey}
+        color={(theme) => theme.palette.custom.typographyVariants.medium}
         fontSize={14}>
         {`${address.recipientFirstName} ${address.recipientLastName}, ${address.recipientContactNumber}`}
       </Typography>
