@@ -11,7 +11,6 @@ import { productSelectionDetailsReducer } from './slices/productSelectionDetails
 import { userReducer } from './slices/userSlice';
 import { productImagesReducer } from './slices/productImagesSlice';
 import { wishlistReducer } from './slices/wishlistSlice';
-import { dataGridReducer } from './slices/dataGridSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormReducer,
@@ -26,5 +25,4 @@ export const rootReducer = combineReducers({
   account: accountReducer,
   checkoutData: checkoutDataReducer,
   productSelectionDetails: productSelectionDetailsReducer,
-  dataGrid: dataGridReducer,
 });

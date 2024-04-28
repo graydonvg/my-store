@@ -14,7 +14,6 @@ export default async function AdminUsersPage({ searchParams }: Props) {
   const typedSort = sort as TableSort<UsersSortableColumns>;
 
   const { success, message, data } = await getUsersForAdmin({
-    page,
     range,
     sort: typedSort,
     filter: typedFilter,

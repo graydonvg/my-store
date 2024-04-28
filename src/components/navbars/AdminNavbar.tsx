@@ -17,7 +17,6 @@ export default function AdminNavbar({ children }: Props) {
   const segments = useSelectedLayoutSegments();
   const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
   const [open, setOpen] = useState(true);
-  const darkMode = theme.palette.mode === 'dark';
 
   function toggleDrawer() {
     setOpen(!open);
@@ -41,7 +40,7 @@ export default function AdminNavbar({ children }: Props) {
           <Box
             sx={{
               // bg color set here to prevent color lightening from elevation scroll
-              backgroundColor: darkMode ? theme.palette.background.paper : theme.palette.custom.navBar.upper.background,
+              backgroundColor: theme.palette.custom.navBar.upper.background,
             }}>
             <Toolbar>
               <IconButton

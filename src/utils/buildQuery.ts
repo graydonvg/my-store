@@ -11,7 +11,9 @@ import { applySortForUsersTable } from '@/utils/applyQuerySort';
 
 type BuildUsersQueryParams = {
   usersQuery: QueryFilterBuilder;
-} & TableQueryData<UsersFilterableColumns, UsersSortableColumns>;
+  sort: TableQueryData<UsersFilterableColumns, UsersSortableColumns>['sort'];
+  filter: TableQueryData<UsersFilterableColumns, UsersSortableColumns>['filter'];
+};
 
 export default async function buildUsersQueryForAdmin({
   usersQuery,

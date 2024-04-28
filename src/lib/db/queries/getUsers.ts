@@ -15,21 +15,18 @@ type ResponseData = {
 };
 
 export default async function getUsersForAdmin({
-  page,
   sort,
   filter,
   range,
-}: TableQueryData<UsersFilterableColumns, UsersSortableColumns>): Promise<CustomResponseType<ResponseData>> {
+}: Omit<TableQueryData<UsersFilterableColumns, UsersSortableColumns>, 'page'>): Promise<
+  CustomResponseType<ResponseData>
+> {
   const supabase = getServiceSupabase();
   let usersQuery = supabase.from('users').select('*', {
     count: 'exact',
   });
 
-  const {
-    success,
-    message,
-    data: builtUsersQuery,
-  } = await buildUsersQueryForAdmin({ usersQuery, page, sort, filter, range });
+  const { success, message, data: builtUsersQuery } = await buildUsersQueryForAdmin({ usersQuery, sort, filter });
 
   if (success === true) {
     const { data: users, count } = await builtUsersQuery!.range(range.start, range.end);

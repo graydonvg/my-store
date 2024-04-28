@@ -18,8 +18,6 @@ import CustomDataGridToolbar from '../dataGrid/CustomDataGridToolbar';
 import MuiLink from '../ui/MuiLink';
 import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
 import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setSavedTotalRowCount } from '@/lib/redux/slices/dataGridSlice';
 import calculateTablePagination from '@/utils/calculateTablePagination';
 import { validatePage } from '@/utils/validation';
 
@@ -113,25 +111,16 @@ export default function AdminUsersPageClient({
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const pageValidation = validatePage(page);
   const validatedPageNumber = pageValidation.data?.pageNumber!;
   const dataGridCurrentPageNumber = validatedPageNumber - 1;
   const validatedRowsPerPage = pageValidation.data?.rowsPerPage!;
-  const { savedTotalRowCount } = useAppSelector((state) => state.dataGrid);
   const searchParams = useSearchParams();
   const newSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
   const memoizedColumns = useMemo(() => columns, []);
   const rowsPerPageOptionsSet = new Set([validatedRowsPerPage, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
-  const { isEndOfData, lastPageNumber } = calculateTablePagination(users, range.start, page.rows, savedTotalRowCount);
-
-  useEffect(() => {
-    // If user enters page number > last page number, totalRowCount = null
-    if (totalRowCount && totalRowCount > 0) {
-      dispatch(setSavedTotalRowCount(totalRowCount));
-    }
-  }, [dispatch, totalRowCount]);
+  const { isEndOfData, lastPageNumber } = calculateTablePagination(users, range.start, page.rows, totalRowCount);
 
   useEffect(() => {
     // handle query builder validation error messages
@@ -143,9 +132,9 @@ export default function AdminUsersPageClient({
   useEffect(() => {
     // handle page number out of bounds
     if (validatedPageNumber > lastPageNumber) {
-      toast.error('Page number out of bounds. Redirecting to last page number.');
+      toast.error('Page number out of bounds. Redirecting to first page.');
 
-      newSearchParams.set('page', `${lastPageNumber}`);
+      newSearchParams.set('page', '1');
 
       router.push(`?${newSearchParams}`);
     }
@@ -156,13 +145,13 @@ export default function AdminUsersPageClient({
     if (pageValidation.success === false) {
       toast.error(pageValidation.message);
 
+      console.log(pageValidation.errorTarget);
+
       if (pageValidation.errorTarget === 'pageNumber') {
         newSearchParams.set('page', `${validatedPageNumber}`);
       } else {
         newSearchParams.set('per_page', `${validatedRowsPerPage}`);
       }
-
-      newSearchParams.set('per_page', `${validatedRowsPerPage}`);
 
       router.push(`?${newSearchParams}`);
     }
@@ -187,8 +176,8 @@ export default function AdminUsersPageClient({
     const queryStart = dataGridCurrentPageNumber * newRowsPerPage;
 
     // Check if the newRowsPerPage will result in an empty page
-    if (queryStart >= savedTotalRowCount) {
-      const maxValidPage = Math.ceil(savedTotalRowCount / newRowsPerPage);
+    if (queryStart >= totalRowCount) {
+      const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
 
       newSearchParams.set('page', `${maxValidPage}`);
     }
@@ -277,7 +266,7 @@ export default function AdminUsersPageClient({
         rows={users ?? []}
         columns={memoizedColumns}
         getRowId={(row) => row.userId}
-        rowCount={savedTotalRowCount}
+        rowCount={totalRowCount}
         disableRowSelectionOnClick
         paginationMode="server"
         processRowUpdate={update}
@@ -339,7 +328,7 @@ export default function AdminUsersPageClient({
       />
       <TablePagination
         component="div"
-        count={savedTotalRowCount}
+        count={totalRowCount}
         rowsPerPageOptions={rowsPerPageOptionsArraySorted}
         page={dataGridCurrentPageNumber}
         rowsPerPage={validatedRowsPerPage}
