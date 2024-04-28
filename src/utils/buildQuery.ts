@@ -1,29 +1,27 @@
-import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
-import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
-
-import { CustomResponseType, TableQueryData, UsersFilterableColumns, UsersSortableColumns } from '@/types';
+import {
+  CustomResponseType,
+  QueryFilterBuilder,
+  TableQueryData,
+  UsersFilterableColumns,
+  UsersQueryFilterBuilderResponse,
+  UsersSortableColumns,
+} from '@/types';
 import { applyFilterForUsersTable } from '@/utils/applyQueryFilter';
 import { applySortForUsersTable } from '@/utils/applyQuerySort';
-import { validatePage } from '@/utils/validateTableQueryData';
-import { Database } from '@/lib/supabase/database.types';
 
-type ResponseData = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
+type BuildUsersQueryParams = {
+  usersQuery: QueryFilterBuilder;
+} & TableQueryData<UsersFilterableColumns, UsersSortableColumns>;
 
 export default async function buildUsersQueryForAdmin({
-  page,
+  usersQuery,
   sort,
   filter,
-}: TableQueryData<UsersFilterableColumns, UsersSortableColumns>): Promise<CustomResponseType<ResponseData>> {
-  const supabase = getServiceSupabase();
-  const pageValidation = validatePage(page);
+}: BuildUsersQueryParams): Promise<CustomResponseType<UsersQueryFilterBuilderResponse>> {
   let isFilterColumnInvalid = false;
   let isFilterOperatorInvalid = false;
   let isSortColumnInvalid = false;
   let isSortDirectionInvalid = false;
-
-  let usersQuery = supabase.from('users').select('*', {
-    count: 'exact',
-  });
 
   function setFilterColumnInvalid() {
     isFilterColumnInvalid = true;
@@ -49,13 +47,7 @@ export default async function buildUsersQueryForAdmin({
     usersQuery = applySortForUsersTable(usersQuery, sort, setSortColumnInvalid, setSortDirectionInvalid);
   }
 
-  if (pageValidation.success === false) {
-    return {
-      success: pageValidation.success,
-      message: pageValidation.message,
-      data: usersQuery,
-    };
-  } else if (isSortColumnInvalid) {
+  if (isSortColumnInvalid) {
     return {
       success: false,
       message: `The provided column '${sort.by}' is invalid.`,

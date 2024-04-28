@@ -1,10 +1,8 @@
-import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 import dayjs from 'dayjs';
-import { Database } from '@/lib/supabase/database.types';
-import { TableFilter, UsersFilterableColumns } from '@/types';
+import { TableFilter, UsersFilterableColumns, UsersQueryFilterBuilder } from '@/types';
 
 type FilterFunctionParams = {
-  usersQuery: PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
+  usersQuery: UsersQueryFilterBuilder;
   filter: TableFilter<UsersFilterableColumns>;
   setOperatorInvalid: () => void;
 };
@@ -98,7 +96,7 @@ function applyRoleFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunct
 }
 
 export function applyFilterForUsersTable(
-  usersQuery: PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>,
+  usersQuery: UsersQueryFilterBuilder,
   filter: TableFilter<UsersFilterableColumns>,
   setColumnInvalid: () => void,
   setOperatorInvalid: () => void

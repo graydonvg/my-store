@@ -12,7 +12,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function Dashboard({ searchParams }: Props) {
+export default async function AdminDashboard({ searchParams }: Props) {
   const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
   const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
 

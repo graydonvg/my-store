@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
 import { GridSortDirection } from '@mui/x-data-grid';
+import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 export type ContainedButtonButtonBackgroundColorType = 'primary' | 'warning';
 
@@ -349,3 +350,21 @@ export type UsersFilterableColumns =
   | 'role';
 
 export type UsersSortableColumns = 'createdAt' | 'firstName' | 'lastName' | 'email' | 'contactNumber' | 'role';
+
+export type QueryFilterBuilder = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
+
+export type UsersQueryFilterBuilder = PostgrestFilterBuilder<
+  Database['public'],
+  Database['public']['Tables']['users'],
+  any[],
+  'users',
+  any[]
+>;
+
+export type UsersQueryFilterBuilderResponse = PostgrestFilterBuilder<
+  Database['public'],
+  Database['public']['Tables']['users'],
+  AdminUserDataType[],
+  'users',
+  any[]
+>;

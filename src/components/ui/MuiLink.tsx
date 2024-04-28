@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from '@mui/material';
 import { ReactNode } from 'react';
 

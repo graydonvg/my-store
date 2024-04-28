@@ -1,13 +1,12 @@
 'use client';
 
 import { Box, TablePagination, useTheme } from '@mui/material';
-import { AdminUserDataType, TableFilter, UsersFilterableColumns } from '@/types';
+import { AdminUserDataType, TableQueryData, UsersFilterableColumns, UsersSortableColumns } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   DataGrid,
   GridColDef,
   GridFilterModel,
-  GridSortDirection,
   GridSortModel,
   getGridNumericOperators,
   getGridSingleSelectOperators,
@@ -19,6 +18,10 @@ import CustomDataGridToolbar from '../dataGrid/CustomDataGridToolbar';
 import MuiLink from '../ui/MuiLink';
 import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
 import { toast } from 'react-toastify';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setSavedTotalRowCount } from '@/lib/redux/slices/dataGridSlice';
+import calculateTablePagination from '@/utils/calculateTablePagination';
+import { validatePage } from '@/utils/validation';
 
 const columns: GridColDef<AdminUserDataType>[] = [
   {
@@ -95,72 +98,83 @@ type Props = {
   users: AdminUserDataType[] | null;
   querySuccess: boolean;
   queryMessage: string;
-  page: {
-    number: number;
-    rows: number;
-  };
-  sort: {
-    by: string;
-    direction: GridSortDirection;
-  };
-  filter: TableFilter<UsersFilterableColumns>;
-  isEndOfData: boolean;
-  lastPageNumber: number;
   totalRowCount: number;
-};
+} & TableQueryData<UsersFilterableColumns, UsersSortableColumns>;
 
 export default function AdminUsersPageClient({
   users,
   querySuccess,
   queryMessage,
   page,
+  range,
   sort,
   filter,
-  isEndOfData,
-  lastPageNumber,
   totalRowCount,
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const pageValidation = validatePage(page);
+  const validatedPageNumber = pageValidation.data?.pageNumber!;
+  const dataGridCurrentPageNumber = validatedPageNumber - 1;
+  const validatedRowsPerPage = pageValidation.data?.rowsPerPage!;
+  const { savedTotalRowCount } = useAppSelector((state) => state.dataGrid);
   const searchParams = useSearchParams();
   const newSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
-  const currentPage = Number.isNaN(page.number) ? 0 : page.number - 1;
-  const rowsPerPage = Number.isNaN(page.rows) ? 5 : page.rows;
   const memoizedColumns = useMemo(() => columns, []);
-  const rowsPerPageOptionsSet = new Set([rowsPerPage, 5, 10, 25, 50, 100]);
+  const rowsPerPageOptionsSet = new Set([validatedRowsPerPage, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
+  const { isEndOfData, lastPageNumber } = calculateTablePagination(users, range.start, page.rows, savedTotalRowCount);
 
   useEffect(() => {
+    // If user enters page number > last page number, totalRowCount = null
+    if (totalRowCount && totalRowCount > 0) {
+      dispatch(setSavedTotalRowCount(totalRowCount));
+    }
+  }, [dispatch, totalRowCount]);
+
+  useEffect(() => {
+    // handle query builder validation error messages
     if (querySuccess === false) {
       toast.error(queryMessage);
     }
   }, [querySuccess, queryMessage]);
 
   useEffect(() => {
-    // handle large numbers
-    if (currentPage > lastPageNumber) {
-      toast.error('Page number out of bounds. Returning to first page.');
+    // handle page number out of bounds
+    if (validatedPageNumber > lastPageNumber) {
+      toast.error('Page number out of bounds. Redirecting to last page number.');
 
-      newSearchParams.set('page', '1');
+      newSearchParams.set('page', `${lastPageNumber}`);
 
       router.push(`?${newSearchParams}`);
     }
-  }, [currentPage, lastPageNumber, newSearchParams, router]);
+  }, [validatedPageNumber, lastPageNumber, newSearchParams, router]);
 
   useEffect(() => {
-    // handle negative numbers
-    if (currentPage <= 0) {
-      newSearchParams.set('page', '1');
+    // handle page validation errors
+    if (pageValidation.success === false) {
+      toast.error(pageValidation.message);
+
+      if (pageValidation.errorTarget === 'pageNumber') {
+        newSearchParams.set('page', `${validatedPageNumber}`);
+      } else {
+        newSearchParams.set('per_page', `${validatedRowsPerPage}`);
+      }
+
+      newSearchParams.set('per_page', `${validatedRowsPerPage}`);
 
       router.push(`?${newSearchParams}`);
     }
-
-    if (rowsPerPage <= 0) {
-      newSearchParams.set('per_page', '5');
-
-      router.push(`?${newSearchParams}`);
-    }
-  }, [currentPage, rowsPerPage, newSearchParams, router]);
+  }, [
+    pageValidation.success,
+    pageValidation.message,
+    validatedPageNumber,
+    validatedRowsPerPage,
+    pageValidation.errorTarget,
+    newSearchParams,
+    router,
+  ]);
 
   function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
     newSearchParams.set('page', `${newPage + 1}`);
@@ -170,11 +184,11 @@ export default function AdminUsersPageClient({
 
   function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const newRowsPerPage = parseInt(event.target.value, 10);
-    const queryStart = currentPage * newRowsPerPage;
+    const queryStart = dataGridCurrentPageNumber * newRowsPerPage;
 
     // Check if the newRowsPerPage will result in an empty page
-    if (queryStart >= totalRowCount) {
-      const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
+    if (queryStart >= savedTotalRowCount) {
+      const maxValidPage = Math.ceil(savedTotalRowCount / newRowsPerPage);
 
       newSearchParams.set('page', `${maxValidPage}`);
     }
@@ -192,8 +206,6 @@ export default function AdminUsersPageClient({
 
   function handleSort(event: GridSortModel) {
     const sortData = event[0];
-
-    console.log(sortData);
 
     if (sortData) {
       const sortField = sortData.field;
@@ -265,7 +277,7 @@ export default function AdminUsersPageClient({
         rows={users ?? []}
         columns={memoizedColumns}
         getRowId={(row) => row.userId}
-        rowCount={totalRowCount}
+        rowCount={savedTotalRowCount}
         disableRowSelectionOnClick
         paginationMode="server"
         processRowUpdate={update}
@@ -327,10 +339,10 @@ export default function AdminUsersPageClient({
       />
       <TablePagination
         component="div"
-        count={totalRowCount}
+        count={savedTotalRowCount}
         rowsPerPageOptions={rowsPerPageOptionsArraySorted}
-        page={currentPage}
-        rowsPerPage={rowsPerPage}
+        page={dataGridCurrentPageNumber}
+        rowsPerPage={validatedRowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleRowsPerPageChange}
         labelRowsPerPage="Rows:"

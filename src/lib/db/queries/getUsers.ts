@@ -1,3 +1,5 @@
+import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
+
 import {
   CustomResponseType,
   AdminUserDataType,
@@ -18,22 +20,29 @@ export default async function getUsersForAdmin({
   filter,
   range,
 }: TableQueryData<UsersFilterableColumns, UsersSortableColumns>): Promise<CustomResponseType<ResponseData>> {
-  const { success, message, data: usersQuery } = await buildUsersQueryForAdmin({ page, sort, filter, range });
+  const supabase = getServiceSupabase();
+  let usersQuery = supabase.from('users').select('*', {
+    count: 'exact',
+  });
+
+  const {
+    success,
+    message,
+    data: builtUsersQuery,
+  } = await buildUsersQueryForAdmin({ usersQuery, page, sort, filter, range });
 
   if (success === true) {
-    const { data: users, count } = await usersQuery!.range(range.start, range.end);
-
-    const totalRowCount = count ?? 0;
+    const { data: users, count } = await builtUsersQuery!.range(range.start, range.end);
 
     return {
-      success: true,
-      message: `Success!`,
-      data: { users, totalRowCount },
+      success,
+      message,
+      data: { users, totalRowCount: count ?? 0 },
     };
   } else {
     return {
-      success: success,
-      message: message,
+      success,
+      message,
       data: { users: null, totalRowCount: 0 },
     };
   }

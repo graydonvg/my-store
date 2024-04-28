@@ -1,7 +1,6 @@
 import AdminUsersPageClient from '@/components/adminView/AdminUsersPageClient';
 import getUsersForAdmin from '@/lib/db/queries/getUsers';
 import { TableFilter, TableSort, UsersFilterableColumns, UsersSortableColumns } from '@/types';
-import calculateTablePagination from '@/utils/calculateTablePagination';
 import { getTableQueryDataFromSearchParams } from '@/utils/getTableQueryData';
 
 type Props = {
@@ -21,23 +20,15 @@ export default async function AdminUsersPage({ searchParams }: Props) {
     filter: typedFilter,
   });
 
-  const { isEndOfData, lastPageNumber } = calculateTablePagination(
-    data!.users,
-    range.start,
-    page.rows,
-    data!.totalRowCount
-  );
-
   return (
     <AdminUsersPageClient
       users={data!.users}
       querySuccess={success}
       queryMessage={message}
       page={page}
-      sort={sort}
+      range={range}
+      sort={typedSort}
       filter={typedFilter}
-      isEndOfData={isEndOfData}
-      lastPageNumber={lastPageNumber}
       totalRowCount={data!.totalRowCount}
     />
   );
