@@ -1,3 +1,5 @@
+import { UserRoleOptions } from './types';
+
 export const STORE_NAME = 'MyStore';
 
 export const STORE_SLOGAN = 'Where Fashion Meets Passion';
@@ -7,6 +9,8 @@ export const STORE_DESCRIPTION = `Immerse yourself in a world of self-expression
 export const BORDER_RADIUS = '4px';
 
 export const FREE_DELIVERY_THRESHOLD = 500;
+
+export const USER_ROLE_OPTIONS: UserRoleOptions = ['customer', 'admin', 'manager'];
 
 // Used to display buttons when adding a product and order buttons XS ---> XL on the product's page
 export const ORDERED_SIZES_FOR_TOGGLE_BUTTONS = [
@@ -26,7 +30,9 @@ export const ERROR_MESSAGES = {
   NO_ID_RECEIVED: 'Please provide a valid ID.',
 };
 
-// Admin nav options in components/adminNavOptions.tsx because of icons
+///////////////////////////////////////////////////////////////////////
+// ADMIN_NAV_OPTIONS in components/adminNavOptions.tsx because of icons
+///////////////////////////////////////////////////////////////////////
 
 export const DEFAULT_NAV_OPTIONS = [
   {
@@ -72,17 +78,17 @@ export const ACCOUNT_NAV_OPTIONS = [
 
 export const HOME_PAGE_CATEGORIES = [
   {
-    label: 'men',
+    label: 'Men',
     imageSrc: '/portrait-handsome-fashion-businessman-model-dressed-elegant-checkered-suit.jpg',
     path: '/products/men',
   },
   {
-    label: 'women',
+    label: 'Women',
     imageSrc: '/vladimir-yelizarov-xmtEdCeBsww-unsplash.jpg',
     path: '/products/women',
   },
   {
-    label: 'kids',
+    label: 'Kids',
     imageSrc: '/terricks-noah-n9R0MN3XGvY-unsplash.jpg',
     path: '/products/kids',
   },

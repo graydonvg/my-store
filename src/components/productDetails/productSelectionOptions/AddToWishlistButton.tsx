@@ -7,7 +7,7 @@ import { openDialog } from '@/lib/redux/slices/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { setWishlistItems } from '@/lib/redux/slices/wishlistSlice';
+import { setWishlistData } from '@/lib/redux/slices/wishlistDataSlice';
 
 type Props = {
   size: string | null;
@@ -17,10 +17,10 @@ type Props = {
 export default function AddToWishlistButton({ product, size }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { userData } = useAppSelector((state) => state.user);
-  const wishlistItems = useAppSelector((state) => state.wishlist.wishlistItems);
+  const  userData  = useAppSelector((state) => state.user.data);
+  const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
-  const itemExists = wishlistItems.some((item) => item.productId === product.productId && item.size === size);
+  const itemExists = wishlistData.some((item) => item.productId === product.productId && item.size === size);
 
   async function addToWishlist() {
     if (!userData) {
@@ -43,7 +43,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
 
     if (success === true) {
       // dispatch new item to keep button disabled. refresh takes too long to check itemExists.
-      dispatch(setWishlistItems([...wishlistItems, { size, productId: product.productId }]));
+      dispatch(setWishlistData([...wishlistData, { size, productId: product.productId }]));
       router.refresh();
       toast.success('Added to wishlist');
     } else {

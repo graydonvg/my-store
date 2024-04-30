@@ -9,12 +9,7 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: adminData } = await supabase
-    .from('admins')
-    .select('userId')
-    .eq('userId', user?.id ?? '');
-
-  const isAdmin = adminData && adminData[0] && adminData[0].userId ? true : false;
+  const { data: userRole } = await supabase.from('users').select('admins(userId), managers(userId)');
 
   function checkPathStartsWith(path: string) {
     return request.nextUrl.pathname.startsWith(path);
@@ -23,7 +18,7 @@ export async function middleware(request: NextRequest) {
   //								!!!IMPORTANT!!!
   // Make sure the path is included in the matcher below
 
-  const adminOnlyPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin');
+  const isAdminPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin');
 
   const authRequiredPath =
     checkPathStartsWith('/api/secure') ||
@@ -33,7 +28,18 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/cart') ||
     checkPathStartsWith('/checkout');
 
-  if (adminOnlyPath && (!user || isAdmin === false)) {
+  const isAdmin = userRole && userRole[0]?.admins[0]?.userId === user?.id ? true : false;
+  const isManager = userRole && userRole[0]?.managers[0]?.userId === user?.id ? true : false;
+
+  let authLevel = 0;
+
+  if (isAdmin) {
+    authLevel = 1;
+  } else if (isManager) {
+    authLevel = 2;
+  }
+
+  if (isAdminPath && (!user || authLevel === 0)) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else {

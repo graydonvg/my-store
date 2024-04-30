@@ -6,7 +6,7 @@ import UserSignedOutUpperNavbarOptions from './UserSignedOutUpperNavbarOptions';
 import UserSignedInUpperNavbarOptions from './UserSignedInUpperNavbarOptions';
 
 export default function UpperNavbarOptions() {
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 

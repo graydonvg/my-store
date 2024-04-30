@@ -9,13 +9,11 @@ export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type AccountFieldToEditType = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
-export type CustomResponseType<T = unknown> = { success: boolean; message: string; data?: T };
+export type UserRole = 'customer' | 'admin' | 'manager';
 
-export type AccountType = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
+export type UserRoleOptions = ['customer', 'admin', 'manager'];
+
+export type CustomResponseType<T = unknown> = { success: boolean; message: string; data?: T };
 
 export type CartItemType = {
   createdAt: string;
@@ -48,7 +46,8 @@ export type UserDataType = {
   lastName: string | null;
   contactNumber: string | null;
   addresses: AddressType[];
-  isAdmin: boolean;
+  isOAuthSignIn: boolean;
+  authLevel: number;
 };
 
 export type AdminUserDataType = {
@@ -75,7 +74,13 @@ export type InsertProductImageDataTypeStore = {
 
 export type InsertProductImageDataTypeDb = Database['public']['Tables']['productImageData']['Insert'];
 
-export type UpdateUserPersonalInformationType = Database['public']['Tables']['users']['Update'];
+export type UpdateUserPersonalInformationType = {
+  userId?: string;
+  contactNumber?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
+};
 
 export type ProductType = {
   brand: string;
@@ -116,7 +121,7 @@ export type InsertProductTypeStore = {
   salePercentage: '' | number;
 };
 
-export type WishlistStoreType = {
+export type WishlistDataType = {
   size: string;
   productId: string;
 };
@@ -280,6 +285,10 @@ export type AddOrderResponseType = {
 
 export type AddProductResponseType = {
   productId: string;
+};
+
+export type CreateUserResponseType = {
+  userId: string;
 };
 
 export type StripeResponseType = {

@@ -4,7 +4,7 @@ import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '@/components/ui/inputFields/NumberField';
-import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
+import { HOME_PAGE_CATEGORIES, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { InsertProductTypeStore } from '@/types';
@@ -19,6 +19,9 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
   const dispatch = useAppDispatch();
   const { productFormData } = useAppSelector((state) => state.productForm);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
+  const categoryOptionsCapitalised = HOME_PAGE_CATEGORIES.map((category) =>
+    category.label.replace(category.label.charAt(0), category.label.charAt(0).toUpperCase())
+  );
 
   function handleSelectSize(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     dispatch(setProductFormData({ field: 'sizes', value: selectedSize }));
@@ -46,7 +49,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         name="category"
         onChange={handleInputChange}
         value={productFormData['category']}
-        options={['Men', 'Women', 'Kids']}
+        options={categoryOptionsCapitalised}
         disabled={isFieldDisabled}
         required
       />

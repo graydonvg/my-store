@@ -8,7 +8,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
 
-const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean, hasDarkerNavbar: boolean) => ({
+const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean, hasDarkerNavbar: boolean) => ({
   palette: {
     mode,
     ...(mode === 'light'
@@ -21,7 +21,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasWhiteBgColor: boolean, hasDa
             // contrastText: '#fff',
           },
           background: {
-            default: hasWhiteBgColor ? '#fff' : grey[200],
+            default: hasGreyBgColor ? grey[200] : '#fff',
           },
           custom: {
             primary: {
@@ -160,14 +160,17 @@ export type GetDesignTokensType = ReturnType<typeof getDesignTokens>;
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
   const pathname = usePathname();
+
   const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
   const isAdminView = pathname.includes('/admin');
-  const hasWhiteBgColor = !isCheckoutFlow && !isAdminView;
+  const isAdminDashboard = pathname.includes('/admin/dashboard');
+
+  const hasGreyBgColor = isCheckoutFlow || isAdminDashboard;
   const hasDarkerNavbar = isAdminView;
 
   const theme = useMemo(
-    () => createTheme(getDesignTokens(mode, hasWhiteBgColor, hasDarkerNavbar)),
-    [mode, hasWhiteBgColor, hasDarkerNavbar]
+    () => createTheme(getDesignTokens(mode, hasGreyBgColor, hasDarkerNavbar)),
+    [mode, hasGreyBgColor, hasDarkerNavbar]
   );
 
   return (

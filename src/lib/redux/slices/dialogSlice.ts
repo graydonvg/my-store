@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type DialogState = {
   signInDialog: boolean;
   signUpDialog: boolean;
+  addUserDialog: boolean;
   addNewAddressDialog: boolean;
   updateAddressDialog: boolean;
   isDialogLoading: boolean;
@@ -11,6 +12,7 @@ type DialogState = {
 const initialState: DialogState = {
   signInDialog: false,
   signUpDialog: false,
+  addUserDialog: false,
   addNewAddressDialog: false,
   updateAddressDialog: false,
   isDialogLoading: false,

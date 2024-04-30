@@ -1,25 +1,22 @@
 'use client';
 
-import { Box, TablePagination, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { AdminUserDataType, TableQueryData, UsersFilterableColumns, UsersSortableColumns } from '@/types';
-import { useRouter, useSearchParams } from 'next/navigation';
 import {
-  DataGrid,
   GridColDef,
-  GridFilterModel,
-  GridSortModel,
+  GridRowSelectionModel,
+  GridValidRowModel,
   getGridNumericOperators,
   getGridSingleSelectOperators,
   getGridStringOperators,
 } from '@mui/x-data-grid';
-import { ChangeEvent, MouseEvent, useEffect, useMemo } from 'react';
-import CustomNoRowsOverlay from '../dataGrid/CustomNoRowsOverlay';
-import CustomDataGridToolbar from '../dataGrid/CustomDataGridToolbar';
 import MuiLink from '../ui/MuiLink';
 import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
-import { toast } from 'react-toastify';
-import calculateTablePagination from '@/utils/calculateTablePagination';
-import { validatePage } from '@/utils/validation';
+import { USER_ROLE_OPTIONS } from '@/config';
+import CustomDataGrid from '../dataGrid/CustomDataGrid';
+import { useMemo } from 'react';
+import CustomDataGridToolbar from '../dataGrid/CustomDataGridToolbar';
+import CreateAuthUserDialog from '../dialogs/CreateAuthUserDialog';
 
 const columns: GridColDef<AdminUserDataType>[] = [
   {
@@ -86,7 +83,7 @@ const columns: GridColDef<AdminUserDataType>[] = [
     editable: true,
     sortable: true,
     type: 'singleSelect',
-    valueOptions: ['manager', 'admin', 'customer'],
+    valueOptions: USER_ROLE_OPTIONS,
     filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     renderCell: (params) => params.row.role,
   },
@@ -99,267 +96,58 @@ type Props = {
   totalRowCount: number;
 } & TableQueryData<UsersFilterableColumns, UsersSortableColumns>;
 
-export default function AdminUsersPageClient({
-  users,
-  querySuccess,
-  queryMessage,
-  page,
-  range,
-  sort,
-  filter,
-  totalRowCount,
-}: Props) {
-  const theme = useTheme();
-  const router = useRouter();
-  const pageValidation = validatePage(page);
-  const validatedPageNumber = pageValidation.data?.pageNumber!;
-  const dataGridCurrentPageNumber = validatedPageNumber - 1;
-  const validatedRowsPerPage = pageValidation.data?.rowsPerPage!;
-  const searchParams = useSearchParams();
-  const newSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
+export default function AdminUsersPageClient(props: Props) {
+  const { users, querySuccess, queryMessage, page, range, sort, filter, totalRowCount } = props;
   const memoizedColumns = useMemo(() => columns, []);
-  const rowsPerPageOptionsSet = new Set([validatedRowsPerPage, 5, 10, 25, 50, 100]);
-  const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
-  const { isEndOfData, lastPageNumber } = calculateTablePagination(users, range.start, page.rows, totalRowCount);
 
-  useEffect(() => {
-    // handle query builder validation error messages
-    if (querySuccess === false) {
-      toast.error(queryMessage);
-    }
-  }, [querySuccess, queryMessage]);
+  function compareObjectValues(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
+    const changedValues: GridValidRowModel = {};
 
-  useEffect(() => {
-    // handle page number out of bounds
-    if (validatedPageNumber > lastPageNumber) {
-      toast.error('Page number out of bounds. Redirecting to first page.');
-
-      newSearchParams.set('page', '1');
-
-      router.push(`?${newSearchParams}`);
-    }
-  }, [validatedPageNumber, lastPageNumber, newSearchParams, router]);
-
-  useEffect(() => {
-    // handle page validation errors
-    if (pageValidation.success === false) {
-      toast.error(pageValidation.message);
-
-      console.log(pageValidation.errorTarget);
-
-      if (pageValidation.errorTarget === 'pageNumber') {
-        newSearchParams.set('page', `${validatedPageNumber}`);
-      } else {
-        newSearchParams.set('per_page', `${validatedRowsPerPage}`);
+    // Iterate over all properties in obj1
+    for (let key in newObj) {
+      // Check if the property exists in obj2 and has a different value
+      if (newObj[key] !== oldObj[key]) {
+        changedValues[key] = newObj[key];
       }
-
-      router.push(`?${newSearchParams}`);
-    }
-  }, [
-    pageValidation.success,
-    pageValidation.message,
-    validatedPageNumber,
-    validatedRowsPerPage,
-    pageValidation.errorTarget,
-    newSearchParams,
-    router,
-  ]);
-
-  function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
-    newSearchParams.set('page', `${newPage + 1}`);
-
-    router.push(`?${newSearchParams}`);
-  }
-
-  function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    const queryStart = dataGridCurrentPageNumber * newRowsPerPage;
-
-    // Check if the newRowsPerPage will result in an empty page
-    if (queryStart >= totalRowCount) {
-      const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
-
-      newSearchParams.set('page', `${maxValidPage}`);
     }
 
-    newSearchParams.set('per_page', `${newRowsPerPage}`);
-
-    router.push(`?${newSearchParams}`);
+    return changedValues;
   }
 
-  function handleGoToLastPage() {
-    newSearchParams.set('page', `${lastPageNumber}`);
+  function handleRowUpdate(
+    newRow: GridValidRowModel,
+    oldRow: GridValidRowModel
+  ): GridValidRowModel | Promise<GridValidRowModel> {
+    const changedValues = compareObjectValues(newRow, oldRow) as Partial<AdminUserDataType>;
 
-    router.push(`?${newSearchParams}`);
+    console.log(changedValues);
+
+    return newRow;
   }
 
-  function handleSort(event: GridSortModel) {
-    const sortData = event[0];
-
-    if (sortData) {
-      const sortField = sortData.field;
-      const sortDirection = sortData.sort;
-
-      newSearchParams.set('sort_by', `${sortField}`);
-      newSearchParams.set('sort', `${sortDirection}`);
-    } else {
-      newSearchParams.delete('sort_by');
-      newSearchParams.delete('sort');
-    }
-
-    router.push(`?${newSearchParams}`, { scroll: false });
-  }
-
-  function handleFilter(event: GridFilterModel) {
-    const filterData = event.items.length > 0 ? event.items[0] : null;
-
-    const previousFilterValue = filter.value;
-
-    // isEmpty and isNotEmpty have no values
-    if (
-      previousFilterValue ||
-      (!previousFilterValue && filterData?.operator == 'isEmpty') ||
-      filterData?.operator === 'isNotEmpty'
-    ) {
-      // Cannot access delete button event independently.
-      // Delete button on filter clears filter value.
-      // This removes the filter query string if the value changes or is removed.
-      // Create a custom filter panel in future to access click events.
-      newSearchParams.delete('col');
-      newSearchParams.delete('op');
-      newSearchParams.delete('val');
-
-      router.push(`?${newSearchParams}`, { scroll: false });
-    }
-
-    if (!filterData) return;
-
-    // isEmpty and isNotEmpty have no values
-    if (!filterData.value && filterData?.operator !== 'isEmpty' && filterData?.operator !== 'isNotEmpty') return;
-
-    newSearchParams.set('col', `${filterData.field}`);
-    newSearchParams.set('op', `${filterData.operator}`);
-    newSearchParams.set('val', `${filterData.value}`);
-
-    router.push(`?${newSearchParams}`, { scroll: false });
-  }
-
-  function update(event: AdminUserDataType) {
-    console.log(event);
-    return event;
-  }
-
-  function updateError(event: unknown) {
-    console.log(event);
+  function handleRowSelection(rowSelectionModel: GridRowSelectionModel) {
+    console.log('rowSelectionModel', rowSelectionModel);
   }
 
   return (
-    <Box
-      sx={{
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: 0,
-        // subtract navbar and footer height
-        height: 'calc(100dvh - 120px)',
-        width: 1,
-      }}>
-      <DataGrid
-        rows={users ?? []}
-        columns={memoizedColumns}
-        getRowId={(row) => row.userId}
-        rowCount={totalRowCount}
-        disableRowSelectionOnClick
-        paginationMode="server"
-        processRowUpdate={update}
-        onProcessRowUpdateError={updateError}
-        filterMode="server"
-        onFilterModelChange={handleFilter}
-        sortingMode="server"
-        sortingOrder={['desc', 'asc']}
-        sortModel={[{ field: sort.by, sort: sort.direction }]}
-        onSortModelChange={handleSort}
-        showCellVerticalBorder
-        disableColumnMenu
-        hideFooter
-        slots={{
-          toolbar: CustomDataGridToolbar,
-          noResultsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
-          noRowsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
-        }}
-        sx={{
-          '--unstable_DataGrid-radius': 0,
-          border: 'none',
-
-          '& .MuiDataGrid-toolbarContainer': {
-            paddingRight: 2,
-            paddingLeft: '11px',
-            paddingY: 1,
-            backgroundColor: theme.palette.custom.table.toolbar,
-            borderTop: `1px solid rgba(255, 255, 255, 0.12)`,
-            borderBottom: `1px solid ${theme.palette.custom.table.border}`,
-          },
-
-          '& .MuiDataGrid-columnHeader': {
-            backgroundColor: theme.palette.custom.table.header,
-            padding: 2,
-            outlineOffset: -2,
-            outline: 0,
-
-            '&:focus-within': {
-              outlineOffset: -2,
-            },
-          },
-
-          '& .MuiDataGrid-columnSeparator--resizable': {
-            opacity: '0 !important',
-          },
-
-          '& .MuiDataGrid-cell': {
-            paddingX: 2,
-          },
-
-          '& .MuiDataGrid-filler': {
-            backgroundColor: theme.palette.custom.table.header,
-          },
-
-          '& .mui-tgsonj': {
-            backgroundColor: theme.palette.background.paper,
-          },
-        }}
-      />
-      <TablePagination
-        component="div"
-        count={totalRowCount}
-        rowsPerPageOptions={rowsPerPageOptionsArraySorted}
-        page={dataGridCurrentPageNumber}
-        rowsPerPage={validatedRowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        labelRowsPerPage="Rows:"
-        showFirstButton
-        showLastButton
-        slotProps={{
-          actions: {
-            nextButton: {
-              disabled: isEndOfData,
-            },
-            lastButton: {
-              disabled: isEndOfData,
-              onClick: handleGoToLastPage,
-            },
-          },
-        }}
-        sx={{
-          backgroundColor: theme.palette.custom.table.footer,
-          '& .MuiTablePagination-toolbar': {
-            paddingX: 2,
-            paddingY: 1,
-            minHeight: 0,
-          },
-          '& .MuiTablePagination-input': {
-            marginRight: { xs: 2, sm: 4 },
-          },
-        }}
-      />
-    </Box>
+    <CustomDataGrid
+      data={users}
+      columns={memoizedColumns}
+      querySuccess={querySuccess}
+      queryMessage={queryMessage}
+      page={page}
+      range={range}
+      sort={sort}
+      filter={filter}
+      totalRowCount={totalRowCount}
+      onRowUpdate={handleRowUpdate}
+      onRowSelection={handleRowSelection}
+      hasCheckboxSelection={true}
+      customToolbar={
+        <CustomDataGridToolbar>
+          <CreateAuthUserDialog />
+        </CustomDataGridToolbar>
+      }
+    />
   );
 }

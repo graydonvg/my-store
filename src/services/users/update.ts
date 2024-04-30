@@ -14,7 +14,7 @@ export async function updateAddress(addressData: UpdateAddressTypeDb): Promise<C
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/address/update. ${error}`);
+    throw new Error(`@services/users/update. ${error}`);
   }
 }
 
@@ -34,7 +34,7 @@ export async function updateUserPersonalInformation(
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/personal/update. ${error}`);
+    throw new Error(`@services/users/update. ${error}`);
   }
 }
 
@@ -52,6 +52,26 @@ export async function updateUserPassword(passwordData: userPasswordType): Promis
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/password/update. ${error}`);
+    throw new Error(`@services/users/update. ${error}`);
+  }
+}
+
+export async function adminUpdateUserPersonalInformation(
+  personalData: UpdateUserPersonalInformationType
+): Promise<CustomResponseType> {
+  try {
+    const response = await fetch('/api/secure/admin/users/update', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(personalData),
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw new Error(`@services/users/update. ${error}`);
   }
 }

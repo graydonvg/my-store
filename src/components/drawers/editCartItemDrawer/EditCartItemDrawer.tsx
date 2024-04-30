@@ -22,7 +22,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const theme = useTheme();
-  const userId = useAppSelector((state) => state.user.userData?.userId);
+  const userId = useAppSelector((state) => state.user.data?.userId);
   const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
   const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);

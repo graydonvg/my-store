@@ -17,7 +17,7 @@ type Props = {
 export default function AddToCartButton({ product }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { quantity, size } = useAppSelector((state) => state.productSelectionDetails);
   const [isAddingToCart, setIsAddingToCart] = useState(false);

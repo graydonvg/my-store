@@ -2,9 +2,6 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export default async function getInitialUserData() {
   const supabase = await createSupabaseServerClient();
-  let userTableData = null;
-  let cartItems = null;
-  let wishlistItems = null;
 
   const {
     data: { user: userAuthData },
@@ -13,23 +10,34 @@ export default async function getInitialUserData() {
   const { data: userDataArray } = await supabase
     .from('users')
     .select(
-      '*, admins(userId), addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
+      '*, admins(userId), managers(userId), addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
     )
     .order('createdAt', { ascending: false, referencedTable: 'addresses' })
     .order('createdAt', { ascending: false, referencedTable: 'cart' });
 
-  if (userDataArray && userDataArray[0]) {
-    const { cart, wishlist, admins, ...restOfUserData } = userDataArray[0];
+  let userData = null;
+  let cartItems = null;
+  let wishlistData = null;
 
-    if (admins && admins[0] && admins[0].userId === userAuthData?.id) {
-      userTableData = { ...restOfUserData, isAdmin: true };
-    } else {
-      userTableData = { ...restOfUserData, isAdmin: false };
+  if (userDataArray && userDataArray[0]) {
+    const { cart, wishlist, admins, managers, ...restOfUserData } = userDataArray[0];
+
+    const isAdmin = admins[0]?.userId === userAuthData?.id;
+    const isManager = managers[0]?.userId === userAuthData?.id;
+    const isOAuthSignIn = userAuthData?.app_metadata.provider !== 'email';
+
+    let authLevel = 0;
+
+    if (isAdmin) {
+      authLevel = 1;
+    } else if (isManager) {
+      authLevel = 2;
     }
 
+    userData = { ...restOfUserData, isOAuthSignIn, authLevel };
     cartItems = cart;
-    wishlistItems = wishlist;
+    wishlistData = wishlist;
   }
 
-  return { userAuthData, userTableData, cartItems, wishlistItems };
+  return { userData, cartItems, wishlistData };
 }

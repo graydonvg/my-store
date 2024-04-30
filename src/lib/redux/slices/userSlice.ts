@@ -1,14 +1,12 @@
 import { UserDataType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type UserState = {
-  isOAuthSignIn: boolean;
-  userData: UserDataType | null;
+export type State = {
+  data: UserDataType | null;
 };
 
-const initialState: UserState = {
-  isOAuthSignIn: false,
-  userData: null,
+const initialState: State = {
+  data: null,
 };
 
 const userSlice = createSlice({
@@ -16,16 +14,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserData(state, action: PayloadAction<UserDataType | null>) {
-      state.userData = action.payload;
-    },
-    setIsOAuthSignIn(state, action: PayloadAction<boolean>) {
-      state.isOAuthSignIn = action.payload;
+      state.data = action.payload;
     },
   },
 });
 
 const { actions, reducer } = userSlice;
 
-export const { setUserData, setIsOAuthSignIn } = actions;
+export const { setUserData } = actions;
 
 export const userReducer = reducer;

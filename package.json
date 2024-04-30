@@ -28,7 +28,7 @@
     "@stripe/stripe-js": "^3.3.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.7",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "encoding": "^0.1.13",
     "firebase": "^10.11.1",
     "next": "^14.2.3",

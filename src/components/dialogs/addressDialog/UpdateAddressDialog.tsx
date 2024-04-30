@@ -12,7 +12,7 @@ type Props = {
 
 export default function UpdateAddressDialog({ addressId }: Props) {
   const dispatch = useAppDispatch();
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
   const isUpdateAddressDialogOpen = useAppSelector((state) => state.dialog.updateAddressDialog);
 
   async function selectAddressToEdit() {

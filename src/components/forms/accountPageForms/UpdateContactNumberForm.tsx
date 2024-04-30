@@ -10,7 +10,7 @@ import AccountPageForm from './AccountPageForm';
 export default function UpdateContactNumberForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const [contactNumber, setContactNumber] = useState(userData?.contactNumber ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 

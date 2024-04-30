@@ -16,7 +16,7 @@ import ContainedButton from '@/components/ui/buttons/ContainedButton';
 export default function AddNewAddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const addressFormData = useAppSelector((state) => state.addressForm);
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 

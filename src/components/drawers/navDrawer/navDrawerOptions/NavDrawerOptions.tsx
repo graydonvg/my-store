@@ -9,7 +9,7 @@ import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { ADMIN_NAV_OPTIONS } from '@/components/AdminNavOptions';
 
 export default function NavDrawerOptions() {
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const isAdminView = pathname.includes('/admin');
@@ -21,7 +21,7 @@ export default function NavDrawerOptions() {
   return (
     <Box component="nav">
       <List disablePadding>
-        {userData && userData?.isAdmin ? (
+        {userData && userData.authLevel > 0 ? (
           <NavDrawerOption
             onClick={closeDrawer}
             label={isAdminView ? 'Client View' : 'Admin View'}
@@ -29,7 +29,7 @@ export default function NavDrawerOptions() {
           />
         ) : null}
 
-        {userData && userData?.isAdmin && isAdminView
+        {isAdminView
           ? ADMIN_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}

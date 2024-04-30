@@ -20,7 +20,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
   const theme = useTheme();
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
   const [isLoading, setIsLoading] = useState(false);
   const addedToCartToastMessage = 'Moved to cart';
 

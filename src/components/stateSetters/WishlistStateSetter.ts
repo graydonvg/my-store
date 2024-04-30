@@ -1,20 +1,20 @@
 'use client';
 
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setWishlistItems } from '@/lib/redux/slices/wishlistSlice';
-import { WishlistStoreType } from '@/types';
+import { setWishlistData } from '@/lib/redux/slices/wishlistDataSlice';
+import { WishlistDataType } from '@/types';
 import { useEffect } from 'react';
 
 type Props = {
-  wishlistItems: WishlistStoreType[] | null;
+  wishlistData: WishlistDataType[] | null;
 };
 
-export default function WishlistStateSetter({ wishlistItems }: Props) {
+export default function WishlistDataStateSetter({ wishlistData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setWishlistItems(wishlistItems !== null ? wishlistItems : []));
-  }, [wishlistItems, dispatch]);
+    dispatch(setWishlistData(wishlistData !== null ? wishlistData : []));
+  }, [wishlistData, dispatch]);
 
   return null;
 }

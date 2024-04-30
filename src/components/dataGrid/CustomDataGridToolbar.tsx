@@ -1,4 +1,3 @@
-import { Add } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import {
   GridToolbarColumnsButton,
@@ -7,30 +6,28 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import ContainedButton from '../ui/buttons/ContainedButton';
+import { ReactNode } from 'react';
 
-export default function CustomDataGridToolbar() {
+type Props = {
+  children?: ReactNode;
+};
+
+export default function CustomDataGridToolbar({ children }: Props) {
   return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector slotProps={{ tooltip: { title: 'Change density' } }} />
+    <GridToolbarContainer sx={{ columnGap: { xs: 0.5, sm: 1 } }}>
+      <GridToolbarColumnsButton slotProps={{ button: { sx: { height: '32px' } } }} />
+      <GridToolbarFilterButton slotProps={{ button: { sx: { height: '32px' } } }} />
+      <GridToolbarDensitySelector
+        slotProps={{ tooltip: { title: 'Change density' }, button: { sx: { height: '32px' } } }}
+      />
       <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }} />
       <GridToolbarExport
         slotProps={{
           tooltip: { title: 'Export data' },
-          button: { variant: 'outlined' },
+          button: { variant: 'outlined', sx: { height: '32px' } },
         }}
       />
-      <Box>
-        <ContainedButton
-          label="add"
-          startIcon={<Add />}
-          height="30.35px"
-          minHeight={1}
-          backgroundColor="primary"
-        />
-      </Box>
+      <Box>{children}</Box>
     </GridToolbarContainer>
   );
 }

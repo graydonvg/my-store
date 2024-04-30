@@ -9,7 +9,7 @@ import SectionContainerAccountPage from '@/components/accountPage/SectionContain
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 
 export default function AccountPage() {
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
 
   return (
     <Box>

@@ -10,7 +10,7 @@ import AccountPageForm from './AccountPageForm';
 export default function UpdateFirstNameForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const [firstName, setFirstName] = useState(userData?.firstName ?? '');
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 

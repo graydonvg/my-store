@@ -1,4 +1,4 @@
-import getServiceSupabase from '@/lib/supabase/getServiceSupabase';
+import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { OrdersSortByOptions } from '@/types';
 import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
@@ -22,7 +22,7 @@ export async function getOrdersForAdmin(
   sortBy: OrdersSortByOptions,
   sortDirection: 'asc' | 'desc'
 ) {
-  const supabase = getServiceSupabase();
+  const supabase = createSupabaseService();
   const { sortOrdersBy, sortOptions } = getOrdersSortOptions(sortBy, sortDirection);
 
   let ordersQuery = supabase

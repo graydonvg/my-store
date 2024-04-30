@@ -7,7 +7,7 @@ import Address from './Address';
 import Recipient from './Recipient';
 
 export default function AddressData() {
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
   const pathname = usePathname();
   const isShippingView = pathname.includes('/checkout/shipping');
 

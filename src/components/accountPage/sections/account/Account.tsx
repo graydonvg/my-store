@@ -4,8 +4,9 @@ import PasswordMask from './PasswordMask';
 import UpdatePasswordForm from '../../../forms/accountPageForms/UpdatePasswordForm';
 
 export default function Account() {
-  const { isOAuthSignIn, userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
   const { fieldToEdit } = useAppSelector((state) => state.account);
+  const isOAuthSignIn = userData?.isOAuthSignIn;
 
   return (
     <>

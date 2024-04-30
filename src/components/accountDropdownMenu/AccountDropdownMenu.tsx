@@ -1,12 +1,10 @@
 import { useTheme, Typography } from '@mui/material';
-import { ArrowDropDown, AccountCircle, ViewList, Favorite } from '@mui/icons-material';
+import { ArrowDropDown, AccountCircle, ViewList, Favorite, AdminPanelSettings } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
 import HoverDropdownMenu from '../ui/HoverDropdownMenu';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { AdminViewToggleIcon } from '../ui/AdminViewToggleIcon';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import SignOutButton from '../ui/buttons/SignOutButton';
 
@@ -47,12 +45,10 @@ const accountMenuOptions = [
 ];
 
 export default function AccountDropdownMenu() {
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
-  const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -73,11 +69,16 @@ export default function AccountDropdownMenu() {
           <ArrowDropDown sx={{ color: theme.palette.custom.primary.dark, marginLeft: 1 }} />
         </>
       }>
-      {userData && userData?.isAdmin ? (
-        <Link href={isAdminView ? '/' : '/admin/dashboard'}>
+      {userData && userData?.authLevel > 0 ? (
+        <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
-            label={isAdminView ? 'Client View' : 'Admin View'}
-            icon={<AdminViewToggleIcon isAdminView={isAdminView} />}
+            label="Admin View"
+            icon={
+              <AdminPanelSettings
+                fontSize="small"
+                sx={{ color: theme.palette.custom.typographyVariants.light }}
+              />
+            }
           />
         </Link>
       ) : null}

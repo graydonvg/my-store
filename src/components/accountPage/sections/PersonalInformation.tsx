@@ -24,7 +24,7 @@ const fieldDataMap = {
 
 export default function PersonalInformation() {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector((state) => state.user.data);
   const { fieldToEdit } = useAppSelector((state) => state.account);
 
   useEffect(() => {

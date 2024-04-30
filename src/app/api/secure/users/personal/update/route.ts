@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType } from '@/types';
+import { CustomResponseType, UpdateUserPersonalInformationType } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const personalData: { firstName: string; lastName: string } = await request.json();
+    const personalData: UpdateUserPersonalInformationType = await request.json();
 
     if (!user)
       return NextResponse.json({

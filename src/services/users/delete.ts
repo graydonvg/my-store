@@ -14,6 +14,6 @@ export async function deleteAddress(addressId: string): Promise<CustomResponseTy
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/address/delete. ${error}`);
+    throw new Error(`@services/users/delete. ${error}`);
   }
 }

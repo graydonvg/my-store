@@ -14,6 +14,6 @@ export async function addNewAddress(addressData: InsertAddressType): Promise<Cus
 
     return data;
   } catch (error) {
-    throw new Error(`@services/users/address/add. ${error}`);
+    throw new Error(`@services/users/add. ${error}`);
   }
 }

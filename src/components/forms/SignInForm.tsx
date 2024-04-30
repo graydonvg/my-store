@@ -52,9 +52,9 @@ export default function SignInForm({ children }: Props) {
     const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
 
     if (success === true) {
-      router.refresh();
       dispatch(closeDialog());
       setFormData(defaultFormData);
+      router.refresh();
     } else {
       toast.error(message);
     }

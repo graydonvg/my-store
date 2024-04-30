@@ -10,7 +10,7 @@ import './globals.css';
 import { STORE_NAME } from '@/config';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
-import WishlistStateSetter from '@/components/stateSetters/WishlistStateSetter';
+import WishlistDataStateSetter from '@/components/stateSetters/WishlistStateSetter';
 import getInitialUserData from '@/lib/db/queries/getInitialUserData';
 
 export const metadata: Metadata = {
@@ -19,18 +19,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const { userAuthData, userTableData, cartItems, wishlistItems } = await getInitialUserData();
+  const { userData, cartItems, wishlistData } = await getInitialUserData();
 
   return (
     <html lang="en">
       <body>
         <Providers>
-          <UserStateSetter
-            user={userAuthData}
-            userData={userTableData}
-          />
+          <UserStateSetter userData={userData} />
           <CartItemsStateSetter cartItems={cartItems} />
-          <WishlistStateSetter wishlistItems={wishlistItems} />
+          <WishlistDataStateSetter wishlistData={wishlistData} />
           {children}
           <Toast />
         </Providers>

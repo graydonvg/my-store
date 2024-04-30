@@ -10,7 +10,7 @@ import AddNewAddressDialog from '../dialogs/addressDialog/AddNewAddressDialog';
 
 export default function Addresses() {
   const dispatch = useAppDispatch();
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useAppSelector((state) => state.user.data);
 
   useEffect(() => {
     dispatch(closeDialog());
@@ -29,15 +29,15 @@ export default function Addresses() {
         }}>
         <Table>
           <TableBody>
-            <TableRow>
-              {userData && userData?.addresses.length === 0 ? (
+            {userData && userData?.addresses.length === 0 ? (
+              <TableRow>
                 <TableCell sx={{ padding: 2, borderBottom: 0 }}>
                   <Typography fontSize={16}>No address found</Typography>
                 </TableCell>
-              ) : (
-                <AddressData />
-              )}
-            </TableRow>
+              </TableRow>
+            ) : (
+              <AddressData />
+            )}
           </TableBody>
         </Table>
       </TableContainer>
