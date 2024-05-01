@@ -124,12 +124,12 @@ export default function SignInForm({ children }: Props) {
           label={!isSignInDialogOpen && isLoading ? '' : 'sign in'}
           disabled={isLoading}
           isLoading={!isSignInDialogOpen && isLoading}
-          styles={{
+          sxStyles={{
             marginTop: 3,
             marginBottom: 2,
           }}
           fullWidth
-          backgroundColor="primary"
+          color="primary"
         />
         <Divider>
           <Typography
@@ -144,13 +144,13 @@ export default function SignInForm({ children }: Props) {
           disabled={isLoading}
           label="sign in with google"
           type="button"
-          styles={{
+          sxStyles={{
             marginTop: 2,
             marginBottom: 3,
           }}
           fullWidth
           startIcon={<GoogleIcon />}
-          backgroundColor="primary"
+          color="primary"
         />
         {children}
       </Box>

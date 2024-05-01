@@ -145,12 +145,12 @@ export default function CreateAuthUserForm() {
           label="create user"
           disabled={isDialogLoading}
           type="submit"
-          styles={{
+          sxStyles={{
             marginTop: 3,
             marginBottom: 3,
           }}
           fullWidth
-          backgroundColor="primary"
+          color="primary"
         />
       </Box>
     </Box>

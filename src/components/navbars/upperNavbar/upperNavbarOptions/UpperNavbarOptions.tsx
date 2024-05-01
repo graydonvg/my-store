@@ -23,7 +23,7 @@ export default function UpperNavbarOptions() {
       <NavbarTitle
         variant="h5"
         display={{ xs: 'flex', md: 'none' }}
-        color={theme.palette.custom.navBar.upper.text}
+        color={theme.palette.custom.navbar.upper.text}
       />
 
       <Box

@@ -21,7 +21,7 @@ export default function LoaderEditCartItemDrawer({ isUpdatingCartItem }: Props) 
         backgroundColor: 'transparent',
       }}>
       <PulseLoader
-        color={theme.palette.custom.typography}
+        color={theme.palette.text.primary}
         loading={isUpdatingCartItem}
         size={30}
       />

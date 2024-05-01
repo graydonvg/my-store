@@ -1,5 +1,5 @@
 import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect } from 'react';
-import Drawer from '@mui/material/Drawer';
+import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 type DrawerState = {
   top?: boolean;
@@ -18,19 +18,18 @@ const initialState: DrawerState = {
 type Props = {
   elevation?: number;
   width: string | Record<string, string>;
-  zIndex: number;
   children: ReactNode;
   isOpen: DrawerState;
   closeDrawer: () => void;
-};
+} & DrawerProps;
 
 export default function DrawerComponent({
   elevation = 0,
   isOpen = initialState,
-  zIndex,
   width,
   children,
   closeDrawer,
+  ...props
 }: Props) {
   const handleCloseDrawer = useCallback(
     (event: KeyboardEvent | MouseEvent) => {
@@ -70,7 +69,7 @@ export default function DrawerComponent({
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <Fragment key={anchor}>
           <Drawer
-            sx={{ zIndex }}
+            variant="temporary"
             PaperProps={{
               elevation: elevation,
               sx: {
@@ -80,7 +79,8 @@ export default function DrawerComponent({
             }}
             anchor={anchor}
             open={isOpen ? isOpen[anchor] : false}
-            onClose={handleCloseDrawer}>
+            onClose={handleCloseDrawer}
+            {...props}>
             {children}
           </Drawer>
         </Fragment>

@@ -8,39 +8,23 @@ import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import SignOutButton from '../ui/buttons/SignOutButton';
 
-export const ICON_COLOR = 'white';
-export const ICON_SIZE = 'small';
+const iconSize = 'small';
 
 const accountMenuOptions = [
   {
     label: 'My Account',
     href: '/account',
-    icon: (
-      <AccountCircle
-        fontSize={ICON_SIZE}
-        sx={{ color: ICON_COLOR }}
-      />
-    ),
+    icon: <AccountCircle fontSize={iconSize} />,
   },
   {
     label: 'Orders',
     href: '/orders',
-    icon: (
-      <ViewList
-        fontSize={ICON_SIZE}
-        sx={{ color: ICON_COLOR }}
-      />
-    ),
+    icon: <ViewList fontSize={iconSize} />,
   },
   {
     label: 'Wishlist',
     href: '/wishlist',
-    icon: (
-      <Favorite
-        fontSize={ICON_SIZE}
-        sx={{ color: ICON_COLOR }}
-      />
-    ),
+    icon: <Favorite fontSize={iconSize} />,
   },
 ];
 
@@ -63,7 +47,7 @@ export default function AccountDropdownMenu() {
 
   return (
     <HoverDropdownMenu
-      buttonBackgroundColor={theme.palette.custom.navBar.upper.background}
+      buttonBackgroundColor={theme.palette.custom.navbar.upper.background}
       label={
         <>
           <Typography
@@ -73,19 +57,14 @@ export default function AccountDropdownMenu() {
             }}>
             {title}
           </Typography>
-          <ArrowDropDown sx={{ color: theme.palette.custom.primary.dark, marginLeft: 1 }} />
+          <ArrowDropDown sx={{ color: theme.palette.primary.main, marginLeft: 1 }} />
         </>
       }>
       {userData && userData?.authLevel > 0 ? (
         <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
             label="Admin View"
-            icon={
-              <AdminPanelSettings
-                fontSize="small"
-                sx={{ color: theme.palette.custom.typographyVariants.light }}
-              />
-            }
+            icon={<AdminPanelSettings fontSize="small" />}
           />
         </Link>
       ) : null}
@@ -103,18 +82,12 @@ export default function AccountDropdownMenu() {
 
       <AccountDropdownMenuItem
         label={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-        icon={
-          <ThemeToggleIcon
-            color={ICON_COLOR}
-            size={ICON_SIZE}
-          />
-        }
+        icon={<ThemeToggleIcon size={iconSize} />}
         onClick={changeTheme}
       />
       <SignOutButton
         buttonVariant="accountDropdownMenu"
-        accountMenuIconColor={ICON_COLOR}
-        accountMenuIconSize={ICON_SIZE}
+        accountMenuIconSize={iconSize}
       />
     </HoverDropdownMenu>
   );

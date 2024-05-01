@@ -56,7 +56,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         elevation={1}
         width={{ xs: '100vw', sm: '350px' }}
         isOpen={{ right: isEditImagesDrawerOpen }}
-        zIndex={theme.zIndex.appBar + 1}
+        sx={{ zIndex: { xs: theme.zIndex.appBar + 1, sm: theme.zIndex.appBar - 1 } }}
         closeDrawer={closeEditImageDrawer}>
         <DrawerHeader
           label="Edit images"
@@ -85,8 +85,8 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             onClick={deleteAllImages}
             disabled={isDeletingAllImages}
             isLoading={isDeletingAllImages}
-            label={isDeletingAllImages ? '' : 'Delete all'}
-            backgroundColor="warning"
+            label={!isDeletingAllImages ? 'Delete all' : ''}
+            color="error"
             fullWidth
             startIcon={<DeleteForever />}
           />

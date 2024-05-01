@@ -51,17 +51,18 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
         <IconButton
           disabled={isRemovingCartItem}
           onClick={handleRemoveCartItem}
+          disableRipple
           sx={(theme) => ({
             padding: 0,
             width: 1,
             height: 1,
-            color: theme.palette.custom.typographyVariants.medium,
-            stroke: theme.palette.custom.typographyVariants.medium,
+            color: theme.palette.text.secondary,
+            stroke: theme.palette.text.secondary,
             strokeWidth: 1,
             '@media (hover: hover)': {
               '&:hover': {
-                color: theme.palette.custom.warning.dark,
-                stroke: theme.palette.custom.warning.dark,
+                color: theme.palette.error.main,
+                stroke: theme.palette.error.main,
               },
             },
           })}>
@@ -72,7 +73,7 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
           <Spinner
             thickness={6}
             size={14}
-            spinnerColor={theme.palette.custom.typographyVariants.medium}
+            spinnerColor={theme.palette.text.secondary}
           />
         </Box>
       )}

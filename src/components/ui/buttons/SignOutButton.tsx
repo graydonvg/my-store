@@ -6,11 +6,11 @@ import { setUserData } from '@/lib/redux/slices/userSlice';
 import signOut from '@/services/auth/sign-out';
 import { Logout } from '@mui/icons-material';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 type Props = {
-  buttonVariant: 'accountDropdownMenu' | 'navDrawer' | 'adminNavDrawer';
+  buttonVariant: 'accountDropdownMenu' | 'temporaryDrawer' | 'permanentDrawer';
   accountMenuIconColor?: string;
   accountMenuIconSize?: 'small' | 'inherit' | 'large' | 'medium' | undefined;
 };
@@ -18,6 +18,8 @@ type Props = {
 export default function SignOutButton({ buttonVariant, accountMenuIconColor, accountMenuIconSize }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathname = usePathname();
+  const clearUserAndRedirectAfterSignout = pathname.includes('/admin');
 
   async function signOutUser() {
     const { success, message } = await signOut();
@@ -28,10 +30,10 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
       toast.error(message);
     }
 
-    dispatch(setIsNavDrawerOpen(false));
+    buttonVariant === 'temporaryDrawer' && dispatch(setIsNavDrawerOpen(false));
   }
 
-  async function signOutFromAdminView() {
+  async function signOutClearUserAndRedirect() {
     const { success, message } = await signOut();
 
     if (success === true) {
@@ -40,6 +42,8 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
     } else {
       toast.error(message);
     }
+
+    buttonVariant === 'temporaryDrawer' && dispatch(setIsNavDrawerOpen(false));
   }
 
   return (
@@ -57,21 +61,21 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
         />
       ) : null}
 
-      {buttonVariant === 'navDrawer' ? (
+      {buttonVariant === 'temporaryDrawer' ? (
         <NavDrawerOption
-          onClick={signOutUser}
+          onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}
           label="Sign Out"
         />
       ) : null}
 
-      {buttonVariant === 'adminNavDrawer' ? (
-        <ListItemButton onClick={signOutFromAdminView}>
+      {buttonVariant === 'permanentDrawer' ? (
+        <ListItemButton onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
           <ListItemText
             primary="Sign Out"
-            sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }}
+            sx={{ color: (theme) => theme.palette.custom.navbar.lower.text }}
           />
         </ListItemButton>
       ) : null}

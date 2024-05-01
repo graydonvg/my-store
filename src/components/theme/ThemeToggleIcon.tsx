@@ -4,7 +4,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 type ThemeToggleIconProps = {
   size: 'small' | 'medium' | 'large';
-  color: string;
+  color?: string;
 };
 
 export function ThemeToggleIcon({ size, color }: ThemeToggleIconProps) {

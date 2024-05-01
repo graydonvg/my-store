@@ -31,7 +31,7 @@ export default function CheckoutOrderTotals() {
         sx={{
           paddingX: 3,
           paddingY: 4,
-          backgroundColor: (theme) => theme.palette.custom.card.background,
+          backgroundColor: (theme) => theme.palette.background.paper,
           borderRadius: BORDER_RADIUS,
         }}>
         <Typography
@@ -54,8 +54,7 @@ export default function CheckoutOrderTotals() {
           <CheckoutButton
             disabled={cartItems.length === 0}
             label="checkout now"
-            fullWidth={true}
-            backgroundColor="primary"
+            fullWidth
           />
         ) : null}
 

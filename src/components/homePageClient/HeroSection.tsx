@@ -49,7 +49,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             fontSize={{ xs: 32, sm: 48, md: 64, lg: 64 }}
             lineHeight={1.1}
             sx={{
-              color: (theme) => theme.palette.custom.typographyVariants.dark,
+              color: (theme) => theme.palette.grey[900],
               maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
             }}>
             {STORE_SLOGAN}
@@ -59,7 +59,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             fontWeight={500}
             fontSize={{ xs: 14, sm: 14, md: 16 }}
             sx={{
-              color: (theme) => theme.palette.custom.shade.dark,
+              color: (theme) => theme.palette.grey[700],
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
@@ -68,9 +68,9 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton
               label="explore the collection"
-              backgroundColor="primary"
+              color="primary"
               onClick={navigateToAllProducts}
-              styles={{ boxShadow: 15 }}
+              sxStyles={{ boxShadow: 4 }}
             />
           </Box>
         </Box>

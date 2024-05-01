@@ -40,7 +40,7 @@ export default function AdminNavbar({ children }: Props) {
           <Box
             sx={{
               // bg color set here to prevent color lightening from elevation scroll
-              backgroundColor: theme.palette.custom.navBar.upper.background,
+              backgroundColor: theme.palette.custom.navbar.upper.background,
             }}>
             <Toolbar>
               <IconButton

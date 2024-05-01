@@ -38,6 +38,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
             },
           }}>
           <ShoppingBasket sx={{ color }} />
+
           {!hideText ? (
             <Typography
               tabIndex={-1}
@@ -61,7 +62,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
           variant="h6"
           color="inherit"
           noWrap
-          sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.custom.typographyVariants.light }}>
+          sx={{ textTransform: 'capitalize', color }}>
           {currentPath}
         </Typography>
       )}

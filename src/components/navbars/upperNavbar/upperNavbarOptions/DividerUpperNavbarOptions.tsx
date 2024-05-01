@@ -7,7 +7,7 @@ export default function DividerUpperNavbarOptions() {
       orientation="vertical"
       sx={{
         display: { xs: 'none', md: 'flex' },
-        backgroundColor: (theme) => theme.palette.custom.navBar.upper.divider,
+        backgroundColor: (theme) => theme.palette.custom.navbar.upper.divider,
       }}
       flexItem
     />

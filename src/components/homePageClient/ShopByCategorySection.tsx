@@ -86,7 +86,7 @@ export default function ShopByCategorySection() {
                   component="h3"
                   fontSize={36}
                   fontWeight={600}
-                  sx={{ color: (theme) => theme.palette.custom.typographyVariants.light }}>
+                  sx={{ color: (theme) => theme.palette.common.white }}>
                   {category.label.toUpperCase()}
                 </Typography>
               </Box>

@@ -59,7 +59,7 @@ export default function PaymentButton({ buttonVariant }: Props) {
           onClick={createOrderAndPayWithStripe}
           label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
           fullWidth
-          backgroundColor={'warning'}
+          color="error"
           isLoading={checkoutData.isProcessing}
         />
       ) : null}

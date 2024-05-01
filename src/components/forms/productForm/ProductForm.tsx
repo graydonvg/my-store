@@ -42,7 +42,7 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
         isOnSale={isOnSale}
       />
       <ContainedButton
-        label={isClearingAllFields ? '' : 'clear all'}
+        label={!isClearingAllFields ? 'clear all' : ''}
         onClick={clearAllFormFields}
         disabled={
           uploadInProgress || isSubmitting || isClearingAllFields || emptyFormFields.length === numberOfFormFields
@@ -51,7 +51,7 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
         component="button"
         isLoading={isClearingAllFields}
         startIcon={<DeleteForever />}
-        backgroundColor="warning"
+        color="error"
       />
       <ContainedButton
         type="submit"
@@ -65,8 +65,8 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
         label={submitButtonLabel}
         fullWidth
         isLoading={isSubmitting}
-        backgroundColor="primary"
         startIcon={submitButtonStartIcon}
+        color="primary"
       />
     </Box>
   );

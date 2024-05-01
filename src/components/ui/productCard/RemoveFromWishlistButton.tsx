@@ -58,13 +58,13 @@ export default function RemoveFromWishlistButton({
             padding: 0,
             width: 1,
             height: 1,
-            color: theme.palette.custom.typographyVariants.medium,
-            stroke: theme.palette.custom.typographyVariants.medium,
+            color: theme.palette.grey[600],
+            stroke: theme.palette.grey[600],
             strokeWidth: 2,
             '@media (hover: hover)': {
               '&:hover': {
-                color: theme.palette.custom.warning.dark,
-                stroke: theme.palette.custom.warning.dark,
+                color: theme.palette.error.main,
+                stroke: theme.palette.error.main,
               },
             },
           }}>
@@ -75,7 +75,7 @@ export default function RemoveFromWishlistButton({
           <Spinner
             thickness={8}
             size={16}
-            spinnerColor={theme.palette.custom.typographyVariants.medium}
+            spinnerColor={theme.palette.grey[600]}
           />
         </Box>
       )}

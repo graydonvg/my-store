@@ -29,7 +29,7 @@ export default function PriceSmallCartItem({ isOnSale, price, discountedPrice }:
             component="span"
             fontSize={16}
             fontWeight={700}
-            color={(theme) => theme.palette.custom.typographyVariants.medium}
+            color={(theme) => theme.palette.text.disabled}
             sx={{ textDecoration: 'line-through' }}>
             {formatCurrency(price)}
           </Typography>

@@ -258,13 +258,13 @@ export default function CustomDataGrid({
             paddingRight: 2,
             paddingLeft: '11px',
             paddingY: 1,
-            backgroundColor: theme.palette.custom.table.toolbar,
+            backgroundColor: theme.palette.custom.dataGrid.toolbar,
             borderTop: `1px solid rgba(255, 255, 255, 0.12)`,
-            borderBottom: `1px solid ${theme.palette.custom.table.border}`,
+            borderBottom: `1px solid ${theme.palette.custom.dataGrid.border}`,
           },
 
           '& .MuiDataGrid-columnHeader': {
-            backgroundColor: theme.palette.custom.table.header,
+            backgroundColor: theme.palette.custom.dataGrid.header,
             outlineOffset: -2,
             outline: 0,
 
@@ -278,7 +278,7 @@ export default function CustomDataGrid({
           },
 
           '& .MuiDataGrid-filler': {
-            backgroundColor: theme.palette.custom.table.header,
+            backgroundColor: theme.palette.custom.dataGrid.header,
           },
 
           '& .mui-tgsonj': {
@@ -286,7 +286,7 @@ export default function CustomDataGrid({
           },
 
           '& .MuiDataGrid-footerContainer': {
-            backgroundColor: theme.palette.custom.table.footer,
+            backgroundColor: theme.palette.custom.dataGrid.footer,
             '& .MuiDataGrid-selectedRowCount': {
               display: { xs: 'none', sm: 'flex' },
             },

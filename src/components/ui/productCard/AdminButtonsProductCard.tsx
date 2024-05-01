@@ -104,7 +104,7 @@ export default function AdminButtonsProductCard({ product }: Props) {
         label={!isDeletingProduct ? 'delete' : ''}
         isLoading={isDeletingProduct}
         startIcon={<DeleteForever />}
-        backgroundColor="warning"
+        color="error"
       />
     </Box>
   );

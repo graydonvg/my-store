@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Toolbar, Typography, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -13,7 +13,6 @@ export default function CartDrawer() {
   const cartCount = selectCartCount(cartItems);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const navbarHeight = document.getElementById('navbar')?.offsetHeight;
 
   function toggleCartDrawer() {
     dispatch(setIsCartOpen(!isCartOpen));
@@ -26,24 +25,24 @@ export default function CartDrawer() {
   return (
     <>
       <UpperNavbarIconButton
-        backgroundColor={theme.palette.custom.navBar.upper.background}
+        backgroundColor={theme.palette.custom.navbar.upper.background}
         onClick={toggleCartDrawer}>
         <Typography
           component="span"
           sx={{
             display: { xs: 'none', md: 'inline' },
-            color: theme.palette.custom.typographyVariants.light,
+            color: theme.palette.custom.navbar.upper.text,
           }}>
           Cart
         </Typography>
         <ShoppingCartIcon
           aria-label="Shopping cart"
-          sx={{ color: theme.palette.custom.navBar.upper.text, marginLeft: 1 }}
+          sx={{ color: theme.palette.custom.navbar.upper.text, marginLeft: 1 }}
         />
         <Box
           sx={{
-            color: theme.palette.custom.navBar.upper.text,
-            backgroundColor: theme.palette.custom.primary.dark,
+            color: theme.palette.primary.contrastText,
+            backgroundColor: theme.palette.primary.main,
             borderRadius: '50%',
             width: 20,
             height: 20,
@@ -58,11 +57,11 @@ export default function CartDrawer() {
         elevation={1}
         width={{ xs: '90vw', sm: '400px' }}
         isOpen={{ right: isCartOpen }}
-        zIndex={theme.zIndex.appBar - 1}
+        sx={{ zIndex: theme.zIndex.appBar - 1 }}
         closeDrawer={closeCartDrawer}>
-        <Box
+        <Toolbar
           sx={{
-            paddingTop: `${navbarHeight}px`,
+            minHeight: { xs: '64px !important', md: '96px !important' },
           }}
         />
         <SmallCartItemList paddingX={2} />

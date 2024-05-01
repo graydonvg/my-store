@@ -1,4 +1,4 @@
-import { Box, Divider, ListItem, Typography } from '@mui/material';
+import { Box, Divider, ListItem, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 
 type Props = {
@@ -9,7 +9,10 @@ type Props = {
 };
 
 export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: Props) {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
   const isSaleOption = label.toLowerCase() === 'sale';
+  const saleOptionHoverColor = darkMode ? theme.palette.error.light : theme.palette.error.dark;
 
   return (
     <ListItem
@@ -18,20 +21,18 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
       <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
         <Typography
           component="span"
-          sx={(theme) => ({
+          sx={{
             textTransform: 'none',
-            color: isSaleOption ? theme.palette.custom.warning.dark : theme.palette.custom.navBar.lower.text,
+            color: isSaleOption ? theme.palette.error.main : theme.palette.text.secondary,
             textDecoration: underline ? 'underline' : 'none',
-            textDecorationColor: isSaleOption
-              ? theme.palette.custom.warning.dark
-              : theme.palette.custom.navBar.lower.text,
+            textDecorationColor: isSaleOption ? theme.palette.error.main : theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
             '&:hover': {
-              color: isSaleOption ? theme.palette.custom.warning.light : theme.palette.custom.typography,
-              textDecorationColor: isSaleOption ? theme.palette.custom.warning.light : theme.palette.custom.typography,
+              color: isSaleOption ? saleOptionHoverColor : theme.palette.text.primary,
+              textDecorationColor: isSaleOption ? theme.palette.error.dark : theme.palette.text.primary,
             },
-          })}>
+          }}>
           <Link href={path}>{label}</Link>
         </Typography>
       </Box>

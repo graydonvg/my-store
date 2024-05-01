@@ -24,7 +24,7 @@ export default function PasswordMask() {
             key={index}
             component="span"
             letterSpacing={1}
-            sx={{ color: (theme) => theme.palette.custom.typography }}>
+            sx={{ color: (theme) => theme.palette.text.primary }}>
             •
           </Typography>
         ))}

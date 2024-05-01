@@ -26,7 +26,7 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
             padding: 1,
             marginTop: 2,
             borderRadius: BORDER_RADIUS,
-            backgroundColor: (theme) => theme.palette.custom.navBar.lower.background,
+            backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
           }}>
           <Typography
             lineHeight={1}

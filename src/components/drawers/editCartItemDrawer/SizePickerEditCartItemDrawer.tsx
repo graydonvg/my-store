@@ -11,7 +11,7 @@ type Props = {
 export default function SizePickerEditCartItemDrawer({ cartItem, isUpdatingCartItem, setCartItemSizeOnClick }: Props) {
   return (
     <Box>
-      <Box sx={{ padding: 2, paddingBottom: 1, opacity: isUpdatingCartItem ? 0.5 : 1 }}>
+      <Box sx={{ padding: 2, opacity: isUpdatingCartItem ? 0.5 : 1, height: '64px' }}>
         <Typography
           fontWeight={600}
           fontSize={24}>

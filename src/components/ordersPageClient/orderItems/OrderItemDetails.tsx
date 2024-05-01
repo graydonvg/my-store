@@ -16,7 +16,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
       <Box>
         {[
           { label: 'qty', value: orderItem?.quantity },
-          { label: 'fontSize', value: orderItem?.size },
+          { label: 'size', value: orderItem?.size },
           { label: 'price paid', value: formatCurrency(orderItem?.pricePaid) },
         ].map((item) => (
           <Box
@@ -26,7 +26,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
               fontSize={13}
               textTransform="uppercase"
               fontWeight={500}
-              color={(theme) => theme.palette.custom.typographyVariants.medium}>
+              color={(theme) => theme.palette.text.secondary}>
               {item.label}:
             </Typography>
             <Typography
@@ -40,7 +40,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
       <Typography
         fontSize={13}
         textTransform="uppercase"
-        color={(theme) => theme.palette.custom.typographyVariants.medium}>
+        color={(theme) => theme.palette.text.secondary}>
         {orderItem.product?.returnInfo}
       </Typography>
     </Box>

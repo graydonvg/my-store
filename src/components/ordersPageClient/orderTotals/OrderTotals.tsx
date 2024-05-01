@@ -1,5 +1,5 @@
 import { formatCurrency } from '@/utils/formatCurrency';
-import { Box, useTheme } from '@mui/material';
+import { Box, alpha, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
 
 type Props = {
@@ -12,8 +12,7 @@ type Props = {
 
 export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
   const theme = useTheme();
-  const mode = theme.palette.mode;
-  const discountTotalBackgroundColor = mode === 'dark' ? theme.palette.custom.shade.dark : 'rgba(66, 165, 245, 0.09)';
+  const discountTotalBackgroundColor = alpha(theme.palette.primary.main, theme.palette.action.focusOpacity);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>

@@ -80,7 +80,7 @@ export default function UpdateAddressForm() {
           disabled={isDialogLoading}
           type="submit"
           fullWidth
-          backgroundColor="primary"
+          color="primary"
           startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
         />
       </Box>

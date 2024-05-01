@@ -15,7 +15,7 @@ export default function Shipping() {
   return (
     <Box
       sx={{
-        backgroundColor: (theme) => theme.palette.custom.card.background,
+        backgroundColor: (theme) => theme.palette.background.paper,
         paddingX: 2,
         paddingY: 4,
         display: 'flex',

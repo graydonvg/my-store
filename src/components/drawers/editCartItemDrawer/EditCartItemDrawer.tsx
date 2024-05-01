@@ -138,7 +138,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
         <Edit
           fontSize="small"
-          sx={{ color: (theme) => theme.palette.custom.typographyVariants.medium }}
+          sx={{ color: (theme) => theme.palette.text.secondary }}
         />
       </IconButton>
       <DrawerComponent
@@ -147,7 +147,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         isOpen={{
           right: cartItemToEditId === cartItem?.cartItemId,
         }}
-        zIndex={theme.zIndex.appBar + 1}
+        sx={{ zIndex: theme.zIndex.appBar + 1 }}
         closeDrawer={closeDrawer}>
         <Box
           sx={{

@@ -25,7 +25,7 @@ export default function AddNewAddressDialog() {
         label="add new address"
         fullWidth={false}
         startIcon={<Add />}
-        backgroundColor="primary"
+        color="primary"
       />
       <DialogComponent isOpen={isAddNewAddressDialogOpen}>
         <AddNewAddressForm />

@@ -13,7 +13,7 @@ export default function SalePercentageBadgeProductCard({ percentage }: Props) {
         flexDirection: 'column',
         borderRadius: BORDER_RADIUS,
         paddingX: 0.5,
-        backgroundColor: (theme) => theme.palette.custom.primary.dark,
+        backgroundColor: (theme) => theme.palette.primary.main,
         width: 'min-content',
       }}>
       <Typography
@@ -21,7 +21,7 @@ export default function SalePercentageBadgeProductCard({ percentage }: Props) {
         variant="caption"
         sx={{
           textAlign: 'center',
-          color: (theme) => theme.palette.custom.typographyVariants.light,
+          color: (theme) => theme.palette.primary.contrastText,
           textTransform: 'uppercase',
         }}>
         {`${percentage}% off`}

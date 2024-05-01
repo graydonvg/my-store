@@ -68,7 +68,7 @@ export default function TopProductDetails({ product }: Props) {
               fontSize={22}
               fontFamily={'Georgia'}
               fontStyle="italic"
-              sx={{ color: (theme) => theme.palette.custom.primary.light, fontFamily: 'serif' }}>
+              sx={{ color: (theme) => theme.palette.primary.light, fontFamily: 'serif' }}>
               {`-${product.salePercentage}%`}
             </Typography>
           </Box>

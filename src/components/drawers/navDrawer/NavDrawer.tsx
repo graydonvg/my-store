@@ -14,7 +14,6 @@ export default function NavDrawer() {
   const { isCartOpen } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
-  const navbarHeight = document.getElementById('navbar')?.offsetHeight;
 
   useEffect(() => {
     isBelowMedium ? dispatch(setIsNavDrawerOpen(false)) : null;
@@ -36,7 +35,7 @@ export default function NavDrawer() {
       <IconButton
         edge="start"
         sx={{
-          color: theme.palette.custom.navBar.upper.text,
+          color: theme.palette.custom.navbar.upper.text,
         }}
         aria-label="open drawer"
         onClick={openNavDrawer}>
@@ -46,12 +45,11 @@ export default function NavDrawer() {
       <DrawerComponent
         width="100vw"
         isOpen={{ left: isNavDrawerOpen }}
-        zIndex={theme.zIndex.appBar + 1}
+        sx={{ zIndex: theme.zIndex.appBar + 1 }}
         closeDrawer={closeNavDrawer}>
         <DrawerHeader
           label="Menu"
           onClick={closeNavDrawer}
-          height={navbarHeight}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: 1 }}>
           <NavDrawerOptions />

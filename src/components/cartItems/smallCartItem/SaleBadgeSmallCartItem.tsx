@@ -12,7 +12,7 @@ export default function SaleBadgeSmallCartItem({ percentage }: Props) {
         display: 'flex',
         borderRadius: BORDER_RADIUS,
         paddingX: 1,
-        backgroundColor: (theme) => theme.palette.custom.primary.dark,
+        backgroundColor: (theme) => theme.palette.primary.main,
         width: 'fit-content',
         height: 'fit-content',
       }}>
@@ -20,7 +20,7 @@ export default function SaleBadgeSmallCartItem({ percentage }: Props) {
         lineHeight={1.6}
         component="span"
         sx={{
-          color: (theme) => theme.palette.custom.typographyVariants.light,
+          color: (theme) => theme.palette.primary.contrastText,
         }}
         fontSize={14}>
         {`-${percentage}%`}

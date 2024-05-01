@@ -1,5 +1,5 @@
 import { BORDER_RADIUS } from '@/config';
-import { Button, ButtonProps, useTheme } from '@mui/material';
+import { Button, ButtonProps, SxProps, Theme, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
@@ -7,7 +7,7 @@ type CustomButtonProps = ButtonProps & {
   isLoading?: boolean;
   label: ReactNode;
   startIcon?: ReactNode;
-  styles?: any;
+  sxStyles?: SxProps<Theme> | undefined;
   isDisabled?: boolean;
 };
 
@@ -15,12 +15,12 @@ export default function OutlinedButton({
   isLoading,
   label,
   startIcon,
-  styles,
+  sxStyles,
   isDisabled,
   ...props
 }: CustomButtonProps) {
   const theme = useTheme();
-  const mode = theme.palette.mode;
+  const darkMode = theme.palette.mode === 'dark';
 
   return (
     <Button
@@ -29,7 +29,7 @@ export default function OutlinedButton({
       startIcon={
         isLoading ? (
           <PulseLoader
-            color={mode === 'dark' ? 'white' : 'black'}
+            color={darkMode ? 'white' : 'black'}
             loading={isLoading}
             size={10}
           />
@@ -38,20 +38,20 @@ export default function OutlinedButton({
         )
       }
       sx={{
-        color: theme.palette.custom.typography,
         height: '48px',
-        borderColor: theme.palette.custom.typography,
+        borderRadius: BORDER_RADIUS,
+        color: theme.palette.text.primary,
+        borderColor: theme.palette.text.primary,
         backgroundColor: 'transparent',
         '&:hover': {
-          backgroundColor: 'transparent',
-          borderColor: theme.palette.custom.typography,
+          backgroundColor: theme.palette.action.hover,
+          borderColor: theme.palette.text.primary,
         },
         '&:active': {
-          backgroundColor: 'transparent',
-          borderColor: theme.palette.custom.typography,
+          backgroundColor: theme.palette.action.hover,
+          borderColor: theme.palette.text.primary,
         },
-        borderRadius: BORDER_RADIUS,
-        ...styles,
+        ...sxStyles,
       }}
       {...props}>
       {label}

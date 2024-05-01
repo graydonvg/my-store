@@ -17,7 +17,7 @@ type Props = {
 export default function AddToWishlistButton({ product, size }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const  userData  = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector((state) => state.user.data);
   const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
   const itemExists = wishlistData.some((item) => item.productId === product.productId && item.size === size);
@@ -60,7 +60,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}
-      backgroundColor="warning"
+      color="error"
       startIcon={<Favorite />}
     />
   );

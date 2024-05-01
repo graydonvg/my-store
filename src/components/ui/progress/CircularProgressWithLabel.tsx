@@ -11,7 +11,7 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
         variant="determinate"
         sx={{
           '&.MuiCircularProgress-root': {
-            color: (theme) => theme.palette.custom.primary.light,
+            color: (theme) => theme.palette.primary.light,
           },
         }}
         {...props}
@@ -30,7 +30,7 @@ export function CircularProgressWithLabel(props: CircularProgressProps) {
         <Typography
           variant="caption"
           component="div"
-          sx={{ color: (theme) => theme.palette.custom.typography }}>
+          sx={{ color: (theme) => theme.palette.text.primary }}>
           {`${Math.round(progress)}%`}
         </Typography>
       </Box>

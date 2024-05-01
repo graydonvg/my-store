@@ -32,7 +32,7 @@ export default function TopDetailsLargeCartItem({ name, brand, productHref }: Pr
         component="span"
         fontWeight={600}
         fontSize={14}
-        color={(theme) => theme.palette.custom.typographyVariants.medium}
+        color={(theme) => theme.palette.text.secondary}
         sx={{
           overflow: 'hidden',
           textOverflow: 'ellipsis',

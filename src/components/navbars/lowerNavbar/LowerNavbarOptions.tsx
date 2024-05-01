@@ -19,7 +19,7 @@ export default function LowerNavbarOptions() {
         <NavbarTitle
           variant="h6"
           display="flex"
-          color={theme.palette.custom.navBar.lower.text}
+          color={theme.palette.custom.navbar.lower.text}
         />
       </Box>
       <List

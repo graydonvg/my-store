@@ -25,7 +25,7 @@ export default function SignUpDialog() {
       <Box sx={{ paddingX: 2 }}>
         <TextButton
           label="sign up"
-          labelColor={theme.palette.custom.navBar.upper.text}
+          labelColor={theme.palette.custom.navbar.upper.text}
           onClick={openSignUpDialog}
         />
       </Box>

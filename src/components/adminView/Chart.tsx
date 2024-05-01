@@ -62,12 +62,12 @@ export default function Chart() {
             {
               dataKey: 'amount',
               showMark: false,
-              color: theme.palette.custom.primary.light,
+              color: theme.palette.primary.light,
             },
           ]}
           sx={{
-            [`.${axisClasses.root} line`]: { stroke: theme.palette.custom.typographyVariants.medium },
-            [`.${axisClasses.root} text`]: { fill: theme.palette.custom.typographyVariants.medium },
+            [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
+            [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
             [`& .${axisClasses.left} .${axisClasses.label}`]: {
               transform: 'translateX(-60px)',
             },

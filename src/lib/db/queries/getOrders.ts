@@ -1,9 +1,9 @@
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { OrdersSortByOptions } from '@/types';
+import { AdminOrderType, CustomerOrderType, OrdersSortByOptions } from '@/types';
 import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
 
-export async function getOrdersForUser() {
+export async function getOrdersForUser(): Promise<CustomerOrderType[] | null> {
   const supabase = await createSupabaseServerClient();
 
   const { data: orders } = await supabase
@@ -16,12 +16,17 @@ export async function getOrdersForUser() {
   return orders;
 }
 
+type OrdersForAdminReturnType = {
+  orders: AdminOrderType[] | null;
+  totalRowCount: number;
+};
+
 export async function getOrdersForAdmin(
   start: number,
   end: number,
   sortBy: OrdersSortByOptions,
   sortDirection: 'asc' | 'desc'
-) {
+): Promise<OrdersForAdminReturnType> {
   const supabase = createSupabaseService();
   const { sortOrdersBy, sortOptions } = getOrdersSortOptions(sortBy, sortDirection);
 

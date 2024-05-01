@@ -11,7 +11,7 @@ export default function HeadingBottomProductDetails({ children }: Props) {
       component="span"
       fontWeight={500}
       fontSize={16}
-      sx={{ color: (theme) => theme.palette.custom.typographyVariants.medium }}>
+      sx={{ color: (theme) => theme.palette.text.secondary }}>
       {children}
     </Typography>
   );

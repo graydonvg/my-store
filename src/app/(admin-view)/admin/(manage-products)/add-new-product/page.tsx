@@ -14,7 +14,7 @@ import revalidateAllData from '@/services/revalidateAllData';
 import ProductForm from '@/components/forms/productForm/ProductForm';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/ManageProductImages';
-import { Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 
@@ -116,7 +116,7 @@ export default function AdminViewAddNewProductPage() {
   }
 
   return (
-    <Paper sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
       <ManageProductImages isSubmitting={isSubmitting} />
       <ProductForm
         onSubmit={handleAddProduct}
@@ -124,6 +124,6 @@ export default function AdminViewAddNewProductPage() {
         submitButtonLabel={!isSubmitting ? 'add product' : ''}
         submitButtonStartIcon={!isSubmitting ? <Add /> : null}
       />
-    </Paper>
+    </Box>
   );
 }

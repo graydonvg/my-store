@@ -31,16 +31,16 @@ export default function UserSignedInUpperNavbarOptions() {
             <DividerUpperNavbarOptions />
             <UpperNavbarIconButton
               onClick={navigateToWishlist}
-              backgroundColor={theme.palette.custom.navBar.upper.background}>
+              backgroundColor={theme.palette.custom.navbar.upper.background}>
               <Typography
                 component="span"
                 fontSize={16}
-                sx={{ color: theme.palette.custom.typographyVariants.light, marginLeft: 1 }}>
+                sx={{ color: theme.palette.custom.navbar.upper.text, marginLeft: 1 }}>
                 Wishlist
               </Typography>
               <Favorite
                 aria-label="Wishlist"
-                sx={{ color: theme.palette.custom.typographyVariants.light, opacity: '50%', marginLeft: 1 }}
+                sx={{ color: theme.palette.grey[500], marginLeft: 1 }}
               />
             </UpperNavbarIconButton>
           </ListItem>
@@ -63,10 +63,8 @@ export default function UserSignedInUpperNavbarOptions() {
               <DividerUpperNavbarOptions />
               <Box sx={{ padding: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 1 }}>
                 <CheckoutButton
-                  height="30px"
-                  minHeight={1}
                   label="checkout"
-                  backgroundColor="primary"
+                  sxStyles={{ height: '30px', minHeight: '30px' }}
                 />
               </Box>
             </ListItem>

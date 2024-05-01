@@ -1,9 +1,8 @@
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { ButtonProps } from '@mui/material';
+import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ContainedButton';
-import { ContainedButtonButtonBackgroundColorType } from '@/types';
 import { calculateDiscountedCartItemPrice } from '@/utils/calculateDiscountedPrice';
 import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import {
@@ -16,21 +15,10 @@ import {
 type Props = ButtonProps & {
   disabled?: boolean;
   label: string;
-  fullWidth?: boolean;
-  backgroundColor: ContainedButtonButtonBackgroundColorType;
-  height?: string | number;
-  minHeight?: string | number;
+  sxStyles?: SxProps<Theme> | undefined;
 };
 
-export default function CheckoutButton({
-  disabled,
-  label,
-  backgroundColor,
-  fullWidth,
-  height,
-  minHeight,
-  ...props
-}: Props) {
+export default function CheckoutButton({ disabled, label, sxStyles, ...props }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
@@ -70,13 +58,11 @@ export default function CheckoutButton({
 
   return (
     <ContainedButton
+      color="error"
       disabled={disabled}
       onClick={checkout}
       label={label}
-      fullWidth={fullWidth}
-      backgroundColor={backgroundColor}
-      height={height}
-      minHeight={minHeight}
+      sxStyles={sxStyles}
       {...props}
     />
   );

@@ -25,7 +25,7 @@ export default function SignInDialog() {
       <Box sx={{ paddingX: { xs: 0, md: 2 } }}>
         <TextButton
           label="sign in"
-          labelColor={theme.palette.custom.navBar.upper.text}
+          labelColor={theme.palette.custom.navbar.upper.text}
           onClick={openSignInDialog}
         />
       </Box>

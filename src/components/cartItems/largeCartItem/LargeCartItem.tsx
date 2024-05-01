@@ -27,7 +27,7 @@ export default function LargeCartItem({ item }: Props) {
     <Box
       sx={{
         padding: 2,
-        backgroundColor: (theme) => theme.palette.custom.card.background,
+        backgroundColor: (theme) => theme.palette.background.paper,
         borderRadius: BORDER_RADIUS,
         position: 'relative',
       }}>

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 
 type Props = {
   label: string;
@@ -6,27 +6,26 @@ type Props = {
 };
 
 export default function AddressButton({ label, onClick }: Props) {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
+
   return (
-    <Typography
+    <Button
       onClick={onClick}
-      component="button"
-      textTransform="uppercase"
-      lineHeight={1}
-      fontWeight={700}
-      sx={(theme) => ({
-        color: theme.palette.custom.primary.dark,
+      variant="text"
+      sx={{
+        color: darkMode ? theme.palette.primary.light : theme.palette.primary.main,
+        lineHeight: 1,
+        fontWeight: 700,
         '@media (hover: hover)': {
           '&:hover': {
-            color: theme.palette.custom.primary.light,
             textDecoration: 'underline',
-            textDecorationColor: theme.palette.custom.primary.light,
             textDecorationThickness: 1,
             textUnderlineOffset: 2,
-            cursor: 'pointer',
           },
         },
-      })}>
+      }}>
       {label}
-    </Typography>
+    </Button>
   );
 }

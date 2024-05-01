@@ -36,14 +36,14 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           display: 'flex',
           alignItems: 'center',
           padding: 0,
-          color: pathname === href ? theme.palette.custom.primary.light : theme.palette.custom.shade.medium,
+          color: pathname === href ? theme.palette.primary.light : theme.palette.grey[600],
           '&.MuiButton-root': {
             minWidth: { xs: 'unset', sm: '64px' },
           },
           '@media (hover: hover)': {
             '&:hover': {
-              color: pathname === href ? theme.palette.custom.primary.light : theme.palette.custom.navBar.upper.text,
-              backgroundColor: theme.palette.custom.navBar.upper.background,
+              color: pathname === href ? theme.palette.primary.light : theme.palette.grey[400],
+              backgroundColor: theme.palette.custom.navbar.upper.background,
             },
           },
         }}>

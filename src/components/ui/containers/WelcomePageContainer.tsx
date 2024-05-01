@@ -17,7 +17,7 @@ export default function WelcomePageContainer({ children }: Props) {
         borderRadius: BORDER_RADIUS,
         padding: 4,
         maxWidth: 400,
-        backgroundColor: (theme) => theme.palette.custom.card.background,
+        backgroundColor: (theme) => theme.palette.background.paper,
       }}>
       {children}
     </Box>

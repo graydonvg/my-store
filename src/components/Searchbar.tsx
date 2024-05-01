@@ -2,7 +2,7 @@
 
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
-import { Box, MenuItem, Select, SelectChangeEvent, alpha } from '@mui/material';
+import { Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { BORDER_RADIUS } from '@/config';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
@@ -55,10 +55,7 @@ export default function Seachbar() {
           borderRadius: BORDER_RADIUS,
           borderTopRightRadius: 0,
           borderBottomRightRadius: 0,
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? alpha(theme.palette.custom.shade.dark, 0.15)
-              : alpha(theme.palette.custom.shade.light, 0.15),
+          // backgroundColor: (theme) =>
           '& .MuiOutlinedInput-notchedOutline': {
             border: 'none',
             borderRight: (theme) => `1px solid ${theme.palette.custom.border}`,
@@ -78,15 +75,6 @@ export default function Seachbar() {
         }}>
         {searchByOptions.map((option) => (
           <MenuItem
-            sx={{
-              '&.Mui-selected': {
-                color: (theme) => theme.palette.custom.typographyVariants.light,
-                backgroundColor: (theme) => theme.palette.custom.primary.light,
-                '&:hover': {
-                  backgroundColor: (theme) => theme.palette.custom.primary.light,
-                },
-              },
-            }}
             key={option}
             value={option}>
             {option}

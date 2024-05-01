@@ -135,12 +135,12 @@ export default function SignUpForm({ children }: Props) {
           disabled={isLoading}
           isLoading={!isSignUpDialogOpen && isLoading}
           type="submit"
-          styles={{
+          sxStyles={{
             marginTop: 3,
             marginBottom: 3,
           }}
           fullWidth
-          backgroundColor="primary"
+          color="primary"
         />
         {children}
       </Box>

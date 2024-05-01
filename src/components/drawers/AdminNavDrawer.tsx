@@ -22,6 +22,7 @@ type Props = {
 
 export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Props) {
   const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
 
   return (
     <Drawer
@@ -30,7 +31,7 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
       open={open}
       sx={{
         '& .MuiDrawer-paper': {
-          backgroundColor: theme.palette.background.paper,
+          backgroundColor: darkMode ? theme.palette.custom.navbar.upper : theme.palette.background.paper,
           position: 'fixed',
           whiteSpace: 'nowrap',
           width: drawerWidth,
@@ -62,7 +63,7 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText
                 primary={item.label}
-                sx={{ color: theme.palette.custom.navBar.lower.text }}
+                sx={{ color: theme.palette.custom.navbar.lower.text }}
               />
             </ListItemButton>
           </Link>
@@ -75,11 +76,11 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
             </ListItemIcon>
             <ListItemText
               primary="Client View"
-              sx={{ color: theme.palette.custom.navBar.lower.text }}
+              sx={{ color: theme.palette.custom.navbar.lower.text }}
             />
           </ListItemButton>
         </Link>
-        <SignOutButton buttonVariant="adminNavDrawer" />
+        <SignOutButton buttonVariant="permanentDrawer" />
       </List>
     </Drawer>
   );

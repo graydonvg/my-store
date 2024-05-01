@@ -1,6 +1,6 @@
 import { BORDER_RADIUS } from '@/config';
 import { ProductType } from '@/types';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import ProductCard from '../../ui/productCard/ProductCard';
 
@@ -21,10 +21,10 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
         item
         xs={6}
         sm={3}>
-        <Box
+        <Paper
+          elevation={0}
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'dark' ? theme.palette.custom.shade.dark : theme.palette.custom.shade.light,
+            backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
             borderRadius: BORDER_RADIUS,
             padding: { xs: 2, lg: 4 },
             display: 'flex',
@@ -44,10 +44,10 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
             <ContainedButton
               onClick={onClick}
               label="shop all"
-              backgroundColor="primary"
+              color="primary"
             />
           </Box>
-        </Box>
+        </Paper>
       </Grid>
 
       {products?.map((product, index) => (

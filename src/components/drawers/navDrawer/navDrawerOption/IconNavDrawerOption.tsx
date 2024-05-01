@@ -10,24 +10,24 @@ export default function IconNavDrawerOption({ label }: Props) {
     return (
       <IconButton
         sx={(theme) => ({
-          color: theme.palette.custom.navBar.upper.text,
+          color: theme.palette.custom.navbar.upper.text,
           '&:hover': {
             backgroundColor: 'transparent',
           },
         })}>
-        <Logout sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }} />
+        <Logout sx={{ color: (theme) => theme.palette.custom.navbar.lower.text }} />
       </IconButton>
     );
   } else {
     return (
       <IconButton
         sx={(theme) => ({
-          color: theme.palette.custom.navBar.upper.text,
+          color: theme.palette.custom.navbar.upper.text,
           '&:hover': {
             backgroundColor: 'transparent',
           },
         })}>
-        <ArrowForwardIos sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }} />
+        <ArrowForwardIos sx={{ color: (theme) => theme.palette.custom.navbar.lower.text }} />
       </IconButton>
     );
   }

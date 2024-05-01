@@ -23,7 +23,7 @@ export default function ThemeToggleButton({ size }: Props) {
       size={size}>
       <ThemeToggleIcon
         size={size}
-        color={theme.palette.custom.navBar.upper.text}
+        color={theme.palette.custom.navbar.upper.text}
       />
     </IconButton>
   );

@@ -11,7 +11,7 @@ export default function ButtonNoLinkNavDrawerOption({ label }: Props) {
     <ListItemButton sx={{ width: 1, height: '100%' }}>
       <ListItemText
         primary={label}
-        sx={{ color: (theme) => theme.palette.custom.navBar.lower.text }}
+        sx={{ color: (theme) => theme.palette.custom.navbar.lower.text }}
       />
       <IconNavDrawerOption label={label} />
     </ListItemButton>

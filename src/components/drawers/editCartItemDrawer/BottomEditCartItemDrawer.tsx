@@ -48,13 +48,13 @@ export default function BottomEditCartItemDrawer({
       <TextButton
         onClick={moveToWishlist}
         label="move to wishlist"
-        labelColor={theme.palette.custom.typography}
+        labelColor={theme.palette.text.primary}
         startIcon={<FavoriteBorder />}
       />
       <TextButton
         onClick={removeCartItem}
         label={'remove'}
-        labelColor={theme.palette.custom.typography}
+        labelColor={theme.palette.text.primary}
         startIcon={<Delete />}
       />
     </Box>

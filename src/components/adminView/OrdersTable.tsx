@@ -78,7 +78,7 @@ export default function OrdersTable({ orders }: Props) {
           <TableRow>
             <TableCell
               sx={{
-                backgroundColor: theme.palette.custom.table.header,
+                backgroundColor: theme.palette.custom.dataGrid.header,
               }}>
               ID
             </TableCell>
@@ -87,7 +87,7 @@ export default function OrdersTable({ orders }: Props) {
                 key={headCell.id}
                 sortDirection={sortBy === headCell.id ? sortDirection : false}
                 sx={{
-                  backgroundColor: theme.palette.custom.table.header,
+                  backgroundColor: theme.palette.custom.dataGrid.header,
                 }}>
                 <TableSortLabel
                   active={sortBy === headCell.id}

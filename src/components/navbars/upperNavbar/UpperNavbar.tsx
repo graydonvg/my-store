@@ -4,7 +4,7 @@ import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContai
 
 export default function UpperNavbar() {
   return (
-    <Box sx={{ backgroundColor: (theme) => theme.palette.custom.navBar.upper.background }}>
+    <Box sx={{ backgroundColor: (theme) => theme.palette.custom.navbar.upper.background }}>
       <CommonNavbarContainer>
         <UpperNavbarOptions />
       </CommonNavbarContainer>

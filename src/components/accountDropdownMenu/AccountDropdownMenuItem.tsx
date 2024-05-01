@@ -1,5 +1,5 @@
 import { BORDER_RADIUS } from '@/config';
-import { ListItemIcon, MenuItem } from '@mui/material';
+import { ListItemIcon, MenuItem, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -9,15 +9,17 @@ type Props = {
 };
 
 export default function AccountDropdownMenuItem({ icon, label, onClick }: Props) {
+  const theme = useTheme();
+
   return (
     <MenuItem
       sx={{
         borderRadius: BORDER_RADIUS,
-        color: 'white',
-        '&:hover': { backgroundColor: (theme) => theme.palette.custom.primary.dark },
+        color: theme.palette.custom.navbar.upper.text,
+        '&:hover': { backgroundColor: theme.palette.primary.main },
       }}
       onClick={onClick}>
-      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemIcon sx={{ color: theme.palette.custom.navbar.upper.text }}>{icon}</ListItemIcon>
       {label}
     </MenuItem>
   );

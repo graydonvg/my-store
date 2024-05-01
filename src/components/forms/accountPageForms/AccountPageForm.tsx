@@ -32,14 +32,14 @@ export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isS
           disabled={disableSubmit}
           isLoading={isSubmitting}
           fullWidth={false}
-          backgroundColor="primary"
-          style={{ minWidth: '96px' }}
+          color="primary"
+          sxStyles={{ minWidth: '96px' }}
         />
         <OutlinedButton
           label="cancel"
           fullWidth={false}
-          style={{ minWidth: '96px' }}
           onClick={onCancel}
+          sxStyles={{ minWidth: '96px' }}
         />
       </Box>
     </Box>

@@ -72,7 +72,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       <ProductImageBoxes maxImageCount={maxImageCount} />
       <EditProductImagesDrawer isSubmitting={isSubmitting} />
       <ContainedButton
-        backgroundColor="primary"
+        color="primary"
         disabled={uploadInProgress || isSubmitting}
         label={
           <>

@@ -4,12 +4,20 @@ import { PulseLoader } from 'react-spinners';
 
 type Props = ButtonProps & {
   label: ReactNode;
-  labelColor?: string;
+  labelColor: string;
+  labelColorHoverActive?: string;
   startIcon?: ReactNode;
   isLoading?: boolean;
 };
 
-export default function TextButton({ label, labelColor, startIcon, isLoading, ...props }: Props) {
+export default function TextButton({
+  label,
+  labelColor,
+  labelColorHoverActive,
+  startIcon,
+  isLoading,
+  ...props
+}: Props) {
   return (
     <Button
       variant="text"
@@ -19,16 +27,18 @@ export default function TextButton({ label, labelColor, startIcon, isLoading, ..
         color: labelColor,
         whiteSpace: 'nowrap',
         '&:hover': {
+          color: labelColorHoverActive ?? labelColor,
           backgroundColor: 'transparent',
         },
         '&:active': {
+          color: labelColorHoverActive ?? labelColor,
           backgroundColor: 'transparent',
         },
       }}
       startIcon={
         isLoading ? (
           <PulseLoader
-            color={labelColor}
+            color={labelColorHoverActive ?? labelColor}
             loading={isLoading}
             size={10}
           />

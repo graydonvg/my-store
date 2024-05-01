@@ -1,6 +1,6 @@
 'use client';
 
-import { Paper, TablePagination, lighten } from '@mui/material';
+import { Paper, TablePagination } from '@mui/material';
 import OrdersTable from './OrdersTable';
 import { AdminOrderType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -89,21 +89,21 @@ export default function AdminOrdersPageClient({
           select: {
             MenuProps: {
               MenuListProps: {
-                sx: {
-                  '& .MuiTablePagination-menuItem.Mui-selected': {
-                    color: (theme) => theme.palette.custom.typographyVariants.light,
-                    backgroundColor: (theme) => `${theme.palette.custom.primary.light} !important`,
-                    '&:hover': {
-                      backgroundColor: (theme) => lighten(theme.palette.custom.primary.light, 0.1),
-                    },
-                  },
-                },
+                // sx: {
+                //   '& .MuiTablePagination-menuItem.Mui-selected': {
+                //     color: (theme) => theme.palette.custom.typographyVariants.light,
+                //     backgroundColor: (theme) => `${theme.palette.primary.light} !important`,
+                //     '&:hover': {
+                //       backgroundColor: (theme) => lighten(theme.palette.primary.light, 0.1),
+                //     },
+                //   },
+                // },
               },
             },
           },
         }}
         sx={(theme) => ({
-          backgroundColor: theme.palette.custom.table.footer,
+          backgroundColor: theme.palette.custom.dataGrid.footer,
           '& .MuiTablePagination-toolbar': {
             paddingX: 2,
             paddingY: 1,

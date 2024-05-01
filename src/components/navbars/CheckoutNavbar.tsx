@@ -16,19 +16,19 @@ export default function CheckoutNavbar() {
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ backgroundColor: theme.palette.custom.navBar.upper.background }}>
+    <Box sx={{ backgroundColor: theme.palette.custom.navbar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
-            height: { xs: '64px', md: '48px' },
+            height: '64px',
           }}>
           <NavbarTitle
             hideText={isBelowSmall ? true : false}
             variant="h5"
             display="flex"
-            color={theme.palette.custom.navBar.upper.text}
+            color={theme.palette.custom.navbar.upper.text}
           />
           <Box
             sx={{ margin: '0 auto' }}

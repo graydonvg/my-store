@@ -37,7 +37,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           maxWidth: 400,
           boxShadow: 24,
           borderRadius: BORDER_RADIUS,
-          backgroundColor: (theme) => theme.palette.custom.dialog.background,
+          backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
         }}>
         <LoadingBar
           isLoading={isDialogLoading}
@@ -49,7 +49,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
             size="small"
             aria-label="close dialog"
             onClick={close}
-            sx={{ color: (theme) => theme.palette.custom.typography }}>
+            sx={{ color: (theme) => theme.palette.text.secondary }}>
             <Close fontSize="large" />
           </IconButton>
         </Box>

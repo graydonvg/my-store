@@ -92,7 +92,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
             position: 'absolute',
             bottom: 0,
             right: 0,
-            color: theme.palette.custom.typography,
+            color: theme.palette.text.primary,
             padding: 0,
             paddingBottom: 1,
           }}>
@@ -100,14 +100,13 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
         </IconButton>
       ) : (
         <PulseLoader
-          color={theme.palette.custom.typography}
+          color={theme.palette.text.primary}
           loading={isLoading}
           size={10}
           style={{
             position: 'absolute',
             bottom: 8,
             right: 0,
-            color: theme.palette.custom.typography,
           }}
         />
       )}

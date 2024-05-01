@@ -87,7 +87,7 @@ export default function PaymentSuccessPage() {
       </Box>
       <PulseLoader
         size={isBelowSmall ? 16 : 24}
-        color={theme.palette.custom.typography}
+        color={theme.palette.text.primary}
         loading={true}
       />
       <Box sx={{ height: { xs: '18px', sm: '30px' } }}>

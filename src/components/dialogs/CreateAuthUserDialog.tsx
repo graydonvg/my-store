@@ -18,10 +18,9 @@ export default function CreateAuthUserDialog() {
       <ContainedButton
         label="add user"
         startIcon={<Add />}
-        height="32px"
-        minHeight={1}
-        backgroundColor="primary"
+        color="primary"
         onClick={openAddUserDialog}
+        sxStyles={{ height: '32px', minHeight: '32px' }}
       />
       <DialogComponent isOpen={isAddUserDialogOpen}>
         <CreateAuthUserForm />

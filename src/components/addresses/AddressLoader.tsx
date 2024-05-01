@@ -20,7 +20,7 @@ export default function AddressLoader({ isLoading }: Props) {
       }}>
       <PulseLoader
         loading={isLoading}
-        color={theme.palette.custom.typography}
+        color={theme.palette.text.primary}
         size={10}
       />
     </Box>

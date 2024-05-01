@@ -14,7 +14,7 @@ export default function BreadcrumbsComponent({ children }: Props) {
         separator={
           <NavigateNext
             fontSize="large"
-            sx={{ color: (theme) => theme.palette.custom.shade.medium }}
+            sx={{ color: (theme) => theme.palette.grey[600] }}
           />
         }
         aria-label="breadcrumb">

@@ -12,7 +12,7 @@ export default function CartViewEmptyMessage() {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: (theme) => theme.palette.custom.card.background,
+        backgroundColor: (theme) => theme.palette.background.paper,
         borderRadius: BORDER_RADIUS,
         paddingX: 2,
         paddingY: 4,
@@ -26,7 +26,7 @@ export default function CartViewEmptyMessage() {
         <Typography
           component="p"
           fontSize={24}
-          sx={{ textDecoration: 'underline', color: (theme) => theme.palette.custom.primary.dark }}>
+          sx={{ textDecoration: 'underline', color: (theme) => theme.palette.primary.main }}>
           Continue shopping
         </Typography>
       </Link>

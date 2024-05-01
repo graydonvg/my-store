@@ -8,7 +8,7 @@ export default function LowerNavbar() {
       id="lower-nav"
       component="div"
       position="sticky"
-      sx={{ backgroundColor: (theme) => theme.palette.custom.navBar.lower.background }}>
+      sx={{ backgroundColor: (theme) => theme.palette.custom.navbar.lower.background }}>
       <CommonNavbarContainer>
         <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
           <LowerNavbarOptions />

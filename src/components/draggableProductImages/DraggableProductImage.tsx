@@ -84,7 +84,18 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
             {...restOfAttributes}
             disableRipple
             sx={{ cursor: 'grab', touchAction: 'none' }}>
-            <DragHandle fontSize="large" />
+            <DragHandle
+              fontSize="large"
+              sx={{
+                color: theme.palette.text.secondary,
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                },
+                '&:active': {
+                  color: theme.palette.text.primary,
+                },
+              }}
+            />
           </IconButton>
         </Grid>
         <Grid
@@ -134,7 +145,8 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               onClick={deleteImage}
               isLoading={isDeletingCurrentImage}
               disabled={isDeletingCurrentImage}
-              labelColor={theme.palette.custom.typography}
+              labelColor={theme.palette.text.secondary}
+              labelColorHoverActive={theme.palette.text.primary}
               startIcon={<DeleteForever />}
             />
           </Box>

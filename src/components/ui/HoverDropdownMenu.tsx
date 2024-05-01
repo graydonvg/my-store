@@ -55,7 +55,7 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
             padding: 0,
           },
           '& .MuiMenu-paper': {
-            backgroundColor: (theme) => theme.palette.custom.navBar.upper.background,
+            backgroundColor: (theme) => theme.palette.custom.navbar.upper.background,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             overflow: 'visible',

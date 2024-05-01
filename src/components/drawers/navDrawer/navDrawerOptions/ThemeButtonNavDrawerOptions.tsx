@@ -21,17 +21,17 @@ export default function ThemeButtonNavDrawerOptions() {
           sx={{ width: 1, height: '100%' }}>
           <ListItemText
             primary={`${theme.palette.mode === 'dark' ? 'Light' : 'Dark'} Mode`}
-            sx={{ color: theme.palette.custom.navBar.lower.text }}
+            sx={{ color: theme.palette.custom.navbar.lower.text }}
           />
           <IconButton
             sx={{
-              color: theme.palette.custom.navBar.upper.text,
+              color: theme.palette.custom.navbar.upper.text,
               '&:hover': {
                 backgroundColor: 'transparent',
               },
             }}>
             <ThemeToggleIcon
-              color={theme.palette.custom.navBar.lower.text}
+              color={theme.palette.custom.navbar.lower.text}
               size={'small'}
             />
           </IconButton>
