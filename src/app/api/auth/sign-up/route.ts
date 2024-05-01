@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType, UserAuthType } from '@/types';
+import { CustomResponseType, UpdateUserPersonalInformationType, UserAuthType } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
+import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
   const supabase = await createSupabaseServerClient();
@@ -12,7 +14,11 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const signUpData: UserAuthType = await request.json();
+    const userData: UserAuthType & UpdateUserPersonalInformationType = await request.json();
+    const { email, password, ...userDataToUpdate } = userData;
+    const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
+    const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);
+    const hasDataToUpdate = emptyFiledsArray.length !== numberOfFromFields;
 
     if (user)
       return NextResponse.json({
@@ -20,19 +26,32 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: 'Sign up failed. Please sign out before creating a new account.',
       });
 
-    if (!signUpData)
+    if (!userData)
       return NextResponse.json({
         success: false,
         message: `Sign up failed. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
-    const { error } = await supabase.auth.signUp({
-      email: signUpData.email,
-      password: signUpData.password,
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email: email,
+      password: password,
     });
 
-    if (error) {
-      return NextResponse.json({ success: false, message: `Sign up failed. ${error.message}.` });
+    if (signUpError) {
+      return NextResponse.json({ success: false, message: `Sign up failed. ${signUpError.message}.` });
+    }
+
+    if (hasDataToUpdate) {
+      const userId = signUpData?.user?.id ?? '';
+
+      const { error: updateUserError } = await supabase.from('users').update(userDataToUpdate).eq('userId', userId);
+
+      if (updateUserError) {
+        return NextResponse.json({
+          success: false,
+          message: `Sign up successful, but failed to insert name and contact number. ${updateUserError.message}.`,
+        });
+      }
     }
 
     return NextResponse.json({ success: true, message: 'Sign up successful.' });

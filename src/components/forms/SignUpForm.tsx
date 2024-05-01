@@ -10,20 +10,27 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
-import { updateUserPersonalInformation } from '@/services/users/update';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', autoComplete: 'given-name' },
-  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name' },
-  { label: 'Email Address', name: 'email', autoComplete: 'email' },
-  { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password' },
-  { label: 'Confirm Password', name: 'confirmPassword', type: 'password', autoComplete: 'new-password' },
+  { label: 'First Name', name: 'firstName', type: 'text', autoComplete: 'given-name', required: false },
+  { label: 'Last Name', name: 'lastName', type: 'text', autoComplete: 'family-name', required: false },
+  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false },
+  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true },
+  { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password', required: true },
+  {
+    label: 'Confirm Password',
+    name: 'confirmPassword',
+    type: 'password',
+    autoComplete: 'new-password',
+    required: true,
+  },
 ];
 
 const defaultFormData = {
   firstName: '',
   lastName: '',
   email: '',
+  contactNumber: '',
   password: '',
   confirmPassword: '',
 };
@@ -62,28 +69,23 @@ export default function SignUpForm({ children }: Props) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const { email, password, firstName, lastName } = formData;
+    const { email, password, firstName, lastName, contactNumber } = formData;
 
-    const { success: signUpSuccess, message: signUpMessage } = await signUpNewUser({
+    // User role defaults to customer db side
+    const { success, message } = await signUpNewUser({
       email,
       password,
+      firstName,
+      lastName,
+      contactNumber,
     });
 
-    if (signUpSuccess === true) {
-      const { success: updateSuccess, message: updateMessage } = await updateUserPersonalInformation({
-        firstName,
-        lastName,
-      });
-
-      if (updateSuccess === true) {
-        dispatch(closeDialog());
-        setFormData(defaultFormData);
-        router.refresh();
-      } else {
-        toast.error(updateMessage);
-      }
+    if (success === true) {
+      dispatch(closeDialog());
+      setFormData(defaultFormData);
+      router.refresh();
     } else {
-      toast.error(signUpMessage);
+      toast.error(message);
     }
 
     setIsLoading(false);
@@ -117,11 +119,11 @@ export default function SignUpForm({ children }: Props) {
               <CustomTextField
                 label={field.label}
                 name={field.name}
-                type={field.type ?? 'text'}
+                type={field.type}
                 value={formData[field.name as keyof typeof formData]}
                 autoComplete={field.autoComplete}
                 autoFocus={field.name === 'firstName'}
-                required={true}
+                required={field.required}
                 fullWidth={true}
                 onChange={handleInputChange}
               />

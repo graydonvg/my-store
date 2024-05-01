@@ -15,10 +15,10 @@ import { createAuthUser } from '@/services/users/create';
 import { UserRole } from '@/types';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', autoComplete: 'given-name', required: false },
-  { label: 'Last Name', name: 'lastName', autoComplete: 'family-name', required: false },
-  { label: 'Email Address', name: 'email', autoComplete: 'email', required: true },
-  { label: 'Contact number', name: 'contactNumber', required: false },
+  { label: 'First Name', name: 'firstName', type: 'text', autoComplete: 'given-name', required: false },
+  { label: 'Last Name', name: 'lastName', type: 'text', autoComplete: 'family-name', required: false },
+  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false },
+  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true },
   { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password', required: true },
   {
     label: 'Confirm Password',
@@ -117,7 +117,7 @@ export default function CreateAuthUserForm() {
               <CustomTextField
                 label={field.label}
                 name={field.name}
-                type={field.type ?? 'text'}
+                type={field.type}
                 value={formData[field.name as keyof typeof formData]}
                 autoComplete={field.autoComplete}
                 autoFocus={field.name === 'firstName'}

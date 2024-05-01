@@ -3,6 +3,8 @@ import { UpdateUserPersonalInformationType, CreateUserResponseType, CustomRespon
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
+import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType<CreateUserResponseType>>> {
   const supabaseAuth = await createSupabaseServerClient();
@@ -19,6 +21,9 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const userData: UserAuthType & UpdateUserPersonalInformationType = await request.json();
     const { email, password, ...userDataToUpdate } = userData;
+    const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
+    const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);
+    const hasDataToUpdate = emptyFiledsArray.length !== numberOfFromFields;
 
     if (!user)
       return NextResponse.json({
@@ -38,7 +43,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: `Failed to create user. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
-    const { data: createdUserData, error: createUserError } = await supabaseSerice.auth.admin.createUser({
+    const { data: createUserData, error: createUserError } = await supabaseSerice.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
@@ -48,23 +53,24 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to create user. ${createUserError.message}.` });
     }
 
-    const { error: updateUserError } = await supabaseSerice
-      .from('users')
-      .update(userDataToUpdate)
-      .eq('userId', createdUserData.user.id);
+    if (hasDataToUpdate) {
+      const { error: updateUserError } = await supabaseSerice
+        .from('users')
+        .update(userDataToUpdate)
+        .eq('userId', createUserData.user.id);
 
-    if (updateUserError) {
-      return NextResponse.json({
-        success: false,
-        message: `Auth user created successfully, but failed to update users table. ${updateUserError.message}.`,
-      });
+      if (updateUserError) {
+        return NextResponse.json({
+          success: false,
+          message: `Auth user created successfully, but failed to update users table. ${updateUserError.message}.`,
+        });
+      }
     }
 
     if (userDataToUpdate.role && userDataToUpdate.role === 'admin') {
-      // role column in users table updated automatically by update_user_role_admins_trigger
       const { error: userAdminRoleError } = await supabaseSerice
         .from('admins')
-        .insert({ userId: createdUserData.user.id });
+        .insert({ userId: createUserData.user.id });
 
       if (userAdminRoleError) {
         return NextResponse.json({
@@ -75,10 +81,9 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     }
 
     if (userDataToUpdate.role && userDataToUpdate.role === 'manager') {
-      // role column in users table updated automatically by update_user_role_managers_trigger
       const { error: userAdminRoleError } = await supabaseSerice
         .from('managers')
-        .insert({ userId: createdUserData.user.id });
+        .insert({ userId: createUserData.user.id });
 
       if (userAdminRoleError) {
         return NextResponse.json({

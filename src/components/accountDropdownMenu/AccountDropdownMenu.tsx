@@ -49,6 +49,13 @@ export default function AccountDropdownMenu() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const mode = theme.palette.mode;
+  let title = 'Account';
+
+  if (userData?.firstName) {
+    title = userData?.firstName;
+  } else if (userData?.email) {
+    title = userData?.email.split('@')[0];
+  }
 
   function changeTheme() {
     dispatch(toggleTheme());
@@ -64,7 +71,7 @@ export default function AccountDropdownMenu() {
             sx={{
               color: 'white',
             }}>
-            {userData?.firstName ?? userData?.email.split('@')[0] ?? 'Account'}
+            {title}
           </Typography>
           <ArrowDropDown sx={{ color: theme.palette.custom.primary.dark, marginLeft: 1 }} />
         </>
