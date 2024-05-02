@@ -60,7 +60,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}
-      color="error"
+      color="secondary"
       startIcon={<Favorite />}
     />
   );

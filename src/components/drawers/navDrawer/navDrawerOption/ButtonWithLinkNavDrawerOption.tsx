@@ -33,10 +33,10 @@ export default function ButtonWithLinkNavDrawerOption({ path, label }: Props) {
         <ListItemText
           primary={label}
           sx={(theme) => ({
-            color: isSaleOption ? theme.palette.error.main : theme.palette.custom.navbar.lower.text,
+            color: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
             width: 1,
             textDecoration: pathname === path ? 'underline' : 'none',
-            textDecorationColor: isSaleOption ? theme.palette.error.main : theme.palette.custom.navbar.lower.text,
+            textDecorationColor: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
           })}

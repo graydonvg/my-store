@@ -51,7 +51,7 @@ export default function ProductForm({ isSubmitting, onSubmit, submitButtonLabel,
         component="button"
         isLoading={isClearingAllFields}
         startIcon={<DeleteForever />}
-        color="error"
+        color="secondary"
       />
       <ContainedButton
         type="submit"

@@ -20,7 +20,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           primary: {
             main: blue[700],
           },
-          error: {
+          secondary: {
             main: red[700],
           },
           custom: {
@@ -63,7 +63,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           primary: {
             main: blue[700],
           },
-          error: {
+          secondary: {
             main: red[700],
           },
           custom: {

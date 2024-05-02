@@ -35,7 +35,6 @@ export default function DialogComponent({ isOpen, children }: Props) {
         sx={{
           margin: '0 auto',
           maxWidth: 400,
-          boxShadow: 24,
           borderRadius: BORDER_RADIUS,
           backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
         }}>

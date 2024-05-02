@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { ProductType } from '@/types';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
@@ -8,6 +8,7 @@ type Props = {
 };
 
 export default function TopProductDetails({ product }: Props) {
+  const theme = useTheme();
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
 
@@ -15,17 +16,17 @@ export default function TopProductDetails({ product }: Props) {
     <>
       <Box>
         <Typography
-          sx={{ paddingY: 1 }}
           lineHeight={1.2}
           component="h1"
-          fontSize={30}>
+          fontSize={30}
+          sx={{ paddingY: 1, color: theme.palette.text.primary }}>
           {product.name}
         </Typography>
         <Typography
           lineHeight={1}
           component="span"
           fontSize={16}
-          sx={{ paddingY: 1, color: (theme) => theme.palette.custom }}>
+          sx={{ paddingY: 1, color: theme.palette.text.secondary }}>
           {product.brand.toUpperCase()}
         </Typography>
       </Box>
@@ -42,7 +43,8 @@ export default function TopProductDetails({ product }: Props) {
           component="span"
           fontFamily={'Georgia'}
           fontStyle="italic"
-          fontSize={42}>
+          fontSize={42}
+          sx={{ color: theme.palette.text.primary }}>
           {formatCurrency(isOnSale ? discountedPrice : product.price)}
         </Typography>
         {isOnSale ? (
@@ -59,7 +61,7 @@ export default function TopProductDetails({ product }: Props) {
               fontFamily={'Georgia'}
               fontStyle="italic"
               fontSize={22}
-              sx={{ textDecoration: 'line-through', paddingRight: 1, color: (theme) => theme.palette.custom }}>
+              sx={{ textDecoration: 'line-through', paddingRight: 1, color: theme.palette.text.disabled }}>
               {formatCurrency(product.price)}
             </Typography>
             <Typography
@@ -68,7 +70,7 @@ export default function TopProductDetails({ product }: Props) {
               fontSize={22}
               fontFamily={'Georgia'}
               fontStyle="italic"
-              sx={{ color: (theme) => theme.palette.primary.light, fontFamily: 'serif' }}>
+              sx={{ color: theme.palette.primary.light, fontFamily: 'serif' }}>
               {`-${product.salePercentage}%`}
             </Typography>
           </Box>

@@ -12,7 +12,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const isSaleOption = label.toLowerCase() === 'sale';
-  const saleOptionHoverColor = darkMode ? theme.palette.error.light : theme.palette.error.dark;
+  const saleOptionHoverColor = darkMode ? theme.palette.secondary.light : theme.palette.secondary.dark;
 
   return (
     <ListItem
@@ -23,14 +23,14 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
           component="span"
           sx={{
             textTransform: 'none',
-            color: isSaleOption ? theme.palette.error.main : theme.palette.text.secondary,
+            color: isSaleOption ? theme.palette.secondary.main : theme.palette.text.secondary,
             textDecoration: underline ? 'underline' : 'none',
-            textDecorationColor: isSaleOption ? theme.palette.error.main : theme.palette.custom.navbar.lower.text,
+            textDecorationColor: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
             '&:hover': {
               color: isSaleOption ? saleOptionHoverColor : theme.palette.text.primary,
-              textDecorationColor: isSaleOption ? theme.palette.error.dark : theme.palette.text.primary,
+              textDecorationColor: isSaleOption ? theme.palette.secondary.dark : theme.palette.text.primary,
             },
           }}>
           <Link href={path}>{label}</Link>

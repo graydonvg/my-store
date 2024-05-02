@@ -121,7 +121,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                       lineHeight={'18px'}
                       noWrap
                       sx={{
-                        color: (theme) => theme.palette.error.main,
+                        color: (theme) => theme.palette.secondary.main,
                       }}>
                       Out of stock
                     </Typography>

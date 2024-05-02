@@ -58,7 +58,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
 
   return (
     <ContainedButton
-      color="error"
+      color="secondary"
       disabled={disabled}
       onClick={checkout}
       label={label}

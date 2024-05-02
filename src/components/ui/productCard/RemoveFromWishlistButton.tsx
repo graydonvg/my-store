@@ -63,8 +63,8 @@ export default function RemoveFromWishlistButton({
             strokeWidth: 2,
             '@media (hover: hover)': {
               '&:hover': {
-                color: theme.palette.error.main,
-                stroke: theme.palette.error.main,
+                color: theme.palette.secondary.main,
+                stroke: theme.palette.secondary.main,
               },
             },
           }}>

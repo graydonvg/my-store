@@ -86,7 +86,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             disabled={isDeletingAllImages}
             isLoading={isDeletingAllImages}
             label={!isDeletingAllImages ? 'Delete all' : ''}
-            color="error"
+            color="secondary"
             fullWidth
             startIcon={<DeleteForever />}
           />
