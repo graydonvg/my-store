@@ -5,7 +5,7 @@ import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
 import { setUserData } from '@/lib/redux/slices/userSlice';
 import signOut from '@/services/auth/sign-out';
 import { Logout } from '@mui/icons-material';
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
@@ -16,6 +16,7 @@ type Props = {
 };
 
 export default function SignOutButton({ buttonVariant, accountMenuIconColor, accountMenuIconSize }: Props) {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -69,14 +70,13 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
       ) : null}
 
       {buttonVariant === 'permanentDrawer' ? (
-        <ListItemButton onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}>
-          <ListItemIcon>
+        <ListItemButton
+          onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}
+          sx={{ color: theme.palette.text.secondary }}>
+          <ListItemIcon sx={{ color: theme.palette.text.secondary }}>
             <Logout />
           </ListItemIcon>
-          <ListItemText
-            primary="Sign Out"
-            sx={{ color: (theme) => theme.palette.custom.navbar.lower.text }}
-          />
+          <ListItemText primary="Sign Out" />
         </ListItemButton>
       ) : null}
     </>

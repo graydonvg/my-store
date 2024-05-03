@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Box, Grid } from '@mui/material';
-import FormHeading from './FormHeading';
+import { Box, Grid, useTheme } from '@mui/material';
+import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -10,19 +10,42 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
+import { Call, Email, Lock, Person } from '@mui/icons-material';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', type: 'text', autoComplete: 'given-name', required: false },
-  { label: 'Last Name', name: 'lastName', type: 'text', autoComplete: 'family-name', required: false },
-  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false },
-  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true },
-  { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password', required: true },
+  {
+    label: 'First Name',
+    name: 'firstName',
+    type: 'text',
+    autoComplete: 'given-name',
+    required: false,
+    icon: <Person />,
+  },
+  {
+    label: 'Last Name',
+    name: 'lastName',
+    type: 'text',
+    autoComplete: 'family-name',
+    required: false,
+    icon: <Person />,
+  },
+  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false, icon: <Call /> },
+  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true, icon: <Email /> },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    autoComplete: 'new-password',
+    required: true,
+    icon: <Lock />,
+  },
   {
     label: 'Confirm Password',
     name: 'confirmPassword',
     type: 'password',
     autoComplete: 'new-password',
     required: true,
+    icon: <Lock />,
   },
 ];
 
@@ -40,6 +63,7 @@ type Props = {
 };
 
 export default function SignUpForm({ children }: Props) {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const isSignUpDialogOpen = useAppSelector((state) => state.dialog.signUpDialog);
@@ -100,13 +124,15 @@ export default function SignUpForm({ children }: Props) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 3,
+        paddingBottom: 3,
       }}>
-      <FormHeading text="Sign up" />
+      <FormHeader text="Sign up" />
       <Box
         component="form"
-        onSubmit={handleSignUp}>
+        onSubmit={handleSignUp}
+        sx={{ paddingX: 3 }}>
         <Grid
           container
           spacing={2}>
@@ -126,6 +152,9 @@ export default function SignUpForm({ children }: Props) {
                 required={field.required}
                 fullWidth={true}
                 onChange={handleInputChange}
+                backgroundColor={theme.palette.custom.dialog.background.accent}
+                icon={field.icon}
+                hasValue={formData[field.name as keyof typeof formData].length > 0}
               />
             </Grid>
           ))}

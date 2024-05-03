@@ -1,17 +1,12 @@
-import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
-import { Add } from '@mui/icons-material';
-import { UpdateAddressTypeDb, UpdateAddressTypeStore } from '@/types';
+import { UpdateAddressTypeDb, AddressTypeStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
 import { updateAddress } from '@/services/users/update';
-import FormHeading from '../../FormHeading';
-import ContactDetailsFieldsAddressForm from '../ContactDetailsFieldsAddressForm';
-import DeliveryAddressFieldsAddressForm from '../DeliveryAddressFieldsAddressForm';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import AddressForm from '../AddressForm';
 
 export default function UpdateAddressForm() {
   const router = useRouter();
@@ -24,7 +19,7 @@ export default function UpdateAddressForm() {
 
     if (name === 'postalCode' && value.length > 4) return;
 
-    dispatch(setAddressFormDataOnChange({ field: name as keyof UpdateAddressTypeStore, value }));
+    dispatch(setAddressFormDataOnChange({ field: name as keyof AddressTypeStore, value }));
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -47,43 +42,11 @@ export default function UpdateAddressForm() {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 1,
-      }}>
-      <Box sx={{ textAlign: 'center', paddingBottom: 1 }}>
-        <FormHeading text={'Edit Address'} />
-      </Box>
-      <Box
-        component="form"
-        onSubmit={handleUpdateAddress}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            handleUpdateAddress;
-          }
-        }}
-        sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <ContactDetailsFieldsAddressForm
-          addressFormData={addressFormData}
-          onInputChange={handleInputChange}
-        />
-        <Divider />
-        <DeliveryAddressFieldsAddressForm
-          addressFormData={addressFormData}
-          onInputChange={handleInputChange}
-        />
-        <ContainedButton
-          label={'save'}
-          disabled={isDialogLoading}
-          type="submit"
-          fullWidth
-          color="primary"
-          startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
-        />
-      </Box>
-    </Box>
+    <AddressForm
+      addressFormData={addressFormData}
+      onInputChange={handleInputChange}
+      onSubmit={handleUpdateAddress}
+      isDialogLoading={isDialogLoading}
+    />
   );
 }

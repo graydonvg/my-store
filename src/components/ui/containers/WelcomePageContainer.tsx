@@ -1,7 +1,7 @@
 'use client';
 
 import { BORDER_RADIUS } from '@/config';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -9,15 +9,16 @@ type Props = {
 };
 
 export default function WelcomePageContainer({ children }: Props) {
+  const theme = useTheme();
   return (
     <Box
       sx={{
         margin: '0 auto',
         boxShadow: 5,
         borderRadius: BORDER_RADIUS,
-        padding: 4,
+        overflow: 'hidden',
         maxWidth: 400,
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: theme.palette.custom.dialog.background.primary,
       }}>
       {children}
     </Box>

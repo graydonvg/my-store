@@ -323,6 +323,24 @@ export type Database = {
         };
         Relationships: [];
       };
+      rolePermissions: {
+        Row: {
+          permission: Database['public']['Enums']['appPermission'];
+          permissionId: number;
+          role: Database['public']['Enums']['appRole'];
+        };
+        Insert: {
+          permission: Database['public']['Enums']['appPermission'];
+          permissionId?: number;
+          role: Database['public']['Enums']['appRole'];
+        };
+        Update: {
+          permission?: Database['public']['Enums']['appPermission'];
+          permissionId?: number;
+          role?: Database['public']['Enums']['appRole'];
+        };
+        Relationships: [];
+      };
       shippingDetails: {
         Row: {
           city: string;
@@ -383,6 +401,32 @@ export type Database = {
           }
         ];
       };
+      userRoles: {
+        Row: {
+          role: Database['public']['Enums']['appRole'];
+          roleId: number;
+          userId: string;
+        };
+        Insert: {
+          role: Database['public']['Enums']['appRole'];
+          roleId?: number;
+          userId: string;
+        };
+        Update: {
+          role?: Database['public']['Enums']['appRole'];
+          roleId?: number;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'userRoles_userId_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['userId'];
+          }
+        ];
+      };
       users: {
         Row: {
           contactNumber: string | null;
@@ -395,7 +439,7 @@ export type Database = {
         };
         Insert: {
           contactNumber?: string | null;
-          createdAt: string;
+          createdAt?: string;
           email: string;
           firstName?: string | null;
           lastName?: string | null;
@@ -465,6 +509,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      authorize: {
+        Args: {
+          requested_permission: Database['public']['Enums']['appPermission'];
+        };
+        Returns: boolean;
+      };
+      custom_access_token_hook: {
+        Args: {
+          event: Json;
+        };
+        Returns: Json;
+      };
       verifyUserPassword: {
         Args: {
           password: string;
@@ -473,7 +529,53 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never;
+      appPermission:
+        | 'addresses.all'
+        | 'addresses.insert'
+        | 'addresses.select'
+        | 'addresses.update'
+        | 'addresses.delete'
+        | 'cart.all'
+        | 'cart.insert'
+        | 'cart.select'
+        | 'cart.update'
+        | 'cart.delete'
+        | 'orderItems.all'
+        | 'orderItems.insert'
+        | 'orderItems.select'
+        | 'orderItems.update'
+        | 'orderItems.delete'
+        | 'orders.all'
+        | 'orders.insert'
+        | 'orders.select'
+        | 'orders.update'
+        | 'orders.delete'
+        | 'productImageData.all'
+        | 'productImageData.insert'
+        | 'productImageData.select'
+        | 'productImageData.update'
+        | 'productImageData.delete'
+        | 'products.all'
+        | 'products.insert'
+        | 'products.select'
+        | 'products.update'
+        | 'products.delete'
+        | 'shippingDetails.all'
+        | 'shippingDetails.insert'
+        | 'shippingDetails.select'
+        | 'shippingDetails.update'
+        | 'shippingDetails.delete'
+        | 'users.all'
+        | 'users.insert'
+        | 'users.select'
+        | 'users.update'
+        | 'users.delete'
+        | 'wishlist.all'
+        | 'wishlist.insert'
+        | 'wishlist.select'
+        | 'wishlist.update'
+        | 'wishlist.delete';
+      appRole: 'admin' | 'manager' | 'owner';
     };
     CompositeTypes: {
       [_ in never]: never;

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import AccountPageForm from './AccountPageForm';
+import { Call } from '@mui/icons-material';
 
 export default function UpdateContactNumberForm() {
   const router = useRouter();
@@ -62,6 +63,8 @@ export default function UpdateContactNumberForm() {
         type={'text'}
         value={contactNumber}
         onChange={handleInputChange}
+        hasValue={contactNumber.length > 0}
+        icon={<Call />}
       />
     </AccountPageForm>
   );

@@ -1,6 +1,8 @@
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, alpha, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
+import { usePathname } from 'next/navigation';
+import { BORDER_RADIUS } from '@/config';
 
 type Props = {
   cartTotal: number;
@@ -12,7 +14,8 @@ type Props = {
 
 export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
   const theme = useTheme();
-  const discountTotalBackgroundColor = alpha(theme.palette.primary.main, theme.palette.action.focusOpacity);
+  const pathname = usePathname();
+  const isOrdersPage = pathname.includes('/orders');
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -23,13 +26,19 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
       />
 
       {discountTotal > 0 ? (
-        <OrderTotalsRow
-          label="Discount total"
-          price={`-${formatCurrency(discountTotal)}`}
-          fontSize={14}
-          fontWeight={600}
-          backgroundColor={discountTotalBackgroundColor}
-        />
+        <Box
+          sx={{
+            backgroundColor: isOrdersPage ? theme.palette.background.paper : 'transparent',
+            borderRadius: BORDER_RADIUS,
+          }}>
+          <OrderTotalsRow
+            label="Discount total"
+            price={`-${formatCurrency(discountTotal)}`}
+            fontSize={14}
+            fontWeight={600}
+            backgroundColor={alpha(theme.palette.primary.main, theme.palette.action.focusOpacity)}
+          />
+        </Box>
       ) : null}
 
       <Box

@@ -12,7 +12,8 @@ export default function OrderShippingDetails({ shippingDetails }: Props) {
         component="h4"
         fontSize={14}
         fontWeight={500}
-        textTransform="uppercase">
+        textTransform="uppercase"
+        sx={{ color: (theme) => theme.palette.text.secondary }}>
         Shipping Details:
       </Typography>
       <Box>
@@ -30,7 +31,8 @@ export default function OrderShippingDetails({ shippingDetails }: Props) {
             key={item.label}
             id={item.label}
             component="p"
-            fontSize={14}>
+            fontSize={14}
+            sx={{ color: (theme) => theme.palette.text.primary }}>
             {item.value}
           </Typography>
         ))}

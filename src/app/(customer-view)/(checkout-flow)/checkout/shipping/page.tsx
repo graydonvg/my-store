@@ -2,7 +2,7 @@
 
 import SmallCartItemList from '@/components/cartItems/smallCartItemList/SmallCartItemList';
 import Addresses from '@/components/addresses/Addresses';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
 import { BORDER_RADIUS } from '@/config';
@@ -13,9 +13,8 @@ export default function Shipping() {
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Box
+    <Paper
       sx={{
-        backgroundColor: (theme) => theme.palette.background.paper,
         paddingX: 2,
         paddingY: 4,
         display: 'flex',
@@ -33,6 +32,6 @@ export default function Shipping() {
         defaultExpanded={isBelowMedium ? false : true}>
         <SmallCartItemList paddingX={isBelowMedium ? 0 : 2} />
       </AccordionComponent>
-    </Box>
+    </Paper>
   );
 }

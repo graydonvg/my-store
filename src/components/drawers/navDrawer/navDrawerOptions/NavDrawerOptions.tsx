@@ -21,7 +21,7 @@ export default function NavDrawerOptions() {
   return (
     <Box component="nav">
       <List disablePadding>
-        {userData && userData.authLevel > 0 ? (
+        {userData?.role === 'admin' || userData?.role === 'manager' ? (
           <NavDrawerOption
             onClick={closeDrawer}
             label={isAdminView ? 'Client View' : 'Admin View'}

@@ -33,7 +33,8 @@ export default function OrderDetails({ order, borderColor }: Props) {
               <Typography
                 component="span"
                 fontSize={14}
-                fontWeight={600}>
+                fontWeight={600}
+                sx={{ color: theme.palette.text.secondary }}>
                 Order Status:
               </Typography>
               <Typography
@@ -46,7 +47,8 @@ export default function OrderDetails({ order, borderColor }: Props) {
               <Typography
                 component="span"
                 fontSize={14}
-                fontWeight={600}>
+                fontWeight={600}
+                sx={{ color: theme.palette.text.secondary }}>
                 Order Date:
               </Typography>
               <Typography

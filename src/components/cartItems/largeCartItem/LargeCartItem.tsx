@@ -1,4 +1,4 @@
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItemType } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
@@ -24,10 +24,9 @@ export default function LargeCartItem({ item }: Props) {
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
-    <Box
+    <Paper
       sx={{
         padding: 2,
-        backgroundColor: (theme) => theme.palette.background.paper,
         borderRadius: BORDER_RADIUS,
         position: 'relative',
       }}>
@@ -112,6 +111,6 @@ export default function LargeCartItem({ item }: Props) {
         variant="fullWidth"
         flexItem
       />
-    </Box>
+    </Paper>
   );
 }

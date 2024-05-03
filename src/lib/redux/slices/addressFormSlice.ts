@@ -1,7 +1,7 @@
-import { UpdateAddressTypeStore } from '@/types';
+import { AddressTypeStore } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: UpdateAddressTypeStore = {
+const initialState: AddressTypeStore = {
   addressId: '',
   recipientFirstName: '',
   recipientLastName: '',
@@ -18,14 +18,14 @@ const addressFormSlice = createSlice({
   name: 'addressForm',
   initialState,
   reducers: {
-    setAddressFormData: (state, action: PayloadAction<UpdateAddressTypeStore>) => {
+    setAddressFormData: (state, action: PayloadAction<AddressTypeStore>) => {
       return { ...state, ...action.payload };
     },
     setAddressFormDataOnChange: (
       state,
       action: PayloadAction<{
-        field: keyof UpdateAddressTypeStore;
-        value: UpdateAddressTypeStore[keyof UpdateAddressTypeStore];
+        field: keyof AddressTypeStore;
+        value: AddressTypeStore[keyof AddressTypeStore];
       }>
     ) => {
       const { field, value } = action.payload;

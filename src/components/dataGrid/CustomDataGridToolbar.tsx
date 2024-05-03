@@ -21,6 +21,7 @@ export default function CustomDataGridToolbar({ children }: Props) {
     <GridToolbarContainer sx={{ columnGap: 1 }}>
       <GridToolbarColumnsButton
         slotProps={{
+          tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },
           button: {
             sx: { ...commonStyle },
           },
@@ -28,6 +29,7 @@ export default function CustomDataGridToolbar({ children }: Props) {
       />
       <GridToolbarFilterButton
         slotProps={{
+          tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },
           button: {
             sx: { ...commonStyle },
           },
@@ -35,7 +37,7 @@ export default function CustomDataGridToolbar({ children }: Props) {
       />
       <GridToolbarDensitySelector
         slotProps={{
-          tooltip: { title: 'Change density' },
+          tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },
           button: {
             sx: { ...commonStyle },
           },
@@ -44,7 +46,7 @@ export default function CustomDataGridToolbar({ children }: Props) {
       <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }} />
       <GridToolbarExport
         slotProps={{
-          tooltip: { title: 'Export data' },
+          tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },
           button: {
             variant: 'outlined',
             sx: { ...commonStyle },

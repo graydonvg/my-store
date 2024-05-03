@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, IconButton, Dialog } from '@mui/material';
+import { Box, IconButton, Dialog, useTheme } from '@mui/material';
 import LoadingBar from '../ui/progress/LoadingBar';
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
@@ -12,11 +12,13 @@ type Props = {
 };
 
 export default function DialogComponent({ isOpen, children }: Props) {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
   function close() {
     if (isDialogLoading) return;
+
     dispatch(closeDialog());
   }
 
@@ -36,23 +38,21 @@ export default function DialogComponent({ isOpen, children }: Props) {
           margin: '0 auto',
           maxWidth: 400,
           borderRadius: BORDER_RADIUS,
-          backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
+          backgroundColor: theme.palette.custom.dialog.background.primary,
         }}>
         <LoadingBar
           isLoading={isDialogLoading}
           style={{ borderTopRightRadius: BORDER_RADIUS, borderTopLeftRadius: BORDER_RADIUS }}
         />
-        <Box sx={{ position: 'absolute', right: 3, top: 3 }}>
-          <IconButton
-            disableRipple
-            size="small"
-            aria-label="close dialog"
-            onClick={close}
-            sx={{ color: (theme) => theme.palette.text.secondary }}>
-            <Close fontSize="large" />
-          </IconButton>
-        </Box>
-        <Box sx={{ padding: 4, paddingTop: 6 }}>{children}</Box>
+        <IconButton
+          disableRipple
+          size="small"
+          aria-label="close dialog"
+          onClick={close}
+          sx={{ color: theme.palette.text.secondary, borderRadius: '4px', position: 'absolute', right: 0, top: 0 }}>
+          <Close fontSize="medium" />
+        </IconButton>
+        {children}
       </Box>
     </Dialog>
   );

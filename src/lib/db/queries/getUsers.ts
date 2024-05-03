@@ -1,4 +1,4 @@
-import createSupabaseService from '@/lib/supabase/supabase-service';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 import {
   CustomResponseType,
@@ -21,7 +21,7 @@ export default async function getUsersForAdmin({
 }: Omit<TableQueryData<UsersFilterableColumns, UsersSortableColumns>, 'page'>): Promise<
   CustomResponseType<ResponseData>
 > {
-  const supabase = createSupabaseService();
+  const supabase = await createSupabaseServerClient();
   let usersQuery = supabase.from('users').select('*', {
     count: 'exact',
   });

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Grid } from '@mui/material';
-import FormHeading from './FormHeading';
+import { Box, FormControl, Grid, useTheme } from '@mui/material';
+import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
@@ -13,19 +13,49 @@ import SelectField from '../ui/inputFields/SelectField';
 import { USER_ROLE_OPTIONS } from '@/config';
 import { createAuthUser } from '@/services/users/create';
 import { UserRole } from '@/types';
+import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
 
 const formFields = [
-  { label: 'First Name', name: 'firstName', type: 'text', autoComplete: 'given-name', required: false },
-  { label: 'Last Name', name: 'lastName', type: 'text', autoComplete: 'family-name', required: false },
-  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false },
-  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true },
-  { label: 'Password', name: 'password', type: 'password', autoComplete: 'new-password', required: true },
+  {
+    label: 'First Name',
+    name: 'firstName',
+    type: 'text',
+    autoComplete: 'given-name',
+    required: false,
+    icon: <Person />,
+  },
+  {
+    label: 'Last Name',
+    name: 'lastName',
+    type: 'text',
+    autoComplete: 'family-name',
+    required: false,
+    icon: <Person />,
+  },
+  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false, icon: <Call /> },
+  {
+    label: 'Email Address',
+    name: 'email',
+    type: 'text',
+    autoComplete: 'email',
+    required: true,
+    icon: <Email />,
+  },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    autoComplete: 'new-password',
+    required: true,
+    icon: <Lock />,
+  },
   {
     label: 'Confirm Password',
     name: 'confirmPassword',
     type: 'password',
     autoComplete: 'new-password',
     required: true,
+    icon: <Lock />,
   },
 ];
 
@@ -40,14 +70,15 @@ const defaultFormData = {
 };
 
 export default function CreateAuthUserForm() {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
-  const authLevel = useAppSelector((state) => state.user.data?.authLevel);
+  const userData = useAppSelector((state) => state.user.data);
   const [formData, setFormData] = useState(defaultFormData);
   let restricedUserRoleOptions = [...USER_ROLE_OPTIONS];
 
-  if (authLevel && authLevel < 2) {
+  if (userData?.role !== 'manager') {
     restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) => role !== 'manager');
   }
 
@@ -98,13 +129,14 @@ export default function CreateAuthUserForm() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        gap: 3,
+        alignItems: 'flex-start',
+        gap: 2,
       }}>
-      <FormHeading text="Create a new user" />
+      <FormHeader text="Create a new user" />
       <Box
         component="form"
-        onSubmit={handleCreateAuthUser}>
+        onSubmit={handleCreateAuthUser}
+        sx={{ paddingX: 2 }}>
         <Grid
           container
           spacing={2}>
@@ -124,21 +156,29 @@ export default function CreateAuthUserForm() {
                 required={field.required}
                 fullWidth={true}
                 onChange={handleInputChange}
+                icon={field.icon}
+                hasValue={formData[field.name as keyof typeof formData].length > 0}
+                backgroundColor={theme.palette.custom.dialog.background.accent}
               />
             </Grid>
           ))}
           <Grid
             item
             xs={12}>
-            <SelectField
-              label="Role"
-              name="role"
-              options={restricedUserRoleOptions}
-              fullWidth
-              defaultValue={defaultFormData.role}
-              required
-              onChange={handleInputChange}
-            />
+            <FormControl fullWidth>
+              <SelectField
+                label="Role"
+                name="role"
+                options={restricedUserRoleOptions}
+                value={formData.role}
+                fullWidth
+                required
+                onChange={handleInputChange}
+                icon={<AdminPanelSettings />}
+                hasValue={formData.role.length > 0}
+                backgroundColor={theme.palette.custom.dialog.background.accent}
+              />
+            </FormControl>
           </Grid>
         </Grid>
         <ContainedButton

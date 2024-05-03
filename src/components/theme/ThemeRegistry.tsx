@@ -29,6 +29,12 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             text: {
               link: '#1976d2',
             },
+            dialog: {
+              background: {
+                primary: '#fff',
+                accent: grey[200],
+              },
+            },
             navbar: {
               upper: {
                 text: '#fff',
@@ -42,14 +48,17 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             },
             textField: {
               label: 'rgba(0, 0, 0, 0.6)',
+              labelFocused: 'rgba(0, 0, 0, 0.87)',
               border: 'rgba(0, 0, 0, 0.23)',
-              hover: 'rgba(0, 0, 0, 0.87)',
-              focused: 'rgba(0, 0, 0, 0.87)',
+              hover: 'rgba(0, 0, 0, 0.35)',
+              focused: 'rgba(0, 0, 0, 0.35)',
+              boxShadow:
+                '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
             },
             dataGrid: {
-              toolbar: grey[300],
-              header: grey[200],
-              footer: grey[200],
+              toolbar: '#fff',
+              header: grey[100],
+              footer: grey[100],
               border: 'rgba(224, 224, 224, 1)',
             },
           },
@@ -72,6 +81,13 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             text: {
               link: '#90caf9',
             },
+
+            dialog: {
+              background: {
+                primary: grey[900],
+                accent: lighten(grey[900], 0.05),
+              },
+            },
             navbar: {
               upper: {
                 text: '#fff',
@@ -85,9 +101,12 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             },
             textField: {
               label: 'rgba(255, 255, 255, 0.7)',
+              labelFocused: 'rgba(255, 255, 255, 1)',
               border: 'rgba(255, 255, 255, 0.23)',
-              hover: '#fff',
-              focused: '#fff',
+              hover: 'rgba(255, 255, 255, 0.35)',
+              focused: 'rgba(255, 255, 255, 0.35)',
+              boxShadow:
+                '0px 3px 1px -2px rgba(255, 255, 255, 0.2), 0px 2px 2px 0px rgba(255, 255, 255, 0.14), 0px 1px 5px 0px rgba(255, 255, 255, 0.12)',
             },
             dataGrid: {
               toolbar: lighten(grey[900], 0.05),

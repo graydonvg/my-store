@@ -9,7 +9,7 @@ export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 export type AccountFieldToEditType = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
-export type UserRole = 'customer' | 'admin' | 'manager';
+export type UserRole = Database['public']['Enums']['appRole'];
 
 export type UserRoleOptions = ['customer', 'admin', 'manager'];
 
@@ -47,7 +47,7 @@ export type UserDataType = {
   contactNumber: string | null;
   addresses: AddressType[];
   isOAuthSignIn: boolean;
-  authLevel: number;
+  role: UserRole | null;
 };
 
 export type AdminUserDataType = {
@@ -148,7 +148,7 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressTypeDb = Database['public']['Tables']['addresses']['Update'];
 
-export type UpdateAddressTypeStore = {
+export type AddressTypeStore = {
   addressId: string;
   recipientContactNumber: string;
   recipientFirstName: string;

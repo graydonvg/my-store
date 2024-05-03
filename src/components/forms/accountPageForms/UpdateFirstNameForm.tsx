@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import AccountPageForm from './AccountPageForm';
+import { Person } from '@mui/icons-material';
 
 export default function UpdateFirstNameForm() {
   const router = useRouter();
@@ -62,6 +63,8 @@ export default function UpdateFirstNameForm() {
         type={'text'}
         value={firstName}
         onChange={handleInputChange}
+        hasValue={firstName.length > 0}
+        icon={<Person />}
       />
     </AccountPageForm>
   );

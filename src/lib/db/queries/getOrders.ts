@@ -1,4 +1,3 @@
-import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AdminOrderType, CustomerOrderType, OrdersSortByOptions } from '@/types';
 import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
@@ -6,11 +5,16 @@ import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
 export async function getOrdersForUser(): Promise<CustomerOrderType[] | null> {
   const supabase = await createSupabaseServerClient();
 
+  const {
+    data: { user: userAuth },
+  } = await supabase.auth.getUser();
+
   const { data: orders } = await supabase
     .from('orders')
     .select(
       'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
     )
+    .eq('userId', userAuth?.id ?? '')
     .order('createdAt', { ascending: false });
 
   return orders;
@@ -27,7 +31,7 @@ export async function getOrdersForAdmin(
   sortBy: OrdersSortByOptions,
   sortDirection: 'asc' | 'desc'
 ): Promise<OrdersForAdminReturnType> {
-  const supabase = createSupabaseService();
+  const supabase = await createSupabaseServerClient();
   const { sortOrdersBy, sortOptions } = getOrdersSortOptions(sortBy, sortDirection);
 
   let ordersQuery = supabase

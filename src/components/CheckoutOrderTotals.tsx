@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import {
@@ -27,11 +27,10 @@ export default function CheckoutOrderTotals() {
       item
       xs={12}
       md={3}>
-      <Box
+      <Paper
         sx={{
           paddingX: 3,
           paddingY: 4,
-          backgroundColor: (theme) => theme.palette.background.paper,
           borderRadius: BORDER_RADIUS,
         }}>
         <Typography
@@ -59,7 +58,7 @@ export default function CheckoutOrderTotals() {
         ) : null}
 
         {isShippingView ? <PaymentButton buttonVariant="contained" /> : null}
-      </Box>
+      </Paper>
     </Grid>
   );
 }

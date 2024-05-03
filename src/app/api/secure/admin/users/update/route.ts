@@ -1,30 +1,35 @@
 import { NextResponse } from 'next/server';
 import { CustomResponseType, UpdateUserPersonalInformationType } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
-import createSupabaseService from '@/lib/supabase/supabase-service';
+// import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
+import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
-  const supabaseAuth = await createSupabaseServerClient();
-  const supabaseSerice = createSupabaseService();
+  const supabase = await createSupabaseServerClient();
+  // const supabaseSerice = createSupabaseService();
 
   try {
     const {
-      data: { user },
-    } = await supabaseAuth.auth.getUser();
+      data: { user: userAuth },
+    } = await supabase.auth.getUser();
 
-    const { data: authorizationData } = await supabaseAuth.from('users').select('admins(userId), managers(userId)');
+    // const { data: authorizationData } = await supabase.from('users').select('admins(userId), managers(userId)');
 
     const userData: UpdateUserPersonalInformationType = await request.json();
     const { userId, ...userDataToUpdate } = userData;
 
-    if (!user)
+    if (!userAuth)
       return NextResponse.json({
         success: false,
         message: `Failed to update user personal information. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
-    if (authorizationData && authorizationData[0].admins.length === 0 && authorizationData[0].managers.length === 0)
+    const userRole = userAuth ? await getUserRoleFromSession(supabase) : null;
+    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+
+    if (!isAdmin || !isManager || !isOwner)
       return NextResponse.json({
         success: false,
         message: 'Failed to update user personal information. Not authorized.',
@@ -42,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: `Failed update user personal information. Please provide a valid user ID.`,
       });
 
-    const { error } = await supabaseSerice.from('users').update(userDataToUpdate).eq('userId', userId);
+    const { error } = await supabase.from('users').update(userDataToUpdate).eq('userId', userId);
 
     if (error) {
       return NextResponse.json({

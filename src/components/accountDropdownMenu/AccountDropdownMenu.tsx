@@ -32,7 +32,7 @@ export default function AccountDropdownMenu() {
   const userData = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const mode = theme.palette.mode;
+  const darkMode = theme.palette.mode === 'dark';
   let title = 'Account';
 
   if (userData?.firstName) {
@@ -60,7 +60,7 @@ export default function AccountDropdownMenu() {
           <ArrowDropDown sx={{ color: theme.palette.primary.main, marginLeft: 1 }} />
         </>
       }>
-      {userData && userData?.authLevel > 0 ? (
+      {userData?.role === 'admin' || userData?.role === 'manager' ? (
         <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
             label="Admin View"
@@ -81,7 +81,7 @@ export default function AccountDropdownMenu() {
       ))}
 
       <AccountDropdownMenuItem
-        label={`${mode === 'dark' ? 'Light' : 'Dark'} Mode`}
+        label={`${darkMode ? 'Light' : 'Dark'} Mode`}
         icon={<ThemeToggleIcon size={iconSize} />}
         onClick={changeTheme}
       />

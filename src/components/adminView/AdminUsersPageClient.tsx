@@ -1,7 +1,7 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { AdminUserDataType, TableQueryData, UsersFilterableColumns, UsersSortableColumns } from '@/types';
+import { AdminUserDataType, TableQueryData, UserRole, UsersFilterableColumns, UsersSortableColumns } from '@/types';
 import {
   GridColDef,
   GridRowSelectionModel,
@@ -17,77 +17,88 @@ import CustomDataGrid from '../dataGrid/CustomDataGrid';
 import { useMemo } from 'react';
 import CustomDataGridToolbar from '../dataGrid/CustomDataGridToolbar';
 import CreateAuthUserDialog from '../dialogs/CreateAuthUserDialog';
+import { useAppSelector } from '@/lib/redux/hooks';
 
-const columns: GridColDef<AdminUserDataType>[] = [
-  {
-    field: 'userId',
-    headerName: 'ID',
-    width: 300,
-    sortable: false,
-    filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
-    renderCell: (params) => (
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 1 }}>
-        <MuiLink>{params.row.userId}</MuiLink>
-      </Box>
-    ),
-  },
-  {
-    field: 'createdAt',
-    headerName: 'Joined',
-    width: 180,
-    renderCell: (params) => params.row.createdAt,
-    filterOperators: getGridNumericOperators()
-      .filter(
+function getColumns(userRole: UserRole) {
+  const columns: GridColDef<AdminUserDataType>[] = [
+    {
+      field: 'userId',
+      headerName: 'ID',
+      width: 300,
+      sortable: false,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 1 }}>
+          <MuiLink>{params.row.userId}</MuiLink>
+        </Box>
+      ),
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Joined',
+      width: 180,
+      renderCell: (params) => params.row.createdAt,
+      filterOperators: getGridNumericOperators()
+        .filter(
+          (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+        )
+        .map((operator) => ({
+          ...operator,
+          InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
+        })),
+    },
+    {
+      field: 'firstName',
+      headerName: 'First name',
+      width: 150,
+      editable: true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 150,
+      editable: true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+      editable: true,
+      filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-      )
-      .map((operator) => ({
-        ...operator,
-        InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
-      })),
-  },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: true,
-    filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: true,
-    filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-    editable: true,
-    filterOperators: getGridStringOperators().filter(
-      (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-    ),
-  },
-  {
-    field: 'contactNumber',
-    headerName: 'Contact number',
-    width: 165,
-    editable: false,
-    sortable: true,
-    filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-  },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 110,
-    editable: true,
-    sortable: true,
-    type: 'singleSelect',
-    valueOptions: USER_ROLE_OPTIONS,
-    filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    renderCell: (params) => params.row.role,
-  },
-];
+      ),
+    },
+    {
+      field: 'contactNumber',
+      headerName: 'Contact number',
+      width: 165,
+      editable: false,
+      sortable: true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 110,
+      editable: true,
+      sortable: true,
+      type: 'singleSelect',
+      valueOptions: USER_ROLE_OPTIONS.filter((role) => {
+        if (userRole === 'manager') {
+          return role;
+        } else {
+          return role !== 'manager';
+        }
+      }),
+      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      renderCell: (params) => params.row.role,
+    },
+  ];
+
+  return columns;
+}
 
 type Props = {
   users: AdminUserDataType[] | null;
@@ -98,7 +109,9 @@ type Props = {
 
 export default function AdminUsersPageClient(props: Props) {
   const { users, querySuccess, queryMessage, page, range, sort, filter, totalRowCount } = props;
-  const memoizedColumns = useMemo(() => columns, []);
+  const userRole = useAppSelector((state) => state.user.data?.role);
+  const columns = getColumns(userRole!);
+  const memoizedColumns = useMemo(() => columns, [columns]);
 
   function compareObjectValues(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
     const changedValues: GridValidRowModel = {};

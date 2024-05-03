@@ -31,7 +31,7 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
       open={open}
       sx={{
         '& .MuiDrawer-paper': {
-          backgroundColor: darkMode ? theme.palette.custom.navbar.upper : theme.palette.background.paper,
+          backgroundColor: darkMode ? theme.palette.custom.navbar.upper.background : theme.palette.background.paper,
           position: 'fixed',
           whiteSpace: 'nowrap',
           width: drawerWidth,
@@ -59,25 +59,19 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
           <Link
             key={index}
             href={item.path}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText
-                primary={item.label}
-                sx={{ color: theme.palette.custom.navbar.lower.text }}
-              />
+            <ListItemButton sx={{ color: theme.palette.text.secondary }}>
+              <ListItemIcon sx={{ color: theme.palette.text.secondary }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </Link>
         ))}
         <Divider />
         <Link href={'/'}>
-          <ListItemButton>
-            <ListItemIcon>
+          <ListItemButton sx={{ color: theme.palette.text.secondary }}>
+            <ListItemIcon sx={{ color: theme.palette.text.secondary }}>
               <Store />
             </ListItemIcon>
-            <ListItemText
-              primary="Client View"
-              sx={{ color: theme.palette.custom.navbar.lower.text }}
-            />
+            <ListItemText primary="Client View" />
           </ListItemButton>
         </Link>
         <SignOutButton buttonVariant="permanentDrawer" />

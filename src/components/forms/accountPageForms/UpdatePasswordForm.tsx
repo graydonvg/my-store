@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import AccountPageForm from './AccountPageForm';
+import { Lock } from '@mui/icons-material';
 
 const initialFormData = {
   currentPassword: '',
@@ -75,6 +76,8 @@ export default function UpdatePasswordForm() {
         type={'password'}
         value={formData.currentPassword}
         onChange={handleInputChange}
+        hasValue={formData.currentPassword.length > 0}
+        icon={<Lock />}
       />
       <CustomTextField
         fullWidth={true}
@@ -83,6 +86,8 @@ export default function UpdatePasswordForm() {
         type={'password'}
         value={formData.newPassword}
         onChange={handleInputChange}
+        hasValue={formData.newPassword.length > 0}
+        icon={<Lock />}
       />
       <CustomTextField
         fullWidth={true}
@@ -91,6 +96,8 @@ export default function UpdatePasswordForm() {
         type={'password'}
         value={formData.confirmPassword}
         onChange={handleInputChange}
+        hasValue={formData.confirmPassword.length > 0}
+        icon={<Lock />}
       />
     </AccountPageForm>
   );

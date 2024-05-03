@@ -53,7 +53,6 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         startIcon={<Edit />}
       />
       <DrawerComponent
-        elevation={1}
         width={{ xs: '100vw', sm: '350px' }}
         isOpen={{ right: isEditImagesDrawerOpen }}
         sx={{ zIndex: { xs: theme.zIndex.appBar + 1, sm: theme.zIndex.appBar - 1 } }}

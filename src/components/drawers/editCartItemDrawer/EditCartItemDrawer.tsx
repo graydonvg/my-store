@@ -142,7 +142,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         />
       </IconButton>
       <DrawerComponent
-        elevation={1}
         width={{ xs: '80vw', sm: '350px' }}
         isOpen={{
           right: cartItemToEditId === cartItem?.cartItemId,

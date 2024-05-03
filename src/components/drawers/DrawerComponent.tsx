@@ -16,21 +16,13 @@ const initialState: DrawerState = {
 };
 
 type Props = {
-  elevation?: number;
   width: string | Record<string, string>;
   children: ReactNode;
   isOpen: DrawerState;
   closeDrawer: () => void;
 } & DrawerProps;
 
-export default function DrawerComponent({
-  elevation = 0,
-  isOpen = initialState,
-  width,
-  children,
-  closeDrawer,
-  ...props
-}: Props) {
+export default function DrawerComponent({ isOpen = initialState, width, children, closeDrawer, ...props }: Props) {
   const handleCloseDrawer = useCallback(
     (event: KeyboardEvent | MouseEvent) => {
       if (
@@ -71,7 +63,7 @@ export default function DrawerComponent({
           <Drawer
             variant="temporary"
             PaperProps={{
-              elevation: elevation,
+              elevation: 1,
               sx: {
                 width: width,
                 backgroundColor: (theme) => theme.palette.background.default,

@@ -23,7 +23,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
           component="span"
           sx={{
             textTransform: 'none',
-            color: isSaleOption ? theme.palette.secondary.main : theme.palette.text.secondary,
+            color: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
             textDecoration: underline ? 'underline' : 'none',
             textDecorationColor: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,

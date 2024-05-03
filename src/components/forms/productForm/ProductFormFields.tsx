@@ -48,81 +48,90 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
         label="Category"
         name="category"
         onChange={handleInputChange}
-        value={productFormData['category']}
+        value={productFormData.category}
         options={categoryOptionsCapitalised}
         disabled={isFieldDisabled}
         required
+        hasValue={productFormData.category.length > 0}
       />
       <CustomTextField
         label="Name"
         name="name"
-        value={productFormData['name']}
+        value={productFormData.name}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         required
+        hasValue={productFormData.name.length > 0}
       />
       <CustomTextField
         label="Brand"
         name="brand"
-        value={productFormData['brand']}
+        value={productFormData.brand}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         required
+        hasValue={productFormData.brand.length > 0}
       />
       <CustomTextField
         label="Product details"
         name="details"
-        value={productFormData['details']}
+        value={productFormData.details}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
         placeholder="e.g. Black, Regular fit, ..."
         required
+        hasValue={productFormData.details.length > 0}
       />
       <CustomTextField
         label="Delivery info"
         name="deliveryInfo"
-        value={productFormData['deliveryInfo']}
+        value={productFormData.deliveryInfo}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
         required
+        hasValue={productFormData.deliveryInfo.length > 0}
       />
       <CustomTextField
         label="Return info"
         name="returnInfo"
-        value={productFormData['returnInfo']}
+        value={productFormData.returnInfo}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
         required
+        hasValue={productFormData.returnInfo.length > 0}
       />
       <NumberField
         label="Price"
         name="price"
-        value={productFormData['price']}
+        value={productFormData.price}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         placeholder="e.g. 199"
         required
+        hasValue={productFormData.price !== ''}
       />
       <SelectField
         label="On sale"
         name="isOnSale"
-        value={productFormData['isOnSale']}
+        value={productFormData.isOnSale}
         onChange={handleInputChange}
         options={['No', 'Yes']}
         disabled={isFieldDisabled}
         required
+        hasValue={productFormData.isOnSale.length > 0}
       />
       <NumberField
         label="Sale %"
         name="salePercentage"
         onChange={handleInputChange}
-        value={productFormData['salePercentage']}
+        value={productFormData.salePercentage}
         disabled={!isOnSale || isFieldDisabled}
         placeholder="e.g. 20"
         required
+        hasValue={productFormData.salePercentage !== ''}
       />
     </>
   );
