@@ -28,7 +28,13 @@ export default function SizePickerEditCartItemDrawer({ cartItem, isUpdatingCartI
               onClick={() => setCartItemSizeOnClick(size)}
               sx={{ height: '56px' }}>
               {size === cartItem.size ? <Check sx={{ marginRight: 1 }} /> : null}
-              <Typography>{size}</Typography>
+              <Typography
+                sx={{
+                  color: (theme) =>
+                    size === cartItem.size ? theme.palette.text.primary : theme.palette.text.secondary,
+                }}>
+                {size}
+              </Typography>
             </ListItemButton>
             <Divider />
           </Box>

@@ -85,10 +85,7 @@ export default function LargeCartItem({ item }: Props) {
             quantity={item.quantity}
             size={item.size}
           />
-          <BottomDetailsLargeCartItem
-            discountedPrice={discountedPrice}
-            returnInfo={item.product?.returnInfo!}
-          />
+          <BottomDetailsLargeCartItem returnInfo={item.product?.returnInfo!} />
           <Box
             sx={{
               display: 'flex',

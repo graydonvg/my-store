@@ -43,10 +43,13 @@ export default function NavDrawer() {
       </IconButton>
 
       <DrawerComponent
-        width="100vw"
         isOpen={{ left: isNavDrawerOpen }}
-        sx={{ zIndex: theme.zIndex.appBar + 1 }}
-        closeDrawer={closeNavDrawer}>
+        closeDrawer={closeNavDrawer}
+        drawerProps={{ sx: { zIndex: theme.zIndex.appBar + 1 } }}
+        paperProps={{
+          elevation: 0,
+          sx: { width: '100vw', backgroundColor: theme.palette.custom.navbar.lower.background },
+        }}>
         <DrawerHeader
           label="Menu"
           onClick={closeNavDrawer}

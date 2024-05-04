@@ -1,5 +1,6 @@
 import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect } from 'react';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
+import { PaperProps } from '@mui/material';
 
 type DrawerState = {
   top?: boolean;
@@ -16,13 +17,20 @@ const initialState: DrawerState = {
 };
 
 type Props = {
-  width: string | Record<string, string>;
   children: ReactNode;
   isOpen: DrawerState;
   closeDrawer: () => void;
-} & DrawerProps;
+  drawerProps: DrawerProps;
+  paperProps: PaperProps;
+};
 
-export default function DrawerComponent({ isOpen = initialState, width, children, closeDrawer, ...props }: Props) {
+export default function DrawerComponent({
+  isOpen = initialState,
+  children,
+  closeDrawer,
+  drawerProps,
+  paperProps,
+}: Props) {
   const handleCloseDrawer = useCallback(
     (event: KeyboardEvent | MouseEvent) => {
       if (
@@ -63,16 +71,12 @@ export default function DrawerComponent({ isOpen = initialState, width, children
           <Drawer
             variant="temporary"
             PaperProps={{
-              elevation: 1,
-              sx: {
-                width: width,
-                backgroundColor: (theme) => theme.palette.background.default,
-              },
+              ...paperProps,
             }}
             anchor={anchor}
             open={isOpen ? isOpen[anchor] : false}
             onClose={handleCloseDrawer}
-            {...props}>
+            {...drawerProps}>
             {children}
           </Drawer>
         </Fragment>

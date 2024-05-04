@@ -4,7 +4,7 @@ import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
-import { Box, useTheme } from '@mui/material';
+import { Box, Divider, useTheme } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
 import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/slices/productImagesSlice';
@@ -53,15 +53,22 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         startIcon={<Edit />}
       />
       <DrawerComponent
-        width={{ xs: '100vw', sm: '350px' }}
         isOpen={{ right: isEditImagesDrawerOpen }}
-        sx={{ zIndex: { xs: theme.zIndex.appBar + 1, sm: theme.zIndex.appBar - 1 } }}
-        closeDrawer={closeEditImageDrawer}>
+        closeDrawer={closeEditImageDrawer}
+        drawerProps={{ sx: { zIndex: { xs: theme.zIndex.appBar + 1, sm: theme.zIndex.appBar - 1 } } }}
+        paperProps={{
+          sx: {
+            width: { xs: '100vw', sm: '350px' },
+            backgroundColor: theme.palette.background.default,
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+          },
+        }}>
         <DrawerHeader
           label="Edit images"
           onClick={closeEditImageDrawer}
         />
         <DraggableProductImages isDeletingAllImages={isDeletingAllImages} />
+        <Divider />
         <Box
           sx={{
             display: 'flex',
@@ -70,15 +77,6 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
             position: 'relative',
             padding: 2,
             gap: 2,
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              boxShadow: `0 -2px 4px 0 ${theme.palette.custom.boxShadow}`,
-              top: 0,
-              right: 0,
-              left: 0,
-              height: '4px',
-            },
           }}>
           <ContainedButton
             onClick={deleteAllImages}

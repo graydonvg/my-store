@@ -11,7 +11,9 @@ export default function DrawerHeader({ label, onClick }: Props) {
 
   return (
     <Toolbar
+      disableGutters
       sx={{
+        paddingX: 2,
         backgroundColor: theme.palette.custom.navbar.upper.background,
         display: 'flex',
         justifyContent: 'space-between',

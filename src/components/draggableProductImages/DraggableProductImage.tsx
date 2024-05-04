@@ -36,6 +36,8 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
   } = useSortable({
     id: imageData.id,
   });
+  const darkMode = theme.palette.mode === 'dark';
+  const containerBgColor = darkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)';
 
   async function deleteImage() {
     dispatch(setIsDeletingImage(true));
@@ -71,7 +73,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
           borderRadius: BORDER_RADIUS,
           paddingY: 2,
           opacity: isDeletingCurrentImage ? 0.5 : 1,
-          backgroundColor: imageData.id === activeItemId ? (theme) => theme.palette.custom.boxShadow : 'transparent',
+          backgroundColor: imageData.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
           transition,
         }}>

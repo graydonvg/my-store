@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { useRouter } from 'next/navigation';
@@ -26,75 +26,69 @@ export default function FooterCartDrawer() {
   }
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        padding: 2,
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          boxShadow: (theme) => `0 -2px 4px 0 ${theme.palette.custom.boxShadow}`,
-          top: 0,
-          right: 0,
-          left: 0,
-          height: '4px',
-        },
-      }}>
-      {discountTotal > 0 ? (
+    <Box>
+      <Divider />
+      <Box
+        sx={{
+          position: 'relative',
+          padding: 2,
+        }}>
+        {discountTotal > 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              textTransform: 'uppercase',
+              justifyContent: 'space-between',
+              paddingBottom: 1,
+            }}>
+            <Typography
+              component="span"
+              fontSize={16}
+              fontWeight={700}>
+              Discount
+            </Typography>
+            <Typography
+              component="span"
+              fontSize={16}
+              fontWeight={700}>
+              {formatCurrency(discountTotal)}
+            </Typography>
+          </Box>
+        ) : null}
+
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            textTransform: 'uppercase',
             justifyContent: 'space-between',
-            paddingBottom: 1,
+            flexDirection: 'row',
+            paddingBottom: 2,
+            textTransform: 'uppercase',
           }}>
           <Typography
             component="span"
-            fontSize={16}
+            fontSize={24}
             fontWeight={700}>
-            Discount
+            total
           </Typography>
           <Typography
             component="span"
-            fontSize={16}
+            fontSize={24}
             fontWeight={700}>
-            {formatCurrency(discountTotal)}
+            {formatCurrency(orderTotal - discountTotal)}
           </Typography>
         </Box>
-      ) : null}
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingBottom: 2,
-          textTransform: 'uppercase',
-        }}>
-        <Typography
-          component="span"
-          fontSize={24}
-          fontWeight={700}>
-          total
-        </Typography>
-        <Typography
-          component="span"
-          fontSize={24}
-          fontWeight={700}>
-          {formatCurrency(orderTotal - discountTotal)}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-        <OutlinedButton
-          onClick={navigateToCartView}
-          fullWidth
-          label="view cart"
-        />
-        <CheckoutButton
-          fullWidth
-          label="checkout"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+          <OutlinedButton
+            onClick={navigateToCartView}
+            fullWidth
+            label="view cart"
+          />
+          <CheckoutButton
+            fullWidth
+            label="checkout"
+          />
+        </Box>
       </Box>
     </Box>
   );

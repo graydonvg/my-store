@@ -142,12 +142,18 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         />
       </IconButton>
       <DrawerComponent
-        width={{ xs: '80vw', sm: '350px' }}
         isOpen={{
           right: cartItemToEditId === cartItem?.cartItemId,
         }}
-        sx={{ zIndex: theme.zIndex.appBar + 1 }}
-        closeDrawer={closeDrawer}>
+        closeDrawer={closeDrawer}
+        drawerProps={{ sx: { zIndex: theme.zIndex.appBar + 1 } }}
+        paperProps={{
+          sx: {
+            width: { xs: '80vw', sm: '350px' },
+            backgroundColor: theme.palette.background.paper,
+            backgroundImage: 'none',
+          },
+        }}>
         <Box
           sx={{
             position: 'relative',
@@ -157,7 +163,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
             justifyContent: 'space-between',
           }}>
           {isUpdatingCartItem ? <LoaderEditCartItemDrawer isUpdatingCartItem={isUpdatingCartItem} /> : null}
-
           <SizePickerEditCartItemDrawer
             cartItem={cartItem}
             isUpdatingCartItem={isUpdatingCartItem}

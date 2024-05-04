@@ -25,14 +25,13 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           },
           custom: {
             border: 'rgba(0, 0, 0, 0.3)',
-            boxShadow: 'rgba(0, 0, 0, 0.15)',
             text: {
               link: '#1976d2',
             },
             dialog: {
               background: {
                 primary: '#fff',
-                accent: grey[200],
+                accent: grey[100],
               },
             },
             navbar: {
@@ -77,11 +76,9 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           },
           custom: {
             border: 'rgba(255, 255, 255, 0.3)',
-            boxShadow: 'rgba(255, 255, 255, 0.15)',
             text: {
               link: '#90caf9',
             },
-
             dialog: {
               background: {
                 primary: grey[900],

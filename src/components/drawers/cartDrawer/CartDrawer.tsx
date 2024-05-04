@@ -54,10 +54,16 @@ export default function CartDrawer() {
         </Box>
       </UpperNavbarIconButton>
       <DrawerComponent
-        width={{ xs: '90vw', sm: '400px' }}
         isOpen={{ right: isCartOpen }}
-        sx={{ zIndex: theme.zIndex.appBar - 1 }}
-        closeDrawer={closeCartDrawer}>
+        closeDrawer={closeCartDrawer}
+        drawerProps={{ sx: { zIndex: theme.zIndex.appBar - 1 } }}
+        paperProps={{
+          sx: {
+            width: { xs: '90vw', sm: '400px' },
+            backgroundColor: theme.palette.background.default,
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+          },
+        }}>
         <Toolbar
           sx={{
             minHeight: { xs: '64px !important', md: '96px !important' },
