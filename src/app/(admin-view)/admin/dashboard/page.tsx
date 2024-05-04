@@ -6,14 +6,14 @@ import OrdersTable from '@/components/adminView/OrdersTable';
 import { BORDER_RADIUS } from '@/config';
 import CardTitleAdminView from '@/components/adminView/CardTitleAdminView';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
-import { OrdersSortByOptions } from '@/types';
+import { AdminOrdersDataGridSortableColumns } from '@/types';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export default async function AdminDashboard({ searchParams }: Props) {
-  const sortBy = (searchParams['sort_by'] as OrdersSortByOptions) ?? 'date';
+  const sortBy = (searchParams['sort_by'] as AdminOrdersDataGridSortableColumns) ?? 'date';
   const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
 
   const { orders } = await getOrdersForAdmin(0, 4, sortBy, sortDirection);

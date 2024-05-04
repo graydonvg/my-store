@@ -7,7 +7,7 @@ import NumberField from '@/components/ui/inputFields/NumberField';
 import { HOME_PAGE_CATEGORIES, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/slices/productFormSlice';
-import { InsertProductTypeStore } from '@/types';
+import { InsertProductStore } from '@/types';
 
 type Props = {
   isSubmitting: boolean;
@@ -29,7 +29,7 @@ export default function ProductFormFields({ isClearingAllFields, isSubmitting, i
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    dispatch(setProductFormData({ field: name as keyof InsertProductTypeStore, value }));
+    dispatch(setProductFormData({ field: name as keyof InsertProductStore, value }));
   }
 
   return (

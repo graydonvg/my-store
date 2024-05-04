@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearProductFormData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import revalidateAllData from '@/services/revalidateAllData';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ import { clearAllProductImagesData, setImageData } from '@/lib/redux/slices/prod
 import OutlinedButton from '../buttons/OutlinedButton';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function AdminButtonsProductCard({ product }: Props) {

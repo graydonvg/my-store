@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, useTheme } from '@mui/material';
-import { TableQueryData } from '@/types';
+import { DataGridQueryData } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   DataGrid,
@@ -28,7 +28,7 @@ type Props = {
   onRowSelection: (rowSelectionModel: GridRowSelectionModel) => void;
   hasCheckboxSelection: boolean;
   customToolbar: ReactNode;
-} & TableQueryData<string, string>;
+} & DataGridQueryData<string, string>;
 
 export default function CustomDataGrid({
   data,

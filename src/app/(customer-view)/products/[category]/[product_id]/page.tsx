@@ -1,6 +1,6 @@
 import ProductDetails from '@/components/productDetails/ProductDetails';
 import { getAllProducts, getProductById } from '@/services/products/get';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
@@ -11,7 +11,7 @@ type Params = {
 
 export async function generateMetadata({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
-  const product = data ? data : ({} as ProductType);
+  const product = data ? data : ({} as Product);
 
   if (!product.productId) {
     return {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params: { product_id } }: Params) {
 export default async function ProductPage({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
 
-  const product = data ? data : ({} as ProductType);
+  const product = data ? data : ({} as Product);
 
   return <ProductDetails product={product} />;
 }

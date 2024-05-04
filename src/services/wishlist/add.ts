@@ -1,6 +1,6 @@
-import { CustomResponseType, InsertWishlistItemType } from '@/types';
+import { CustomResponse, InsertWishlistItemDb } from '@/types';
 
-export default async function addItemToWishlist(wishlistItemData: InsertWishlistItemType): Promise<CustomResponseType> {
+export default async function addItemToWishlist(wishlistItemData: InsertWishlistItemDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/wishlist/add', {
       method: 'POST',

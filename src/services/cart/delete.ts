@@ -1,6 +1,6 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 
-export async function deleteItemFromCart(cartItemId: string): Promise<CustomResponseType> {
+export async function deleteItemFromCart(cartItemId: string): Promise<CustomResponse> {
   try {
     const response = await fetch(`/api/secure/cart/delete/by-id?cart_item_id=${cartItemId}`, {
       method: 'DELETE',
@@ -17,7 +17,7 @@ export async function deleteItemFromCart(cartItemId: string): Promise<CustomResp
   }
 }
 
-export async function deleteAllCartItems(): Promise<CustomResponseType> {
+export async function deleteAllCartItems(): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/cart/delete/all', {
       method: 'DELETE',

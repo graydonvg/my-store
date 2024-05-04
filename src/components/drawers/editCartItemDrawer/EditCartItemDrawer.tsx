@@ -3,7 +3,7 @@ import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
@@ -15,7 +15,7 @@ import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
 import addItemToWishlist from '@/services/wishlist/add';
 
 type Props = {
-  cartItem: CartItemType;
+  cartItem: CartItem;
 };
 
 export default function EditCartItemDrawer({ cartItem }: Props) {

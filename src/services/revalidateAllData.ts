@@ -1,7 +1,7 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 import createURL from '@/utils/createURL';
 
-export default async function revalidateAllData(): Promise<CustomResponseType> {
+export default async function revalidateAllData(): Promise<CustomResponse> {
   const url = createURL('/api/secure/revalidate');
 
   try {

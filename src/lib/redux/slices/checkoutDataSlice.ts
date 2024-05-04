@@ -1,7 +1,7 @@
-import { CheckoutDataType } from '@/types';
+import { CheckoutData } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: CheckoutDataType = {
+const initialState: CheckoutData = {
   selectedAddressId: null,
   orderItems: [],
   paymentTotals: {
@@ -20,7 +20,7 @@ const checkoutDataSlice = createSlice({
   name: 'checkoutData',
   initialState,
   reducers: {
-    setCheckoutData(state, action: PayloadAction<Partial<CheckoutDataType>>) {
+    setCheckoutData(state, action: PayloadAction<Partial<CheckoutData>>) {
       return { ...state, ...action.payload };
     },
     resetCheckoutData() {

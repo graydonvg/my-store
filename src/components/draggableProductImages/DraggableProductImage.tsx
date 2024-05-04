@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
-import { InsertProductImageDataTypeStore } from '@/types';
+import { InsertProductImageDataStore } from '@/types';
 import Image from 'next/image';
 import { BORDER_RADIUS } from '@/config';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
@@ -15,7 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 
 export type Props = {
-  imageData: InsertProductImageDataTypeStore & { id: string };
+  imageData: InsertProductImageDataStore & { id: string };
   activeItemId: UniqueIdentifier | null;
 };
 

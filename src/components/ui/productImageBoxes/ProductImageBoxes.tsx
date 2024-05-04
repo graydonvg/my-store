@@ -3,12 +3,12 @@ import { Container, Grid, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import ClientViewSmallProductImageBox from './smallProductImageBox/ClientViewSmallProductImageBox';
 import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSmallProductImageBoxes';
 
 type Props = {
-  product?: ProductType;
+  product?: Product;
   maxImageCount?: number;
 };
 

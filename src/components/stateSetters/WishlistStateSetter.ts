@@ -2,11 +2,11 @@
 
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setWishlistData } from '@/lib/redux/slices/wishlistDataSlice';
-import { WishlistDataType } from '@/types';
+import { WishlistData } from '@/types';
 import { useEffect } from 'react';
 
 type Props = {
-  wishlistData: WishlistDataType[] | null;
+  wishlistData: WishlistData[] | null;
 };
 
 export default function WishlistDataStateSetter({ wishlistData }: Props) {

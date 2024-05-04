@@ -1,11 +1,11 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { calculateDiscountedCartItemPrice } from './calculateDiscountedPrice';
 import { callStripeSession } from '@/services/stripe/call-stripe-session';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export default async function payWithStripe(cartItems: CartItemType[]) {
+export default async function payWithStripe(cartItems: CartItem[]) {
   try {
     const stripe = await stripePromise;
     const createLineItems = cartItems.map((item) => {

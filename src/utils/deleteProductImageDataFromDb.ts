@@ -1,7 +1,7 @@
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
-import { InsertProductImageDataTypeStore } from '@/types';
+import { InsertProductImageDataStore } from '@/types';
 
-export async function deleteProductImagesDataFromDb(imageData: InsertProductImageDataTypeStore[]) {
+export async function deleteProductImagesDataFromDb(imageData: InsertProductImageDataStore[]) {
   const dbProductImageDataToDelete = imageData.map((data) => data.productImageId);
 
   const dbProductImageDataDeletePromises = dbProductImageDataToDelete.map((productImageId) =>

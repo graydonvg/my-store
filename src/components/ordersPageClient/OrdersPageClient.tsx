@@ -1,12 +1,12 @@
 'use client';
 
-import { CustomerOrderType } from '@/types';
+import { OrderData } from '@/types';
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
 
 type Props = {
-  orders: CustomerOrderType[] | null;
+  orders: OrderData[] | null;
 };
 
 export default function OrdersPageClient({ orders }: Props) {

@@ -1,6 +1,6 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
-import { AddressTypeStore } from '@/types';
+import { AddressStore } from '@/types';
 import { ChangeEvent } from 'react';
 import { Call, Person } from '@mui/icons-material';
 
@@ -17,7 +17,7 @@ const contactDetailsFormFields = [
 ];
 
 type Props = {
-  addressFormData: AddressTypeStore;
+  addressFormData: AddressStore;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -42,15 +42,15 @@ export default function ContactDetailsFieldsAddressForm({ addressFormData, onInp
             key={field.name}
             label={field.label}
             name={field.name}
-            value={addressFormData[field.name as keyof AddressTypeStore]}
+            value={addressFormData[field.name as keyof AddressStore]}
             placeholder={field.placeholder ?? ''}
             required={field.required}
             fullWidth={true}
             onChange={onInputChange}
             icon={field.icon}
             hasValue={
-              addressFormData[field.name as keyof AddressTypeStore] !== '' &&
-              addressFormData[field.name as keyof AddressTypeStore] !== null
+              addressFormData[field.name as keyof AddressStore] !== '' &&
+              addressFormData[field.name as keyof AddressStore] !== null
             }
             backgroundColor={theme.palette.custom.dialog.background.accent}
           />

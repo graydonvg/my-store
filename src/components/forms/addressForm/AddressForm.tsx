@@ -1,14 +1,14 @@
 import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
 import { Add } from '@mui/icons-material';
-import { AddressTypeStore } from '@/types';
+import { AddressStore } from '@/types';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import FormHeader from '../FormHeader';
 import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
 import DeliveryAddressFieldsAddressForm from './DeliveryAddressFieldsAddressForm';
 
 type Props = {
-  addressFormData: AddressTypeStore;
+  addressFormData: AddressStore;
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   isDialogLoading: boolean;

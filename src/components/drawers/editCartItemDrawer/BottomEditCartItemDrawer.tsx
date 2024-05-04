@@ -1,11 +1,11 @@
 import { Box, Divider, useTheme } from '@mui/material';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import TextButton from '../../ui/buttons/TextButton';
 import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
 
 type Props = {
-  cartItem: CartItemType;
+  cartItem: CartItem;
   isUpdatingCartItem: boolean;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   removeCartItem: () => void;

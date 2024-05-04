@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { Box, Divider, Grid } from '@mui/material';
 import ProductImageBoxes from '../ui/productImageBoxes/ProductImageBoxes';
 import ProductSelectionOptions from './productSelectionOptions/ProductSelectionOptions';
@@ -11,7 +11,7 @@ import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectio
 import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function ProductDetails({ product }: Props) {

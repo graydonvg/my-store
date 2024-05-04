@@ -1,6 +1,6 @@
-import { CustomResponseType, UpdateOrderType } from '@/types';
+import { CustomResponse, UpdateOrderPaymentStatus } from '@/types';
 
-export default async function updateOrderPaymentStatus(orderData: UpdateOrderType): Promise<CustomResponseType> {
+export default async function updateOrderPaymentStatus(orderData: UpdateOrderPaymentStatus): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/orders/update/payment-status', {
       method: 'POST',

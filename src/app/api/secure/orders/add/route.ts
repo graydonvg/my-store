@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { AddOrderType, AddOrderResponseType, CustomResponseType } from '@/types';
+import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType<AddOrderResponseType>>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse<AddOrderResponse>>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const orderData: AddOrderType = await request.json();
+    const orderData: InsertOrderDb = await request.json();
 
     if (!user)
       return NextResponse.json({
@@ -27,7 +27,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const { error, data } = await supabase
       .from('orders')
-      .insert({ ...orderData.orderDetails, userId: user.id })
+      .insert({ ...orderData.orderDetails })
       .select('orderId');
 
     if (error) {
@@ -39,15 +39,15 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const createOrderItems = orderData.orderItems.map((item) => {
       return {
         ...item,
-        userId: user.id,
         orderId: orderId,
       };
     });
 
     const insertOrderItemsPromise = supabase.from('orderItems').insert(createOrderItems);
+
     const insertShippingDetailsPromise = supabase
       .from('shippingDetails')
-      .insert({ ...orderData.shippingDetails, userId: user.id, orderId: orderId });
+      .insert({ ...orderData.shippingDetails, orderId: orderId });
 
     const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
       insertOrderItemsPromise,

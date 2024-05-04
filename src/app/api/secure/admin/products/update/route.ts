@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType, UpdateProductType } from '@/types';
+import { CustomResponse, UpdateProductDb } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const productData: UpdateProductType = await request.json();
+    const productData: UpdateProductDb = await request.json();
 
     if (!user)
       return NextResponse.json({

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType, InsertAddressType } from '@/types';
+import { CustomResponse, InsertAddressDb } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const addressData: InsertAddressType = await request.json();
+    const addressData: InsertAddressDb = await request.json();
 
     if (!user)
       return NextResponse.json({

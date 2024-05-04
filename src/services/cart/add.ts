@@ -1,6 +1,6 @@
-import { InsertCartItemType, CustomResponseType } from '@/types';
+import { InsertCartItemDb, CustomResponse } from '@/types';
 
-export default async function addItemToCart(cartItemData: InsertCartItemType): Promise<CustomResponseType> {
+export default async function addItemToCart(cartItemData: InsertCartItemDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/cart/add', {
       method: 'POST',

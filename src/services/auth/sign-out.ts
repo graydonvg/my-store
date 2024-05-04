@@ -1,6 +1,6 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 
-export default async function signOut(): Promise<CustomResponseType> {
+export default async function signOut(): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/auth/sign-out', {
       method: 'GET',

@@ -2,10 +2,10 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, List, List
 import { ExpandMore, LocalShippingOutlined } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/config';
 import HeadingBottomProductDetails from './HeadingBottomProductDetails';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function BottomProductDetails({ product }: Props) {

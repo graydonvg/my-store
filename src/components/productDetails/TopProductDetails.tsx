@@ -1,10 +1,10 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function TopProductDetails({ product }: Props) {

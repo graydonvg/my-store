@@ -1,8 +1,8 @@
-import { AddressType } from '@/types';
+import { type Address } from '@/types';
 import { Typography } from '@mui/material';
 
 type Props = {
-  address: AddressType;
+  address: Address;
 };
 
 export default function Address({ address }: Props) {

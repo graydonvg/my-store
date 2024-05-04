@@ -4,7 +4,7 @@ import UpdateAddressForm from '@/components/forms/addressForm/addressForm/Update
 import AddressButton from '@/components/addresses/AddressButton';
 import { setAddressFormData } from '@/lib/redux/slices/addressFormSlice';
 import { openDialog } from '@/lib/redux/slices/dialogSlice';
-import { AddressTypeStore } from '@/types';
+import { AddressStore } from '@/types';
 
 type Props = {
   addressId: string;
@@ -18,7 +18,7 @@ export default function UpdateAddressDialog({ addressId }: Props) {
   async function selectAddressToEdit() {
     const addressToEdit = userData?.addresses.filter((address) => address.addressId === addressId)[0];
 
-    dispatch(setAddressFormData(addressToEdit as AddressTypeStore));
+    dispatch(setAddressFormData(addressToEdit as AddressStore));
     dispatch(openDialog('updateAddressDialog'));
   }
 

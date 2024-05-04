@@ -1,11 +1,11 @@
-import { CustomerOrderType } from '@/types';
+import { OrderData } from '@/types';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
 import { BORDER_RADIUS } from '@/config';
 import OrderShippingDetails from './OrderShippingDetails';
 
 type Props = {
-  order: CustomerOrderType;
+  order: OrderData;
   borderColor: string;
 };
 

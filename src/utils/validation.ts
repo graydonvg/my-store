@@ -1,11 +1,11 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 
 type ResponseData = { pageNumber: number; rowsPerPage: number };
 
 export function validatePage(page: {
   number: number;
   rows: number;
-}): CustomResponseType<ResponseData> & { errorTarget: 'pageNumber' | 'rowsPerPage' | null } {
+}): CustomResponse<ResponseData> & { errorTarget: 'pageNumber' | 'rowsPerPage' | null } {
   const { number: pageNumber, rows: rowsPerPage } = page;
 
   if (typeof pageNumber !== 'number' || Number.isNaN(pageNumber)) {

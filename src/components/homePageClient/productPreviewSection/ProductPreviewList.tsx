@@ -1,12 +1,12 @@
 import { BORDER_RADIUS } from '@/config';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import ProductCard from '../../ui/productCard/ProductCard';
 
 type Props = {
   title: string;
-  products: ProductType[] | undefined;
+  products: Product[] | undefined;
   onClick: () => void;
 };
 

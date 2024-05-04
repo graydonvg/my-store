@@ -1,12 +1,12 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import { useEffect, useState } from 'react';
 import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
 import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {
-  cartItem: CartItemType;
+  cartItem: CartItem;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
 };
 

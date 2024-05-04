@@ -1,8 +1,13 @@
-import { QueryFilterBuilder, TableSort, UsersQueryFilterBuilder, UsersSortableColumns } from '@/types';
+import {
+  QueryFilterBuilder,
+  DataGridSort,
+  AdminUsersDataGridQueryFilterBuilder,
+  AdminUsersDataGridSortableColumns,
+} from '@/types';
 
 type SortFunctionParams = {
   query: QueryFilterBuilder;
-  sort: TableSort<UsersSortableColumns>;
+  sort: DataGridSort<AdminUsersDataGridSortableColumns>;
   setSortDirectionInvalid: () => void;
 };
 
@@ -18,8 +23,8 @@ function applySort({ query, sort, setSortDirectionInvalid }: SortFunctionParams)
 }
 
 export function applySortForUsersTable(
-  usersQuery: UsersQueryFilterBuilder,
-  sort: TableSort<UsersSortableColumns>,
+  usersQuery: AdminUsersDataGridQueryFilterBuilder,
+  sort: DataGridSort<AdminUsersDataGridSortableColumns>,
   setSortColumnInvalid: () => void,
   setSortDirectionInvalid: () => void
 ) {

@@ -1,4 +1,4 @@
-import { CustomResponseType, InsertProductImageDataTypeStore } from '@/types';
+import { CustomResponse, InsertProductImageDataStore } from '@/types';
 import { deleteProductImagesFromStorage } from './deleteProductImagesFromStorage';
 import { deleteProductImagesDataFromDb } from './deleteProductImageDataFromDb';
 
@@ -6,10 +6,10 @@ import { deleteProductImagesDataFromDb } from './deleteProductImageDataFromDb';
 // If a productId exists, delete related image data (image url, etc) from database.
 
 export async function deleteAllProductImages(
-  imageData: InsertProductImageDataTypeStore[],
+  imageData: InsertProductImageDataStore[],
   productId?: string | null
-): Promise<CustomResponseType> {
-  let dbDeleteResponse: CustomResponseType = {
+): Promise<CustomResponse> {
+  let dbDeleteResponse: CustomResponse = {
     success: true,
     message: 'No image data has been added to the database.',
   };

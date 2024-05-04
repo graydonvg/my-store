@@ -1,6 +1,6 @@
-import { OrdersSortByOptions } from '@/types';
+import { AdminOrdersDataGridSortableColumns } from '@/types';
 
-export function getOrdersSortOptions(sortBy: OrdersSortByOptions, sortDirection: 'asc' | 'desc') {
+export function getOrdersSortOptions(sortBy: AdminOrdersDataGridSortableColumns, sortDirection: 'asc' | 'desc') {
   let sortOptions: { referencedTable: 'users' | 'shippingDetails' | null; ascending: boolean };
   sortOptions = { referencedTable: null, ascending: sortDirection === 'asc' ? true : false };
 

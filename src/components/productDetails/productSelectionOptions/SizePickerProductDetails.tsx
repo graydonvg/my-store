@@ -1,4 +1,4 @@
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../ui/buttons/ToggleButtons';
 import { MouseEvent } from 'react';
@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setSize } from '@/lib/redux/slices/productSelectionDetailsSlice';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function SizePickerProductDetails({ product }: Props) {

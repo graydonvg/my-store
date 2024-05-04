@@ -2,7 +2,7 @@ import { Favorite } from '@mui/icons-material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { toast } from 'react-toastify';
 import addItemToWishlist from '@/services/wishlist/add';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { openDialog } from '@/lib/redux/slices/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { setWishlistData } from '@/lib/redux/slices/wishlistDataSlice';
 
 type Props = {
   size: string | null;
-  product: ProductType;
+  product: Product;
 };
 
 export default function AddToWishlistButton({ product, size }: Props) {
@@ -38,7 +38,6 @@ export default function AddToWishlistButton({ product, size }: Props) {
     const { success, message } = await addItemToWishlist({
       size,
       productId: product.productId,
-      userId: userData.userId,
     });
 
     if (success === true) {

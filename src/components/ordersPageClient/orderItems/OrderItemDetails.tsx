@@ -1,10 +1,10 @@
-import { OrderItemType } from '@/types';
+import { OrderItem } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
 type Props = {
-  orderItem: OrderItemType;
+  orderItem: OrderItem;
 };
 
 export default function OrderItemDetails({ orderItem }: Props) {

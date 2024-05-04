@@ -1,16 +1,16 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 import {
-  CustomResponseType,
-  AdminUserDataType,
-  TableQueryData,
-  UsersFilterableColumns,
-  UsersSortableColumns,
+  CustomResponse,
+  AdminUsersTableUserData,
+  DataGridQueryData,
+  AdminUsersDataGridFilterableColumns,
+  AdminUsersDataGridSortableColumns,
 } from '@/types';
 import buildUsersQueryForAdmin from '@/utils/buildQuery';
 
 type ResponseData = {
-  users: AdminUserDataType[] | null;
+  users: AdminUsersTableUserData[] | null;
   totalRowCount: number;
 };
 
@@ -18,8 +18,8 @@ export default async function getUsersForAdmin({
   sort,
   filter,
   range,
-}: Omit<TableQueryData<UsersFilterableColumns, UsersSortableColumns>, 'page'>): Promise<
-  CustomResponseType<ResponseData>
+}: Omit<DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>, 'page'>): Promise<
+  CustomResponse<ResponseData>
 > {
   const supabase = await createSupabaseServerClient();
   let usersQuery = supabase.from('users').select('*', {

@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType, UpdateUserPersonalInformationType } from '@/types';
+import { CustomResponse, UpdateUserPersonalInformationDb } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 // import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
 import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
   // const supabaseSerice = createSupabaseService();
 
@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     // const { data: authorizationData } = await supabase.from('users').select('admins(userId), managers(userId)');
 
-    const userData: UpdateUserPersonalInformationType = await request.json();
+    const userData: UpdateUserPersonalInformationDb = await request.json();
     const { userId, ...userDataToUpdate } = userData;
 
     if (!userAuth)

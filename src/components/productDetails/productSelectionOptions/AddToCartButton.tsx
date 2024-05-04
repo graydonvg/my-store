@@ -7,11 +7,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { useState } from 'react';
-import { CartItemType, ProductType } from '@/types';
+import { CartItem, Product } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function AddToCartButton({ product }: Props) {
@@ -23,7 +23,7 @@ export default function AddToCartButton({ product }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addedToCartToastMessage = 'Added to cart';
 
-  async function incrementItemQuantity(existingItem: CartItemType) {
+  async function incrementItemQuantity(existingItem: CartItem) {
     const { success, message } = await updateCartItemQuantity({
       cartItemId: existingItem.cartItemId,
       quantity: existingItem.quantity + quantity,
@@ -42,7 +42,6 @@ export default function AddToCartButton({ product }: Props) {
       productId: product.productId,
       quantity: quantity,
       size: size!,
-      userId: userData?.userId!,
     });
 
     if (success === true) {

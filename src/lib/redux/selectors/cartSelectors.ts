@@ -1,18 +1,18 @@
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 
-export function selectCartCount(items: CartItemType[]) {
+export function selectCartCount(items: CartItem[]) {
   return items.reduce((totalCount, item) => totalCount + (item ? item?.quantity : 0), 0);
 }
 
-export function selectPrice(item: CartItemType) {
+export function selectPrice(item: CartItem) {
   return item?.product?.price! * item?.quantity!;
 }
 
-export function selectDiscountedPrice(item: CartItemType) {
+export function selectDiscountedPrice(item: CartItem) {
   return (item?.product?.price! - item?.product?.price! * (item?.product?.salePercentage! / 100)) * item?.quantity!;
 }
 
-export function selectDiscountTotal(items: CartItemType[]) {
+export function selectDiscountTotal(items: CartItem[]) {
   return items.reduce(
     (discountTotal, item) =>
       discountTotal +
@@ -24,14 +24,14 @@ export function selectDiscountTotal(items: CartItemType[]) {
   );
 }
 
-export function selectCartTotal(items: CartItemType[]) {
+export function selectCartTotal(items: CartItem[]) {
   return items.reduce((totalPrice, item) => totalPrice + item?.product?.price! * item?.quantity!, 0);
 }
 
-export function selectDeliveryFee(items: CartItemType[]) {
+export function selectDeliveryFee(items: CartItem[]) {
   return selectCartTotal(items) - selectDiscountTotal(items) > 500 ? 0 : 60;
 }
 
-export function selectOrderTotal(items: CartItemType[]) {
+export function selectOrderTotal(items: CartItem[]) {
   return selectCartTotal(items) - selectDiscountTotal(items);
 }

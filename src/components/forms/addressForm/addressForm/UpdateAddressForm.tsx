@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent } from 'react';
-import { UpdateAddressTypeDb, AddressTypeStore } from '@/types';
+import { UpdateAddressDb, AddressStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function UpdateAddressForm() {
 
     if (name === 'postalCode' && value.length > 4) return;
 
-    dispatch(setAddressFormDataOnChange({ field: name as keyof AddressTypeStore, value }));
+    dispatch(setAddressFormDataOnChange({ field: name as keyof AddressStore, value }));
   }
 
   async function handleUpdateAddress(event: FormEvent<HTMLFormElement>) {
@@ -30,7 +30,7 @@ export default function UpdateAddressForm() {
     const { success, message } = await updateAddress({
       ...addressFormData,
       postalCode: Number(addressFormData.postalCode),
-    } as UpdateAddressTypeDb);
+    } as UpdateAddressDb);
 
     if (success === true) {
       router.refresh();

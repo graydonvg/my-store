@@ -1,8 +1,8 @@
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import SmallProductImageBox from './SmallProductImageBox';
 
 type Props = {
-  product: ProductType;
+  product: Product;
   selectImage: (index: number) => void;
   selectedImageIndex: number;
   boxBorderColor: string;

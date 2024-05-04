@@ -1,8 +1,6 @@
-import { AddProductResponseType, CustomResponseType, InsertProductTypeDb } from '@/types';
+import { AddProductResponse, CustomResponse, InsertProductDb } from '@/types';
 
-export default async function addProduct(
-  productData: InsertProductTypeDb
-): Promise<CustomResponseType<AddProductResponseType>> {
+export default async function addProduct(productData: InsertProductDb): Promise<CustomResponse<AddProductResponse>> {
   try {
     const response = await fetch('/api/secure/admin/products/add', {
       method: 'POST',

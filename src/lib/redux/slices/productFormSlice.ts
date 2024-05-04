@@ -1,11 +1,11 @@
-import { InsertProductTypeStore } from '@/types';
+import { InsertProductStore } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sortItemSizesArray';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 function handleSetProductDataOnChange(
-  field: keyof InsertProductTypeStore,
-  value: InsertProductTypeStore[keyof InsertProductTypeStore],
-  productFormData: InsertProductTypeStore,
+  field: keyof InsertProductStore,
+  value: InsertProductStore[keyof InsertProductStore],
+  productFormData: InsertProductStore,
   initialState: State
 ) {
   if (field === 'sizes') {
@@ -19,7 +19,7 @@ function handleSetProductDataOnChange(
   }
 }
 
-function setAvailableSizes(value: string, productFormData: InsertProductTypeStore) {
+function setAvailableSizes(value: string, productFormData: InsertProductStore) {
   if (productFormData.sizes.includes(value)) {
     const filteredSizes = productFormData.sizes.filter((size) => size !== value);
 
@@ -34,7 +34,7 @@ function setAvailableSizes(value: string, productFormData: InsertProductTypeStor
 }
 
 type State = {
-  productFormData: InsertProductTypeStore;
+  productFormData: InsertProductStore;
 };
 
 const initialState: State = {
@@ -59,8 +59,7 @@ const productFormSlice = createSlice({
     setProductFormData(
       state,
       action: PayloadAction<
-        | InsertProductTypeStore
-        | { field: keyof InsertProductTypeStore; value: InsertProductTypeStore[keyof InsertProductTypeStore] }
+        InsertProductStore | { field: keyof InsertProductStore; value: InsertProductStore[keyof InsertProductStore] }
       >
     ) {
       if ('field' in action.payload && 'value' in action.payload) {

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function DELETE(): Promise<NextResponse<CustomResponseType>> {
+export async function DELETE(): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {

@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { InsertProductTypeDb } from '@/types';
+import { InsertProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -85,7 +85,7 @@ export default function AdminViewAddNewProductPage() {
       success: addProductSuccess,
       message: addProductMessage,
       data: productData,
-    } = await addProduct(productFormData as InsertProductTypeDb);
+    } = await addProduct(productFormData as InsertProductDb);
 
     if (addProductSuccess === true && productData) {
       productId = productData.productId;

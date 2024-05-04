@@ -1,6 +1,6 @@
-import { AddOrderType, AddOrderResponseType, CustomResponseType } from '@/types';
+import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
 
-export default async function addOrder(orderData: AddOrderType): Promise<CustomResponseType<AddOrderResponseType>> {
+export default async function addOrder(orderData: InsertOrderDb): Promise<CustomResponse<AddOrderResponse>> {
   try {
     const response = await fetch('/api/secure/orders/add', {
       method: 'POST',

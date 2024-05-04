@@ -1,8 +1,8 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { AdminOrderType, CustomerOrderType, OrdersSortByOptions } from '@/types';
+import { AdminOrdersTableOrderData, OrderData, AdminOrdersDataGridSortableColumns } from '@/types';
 import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
 
-export async function getOrdersForUser(): Promise<CustomerOrderType[] | null> {
+export async function getOrdersForUser(): Promise<OrderData[] | null> {
   const supabase = await createSupabaseServerClient();
 
   const {
@@ -21,14 +21,14 @@ export async function getOrdersForUser(): Promise<CustomerOrderType[] | null> {
 }
 
 type OrdersForAdminReturnType = {
-  orders: AdminOrderType[] | null;
+  orders: AdminOrdersTableOrderData[] | null;
   totalRowCount: number;
 };
 
 export async function getOrdersForAdmin(
   start: number,
   end: number,
-  sortBy: OrdersSortByOptions,
+  sortBy: AdminOrdersDataGridSortableColumns,
   sortDirection: 'asc' | 'desc'
 ): Promise<OrdersForAdminReturnType> {
   const supabase = await createSupabaseServerClient();

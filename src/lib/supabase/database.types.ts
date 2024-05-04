@@ -30,7 +30,7 @@ export type Database = {
           recipientLastName: string;
           streetAddress: string;
           suburb: string;
-          userId: string;
+          userId?: string;
         };
         Update: {
           addressId?: string;
@@ -97,7 +97,7 @@ export type Database = {
           productId: string;
           quantity: number;
           size: string;
-          userId: string;
+          userId?: string;
         };
         Update: {
           cartItemId?: string;
@@ -167,7 +167,7 @@ export type Database = {
           productId: string;
           quantity: number;
           size: string;
-          userId: string;
+          userId?: string;
         };
         Update: {
           orderId?: string;
@@ -221,7 +221,7 @@ export type Database = {
           isPaid?: boolean;
           orderId?: string;
           orderTotal: number;
-          userId: string;
+          userId?: string;
         };
         Update: {
           cartTotal?: number;
@@ -368,7 +368,7 @@ export type Database = {
           shippingDetailsId?: string;
           streetAddress: string;
           suburb: string;
-          userId: string;
+          userId?: string;
         };
         Update: {
           city?: string;
@@ -434,7 +434,6 @@ export type Database = {
           email: string;
           firstName: string | null;
           lastName: string | null;
-          role: string;
           userId: string;
         };
         Insert: {
@@ -443,7 +442,6 @@ export type Database = {
           email: string;
           firstName?: string | null;
           lastName?: string | null;
-          role?: string;
           userId: string;
         };
         Update: {
@@ -452,7 +450,6 @@ export type Database = {
           email?: string;
           firstName?: string | null;
           lastName?: string | null;
-          role?: string;
           userId?: string;
         };
         Relationships: [

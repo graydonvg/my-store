@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType, UpdateUserPersonalInformationType, UserAuthType } from '@/types';
+import { CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -14,7 +14,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user },
     } = await supabase.auth.getUser();
 
-    const userData: UserAuthType & UpdateUserPersonalInformationType = await request.json();
+    const userData: UserAuthData & UpdateUserPersonalInformationDb = await request.json();
     const { email, password, ...userDataToUpdate } = userData;
     const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
     const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);

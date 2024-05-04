@@ -1,9 +1,9 @@
 import { deleteProductImageFromStorage } from '@/lib/firebase';
-import { CustomResponseType, InsertProductImageDataTypeStore } from '@/types';
+import { CustomResponse, InsertProductImageDataStore } from '@/types';
 
 export async function deleteProductImagesFromStorage(
-  imageData: InsertProductImageDataTypeStore[]
-): Promise<CustomResponseType> {
+  imageData: InsertProductImageDataStore[]
+): Promise<CustomResponse> {
   const storageImagesToDelete = imageData.map((data) => data.fileName);
 
   const storageDeletePromises = storageImagesToDelete.map(

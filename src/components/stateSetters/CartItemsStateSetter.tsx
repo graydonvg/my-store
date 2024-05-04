@@ -2,11 +2,11 @@
 
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import { setCartItems } from '@/lib/redux/slices/cartSlice';
 
 type Props = {
-  cartItems: CartItemType[] | null;
+  cartItems: CartItem[] | null;
 };
 
 export default function CartItemsStateSetter({ cartItems }: Props) {

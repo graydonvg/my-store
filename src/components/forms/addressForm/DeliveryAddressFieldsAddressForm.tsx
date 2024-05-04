@@ -1,11 +1,11 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { ChangeEvent } from 'react';
-import { AddressTypeStore } from '@/types';
+import { AddressStore } from '@/types';
 import NumberField from '../../ui/inputFields/NumberField';
 
 type Props = {
-  addressFormData: AddressTypeStore;
+  addressFormData: AddressStore;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 

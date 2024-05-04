@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 import ProductPreviewList from './ProductPreviewList';
 import { useRouter } from 'next/navigation';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 
 type Props = {
-  latestArrivals: ProductType[] | undefined;
-  productsOnSale: ProductType[] | undefined;
+  latestArrivals: Product[] | undefined;
+  productsOnSale: Product[] | undefined;
   navigateToAllProducts: () => void;
 };
 

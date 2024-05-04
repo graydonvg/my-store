@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { TableFilter, UsersFilterableColumns, UsersQueryFilterBuilder } from '@/types';
+import { DataGridFilter, AdminUsersDataGridFilterableColumns, AdminUsersDataGridQueryFilterBuilder } from '@/types';
 
 type FilterFunctionParams = {
-  usersQuery: UsersQueryFilterBuilder;
-  filter: TableFilter<UsersFilterableColumns>;
+  usersQuery: AdminUsersDataGridQueryFilterBuilder;
+  filter: DataGridFilter<AdminUsersDataGridFilterableColumns>;
   setOperatorInvalid: () => void;
 };
 
@@ -96,8 +96,8 @@ function applyRoleFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunct
 }
 
 export function applyFilterForUsersTable(
-  usersQuery: UsersQueryFilterBuilder,
-  filter: TableFilter<UsersFilterableColumns>,
+  usersQuery: AdminUsersDataGridQueryFilterBuilder,
+  filter: DataGridFilter<AdminUsersDataGridFilterableColumns>,
   setColumnInvalid: () => void,
   setOperatorInvalid: () => void
 ) {

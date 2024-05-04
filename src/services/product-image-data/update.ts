@@ -1,8 +1,8 @@
-import { CustomResponseType, InsertProductImageDataTypeStore } from '@/types';
+import { CustomResponse, InsertProductImageDataStore } from '@/types';
 
 export default async function updateProductImageData(
-  imageData: InsertProductImageDataTypeStore[]
-): Promise<CustomResponseType> {
+  imageData: InsertProductImageDataStore[]
+): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/admin/product-image-data/update', {
       method: 'POST',

@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import HeroSection from './HeroSection';
@@ -8,8 +8,8 @@ import ProductPreviewSection from './productPreviewSection/ProductPreviewSection
 import ShopByCategorySection from './ShopByCategorySection';
 
 type HomePageClientProps = {
-  allProducts: ProductType[] | undefined;
-  saleProducts: ProductType[] | undefined;
+  allProducts: Product[] | undefined;
+  saleProducts: Product[] | undefined;
 };
 
 export default function HomePageClient({ allProducts, saleProducts }: HomePageClientProps) {

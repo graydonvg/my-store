@@ -2,12 +2,12 @@
 
 import { Paper, TablePagination } from '@mui/material';
 import OrdersTable from './OrdersTable';
-import { AdminOrderType } from '@/types';
+import { AdminOrdersTableOrderData } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, MouseEvent } from 'react';
 
 type Props = {
-  orders: AdminOrderType[] | null;
+  orders: AdminOrdersTableOrderData[] | null;
   isEndOfData: boolean;
   page: number;
   rowsPerPage: number;

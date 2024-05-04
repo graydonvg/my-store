@@ -2,7 +2,7 @@
 
 import { Box, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
@@ -15,7 +15,7 @@ import RemoveFromWishlistButton from './RemoveFromWishlistButton';
 import { useState } from 'react';
 
 type ProductCardProps = {
-  product: ProductType;
+  product: Product;
   imageSizes: string;
   wishlistSize?: string;
   wishlistItemId?: string;

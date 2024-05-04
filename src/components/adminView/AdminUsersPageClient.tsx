@@ -1,7 +1,13 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { AdminUserDataType, TableQueryData, UserRole, UsersFilterableColumns, UsersSortableColumns } from '@/types';
+import {
+  AdminUsersTableUserData,
+  DataGridQueryData,
+  UserRole,
+  AdminUsersDataGridFilterableColumns,
+  AdminUsersDataGridSortableColumns,
+} from '@/types';
 import {
   GridColDef,
   GridRowSelectionModel,
@@ -20,7 +26,7 @@ import CreateAuthUserDialog from '../dialogs/CreateAuthUserDialog';
 import { useAppSelector } from '@/lib/redux/hooks';
 
 function getColumns(userRole: UserRole) {
-  const columns: GridColDef<AdminUserDataType>[] = [
+  const columns: GridColDef<AdminUsersTableUserData>[] = [
     {
       field: 'userId',
       headerName: 'ID',
@@ -101,11 +107,11 @@ function getColumns(userRole: UserRole) {
 }
 
 type Props = {
-  users: AdminUserDataType[] | null;
+  users: AdminUsersTableUserData[] | null;
   querySuccess: boolean;
   queryMessage: string;
   totalRowCount: number;
-} & TableQueryData<UsersFilterableColumns, UsersSortableColumns>;
+} & DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>;
 
 export default function AdminUsersPageClient(props: Props) {
   const { users, querySuccess, queryMessage, page, range, sort, filter, totalRowCount } = props;
@@ -131,7 +137,7 @@ export default function AdminUsersPageClient(props: Props) {
     newRow: GridValidRowModel,
     oldRow: GridValidRowModel
   ): GridValidRowModel | Promise<GridValidRowModel> {
-    const changedValues = compareObjectValues(newRow, oldRow) as Partial<AdminUserDataType>;
+    const changedValues = compareObjectValues(newRow, oldRow) as Partial<AdminUsersTableUserData>;
 
     console.log(changedValues);
 

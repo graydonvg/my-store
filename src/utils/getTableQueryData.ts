@@ -1,4 +1,4 @@
-import { OrdersSortByOptions } from '@/types';
+import { AdminOrdersDataGridSortableColumns } from '@/types';
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
@@ -9,7 +9,7 @@ export function getOrdersQueryDataForAdmin(searchParams: SearchParams) {
   const rowsPerPage = (searchParams['per_page'] ?? '5') as string;
   const rowsPerPageNumber = Number(rowsPerPage);
 
-  const sortBy = (searchParams['sort_by'] ?? 'date') as OrdersSortByOptions;
+  const sortBy = (searchParams['sort_by'] ?? 'date') as AdminOrdersDataGridSortableColumns;
   const sortDirection = (searchParams['sort'] ?? 'desc') as 'asc' | 'desc';
 
   const queryStart = (pageNumber - 1) * rowsPerPageNumber;

@@ -1,6 +1,6 @@
-import { CustomResponseType, InsertAddressType } from '@/types';
+import { CustomResponse, InsertAddressDb } from '@/types';
 
-export async function addNewAddress(addressData: InsertAddressType): Promise<CustomResponseType> {
+export async function addNewAddress(addressData: InsertAddressDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/users/address/add', {
       method: 'POST',

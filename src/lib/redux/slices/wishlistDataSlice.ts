@@ -1,8 +1,8 @@
-import { WishlistDataType } from '@/types';
+import { WishlistData } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type State = {
-  wishlistData: WishlistDataType[];
+  wishlistData: WishlistData[];
 };
 
 const initialState: State = {
@@ -13,7 +13,7 @@ const wishlistDataSlice = createSlice({
   name: 'wishlistData',
   initialState,
   reducers: {
-    setWishlistData(state, action: PayloadAction<WishlistDataType[]>) {
+    setWishlistData(state, action: PayloadAction<WishlistData[]>) {
       state.wishlistData = action.payload;
     },
   },

@@ -2,7 +2,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
 import { deleteItemFromWishlist } from '@/services/wishlist/delete';
-import { CartItemType, ProductType } from '@/types';
+import { CartItem, Product } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
 import { IconButton, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 
 type Props = {
-  product: ProductType;
+  product: Product;
   wishlistSize: string;
   wishlistItemId: string;
 };
@@ -32,7 +32,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
     }
   }
 
-  async function incrementItemQuantity(existingItem: CartItemType) {
+  async function incrementItemQuantity(existingItem: CartItem) {
     const { success, message } = await updateCartItemQuantity({
       cartItemId: existingItem.cartItemId,
       quantity: existingItem.quantity + 1,

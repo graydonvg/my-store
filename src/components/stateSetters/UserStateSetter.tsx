@@ -2,11 +2,11 @@
 
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { useEffect } from 'react';
-import { UserDataType } from '@/types';
+import { UserData } from '@/types';
 import { setUserData } from '@/lib/redux/slices/userSlice';
 
 type Props = {
-  userData: UserDataType | null;
+  userData: UserData | null;
 };
 
 export default function UserStateSetter({ userData }: Props) {

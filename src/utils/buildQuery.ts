@@ -1,25 +1,25 @@
 import {
-  CustomResponseType,
+  CustomResponse,
   QueryFilterBuilder,
-  TableQueryData,
-  UsersFilterableColumns,
-  UsersQueryFilterBuilderResponse,
-  UsersSortableColumns,
+  DataGridQueryData,
+  AdminUsersDataGridFilterableColumns,
+  AdminUsersDataGridQueryFilterBuilderResponse,
+  AdminUsersDataGridSortableColumns,
 } from '@/types';
 import { applyFilterForUsersTable } from '@/utils/applyQueryFilter';
 import { applySortForUsersTable } from '@/utils/applyQuerySort';
 
 type BuildUsersQueryParams = {
   usersQuery: QueryFilterBuilder;
-  sort: TableQueryData<UsersFilterableColumns, UsersSortableColumns>['sort'];
-  filter: TableQueryData<UsersFilterableColumns, UsersSortableColumns>['filter'];
+  sort: DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>['sort'];
+  filter: DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>['filter'];
 };
 
 export default async function buildUsersQueryForAdmin({
   usersQuery,
   sort,
   filter,
-}: BuildUsersQueryParams): Promise<CustomResponseType<UsersQueryFilterBuilderResponse>> {
+}: BuildUsersQueryParams): Promise<CustomResponse<AdminUsersDataGridQueryFilterBuilderResponse>> {
   let isFilterColumnInvalid = false;
   let isFilterOperatorInvalid = false;
   let isSortColumnInvalid = false;

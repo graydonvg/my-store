@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { CustomResponseType, userPasswordType } from '@/types';
+import { CustomResponse, userPasswordType } from '@/types';
 import { ERROR_MESSAGES } from '@/config';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponseType>> {
+export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {

@@ -2,12 +2,12 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { setFieldToEdit } from '@/lib/redux/slices/accountSlice';
 import { Typography } from '@mui/material';
 import UserDataAccountPage from '../../UserDataAccountPage';
-import { AccountFieldToEditType } from '@/types';
+import { UserAccountFieldToEdit } from '@/types';
 
 export default function PasswordMask() {
   const dispatch = useAppDispatch();
 
-  function selectFieldToEdit(field: AccountFieldToEditType) {
+  function selectFieldToEdit(field: UserAccountFieldToEdit) {
     dispatch(setFieldToEdit(field));
   }
 

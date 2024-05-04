@@ -1,9 +1,9 @@
 import { Box, Divider, List, ListItemButton, Typography } from '@mui/material';
 import { Check } from '@mui/icons-material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 
 type Props = {
-  cartItem: CartItemType;
+  cartItem: CartItem;
   isUpdatingCartItem: boolean;
   setCartItemSizeOnClick: (size: string) => Promise<void>;
 };

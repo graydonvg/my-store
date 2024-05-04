@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function GET(): Promise<NextResponse<CustomResponseType>> {
+export async function GET(): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {

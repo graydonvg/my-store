@@ -5,7 +5,7 @@ import { Fragment, useEffect } from 'react';
 import UpdateFirstNameForm from '@/components/forms/accountPageForms/UpdateFirstNameForm';
 import UpdateLastNameForm from '@/components/forms/accountPageForms/UpdateLastNameForm';
 import UpdateContactNumberForm from '@/components/forms/accountPageForms/UpdateContactNumberForm';
-import { AccountFieldToEditType } from '@/types';
+import { UserAccountFieldToEdit } from '@/types';
 
 const fieldDataMap = {
   firstName: {
@@ -32,7 +32,7 @@ export default function PersonalInformation() {
     dispatch(setIsUpdatingAccount(false));
   }, [dispatch, userData]);
 
-  function selectFieldToEdit(field: AccountFieldToEditType) {
+  function selectFieldToEdit(field: UserAccountFieldToEdit) {
     dispatch(setFieldToEdit(field));
   }
 

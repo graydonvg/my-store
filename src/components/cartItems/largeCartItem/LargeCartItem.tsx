@@ -1,6 +1,6 @@
 import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { Divider } from '@mui/material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
 import { BORDER_RADIUS } from '@/config';
@@ -12,7 +12,7 @@ import ImageLargeCartItem from './ImageLargeCartItem';
 import PriceLargeCartItem from './PriceLargeCartItem';
 
 type Props = {
-  item: CartItemType;
+  item: CartItem;
 };
 
 export default function LargeCartItem({ item }: Props) {

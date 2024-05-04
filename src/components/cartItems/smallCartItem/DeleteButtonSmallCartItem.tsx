@@ -5,10 +5,10 @@ import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 
 type Props = {
-  item: CartItemType;
+  item: CartItem;
   isRemovingCartItem: boolean;
   setIsRemovingCartItem: Dispatch<SetStateAction<boolean>>;
 };

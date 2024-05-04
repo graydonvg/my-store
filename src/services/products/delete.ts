@@ -1,6 +1,6 @@
-import { CustomResponseType } from '@/types';
+import { CustomResponse } from '@/types';
 
-export default async function deleteProduct(productId: string): Promise<CustomResponseType> {
+export default async function deleteProduct(productId: string): Promise<CustomResponse> {
   try {
     const response = await fetch(`/api/secure/admin/products/delete?product_id=${productId}`, {
       method: 'DELETE',

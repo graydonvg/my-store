@@ -1,5 +1,5 @@
 import { Box, ListItem, Typography } from '@mui/material';
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
@@ -12,7 +12,7 @@ import ImageSmallCartItem from './ImageSmallCartItem';
 import PriceSmallCartItem from './PriceSmallCartItem';
 
 type Props = {
-  item: CartItemType;
+  item: CartItem;
 };
 
 export default function SmallCartItem({ item }: Props) {

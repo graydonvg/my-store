@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 import { addNewAddress } from '@/services/users/add';
-import { InsertAddressType, AddressTypeStore } from '@/types';
+import { AddressStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,6 @@ import AddressForm from '../AddressForm';
 export default function AddNewAddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
   const addressFormData = useAppSelector((state) => state.addressForm);
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
 
@@ -20,7 +19,7 @@ export default function AddNewAddressForm() {
 
     if (name === 'postalCode' && value.length > 4) return;
 
-    dispatch(setAddressFormDataOnChange({ field: name as keyof AddressTypeStore, value }));
+    dispatch(setAddressFormDataOnChange({ field: name as keyof AddressStore, value }));
   }
 
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
@@ -33,8 +32,7 @@ export default function AddNewAddressForm() {
     const { success, message } = await addNewAddress({
       ...restOfAddressData,
       postalCode: Number(postalCode),
-      userId: userData?.userId!,
-    } as InsertAddressType);
+    });
 
     if (success === true) {
       router.refresh();

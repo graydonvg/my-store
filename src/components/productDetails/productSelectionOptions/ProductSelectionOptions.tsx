@@ -1,4 +1,4 @@
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 import { Box } from '@mui/material';
 import QuantityPickerProductDetails from './QuantityPickerProductDetails';
 import AddToCartButton from './AddToCartButton';
@@ -7,7 +7,7 @@ import SizePickerProductDetails from './SizePickerProductDetails';
 import AddToWishlistButton from './AddToWishlistButton';
 
 type Props = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function ProductSelectionOptions({ product }: Props) {

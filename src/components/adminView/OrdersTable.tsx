@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import MuiLink from '../ui/MuiLink';
-import { AdminOrderType } from '@/types';
+import { AdminOrdersTableOrderData } from '@/types';
 import { visuallyHidden } from '@mui/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -43,7 +43,7 @@ const sortableHeadCells = [
 ];
 
 type Props = {
-  orders: AdminOrderType[] | null;
+  orders: AdminOrdersTableOrderData[] | null;
 };
 
 export default function OrdersTable({ orders }: Props) {

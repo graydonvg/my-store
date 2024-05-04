@@ -2,13 +2,13 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
-import { InsertProductImageDataTypeDb, InsertProductImageDataTypeStore } from '@/types';
+import { InsertProductImageDataDb, InsertProductImageDataStore } from '@/types';
 import { BORDER_RADIUS } from '@/config';
 import { useState } from 'react';
 
 type Props = {
   selectedImageIndex: number;
-  productImageData?: InsertProductImageDataTypeDb | InsertProductImageDataTypeStore;
+  productImageData?: InsertProductImageDataDb | InsertProductImageDataStore;
   productName: string;
   boxBorderColor: string;
   maxImageCount?: number;

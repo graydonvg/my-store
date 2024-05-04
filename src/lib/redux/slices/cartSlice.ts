@@ -1,9 +1,9 @@
-import { CartItemType } from '@/types';
+import { CartItem } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type CartState = {
   isCartOpen: boolean;
-  cartItems: CartItemType[];
+  cartItems: CartItem[];
   cartItemQuantityWillUpdate: boolean;
 };
 
@@ -20,7 +20,7 @@ const cartSlice = createSlice({
     setIsCartOpen(state, action: PayloadAction<boolean>) {
       state.isCartOpen = action.payload;
     },
-    setCartItems(state, action: PayloadAction<CartItemType[]>) {
+    setCartItems(state, action: PayloadAction<CartItem[]>) {
       state.cartItems = action.payload;
     },
     setCartItemQuantityWillUpdate(state, action: PayloadAction<boolean>) {

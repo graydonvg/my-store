@@ -4,10 +4,10 @@ import Products from '@/components/Products';
 import RevalidateButton from '@/components/adminView/adminProductsPageClient/RevalidateButton';
 import AddNewProductButton from '@/components/adminView/adminProductsPageClient/AddNewProductButton';
 import { Box } from '@mui/material';
-import { ProductType } from '@/types';
+import { Product } from '@/types';
 
 type Props = {
-  products: ProductType[];
+  products: Product[];
 };
 
 export default function AdminProductsPageClient({ products }: Props) {
