@@ -10,7 +10,7 @@ export const BORDER_RADIUS = '4px';
 
 export const FREE_DELIVERY_THRESHOLD = 500;
 
-export const USER_ROLE_OPTIONS: UserRoleOptions = ['customer', 'admin', 'manager'];
+export const USER_ROLE_OPTIONS: UserRoleOptions = ['owner', 'admin'];
 
 // Used to display buttons when adding a product and order buttons XS ---> XL on the product's page
 export const ORDERED_SIZES_FOR_TOGGLE_BUTTONS = [

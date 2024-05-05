@@ -37,6 +37,3 @@ export default async function AdminUsersPage({ searchParams }: Props) {
     />
   );
 }
-
-// Enable read for users based on user_id or authorization
-// (auth.uid() = "userId") OR authorize('user.all') OR authorize('user.select')

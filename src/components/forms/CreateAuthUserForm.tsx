@@ -76,11 +76,9 @@ export default function CreateAuthUserForm() {
   const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
   const userData = useAppSelector((state) => state.user.data);
   const [formData, setFormData] = useState(defaultFormData);
-  let restricedUserRoleOptions = [...USER_ROLE_OPTIONS];
-
-  if (userData?.role !== 'manager') {
-    restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) => role !== 'manager');
-  }
+  let restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) =>
+    userData?.role !== 'owner' ? role !== 'owner' : role
+  );
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;

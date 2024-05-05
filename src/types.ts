@@ -25,7 +25,8 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 export type UserRole = Database['public']['Enums']['appRole'];
 
-export type UserRoleOptions = ['customer', 'admin', 'manager'];
+// export type UserRoleOptions = ['customer', 'admin', 'manager'];
+export type UserRoleOptions = UserRole[];
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 

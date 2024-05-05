@@ -91,13 +91,7 @@ function getColumns(userRole: UserRole) {
       editable: true,
       sortable: true,
       type: 'singleSelect',
-      valueOptions: USER_ROLE_OPTIONS.filter((role) => {
-        if (userRole === 'manager') {
-          return role;
-        } else {
-          return role !== 'manager';
-        }
-      }),
+      valueOptions: USER_ROLE_OPTIONS.filter((role) => (userRole !== 'owner' ? role !== 'owner' : role)),
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
       renderCell: (params) => params.row.role,
     },

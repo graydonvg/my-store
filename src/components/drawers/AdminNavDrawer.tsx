@@ -29,9 +29,9 @@ export default function AdminNavDrawer({ open, toggleDrawer, drawerWidth }: Prop
       variant="permanent"
       anchor="left"
       open={open}
-      sx={{
-        '& .MuiDrawer-paper': {
-          backgroundColor: darkMode ? theme.palette.custom.navbar.upper.background : theme.palette.background.paper,
+      PaperProps={{
+        sx: {
+          backgroundColor: darkMode ? theme.palette.custom.navbar.upper.background : theme.palette.common.white,
           position: 'fixed',
           whiteSpace: 'nowrap',
           width: drawerWidth,

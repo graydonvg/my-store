@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { DataGridQueryData } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -56,6 +56,7 @@ export default function CustomDataGrid({
   const rowsPerPageOptionsSet = new Set([validatedRowsPerPage, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
   const { isEndOfData, lastPageNumber } = calculateTablePagination(data, range.start, page.rows, totalRowCount);
+  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     // handle query builder validation error messages
@@ -193,7 +194,6 @@ export default function CustomDataGrid({
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.background.paper,
         borderRadius: 0,
         // subtract navbar height
         height: 'calc(100dvh - 64px)',
@@ -222,6 +222,7 @@ export default function CustomDataGrid({
         onSortModelChange={handleSort}
         showCellVerticalBorder
         disableColumnMenu
+        initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
         slots={{
           toolbar: () => customToolbar,
           noResultsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
@@ -246,7 +247,8 @@ export default function CustomDataGrid({
             sx: {
               width: { xs: 1, sm: 'auto' },
               '& .MuiTablePagination-selectLabel': { display: 'block' },
-              '& .MuiTablePagination-input': { display: 'inline-flex', marginRight: '20px' },
+              '& .MuiTablePagination-input': { display: 'inline-flex', marginRight: { xs: '20px', sm: 4 } },
+              '& .MuiTablePagination-actions': { marginLeft: { xs: 2, sm: '20px' } },
             },
           },
         }}
@@ -282,11 +284,11 @@ export default function CustomDataGrid({
           },
 
           '& .mui-tgsonj': {
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: theme.palette.background.default,
           },
 
           '& .MuiDataGrid-footerContainer': {
-            backgroundColor: theme.palette.custom.dataGrid.footer,
+            backgroundColor: theme.palette.custom.dataGrid.toolbar,
             '& .MuiDataGrid-selectedRowCount': {
               display: { xs: 'none', sm: 'flex' },
             },

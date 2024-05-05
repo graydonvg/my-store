@@ -29,6 +29,9 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
         <Box
           sx={{
             backgroundColor: isOrdersPage ? theme.palette.background.paper : 'transparent',
+            backgroundImage: isOrdersPage
+              ? 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))'
+              : 'none',
             borderRadius: BORDER_RADIUS,
           }}>
           <OrderTotalsRow

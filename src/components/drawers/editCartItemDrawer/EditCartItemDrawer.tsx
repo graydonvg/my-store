@@ -150,8 +150,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         paperProps={{
           sx: {
             width: { xs: '80vw', sm: '350px' },
-            backgroundColor: theme.palette.background.paper,
-            backgroundImage: 'none',
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07))',
           },
         }}>
         <Box

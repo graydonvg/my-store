@@ -50,11 +50,10 @@ export default function SelectField({ options, icon, hasValue, backgroundColor, 
         },
       })}
       InputLabelProps={{
-        shrink: focused || hasValue,
+        shrink: hasValue,
         sx: {
           marginLeft: 0,
           ...(icon &&
-            !focused &&
             !hasValue && {
               marginLeft: 4,
             }),

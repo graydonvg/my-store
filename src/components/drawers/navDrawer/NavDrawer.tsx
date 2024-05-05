@@ -48,7 +48,7 @@ export default function NavDrawer() {
         drawerProps={{ sx: { zIndex: theme.zIndex.appBar + 1 } }}
         paperProps={{
           elevation: 0,
-          sx: { width: '100vw', backgroundColor: theme.palette.custom.navbar.lower.background },
+          sx: { width: '100vw' },
         }}>
         <DrawerHeader
           label="Menu"

@@ -55,9 +55,9 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
                 '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
             },
             dataGrid: {
-              toolbar: '#fff',
-              header: grey[100],
-              footer: grey[100],
+              toolbar: grey[200],
+              header: grey[200],
+              footer: grey[200],
               border: 'rgba(224, 224, 224, 1)',
             },
           },
@@ -66,7 +66,6 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           // palette values for dark mode
           background: {
             default: 'rgba(0, 0, 0, 1)',
-            paper: grey[900],
           },
           primary: {
             main: blue[700],
@@ -107,8 +106,8 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             },
             dataGrid: {
               toolbar: lighten(grey[900], 0.05),
-              header: lighten(grey[900], 0.08),
-              footer: lighten(grey[900], 0.08),
+              header: lighten(grey[900], 0.05),
+              footer: lighten(grey[900], 0.05),
               border: 'rgba(81, 81, 81, 1)',
             },
           },

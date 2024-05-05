@@ -59,8 +59,7 @@ export default function EditProductImagesDrawer({ isSubmitting }: Props) {
         paperProps={{
           sx: {
             width: { xs: '100vw', sm: '350px' },
-            backgroundColor: theme.palette.background.default,
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))',
           },
         }}>
         <DrawerHeader

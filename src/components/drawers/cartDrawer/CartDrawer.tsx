@@ -60,8 +60,7 @@ export default function CartDrawer() {
         paperProps={{
           sx: {
             width: { xs: '90vw', sm: '400px' },
-            backgroundColor: theme.palette.background.default,
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))',
           },
         }}>
         <Toolbar

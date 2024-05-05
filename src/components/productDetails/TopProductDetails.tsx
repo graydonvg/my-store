@@ -41,7 +41,7 @@ export default function TopProductDetails({ product }: Props) {
         <Typography
           lineHeight={1}
           component="span"
-          fontFamily={'Georgia'}
+          fontFamily="Georgia"
           fontStyle="italic"
           fontSize={42}
           sx={{ color: theme.palette.text.primary }}>
@@ -58,7 +58,7 @@ export default function TopProductDetails({ product }: Props) {
             <Typography
               lineHeight={1.3}
               component="span"
-              fontFamily={'Georgia'}
+              fontFamily="Georgia"
               fontStyle="italic"
               fontSize={22}
               sx={{ textDecoration: 'line-through', paddingRight: 1, color: theme.palette.text.disabled }}>
@@ -68,7 +68,7 @@ export default function TopProductDetails({ product }: Props) {
               lineHeight={1}
               component="span"
               fontSize={22}
-              fontFamily={'Georgia'}
+              fontFamily="Georgia"
               fontStyle="italic"
               sx={{ color: theme.palette.primary.light, fontFamily: 'serif' }}>
               {`-${product.salePercentage}%`}

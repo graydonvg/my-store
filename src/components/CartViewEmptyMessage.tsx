@@ -1,10 +1,10 @@
 import { BORDER_RADIUS } from '@/config';
-import { Box, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 
 export default function CartViewEmptyMessage() {
   return (
-    <Box
+    <Paper
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -12,7 +12,6 @@ export default function CartViewEmptyMessage() {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: (theme) => theme.palette.background.paper,
         borderRadius: BORDER_RADIUS,
         paddingX: 2,
         paddingY: 4,
@@ -30,6 +29,6 @@ export default function CartViewEmptyMessage() {
           Continue shopping
         </Typography>
       </Link>
-    </Box>
+    </Paper>
   );
 }

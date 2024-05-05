@@ -572,7 +572,7 @@ export type Database = {
         | 'wishlist.select'
         | 'wishlist.update'
         | 'wishlist.delete';
-      appRole: 'admin' | 'manager' | 'owner';
+      appRole: 'owner' | 'admin';
     };
     CompositeTypes: {
       [_ in never]: never;
