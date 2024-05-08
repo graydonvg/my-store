@@ -3,7 +3,7 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../progress/CircularProgressWithLabel';
 import { InsertProductImageDataDb, InsertProductImageDataStore } from '@/types';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { useState } from 'react';
 
 type Props = {

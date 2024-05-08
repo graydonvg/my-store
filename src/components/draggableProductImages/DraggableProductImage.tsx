@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
 import { InsertProductImageDataStore } from '@/types';
 import Image from 'next/image';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import TextButton from '../ui/buttons/TextButton';
 import { toast } from 'react-toastify';

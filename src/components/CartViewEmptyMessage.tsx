@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 

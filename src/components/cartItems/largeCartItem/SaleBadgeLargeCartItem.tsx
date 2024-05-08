@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 
 type Props = {
   percentage: number;

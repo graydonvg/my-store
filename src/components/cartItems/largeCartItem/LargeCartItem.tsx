@@ -3,7 +3,7 @@ import { Divider } from '@mui/material';
 import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import SaleBadgeLargeCartItem from './SaleBadgeLargeCartItem';
 import BottomDetailsLargeCartItem from './BottomDetailsLargeCartItem';
 import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';

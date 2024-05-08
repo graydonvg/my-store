@@ -7,6 +7,7 @@ import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import SignOutButton from '../ui/buttons/SignOutButton';
+import { HAS_ADMIN_PANEL_ACCESS } from '@/data';
 
 const iconSize = 'small';
 
@@ -60,10 +61,10 @@ export default function AccountDropdownMenu() {
           <ArrowDropDown sx={{ color: theme.palette.primary.main, marginLeft: 1 }} />
         </>
       }>
-      {userData?.role === 'admin' || userData?.role === 'manager' ? (
+      {HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) ? (
         <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
-            label="Admin View"
+            label="Admin Panel"
             icon={<AdminPanelSettings fontSize="small" />}
           />
         </Link>

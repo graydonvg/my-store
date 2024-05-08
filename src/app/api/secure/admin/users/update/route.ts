@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { CustomResponse, UpdateUserPersonalInformationDb } from '@/types';
-import { ERROR_MESSAGES } from '@/config';
+import { ERROR_MESSAGES } from '@/data';
 // import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { user: userAuth },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
     // const { data: authorizationData } = await supabase.from('users').select('admins(userId), managers(userId)');
@@ -20,16 +20,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
     const userData: UpdateUserPersonalInformationDb = await request.json();
     const { userId, ...userDataToUpdate } = userData;
 
-    if (!userAuth)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to update user personal information. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
       });
 
-    const userRole = userAuth ? await getUserRoleFromSession(supabase) : null;
-    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+    const userRole = authUser ? await getUserRoleFromSession(supabase) : null;
+    const { isAdmin, isOwner } = getUserRoleBoolean(userRole);
 
-    if (!isAdmin || !isManager || !isOwner)
+    if (!isAdmin && !isOwner)
       return NextResponse.json({
         success: false,
         message: 'Failed to update user personal information. Not authorized.',

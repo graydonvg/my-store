@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
 import { Product } from '@/types';
-import ClientViewSmallProductImageBox from './smallProductImageBox/ClientViewSmallProductImageBox';
-import AdminViewSmallProductImageBoxes from './smallProductImageBox/AdminViewSmallProductImageBoxes';
+import SmallProductImageBoxStorefront from './smallProductImageBox/SmallProductImageBoxStorefront';
+import SmallProductImageBoxesAdminPanel from './smallProductImageBox/SmallProductImageBoxesAdminPanel';
 
 type Props = {
   product?: Product;
@@ -15,22 +15,22 @@ type Props = {
 export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const theme = useTheme();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { productFormData } = useAppSelector((state) => state.productForm);
   const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
 
   useEffect(() => {
-    if ((isAdminView && imageData.length === 0) || product?.productImageData.length === 0) {
+    if ((isAdminPath && imageData.length === 0) || product?.productImageData.length === 0) {
       setSelectedImageIndex(0);
     }
-  }, [isAdminView, imageData, product]);
+  }, [isAdminPath, imageData, product]);
 
   useEffect(() => {
-    if (isAdminView && !imageData[selectedImageIndex]) {
+    if (isAdminPath && !imageData[selectedImageIndex]) {
       setSelectedImageIndex(0);
     }
-  }, [imageData, selectedImageIndex, isAdminView]);
+  }, [imageData, selectedImageIndex, isAdminPath]);
 
   function selectedImage(index: number) {
     setSelectedImageIndex(index);
@@ -48,7 +48,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
 
   return (
     <Container
-      maxWidth={isAdminView ? 'xs' : 'sm'}
+      maxWidth={isAdminPath ? 'xs' : 'sm'}
       disableGutters>
       <Grid
         container
@@ -61,8 +61,8 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
           <Grid
             container
             spacing={{ xs: 1, sm: 1.32 }}>
-            {!isAdminView && product ? (
-              <ClientViewSmallProductImageBox
+            {!isAdminPath && product ? (
+              <SmallProductImageBoxStorefront
                 product={product}
                 selectImage={selectedImage}
                 selectedImageIndex={selectedImageIndex}
@@ -70,8 +70,8 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
               />
             ) : null}
 
-            {isAdminView ? (
-              <AdminViewSmallProductImageBoxes
+            {isAdminPath ? (
+              <SmallProductImageBoxesAdminPanel
                 selectImage={selectedImage}
                 selectedImageIndex={selectedImageIndex}
                 getBoxBorderColor={getBoxBorderColor}
@@ -85,7 +85,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
           xs={12}
           sm={10}
           sx={{ order: { xs: 1, sm: 2 } }}>
-          {!isAdminView && product ? (
+          {!isAdminPath && product ? (
             <LargeProductImageBox
               productName={product?.name ?? ''}
               productImageData={product?.productImageData[selectedImageIndex]}
@@ -94,7 +94,7 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
             />
           ) : null}
 
-          {isAdminView ? (
+          {isAdminPath ? (
             <LargeProductImageBox
               productName={productFormData.name}
               productImageData={imageData[selectedImageIndex]}

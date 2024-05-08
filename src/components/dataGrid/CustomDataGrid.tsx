@@ -25,7 +25,7 @@ type Props = {
   queryMessage: string;
   totalRowCount: number;
   onRowUpdate: (newRow: GridValidRowModel, oldRow: GridValidRowModel) => GridValidRowModel | Promise<GridValidRowModel>;
-  onRowSelection: (rowSelectionModel: GridRowSelectionModel) => void;
+  onRowSelection?: (rowSelectionModel: GridRowSelectionModel) => void;
   hasCheckboxSelection: boolean;
   customToolbar: ReactNode;
 } & DataGridQueryData<string, string>;

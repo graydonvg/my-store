@@ -43,6 +43,7 @@ export default function SignInForm({ children }: Props) {
   const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
+  const darkMode = theme.palette.mode === 'dark';
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -164,7 +165,10 @@ export default function SignInForm({ children }: Props) {
             type="button"
             fullWidth
             startIcon={<GoogleIcon />}
-            sxStyles={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: 'rgba(0, 0, 0, 1)' } }}
+            sxStyles={{
+              backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.7)' : theme.palette.grey[900],
+              '&:hover': { backgroundColor: theme.palette.common.black },
+            }}
           />
         </Box>
         {children}

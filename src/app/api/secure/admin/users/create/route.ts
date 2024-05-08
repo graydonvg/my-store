@@ -1,100 +1,152 @@
 import { NextResponse } from 'next/server';
-import { UpdateUserPersonalInformationDb, AdminCreateUserResponse, CustomResponse, UserAuthData } from '@/types';
-import { ERROR_MESSAGES } from '@/config';
+import { UpdateUserPersonalInformationDb, AdminAddNewUserResponse, CustomResponse, UserAuthData } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
+import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
+import { withAxiom, AxiomRequest } from 'next-axiom';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse<AdminCreateUserResponse>>> {
-  const supabaseAuth = await createSupabaseServerClient();
-  const supabaseSerice = createSupabaseService();
-
+async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse<AdminAddNewUserResponse>>> {
   try {
+    const supabase = await createSupabaseServerClient();
+
     const {
-      data: { user },
-    } = await supabaseAuth.auth.getUser();
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
 
-    const { data: authorizationData } = await supabaseAuth.from('users').select('admins(userId), managers(userId)');
-    const isAuthorized =
-      authorizationData && (authorizationData[0].admins.length > 0 || authorizationData[0].managers.length > 0);
-
+    const userRole = await getUserRoleFromSession(supabase);
     const userData: UserAuthData & UpdateUserPersonalInformationDb = await request.json();
+    const supabaseService = createSupabaseService();
+
     const { email, password, ...userDataToUpdate } = userData;
-    const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
-    const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);
-    const hasDataToUpdate = emptyFiledsArray.length !== numberOfFromFields;
+    const emptyFieldsArray = getEmptyFormFields(userDataToUpdate);
+    const numberOfFormFields = getNumberOfFormFields(userDataToUpdate);
+    const hasDataToUpdate = emptyFieldsArray.length !== numberOfFormFields;
+    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+    const failedMessage = 'Failed to create user';
+    const successMessage = 'User created successfully.';
 
-    if (!user)
+    request.log.info('Attempt: Create user.', {
+      callerId: authUser?.id,
+      callerRole: userRole,
+      callerEmail: authUser?.email,
+      partialPayload: { email, ...userDataToUpdate },
+    });
+
+    if (!authUser) {
+      const message = `${failedMessage}. Not authenticated.`;
+
+      request.log.error(message);
+
       return NextResponse.json({
         success: false,
-        message: `Failed to create user. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+        message,
       });
+    }
 
-    if (!isAuthorized)
+    if (!isAdmin && !isManager && !isOwner) {
+      const message = `${failedMessage}. Not authorized.`;
+
+      request.log.error(message);
+
       return NextResponse.json({
         success: false,
-        message: 'Failed to create user. Not authorized.',
+        message,
       });
+    }
 
-    if (!userData)
+    if (!userData) {
+      const message = `${failedMessage}. No data received.`;
+
+      request.log.error(message);
+
       return NextResponse.json({
         success: false,
-        message: `Failed to create user. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
+        message,
       });
+    }
 
-    const { data: createUserData, error: createUserError } = await supabaseSerice.auth.admin.createUser({
+    if (
+      (userDataToUpdate.role === 'owner' && !isOwner) ||
+      (userDataToUpdate.role === 'manager' && !isOwner) ||
+      (userDataToUpdate.role === 'admin' && !(isOwner || isManager))
+    ) {
+      const message = `${failedMessage}. Not authorized to assign role '${userDataToUpdate.role}'.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    const { data: createUserData, error: createUserError } = await supabaseService.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
     });
 
     if (createUserError) {
-      return NextResponse.json({ success: false, message: `Failed to create user. ${createUserError.message}.` });
+      const message = `${failedMessage}. Database error.`;
+
+      request.log.error(message, createUserError);
+
+      return NextResponse.json({
+        success: false,
+        message: `${message} ${createUserError.message}.`,
+      });
     }
 
     if (hasDataToUpdate) {
-      const { error: updateUserError } = await supabaseSerice
+      const { role, ...restOfDataToUpdate } = userDataToUpdate;
+
+      const { error: updateUserError } = await supabaseService
         .from('users')
-        .update(userDataToUpdate)
+        .update(restOfDataToUpdate)
         .eq('userId', createUserData.user.id);
 
       if (updateUserError) {
+        const message = 'Auth user created successfully, but failed to update users table entry.';
+
+        request.log.error(message, updateUserError);
+
         return NextResponse.json({
           success: false,
-          message: `Auth user created successfully, but failed to update users table. ${updateUserError.message}.`,
+          message: `${message} ${updateUserError.message}.`,
         });
+      }
+
+      if (userDataToUpdate.role) {
+        const { error: insertUserRoleError } = await supabase
+          .from('userRoles')
+          .insert({ userId: createUserData.user.id, role: userDataToUpdate.role });
+
+        if (insertUserRoleError) {
+          const message = 'User created successfully, but failed to assign user role.';
+
+          request.log.error(message, insertUserRoleError);
+
+          return NextResponse.json({
+            success: false,
+            message: `${message} ${insertUserRoleError.message}.`,
+          });
+        }
       }
     }
 
-    if (userDataToUpdate.role && userDataToUpdate.role === 'admin') {
-      const { error: userAdminRoleError } = await supabaseSerice
-        .from('admins')
-        .insert({ userId: createUserData.user.id });
+    request.log.info(successMessage);
 
-      if (userAdminRoleError) {
-        return NextResponse.json({
-          success: false,
-          message: `User created successfully, but failed to set role. ${userAdminRoleError.message}.`,
-        });
-      }
-    }
-
-    if (userDataToUpdate.role && userDataToUpdate.role === 'manager') {
-      const { error: userAdminRoleError } = await supabaseSerice
-        .from('managers')
-        .insert({ userId: createUserData.user.id });
-
-      if (userAdminRoleError) {
-        return NextResponse.json({
-          success: false,
-          message: `User created successfully, but failed to set role. ${userAdminRoleError.message}.`,
-        });
-      }
-    }
-
-    return NextResponse.json({ success: true, message: 'User created successfully.' });
+    return NextResponse.json({ success: true, message: successMessage });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Failed to create user. An unexpect error occured.' });
+    const failedMessage = 'Failed to create user';
+
+    request.log.error(`${failedMessage}.`, { error: error as Error });
+
+    return NextResponse.json({ success: false, message: `${failedMessage}. An unexpected error occurred.` });
   }
 }
+
+export const POST = withAxiom(handlePost);

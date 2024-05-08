@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { Product } from '@/types';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/ContainedButton';

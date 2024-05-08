@@ -1,5 +1,3 @@
-import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-
 import {
   CustomResponse,
   AdminUsersTableUserData,
@@ -21,25 +19,35 @@ export default async function getUsersForAdmin({
 }: Omit<DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>, 'page'>): Promise<
   CustomResponse<ResponseData>
 > {
-  const supabase = await createSupabaseServerClient();
-  let usersQuery = supabase.from('users').select('*', {
-    count: 'exact',
-  });
+  const {
+    success: buildUsersQuerySuccess,
+    message: buildUsersQueryMessage,
+    data: builtUsersQuery,
+  } = await buildUsersQueryForAdmin({ sort, filter });
 
-  const { success, message, data: builtUsersQuery } = await buildUsersQueryForAdmin({ usersQuery, sort, filter });
+  if (buildUsersQuerySuccess === true) {
+    const { data: users, count, error: finalQueryError } = await builtUsersQuery!.range(range.start, range.end);
 
-  if (success === true) {
-    const { data: users, count } = await builtUsersQuery!.range(range.start, range.end);
-
-    return {
-      success,
-      message,
-      data: { users, totalRowCount: count ?? 0 },
-    };
+    if (!finalQueryError) {
+      return {
+        success: true,
+        message: 'Success!',
+        data: { users, totalRowCount: count ?? 0 },
+      };
+    } else {
+      // Axiom error log
+      // Need log here for full db error
+      return {
+        success: false,
+        message: finalQueryError.message,
+        data: { users: null, totalRowCount: 0 },
+      };
+    }
   } else {
+    // Axiom error log
     return {
-      success,
-      message,
+      success: false,
+      message: buildUsersQueryMessage,
       data: { users: null, totalRowCount: 0 },
     };
   }

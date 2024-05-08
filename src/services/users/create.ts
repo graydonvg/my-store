@@ -1,8 +1,8 @@
-import { AdminCreateUserResponse, CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
+import { AdminAddNewUserResponse, CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
 
-export async function createAuthUser(
+export async function createNewUser(
   userData: UserAuthData & UpdateUserPersonalInformationDb
-): Promise<CustomResponse<AdminCreateUserResponse>> {
+): Promise<CustomResponse<AdminAddNewUserResponse>> {
   try {
     const response = await fetch('/api/secure/admin/users/create', {
       method: 'POST',

@@ -8,17 +8,17 @@ export default async function getInitialUserData() {
   let wishlistData = null;
 
   const {
-    data: { user: userAuth },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
 
   // Get user data only if auth user exists
-  const { data: userDataArray } = userAuth
+  const { data: userDataArray } = authUser
     ? await supabase
         .from('users')
         .select(
           '*, addresses(*), wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
         )
-        .eq('userId', userAuth?.id)
+        .eq('userId', authUser?.id)
         .order('createdAt', { ascending: false, referencedTable: 'addresses' })
         .order('createdAt', { ascending: false, referencedTable: 'cart' })
     : { data: null };
@@ -28,7 +28,7 @@ export default async function getInitialUserData() {
 
     const { cart, wishlist, ...restOfUserData } = userDataArray[0];
 
-    const isOAuthSignIn = userAuth?.app_metadata.provider !== 'email';
+    const isOAuthSignIn = authUser?.app_metadata.provider !== 'email';
 
     cartItems = cart;
     wishlistData = wishlist;

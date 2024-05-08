@@ -3,21 +3,24 @@ import {
   DataGridSort,
   AdminUsersDataGridQueryFilterBuilder,
   AdminUsersDataGridSortableColumns,
+  DataGridInvalidFlags,
 } from '@/types';
 
 type SortFunctionParams = {
   query: QueryFilterBuilder;
   sort: DataGridSort<AdminUsersDataGridSortableColumns>;
-  setSortDirectionInvalid: () => void;
+  setInvalidFlags: (options: DataGridInvalidFlags) => void;
 };
 
-function applySort({ query, sort, setSortDirectionInvalid }: SortFunctionParams) {
+function applySort({ query, sort, setInvalidFlags }: SortFunctionParams) {
+  let sortBy = sort.by === 'role' ? 'userRoles(role)' : sort.by;
+
   if (sort.direction === 'asc') {
-    return query.order(sort.by, { ascending: true });
+    return query.order(sortBy, { ascending: true });
   } else if (sort.direction === 'desc') {
-    return query.order(sort.by, { ascending: false });
+    return query.order(sortBy, { ascending: false });
   } else {
-    setSortDirectionInvalid();
+    setInvalidFlags({ sortDirection: true });
     return query;
   }
 }
@@ -25,8 +28,7 @@ function applySort({ query, sort, setSortDirectionInvalid }: SortFunctionParams)
 export function applySortForUsersTable(
   usersQuery: AdminUsersDataGridQueryFilterBuilder,
   sort: DataGridSort<AdminUsersDataGridSortableColumns>,
-  setSortColumnInvalid: () => void,
-  setSortDirectionInvalid: () => void
+  setInvalidFlags: (options: DataGridInvalidFlags) => void
 ) {
   switch (sort.by) {
     case 'createdAt':
@@ -35,9 +37,9 @@ export function applySortForUsersTable(
     case 'email':
     case 'contactNumber':
     case 'role':
-      return applySort({ query: usersQuery, sort, setSortDirectionInvalid });
+      return applySort({ query: usersQuery, sort, setInvalidFlags });
     default:
-      setSortColumnInvalid();
+      setInvalidFlags({ sortColumn: true });
       return usersQuery;
   }
 }

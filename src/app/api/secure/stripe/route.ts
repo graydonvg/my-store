@@ -2,7 +2,7 @@ import { CustomResponse, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createURL from '@/utils/createURL';
-import { ERROR_MESSAGES } from '@/config';
+import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {

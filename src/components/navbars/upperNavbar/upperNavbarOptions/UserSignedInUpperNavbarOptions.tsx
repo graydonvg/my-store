@@ -15,7 +15,7 @@ export default function UserSignedInUpperNavbarOptions() {
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
 
   function navigateToWishlist() {
     router.push('/wishlist');
@@ -46,7 +46,7 @@ export default function UserSignedInUpperNavbarOptions() {
           </ListItem>
         ) : null}
 
-        {!isAdminView ? (
+        {!isAdminPath ? (
           <ListItem disablePadding>
             <DividerUpperNavbarOptions />
             <CartDrawer />

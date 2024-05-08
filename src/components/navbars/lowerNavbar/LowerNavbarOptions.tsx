@@ -1,4 +1,4 @@
-import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/config';
+import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/data';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List, useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -7,9 +7,9 @@ import NavbarTitle from '@/components/ui/NavbarTitle';
 export default function LowerNavbarOptions() {
   const theme = useTheme();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
   const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
-  const showDefaultNavOptions = !isAdminView && !isAccountView;
+  const showDefaultNavOptions = !isAdminPath && !isAccountView;
 
   return (
     <Box

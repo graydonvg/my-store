@@ -8,7 +8,7 @@ import ImageInput from './ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
-import EditProductImagesDrawer from './drawers/EditProductImagesDrawer';
+import EditProductImagesDrawerAdminPanel from './drawers/EditProductImagesDrawerAdminPanel';
 import { clearImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {
@@ -40,7 +40,7 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       imagesToUpload.push({ file, uniqueFileName });
     }
 
-    const uploadPromises = imagesToUpload.map((image) =>
+    const uploadImagePromises = imagesToUpload.map((image) =>
       uploadProductImageToStorage(image.file, image.uniqueFileName, (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
@@ -48,9 +48,9 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       })
     );
 
-    const imageDataArray = await Promise.allSettled(uploadPromises);
+    const uploadImagePromiseResults = await Promise.allSettled(uploadImagePromises);
 
-    const uploadPromiseResults = imageDataArray.map((result, index) => {
+    const uploadImagelResults = uploadImagePromiseResults.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { fileName, imageUrl } = result.value;
 
@@ -63,14 +63,14 @@ export default function ManageProductImages({ isSubmitting }: Props) {
       }
     });
 
-    dispatch(setImageData(uploadPromiseResults));
+    dispatch(setImageData(uploadImagelResults));
     dispatch(clearImageUploadProgess());
   }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
       <ProductImageBoxes maxImageCount={maxImageCount} />
-      <EditProductImagesDrawer isSubmitting={isSubmitting} />
+      <EditProductImagesDrawerAdminPanel isSubmitting={isSubmitting} />
       <ContainedButton
         color="primary"
         disabled={uploadInProgress || isSubmitting}

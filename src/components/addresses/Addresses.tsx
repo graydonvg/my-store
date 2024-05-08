@@ -2,7 +2,7 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearAddressFormData } from '@/lib/redux/slices/addressFormSlice';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { useEffect } from 'react';
 import AddressData from './AddressData';
 import { setAddressToDeleteId } from '@/lib/redux/slices/accountSlice';

@@ -23,10 +23,7 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 // 1. User
 
-export type UserRole = Database['public']['Enums']['appRole'];
-
-// export type UserRoleOptions = ['customer', 'admin', 'manager'];
-export type UserRoleOptions = UserRole[];
+export type UserRole = Database['public']['Enums']['appRole'] | null;
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
@@ -53,7 +50,7 @@ export type UserData = {
   contactNumber: string | null;
   addresses: Address[];
   isOAuthSignIn: boolean;
-  role: UserRole | null;
+  role: UserRole;
 };
 
 export type UpdateUserPersonalInformationDb = {
@@ -344,7 +341,7 @@ export type AdminOrdersTableOrderData = {
   }[];
 };
 
-export type AdminCreateUserResponse = {
+export type AdminAddNewUserResponse = {
   userId: string;
 };
 
@@ -355,7 +352,7 @@ export type AdminUsersTableUserData = {
   lastName: string | null;
   contactNumber: string | null;
   createdAt: string;
-  role: string;
+  role: UserRole;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -436,6 +433,13 @@ export type AdminUsersDataGridQueryFilterBuilderResponse = PostgrestFilterBuilde
   'users',
   any[]
 >;
+
+export type DataGridInvalidFlags = {
+  filterColumn?: boolean;
+  filterOperator?: boolean;
+  sortColumn?: boolean;
+  sortDirection?: boolean;
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

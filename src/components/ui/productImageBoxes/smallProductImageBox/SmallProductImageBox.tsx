@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { CircularProgressWithLabel } from '../../progress/CircularProgressWithLabel';
 import { ProductImageUploadProgress, InsertProductImageDataStore } from '@/types';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { useState } from 'react';
 
 type SmallProductImageBoxProps = {
@@ -27,7 +27,7 @@ export default function SmallProductImageBox({
 }: SmallProductImageBoxProps) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
 
   return (
     <Grid
@@ -73,7 +73,7 @@ export default function SmallProductImageBox({
           </>
         ) : null}
 
-        {uploadProgressData && isAdminView ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
+        {uploadProgressData && isAdminPath ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
       </Box>
     </Grid>
   );

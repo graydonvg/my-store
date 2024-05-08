@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, HOME_PAGE_CATEGORIES } from '@/config';
+import { BORDER_RADIUS, HOME_PAGE_CATEGORIES } from '@/data';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, STORE_DESCRIPTION, STORE_SLOGAN } from '@/config';
+import { BORDER_RADIUS, STORE_DESCRIPTION, STORE_SLOGAN } from '@/data';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';

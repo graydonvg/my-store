@@ -6,9 +6,9 @@ import { Product } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
-import AdminButtonsProductCard from './AdminButtonsProductCard';
+import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';
 import ImageProductCard from './ImageProductCard';
 import MoveToCartButton from './MoveToCartButton';
 import RemoveFromWishlistButton from './RemoveFromWishlistButton';
@@ -23,7 +23,7 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
   const isWishlistView = pathname.includes('/wishlist');
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
@@ -175,7 +175,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
           </Box>
         </Link>
 
-        {isAdminView ? <AdminButtonsProductCard product={product} /> : null}
+        {isAdminPath ? <ProductCardButtonsAdminPanel product={product} /> : null}
       </Box>
     </Box>
   );

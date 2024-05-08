@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { Box, Typography } from '@mui/material';
 
 type Props = {

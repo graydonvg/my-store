@@ -1,6 +1,6 @@
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import Link from 'next/link';
 import { useState } from 'react';
 

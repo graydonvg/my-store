@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
-import { ERROR_MESSAGES } from '@/config';
+import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';

@@ -6,7 +6,7 @@ export async function getOrdersForUser(): Promise<OrderData[] | null> {
   const supabase = await createSupabaseServerClient();
 
   const {
-    data: { user: userAuth },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
 
   const { data: orders } = await supabase
@@ -14,7 +14,7 @@ export async function getOrdersForUser(): Promise<OrderData[] | null> {
     .select(
       'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
     )
-    .eq('userId', userAuth?.id ?? '')
+    .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: false });
 
   return orders;

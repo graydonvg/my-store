@@ -3,7 +3,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 const searchByOptions = ['ID', 'Name'];

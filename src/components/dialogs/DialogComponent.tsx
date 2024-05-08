@@ -1,9 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, IconButton, Dialog, useTheme } from '@mui/material';
-import LoadingBar from '../ui/progress/LoadingBar';
+import { Box, IconButton, Dialog, useTheme, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { closeDialog } from '@/lib/redux/slices/dialogSlice';
 
 type Props = {
@@ -40,10 +39,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           borderRadius: BORDER_RADIUS,
           backgroundColor: theme.palette.custom.dialog.background.primary,
         }}>
-        <LoadingBar
-          isLoading={isDialogLoading}
-          style={{ borderTopRightRadius: BORDER_RADIUS, borderTopLeftRadius: BORDER_RADIUS }}
-        />
+        {isDialogLoading ? <LinearProgress /> : null}
         <IconButton
           disableRipple
           size="small"

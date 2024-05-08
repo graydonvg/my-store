@@ -7,8 +7,8 @@ import {
   selectDiscountTotal,
   selectOrderTotal,
 } from '@/lib/redux/selectors/cartSelectors';
-import { BORDER_RADIUS } from '@/config';
-import OrderTotals from '@/components/ordersPageClient/orderTotals/OrderTotals';
+import { BORDER_RADIUS } from '@/data';
+import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
 import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import PaymentButton from '@/components/ui/buttons/PaymentButton';
 

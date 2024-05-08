@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { ListItemIcon, MenuItem, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 

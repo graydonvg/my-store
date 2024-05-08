@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';

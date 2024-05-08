@@ -73,7 +73,7 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
         <ListItemButton
           onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}
           sx={{ color: theme.palette.text.secondary }}>
-          <ListItemIcon sx={{ color: theme.palette.text.secondary }}>
+          <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
             <Logout />
           </ListItemIcon>
           <ListItemText primary="Sign Out" />

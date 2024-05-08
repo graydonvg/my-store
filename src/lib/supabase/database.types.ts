@@ -421,7 +421,7 @@ export type Database = {
           {
             foreignKeyName: 'userRoles_userId_fkey';
             columns: ['userId'];
-            isOneToOne: false;
+            isOneToOne: true;
             referencedRelation: 'users';
             referencedColumns: ['userId'];
           }
@@ -571,8 +571,9 @@ export type Database = {
         | 'wishlist.insert'
         | 'wishlist.select'
         | 'wishlist.update'
-        | 'wishlist.delete';
-      appRole: 'owner' | 'admin';
+        | 'wishlist.delete'
+        | 'userRoles.select';
+      appRole: 'owner' | 'admin' | 'manager';
     };
     CompositeTypes: {
       [_ in never]: never;

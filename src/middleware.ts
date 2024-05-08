@@ -1,14 +1,13 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { ERROR_MESSAGES } from './config';
+import { ERROR_MESSAGES, HAS_ADMIN_PANEL_ACCESS } from './data';
 import { updateSession } from './lib/supabase/middleware';
 import getUserRoleFromSession from './utils/getUserRoleFromSession';
-import getUserRoleBoolean from './utils/getUserRoleBoolean';
 
 export async function middleware(request: NextRequest) {
   let { response, supabase } = await updateSession(request);
 
   const {
-    data: { user: userAuth },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
 
   //								!!!IMPORTANT!!!
@@ -27,10 +26,10 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/cart') ||
     checkPathStartsWith('/checkout');
 
-  const userRole = userAuth ? await getUserRoleFromSession(supabase) : null;
-  const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+  const userRole = authUser ? await getUserRoleFromSession(supabase) : null;
+  const hasAdminPanelAccess = userRole === null ? false : HAS_ADMIN_PANEL_ACCESS.includes(userRole);
 
-  if (isAdminPath && (!userAuth || (!isAdmin && !isManager && !isOwner))) {
+  if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json({ success: false, message: 'Not Authorized.' });
     } else {
@@ -39,7 +38,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (authRequiredPath && !userAuth) {
+  if (authRequiredPath && !authUser) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
     } else {

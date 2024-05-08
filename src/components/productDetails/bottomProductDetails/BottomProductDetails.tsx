@@ -1,6 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, List, ListItem, Typography } from '@mui/material';
 import { ExpandMore, LocalShippingOutlined } from '@mui/icons-material';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import HeadingBottomProductDetails from './HeadingBottomProductDetails';
 import { Product } from '@/types';
 

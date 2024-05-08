@@ -1,4 +1,4 @@
-import { ORDERED_SIZES_FOR_STORE, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/config';
+import { ORDERED_SIZES_FOR_STORE, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
 
 export function sortItemSizesArrayForToggleButtons(
   a: { label: string; value: string },

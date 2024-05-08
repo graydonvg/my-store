@@ -1,7 +1,7 @@
 import { IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import { usePathname, useRouter, useSelectedLayoutSegments } from 'next/navigation';
-import { STORE_NAME } from '@/config';
+import { STORE_NAME } from '@/data';
 
 type Props = {
   display: 'flex' | { xs: 'flex'; md: 'none' };
@@ -13,7 +13,7 @@ type Props = {
 export default function NavbarTitle({ display, variant, color, hideText = false }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const isAdminView = pathname.includes('/admin');
+  const isAdminPath = pathname.includes('/admin');
   const segments = useSelectedLayoutSegments();
   const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
 
@@ -23,7 +23,7 @@ export default function NavbarTitle({ display, variant, color, hideText = false 
 
   return (
     <>
-      {!isAdminView ? (
+      {!isAdminPath ? (
         <IconButton
           onClick={navigateToHome}
           sx={{

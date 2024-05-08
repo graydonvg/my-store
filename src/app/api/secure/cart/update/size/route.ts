@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { CustomResponse, UpdateCartItemSize } from '@/types';
-import { ERROR_MESSAGES } from '@/config';
+import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {

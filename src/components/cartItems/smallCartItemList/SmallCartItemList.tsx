@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography } from '@mui/material';
-import { BORDER_RADIUS } from '@/config';
+import { BORDER_RADIUS } from '@/data';
 import SmallCartItems from './SmallCartItems';
 
 type Props = {

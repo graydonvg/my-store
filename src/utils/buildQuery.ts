@@ -1,3 +1,4 @@
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import {
   CustomResponse,
   QueryFilterBuilder,
@@ -5,48 +6,66 @@ import {
   AdminUsersDataGridFilterableColumns,
   AdminUsersDataGridQueryFilterBuilderResponse,
   AdminUsersDataGridSortableColumns,
+  DataGridInvalidFlags,
 } from '@/types';
 import { applyFilterForUsersTable } from '@/utils/applyQueryFilter';
 import { applySortForUsersTable } from '@/utils/applyQuerySort';
 
 type BuildUsersQueryParams = {
-  usersQuery: QueryFilterBuilder;
   sort: DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>['sort'];
   filter: DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>['filter'];
 };
 
 export default async function buildUsersQueryForAdmin({
-  usersQuery,
   sort,
   filter,
 }: BuildUsersQueryParams): Promise<CustomResponse<AdminUsersDataGridQueryFilterBuilderResponse>> {
+  const supabase = await createSupabaseServerClient();
+
   let isFilterColumnInvalid = false;
   let isFilterOperatorInvalid = false;
   let isSortColumnInvalid = false;
   let isSortDirectionInvalid = false;
 
-  function setFilterColumnInvalid() {
-    isFilterColumnInvalid = true;
+  let usersQuery: QueryFilterBuilder;
+
+  if (filter.column === 'role' && !(filter.operator === 'is' && filter.value === 'null')) {
+    // Operator/value pairs other than is null require inner join to filter role
+    usersQuery = supabase.from('users').select('*, ...userRoles!inner(role)', {
+      count: 'exact',
+    });
+  } else {
+    usersQuery = supabase.from('users').select('*, ...userRoles(role)', {
+      count: 'exact',
+    });
   }
 
-  function setFilterOperatorInvalid() {
-    isFilterOperatorInvalid = true;
-  }
+  function setInvalidFlags(options: DataGridInvalidFlags) {
+    const { filterColumn, filterOperator, sortColumn, sortDirection } = options;
 
-  function setSortColumnInvalid() {
-    isSortColumnInvalid = true;
-  }
+    if (filterColumn) {
+      isFilterColumnInvalid = true;
+    }
 
-  function setSortDirectionInvalid() {
-    isSortDirectionInvalid = true;
+    if (filterOperator) {
+      isFilterOperatorInvalid = true;
+    }
+
+    if (sortColumn) {
+      isSortColumnInvalid = true;
+    }
+
+    if (sortDirection) {
+      isSortDirectionInvalid = true;
+    }
   }
 
   if (filter.column && filter.operator) {
-    usersQuery = applyFilterForUsersTable(usersQuery, filter, setFilterColumnInvalid, setFilterOperatorInvalid);
+    usersQuery = applyFilterForUsersTable(usersQuery, filter, setInvalidFlags);
   }
 
   if (sort.by && sort.direction) {
-    usersQuery = applySortForUsersTable(usersQuery, sort, setSortColumnInvalid, setSortDirectionInvalid);
+    usersQuery = applySortForUsersTable(usersQuery, sort, setInvalidFlags);
   }
 
   if (isSortColumnInvalid) {
@@ -76,7 +95,7 @@ export default async function buildUsersQueryForAdmin({
   } else {
     return {
       success: true,
-      message: 'Success! No validation errors.',
+      message: 'Success! No validation errors caught.',
       data: usersQuery,
     };
   }

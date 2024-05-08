@@ -3,7 +3,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { jwtDecode } from 'jwt-decode';
 
 export default async function getUserRoleFromSession(supabase: SupabaseClient) {
-  let role: UserRole | null = null;
+  let role: UserRole = null;
 
   const {
     data: { session },

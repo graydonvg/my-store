@@ -1,27 +1,32 @@
 import dayjs from 'dayjs';
-import { DataGridFilter, AdminUsersDataGridFilterableColumns, AdminUsersDataGridQueryFilterBuilder } from '@/types';
+import {
+  DataGridFilter,
+  AdminUsersDataGridFilterableColumns,
+  AdminUsersDataGridQueryFilterBuilder,
+  DataGridInvalidFlags,
+} from '@/types';
 
 type FilterFunctionParams = {
   usersQuery: AdminUsersDataGridQueryFilterBuilder;
   filter: DataGridFilter<AdminUsersDataGridFilterableColumns>;
-  setOperatorInvalid: () => void;
+  setInvalidFlags: (options: DataGridInvalidFlags) => void;
 };
 
-function applyUserIdFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunctionParams) {
+function applyUserIdFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
   if (filter.operator === 'equals') {
-    return usersQuery.eq(filter.column!, `${filter.value}`);
+    return usersQuery.eq(filter.column!, filter.value);
   } else {
-    setOperatorInvalid();
+    setInvalidFlags({ filterOperator: true });
     return usersQuery;
   }
 }
 
-function applyCreatedAtFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunctionParams) {
+function applyCreatedAtFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
   if (filter.operator === '=') {
     // Cannot use eq because of timestamptz
     // To filter by specific date (e.g. 2024/01/02) use previous date < given date < next date
 
-    const givenDate = new Date(`${filter.value}`);
+    const givenDate = new Date(filter.value);
 
     // Adding a day
     const nextDay = new Date(givenDate);
@@ -45,12 +50,12 @@ function applyCreatedAtFilter({ usersQuery, filter, setOperatorInvalid }: Filter
   } else if (filter.operator === '<=') {
     return usersQuery.lte(filter.column!, filter.value);
   } else {
-    setOperatorInvalid();
+    setInvalidFlags({ filterOperator: true });
     return usersQuery;
   }
 }
 
-function applyNameOrContactNumberFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunctionParams) {
+function applyNameOrContactNumberFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
   if (filter.operator === 'contains') {
     return usersQuery.ilike(filter.column!, `%${filter.value}%`);
   } else if (filter.operator === 'equals') {
@@ -60,16 +65,16 @@ function applyNameOrContactNumberFilter({ usersQuery, filter, setOperatorInvalid
   } else if (filter.operator === 'endsWith') {
     return usersQuery.like(filter.column!, `%${filter.value}`);
   } else if (filter.operator === 'isEmpty') {
-    return usersQuery.is(filter.column!, null);
+    return usersQuery.or(`${filter.column!}.is.null, ${filter.column!}.eq.""`);
   } else if (filter.operator === 'isNotEmpty') {
-    return usersQuery.ilike(filter.column!, '%');
+    return usersQuery.not(filter.column!, 'is', null).not(filter.column!, 'eq', '');
   } else {
-    setOperatorInvalid();
+    setInvalidFlags({ filterOperator: true });
     return usersQuery;
   }
 }
 
-function applyEmailFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunctionParams) {
+function applyEmailFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
   if (filter.operator === 'contains') {
     return usersQuery.ilike(filter.column!, `%${filter.value}%`);
   } else if (filter.operator === 'equals') {
@@ -79,18 +84,28 @@ function applyEmailFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunc
   } else if (filter.operator === 'endsWith') {
     return usersQuery.ilike(filter.column!, `%${filter.value}`);
   } else {
-    setOperatorInvalid();
+    setInvalidFlags({ filterOperator: true });
     return usersQuery;
   }
 }
 
-function applyRoleFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunctionParams) {
+function applyRoleFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
+  let column = 'userRoles.role';
+
   if (filter.operator === 'is') {
-    return usersQuery.eq(filter.column!, filter.value);
+    if (filter.value === 'null') {
+      return usersQuery.is(column, null);
+    } else {
+      return usersQuery.eq(column, filter.value);
+    }
   } else if (filter.operator === 'not') {
-    return usersQuery.neq(filter.column!, filter.value);
+    if (filter.value === 'null') {
+      return usersQuery.not(column, 'is', null);
+    } else {
+      return usersQuery.neq(column, filter.value);
+    }
   } else {
-    setOperatorInvalid();
+    setInvalidFlags({ filterOperator: true });
     return usersQuery;
   }
 }
@@ -98,24 +113,23 @@ function applyRoleFilter({ usersQuery, filter, setOperatorInvalid }: FilterFunct
 export function applyFilterForUsersTable(
   usersQuery: AdminUsersDataGridQueryFilterBuilder,
   filter: DataGridFilter<AdminUsersDataGridFilterableColumns>,
-  setColumnInvalid: () => void,
-  setOperatorInvalid: () => void
+  setInvalidFlags: (options: DataGridInvalidFlags) => void
 ) {
   switch (filter.column) {
     case 'userId':
-      return applyUserIdFilter({ usersQuery, filter, setOperatorInvalid });
+      return applyUserIdFilter({ usersQuery, filter, setInvalidFlags });
     case 'createdAt':
-      return applyCreatedAtFilter({ usersQuery, filter, setOperatorInvalid });
+      return applyCreatedAtFilter({ usersQuery, filter, setInvalidFlags });
     case 'firstName':
     case 'lastName':
     case 'contactNumber':
-      return applyNameOrContactNumberFilter({ usersQuery, filter, setOperatorInvalid });
+      return applyNameOrContactNumberFilter({ usersQuery, filter, setInvalidFlags });
     case 'email':
-      return applyEmailFilter({ usersQuery, filter, setOperatorInvalid });
+      return applyEmailFilter({ usersQuery, filter, setInvalidFlags });
     case 'role':
-      return applyRoleFilter({ usersQuery, filter, setOperatorInvalid });
+      return applyRoleFilter({ usersQuery, filter, setInvalidFlags });
     default:
-      setColumnInvalid();
+      setInvalidFlags({ filterColumn: true });
       return usersQuery;
   }
 }

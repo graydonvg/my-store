@@ -4,13 +4,13 @@ export default async function getWishlist() {
   const supabase = await createSupabaseServerClient();
 
   const {
-    data: { user: userAuth },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
 
   const { data } = await supabase
     .from('wishlist')
     .select('wishlistItemId, size, product: products(*, productImageData(fileName, imageUrl, productImageId, index))')
-    .eq('userId', userAuth?.id ?? '')
+    .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: true });
 
   const wishlist = data?.map((item) => {
