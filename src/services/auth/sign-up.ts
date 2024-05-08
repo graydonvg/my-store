@@ -1,8 +1,6 @@
-import { CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
+import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
 
-export default async function signUpNewUser(
-  signUpData: UserAuthData & UpdateUserPersonalInformationDb
-): Promise<CustomResponse> {
+export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/auth/sign-up', {
       method: 'POST',

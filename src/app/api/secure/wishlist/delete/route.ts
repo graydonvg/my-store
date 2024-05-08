@@ -8,13 +8,13 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
     const searchParams = request.nextUrl.searchParams;
     const wishlistItemId = searchParams.get('wishlist_item_id');
 
-    if (!user)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to remove item from wishlist. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

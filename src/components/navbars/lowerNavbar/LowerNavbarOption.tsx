@@ -23,14 +23,22 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
           component="span"
           sx={{
             textTransform: 'none',
-            color: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
+            color: theme.palette.custom.navbar.lower.text,
             textDecoration: underline ? 'underline' : 'none',
-            textDecorationColor: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
+            textDecorationColor: theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
+            ...(isSaleOption && {
+              color: theme.palette.secondary.main,
+              textDecorationColor: theme.palette.secondary.main,
+            }),
             '&:hover': {
-              color: isSaleOption ? saleOptionHoverColor : theme.palette.text.primary,
-              textDecorationColor: isSaleOption ? theme.palette.secondary.dark : theme.palette.text.primary,
+              color: theme.palette.text.primary,
+              textDecorationColor: theme.palette.text.primary,
+              ...(isSaleOption && {
+                color: saleOptionHoverColor,
+                textDecorationColor: theme.palette.secondary.dark,
+              }),
             },
           }}>
           <Link href={path}>{label}</Link>

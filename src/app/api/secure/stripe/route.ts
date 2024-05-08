@@ -14,12 +14,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
     const lineItems = await request.json();
 
-    if (!user)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to create a Stripe session. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

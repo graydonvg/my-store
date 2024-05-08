@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponse, UpdateUserPersonalInformationDb, UserAuthData } from '@/types';
+import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
 import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
@@ -11,16 +11,16 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const userData: UserAuthData & UpdateUserPersonalInformationDb = await request.json();
+    const userData: UserAuthData & UpdateUserDb = await request.json();
     const { email, password, ...userDataToUpdate } = userData;
     const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
     const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);
     const hasDataToUpdate = emptyFiledsArray.length !== numberOfFromFields;
 
-    if (user)
+    if (authUser)
       return NextResponse.json({
         success: false,
         message: 'Sign up failed. Please sign out before creating a new account.',

@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Typography, buttonBaseClasses, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
@@ -37,9 +37,7 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           alignItems: 'center',
           padding: 0,
           color: pathname === href ? theme.palette.primary.light : theme.palette.grey[600],
-          '&.MuiButton-root': {
-            minWidth: { xs: 'unset', sm: '64px' },
-          },
+          [`&.${buttonBaseClasses.root}`]: { minWidth: { xs: 'unset', sm: '64px' } },
           '@media (hover: hover)': {
             '&:hover': {
               color: pathname === href ? theme.palette.primary.light : theme.palette.grey[400],

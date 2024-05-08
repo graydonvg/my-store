@@ -1,4 +1,4 @@
-import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
+import CircularProgress, { CircularProgressProps, circularProgressClasses } from '@mui/material/CircularProgress';
 
 type SpinnerProps = CircularProgressProps & {
   spinnerColor?: string;
@@ -9,9 +9,7 @@ export function Spinner({ spinnerColor, ...props }: SpinnerProps) {
     <CircularProgress
       variant="indeterminate"
       sx={{
-        '&.MuiCircularProgress-root': {
-          color: spinnerColor,
-        },
+        [`&.${circularProgressClasses.root}`]: { color: spinnerColor },
       }}
       {...props}
     />

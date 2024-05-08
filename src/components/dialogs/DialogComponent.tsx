@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, IconButton, Dialog, useTheme, LinearProgress } from '@mui/material';
+import { Box, IconButton, Dialog, useTheme, LinearProgress, dialogClasses } from '@mui/material';
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/data';
@@ -27,10 +27,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
       open={isOpen}
       onClose={close}
       sx={{
-        '& .MuiPaper-root': {
-          margin: 2,
-          maxWidth: 'none !important',
-        },
+        [`& .${dialogClasses.paper}`]: { margin: 2, maxWidth: 'none !important' },
       }}>
       <Box
         sx={{

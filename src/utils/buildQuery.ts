@@ -22,8 +22,15 @@ export default async function buildUsersQueryForAdmin({
 }: BuildUsersQueryParams): Promise<CustomResponse<AdminUsersDataGridQueryFilterBuilderResponse>> {
   const supabase = await createSupabaseServerClient();
 
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
+
+  // Filter
   let isFilterColumnInvalid = false;
   let isFilterOperatorInvalid = false;
+  let isFilterValueInvalid = false;
+  // Sort
   let isSortColumnInvalid = false;
   let isSortDirectionInvalid = false;
 
@@ -31,17 +38,23 @@ export default async function buildUsersQueryForAdmin({
 
   if (filter.column === 'role' && !(filter.operator === 'is' && filter.value === 'null')) {
     // Operator/value pairs other than is null require inner join to filter role
-    usersQuery = supabase.from('users').select('*, ...userRoles!inner(role)', {
-      count: 'exact',
-    });
+    usersQuery = supabase
+      .from('users')
+      .select('*, ...userRoles!inner(role)', {
+        count: 'exact',
+      })
+      .neq('userId', authUser?.id);
   } else {
-    usersQuery = supabase.from('users').select('*, ...userRoles(role)', {
-      count: 'exact',
-    });
+    usersQuery = supabase
+      .from('users')
+      .select('*, ...userRoles(role)', {
+        count: 'exact',
+      })
+      .neq('userId', authUser?.id);
   }
 
   function setInvalidFlags(options: DataGridInvalidFlags) {
-    const { filterColumn, filterOperator, sortColumn, sortDirection } = options;
+    const { filterColumn, filterOperator, filterValue, sortColumn, sortDirection } = options;
 
     if (filterColumn) {
       isFilterColumnInvalid = true;
@@ -49,6 +62,10 @@ export default async function buildUsersQueryForAdmin({
 
     if (filterOperator) {
       isFilterOperatorInvalid = true;
+    }
+
+    if (filterValue) {
+      isFilterValueInvalid = true;
     }
 
     if (sortColumn) {
@@ -68,28 +85,34 @@ export default async function buildUsersQueryForAdmin({
     usersQuery = applySortForUsersTable(usersQuery, sort, setInvalidFlags);
   }
 
-  if (isSortColumnInvalid) {
+  if (isFilterColumnInvalid) {
     return {
       success: false,
-      message: `The provided column '${sort.by}' is invalid.`,
-      data: usersQuery,
-    };
-  } else if (isSortDirectionInvalid) {
-    return {
-      success: false,
-      message: `The provided sorting direction '${sort.direction}' is invalid. Options are 'asc' or 'desc' only.`,
-      data: usersQuery,
-    };
-  } else if (isFilterColumnInvalid) {
-    return {
-      success: false,
-      message: `The provided column '${filter.column}' is invalid.`,
+      message: `The provided filter column '${filter.column}' is invalid.`,
       data: usersQuery,
     };
   } else if (isFilterOperatorInvalid) {
     return {
       success: false,
-      message: `The provided operator '${filter.operator}' is invalid.`,
+      message: `The provided filter operator '${filter.operator}' is invalid.`,
+      data: usersQuery,
+    };
+  } else if (isFilterValueInvalid) {
+    return {
+      success: false,
+      message: `The provided filter value '${filter.value}' is invalid.`,
+      data: usersQuery,
+    };
+  } else if (isSortColumnInvalid) {
+    return {
+      success: false,
+      message: `The provided sort column '${sort.by}' is invalid.`,
+      data: usersQuery,
+    };
+  } else if (isSortDirectionInvalid) {
+    return {
+      success: false,
+      message: `The provided sort direction '${sort.direction}' is invalid. Options are 'asc' or 'desc' only.`,
       data: usersQuery,
     };
   } else {

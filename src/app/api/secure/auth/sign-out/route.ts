@@ -8,10 +8,10 @@ export async function GET(): Promise<NextResponse<CustomResponse>> {
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    if (!user) return NextResponse.json({ success: false, message: 'Sign out failed. No user session exists.' });
+    if (!authUser) return NextResponse.json({ success: false, message: 'Sign out failed. No user session exists.' });
 
     const { error } = await supabase.auth.signOut();
 

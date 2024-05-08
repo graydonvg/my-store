@@ -5,6 +5,7 @@ import {
   AdminUsersDataGridQueryFilterBuilder,
   DataGridInvalidFlags,
 } from '@/types';
+import { validateEmail } from './validation';
 
 type FilterFunctionParams = {
   usersQuery: AdminUsersDataGridQueryFilterBuilder;
@@ -22,23 +23,19 @@ function applyUserIdFilter({ usersQuery, filter, setInvalidFlags }: FilterFuncti
 }
 
 function applyCreatedAtFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
-  if (filter.operator === '=') {
+  const isValidDate = dayjs(filter.value).isValid();
+
+  if (!isValidDate) {
+    setInvalidFlags({ filterValue: true });
+    return usersQuery;
+  } else if (filter.operator === '=') {
     // Cannot use eq because of timestamptz
-    // To filter by specific date (e.g. 2024/01/02) use previous date < given date < next date
+    // To filter by specific date (e.g. 2024/01/02) use start of day < given date < end of day
+    const givenDate = dayjs(filter.value);
+    const startOfDay = givenDate.startOf('day').format('YYYY/MM/DD HH:mm:ss');
+    const endOfDay = givenDate.endOf('day').format('YYYY/MM/DD HH:mm:ss');
 
-    const givenDate = new Date(filter.value);
-
-    // Adding a day
-    const nextDay = new Date(givenDate);
-    nextDay.setDate(givenDate.getDate() + 1);
-    const formattedNextDay = dayjs(nextDay).format('YYYY/MM/DD');
-
-    // Subtracting a day
-    const previousDay = new Date(givenDate);
-    previousDay.setDate(givenDate.getDate() - 1);
-    const formattedPreviousDay = dayjs(previousDay).format('YYYY/MM/DD');
-
-    return usersQuery.gt(filter.column!, formattedPreviousDay).lt(filter.column!, formattedNextDay);
+    return usersQuery.gt(filter.column!, startOfDay).lt(filter.column!, endOfDay);
   } else if (filter.operator === '!=') {
     return usersQuery.neq(filter.column!, filter.value);
   } else if (filter.operator === '>') {
@@ -75,7 +72,12 @@ function applyNameOrContactNumberFilter({ usersQuery, filter, setInvalidFlags }:
 }
 
 function applyEmailFilter({ usersQuery, filter, setInvalidFlags }: FilterFunctionParams) {
-  if (filter.operator === 'contains') {
+  const isValidEmail = validateEmail(filter.value);
+
+  if (!isValidEmail) {
+    setInvalidFlags({ filterValue: true });
+    return usersQuery;
+  } else if (filter.operator === 'contains') {
     return usersQuery.ilike(filter.column!, `%${filter.value}%`);
   } else if (filter.operator === 'equals') {
     return usersQuery.eq(filter.column!, filter.value);

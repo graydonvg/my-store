@@ -1,4 +1,15 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, List, ListItem, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  Typography,
+  accordionSummaryClasses,
+  listItemClasses,
+} from '@mui/material';
 import { ExpandMore, LocalShippingOutlined } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/data';
 import HeadingBottomProductDetails from './HeadingBottomProductDetails';
@@ -57,9 +68,7 @@ export default function BottomProductDetails({ product }: Props) {
             padding: 0,
             minHeight: 'unset',
             paddingY: { xs: 1, sm: 2 },
-            '& .MuiAccordionSummary-content': {
-              margin: '0',
-            },
+            [`& .${accordionSummaryClasses.content}`]: { margin: '0' },
           }}>
           <HeadingBottomProductDetails>Product Details</HeadingBottomProductDetails>
         </AccordionSummary>
@@ -68,9 +77,7 @@ export default function BottomProductDetails({ product }: Props) {
             sx={{
               listStyleType: 'disc',
               paddingLeft: 3,
-              '& .MuiListItem-root': {
-                display: 'list-item',
-              },
+              [`& .${listItemClasses.root}`]: { display: 'list-item' },
             }}>
             {product.details.split(',').map((detail, index) => (
               <ListItem

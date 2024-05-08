@@ -58,9 +58,9 @@ export default function UpdateContactNumberForm() {
       onCancel={cancelUpdateField}>
       <CustomTextField
         fullWidth={true}
-        label={'Contact number'}
-        name={'contactNumber'}
-        type={'text'}
+        label="Contact number"
+        name="contactNumber"
+        type="text"
         value={contactNumber}
         onChange={handleInputChange}
         hasValue={contactNumber.length > 0}

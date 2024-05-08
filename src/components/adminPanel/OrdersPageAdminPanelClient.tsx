@@ -86,21 +86,6 @@ export default function OrdersPageAdminPanelClient({
               onClick: handleGoToLastPage,
             },
           },
-          select: {
-            MenuProps: {
-              MenuListProps: {
-                // sx: {
-                //   '& .MuiTablePagination-menuItem.Mui-selected': {
-                //     color: (theme) => theme.palette.custom.typographyVariants.light,
-                //     backgroundColor: (theme) => `${theme.palette.primary.light} !important`,
-                //     '&:hover': {
-                //       backgroundColor: (theme) => lighten(theme.palette.primary.light, 0.1),
-                //     },
-                //   },
-                // },
-              },
-            },
-          },
         }}
         sx={(theme) => ({
           backgroundColor: theme.palette.custom.dataGrid.footer,

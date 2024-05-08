@@ -1,12 +1,12 @@
 'use client';
 
-import { Box } from '@mui/material';
 import {
   AdminUsersTableUserData,
   DataGridQueryData,
   AdminUsersDataGridFilterableColumns,
   AdminUsersDataGridSortableColumns,
   UserRole,
+  UpdateUserDb,
 } from '@/types';
 import {
   GridColDef,
@@ -16,7 +16,6 @@ import {
   getGridSingleSelectOperators,
   getGridStringOperators,
 } from '@mui/x-data-grid';
-import MuiLink from '../ui/MuiLink';
 import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
 import { USER_ROLE_OPTIONS } from '@/data';
 import CustomDataGrid from '../dataGrid/CustomDataGrid';
@@ -26,9 +25,11 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { deleteAuthUser } from '@/services/users/delete';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { toastPromiseErrorOptions, toastPromiseSuccessOptions } from '../ui/Toast';
+import { adminUpdateUser } from '@/services/users/update';
+import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import dayjs from 'dayjs';
 
-function getColumns(userRole: UserRole) {
+function getColumns(userRole: UserRole, isUpdating: boolean) {
   const columns: GridColDef<AdminUsersTableUserData>[] = [
     {
       field: 'userId',
@@ -36,17 +37,12 @@ function getColumns(userRole: UserRole) {
       width: 300,
       sortable: false,
       filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 1 }}>
-          <MuiLink>{params.row.userId}</MuiLink>
-        </Box>
-      ),
     },
     {
       field: 'createdAt',
       headerName: 'Joined',
-      width: 180,
-      renderCell: (params) => params.row.createdAt,
+      width: 160,
+      renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
       filterOperators: getGridNumericOperators()
         .filter(
           (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
@@ -60,21 +56,21 @@ function getColumns(userRole: UserRole) {
       field: 'firstName',
       headerName: 'First name',
       width: 150,
-      editable: true,
+      editable: !isUpdating ? true : false,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
       field: 'lastName',
       headerName: 'Last name',
       width: 150,
-      editable: true,
+      editable: !isUpdating ? true : false,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
       field: 'email',
       headerName: 'Email',
       width: 200,
-      editable: true,
+      editable: !isUpdating ? true : false,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -83,7 +79,7 @@ function getColumns(userRole: UserRole) {
       field: 'contactNumber',
       headerName: 'Contact number',
       width: 165,
-      editable: true,
+      editable: !isUpdating ? true : false,
       sortable: true,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
@@ -91,20 +87,20 @@ function getColumns(userRole: UserRole) {
       field: 'role',
       headerName: 'Role',
       width: 110,
-      editable: userRole === 'admin' ? false : true,
+      editable: userRole === 'admin' ? false : !isUpdating ? true : false,
       sortable: true,
       type: 'singleSelect',
       valueOptions: USER_ROLE_OPTIONS.filter((role) => {
         if (userRole === 'admin') {
-          return role === 'null';
+          return role === 'none';
         } else if (userRole === 'manager') {
-          return role === 'null' || role === 'admin';
+          return role === 'none' || role === 'admin';
         } else {
           return role;
         }
       }),
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
-      renderCell: (params) => (params.row.role === null ? 'null' : params.row.role),
+      renderCell: (params) => (params.row.role === null ? 'none' : params.row.role),
     },
   ];
   return columns;
@@ -117,13 +113,23 @@ type Props = {
   totalRowCount: number;
 } & DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>;
 
-export default function UsersPageAdminPanelClient(props: Props) {
+export default function UsersPageAdminPanelClient({
+  users,
+  querySuccess,
+  queryMessage,
+  page,
+  range,
+  sort,
+  filter,
+  totalRowCount,
+}: Props) {
   const router = useRouter();
-  const { users, querySuccess, queryMessage, page, range, sort, filter, totalRowCount } = props;
   const userData = useAppSelector((state) => state.user.data);
-  const columns = getColumns(userData?.role!);
-  const memoizedColumns = useMemo(() => columns, [columns]);
   const [selectedUserIds, setSelectedUserIds] = useState<GridRowSelectionModel>([]);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const columns = getColumns(userData?.role!, isUpdating);
+  const memoizedColumns = useMemo(() => columns, [columns]);
 
   function compareObjectValues(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
     const changedValues: GridValidRowModel = {};
@@ -132,27 +138,36 @@ export default function UsersPageAdminPanelClient(props: Props) {
     for (let key in newObj) {
       // Check if the property exists in obj2 and has a different value
       if (newObj[key] !== oldObj[key]) {
-        changedValues[key] = newObj[key];
+        changedValues[key] = newObj[key] === '' ? null : newObj[key];
       }
     }
 
     return changedValues;
   }
 
-  function handleRowUpdate(
-    newRow: GridValidRowModel,
-    oldRow: GridValidRowModel
-  ): GridValidRowModel | Promise<GridValidRowModel> {
-    const changedValues = compareObjectValues(newRow, oldRow) as Partial<AdminUsersTableUserData>;
+  async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel): Promise<GridValidRowModel> {
+    setIsUpdating(true);
+    const changedValues = compareObjectValues(newRow, oldRow) as UpdateUserDb;
+    const numberOfFormFields = getNumberOfFormFields(changedValues);
 
-    if (userData?.role !== 'owner' && oldRow.role === 'owner') {
-      toast.error('Failed to update role. Not authorized.');
+    if (numberOfFormFields === 0) {
+      setIsUpdating(false);
+      router.refresh();
       return oldRow;
     }
 
-    console.log(changedValues);
+    const { success, message } = await adminUpdateUser({ userId: newRow.userId, ...changedValues });
 
-    return newRow;
+    if (success) {
+      toast.success(message);
+      setIsUpdating(false);
+      router.refresh();
+      return newRow;
+    } else {
+      toast.error(message);
+      setIsUpdating(false);
+      return oldRow;
+    }
   }
 
   function handleRowSelection(rowSelectionModel: GridRowSelectionModel) {
@@ -160,49 +175,19 @@ export default function UsersPageAdminPanelClient(props: Props) {
   }
 
   async function handleDeleteUsers() {
-    if (selectedUserIds.includes(userData?.userId!)) {
-      toast.error('Cannot delete your own account.');
-      return;
-    }
-
-    // const usersToDelete =
-    //   users
-    //     ?.filter((user) => selectedUserIds.includes(user.userId))
-    //     .map((user) => {
-    //       return { userId: user.userId, role: user.role };
-    //     }) ?? [];
-
-    // const includesAdminToDelete = usersToDelete.some((user) => user.role === 'admin');
-    // const includesOwnerToDelete = usersToDelete.some((user) => user.role === 'owner');
-
-    // if (includesAdminToDelete && includesOwnerToDelete) {
-    //   toast.error('Not authorized to delete users with admin or owner role.');
-    //   return;
-    // } else if (includesAdminToDelete) {
-    //   toast.error('Not authorized to delete users with admin role.');
-    //   return;
-    // } else if (includesOwnerToDelete) {
-    //   toast.error('Not authorized to delete users with owner role.');
-    //   return;
-    // }
-
-    const toastId = toast.loading(`Deleting user${selectedUserIds.length > 1 ? 's' : ''}.`);
+    setIsDeleting(true);
 
     const { success, message } = await deleteAuthUser(selectedUserIds);
 
     if (success) {
-      toast.update(toastId, {
-        render: message,
-        ...toastPromiseSuccessOptions,
-      });
+      toast.success(message);
       setSelectedUserIds([]);
       router.refresh();
     } else {
-      toast.update(toastId, {
-        render: message,
-        ...toastPromiseErrorOptions,
-      });
+      toast.error(message);
     }
+
+    setIsDeleting(false);
   }
 
   return (
@@ -216,11 +201,16 @@ export default function UsersPageAdminPanelClient(props: Props) {
       sort={sort}
       filter={filter}
       totalRowCount={totalRowCount}
-      onRowUpdate={handleRowUpdate}
-      onRowSelection={handleRowSelection}
-      hasCheckboxSelection={userData?.role === 'admin' ? false : true}
+      processRowUpdate={handleRowUpdate}
+      onRowSelectionModelChange={handleRowSelection}
+      checkboxSelection={userData?.role === 'admin' ? false : true}
+      getRowSpacing={(params) => ({
+        top: params.isFirstVisible ? 0 : 5,
+        bottom: params.isLastVisible ? 0 : 5,
+      })}
       customToolbar={
         <UsersDataGridToolbarAdminPanel
+          isDeleting={isDeleting}
           onDeleteClick={handleDeleteUsers}
           numberOfSelectedRows={selectedUserIds.length}
         />

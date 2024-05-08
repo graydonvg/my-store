@@ -7,10 +7,10 @@ import WelcomePageContainer from '@/components/ui/containers/WelcomePageContaine
 export default async function WelcomeLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClient();
   const {
-    data: { user },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
 
-  if (user) {
+  if (authUser) {
     redirect('/');
   }
 

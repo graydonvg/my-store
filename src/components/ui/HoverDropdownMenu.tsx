@@ -1,4 +1,4 @@
-import { Box, Menu } from '@mui/material';
+import { Box, Menu, menuClasses } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import UpperNavbarIconButton from '../navbars/upperNavbar/UpperNavbarIconButton';
 
@@ -51,10 +51,8 @@ export default function HoverDropdownMenu({ buttonBackgroundColor, children, lab
         disableScrollLock
         elevation={0}
         sx={{
-          '& .MuiMenu-list': {
-            padding: 0,
-          },
-          '& .MuiMenu-paper': {
+          [`& .${menuClasses.list}`]: { padding: 0 },
+          [`& .${menuClasses.paper}`]: {
             backgroundColor: (theme) => theme.palette.custom.navbar.upper.background,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,

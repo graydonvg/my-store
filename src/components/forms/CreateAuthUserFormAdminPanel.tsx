@@ -78,9 +78,9 @@ export default function CreateAuthUserFormAdminPanel() {
   const userData = useAppSelector((state) => state.user.data);
   const restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) => {
     if (userData?.role === 'admin') {
-      return role === 'null';
+      return role === 'none';
     } else if (userData?.role === 'manager') {
-      return role === 'null' || role === 'admin';
+      return role === 'none' || role === 'admin';
     } else {
       return role;
     }
@@ -113,7 +113,7 @@ export default function CreateAuthUserFormAdminPanel() {
       firstName,
       lastName,
       contactNumber,
-      role: role === 'null' ? null : (role as UserRole),
+      role: role === 'none' ? null : (role as UserRole),
     });
 
     if (success) {

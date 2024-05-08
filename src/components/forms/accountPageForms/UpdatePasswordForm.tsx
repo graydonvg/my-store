@@ -71,9 +71,9 @@ export default function UpdatePasswordForm() {
       onCancel={handleCancelUpdateField}>
       <CustomTextField
         fullWidth={true}
-        label={'Current Password'}
-        name={'currentPassword'}
-        type={'password'}
+        label="Current Password"
+        name="currentPassword"
+        type="password"
         value={formData.currentPassword}
         onChange={handleInputChange}
         hasValue={formData.currentPassword.length > 0}
@@ -81,9 +81,9 @@ export default function UpdatePasswordForm() {
       />
       <CustomTextField
         fullWidth={true}
-        label={'New Password'}
-        name={'newPassword'}
-        type={'password'}
+        label="New Password"
+        name="newPassword"
+        type="password"
         value={formData.newPassword}
         onChange={handleInputChange}
         hasValue={formData.newPassword.length > 0}
@@ -91,9 +91,9 @@ export default function UpdatePasswordForm() {
       />
       <CustomTextField
         fullWidth={true}
-        label={'Confirm Password'}
-        name={'confirmPassword'}
-        type={'password'}
+        label="Confirm Password"
+        name="confirmPassword"
+        type="password"
         value={formData.confirmPassword}
         onChange={handleInputChange}
         hasValue={formData.confirmPassword.length > 0}

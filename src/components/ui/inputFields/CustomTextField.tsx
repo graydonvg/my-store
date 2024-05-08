@@ -1,5 +1,5 @@
 import { BORDER_RADIUS } from '@/data';
-import { InputAdornment, TextField, TextFieldProps, useTheme } from '@mui/material';
+import { InputAdornment, TextField, TextFieldProps, inputLabelClasses, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type Props = {
@@ -21,13 +21,9 @@ export default function CustomTextField({ icon, backgroundColor, hasValue, ...pr
         boxShadow: focused ? theme.palette.custom.textField.boxShadow : 0,
         backgroundColor,
 
-        '& label': {
-          color: theme.palette.custom.textField.label,
-        },
+        [`& .${inputLabelClasses.root}`]: { color: theme.palette.custom.textField.label },
 
-        '& label.Mui-focused': {
-          color: theme.palette.custom.textField.labelFocused,
-        },
+        [`& .${inputLabelClasses.focused}`]: { color: theme.palette.custom.textField.labelFocused },
 
         '& fieldset': {
           border: `1px solid ${theme.palette.custom.textField.border}`,

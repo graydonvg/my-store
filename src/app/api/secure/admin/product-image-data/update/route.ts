@@ -8,12 +8,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
     const imageData: InsertProductImageDataStore[] = await request.json();
 
-    if (!user)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to update image data. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,

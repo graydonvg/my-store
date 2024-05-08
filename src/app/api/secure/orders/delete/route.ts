@@ -8,13 +8,13 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
     const searchParams = request.nextUrl.searchParams;
     const orderId = searchParams.get('order_id');
 
-    if (!user)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to delete order. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
@@ -26,7 +26,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
         message: `Failed to delete order. ${ERROR_MESSAGES.NO_ID_RECEIVED}`,
       });
 
-    const { error } = await supabase.from('orders').delete().eq('orderId', orderId).eq('userId', user.id);
+    const { error } = await supabase.from('orders').delete().eq('orderId', orderId).eq('userId', authUser.id);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to delete order. ${error.message}.` });

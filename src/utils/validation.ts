@@ -1,11 +1,17 @@
 import { CustomResponse } from '@/types';
 
-type ResponseData = { pageNumber: number; rowsPerPage: number };
+export function validateEmail(email: string) {
+  // Regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+type ValidatePageResponse = { pageNumber: number; rowsPerPage: number };
 
 export function validatePage(page: {
   number: number;
   rows: number;
-}): CustomResponse<ResponseData> & { errorTarget: 'pageNumber' | 'rowsPerPage' | null } {
+}): CustomResponse<ValidatePageResponse> & { errorTarget: 'pageNumber' | 'rowsPerPage' | null } {
   const { number: pageNumber, rows: rowsPerPage } = page;
 
   if (typeof pageNumber !== 'number' || Number.isNaN(pageNumber)) {

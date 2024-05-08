@@ -71,7 +71,7 @@ export default function NavDrawerAdminPanel({ open, toggleDrawer, drawerWidth }:
             <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
               <Store />
             </ListItemIcon>
-            <ListItemText primary="Client View" />
+            <ListItemText primary="Storefront" />
           </ListItemButton>
         </Link>
         <SignOutButton buttonVariant="permanentDrawer" />

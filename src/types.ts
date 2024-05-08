@@ -53,7 +53,7 @@ export type UserData = {
   role: UserRole;
 };
 
-export type UpdateUserPersonalInformationDb = {
+export type UpdateUserDb = {
   userId?: string;
   contactNumber?: string;
   firstName?: string;
@@ -437,6 +437,7 @@ export type AdminUsersDataGridQueryFilterBuilderResponse = PostgrestFilterBuilde
 export type DataGridInvalidFlags = {
   filterColumn?: boolean;
   filterOperator?: boolean;
+  filterValue?: boolean;
   sortColumn?: boolean;
   sortDirection?: boolean;
 };

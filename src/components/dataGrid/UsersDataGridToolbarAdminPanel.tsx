@@ -11,11 +11,12 @@ import { DeleteForever } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/ContainedButton';
 
 type Props = {
-  numberOfSelectedRows: number;
+  isDeleting: boolean;
   onDeleteClick: () => void;
+  numberOfSelectedRows: number;
 };
 
-export default function UsersDataGridToolbarAdminPanel({ numberOfSelectedRows, onDeleteClick }: Props) {
+export default function UsersDataGridToolbarAdminPanel({ isDeleting, onDeleteClick, numberOfSelectedRows }: Props) {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const commonStyle = { height: '32px', color: darkMode ? theme.palette.primary.light : theme.palette.primary.main };
@@ -60,10 +61,12 @@ export default function UsersDataGridToolbarAdminPanel({ numberOfSelectedRows, o
         />
         {numberOfSelectedRows > 0 ? (
           <ContainedButton
-            label="delete"
+            label={!isDeleting ? 'delete' : ''}
             startIcon={<DeleteForever />}
             color="secondary"
             onClick={onDeleteClick}
+            isLoading={isDeleting}
+            disabled={isDeleting}
             sxStyles={{ height: '32px', minHeight: '32px', minWidth: '124.53px' }}
           />
         ) : (

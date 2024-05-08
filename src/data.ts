@@ -8,7 +8,7 @@ export const BORDER_RADIUS = '4px';
 
 export const FREE_DELIVERY_THRESHOLD = 500;
 
-export const USER_ROLE_OPTIONS = ['null', 'admin', 'manager', 'owner'];
+export const USER_ROLE_OPTIONS = ['none', 'admin', 'manager', 'owner'];
 
 export const HAS_ADMIN_PANEL_ACCESS = ['admin', 'manager', 'owner'];
 

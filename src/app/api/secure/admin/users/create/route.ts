@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { UpdateUserPersonalInformationDb, AdminAddNewUserResponse, CustomResponse, UserAuthData } from '@/types';
+import { UpdateUserDb, AdminAddNewUserResponse, CustomResponse, UserAuthData } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
@@ -17,12 +17,13 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     } = await supabase.auth.getUser();
 
     const userRole = await getUserRoleFromSession(supabase);
-    const userData: UserAuthData & UpdateUserPersonalInformationDb = await request.json();
+    const userData: UserAuthData & UpdateUserDb = await request.json();
     const supabaseService = createSupabaseService();
 
     const { email, password, ...userDataToUpdate } = userData;
-    const emptyFieldsArray = getEmptyFormFields(userDataToUpdate);
-    const numberOfFormFields = getNumberOfFormFields(userDataToUpdate);
+    const { role, ...restOfDataToUpdate } = userDataToUpdate;
+    const emptyFieldsArray = getEmptyFormFields(restOfDataToUpdate);
+    const numberOfFormFields = getNumberOfFormFields(restOfDataToUpdate);
     const hasDataToUpdate = emptyFieldsArray.length !== numberOfFormFields;
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
     const failedMessage = 'Failed to create user';
@@ -69,11 +70,11 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     }
 
     if (
-      (userDataToUpdate.role === 'owner' && !isOwner) ||
-      (userDataToUpdate.role === 'manager' && !isOwner) ||
-      (userDataToUpdate.role === 'admin' && !(isOwner || isManager))
+      (role === 'owner' && !isOwner) ||
+      (role === 'manager' && !isOwner) ||
+      (role === 'admin' && !(isOwner || isManager))
     ) {
-      const message = `${failedMessage}. Not authorized to assign role '${userDataToUpdate.role}'.`;
+      const message = `${failedMessage}. Not authorized to assign role '${role}'.`;
 
       request.log.error(message);
 
@@ -101,8 +102,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     }
 
     if (hasDataToUpdate) {
-      const { role, ...restOfDataToUpdate } = userDataToUpdate;
-
+      // Using supabaseService since anyone can sign up
       const { error: updateUserError } = await supabaseService
         .from('users')
         .update(restOfDataToUpdate)
@@ -119,10 +119,11 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
         });
       }
 
-      if (userDataToUpdate.role) {
+      if (role) {
+        // Not using supabaseService since not everyone can assign roles
         const { error: insertUserRoleError } = await supabase
           .from('userRoles')
-          .insert({ userId: createUserData.user.id, role: userDataToUpdate.role });
+          .insert({ userId: createUserData.user.id, role });
 
         if (insertUserRoleError) {
           const message = 'User created successfully, but failed to assign user role.';

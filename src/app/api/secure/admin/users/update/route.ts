@@ -1,66 +1,131 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, UpdateUserPersonalInformationDb } from '@/types';
-import { ERROR_MESSAGES } from '@/data';
-// import createSupabaseService from '@/lib/supabase/supabase-service';
+import { CustomResponse, UpdateUserDb } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
 import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
+import { withAxiom, AxiomRequest } from 'next-axiom';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
-  const supabase = await createSupabaseServerClient();
-  // const supabaseSerice = createSupabaseService();
-
+async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
   try {
+    const supabase = await createSupabaseServerClient();
+
     const {
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    // const { data: authorizationData } = await supabase.from('users').select('admins(userId), managers(userId)');
+    const userRole = await getUserRoleFromSession(supabase);
+    const userData: UpdateUserDb = await request.json();
 
-    const userData: UpdateUserPersonalInformationDb = await request.json();
     const { userId, ...userDataToUpdate } = userData;
+    const { role, ...restOfDataToUpdate } = userDataToUpdate;
+    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+    const failedMessage = 'Failed to update user';
+    const successMessage = 'User updated successfully.';
 
-    if (!authUser)
+    request.log.info('Attempt: Update user.', {
+      callerId: authUser?.id,
+      callerRole: userRole,
+      callerEmail: authUser?.email,
+      payload: userData,
+    });
+
+    if (!authUser) {
+      const message = `${failedMessage}. Not authenticated.`;
+
+      request.log.error(message);
+
       return NextResponse.json({
         success: false,
-        message: `Failed to update user personal information. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
-      });
-
-    const userRole = authUser ? await getUserRoleFromSession(supabase) : null;
-    const { isAdmin, isOwner } = getUserRoleBoolean(userRole);
-
-    if (!isAdmin && !isOwner)
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to update user personal information. Not authorized.',
-      });
-
-    if (!userDataToUpdate)
-      return NextResponse.json({
-        success: false,
-        message: `Failed update user personal information. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
-      });
-
-    if (!userId)
-      return NextResponse.json({
-        success: false,
-        message: `Failed update user personal information. Please provide a valid user ID.`,
-      });
-
-    const { error } = await supabase.from('users').update(userDataToUpdate).eq('userId', userId);
-
-    if (error) {
-      return NextResponse.json({
-        success: false,
-        message: `Failed to update user personal information. ${error.message}.`,
+        message,
       });
     }
 
-    return NextResponse.json({ success: true, message: 'User personal information updated successfully.' });
+    if (!isAdmin && !isManager && !isOwner) {
+      const message = `${failedMessage}. Not authorized.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    if (!userData) {
+      const message = `${failedMessage}. No data received.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    if (!userId) {
+      const message = `${failedMessage}. Please provide a valid user ID.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    if (
+      (role === 'owner' && !isOwner) ||
+      (role === 'manager' && !isOwner) ||
+      (role === 'admin' && !(isOwner || isManager))
+    ) {
+      const message = `${failedMessage}. Not authorized to assign role '${role}'.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    const { error: updateUserError } = await supabase.from('users').update(restOfDataToUpdate).eq('userId', userId);
+
+    if (updateUserError) {
+      const message = `${failedMessage}. Database error.`;
+
+      request.log.error(message, updateUserError);
+
+      return NextResponse.json({
+        success: false,
+        message: `${message} ${updateUserError.message}.`,
+      });
+    }
+
+    if (role) {
+      const { error: updateUserRoleError } = await supabase.from('userRoles').update({ userId, role });
+
+      if (updateUserRoleError) {
+        const message = 'Failed to update user role. Database error.';
+
+        request.log.error(message, updateUserRoleError);
+
+        return NextResponse.json({
+          success: false,
+          message: `${message} ${updateUserRoleError.message}.`,
+        });
+      }
+    }
+
+    request.log.info(successMessage);
+
+    return NextResponse.json({ success: true, message: successMessage });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to update user personal information. An unexpect error occured.',
-    });
+    const failedMessage = 'Failed to update user';
+
+    request.log.error(`${failedMessage}.`, { error: error as Error });
+
+    return NextResponse.json({ success: false, message: `${failedMessage}. An unexpected error occurred.` });
   }
 }
+
+export const POST = withAxiom(handlePost);

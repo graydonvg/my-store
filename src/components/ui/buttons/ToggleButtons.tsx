@@ -1,5 +1,11 @@
 import { BORDER_RADIUS } from '@/data';
-import { ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  ToggleButtonGroupProps,
+  toggleButtonClasses,
+  toggleButtonGroupClasses,
+} from '@mui/material';
 
 type ToggleButtonsProps = ToggleButtonGroupProps & {
   buttons: { label: string; value: string }[];
@@ -25,7 +31,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
             sx={(theme) => ({
               height: '56px',
               aspectRatio: 4 / 3,
-              '&.MuiToggleButton-root.MuiToggleButtonGroup-grouped': {
+              [`&.${toggleButtonGroupClasses.grouped}`]: {
                 color: theme.palette.custom.textField.label,
                 border: `1px solid ${theme.palette.custom.textField.border} !important`,
                 borderRadius: `${BORDER_RADIUS} !important`,
@@ -37,7 +43,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                   },
                 },
               },
-              '&.MuiToggleButton-root.Mui-selected': {
+              [`&.${toggleButtonClasses.selected}`]: {
                 color: theme.palette.primary.contrastText,
                 borderColor: `${theme.palette.background.default} !important`,
                 backgroundColor: theme.palette.primary.light,

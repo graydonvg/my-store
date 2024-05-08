@@ -1,16 +1,15 @@
 'use client';
 
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, tablePaginationClasses, useMediaQuery, useTheme } from '@mui/material';
 import { DataGridQueryData } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   DataGrid,
-  GridColDef,
+  DataGridProps,
   GridFilterModel,
   GridPaginationModel,
-  GridRowSelectionModel,
   GridSortModel,
-  GridValidRowModel,
+  gridClasses,
 } from '@mui/x-data-grid';
 import { ReactNode, useEffect, useMemo } from 'react';
 import CustomNoRowsOverlay from '../dataGrid/CustomNoRowsOverlay';
@@ -20,19 +19,15 @@ import { validatePage } from '@/utils/validation';
 
 type Props = {
   data: {}[] | null;
-  columns: GridColDef[];
   querySuccess: boolean;
   queryMessage: string;
   totalRowCount: number;
-  onRowUpdate: (newRow: GridValidRowModel, oldRow: GridValidRowModel) => GridValidRowModel | Promise<GridValidRowModel>;
-  onRowSelection?: (rowSelectionModel: GridRowSelectionModel) => void;
-  hasCheckboxSelection: boolean;
   customToolbar: ReactNode;
-} & DataGridQueryData<string, string>;
+} & DataGridQueryData<string, string> &
+  DataGridProps;
 
 export default function CustomDataGrid({
   data,
-  columns,
   querySuccess,
   queryMessage,
   page,
@@ -40,10 +35,8 @@ export default function CustomDataGrid({
   sort,
   filter,
   totalRowCount,
-  onRowUpdate,
-  onRowSelection,
-  hasCheckboxSelection,
   customToolbar,
+  ...datagridProps
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
@@ -201,18 +194,14 @@ export default function CustomDataGrid({
       }}>
       <DataGrid
         rows={data ?? []}
-        columns={columns}
         getRowId={(row) => row.userId}
         rowCount={totalRowCount}
         pageSizeOptions={rowsPerPageOptionsArraySorted}
         disableRowSelectionOnClick
-        checkboxSelection={hasCheckboxSelection}
-        onRowSelectionModelChange={onRowSelection}
         pagination
         paginationMode="server"
         paginationModel={{ page: dataGridCurrentPageNumber, pageSize: validatedRowsPerPage }}
         onPaginationModelChange={handlePaginationModelChange}
-        processRowUpdate={onRowUpdate}
         onProcessRowUpdateError={handleUpdateError}
         filterMode="server"
         onFilterModelChange={handleFilter}
@@ -221,6 +210,7 @@ export default function CustomDataGrid({
         sortModel={[{ field: sort.by, sort: sort.direction }]}
         onSortModelChange={handleSort}
         showCellVerticalBorder
+        showColumnVerticalBorder
         disableColumnMenu
         initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
         slots={{
@@ -229,6 +219,34 @@ export default function CustomDataGrid({
           noRowsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
         }}
         slotProps={{
+          columnsManagement: { autoFocusSearchField: false },
+          filterPanel: {
+            filterFormProps: {
+              deleteIconProps: {
+                sx: {
+                  display: 'flex',
+                  justifyContent: { xs: 'center', sm: 'flex-end' },
+                  alignItems: 'flex-end',
+                  width: 'auto',
+                },
+              },
+              columnInputProps: {
+                sx: { width: { xs: 1, sm: '150px' } },
+              },
+              operatorInputProps: { sx: { width: { xs: 1, sm: '120px' } } },
+              valueInputProps: {
+                sx: {
+                  width: { xs: 1, sm: '190px' },
+                },
+              },
+            },
+            sx: {
+              [`& .${gridClasses.filterForm}`]: {
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row', rowGap: '8px' },
+              },
+            },
+          },
           pagination: {
             showFirstButton: true,
             showLastButton: true,
@@ -246,9 +264,9 @@ export default function CustomDataGrid({
             },
             sx: {
               width: { xs: 1, sm: 'auto' },
-              '& .MuiTablePagination-selectLabel': { display: 'block' },
-              '& .MuiTablePagination-input': { display: 'inline-flex', marginRight: { xs: '20px', sm: 4 } },
-              '& .MuiTablePagination-actions': { marginLeft: { xs: 2, sm: '20px' } },
+              [`& .${tablePaginationClasses.selectLabel}`]: { display: 'block' },
+              [`& .${tablePaginationClasses.input}`]: { display: 'inline-flex', marginRight: { xs: '20px', sm: 4 } },
+              [`& .${tablePaginationClasses.actions}`]: { marginLeft: { xs: 2, sm: '20px' } },
             },
           },
         }}
@@ -256,7 +274,7 @@ export default function CustomDataGrid({
           '--unstable_DataGrid-radius': 0,
           border: 'none',
 
-          '& .MuiDataGrid-toolbarContainer': {
+          [`& .${gridClasses.toolbarContainer}`]: {
             paddingRight: 2,
             paddingLeft: '11px',
             paddingY: 1,
@@ -265,7 +283,7 @@ export default function CustomDataGrid({
             borderBottom: `1px solid ${theme.palette.custom.dataGrid.border}`,
           },
 
-          '& .MuiDataGrid-columnHeader': {
+          [`& .${gridClasses.columnHeader}`]: {
             backgroundColor: theme.palette.custom.dataGrid.header,
             outlineOffset: -2,
             outline: 0,
@@ -275,11 +293,11 @@ export default function CustomDataGrid({
             },
           },
 
-          '& .MuiDataGrid-columnSeparator--resizable': {
+          [`& .${gridClasses['columnSeparator--resizable']}`]: {
             opacity: '0 !important',
           },
 
-          '& .MuiDataGrid-filler': {
+          [`& .${gridClasses.filler}`]: {
             backgroundColor: theme.palette.custom.dataGrid.header,
           },
 
@@ -287,13 +305,15 @@ export default function CustomDataGrid({
             backgroundColor: theme.palette.background.default,
           },
 
-          '& .MuiDataGrid-footerContainer': {
+          [`& .${gridClasses.footerContainer}`]: {
             backgroundColor: theme.palette.custom.dataGrid.toolbar,
-            '& .MuiDataGrid-selectedRowCount': {
+
+            [`& .${gridClasses.selectedRowCount}`]: {
               display: { xs: 'none', sm: 'flex' },
             },
           },
         }}
+        {...datagridProps}
       />
     </Box>
   );

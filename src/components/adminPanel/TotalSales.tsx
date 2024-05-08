@@ -69,15 +69,6 @@ export default function TotalSales({ title, type, amount }: Props) {
   const formattedLastDay = formatDay(lastDayOfWeek);
   const currentDate = formatDay(new Date());
   const currentMonth = getMonth();
-  // const ONE_HUNDRED_MILLION = 100000000;
-  // const TEN_MILLION = 10000000;
-  // let amountFontSize = { xs: 32, sm: 28, md: 30, lg: 36 };
-
-  // if (amount >= ONE_HUNDRED_MILLION) {
-  //   amountFontSize = { xs: 32, sm: 22, md: 22, lg: 36 };
-  // } else if (amount >= TEN_MILLION) {
-  //   amountFontSize = { xs: 32, sm: 24, md: 26, lg: 36 };
-  // }
 
   return (
     <>

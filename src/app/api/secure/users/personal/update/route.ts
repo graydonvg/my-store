@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, UpdateUserPersonalInformationDb } from '@/types';
+import { CustomResponse, UpdateUserDb } from '@/types';
 import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
@@ -8,12 +8,12 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
   try {
     const {
-      data: { user },
+      data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const personalData: UpdateUserPersonalInformationDb = await request.json();
+    const personalData: UpdateUserDb = await request.json();
 
-    if (!user)
+    if (!authUser)
       return NextResponse.json({
         success: false,
         message: `Failed to update personal information. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
@@ -25,7 +25,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: `Failed to update personal information. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
       });
 
-    const { error } = await supabase.from('users').update(personalData).eq('userId', user.id);
+    const { error } = await supabase.from('users').update(personalData).eq('userId', authUser.id);
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to update personal information. ${error.message}.` });

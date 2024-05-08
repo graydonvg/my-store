@@ -58,9 +58,9 @@ export default function UpdateFirstNameForm() {
       onCancel={cancelUpdateField}>
       <CustomTextField
         fullWidth={true}
-        label={'Name'}
-        name={'firstName'}
-        type={'text'}
+        label="Name"
+        name="firstName"
+        type="text"
         value={firstName}
         onChange={handleInputChange}
         hasValue={firstName.length > 0}
