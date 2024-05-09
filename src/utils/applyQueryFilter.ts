@@ -95,13 +95,13 @@ function applyRoleFilter({ usersQuery, filter, setInvalidFlags }: FilterFunction
   let column = 'userRoles.role';
 
   if (filter.operator === 'is') {
-    if (filter.value === 'null') {
+    if (filter.value === 'none') {
       return usersQuery.is(column, null);
     } else {
       return usersQuery.eq(column, filter.value);
     }
   } else if (filter.operator === 'not') {
-    if (filter.value === 'null') {
+    if (filter.value === 'none') {
       return usersQuery.not(column, 'is', null);
     } else {
       return usersQuery.neq(column, filter.value);

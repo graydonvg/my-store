@@ -1,5 +1,5 @@
 import { BORDER_RADIUS } from '@/data';
-import { InputAdornment, TextField, TextFieldProps, inputLabelClasses, useTheme } from '@mui/material';
+import { InputAdornment, TextField, TextFieldProps, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type Props = TextFieldProps & {
@@ -24,9 +24,13 @@ export default function NumberField({ styles, icon, hasValue, backgroundColor, .
         boxShadow: focused ? theme.palette.custom.textField.boxShadow : 0,
         backgroundColor,
 
-        [`& .${inputLabelClasses.root}`]: { color: theme.palette.custom.textField.label },
+        '& label': {
+          color: theme.palette.custom.textField.label,
+        },
 
-        [`& .${inputLabelClasses.focused}`]: { color: theme.palette.custom.textField.labelFocused },
+        '& label.Mui-focused': {
+          color: theme.palette.custom.textField.labelFocused,
+        },
 
         '& fieldset': {
           border: `1px solid ${theme.palette.custom.textField.border}`,

@@ -6,7 +6,7 @@ import {
   AdminUsersDataGridFilterableColumns,
   AdminUsersDataGridSortableColumns,
   UserRole,
-  UpdateUserDb,
+  AdminUpdateUserDb,
 } from '@/types';
 import {
   GridColDef,
@@ -23,7 +23,7 @@ import { useMemo, useState } from 'react';
 import UsersDataGridToolbarAdminPanel from '../dataGrid/UsersDataGridToolbarAdminPanel';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { deleteAuthUser } from '@/services/users/delete';
-import { toast } from 'react-toastify';
+import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { adminUpdateUser } from '@/services/users/update';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
@@ -84,6 +84,7 @@ function getColumns(userRole: UserRole, isUpdating: boolean) {
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
+      pinnable: true,
       field: 'role',
       headerName: 'Role',
       width: 110,
@@ -100,7 +101,13 @@ function getColumns(userRole: UserRole, isUpdating: boolean) {
         }
       }),
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
-      renderCell: (params) => (params.row.role === null ? 'none' : params.row.role),
+      // Changing null to 'none' for role.
+      // Users without a role, initially have role: null.
+      // Datagrid set to display null as 'none'.
+      // Datagrid select menu value cannot be null so using 'none'.
+      // Value received from select menu is 'none'.
+      // If role === null, adminUpdateUser will return no data received.
+      valueGetter: (role) => (role === null ? 'none' : role),
     },
   ];
   return columns;
@@ -138,7 +145,13 @@ export default function UsersPageAdminPanelClient({
     for (let key in newObj) {
       // Check if the property exists in obj2 and has a different value
       if (newObj[key] !== oldObj[key]) {
-        changedValues[key] = newObj[key] === '' ? null : newObj[key];
+        if (newObj[key] === '') {
+          // Names and contact number not required.
+          // Set empty strings to null to prevent empty string in db
+          changedValues[key] = null;
+        } else {
+          changedValues[key] = newObj[key];
+        }
       }
     }
 
@@ -146,25 +159,53 @@ export default function UsersPageAdminPanelClient({
   }
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel): Promise<GridValidRowModel> {
-    setIsUpdating(true);
-    const changedValues = compareObjectValues(newRow, oldRow) as UpdateUserDb;
+    // Changing null to 'none' for role.
+    // Users without a role, initially have role: null.
+    // Datagrid set to display null as 'none'.
+    // Datagrid select menu value cannot be null so using 'none'.
+    // Value received from select menu is 'none'.
+    // If role === null, adminUpdateUser will return no data received.
+    const modifiedOldRow = oldRow.role === null ? { ...oldRow, role: 'none' } : oldRow;
+    const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
+    const changedValues = compareObjectValues(modifiedNewRow, modifiedOldRow) as AdminUpdateUserDb;
     const numberOfFormFields = getNumberOfFormFields(changedValues);
 
     if (numberOfFormFields === 0) {
-      setIsUpdating(false);
-      router.refresh();
       return oldRow;
     }
 
-    const { success, message } = await adminUpdateUser({ userId: newRow.userId, ...changedValues });
+    const modifiedChangedValues = changedValues.role
+      ? { ...changedValues, role: { old: modifiedOldRow.role, new: modifiedNewRow.role } }
+      : changedValues;
+
+    setIsUpdating(true);
+    const toastId = toast.loading('Updating user.');
+
+    const { success, message } = await adminUpdateUser({ userId: newRow.userId, ...modifiedChangedValues });
 
     if (success) {
-      toast.success(message);
+      toast.update(toastId, {
+        render: message,
+        type: 'success',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
+      });
       setIsUpdating(false);
       router.refresh();
       return newRow;
     } else {
-      toast.error(message);
+      toast.update(toastId, {
+        render: message,
+        type: 'error',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
+      });
       setIsUpdating(false);
       return oldRow;
     }
@@ -204,10 +245,6 @@ export default function UsersPageAdminPanelClient({
       processRowUpdate={handleRowUpdate}
       onRowSelectionModelChange={handleRowSelection}
       checkboxSelection={userData?.role === 'admin' ? false : true}
-      getRowSpacing={(params) => ({
-        top: params.isFirstVisible ? 0 : 5,
-        bottom: params.isLastVisible ? 0 : 5,
-      })}
       customToolbar={
         <UsersDataGridToolbarAdminPanel
           isDeleting={isDeleting}

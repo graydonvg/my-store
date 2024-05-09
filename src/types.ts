@@ -23,7 +23,12 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 // 1. User
 
-export type UserRole = Database['public']['Enums']['appRole'] | null;
+export type UserRoleDb = Database['public']['Enums']['appRole'];
+
+export type UserRole = UserRoleDb | null;
+
+// Cannot use null for select component
+export type UserRoleSelectOptions = UserRoleDb | 'none';
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
@@ -54,11 +59,9 @@ export type UserData = {
 };
 
 export type UpdateUserDb = {
-  userId?: string;
   contactNumber?: string;
   firstName?: string;
   lastName?: string;
-  role?: UserRole;
 };
 
 export type userPasswordType = {
@@ -353,6 +356,24 @@ export type AdminUsersTableUserData = {
   contactNumber: string | null;
   createdAt: string;
   role: UserRole;
+};
+
+export type AdminCreateUserDb = {
+  contactNumber?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
+};
+
+export type AdminUpdateUserDb = {
+  userId?: string;
+  contactNumber?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: {
+    old: UserRoleSelectOptions;
+    new: UserRoleSelectOptions;
+  };
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

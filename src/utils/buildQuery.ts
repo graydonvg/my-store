@@ -36,8 +36,13 @@ export default async function buildUsersQueryForAdmin({
 
   let usersQuery: QueryFilterBuilder;
 
-  if (filter.column === 'role' && !(filter.operator === 'is' && filter.value === 'null')) {
-    // Operator/value pairs other than is null require inner join to filter role
+  if (
+    filter.column === 'role' &&
+    !(filter.operator === 'is' && filter.value === 'none') &&
+    !(filter.operator === 'not' && filter.value !== 'none')
+  ) {
+    // Operator/value pairs other than 'is' and 'none' or 'not' and not 'none' require inner join to filter role
+
     usersQuery = supabase
       .from('users')
       .select('*, ...userRoles!inner(role)', {

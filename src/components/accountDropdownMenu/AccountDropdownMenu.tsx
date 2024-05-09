@@ -1,5 +1,5 @@
 import { useTheme, Typography } from '@mui/material';
-import { ArrowDropDown, AccountCircle, ViewList, Favorite, AdminPanelSettings } from '@mui/icons-material';
+import { ArrowDropDown, AccountCircle, ViewList, Favorite, Security } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/slices/themeSlice';
@@ -65,7 +65,7 @@ export default function AccountDropdownMenu() {
         <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
             label="Admin Panel"
-            icon={<AdminPanelSettings fontSize="small" />}
+            icon={<Security fontSize="small" />}
           />
         </Link>
       ) : null}

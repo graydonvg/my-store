@@ -26,8 +26,8 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/cart') ||
     checkPathStartsWith('/checkout');
 
-  const userRole = authUser ? await getUserRoleFromSession(supabase) : null;
-  const hasAdminPanelAccess = userRole === null ? false : HAS_ADMIN_PANEL_ACCESS.includes(userRole);
+  const userRole = await getUserRoleFromSession(supabase);
+  const hasAdminPanelAccess = HAS_ADMIN_PANEL_ACCESS.includes(userRole ?? '');
 
   if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {

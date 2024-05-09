@@ -219,34 +219,24 @@ export default function CustomDataGrid({
           noRowsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
         }}
         slotProps={{
+          panel: {
+            sx: {
+              [`& .${gridClasses.paper}`]: { minWidth: 'unset', maxWidth: 'calc(100vw - 4px)', overflow: 'hidden' },
+              [`& .${gridClasses.panelWrapper}`]: { maxWidth: 'calc(100vw - 4px)', overflow: 'hidden' },
+            },
+          },
+
           columnsManagement: { autoFocusSearchField: false },
           filterPanel: {
             filterFormProps: {
-              deleteIconProps: {
-                sx: {
-                  display: 'flex',
-                  justifyContent: { xs: 'center', sm: 'flex-end' },
-                  alignItems: 'flex-end',
-                  width: 'auto',
-                },
-              },
-              columnInputProps: {
-                sx: { width: { xs: 1, sm: '150px' } },
-              },
-              operatorInputProps: { sx: { width: { xs: 1, sm: '120px' } } },
+              columnInputProps: { sx: { maxWidth: '150px' } },
+              operatorInputProps: { sx: { maxWidth: '120px' } },
               valueInputProps: {
-                sx: {
-                  width: { xs: 1, sm: '190px' },
-                },
-              },
-            },
-            sx: {
-              [`& .${gridClasses.filterForm}`]: {
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row', rowGap: '8px' },
+                sx: { maxWidth: '190px' },
               },
             },
           },
+
           pagination: {
             showFirstButton: true,
             showLastButton: true,
@@ -266,7 +256,7 @@ export default function CustomDataGrid({
               width: { xs: 1, sm: 'auto' },
               [`& .${tablePaginationClasses.selectLabel}`]: { display: 'block' },
               [`& .${tablePaginationClasses.input}`]: { display: 'inline-flex', marginRight: { xs: '20px', sm: 4 } },
-              [`& .${tablePaginationClasses.actions}`]: { marginLeft: { xs: 2, sm: '20px' } },
+              [`& .${tablePaginationClasses.actions}`]: { marginLeft: { xs: '12px', sm: '20px' } },
             },
           },
         }}
@@ -291,10 +281,6 @@ export default function CustomDataGrid({
             '&:focus-within': {
               outlineOffset: -2,
             },
-          },
-
-          [`& .${gridClasses['columnSeparator--resizable']}`]: {
-            opacity: '0 !important',
           },
 
           [`& .${gridClasses.filler}`]: {

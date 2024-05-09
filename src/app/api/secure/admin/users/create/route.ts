@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { UpdateUserDb, AdminAddNewUserResponse, CustomResponse, UserAuthData } from '@/types';
+import { AdminAddNewUserResponse, CustomResponse, UserAuthData, AdminCreateUserDb } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
@@ -17,7 +17,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     } = await supabase.auth.getUser();
 
     const userRole = await getUserRoleFromSession(supabase);
-    const userData: UserAuthData & UpdateUserDb = await request.json();
+    const userData: UserAuthData & AdminCreateUserDb = await request.json();
     const supabaseService = createSupabaseService();
 
     const { email, password, ...userDataToUpdate } = userData;

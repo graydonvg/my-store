@@ -3,6 +3,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   ToggleButtonGroupProps,
+  alpha,
   toggleButtonClasses,
   toggleButtonGroupClasses,
 } from '@mui/material';
@@ -44,19 +45,17 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 },
               },
               [`&.${toggleButtonClasses.selected}`]: {
-                color: theme.palette.primary.contrastText,
-                borderColor: `${theme.palette.background.default} !important`,
-                backgroundColor: theme.palette.primary.light,
+                color: theme.palette.warning.light,
+                borderColor: `${theme.palette.warning.light} !important`,
+                backgroundColor: alpha(theme.palette.warning.light, 0.1),
                 '&:hover': {
                   backgroundColor: theme.palette.primary.light,
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: theme.palette.primary.contrastText,
-                    backgroundColor: theme.palette.primary.light,
-                    border: `1px solid ${theme.palette.background.default} !important`,
-                    filter: 'brightness(1.1)',
-                    transition: 'filter 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                    color: theme.palette.warning.light,
+                    backgroundColor: alpha(theme.palette.warning.light, 0.1),
+                    border: `1px solid ${theme.palette.warning.light} !important`,
                   },
                 },
               },
