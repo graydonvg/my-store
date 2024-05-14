@@ -28,25 +28,29 @@ export default function PaymentButton({ buttonVariant }: Props) {
       shippingDetails: checkoutData.shippingDetails!,
     });
 
-    if (success === false) {
+    if (!success) {
       dispatch(setCheckoutData({ isProcessing: false }));
       toast.error(message);
-      return;
+      return { success };
     }
 
     dispatch(setCheckoutData({ orderId: data?.orderId }));
+
+    return { success };
   }
 
   async function createOrderAndPayWithStripe() {
     dispatch(setCheckoutData({ isProcessing: true }));
 
-    await addNewOrder();
+    const { success: addNewOrderSuccess } = await addNewOrder();
 
-    const response = await payWithStripe(cartItems);
+    if (addNewOrderSuccess) {
+      const { success: paymentSuccess } = await payWithStripe(cartItems);
 
-    if (response.success === false) {
-      dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error('Failed to process payment. Please try again later.');
+      if (!paymentSuccess) {
+        dispatch(setCheckoutData({ isProcessing: false }));
+        toast.error('Failed to process payment. Please try again later.');
+      }
     }
   }
 

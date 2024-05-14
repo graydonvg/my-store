@@ -35,6 +35,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({ success: true, message: 'Payment successful.', data: { sessionId: session.id } });
   } catch (error) {
+    // Axiom error log
     return NextResponse.json({
       success: false,
       message: 'Failed to process payment. An unexpect error occured.',

@@ -121,7 +121,7 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
   const pathname = usePathname();
 
-  const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout');
+  const isCheckoutFlow = pathname.includes('/cart') || pathname.includes('/checkout/shipping');
   const isAdminDashboard = pathname.includes('/admin/dashboard');
 
   const hasGreyBgColor = isCheckoutFlow || isAdminDashboard;
