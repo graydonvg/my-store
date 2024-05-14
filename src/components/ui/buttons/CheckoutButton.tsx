@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ContainedButton from './ContainedButton';
-import { calculateDiscountedCartItemPrice } from '@/utils/calculateDiscountedPrice';
+import { calculateDiscountedCartItemPrice } from '@/utils/calculate';
 import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
 import {
   selectCartTotal,

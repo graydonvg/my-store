@@ -95,3 +95,19 @@ export const HOME_PAGE_CATEGORIES = [
     path: '/products/kids',
   },
 ];
+
+export const DATA_GRID_DEFAULTS = {
+  page: {
+    number: 1,
+    rows: 5,
+  },
+  sort: {
+    column: 'createdAt',
+    direction: 'desc',
+  },
+  filter: {
+    column: null,
+    operator: null,
+    value: null,
+  },
+};

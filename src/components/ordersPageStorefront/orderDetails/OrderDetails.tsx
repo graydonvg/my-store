@@ -3,6 +3,7 @@ import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
 import { BORDER_RADIUS } from '@/data';
 import OrderShippingDetails from './OrderShippingDetails';
+import dayjs from 'dayjs';
 
 type Props = {
   order: OrderData;
@@ -10,7 +11,6 @@ type Props = {
 };
 
 export default function OrderDetails({ order, borderColor }: Props) {
-  const shippingDetails = { ...order.shippingDetails[0] };
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -39,8 +39,9 @@ export default function OrderDetails({ order, borderColor }: Props) {
               </Typography>
               <Typography
                 component="span"
-                fontSize={14}>
-                {order.isPaid === true ? 'Paid' : 'Payment pending'}
+                fontSize={14}
+                sx={{ textTransform: 'capitalize' }}>
+                {order.orderStatus}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -54,11 +55,11 @@ export default function OrderDetails({ order, borderColor }: Props) {
               <Typography
                 component="span"
                 fontSize={14}>
-                {order.createdAt.split('T')[0]}
+                {dayjs(order?.createdAt).format('YYYY-MM-DD')}
               </Typography>
             </Box>
           </Box>
-          <OrderShippingDetails shippingDetails={shippingDetails} />
+          {order.shippingDetails ? <OrderShippingDetails shippingDetails={order.shippingDetails} /> : null}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography
               component="h3"

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { openDialog, closeDialog } from '@/lib/redux/slices/dialogSlice';
 import SignUpForm from '../forms/SignUpForm';
 import MuiLink from '../ui/MuiLink';
-import { Box, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 export default function SignUpDialog() {
   const theme = useTheme();
@@ -22,13 +22,11 @@ export default function SignUpDialog() {
 
   return (
     <>
-      <Box sx={{ paddingX: 2 }}>
-        <TextButton
-          label="sign up"
-          labelColor={theme.palette.custom.navbar.upper.text}
-          onClick={openSignUpDialog}
-        />
-      </Box>
+      <TextButton
+        label="sign up"
+        onClick={openSignUpDialog}
+        sxStyles={{ width: '100px', color: theme.palette.custom.navbar.upper.text, height: 1 }}
+      />
       <DialogComponent isOpen={isSignUpDialogOpen}>
         <SignUpForm>
           <MuiLink onClick={openSignInDialog}>Already have an account? Sign in</MuiLink>

@@ -1,6 +1,5 @@
 import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
-import { GridSortDirection } from '@mui/x-data-grid';
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -10,14 +9,13 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 // 2. Cart
 // 3. Checkout
 // 4. Address
-// 5. Shipping
-// 6. Order
-// 7. Wishlist
-// 8. Product
-// 9. Payment
-// 10. Admin
-// 11. Data grid
-// 12. Misc
+// 5. Order
+// 6. Wishlist
+// 7. Product
+// 8. Payment
+// 9. Admin
+// 10. Data grid
+// 11. Misc
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +127,7 @@ export type CheckoutData = {
     discountTotal: number;
     orderTotal: number;
   };
-  shippingDetails: ShippingDetails | null;
+  shippingDetails: OrderShippingDetails | null;
   orderId: string | null;
   userId: string | null;
 };
@@ -159,23 +157,9 @@ export type AddressStore = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 5. Shipping
+// 5. Order
 
-export type ShippingDetails = {
-  recipientFirstName: string;
-  recipientLastName: string;
-  recipientContactNumber: string;
-  complexOrBuilding: string | null;
-  streetAddress: string;
-  suburb: string;
-  province: string;
-  city: string;
-  postalCode: number;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// 6. Order
+export type OrderStatus = Database['public']['Enums']['orderStatus'];
 
 export type OrderItem = {
   orderItemId: string;
@@ -194,6 +178,18 @@ export type OrderItem = {
   } | null;
 };
 
+export type OrderShippingDetails = {
+  recipientFirstName: string;
+  recipientLastName: string;
+  recipientContactNumber: string;
+  complexOrBuilding: string | null;
+  streetAddress: string;
+  suburb: string;
+  province: string;
+  city: string;
+  postalCode: number;
+};
+
 export type OrderData = {
   createdAt: string;
   orderId: string;
@@ -201,8 +197,8 @@ export type OrderData = {
   discountTotal: number;
   deliveryFee: number;
   orderTotal: number;
-  isPaid: boolean;
-  shippingDetails: ShippingDetails[];
+  orderStatus: OrderStatus;
+  shippingDetails: OrderShippingDetails | null;
   orderItems: OrderItem[];
 };
 
@@ -211,16 +207,15 @@ export type InsertOrderDb = {
     cartTotal: number;
     deliveryFee: number;
     discountTotal: number;
-    isPaid: boolean;
     orderTotal: number;
   };
   orderItems: { pricePaid: number; productId: string; quantity: number; size: string }[];
-  shippingDetails: ShippingDetails;
+  shippingDetails: OrderShippingDetails;
 };
 
-export type UpdateOrderPaymentStatus = {
+export type UpdateOrderStatus = {
   orderId: string;
-  isPaid: boolean;
+  orderStatus: OrderStatus;
 };
 
 export type AddOrderResponse = {
@@ -229,7 +224,7 @@ export type AddOrderResponse = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 7. Wishlist
+// 6. Wishlist
 
 export type WishlistData = {
   size: string;
@@ -246,7 +241,7 @@ export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Ins
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 8. Product
+// 7. Product
 
 export type ProductImageUploadProgress = {
   fileName: string;
@@ -307,7 +302,7 @@ export type AddProductResponse = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 9. Payment
+// 8. Payment
 
 export type StripeCheckoutSessionResponse = {
   sessionId: string;
@@ -327,145 +322,90 @@ export type StripeLineItem = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 10. Admin
+// 9. Admin
 
-export type AdminOrdersTableOrderData = {
-  createdAt: string;
+export type OrdersDataGridDataAdmin = {
   orderId: string;
-  orderTotal: number;
-  isPaid: boolean;
-  user: {
-    firstName: string | null;
-    lastName: string | null;
-  } | null;
-  shippingDetails: {
-    province: string;
-    city: string;
-  }[];
-};
-
-export type AdminAddNewUserResponse = {
-  userId: string;
-};
-
-export type AdminUsersTableUserData = {
-  userId: string;
-  email: string;
+  createdAt: string;
   firstName: string | null;
   lastName: string | null;
-  contactNumber: string | null;
+  contactNumber: string;
+  recipientFirstName: string;
+  recipientLastName: string;
+  recipientContactNumber: string;
+  province: string;
+  city: string;
+  orderStatus: OrderStatus;
+  orderTotal: number;
+};
+
+export type UpdateOrderAdminDb = {
+  orderId: string;
+  recipientFirstName?: string;
+  recipientLastName?: string;
+  recipientContactNumber?: string;
+  province?: string;
+  city?: string;
+  orderStatus?: OrderStatus;
+};
+
+export type AddNewUserAdminResponse = {
+  userId: string;
+};
+
+export type UsersDataGridDataAdmin = {
+  userId: string;
   createdAt: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  contactNumber: string | null;
   role: UserRole;
 };
 
-export type AdminCreateUserDb = {
+export type CreateUserAdminDb = {
   contactNumber?: string;
   firstName?: string;
   lastName?: string;
   role?: UserRole;
 };
 
-export type AdminUpdateUserDb = {
-  userId?: string;
-  contactNumber?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: {
-    old: UserRoleSelectOptions;
-    new: UserRoleSelectOptions;
+export type UpdateUserAdminDb = {
+  userId: string;
+  currentRole: UserRoleSelectOptions;
+  dataToUpdate: {
+    contactNumber?: string;
+    firstName?: string;
+    lastName?: string;
+    role?: UserRoleSelectOptions;
   };
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 11. Data grid
+// 10. Data grid
 
-export type DataGridFilterOperators =
-  | 'equals'
-  | 'contains'
-  | 'startsWith'
-  | 'endsWith'
-  | 'isEmpty'
-  | 'isNotEmpty'
-  | 'is'
-  | 'not'
-  | '='
-  | '!='
-  | '>'
-  | '>='
-  | '<'
-  | '<=';
+export type DataGridOptions = 'users' | 'orders';
 
-export type DataGridFilter<T> = {
-  column: T | null;
-  operator: DataGridFilterOperators | null;
-  value: string;
+export type QueryPageDataGrid = {
+  number: number;
+  rows: number;
 };
 
-export type DataGridSort<T> = {
-  by: T;
-  direction: GridSortDirection;
+export type QuerySortDataGrid = {
+  column: string;
+  direction: string;
 };
 
-export type DataGridQueryData<T, U> = {
-  page: {
-    number: number;
-    rows: number;
-  };
-  range: {
-    start: number;
-    end: number;
-  };
-  sort: DataGridSort<U>;
-  filter: DataGridFilter<T>;
-};
-
-export type AdminOrdersDataGridSortableColumns = 'date' | 'name' | 'ship_to' | 'order_total' | 'status';
-
-export type AdminUsersDataGridFilterableColumns =
-  | 'userId'
-  | 'createdAt'
-  | 'firstName'
-  | 'lastName'
-  | 'email'
-  | 'contactNumber'
-  | 'role';
-
-export type AdminUsersDataGridSortableColumns =
-  | 'createdAt'
-  | 'firstName'
-  | 'lastName'
-  | 'email'
-  | 'contactNumber'
-  | 'role';
-
-export type AdminUsersDataGridQueryFilterBuilder = PostgrestFilterBuilder<
-  Database['public'],
-  Database['public']['Tables']['users'],
-  any[],
-  'users',
-  any[]
->;
-
-export type AdminUsersDataGridQueryFilterBuilderResponse = PostgrestFilterBuilder<
-  Database['public'],
-  Database['public']['Tables']['users'],
-  AdminUsersTableUserData[],
-  'users',
-  any[]
->;
-
-export type DataGridInvalidFlags = {
-  filterColumn?: boolean;
-  filterOperator?: boolean;
-  filterValue?: boolean;
-  sortColumn?: boolean;
-  sortDirection?: boolean;
+export type QueryFilterDataGrid = {
+  column: string | null;
+  operator: string | null;
+  value: string | null;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 12. Misc
+// 11. Misc
 export type CustomResponse<T = unknown> = { success: boolean; message: string; data?: T };
 
 export type QueryFilterBuilder = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;

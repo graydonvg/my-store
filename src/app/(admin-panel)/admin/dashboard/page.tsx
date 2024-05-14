@@ -2,21 +2,13 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import ChartAdminPanel from '@/components/adminPanel/ChartAdminPanel';
 import TotalSales from '@/components/adminPanel/TotalSales';
-import OrdersTable from '@/components/adminPanel/OrdersTable';
-import { BORDER_RADIUS } from '@/data';
-import CardTitle from '@/components/adminPanel/CardTitle';
+import RecentOrdersTable from '@/components/adminPanel/RecentOrdersTable';
+import { BORDER_RADIUS, DATA_GRID_DEFAULTS } from '@/data';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
-import { AdminOrdersDataGridSortableColumns } from '@/types';
 
-type Props = {
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export default async function AdminDashboard({ searchParams }: Props) {
-  const sortBy = (searchParams['sort_by'] as AdminOrdersDataGridSortableColumns) ?? 'date';
-  const sortDirection = (searchParams['sort'] as 'asc' | 'desc') ?? 'desc';
-
-  const { orders } = await getOrdersForAdmin(0, 4, sortBy, sortDirection);
+export default async function DashboardAdminPanel() {
+  const { page, sort, filter } = DATA_GRID_DEFAULTS;
+  const { data } = await getOrdersForAdmin(page, sort, filter);
 
   return (
     <Grid
@@ -108,8 +100,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
             overflow: 'hidden',
             padding: 2,
           }}>
-          <CardTitle>Recent Orders</CardTitle>
-          <OrdersTable orders={orders} />
+          <RecentOrdersTable orders={data.orders} />
         </Paper>
       </Grid>
     </Grid>

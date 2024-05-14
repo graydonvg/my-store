@@ -1,8 +1,8 @@
-import { ShippingDetails } from '@/types';
+import { type OrderShippingDetails } from '@/types';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
-  shippingDetails: ShippingDetails;
+  shippingDetails: OrderShippingDetails;
 };
 
 export default function OrderShippingDetails({ shippingDetails }: Props) {

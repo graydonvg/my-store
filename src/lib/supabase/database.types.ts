@@ -208,8 +208,8 @@ export type Database = {
           createdAt: string;
           deliveryFee: number;
           discountTotal: number;
-          isPaid: boolean;
           orderId: string;
+          orderStatus: Database['public']['Enums']['orderStatus'];
           orderTotal: number;
           userId: string;
         };
@@ -218,8 +218,8 @@ export type Database = {
           createdAt?: string;
           deliveryFee: number;
           discountTotal: number;
-          isPaid?: boolean;
           orderId?: string;
+          orderStatus?: Database['public']['Enums']['orderStatus'];
           orderTotal: number;
           userId?: string;
         };
@@ -228,8 +228,8 @@ export type Database = {
           createdAt?: string;
           deliveryFee?: number;
           discountTotal?: number;
-          isPaid?: boolean;
           orderId?: string;
+          orderStatus?: Database['public']['Enums']['orderStatus'];
           orderTotal?: number;
           userId?: string;
         };
@@ -388,7 +388,7 @@ export type Database = {
           {
             foreignKeyName: 'shippingDetails_orderId_fkey';
             columns: ['orderId'];
-            isOneToOne: false;
+            isOneToOne: true;
             referencedRelation: 'orders';
             referencedColumns: ['orderId'];
           },
@@ -572,8 +572,20 @@ export type Database = {
         | 'wishlist.select'
         | 'wishlist.update'
         | 'wishlist.delete'
-        | 'userRoles.select';
+        | 'userRoles.insert'
+        | 'userRoles.select'
+        | 'userRoles.update'
+        | 'userRoles.delete';
       appRole: 'owner' | 'admin' | 'manager';
+      orderStatus:
+        | 'awaiting payment'
+        | 'paid'
+        | 'processing'
+        | 'shipped'
+        | 'delivered'
+        | 'cancelled'
+        | 'returned'
+        | 'refunded';
     };
     CompositeTypes: {
       [_ in never]: never;

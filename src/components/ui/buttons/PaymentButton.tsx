@@ -19,7 +19,6 @@ export default function PaymentButton({ buttonVariant }: Props) {
   async function addNewOrder() {
     const { success, message, data } = await addOrder({
       orderDetails: {
-        isPaid: false,
         cartTotal: checkoutData.paymentTotals.cartTotal,
         deliveryFee: checkoutData.paymentTotals.deliveryFee,
         discountTotal: checkoutData.paymentTotals.discountTotal,

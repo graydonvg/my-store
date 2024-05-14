@@ -15,12 +15,12 @@ import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
 import SignOutButton from '../ui/buttons/SignOutButton';
 
 type Props = {
-  open: boolean;
-  toggleDrawer: () => void;
   drawerWidth: number;
+  isDrawerOpen: boolean;
+  toggleDrawer: () => void;
 };
 
-export default function NavDrawerAdminPanel({ open, toggleDrawer, drawerWidth }: Props) {
+export default function NavDrawerAdminPanel({ isDrawerOpen, toggleDrawer, drawerWidth }: Props) {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
@@ -28,14 +28,14 @@ export default function NavDrawerAdminPanel({ open, toggleDrawer, drawerWidth }:
     <Drawer
       variant="permanent"
       anchor="left"
-      open={open}
+      open={isDrawerOpen}
       PaperProps={{
         sx: {
           backgroundColor: darkMode ? theme.palette.custom.navbar.upper.background : theme.palette.common.white,
           position: 'fixed',
           whiteSpace: 'nowrap',
           width: drawerWidth,
-          ...(!open && {
+          ...(!isDrawerOpen && {
             overflowX: 'hidden',
             width: { xs: theme.spacing(7), sm: theme.spacing(9) },
           }),

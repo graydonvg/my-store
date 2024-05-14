@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { AdminAddNewUserResponse, CustomResponse, UserAuthData, AdminCreateUserDb } from '@/types';
+import { AddNewUserAdminResponse, CustomResponse, UserAuthData, CreateUserAdminDb } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
-import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
-import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
 import { withAxiom, AxiomRequest } from 'next-axiom';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
-async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse<AdminAddNewUserResponse>>> {
+async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse<AddNewUserAdminResponse>>> {
   try {
     const supabase = await createSupabaseServerClient();
 
@@ -17,15 +16,17 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     } = await supabase.auth.getUser();
 
     const userRole = await getUserRoleFromSession(supabase);
-    const userData: UserAuthData & AdminCreateUserDb = await request.json();
+    const userData: UserAuthData & CreateUserAdminDb = await request.json();
     const supabaseService = createSupabaseService();
 
     const { email, password, ...userDataToUpdate } = userData;
-    const { role, ...restOfDataToUpdate } = userDataToUpdate;
+    const { role: roleToAssign, ...restOfDataToUpdate } = userDataToUpdate;
+
     const emptyFieldsArray = getEmptyFormFields(restOfDataToUpdate);
     const numberOfFormFields = getNumberOfFormFields(restOfDataToUpdate);
     const hasDataToUpdate = emptyFieldsArray.length !== numberOfFormFields;
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+
     const failedMessage = 'Failed to create user';
     const successMessage = 'User created successfully.';
 
@@ -70,11 +71,11 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     }
 
     if (
-      (role === 'owner' && !isOwner) ||
-      (role === 'manager' && !isOwner) ||
-      (role === 'admin' && !(isOwner || isManager))
+      (roleToAssign === 'owner' && !isOwner) ||
+      (roleToAssign === 'manager' && !isOwner) ||
+      (roleToAssign === 'admin' && !(isOwner || isManager))
     ) {
-      const message = `${failedMessage}. Not authorized to assign role '${role}'.`;
+      const message = `${failedMessage}. Not authorized to assign role '${roleToAssign}'.`;
 
       request.log.error(message);
 
@@ -119,11 +120,11 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
         });
       }
 
-      if (role) {
+      if (roleToAssign) {
         // Not using supabaseService since not everyone can assign roles
         const { error: insertUserRoleError } = await supabase
           .from('userRoles')
-          .insert({ userId: createUserData.user.id, role });
+          .insert({ userId: createUserData.user.id, role: roleToAssign });
 
         if (insertUserRoleError) {
           const message = 'User created successfully, but failed to assign user role.';

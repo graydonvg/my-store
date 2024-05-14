@@ -1,98 +1,59 @@
 'use client';
 
 import { Box, tablePaginationClasses, useMediaQuery, useTheme } from '@mui/material';
-import { DataGridQueryData } from '@/types';
+import { QueryPageDataGrid, QueryFilterDataGrid, QuerySortDataGrid } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   DataGrid,
   DataGridProps,
   GridFilterModel,
   GridPaginationModel,
+  GridSortDirection,
   GridSortModel,
   gridClasses,
 } from '@mui/x-data-grid';
 import { ReactNode, useEffect, useMemo } from 'react';
 import CustomNoRowsOverlay from '../dataGrid/CustomNoRowsOverlay';
 import { toast } from 'react-toastify';
-import calculateTablePagination from '@/utils/calculateTablePagination';
-import { validatePage } from '@/utils/validation';
+import { calculateTablePagination } from '@/utils/calculate';
 
 type Props = {
   data: {}[] | null;
+  totalRowCount: number;
   querySuccess: boolean;
   queryMessage: string;
-  totalRowCount: number;
-  customToolbar: ReactNode;
-} & DataGridQueryData<string, string> &
-  DataGridProps;
+  page: QueryPageDataGrid;
+  sort: QuerySortDataGrid;
+  filter: QueryFilterDataGrid;
+  toolbar?: ReactNode;
+} & DataGridProps;
 
 export default function CustomDataGrid({
   data,
+  totalRowCount,
   querySuccess,
   queryMessage,
   page,
-  range,
   sort,
   filter,
-  totalRowCount,
-  customToolbar,
-  ...datagridProps
+  toolbar,
+  ...dataGridProps
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
-  const pageValidation = validatePage(page);
-  const validatedPageNumber = pageValidation.data?.pageNumber!;
-  const dataGridCurrentPageNumber = validatedPageNumber - 1;
-  const validatedRowsPerPage = pageValidation.data?.rowsPerPage!;
   const searchParams = useSearchParams();
   const newSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
-  const rowsPerPageOptionsSet = new Set([validatedRowsPerPage, 5, 10, 25, 50, 100]);
+  const dataGridCurrentPageNumber = page.number - 1;
+  const rowsPerPageOptionsSet = new Set([page.rows, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
-  const { isEndOfData, lastPageNumber } = calculateTablePagination(data, range.start, page.rows, totalRowCount);
+  const { isEndOfData, lastPageNumber } = calculateTablePagination(data, page, totalRowCount);
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
-    // handle query builder validation error messages
-    if (querySuccess === false) {
+    if (!querySuccess) {
       toast.error(queryMessage);
     }
   }, [querySuccess, queryMessage]);
-
-  useEffect(() => {
-    // handle page number out of bounds
-    if (validatedPageNumber > lastPageNumber) {
-      toast.error('Page number out of bounds. Redirecting to first page.');
-
-      newSearchParams.set('page', '1');
-
-      router.push(`?${newSearchParams}`);
-    }
-  }, [validatedPageNumber, lastPageNumber, newSearchParams, router]);
-
-  useEffect(() => {
-    // handle page number and rows per page validation errors
-    if (pageValidation.success === false) {
-      toast.error(pageValidation.message);
-
-      console.log(pageValidation.errorTarget);
-
-      if (pageValidation.errorTarget === 'pageNumber') {
-        newSearchParams.set('page', `${validatedPageNumber}`);
-      } else {
-        newSearchParams.set('per_page', `${validatedRowsPerPage}`);
-      }
-
-      router.push(`?${newSearchParams}`);
-    }
-  }, [
-    pageValidation.success,
-    pageValidation.message,
-    validatedPageNumber,
-    validatedRowsPerPage,
-    pageValidation.errorTarget,
-    newSearchParams,
-    router,
-  ]);
 
   function changePage(newPage: number) {
     newSearchParams.set('page', `${newPage + 1}`);
@@ -118,19 +79,19 @@ export default function CustomDataGrid({
   function handlePaginationModelChange(model: GridPaginationModel) {
     changePage(model.page);
 
-    if (model.pageSize !== validatedRowsPerPage) {
+    if (model.pageSize !== page.rows) {
       changeRowsPerPage(model.pageSize);
     }
   }
 
-  function handleGoToLastPage() {
+  function goToLastPage() {
     newSearchParams.set('page', `${lastPageNumber}`);
 
     router.push(`?${newSearchParams}`);
   }
 
-  function handleSort(event: GridSortModel) {
-    const sortData = event[0];
+  function handleSort(sortModel: GridSortModel) {
+    const sortData = sortModel[0];
 
     if (sortData) {
       const sortField = sortData.field;
@@ -146,8 +107,8 @@ export default function CustomDataGrid({
     router.push(`?${newSearchParams}`, { scroll: false });
   }
 
-  function handleFilter(event: GridFilterModel) {
-    const filterData = event.items.length > 0 ? event.items[0] : null;
+  function handleFilter(filterModel: GridFilterModel) {
+    const filterData = filterModel.items.length > 0 ? filterModel.items[0] : null;
 
     const previousFilterValue = filter.value;
 
@@ -180,10 +141,6 @@ export default function CustomDataGrid({
     router.push(`?${newSearchParams}`, { scroll: false });
   }
 
-  function handleUpdateError(event: unknown) {
-    console.log(event);
-  }
-
   return (
     <Box
       sx={{
@@ -191,38 +148,38 @@ export default function CustomDataGrid({
         // subtract navbar height
         height: 'calc(100dvh - 64px)',
         width: 1,
+        overflow: 'hidden !important',
       }}>
       <DataGrid
         rows={data ?? []}
-        getRowId={(row) => row.userId}
         rowCount={totalRowCount}
         pageSizeOptions={rowsPerPageOptionsArraySorted}
         disableRowSelectionOnClick
         pagination
         paginationMode="server"
-        paginationModel={{ page: dataGridCurrentPageNumber, pageSize: validatedRowsPerPage }}
+        paginationModel={{ page: dataGridCurrentPageNumber, pageSize: page.rows }}
         onPaginationModelChange={handlePaginationModelChange}
-        onProcessRowUpdateError={handleUpdateError}
         filterMode="server"
         onFilterModelChange={handleFilter}
         sortingMode="server"
         sortingOrder={['desc', 'asc']}
-        sortModel={[{ field: sort.by, sort: sort.direction }]}
+        sortModel={[{ field: sort.column, sort: sort.direction as GridSortDirection }]}
         onSortModelChange={handleSort}
         showCellVerticalBorder
         showColumnVerticalBorder
         disableColumnMenu
+        scrollbarSize={0}
         initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
         slots={{
-          toolbar: () => customToolbar,
+          toolbar: () => toolbar,
           noResultsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
           noRowsOverlay: () => <CustomNoRowsOverlay text="No results found." />,
         }}
         slotProps={{
           panel: {
             sx: {
-              [`& .${gridClasses.paper}`]: { minWidth: 'unset', maxWidth: 'calc(100vw - 4px)', overflow: 'hidden' },
-              [`& .${gridClasses.panelWrapper}`]: { maxWidth: 'calc(100vw - 4px)', overflow: 'hidden' },
+              [`& .${gridClasses.paper}`]: { minWidth: 'unset', maxWidth: 'calc(100vw - 4px)' },
+              [`& .${gridClasses.panelWrapper}`]: { maxWidth: 'calc(100vw - 4px)' },
             },
           },
 
@@ -230,7 +187,7 @@ export default function CustomDataGrid({
           filterPanel: {
             filterFormProps: {
               columnInputProps: { sx: { maxWidth: '150px' } },
-              operatorInputProps: { sx: { maxWidth: '120px' } },
+              operatorInputProps: { sx: { maxWidth: '130px', width: 1 } },
               valueInputProps: {
                 sx: { maxWidth: '190px' },
               },
@@ -248,21 +205,26 @@ export default function CustomDataGrid({
                 },
                 lastButton: {
                   disabled: isEndOfData,
-                  onClick: handleGoToLastPage,
+                  onClick: goToLastPage,
                 },
               },
             },
             sx: {
-              width: { xs: 1, sm: 'auto' },
+              [`& .${tablePaginationClasses.toolbar}`]: { paddingX: { xs: 0.5, sm: 3 } },
               [`& .${tablePaginationClasses.selectLabel}`]: { display: 'block' },
-              [`& .${tablePaginationClasses.input}`]: { display: 'inline-flex', marginRight: { xs: '20px', sm: 4 } },
+              [`& .${tablePaginationClasses.input}`]: {
+                display: 'inline-flex',
+                marginRight: { xs: '20px', sm: 4 },
+              },
               [`& .${tablePaginationClasses.actions}`]: { marginLeft: { xs: '12px', sm: '20px' } },
             },
           },
         }}
         sx={{
-          '--unstable_DataGrid-radius': 0,
           border: 'none',
+          '--unstable_DataGrid-radius': 0,
+
+          [`& .${gridClasses['scrollbar--vertical']}`]: { display: 'block' },
 
           [`& .${gridClasses.toolbarContainer}`]: {
             paddingRight: 2,
@@ -293,13 +255,10 @@ export default function CustomDataGrid({
 
           [`& .${gridClasses.footerContainer}`]: {
             backgroundColor: theme.palette.custom.dataGrid.toolbar,
-
-            [`& .${gridClasses.selectedRowCount}`]: {
-              display: { xs: 'none', sm: 'flex' },
-            },
+            justifyContent: { xs: 'center', sm: 'space-between' },
           },
         }}
-        {...datagridProps}
+        {...dataGridProps}
       />
     </Box>
   );

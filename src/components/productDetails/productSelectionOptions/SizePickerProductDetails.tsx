@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../ui/buttons/ToggleButtons';
 import { MouseEvent } from 'react';
 import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
-import { sortItemSizesArrayForToggleButtons } from '@/utils/sortItemSizesArray';
+import { sortItemSizesArrayForToggleButtons } from '@/utils/sort';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setSize } from '@/lib/redux/slices/productSelectionDetailsSlice';
 

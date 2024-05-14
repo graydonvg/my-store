@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { Container } from '@mui/material';
-import Navbar from '@/components/navbars/Navbar';
+import NavbarStorefront from '@/components/navbars/navbarStorefront/NavbarStorefront';
 
-export default async function Layout({ children }: { children: ReactNode }) {
+export default function LayoutStorefront({ children }: { children: ReactNode }) {
   return (
     <>
-      <Navbar />
+      <NavbarStorefront />
       <Container
         component="main"
         sx={{

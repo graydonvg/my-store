@@ -1,8 +1,8 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { AdminOrdersTableOrderData, OrderData, AdminOrdersDataGridSortableColumns } from '@/types';
-import { getOrdersSortOptions } from '@/utils/getTableSortOptions';
+import { QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
+import buildQuery from '@/utils/queryBuilder/buildQuery';
 
-export async function getOrdersForUser(): Promise<OrderData[] | null> {
+export async function getOrdersForUser() {
   const supabase = await createSupabaseServerClient();
 
   const {
@@ -12,7 +12,7 @@ export async function getOrdersForUser(): Promise<OrderData[] | null> {
   const { data: orders } = await supabase
     .from('orders')
     .select(
-      'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, isPaid, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
+      'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, orderStatus, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl, index))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode)'
     )
     .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: false });
@@ -20,38 +20,38 @@ export async function getOrdersForUser(): Promise<OrderData[] | null> {
   return orders;
 }
 
-type OrdersForAdminReturnType = {
-  orders: AdminOrdersTableOrderData[] | null;
-  totalRowCount: number;
-};
-
-export async function getOrdersForAdmin(
-  start: number,
-  end: number,
-  sortBy: AdminOrdersDataGridSortableColumns,
-  sortDirection: 'asc' | 'desc'
-): Promise<OrdersForAdminReturnType> {
+export async function getOrdersForAdmin(page: QueryPageDataGrid, sort: QuerySortDataGrid, filter: QueryFilterDataGrid) {
   const supabase = await createSupabaseServerClient();
-  const { sortOrdersBy, sortOptions } = getOrdersSortOptions(sortBy, sortDirection);
+
+  // const {
+  //   data: { user: authUser },
+  // } = await supabase.auth.getUser();
 
   let ordersQuery = supabase
     .from('orders')
     .select(
-      'createdAt, orderId, orderTotal, isPaid, user: users(firstName, lastName), shippingDetails(province, city)',
+      'createdAt, orderId, orderTotal, orderStatus, ...users(firstName, lastName, contactNumber), ...shippingDetails(province, city, recipientFirstName, recipientLastName, recipientContactNumber)',
       {
         count: 'exact',
       }
     );
+  // .neq('userId', authUser?.id);
 
-  if (sortOrdersBy === 'lastName') {
-    ordersQuery = ordersQuery.order(sortOrdersBy, sortOptions).order('firstName', sortOptions);
-  } else {
-    ordersQuery = ordersQuery.order(sortOrdersBy, sortOptions);
+  const builtOrdersQuery = buildQuery(ordersQuery, page, sort, filter);
+
+  const { data: orders, count, error } = await builtOrdersQuery;
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: { orders: null, totalRowCount: count ?? 0 },
+    };
   }
 
-  const { data: orders, count } = await ordersQuery.range(start, end);
-
-  const totalRowCount = count ?? 0;
-
-  return { orders, totalRowCount };
+  return {
+    success: true,
+    message: 'Success!',
+    data: { orders, totalRowCount: count ?? 0 },
+  };
 }

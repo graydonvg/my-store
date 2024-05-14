@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js';
-import { calculateDiscountedCartItemPrice } from './calculateDiscountedPrice';
+import { calculateDiscountedCartItemPrice } from './calculate';
 import { callStripeSession } from '@/services/stripe/call-stripe-session';
 import { CartItem } from '@/types';
 

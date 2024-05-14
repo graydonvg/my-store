@@ -1,6 +1,6 @@
-import { AdminUpdateUserDb, CustomResponse, UpdateAddressDb, UpdateUserDb, userPasswordType } from '@/types';
+import { CustomResponse, UpdateAddressDb, UpdateUserDb, userPasswordType } from '@/types';
 
-export async function updateAddress(addressData: UpdateAddressDb): Promise<CustomResponse> {
+export async function updateUserAddress(addressData: UpdateAddressDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/users/address/update', {
       method: 'POST',
@@ -18,14 +18,14 @@ export async function updateAddress(addressData: UpdateAddressDb): Promise<Custo
   }
 }
 
-export async function updateUserPersonalInformation(personalData: UpdateUserDb): Promise<CustomResponse> {
+export async function updateUserPersonalInformation(userData: UpdateUserDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/users/personal/update', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(personalData),
+      body: JSON.stringify(userData),
     });
 
     const data = await response.json();
@@ -44,24 +44,6 @@ export async function updateUserPassword(passwordData: userPasswordType): Promis
         'content-type': 'application/json',
       },
       body: JSON.stringify(passwordData),
-    });
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    throw new Error(`@services/users/update. ${error}`);
-  }
-}
-
-export async function adminUpdateUser(personalData: AdminUpdateUserDb): Promise<CustomResponse> {
-  try {
-    const response = await fetch('/api/secure/admin/users/update', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(personalData),
     });
 
     const data = await response.json();

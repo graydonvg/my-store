@@ -146,10 +146,20 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               label={!isDeletingCurrentImage ? 'delete' : ''}
               onClick={deleteImage}
               isLoading={isDeletingCurrentImage}
+              loaderColor={theme.palette.text.primary}
               disabled={isDeletingCurrentImage}
-              labelColor={theme.palette.text.secondary}
-              labelColorHoverActive={theme.palette.text.primary}
               startIcon={<DeleteForever />}
+              sxStyles={{
+                color: theme.palette.text.secondary,
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                  backgroundColor: 'transparent',
+                },
+                '&:active': {
+                  color: theme.palette.text.primary,
+                  backgroundColor: 'transparent',
+                },
+              }}
             />
           </Box>
         </Grid>

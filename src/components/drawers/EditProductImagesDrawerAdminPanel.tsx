@@ -3,7 +3,7 @@ import { DeleteForever, Edit } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
+import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { Box, Divider, useTheme } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
@@ -46,7 +46,7 @@ export default function EditProductImagesDrawerAdminPanel({ isSubmitting }: Prop
   return (
     <>
       <OutlinedButton
-        isDisabled={uploadInProgress || isSubmitting || imageData.length === 0}
+        disabled={uploadInProgress || isSubmitting || imageData.length === 0}
         onClick={openEditImageDrawer}
         fullWidth
         label={'edit'}

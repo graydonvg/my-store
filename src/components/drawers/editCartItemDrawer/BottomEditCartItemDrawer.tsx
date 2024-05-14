@@ -41,14 +41,14 @@ export default function BottomEditCartItemDrawer({
         <TextButton
           onClick={moveToWishlist}
           label="move to wishlist"
-          labelColor={theme.palette.text.primary}
           startIcon={<FavoriteBorder />}
+          sxStyles={{ color: theme.palette.text.primary, paddingX: 0 }}
         />
         <TextButton
           onClick={removeCartItem}
           label={'remove'}
-          labelColor={theme.palette.text.primary}
           startIcon={<Delete />}
+          sxStyles={{ color: theme.palette.text.primary, paddingX: 0 }}
         />
       </Box>
     </Box>

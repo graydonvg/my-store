@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Product } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
+import { calculateDiscountedProductPrice } from '@/utils/calculate';
 import { BORDER_RADIUS } from '@/data';
 import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
 import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';

@@ -49,7 +49,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
                 borderColor: `${theme.palette.warning.light} !important`,
                 backgroundColor: alpha(theme.palette.warning.light, 0.1),
                 '&:hover': {
-                  backgroundColor: theme.palette.primary.light,
+                  backgroundColor: alpha(theme.palette.warning.light, 0.1),
                 },
                 '@media (hover: hover)': {
                   '&:hover': {

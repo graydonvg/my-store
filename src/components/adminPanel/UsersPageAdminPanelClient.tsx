@@ -1,18 +1,17 @@
 'use client';
 
 import {
-  AdminUsersTableUserData,
-  DataGridQueryData,
-  AdminUsersDataGridFilterableColumns,
-  AdminUsersDataGridSortableColumns,
-  UserRole,
-  AdminUpdateUserDb,
+  UsersDataGridDataAdmin,
+  UpdateUserAdminDb,
+  QueryPageDataGrid,
+  QueryFilterDataGrid,
+  QuerySortDataGrid,
 } from '@/types';
 import {
   GridColDef,
   GridRowSelectionModel,
   GridValidRowModel,
-  getGridNumericOperators,
+  getGridDateOperators,
   getGridSingleSelectOperators,
   getGridStringOperators,
 } from '@mui/x-data-grid';
@@ -22,15 +21,17 @@ import CustomDataGrid from '../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
 import UsersDataGridToolbarAdminPanel from '../dataGrid/UsersDataGridToolbarAdminPanel';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { deleteAuthUser } from '@/services/users/delete';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { adminUpdateUser } from '@/services/users/update';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import dayjs from 'dayjs';
+import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
+import { getUserRoleBoolean } from '@/utils/getUserRole';
+import { updateUserAdmin } from '@/services/admin/update';
+import { deleteUserAdmin } from '@/services/admin/delete';
 
-function getColumns(userRole: UserRole, isUpdating: boolean) {
-  const columns: GridColDef<AdminUsersTableUserData>[] = [
+function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
+  const columns: GridColDef<UsersDataGridDataAdmin>[] = [
     {
       field: 'userId',
       headerName: 'ID',
@@ -40,13 +41,11 @@ function getColumns(userRole: UserRole, isUpdating: boolean) {
     },
     {
       field: 'createdAt',
-      headerName: 'Joined',
+      headerName: 'Created at',
       width: 160,
       renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-      filterOperators: getGridNumericOperators()
-        .filter(
-          (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-        )
+      filterOperators: getGridDateOperators()
+        .filter((operator) => operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty')
         .map((operator) => ({
           ...operator,
           InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
@@ -80,31 +79,37 @@ function getColumns(userRole: UserRole, isUpdating: boolean) {
       headerName: 'Contact number',
       width: 165,
       editable: !isUpdating ? true : false,
-      sortable: true,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
-      pinnable: true,
       field: 'role',
       headerName: 'Role',
       width: 110,
-      editable: userRole === 'admin' ? false : !isUpdating ? true : false,
-      sortable: true,
+      editable: userRole.isAdmin ? false : !isUpdating ? true : false,
       type: 'singleSelect',
-      valueOptions: USER_ROLE_OPTIONS.filter((role) => {
-        if (userRole === 'admin') {
-          return role === 'none';
-        } else if (userRole === 'manager') {
-          return role === 'none' || role === 'admin';
-        } else {
-          return role;
+      valueOptions: (params) => {
+        const filteredOptions = USER_ROLE_OPTIONS.filter((role) => {
+          if (userRole.isAdmin) {
+            return role === 'none';
+          } else if (userRole.isManager) {
+            return role === 'none' || role === 'admin';
+          } else {
+            return role;
+          }
+        });
+
+        // Keep the users current role in the list of options to prevent 'out-of-range' value after filtering for select component
+        if (params.row?.role && !filteredOptions.includes(params.row?.role)) {
+          filteredOptions.push(params.row?.role);
         }
-      }),
+
+        return filteredOptions;
+      },
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
       // Changing null to 'none' for role.
       // Users without a role, initially have role: null.
-      // Datagrid set to display null as 'none'.
-      // Datagrid select menu value cannot be null so using 'none'.
+      // Data grid set to display null as 'none'.
+      // Data grid select menu value cannot be null so using 'none'.
       // Value received from select menu is 'none'.
       // If role === null, adminUpdateUser will return no data received.
       valueGetter: (role) => (role === null ? 'none' : role),
@@ -114,74 +119,80 @@ function getColumns(userRole: UserRole, isUpdating: boolean) {
 }
 
 type Props = {
-  users: AdminUsersTableUserData[] | null;
+  users: UsersDataGridDataAdmin[] | null;
+  totalRowCount: number;
   querySuccess: boolean;
   queryMessage: string;
-  totalRowCount: number;
-} & DataGridQueryData<AdminUsersDataGridFilterableColumns, AdminUsersDataGridSortableColumns>;
+  page: QueryPageDataGrid;
+  sort: QuerySortDataGrid;
+  filter: QueryFilterDataGrid;
+};
 
 export default function UsersPageAdminPanelClient({
   users,
+  totalRowCount,
   querySuccess,
   queryMessage,
   page,
-  range,
   sort,
   filter,
-  totalRowCount,
 }: Props) {
   const router = useRouter();
   const userData = useAppSelector((state) => state.user.data);
+  const userRole = getUserRoleBoolean(userData?.role!);
   const [selectedUserIds, setSelectedUserIds] = useState<GridRowSelectionModel>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const columns = getColumns(userData?.role!, isUpdating);
+  const columns = getColumns(userRole!, isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
-  function compareObjectValues(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
-    const changedValues: GridValidRowModel = {};
-
-    // Iterate over all properties in obj1
-    for (let key in newObj) {
-      // Check if the property exists in obj2 and has a different value
-      if (newObj[key] !== oldObj[key]) {
-        if (newObj[key] === '') {
-          // Names and contact number not required.
-          // Set empty strings to null to prevent empty string in db
-          changedValues[key] = null;
-        } else {
-          changedValues[key] = newObj[key];
-        }
-      }
-    }
-
-    return changedValues;
-  }
-
-  async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel): Promise<GridValidRowModel> {
+  async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
     // Changing null to 'none' for role.
     // Users without a role, initially have role: null.
-    // Datagrid set to display null as 'none'.
-    // Datagrid select menu value cannot be null so using 'none'.
+    // Data grid set to display null as 'none'.
+    // Data grid select menu value cannot be null so using 'none'.
     // Value received from select menu is 'none'.
     // If role === null, adminUpdateUser will return no data received.
     const modifiedOldRow = oldRow.role === null ? { ...oldRow, role: 'none' } : oldRow;
     const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
-    const changedValues = compareObjectValues(modifiedNewRow, modifiedOldRow) as AdminUpdateUserDb;
-    const numberOfFormFields = getNumberOfFormFields(changedValues);
 
-    if (numberOfFormFields === 0) {
+    const dataToUpdate = getChangedDataGridValues(modifiedNewRow, modifiedOldRow);
+    const numberOfFieldsToUpdate = getNumberOfFormFields(dataToUpdate);
+
+    if (numberOfFieldsToUpdate === 0) {
       return oldRow;
     }
 
-    const modifiedChangedValues = changedValues.role
-      ? { ...changedValues, role: { old: modifiedOldRow.role, new: modifiedNewRow.role } }
-      : changedValues;
+    if (
+      (modifiedOldRow.role === 'owner' && !userRole.isOwner) ||
+      (modifiedOldRow.role === 'manager' && !userRole.isOwner) ||
+      (modifiedOldRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
+    ) {
+      toast.error(`Not authorized to update ${modifiedOldRow.role}`);
+
+      return oldRow;
+    }
+
+    if (
+      (modifiedNewRow.role === 'owner' && !userRole.isOwner) ||
+      (modifiedNewRow.role === 'manager' && !userRole.isOwner) ||
+      (modifiedNewRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
+    ) {
+      toast.error(`Not authorized to assign role ${modifiedNewRow.role}`);
+
+      return oldRow;
+    }
+
+    const modifiedChangedValues: UpdateUserAdminDb = {
+      userId: oldRow.userId,
+      currentRole: modifiedOldRow.role,
+      dataToUpdate,
+    };
 
     setIsUpdating(true);
-    const toastId = toast.loading('Updating user.');
+    const toastId = toast.loading('Updating user...');
 
-    const { success, message } = await adminUpdateUser({ userId: newRow.userId, ...modifiedChangedValues });
+    const { success, message } = await updateUserAdmin({ ...modifiedChangedValues });
 
     if (success) {
       toast.update(toastId, {
@@ -193,6 +204,7 @@ export default function UsersPageAdminPanelClient({
         closeOnClick: true,
         transition: Flip,
       });
+
       setIsUpdating(false);
       router.refresh();
       return newRow;
@@ -206,9 +218,15 @@ export default function UsersPageAdminPanelClient({
         closeOnClick: true,
         transition: Flip,
       });
+
       setIsUpdating(false);
       return oldRow;
     }
+  }
+
+  function handleRowUpdateError(_error: unknown) {
+    // Axiom error log
+    toast.error('Failed to process update. An unexpected data grid error occured.');
   }
 
   function handleRowSelection(rowSelectionModel: GridRowSelectionModel) {
@@ -218,7 +236,7 @@ export default function UsersPageAdminPanelClient({
   async function handleDeleteUsers() {
     setIsDeleting(true);
 
-    const { success, message } = await deleteAuthUser(selectedUserIds);
+    const { success, message } = await deleteUserAdmin(selectedUserIds);
 
     if (success) {
       toast.success(message);
@@ -234,18 +252,19 @@ export default function UsersPageAdminPanelClient({
   return (
     <CustomDataGrid
       data={users}
-      columns={memoizedColumns}
+      getRowId={(row) => row.userId}
+      totalRowCount={totalRowCount}
       querySuccess={querySuccess}
       queryMessage={queryMessage}
       page={page}
-      range={range}
       sort={sort}
       filter={filter}
-      totalRowCount={totalRowCount}
+      columns={memoizedColumns}
       processRowUpdate={handleRowUpdate}
+      onProcessRowUpdateError={handleRowUpdateError}
       onRowSelectionModelChange={handleRowSelection}
       checkboxSelection={userData?.role === 'admin' ? false : true}
-      customToolbar={
+      toolbar={
         <UsersDataGridToolbarAdminPanel
           isDeleting={isDeleting}
           onDeleteClick={handleDeleteUsers}

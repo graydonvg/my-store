@@ -9,7 +9,7 @@ export default async function OrdersPage() {
   return (
     <Box>
       <PageHeaderWithBorder label="Orders" />
-      <OrdersPageStorefront orders={orders} />
+      {orders ? <OrdersPageStorefront orders={orders} /> : null}
     </Box>
   );
 }

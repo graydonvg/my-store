@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 import { CustomResponse } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
-import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
 import { withAxiom, AxiomRequest } from 'next-axiom';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
 async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
   try {
@@ -18,8 +17,9 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     const usersToDelete: string[] = await request.json();
     const supabaseSerice = createSupabaseService();
 
-    const { isManager, isOwner } = getUserRoleBoolean(userRole);
     const usersToDeleteLength = usersToDelete.length;
+    const { isManager, isOwner } = getUserRoleBoolean(userRole);
+
     const failedMessage = `Failed to delete user${usersToDeleteLength > 1 ? 's' : ''}`;
     const successMessage = `User${usersToDeleteLength > 1 ? 's' : ''} deleted successfully.`;
 

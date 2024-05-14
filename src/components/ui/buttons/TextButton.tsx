@@ -1,44 +1,23 @@
-import { Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps, SxProps, Theme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
 
 type Props = ButtonProps & {
   label: ReactNode;
-  labelColor: string;
-  labelColorHoverActive?: string;
+  loaderColor?: string;
   startIcon?: ReactNode;
   isLoading?: boolean;
+  sxStyles?: SxProps<Theme> | undefined;
 };
 
-export default function TextButton({
-  label,
-  labelColor,
-  labelColorHoverActive,
-  startIcon,
-  isLoading,
-  ...props
-}: Props) {
+export default function TextButton({ label, loaderColor, startIcon, isLoading, sxStyles, ...props }: Props) {
   return (
     <Button
       variant="text"
-      sx={{
-        height: '48px',
-        paddingX: 0,
-        color: labelColor,
-        whiteSpace: 'nowrap',
-        '&:hover': {
-          color: labelColorHoverActive ?? labelColor,
-          backgroundColor: 'transparent',
-        },
-        '&:active': {
-          color: labelColorHoverActive ?? labelColor,
-          backgroundColor: 'transparent',
-        },
-      }}
       startIcon={
         isLoading ? (
           <PulseLoader
-            color={labelColorHoverActive ?? labelColor}
+            color={loaderColor}
             loading={isLoading}
             size={10}
           />
@@ -46,6 +25,17 @@ export default function TextButton({
           startIcon
         )
       }
+      sx={{
+        height: '48px',
+        whiteSpace: 'nowrap',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+        '&:active': {
+          backgroundColor: 'transparent',
+        },
+        ...sxStyles,
+      }}
       {...props}>
       {label}
     </Button>

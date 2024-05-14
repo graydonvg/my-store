@@ -20,26 +20,23 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const clearUserAndRedirectAfterSignout = pathname.includes('/admin');
+  const redirectAfterSignout =
+    pathname.includes('/admin') ||
+    pathname.includes('/account') ||
+    pathname.includes('/orders') ||
+    pathname.includes('/wishlist');
 
   async function signOutUser() {
     const { success, message } = await signOut();
 
     if (success === true) {
-      router.refresh();
-    } else {
-      toast.error(message);
-    }
-
-    buttonVariant === 'temporaryDrawer' && dispatch(setIsNavDrawerOpen(false));
-  }
-
-  async function signOutClearUserAndRedirect() {
-    const { success, message } = await signOut();
-
-    if (success === true) {
       dispatch(setUserData(null));
-      router.push('/');
+
+      if (redirectAfterSignout) {
+        router.push('/');
+      }
+      // NB!!! refresh must come after push!!!
+      router.refresh();
     } else {
       toast.error(message);
     }
@@ -64,14 +61,14 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
 
       {buttonVariant === 'temporaryDrawer' ? (
         <NavDrawerOption
-          onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}
+          onClick={signOutUser}
           label="Sign Out"
         />
       ) : null}
 
       {buttonVariant === 'permanentDrawer' ? (
         <ListItemButton
-          onClick={clearUserAndRedirectAfterSignout ? signOutClearUserAndRedirect : signOutUser}
+          onClick={signOutUser}
           sx={{ color: theme.palette.text.secondary }}>
           <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
             <Logout />

@@ -5,7 +5,7 @@ import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
-import { updateAddress } from '@/services/users/update';
+import { updateUserAddress } from '@/services/users/update';
 import AddressForm from '../AddressForm';
 
 export default function UpdateAddressForm() {
@@ -27,7 +27,7 @@ export default function UpdateAddressForm() {
 
     dispatch(setIsDialogLoading(true));
 
-    const { success, message } = await updateAddress({
+    const { success, message } = await updateUserAddress({
       ...addressFormData,
       postalCode: Number(addressFormData.postalCode),
     } as UpdateAddressDb);

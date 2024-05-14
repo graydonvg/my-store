@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Product } from '@/types';
-import { calculateDiscountedProductPrice } from '@/utils/calculateDiscountedPrice';
+import { calculateDiscountedProductPrice } from '@/utils/calculate';
 
 type Props = {
   product: Product;

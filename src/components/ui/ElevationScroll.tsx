@@ -1,3 +1,5 @@
+'use client';
+
 import { useScrollTrigger } from '@mui/material';
 import { JSXElementConstructor, ReactElement, cloneElement } from 'react';
 

@@ -3,7 +3,7 @@ import { clearProductFormData, setProductFormData } from '@/lib/redux/slices/pro
 import deleteProduct from '@/services/products/delete';
 import revalidateAllData from '@/services/revalidateAllData';
 import { Product } from '@/types';
-import { deleteAllProductImages } from '@/utils/deleteAllProductImages';
+import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

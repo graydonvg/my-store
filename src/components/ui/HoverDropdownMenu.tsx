@@ -1,6 +1,6 @@
 import { Box, Menu, menuClasses } from '@mui/material';
 import { ReactNode, useState } from 'react';
-import UpperNavbarIconButton from '../navbars/upperNavbar/UpperNavbarIconButton';
+import UpperNavbarIconButton from '../navbars/navbarStorefront/upperNavbar/UpperNavbarIconButton';
 
 type Props = {
   buttonBackgroundColor: string;

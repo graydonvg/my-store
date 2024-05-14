@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import { AdminUpdateUserDb, CustomResponse } from '@/types';
+import { UpdateUserAdminDb, CustomResponse } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import getUserRoleFromSession from '@/utils/getUserRoleFromSession';
-import getUserRoleBoolean from '@/utils/getUserRoleBoolean';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
 async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
   try {
@@ -14,22 +13,28 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const userRole = await getUserRoleFromSession(supabase);
-    const userData: AdminUpdateUserDb = await request.json();
+    const callerRole = await getUserRoleFromSession(supabase);
+    const userToUpdateData: UpdateUserAdminDb = await request.json();
 
-    const { userId, ...userDataToUpdate } = userData;
-    const { role, ...restOfDataToUpdate } = userDataToUpdate;
-    const numberOfFormFields = getNumberOfFormFields(restOfDataToUpdate);
-    const hasDataToUpdate = numberOfFormFields > 0;
-    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+    const { userId: userToUpdateId, currentRole: userToUpdateCurrentRole, dataToUpdate } = userToUpdateData;
+    const { role: newRole, ...personalDataToUpdate } = dataToUpdate;
+
+    const numberOfFormFields = getNumberOfFormFields(personalDataToUpdate);
+    const hasPersonalDataToUpdate = numberOfFormFields > 0;
+    const {
+      isAdmin: callerIsAdmin,
+      isManager: callerIsManager,
+      isOwner: callerIsOwner,
+    } = getUserRoleBoolean(callerRole);
+
     const failedMessage = 'Failed to update user';
     const successMessage = 'User updated successfully.';
 
     request.log.info('Attempt: Update user.', {
       callerId: authUser?.id,
-      callerRole: userRole,
+      callerRole,
       callerEmail: authUser?.email,
-      payload: userData,
+      payload: userToUpdateData,
     });
 
     if (!authUser) {
@@ -43,7 +48,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       });
     }
 
-    if (!isAdmin && !isManager && !isOwner) {
+    if (!callerIsAdmin && !callerIsManager && !callerIsOwner) {
       const message = `${failedMessage}. Not authorized.`;
 
       request.log.error(message);
@@ -54,7 +59,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       });
     }
 
-    if (!userData || !(hasDataToUpdate || role)) {
+    if (!userToUpdateData || !(hasPersonalDataToUpdate || newRole)) {
       const message = `${failedMessage}. No data received.`;
 
       request.log.error(message);
@@ -65,7 +70,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       });
     }
 
-    if (!userId) {
+    if (!userToUpdateId) {
       const message = `${failedMessage}. Please provide a valid user ID.`;
 
       request.log.error(message);
@@ -76,8 +81,26 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       });
     }
 
-    if (hasDataToUpdate) {
-      const { error: updateUserError } = await supabase.from('users').update(restOfDataToUpdate).eq('userId', userId);
+    if (
+      (userToUpdateCurrentRole === 'owner' && !callerIsOwner) ||
+      (userToUpdateCurrentRole === 'manager' && !callerIsOwner) ||
+      (userToUpdateCurrentRole === 'admin' && !(callerIsOwner || callerIsManager))
+    ) {
+      const message = `${failedMessage}. Not authorized to update '${userToUpdateCurrentRole}'.`;
+
+      request.log.error(message);
+
+      return NextResponse.json({
+        success: false,
+        message,
+      });
+    }
+
+    if (hasPersonalDataToUpdate) {
+      const { error: updateUserError } = await supabase
+        .from('users')
+        .update(personalDataToUpdate)
+        .eq('userId', userToUpdateId);
 
       if (updateUserError) {
         const message = `${failedMessage}. Database error.`;
@@ -91,24 +114,13 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       }
     }
 
-    if (role) {
-      if (!role.old || !role.new) {
-        const message = `${failedMessage}. Old and new roles required.`;
-
-        request.log.error(message);
-
-        return NextResponse.json({
-          success: false,
-          message,
-        });
-      }
-
+    if (newRole) {
       if (
-        (role.new === 'owner' && !isOwner) ||
-        (role.new === 'manager' && !isOwner) ||
-        (role.new === 'admin' && !(isOwner || isManager))
+        (newRole === 'owner' && !callerIsOwner) ||
+        (newRole === 'manager' && !callerIsOwner) ||
+        (newRole === 'admin' && !(callerIsOwner || callerIsManager))
       ) {
-        const message = `${failedMessage}. Not authorized to assign role '${role}'.`;
+        const message = `${failedMessage}. Not authorized to assign role '${newRole}'.`;
 
         request.log.error(message);
 
@@ -118,8 +130,8 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
         });
       }
 
-      if (role.new === 'none') {
-        const { error: deleteUserRoleError } = await supabase.from('userRoles').delete().eq('userId', userId);
+      if (newRole === 'none') {
+        const { error: deleteUserRoleError } = await supabase.from('userRoles').delete().eq('userId', userToUpdateId);
 
         if (deleteUserRoleError) {
           const message = 'Failed to update user role. Database error.';
@@ -131,11 +143,11 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
             message: `${message} ${deleteUserRoleError.message}.`,
           });
         }
-      } else if (role.old === 'none') {
+      } else if (userToUpdateCurrentRole === 'none') {
         const { error: insertUserRoleError } = await supabase
           .from('userRoles')
-          .insert({ userId, role: role.new })
-          .eq('userId', userId);
+          .insert({ userId: userToUpdateId, role: newRole })
+          .eq('userId', userToUpdateId);
 
         if (insertUserRoleError) {
           const message = 'Failed to update user role. Database error.';
@@ -150,8 +162,8 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
       } else {
         const { error: updateUserRoleError } = await supabase
           .from('userRoles')
-          .update({ userId, role: role.new })
-          .eq('userId', userId);
+          .update({ role: newRole })
+          .eq('userId', userToUpdateId);
 
         if (updateUserRoleError) {
           const message = 'Failed to update user role. Database error.';

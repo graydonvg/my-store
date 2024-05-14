@@ -8,24 +8,15 @@ type CustomButtonProps = ButtonProps & {
   label: ReactNode;
   startIcon?: ReactNode;
   sxStyles?: SxProps<Theme> | undefined;
-  isDisabled?: boolean;
 };
 
-export default function OutlinedButton({
-  isLoading,
-  label,
-  startIcon,
-  sxStyles,
-  isDisabled,
-  ...props
-}: CustomButtonProps) {
+export default function OutlinedButton({ isLoading, label, startIcon, sxStyles, ...props }: CustomButtonProps) {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
   return (
     <Button
       variant="outlined"
-      disabled={isDisabled}
       startIcon={
         isLoading ? (
           <PulseLoader

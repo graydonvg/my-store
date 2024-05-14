@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function WelcomePageContainer({ children }: Props) {
+export default function WelcomePageFormContainer({ children }: Props) {
   const theme = useTheme();
   return (
     <Box

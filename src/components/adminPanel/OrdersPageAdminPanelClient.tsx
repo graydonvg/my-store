@@ -1,104 +1,225 @@
 'use client';
 
-import { Paper, TablePagination } from '@mui/material';
-import OrdersTable from './OrdersTable';
-import { AdminOrdersTableOrderData } from '@/types';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent, MouseEvent } from 'react';
+import {
+  OrderStatus,
+  OrdersDataGridDataAdmin,
+  QueryFilterDataGrid,
+  QueryPageDataGrid,
+  QuerySortDataGrid,
+  UpdateOrderAdminDb,
+} from '@/types';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import CustomDataGrid from '../dataGrid/CustomDataGrid';
+import { Flip, toast } from 'react-toastify';
+import {
+  GridColDef,
+  GridValidRowModel,
+  getGridDateOperators,
+  getGridSingleSelectOperators,
+  getGridStringOperators,
+} from '@mui/x-data-grid';
+import dayjs from 'dayjs';
+import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
+import { formatCurrency } from '@/utils/formatCurrency';
+import OrdersDataGridToolbarAdminPanel from '../dataGrid/OrdersDataGridToolbarAdminPanel';
+import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
+import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { updateOrderAdmin } from '@/services/admin/update';
+
+function getColumns(isUpdating: boolean) {
+  const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
+    {
+      field: 'orderId',
+      headerName: 'ID',
+      width: 300,
+      sortable: false,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created at',
+      width: 160,
+      renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      filterOperators: getGridDateOperators()
+        .filter((operator) => operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty')
+        .map((operator) => ({
+          ...operator,
+          InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
+        })),
+    },
+    {
+      field: 'firstName',
+      headerName: 'First name',
+      width: 150,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 150,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'contactNumber',
+      headerName: 'Contact number',
+      width: 150,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'recipientFirstName',
+      headerName: 'Recipient first name',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'recipientLastName',
+      headerName: 'Recipient last name',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'recipientContactNumber',
+      headerName: 'Recipient contact number',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'province',
+      headerName: 'Province',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'city',
+      headerName: 'City',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'orderStatus',
+      headerName: 'Status',
+      width: 150,
+      editable: isUpdating ? false : true,
+      type: 'singleSelect',
+      valueOptions: [
+        'awaiting payment',
+        'paid',
+        'processing',
+        'shipped',
+        'delivered',
+        'cancelled',
+        'returned',
+        'refunded',
+      ] as OrderStatus[],
+      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'orderTotal',
+      headerName: 'Order total',
+      width: 100,
+      valueFormatter: (value) => formatCurrency(value),
+      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+  ];
+  return columns;
+}
 
 type Props = {
-  orders: AdminOrdersTableOrderData[] | null;
-  isEndOfData: boolean;
-  page: number;
-  rowsPerPage: number;
-  lastPageNumber: number;
+  orders: OrdersDataGridDataAdmin[] | null;
   totalRowCount: number;
+  querySuccess: boolean;
+  queryMessage: string;
+  page: QueryPageDataGrid;
+  sort: QuerySortDataGrid;
+  filter: QueryFilterDataGrid;
 };
 
 export default function OrdersPageAdminPanelClient({
   orders,
-  isEndOfData,
-  page,
-  rowsPerPage,
-  lastPageNumber,
   totalRowCount,
+  querySuccess,
+  queryMessage,
+  page,
+  sort,
+  filter,
 }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams.toString());
-  const currentPage = page - 1;
+  const [isUpdating, setIsUpdating] = useState(false);
+  const columns = getColumns(isUpdating);
+  const memoizedColumns = useMemo(() => columns, [columns]);
 
-  function handleChangePage(_event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null, newPage: number) {
-    newSearchParams.set('page', `${newPage + 1}`);
+  async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
+    const changedValues = getChangedDataGridValues(newRow, oldRow);
+    const numberOfFormFields = getNumberOfFormFields(changedValues);
 
-    router.push(`?${newSearchParams}`);
-  }
-
-  function handleRowsPerPageChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    const queryStart = currentPage * newRowsPerPage;
-
-    // Check if the newRowsPerPage will result in an empty page
-    if (queryStart >= totalRowCount) {
-      const maxValidPage = Math.ceil(totalRowCount / newRowsPerPage);
-
-      newSearchParams.set('page', `${maxValidPage}`);
+    if (numberOfFormFields === 0) {
+      return oldRow;
     }
 
-    newSearchParams.set('per_page', `${newRowsPerPage}`);
+    const modifiedChangedValues: UpdateOrderAdminDb = { ...changedValues, orderId: oldRow.orderId };
 
-    router.push(`?${newSearchParams}`);
+    setIsUpdating(true);
+    const toastId = toast.loading('Updating order...');
+
+    const { success, message } = await updateOrderAdmin(modifiedChangedValues);
+
+    if (success) {
+      toast.update(toastId, {
+        render: message,
+        type: 'success',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
+      });
+      setIsUpdating(false);
+      router.refresh();
+      return newRow;
+    } else {
+      toast.update(toastId, {
+        render: message,
+        type: 'error',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
+      });
+      setIsUpdating(false);
+      return oldRow;
+    }
   }
 
-  function handleGoToLastPage() {
-    newSearchParams.set('page', `${lastPageNumber}`);
-
-    router.push(`?${newSearchParams}`);
+  function handleRowUpdateError(_error: unknown) {
+    // Axiom error log
+    toast.error('Failed to process update. An unexpected data grid error occured.');
   }
 
   return (
-    <Paper
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 0,
-        overflow: 'hidden',
-      }}>
-      <OrdersTable orders={orders} />
-      <TablePagination
-        component="div"
-        count={totalRowCount}
-        rowsPerPageOptions={[5, 10, 25, 50, 100]}
-        page={currentPage}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        labelRowsPerPage="Rows:"
-        showFirstButton
-        showLastButton
-        slotProps={{
-          actions: {
-            nextButton: {
-              disabled: isEndOfData,
-            },
-            lastButton: {
-              disabled: isEndOfData,
-              onClick: handleGoToLastPage,
-            },
-          },
-        }}
-        sx={(theme) => ({
-          backgroundColor: theme.palette.custom.dataGrid.footer,
-          '& .MuiTablePagination-toolbar': {
-            paddingX: 2,
-            paddingY: 1,
-            minHeight: 0,
-          },
-          '& .MuiTablePagination-input': {
-            marginRight: { xs: 2, sm: 4 },
-          },
-        })}
-      />
-    </Paper>
+    <CustomDataGrid
+      data={orders}
+      getRowId={(row) => row.orderId}
+      totalRowCount={totalRowCount}
+      querySuccess={querySuccess}
+      queryMessage={queryMessage}
+      page={page}
+      sort={sort}
+      filter={filter}
+      columns={memoizedColumns}
+      processRowUpdate={handleRowUpdate}
+      onProcessRowUpdateError={handleRowUpdateError}
+      toolbar={<OrdersDataGridToolbarAdminPanel />}
+    />
   );
 }

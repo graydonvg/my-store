@@ -10,10 +10,10 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
-import { createNewUser } from '@/services/users/create';
 import { USER_ROLE_OPTIONS } from '@/data';
 import SelectField from '../ui/inputFields/SelectField';
 import { UserRole } from '@/types';
+import { createNewUserAdmin } from '@/services/admin/add';
 
 const formFields = [
   {
@@ -107,7 +107,7 @@ export default function CreateAuthUserFormAdminPanel() {
 
     const { email, password, firstName, lastName, contactNumber, role } = formData;
 
-    const { success, message } = await createNewUser({
+    const { success, message } = await createNewUserAdmin({
       email,
       password,
       firstName,

@@ -6,7 +6,7 @@ import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
 import { selectCartCount } from '@/lib/redux/selectors/cartSelectors';
 import SmallCartItemList from '../../cartItems/smallCartItemList/SmallCartItemList';
 import FooterCartDrawer from './FooterCartDrawer';
-import UpperNavbarIconButton from '@/components/navbars/upperNavbar/UpperNavbarIconButton';
+import UpperNavbarIconButton from '@/components/navbars/navbarStorefront/upperNavbar/UpperNavbarIconButton';
 
 export default function CartDrawer() {
   const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
