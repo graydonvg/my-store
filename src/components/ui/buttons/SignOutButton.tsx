@@ -30,8 +30,6 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
     const { success, message } = await signOut();
 
     if (success === true) {
-      dispatch(setUserData(null));
-
       if (redirectAfterSignout) {
         router.push('/');
       }
