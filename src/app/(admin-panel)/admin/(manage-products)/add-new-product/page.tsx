@@ -13,7 +13,7 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidateAllData from '@/services/revalidateAllData';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
-import ManageProductImages from '@/components/ManageProductImages';
+import ManageProductImages from '@/components/adminPanel/ManageProductImages';
 import { Box } from '@mui/material';
 import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';

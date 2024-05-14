@@ -58,7 +58,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       quantity: newQuantity,
     });
 
-    if (success === false) {
+    if (!success) {
       toast.error(message);
     }
 
@@ -92,7 +92,9 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         size,
       });
 
-      if (success === true) {
+      if (success) {
+        console.log('SUCCESS!!!!');
+
         router.refresh();
       } else {
         setIsUpdatingCartItemSize(false);
@@ -106,7 +108,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
     const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
 
-    if (success === true) {
+    if (success) {
       router.refresh();
     } else {
       setIsRemovingCartItem(false);
@@ -123,7 +125,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       userId,
     });
 
-    if (success === true) {
+    if (success) {
       await removeCartItem();
       toast.success('Moved to wishlist');
     } else {

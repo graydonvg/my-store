@@ -1,35 +1,16 @@
-'use client';
+import CartPageClient from '@/components/checkoutFlow/CartPageClient';
+import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
+import WishlistDataStateSetter from '@/components/stateSetters/WishlistStateSetter';
+import getAuthUserData from '@/lib/db/queries/getAuthUserData';
 
-import CartViewEmptyMessage from '@/components/CartViewEmptyMessage';
-import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { Grid } from '@mui/material';
-
-export default function CartView() {
-  const { cartItems } = useAppSelector((state) => state.cart);
+export default async function CartPage() {
+  const { cartItems, wishlistData } = await getAuthUserData();
 
   return (
     <>
-      {cartItems.length === 0 ? <CartViewEmptyMessage /> : null}
-
-      {cartItems.length !== 0 ? (
-        <Grid
-          component="ul"
-          container
-          rowSpacing={2}>
-          {cartItems.map((item) => {
-            return (
-              <Grid
-                component="li"
-                key={item?.cartItemId}
-                item
-                xs={12}>
-                <LargeCartItem item={item} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      ) : null}
+      <CartPageClient />
+      <CartItemsStateSetter cartItems={cartItems} />
+      <WishlistDataStateSetter wishlistData={wishlistData} />
     </>
   );
 }

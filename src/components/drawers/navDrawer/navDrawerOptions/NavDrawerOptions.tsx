@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/SignOutButton';
-import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS, HAS_ADMIN_PANEL_ACCESS } from '@/data';
+import { NAV_OPTIONS_ACCOUNT, NAV_OPTIONS_DEFAULT, HAS_ADMIN_PANEL_ACCESS } from '@/data';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
-import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
+import { NAV_OPTIONS_ADMIN_PANEL } from '@/components/adminPanel/NavOptionsAdminPanel';
 
 export default function NavDrawerOptions() {
   const userData = useAppSelector((state) => state.user.data);
@@ -30,7 +30,7 @@ export default function NavDrawerOptions() {
         ) : null}
 
         {isAdminPath
-          ? ADMIN_PANEL_NAV_OPTIONS.map((option) => (
+          ? NAV_OPTIONS_ADMIN_PANEL.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -41,7 +41,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {!isAdminPath
-          ? DEFAULT_NAV_OPTIONS.map((option) => (
+          ? NAV_OPTIONS_DEFAULT.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -52,7 +52,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {userData && !isAdminPath
-          ? ACCOUNT_NAV_OPTIONS.map((option) => (
+          ? NAV_OPTIONS_ACCOUNT.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}

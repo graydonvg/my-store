@@ -1,6 +1,6 @@
 'use client';
 
-import { ACCOUNT_NAV_OPTIONS, DEFAULT_NAV_OPTIONS } from '@/data';
+import { NAV_OPTIONS_ACCOUNT, NAV_OPTIONS_DEFAULT } from '@/data';
 import LowerNavbarOption from './LowerNavbarOption';
 import { Box, List, useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -35,8 +35,8 @@ export default function LowerNavbarOptions() {
         disablePadding
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {showDefaultNavOptions
-          ? DEFAULT_NAV_OPTIONS.map((option, index) => {
-              const isLastNavOption = DEFAULT_NAV_OPTIONS.length - 1 === index;
+          ? NAV_OPTIONS_DEFAULT.map((option, index) => {
+              const isLastNavOption = NAV_OPTIONS_DEFAULT.length - 1 === index;
 
               return (
                 <LowerNavbarOption
@@ -51,8 +51,8 @@ export default function LowerNavbarOptions() {
           : null}
 
         {isAccountView
-          ? ACCOUNT_NAV_OPTIONS.map((option, index) => {
-              const isLastNavOption = ACCOUNT_NAV_OPTIONS.length - 1 === index;
+          ? NAV_OPTIONS_ACCOUNT.map((option, index) => {
+              const isLastNavOption = NAV_OPTIONS_ACCOUNT.length - 1 === index;
 
               return (
                 <LowerNavbarOption

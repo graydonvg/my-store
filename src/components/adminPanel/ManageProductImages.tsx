@@ -1,14 +1,14 @@
 import { CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import ProductImageBoxes from './ui/productImageBoxes/ProductImageBoxes';
+import ProductImageBoxes from '../ui/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
 import { Box } from '@mui/material';
-import ContainedButton from './ui/buttons/ContainedButton';
-import ImageInput from './ui/inputFields/ImageInput';
+import ContainedButton from '../ui/buttons/ContainedButton';
+import ImageInput from '../ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
-import EditProductImagesDrawerAdminPanel from './drawers/EditProductImagesDrawerAdminPanel';
+import EditProductImagesDrawerAdminPanel from '../drawers/EditProductImagesDrawerAdminPanel';
 import { clearImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productImagesSlice';
 
 type Props = {

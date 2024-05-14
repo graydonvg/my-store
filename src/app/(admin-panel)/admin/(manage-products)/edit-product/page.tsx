@@ -13,7 +13,7 @@ import revalidateAllData from '@/services/revalidateAllData';
 import updateProductImageData from '@/services/product-image-data/update';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Box } from '@mui/material';
-import ManageProductImages from '@/components/ManageProductImages';
+import ManageProductImages from '@/components/adminPanel/ManageProductImages';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
 
