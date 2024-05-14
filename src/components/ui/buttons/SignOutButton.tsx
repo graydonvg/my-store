@@ -2,7 +2,6 @@ import AccountDropdownMenuItem from '@/components/accountDropdownMenu/AccountDro
 import NavDrawerOption from '@/components/drawers/navDrawer/navDrawerOption/NavDrawerOption';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
-import { setUserData } from '@/lib/redux/slices/userSlice';
 import signOut from '@/services/auth/sign-out';
 import { Logout } from '@mui/icons-material';
 import { ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
