@@ -20,10 +20,10 @@ export default function SignOutButton({ buttonVariant, accountMenuIconColor, acc
   const router = useRouter();
   const pathname = usePathname();
   const redirectAfterSignout =
-    pathname.includes('/admin') ||
-    pathname.includes('/account') ||
-    pathname.includes('/orders') ||
-    pathname.includes('/wishlist');
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/orders') ||
+    pathname.startsWith('/wishlist');
 
   async function signOutUser() {
     const { success, message } = await signOut();

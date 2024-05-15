@@ -24,6 +24,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const theme = useTheme();
   const userId = useAppSelector((state) => state.user.data?.userId);
   const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
+  const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
   const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
   const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
   const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
@@ -93,8 +94,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       });
 
       if (success) {
-        console.log('SUCCESS!!!!');
-
         router.refresh();
       } else {
         setIsUpdatingCartItemSize(false);
@@ -117,6 +116,15 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   }
 
   async function moveToWishlist() {
+    const itemExists = wishlistData.some(
+      (item) => item.productId === cartItem.product?.productId && item.size === cartItem.size
+    );
+
+    if (itemExists) {
+      toast.error('Already in wishlist');
+      return;
+    }
+
     setIsMovingToWishlist(true);
 
     const { success, message } = await addItemToWishlist({

@@ -13,18 +13,18 @@ type Props = {
 export default function ImageSmallCartItem({ imageUrl, productName, onClick }: Props) {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const pathname = usePathname();
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
     <Box
-      onClick={!isShippingView ? onClick : undefined}
+      onClick={!isShippingPath ? onClick : undefined}
       sx={{
         display: 'flex',
         position: 'relative',
         aspectRatio: 3 / 4,
         width: '60px',
         flexShrink: 0,
-        cursor: !isShippingView ? 'pointer' : 'default',
+        cursor: !isShippingPath ? 'pointer' : 'default',
         borderRadius: BORDER_RADIUS,
         overflow: 'hidden',
       }}>

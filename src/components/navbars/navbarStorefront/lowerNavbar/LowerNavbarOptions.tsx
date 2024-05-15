@@ -9,8 +9,9 @@ import NavbarTitle from '@/components/ui/NavbarTitle';
 export default function LowerNavbarOptions() {
   const theme = useTheme();
   const pathname = usePathname();
-  const isAdminPath = pathname.includes('/admin');
-  const isAccountView = pathname.includes('/account') || pathname.includes('/orders') || pathname.includes('/wishlist');
+  const isAdminPath = pathname.startsWith('/admin');
+  const isAccountView =
+    pathname.startsWith('/account') || pathname.startsWith('/orders') || pathname.startsWith('/wishlist');
   const showDefaultNavOptions = !isAdminPath && !isAccountView;
 
   return (

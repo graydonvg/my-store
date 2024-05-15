@@ -22,7 +22,7 @@ export default function SmallCartItem({ item }: Props) {
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
@@ -59,7 +59,7 @@ export default function SmallCartItem({ item }: Props) {
           flexGrow: 1,
           height: 1,
         }}>
-        {!isShippingView ? (
+        {!isShippingPath ? (
           <DeleteCartItemButton
             item={item}
             setIsRemovingCartItem={setIsRemovingCartItem}
@@ -69,7 +69,7 @@ export default function SmallCartItem({ item }: Props) {
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
           <Typography
-            onClick={!isShippingView ? navigateToProductPage : undefined}
+            onClick={!isShippingPath ? navigateToProductPage : undefined}
             lineHeight={1}
             component="h4"
             fontWeight={600}
@@ -81,7 +81,7 @@ export default function SmallCartItem({ item }: Props) {
               WebkitLineClamp: '1',
               WebkitBoxOrient: 'vertical',
               paddingRight: 3,
-              cursor: !isShippingView ? 'pointer' : 'default',
+              cursor: !isShippingPath ? 'pointer' : 'default',
             }}>
             {item?.product?.name}
           </Typography>

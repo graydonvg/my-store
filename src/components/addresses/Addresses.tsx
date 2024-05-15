@@ -5,19 +5,19 @@ import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice'
 import { BORDER_RADIUS } from '@/data';
 import { useEffect } from 'react';
 import AddressData from './AddressData';
-import { setAddressToDeleteId } from '@/lib/redux/slices/accountSlice';
 import AddNewAddressDialog from '../dialogs/addressDialog/AddNewAddressDialog';
+import { setAddressToDeleteId } from '@/lib/redux/slices/addressesSlice';
 
 export default function Addresses() {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
+  const addresses = useAppSelector((state) => state.addresses.data);
 
   useEffect(() => {
     dispatch(closeDialog());
     dispatch(setIsDialogLoading(false));
     dispatch(clearAddressFormData());
     dispatch(setAddressToDeleteId(null));
-  }, [dispatch, userData?.addresses]);
+  }, [dispatch, addresses]);
 
   return (
     <Box>
@@ -29,7 +29,7 @@ export default function Addresses() {
         }}>
         <Table>
           <TableBody>
-            {userData && userData?.addresses.length === 0 ? (
+            {!addresses || addresses?.length === 0 ? (
               <TableRow>
                 <TableCell sx={{ padding: 2, borderBottom: 0 }}>
                   <Typography fontSize={16}>No address found</Typography>

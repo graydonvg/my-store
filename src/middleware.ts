@@ -16,6 +16,11 @@ export async function middleware(request: NextRequest) {
     return request.nextUrl.pathname.startsWith(path);
   }
 
+  if (authUser && checkPathStartsWith('/welcome')) {
+    const redirectUrl = new URL('/', request.url);
+    response = NextResponse.redirect(redirectUrl);
+  }
+
   const isAdminPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin');
 
   const authRequiredPath =
@@ -59,5 +64,6 @@ export const config = {
     '/wishlist',
     '/checkout/:path*',
     '/cart/:path*',
+    '/welcome/:path*',
   ],
 };

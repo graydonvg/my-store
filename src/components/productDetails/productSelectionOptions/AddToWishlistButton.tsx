@@ -20,7 +20,6 @@ export default function AddToWishlistButton({ product, size }: Props) {
   const userData = useAppSelector((state) => state.user.data);
   const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
-  const itemExists = wishlistData.some((item) => item.productId === product.productId && item.size === size);
 
   async function addToWishlist() {
     if (!userData) {
@@ -29,7 +28,14 @@ export default function AddToWishlistButton({ product, size }: Props) {
     }
 
     if (!size) {
-      toast.error('Select a size first');
+      toast.error('Select a size first.');
+      return;
+    }
+
+    const itemExists = wishlistData.some((item) => item.productId === product.productId && item.size === size);
+
+    if (itemExists) {
+      toast.error('Already in wishlist');
       return;
     }
 
@@ -55,7 +61,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
   return (
     <ContainedButton
       onClick={addToWishlist}
-      disabled={isAddingToWishlist || itemExists}
+      disabled={isAddingToWishlist}
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}

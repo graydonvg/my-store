@@ -4,13 +4,11 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 type State = {
   fieldToEdit: UserAccountFieldToEdit | null;
   isUpdatingAccount: boolean;
-  addressToDeleteId: string | null;
 };
 
 const initialState: State = {
   fieldToEdit: null,
   isUpdatingAccount: false,
-  addressToDeleteId: null,
 };
 
 const accountSlice = createSlice({
@@ -23,14 +21,11 @@ const accountSlice = createSlice({
     setIsUpdatingAccount(state, action: PayloadAction<boolean>) {
       state.isUpdatingAccount = action.payload;
     },
-    setAddressToDeleteId(state, action: PayloadAction<string | null>) {
-      state.addressToDeleteId = action.payload;
-    },
   },
 });
 
 const { actions, reducer } = accountSlice;
 
-export const { setFieldToEdit, setIsUpdatingAccount, setAddressToDeleteId } = actions;
+export const { setFieldToEdit, setIsUpdatingAccount } = actions;
 
 export const accountReducer = reducer;

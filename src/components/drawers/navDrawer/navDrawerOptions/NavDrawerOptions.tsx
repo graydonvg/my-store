@@ -12,7 +12,7 @@ export default function NavDrawerOptions() {
   const userData = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
-  const isAdminPath = pathname.includes('/admin');
+  const isAdminPath = pathname.startsWith('/admin');
 
   function closeDrawer() {
     dispatch(setIsNavDrawerOpen(false));

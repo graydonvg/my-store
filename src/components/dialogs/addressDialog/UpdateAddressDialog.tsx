@@ -12,11 +12,11 @@ type Props = {
 
 export default function UpdateAddressDialog({ addressId }: Props) {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
+  const addresses = useAppSelector((state) => state.addresses.data);
   const isUpdateAddressDialogOpen = useAppSelector((state) => state.dialog.updateAddressDialog);
 
   async function selectAddressToEdit() {
-    const addressToEdit = userData?.addresses.filter((address) => address.addressId === addressId)[0];
+    const addressToEdit = addresses?.filter((address) => address.addressId === addressId)[0];
 
     dispatch(setAddressFormData(addressToEdit as AddressStore));
     dispatch(openDialog('updateAddressDialog'));

@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AddressLoader from './AddressLoader';
-import { setAddressToDeleteId } from '@/lib/redux/slices/accountSlice';
 import UpdateAddressDialog from '../dialogs/addressDialog/UpdateAddressDialog';
+import { setAddressToDeleteId } from '@/lib/redux/slices/addressesSlice';
 
 type Props = {
   addressId: string;
@@ -15,7 +15,7 @@ type Props = {
 export default function AddressButtons({ addressId }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const addressToDeleteId = useAppSelector((state) => state.account.addressToDeleteId);
+  const addressToDeleteId = useAppSelector((state) => state.addresses.addressToDeleteId);
 
   async function deleteAddressById() {
     dispatch(setAddressToDeleteId(addressId));

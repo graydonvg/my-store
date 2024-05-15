@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   description: 'Ecommerce',
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+};
+
+export default async function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>

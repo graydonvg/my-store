@@ -7,20 +7,20 @@ import Address from './Address';
 import Recipient from './Recipient';
 
 export default function AddressData() {
-  const userData = useAppSelector((state) => state.user.data);
+  const addresses = useAppSelector((state) => state.addresses.data);
   const pathname = usePathname();
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
     <>
-      {userData?.addresses?.map((address, index) => (
+      {addresses?.map((address, index) => (
         <TableRow
           key={index}
           sx={{
             display: 'flex',
             '&:last-child td': { border: 0 },
           }}>
-          {isShippingView ? <SelectShippingAddressCheckbox address={address} /> : null}
+          {isShippingPath ? <SelectShippingAddressCheckbox address={address} /> : null}
           <TableCell
             sx={{
               display: 'flex',

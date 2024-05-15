@@ -51,7 +51,6 @@ export type UserData = {
   firstName: string | null;
   lastName: string | null;
   contactNumber: string | null;
-  addresses: Address[];
   isOAuthSignIn: boolean;
   role: UserRole;
 };

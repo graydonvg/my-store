@@ -23,8 +23,8 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
   const pathname = usePathname();
-  const isAdminPath = pathname.includes('/admin');
-  const isWishlistView = pathname.includes('/wishlist');
+  const isAdminPath = pathname.startsWith('/admin');
+  const isWishlistPath = pathname.startsWith('/wishlist');
   const isOnSale = product.isOnSale === 'Yes';
   const discountedPrice = calculateDiscountedProductPrice(product);
   const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
@@ -61,7 +61,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
               </Box>
             ) : null}
 
-            {isWishlistView ? (
+            {isWishlistPath ? (
               <Box
                 sx={{
                   position: 'absolute',
@@ -103,7 +103,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 {product.brand?.toUpperCase()}
               </Typography>
 
-              {isWishlistView ? (
+              {isWishlistPath ? (
                 <Box sx={{ display: 'flex', columnGap: 1, flexWrap: 'wrap' }}>
                   <Typography
                     component="span"
@@ -135,7 +135,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   alignItems: 'center',
                   flexWrap: 'wrap',
                   columnGap: 1,
-                  paddingRight: isWishlistView ? 4 : 0,
+                  paddingRight: isWishlistPath ? 4 : 0,
                   overflow: 'hidden',
                   height: '24px',
                 }}>
@@ -164,7 +164,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 ) : null}
               </Box>
 
-              {isWishlistView && isInStock ? (
+              {isWishlistPath && isInStock ? (
                 <MoveToCartButton
                   product={product}
                   wishlistSize={wishlistSize ?? ''}

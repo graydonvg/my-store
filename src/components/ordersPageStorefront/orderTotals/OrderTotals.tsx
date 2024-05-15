@@ -15,7 +15,7 @@ type Props = {
 export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, totalToPay, cartTotal }: Props) {
   const theme = useTheme();
   const pathname = usePathname();
-  const isOrdersPage = pathname.includes('/orders');
+  const isOrdersPath = pathname.startsWith('/orders');
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -28,8 +28,8 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
       {discountTotal > 0 ? (
         <Box
           sx={{
-            backgroundColor: isOrdersPage ? theme.palette.background.paper : 'transparent',
-            backgroundImage: isOrdersPage
+            backgroundColor: isOrdersPath ? theme.palette.background.paper : 'transparent',
+            backgroundImage: isOrdersPath
               ? 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))'
               : 'none',
             borderRadius: BORDER_RADIUS,

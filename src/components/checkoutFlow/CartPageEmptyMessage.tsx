@@ -2,7 +2,7 @@ import { BORDER_RADIUS } from '@/data';
 import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 
-export default function CartViewEmptyMessage() {
+export default function CartPageEmptyMessage() {
   return (
     <Paper
       sx={{

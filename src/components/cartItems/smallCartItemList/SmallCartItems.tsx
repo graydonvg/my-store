@@ -7,15 +7,15 @@ import { usePathname } from 'next/navigation';
 export default function SmallCartItems() {
   const pathname = usePathname();
   const { cartItems } = useAppSelector((state) => state.cart);
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return cartItems.map((item, index) => {
     const isLastItem = cartItems.length - 1 === index;
     let showDivider = false;
 
-    if (!isShippingView) {
+    if (!isShippingPath) {
       showDivider = true;
-    } else if (isShippingView && !isLastItem) {
+    } else if (isShippingPath && !isLastItem) {
       showDivider = true;
     }
 

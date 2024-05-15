@@ -1,18 +1,20 @@
 'use client';
 
-import CartViewEmptyMessage from '@/components/checkoutFlow/CartViewEmptyMessage';
+import CartPageEmptyMessage from '@/components/checkoutFlow/CartPageEmptyMessage';
 import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
-import { useAppSelector } from '@/lib/redux/hooks';
 import { Grid } from '@mui/material';
+import { CartItem } from '@/types';
 
-export default function CartPageClient() {
-  const { cartItems } = useAppSelector((state) => state.cart);
+type Props = {
+  cartItems: CartItem[] | null;
+};
 
+export default function CartPageClient({ cartItems }: Props) {
   return (
     <>
-      {cartItems.length === 0 ? <CartViewEmptyMessage /> : null}
+      {!cartItems ? <CartPageEmptyMessage /> : null}
 
-      {cartItems.length !== 0 ? (
+      {cartItems ? (
         <Grid
           component="ul"
           container

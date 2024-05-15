@@ -19,8 +19,8 @@ export default function CheckoutOrderTotals() {
   const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
-  const isCartView = pathname.includes('/cart/view');
-  const isShippingView = pathname.includes('/checkout/shipping');
+  const isCartViewPath = pathname.startsWith('/cart/view');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
     <Grid
@@ -49,7 +49,7 @@ export default function CheckoutOrderTotals() {
             totalToPay={orderTotal}
           />
         </Box>
-        {isCartView ? (
+        {isCartViewPath ? (
           <CheckoutButton
             disabled={cartItems.length === 0}
             label="checkout now"
@@ -57,7 +57,7 @@ export default function CheckoutOrderTotals() {
           />
         ) : null}
 
-        {isShippingView ? <PaymentButton buttonVariant="contained" /> : null}
+        {isShippingPath ? <PaymentButton buttonVariant="contained" /> : null}
       </Paper>
     </Grid>
   );
