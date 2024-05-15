@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import ChartAdminPanel from '@/components/adminPanel/ChartAdminPanel';
+import SalesChartAdminPanel from '@/components/adminPanel/SalesChartAdminPanel';
 import TotalSales from '@/components/adminPanel/TotalSales';
-import RecentOrdersTable from '@/components/adminPanel/RecentOrdersTable';
+import RecentOrdersTableAdminPanel from '@/components/adminPanel/RecentOrdersTableAdminPanel';
 import { BORDER_RADIUS, DATA_GRID_DEFAULTS } from '@/data';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 
@@ -86,7 +86,7 @@ export default async function DashboardAdminPanel() {
             height: { xs: 240, sm: 360 },
             borderRadius: BORDER_RADIUS,
           }}>
-          <ChartAdminPanel />
+          <SalesChartAdminPanel />
         </Paper>
       </Grid>
       <Grid
@@ -100,7 +100,7 @@ export default async function DashboardAdminPanel() {
             overflow: 'hidden',
             padding: 2,
           }}>
-          <RecentOrdersTable orders={data.orders} />
+          <RecentOrdersTableAdminPanel orders={data.orders} />
         </Paper>
       </Grid>
     </Grid>

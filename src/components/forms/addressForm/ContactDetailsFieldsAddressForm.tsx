@@ -44,6 +44,7 @@ export default function ContactDetailsFieldsAddressForm({ addressFormData, onInp
             name={field.name}
             value={addressFormData[field.name as keyof AddressStore]}
             placeholder={field.placeholder ?? ''}
+            autoFocus={field.name === 'recipientFirstName'}
             required={field.required}
             fullWidth={true}
             onChange={onInputChange}

@@ -43,7 +43,7 @@ type Props = {
   orders: OrdersDataGridDataAdmin[] | null;
 };
 
-export default function RecentOrdersTable({ orders }: Props) {
+export default function RecentOrdersTableAdminPanel({ orders }: Props) {
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -80,12 +80,12 @@ export default function RecentOrdersTable({ orders }: Props) {
             ))}
           </TableBody>
         </Table>
-        <Box sx={{ width: 'fit-content', marginTop: 2 }}>
-          <Link href="/admin/orders">
-            <MuiLink>See more orders</MuiLink>
-          </Link>
-        </Box>
       </TableContainer>
+      <Box sx={{ width: 'fit-content', marginTop: 2 }}>
+        <Link href="/admin/orders">
+          <MuiLink>See more orders</MuiLink>
+        </Link>
+      </Box>
     </>
   );
 }

@@ -15,7 +15,7 @@ type Props = {
   isSubmitting: boolean;
 };
 
-export default function ManageProductImages({ isSubmitting }: Props) {
+export default function ManageProductImagesAdminPanel({ isSubmitting }: Props) {
   const dispatch = useAppDispatch();
   const { imageUploadProgress, imageData } = useAppSelector((state) => state.productImages);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);

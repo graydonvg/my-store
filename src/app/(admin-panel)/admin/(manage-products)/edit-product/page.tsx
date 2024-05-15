@@ -13,7 +13,7 @@ import revalidateAllData from '@/services/revalidateAllData';
 import updateProductImageData from '@/services/product-image-data/update';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Box } from '@mui/material';
-import ManageProductImages from '@/components/adminPanel/ManageProductImages';
+import ManageProductImagesAdminPanel from '@/components/adminPanel/ManageProductImagesAdminPanel';
 import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
 import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
 
@@ -122,7 +122,7 @@ export default function AdminPanelUpdateProductPage() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
-      <ManageProductImages isSubmitting={isSubmitting} />
+      <ManageProductImagesAdminPanel isSubmitting={isSubmitting} />
       <ProductFormAdminPanel
         onSubmit={handleUpdateProduct}
         isSubmitting={isSubmitting}

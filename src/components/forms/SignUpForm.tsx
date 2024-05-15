@@ -95,7 +95,6 @@ export default function SignUpForm({ children }: Props) {
 
     const { email, password, firstName, lastName, contactNumber } = formData;
 
-    // User role defaults to customer db side
     const { success, message } = await signUpNewUser({
       email,
       password,

@@ -23,7 +23,7 @@ export default function AddressForm({ addressFormData, onInputChange, onSubmit, 
         gap: 3,
         paddingBottom: 3,
       }}>
-      <FormHeader text={'Add Address'} />
+      <FormHeader text="Add Address" />
       <Box
         component="form"
         onSubmit={onSubmit}
@@ -43,7 +43,7 @@ export default function AddressForm({ addressFormData, onInputChange, onSubmit, 
           onInputChange={onInputChange}
         />
         <ContainedButton
-          label={'add'}
+          label="add"
           disabled={isDialogLoading}
           type="submit"
           fullWidth

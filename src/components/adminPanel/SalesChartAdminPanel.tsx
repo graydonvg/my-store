@@ -23,7 +23,7 @@ const data = [
   createData('24:00'),
 ];
 
-export default function ChartAdminPanel() {
+export default function SalesChartAdminPanel() {
   const theme = useTheme();
 
   return (
