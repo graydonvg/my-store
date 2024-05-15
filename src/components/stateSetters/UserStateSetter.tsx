@@ -18,7 +18,7 @@ export default function UserStateSetter({ userData }: Props) {
     } else {
       dispatch(setUserData(null));
     }
-  });
+  }, [userData, dispatch]);
 
   return null;
 }

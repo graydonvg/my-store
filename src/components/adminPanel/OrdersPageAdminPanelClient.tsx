@@ -126,7 +126,7 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'orderTotal',
       headerName: 'Order total',
-      width: 100,
+      width: 120,
       valueFormatter: (value) => formatCurrency(value),
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },

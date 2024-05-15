@@ -23,10 +23,6 @@ export async function getOrdersForUser() {
 export async function getOrdersForAdmin(page: QueryPageDataGrid, sort: QuerySortDataGrid, filter: QueryFilterDataGrid) {
   const supabase = await createSupabaseServerClient();
 
-  // const {
-  //   data: { user: authUser },
-  // } = await supabase.auth.getUser();
-
   let ordersQuery = supabase
     .from('orders')
     .select(
@@ -35,9 +31,8 @@ export async function getOrdersForAdmin(page: QueryPageDataGrid, sort: QuerySort
         count: 'exact',
       }
     );
-  // .neq('userId', authUser?.id);
 
-  const builtOrdersQuery = buildQuery(ordersQuery, page, sort, filter);
+  const builtOrdersQuery = buildQuery('orders', ordersQuery, page, sort, filter);
 
   const { data: orders, count, error } = await builtOrdersQuery;
 

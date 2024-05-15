@@ -7,7 +7,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
 import { BORDER_RADIUS } from '@/data';
 
-export default function Shipping() {
+export default function ShippingPage() {
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));

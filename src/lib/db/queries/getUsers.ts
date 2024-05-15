@@ -31,7 +31,7 @@ export async function getUsersForAdmin(page: QueryPageDataGrid, sort: QuerySortD
       .neq('userId', authUser?.id);
   }
 
-  const builtUsersQuery = buildQuery(usersQuery, page, sort, filter);
+  const builtUsersQuery = buildQuery('users', usersQuery, page, sort, filter);
 
   const { data: users, count, error } = await builtUsersQuery;
 
