@@ -1,23 +1,11 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { clearAddressFormData } from '@/lib/redux/slices/addressFormSlice';
-import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { BORDER_RADIUS } from '@/data';
-import { useEffect } from 'react';
 import AddressData from './AddressData';
 import AddNewAddressDialog from '../dialogs/addressDialog/AddNewAddressDialog';
-import { setAddressToDeleteId } from '@/lib/redux/slices/addressesSlice';
 
 export default function Addresses() {
-  const dispatch = useAppDispatch();
   const addresses = useAppSelector((state) => state.addresses.data);
-
-  useEffect(() => {
-    dispatch(closeDialog());
-    dispatch(setIsDialogLoading(false));
-    dispatch(clearAddressFormData());
-    dispatch(setAddressToDeleteId(null));
-  }, [dispatch, addresses]);
 
   return (
     <Box>

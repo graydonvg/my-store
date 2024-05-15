@@ -2,10 +2,10 @@ import { ChangeEvent, FormEvent } from 'react';
 import { addNewAddress } from '@/services/users/add';
 import { AddressStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
+import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
 import AddressForm from '../AddressForm';
 
 export default function AddNewAddressForm() {
@@ -36,11 +36,14 @@ export default function AddNewAddressForm() {
 
     if (success === true) {
       router.refresh();
+      dispatch(closeDialog());
+      dispatch(clearAddressFormData());
       toast.success(message);
     } else {
       toast.error(message);
-      dispatch(setIsDialogLoading(false));
     }
+
+    dispatch(setIsDialogLoading(false));
   }
 
   return (

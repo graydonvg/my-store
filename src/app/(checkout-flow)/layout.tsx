@@ -53,8 +53,6 @@ export default function LayoutCheckoutFlow({ children }: Props) {
     checkoutData.isProcessing,
   ]);
 
-  if (shouldRedirect) return null;
-
   return (
     <>
       <NavbarCheckout />
@@ -64,17 +62,19 @@ export default function LayoutCheckoutFlow({ children }: Props) {
           paddingY: { xs: 2, sm: 3 },
         }}
         maxWidth="lg">
-        <Grid
-          container
-          spacing={2}>
+        {!shouldRedirect ? (
           <Grid
-            item
-            xs={12}
-            md={!isPaymentPath ? 9 : 12}>
-            {children}
+            container
+            spacing={2}>
+            <Grid
+              item
+              xs={12}
+              md={!isPaymentPath ? 9 : 12}>
+              {children}
+            </Grid>
+            {!isPaymentPath ? <CheckoutOrderTotals /> : null}
           </Grid>
-          {!isPaymentPath ? <CheckoutOrderTotals /> : null}
-        </Grid>
+        ) : null}
       </Container>
     </>
   );

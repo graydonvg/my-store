@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
 import { CartItem } from '@/types';
 import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
@@ -32,14 +32,6 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
   const isUpdatingCartItem =
     isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize || isMovingToWishlist;
-
-  useEffect(() => {
-    setIsUpdatingCartItemSize(false);
-  }, [dispatch, cartItem?.size]);
-
-  useEffect(() => {
-    setIsRemovingCartItem(false);
-  }, [cartItem]);
 
   function openDrawer(id: string | null) {
     setCartItemToEditId(id);
@@ -96,9 +88,10 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       if (success) {
         router.refresh();
       } else {
-        setIsUpdatingCartItemSize(false);
         toast.error(message);
       }
+
+      setIsUpdatingCartItemSize(false);
     }
   }
 
@@ -110,9 +103,10 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     if (success) {
       router.refresh();
     } else {
-      setIsRemovingCartItem(false);
       toast.error(message);
     }
+
+    setIsRemovingCartItem(false);
   }
 
   async function moveToWishlist() {

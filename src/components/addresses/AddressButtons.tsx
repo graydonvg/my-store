@@ -28,6 +28,8 @@ export default function AddressButtons({ addressId }: Props) {
     } else {
       toast.error(message);
     }
+
+    dispatch(setAddressToDeleteId(null));
   }
 
   return (
