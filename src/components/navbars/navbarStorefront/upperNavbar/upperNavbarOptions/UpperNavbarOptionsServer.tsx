@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
-import UnauthenticatedUpperNavbarOptions from './UnauthenticatedUpperNavbarOptions';
-import getAuthUserData from '@/lib/db/queries/getAuthUserData';
-import AuthenticatedUpperNavbarOptions from './AuthenticatedUpperNavbarOptions';
+import AuthenticatedUserUpperNavbarOptions from './AuthenticatedUserUpperNavbarOptions';
+import UserAuthenticationUpperNavbarOptions from './UserAuthenticationUpperNavbarOptions';
 import UserStateSetter from '@/components/stateSetters/UserStateSetter';
+import AddressesStateSetter from '@/components/stateSetters/AddressesStateSetter';
 import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
 import WishlistDataStateSetter from '@/components/stateSetters/WishlistStateSetter';
-import AddressesStateSetter from '@/components/stateSetters/AddressesStateSetter';
+import getAuthUserData from '@/lib/db/queries/getAuthUserData';
 
 export default async function UpperNavbarOptionsServer() {
   const { authUser, userData, addresses, cartItems, wishlistData } = await getAuthUserData();
@@ -15,7 +15,7 @@ export default async function UpperNavbarOptionsServer() {
       <Box
         component="nav"
         sx={{ height: 1 }}>
-        {!authUser ? <UnauthenticatedUpperNavbarOptions /> : <AuthenticatedUpperNavbarOptions />}
+        {!authUser ? <UserAuthenticationUpperNavbarOptions /> : <AuthenticatedUserUpperNavbarOptions />}
       </Box>
       <UserStateSetter userData={userData} />
       <AddressesStateSetter addresses={addresses} />

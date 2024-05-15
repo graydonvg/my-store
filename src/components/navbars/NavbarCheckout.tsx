@@ -33,8 +33,7 @@ export default function NavbarCheckout() {
               <NavbarTitle
                 hideText={isBelowSmall ? true : false}
                 variant="h5"
-                display="flex"
-                color={theme.palette.custom.navbar.upper.text}
+                iconButtonSxStyles={{ display: 'flex', color: theme.palette.custom.navbar.upper.text }}
               />
               <Box
                 sx={{ margin: '0 auto' }}

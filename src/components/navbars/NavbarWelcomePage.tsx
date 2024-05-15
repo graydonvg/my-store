@@ -23,8 +23,7 @@ export default function NavbarWelcomePage() {
             }}>
             <NavbarTitle
               variant="h5"
-              display="flex"
-              color={theme.palette.custom.navbar.upper.text}
+              iconButtonSxStyles={{ display: 'flex', color: theme.palette.custom.navbar.upper.text }}
             />
           </Box>
         </CommonNavbarContainer>

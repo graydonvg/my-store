@@ -2,10 +2,10 @@
 
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import NavbarTitle from '../../../../ui/NavbarTitle';
-import NavDrawer from '../../../../drawers/navDrawer/NavDrawer';
-import UnauthenticatedUpperNavbarOptions from './UnauthenticatedUpperNavbarOptions';
-import AuthenticatedUpperNavbarOptions from './AuthenticatedUpperNavbarOptions';
+import UserAuthentication from './UserAuthenticationUpperNavbarOptions';
+import AuthenticatedUserUpperNavbarOptions from './AuthenticatedUserUpperNavbarOptions';
+import NavDrawer from '@/components/drawers/navDrawer/NavDrawer';
+import NavbarTitle from '@/components/ui/NavbarTitle';
 
 export default function UpperNavbarOptions() {
   const userData = useAppSelector((state) => state.user.data);
@@ -24,13 +24,12 @@ export default function UpperNavbarOptions() {
 
       <NavbarTitle
         variant="h5"
-        display={{ xs: 'flex', md: 'none' }}
-        color={theme.palette.custom.navbar.upper.text}
+        iconButtonSxStyles={{ display: { xs: 'flex', md: 'none' }, color: theme.palette.custom.navbar.upper.text }}
       />
 
       <Box sx={{ height: 1 }}>
-        {!userData ? <UnauthenticatedUpperNavbarOptions /> : null}
-        {userData ? <AuthenticatedUpperNavbarOptions /> : null}
+        {!userData ? <UserAuthentication /> : null}
+        {userData ? <AuthenticatedUserUpperNavbarOptions /> : null}
       </Box>
     </Box>
   );

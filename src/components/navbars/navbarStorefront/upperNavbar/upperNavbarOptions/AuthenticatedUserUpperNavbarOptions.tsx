@@ -10,7 +10,7 @@ import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
 import { useRouter } from 'next/navigation';
 
-export default function AuthenticatedUpperNavbarOptions() {
+export default function AuthenticatedUserUpperNavbarOptions() {
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();

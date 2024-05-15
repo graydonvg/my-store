@@ -28,8 +28,7 @@ export default function LowerNavbarOptions() {
       <Box sx={{ position: 'absolute', left: 0 }}>
         <NavbarTitle
           variant="h6"
-          display="flex"
-          color={theme.palette.custom.navbar.lower.text}
+          iconButtonSxStyles={{ display: 'flex', color: theme.palette.custom.navbar.lower.text }}
         />
       </Box>
       <List

@@ -26,8 +26,7 @@ export default function UpperNavbarOptionsClient({ children }: Props) {
       <Box component="nav">
         <NavbarTitle
           variant="h5"
-          display={{ xs: 'flex', md: 'none' }}
-          color={theme.palette.custom.navbar.upper.text}
+          iconButtonSxStyles={{ display: { xs: 'flex', md: 'none' }, color: theme.palette.custom.navbar.upper.text }}
         />
       </Box>
 

@@ -6,7 +6,7 @@ import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 
-export default function UnauthenticatedUpperNavbarOptions() {
+export default function UserAuthenticationUpperNavbarOptions() {
   return (
     <List
       sx={{ display: 'flex', height: '100%' }}
