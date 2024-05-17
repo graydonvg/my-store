@@ -1,9 +1,9 @@
 'use client';
 
+import LargeAdminPanelNavbar from '@/components/navbars/adminPanelNavbar/LargeAdminPanelNavbar';
+import SmallAdminPanelNavbar from '@/components/navbars/adminPanelNavbar/SmallAdminPanelNavbar';
 import { Container, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
-import SmallNavbarAdminPanel from '@/components/navbars/navbarAdminPanel/SmallNavbarAdminPanel';
-import LargeNavbarAdminPanel from '@/components/navbars/navbarAdminPanel/LargeNavbarAdminPanel';
 
 type Props = {
   children: ReactNode;
@@ -23,7 +23,7 @@ export default function LayoutAdminPanel({ children }: Props) {
     <>
       {!isBelowMedium ? (
         <>
-          <LargeNavbarAdminPanel
+          <LargeAdminPanelNavbar
             drawerWidth={drawerWidth}
             isDrawerOpen={isDrawerOpen}
             toggleDrawer={toggleLargeNavbarDrawer}
@@ -46,7 +46,7 @@ export default function LayoutAdminPanel({ children }: Props) {
         </>
       ) : (
         <>
-          <SmallNavbarAdminPanel />
+          <SmallAdminPanelNavbar />
           <Container
             component="main"
             disableGutters>
