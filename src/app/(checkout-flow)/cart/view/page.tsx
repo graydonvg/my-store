@@ -5,11 +5,9 @@ export default async function CartPage() {
   const { cartItems, wishlistData } = await getCartAndWishlistData();
 
   return (
-    <>
-      <CartPageClient
-        cartItems={cartItems}
-        wishlistData={wishlistData}
-      />
-    </>
+    <CartPageClient
+      cartItems={cartItems}
+      wishlistData={wishlistData}
+    />
   );
 }

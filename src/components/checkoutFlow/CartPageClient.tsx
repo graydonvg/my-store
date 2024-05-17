@@ -18,7 +18,6 @@ export default function CartPageClient({ cartItems, wishlistData }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Dispatch to store to perform checks when editing cart
     dispatch(setCartItems(cartItems ?? []));
     dispatch(setWishlistData(wishlistData ?? []));
   }, [cartItems, wishlistData, dispatch]);

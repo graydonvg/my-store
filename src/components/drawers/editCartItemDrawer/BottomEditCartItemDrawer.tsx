@@ -3,13 +3,16 @@ import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItem } from '@/types';
 import TextButton from '../../ui/buttons/simple/TextButton';
 import EditCartItemDrawerQuantityPicker from './EditCartItemDrawerQuantityPicker';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setIsMovingToWishlist } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
+import addItemToWishlist from '@/services/wishlist/add';
+import { toast } from 'react-toastify';
 
 type Props = {
   cartItem: CartItem;
   isUpdatingCartItem: boolean;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
-  removeCartItem: () => void;
-  moveToWishlist: () => void;
+  removeCartItem: () => Promise<void>;
 };
 
 export default function BottomEditCartItemDrawer({
@@ -17,9 +20,39 @@ export default function BottomEditCartItemDrawer({
   isUpdatingCartItem,
   removeCartItem,
   updateCartItemQuantity,
-  moveToWishlist,
 }: Props) {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.user.data?.userId);
+  const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
+
+  async function moveToWishlist() {
+    const itemExists = wishlistData.some(
+      (item) => item.productId === cartItem.product?.productId && item.size === cartItem.size
+    );
+
+    if (itemExists) {
+      toast.error('Already in wishlist');
+      return;
+    }
+
+    dispatch(setIsMovingToWishlist(true));
+
+    const { success, message } = await addItemToWishlist({
+      size: cartItem.size,
+      productId: cartItem.product?.productId,
+      userId,
+    });
+
+    if (success) {
+      await removeCartItem();
+      toast.success('Moved to wishlist');
+    } else {
+      toast.error(message);
+    }
+
+    dispatch(setIsMovingToWishlist(false));
+  }
 
   return (
     <Box>

@@ -1,19 +1,17 @@
 import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionProps, AccordionSummary, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
-type AccordionProps = {
+type Props = {
   title: string;
-  defaultExpanded: boolean;
   children: ReactNode;
-};
+} & AccordionProps;
 
-export default function AccordionComponent({ title, defaultExpanded, children }: AccordionProps) {
+export default function AccordionComponent({ title, children, ...props }: Props) {
   return (
     <Accordion
       elevation={0}
       disableGutters
-      defaultExpanded={defaultExpanded}
       sx={{
         backgroundColor: 'transparent',
         borderBottom: (theme) => `1px solid ${theme.palette.custom.border}`,
@@ -21,7 +19,8 @@ export default function AccordionComponent({ title, defaultExpanded, children }:
         '&:before': {
           display: 'none',
         },
-      }}>
+      }}
+      {...props}>
       <AccordionSummary expandIcon={<ExpandMore />}>
         <Typography
           component="h2"
