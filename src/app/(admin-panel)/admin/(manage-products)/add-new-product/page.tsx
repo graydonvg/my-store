@@ -15,8 +15,8 @@ import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/Prod
 import { Add } from '@mui/icons-material';
 import ManageProductImagesAdminPanel from '@/components/adminPanel/ManageProductImagesAdminPanel';
 import { Box } from '@mui/material';
-import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
-import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { clearAllProductImagesData } from '@/lib/redux/features/productImages/productImagesSlice';
+import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 
 export default function AdminPanelAddNewProductPage() {
   const router = useRouter();

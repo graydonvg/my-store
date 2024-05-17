@@ -5,7 +5,7 @@ import { MouseEvent } from 'react';
 import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sort';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setSize } from '@/lib/redux/slices/productSelectionDetailsSlice';
+import { setSize } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
 
 type Props = {
   product: Product;

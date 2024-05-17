@@ -9,7 +9,11 @@ import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useState } from 'react';
-import { deleteImageData, setIsDeletingImage, setIsEditImagesDrawerOpen } from '@/lib/redux/slices/productImagesSlice';
+import {
+  deleteImageData,
+  setIsDeletingImage,
+  setIsEditImagesDrawerOpen,
+} from '@/lib/redux/features/productImages/productImagesSlice';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';

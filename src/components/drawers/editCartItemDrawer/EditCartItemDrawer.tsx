@@ -11,7 +11,7 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
 import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
 import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
-import { setCartItemQuantityWillUpdate } from '@/lib/redux/slices/cartSlice';
+import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/cart/cartSlice';
 import addItemToWishlist from '@/services/wishlist/add';
 
 type Props = {
@@ -76,9 +76,9 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     if (itemOfSelectedSizeExists) {
       const newQuantity = itemOfSelectedSizeExists.quantity + cartItem?.quantity!;
 
-      await updateItemQuantity(itemOfSelectedSizeExists.cartItemId, newQuantity);
-
       await removeCartItem();
+
+      await updateItemQuantity(itemOfSelectedSizeExists.cartItemId, newQuantity);
     } else {
       const { success, message } = await updateCartItemSize({
         cartItemId: cartItem?.cartItemId!,

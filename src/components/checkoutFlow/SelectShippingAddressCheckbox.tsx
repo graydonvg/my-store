@@ -1,15 +1,15 @@
 import { Checkbox, TableCell } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Address } from '@/types';
-import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
+import { AddressType } from '@/types';
+import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 
 type Props = {
-  address: Address;
+  address: AddressType;
 };
 
 export default function SelectShippingAddressCheckbox({ address }: Props) {
   const dispatch = useAppDispatch();
-  const selectedAddressId = useAppSelector((state) => state.checkoutData.selectedAddressId);
+  const selectedAddressId = useAppSelector((state) => state.checkout.selectedAddressId);
 
   function selectShippingAddress() {
     const { addressId, userId, createdAt, ...shippingDetails } = address;

@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
-import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectionDetailsSlice';
-import { openDialog } from '@/lib/redux/slices/dialogSlice';
+import { resetProductSelectionDetails } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
+import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../../ui/buttons/ContainedButton';

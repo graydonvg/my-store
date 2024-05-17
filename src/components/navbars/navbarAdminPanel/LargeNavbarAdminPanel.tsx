@@ -1,9 +1,9 @@
 import { Menu } from '@mui/icons-material';
-import { AppBar, Box, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import { ElevationScroll } from '../../ui/ElevationScroll';
-import { useSelectedLayoutSegments } from 'next/navigation';
 import NavDrawerAdminPanel from '../../drawers/NavDrawerAdminPanel';
 import ThemeToggleButton from '../../theme/ThemeToggleButton';
+import AdminPanelNavbarTitle from './AdminPanelNavbarTitle';
 
 type Props = {
   drawerWidth: number;
@@ -12,10 +12,6 @@ type Props = {
 };
 
 export default function LargeNavbarAdminPanel({ drawerWidth, isDrawerOpen, toggleDrawer }: Props) {
-  const theme = useTheme();
-  const segments = useSelectedLayoutSegments();
-  const currentPath = segments.at(-1)?.split('-').join(' ') ?? '';
-
   return (
     <>
       <ElevationScroll>
@@ -25,7 +21,7 @@ export default function LargeNavbarAdminPanel({ drawerWidth, isDrawerOpen, toggl
           sx={{
             // bg color set below to prevent color lightening from elevation scroll
             backgroundColor: 'transparent',
-            zIndex: theme.zIndex.drawer + 1,
+            zIndex: (theme) => theme.zIndex.drawer + 1,
             ...(isDrawerOpen && {
               marginLeft: drawerWidth,
               width: `calc(100% - ${drawerWidth}px)`,
@@ -34,7 +30,7 @@ export default function LargeNavbarAdminPanel({ drawerWidth, isDrawerOpen, toggl
           <Box
             sx={{
               // bg color set here to prevent color lightening from elevation scroll
-              backgroundColor: theme.palette.custom.navbar.upper.background,
+              backgroundColor: (theme) => theme.palette.custom.navbar.upper.background,
             }}>
             <Toolbar>
               <IconButton
@@ -48,15 +44,10 @@ export default function LargeNavbarAdminPanel({ drawerWidth, isDrawerOpen, toggl
                 }}>
                 <Menu />
               </IconButton>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
-                {currentPath}
-              </Typography>
-              <ThemeToggleButton size="medium" />
+              <AdminPanelNavbarTitle />
+              <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', flex: 1 }}>
+                <ThemeToggleButton size="medium" />
+              </Box>
             </Toolbar>
           </Box>
         </AppBar>

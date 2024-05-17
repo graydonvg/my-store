@@ -1,17 +1,17 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { navDrawerReducer } from './slices/navDrawerSlice';
-import { themeReducer } from './slices/themeSlice';
-import { dialogReducer } from './slices/dialogSlice';
-import { productFormReducer } from './slices/productFormSlice';
-import { cartReducer } from './slices/cartSlice';
-import { addressFormReducer } from './slices/addressFormSlice';
-import { accountReducer } from './slices/accountSlice';
-import { checkoutDataReducer } from './slices/checkoutDataSlice';
-import { productSelectionDetailsReducer } from './slices/productSelectionDetailsSlice';
-import { userReducer } from './slices/userSlice';
-import { productImagesReducer } from './slices/productImagesSlice';
-import { wishlistDataReducer } from './slices/wishlistDataSlice';
-import { addressesReducer } from './slices/addressesSlice';
+import { navDrawerReducer } from './features/navDrawer/navDrawerSlice';
+import { themeReducer } from './features/theme/themeSlice';
+import { dialogReducer } from './features/dialog/dialogSlice';
+import { productFormReducer } from './features/productForm/productFormSlice';
+import { cartReducer } from './features/cart/cartSlice';
+import { addressFormReducer } from './features/addressForm/addressFormSlice';
+import { accountReducer } from './features/account/accountSlice';
+import { checkoutReducer } from './features/checkout/checkoutSlice';
+import { productSelectionDetailsReducer } from './features/productSelectionDetails/productSelectionDetailsSlice';
+import { userReducer } from './features/user/userSlice';
+import { productImagesReducer } from './features/productImages/productImagesSlice';
+import { wishlistDataReducer } from './features/wishlistData/wishlistDataSlice';
+import { addressesReducer } from './features/addresses/addressesSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormReducer,
@@ -24,7 +24,7 @@ export const rootReducer = combineReducers({
   wishlist: wishlistDataReducer,
   addressForm: addressFormReducer,
   account: accountReducer,
-  checkoutData: checkoutDataReducer,
+  checkout: checkoutReducer,
   productSelectionDetails: productSelectionDetailsReducer,
   addresses: addressesReducer,
 });

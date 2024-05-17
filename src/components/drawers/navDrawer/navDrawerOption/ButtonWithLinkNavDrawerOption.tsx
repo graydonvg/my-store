@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { ListItemButton, ListItemText } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { usePathname } from 'next/navigation';
 import IconNavDrawerOption from './IconNavDrawerOption';
-import { clearAllProductImagesData } from '@/lib/redux/slices/productImagesSlice';
+import { clearAllProductImagesData } from '@/lib/redux/features/productImages/productImagesSlice';
 
 type Props = {
   path: string;

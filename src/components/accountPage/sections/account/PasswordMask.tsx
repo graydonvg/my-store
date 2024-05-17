@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { setFieldToEdit } from '@/lib/redux/slices/accountSlice';
+import { setFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 import { Typography } from '@mui/material';
 import UserDataAccountPage from '../../UserDataAccountPage';
 import { UserAccountFieldToEdit } from '@/types';

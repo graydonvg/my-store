@@ -2,7 +2,7 @@
 
 import { AppBar, Box, useTheme } from '@mui/material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
-import NavbarTitle from '../ui/NavbarTitle';
+import NavbarTitle from './NavbarTitle';
 
 export default function NavbarWelcomePage() {
   const theme = useTheme();
@@ -22,8 +22,9 @@ export default function NavbarWelcomePage() {
               height: '64px',
             }}>
             <NavbarTitle
+              component="h2"
               variant="h5"
-              iconButtonSxStyles={{ display: 'flex', color: theme.palette.custom.navbar.upper.text }}
+              color={(theme) => theme.palette.custom.navbar.upper.text}
             />
           </Box>
         </CommonNavbarContainer>

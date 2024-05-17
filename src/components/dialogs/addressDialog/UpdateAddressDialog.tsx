@@ -2,8 +2,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import DialogComponent from '../DialogComponent';
 import UpdateAddressForm from '@/components/forms/addressForm/addressForm/UpdateAddressForm';
 import AddressButton from '@/components/addresses/AddressButton';
-import { setAddressFormData } from '@/lib/redux/slices/addressFormSlice';
-import { openDialog } from '@/lib/redux/slices/dialogSlice';
+import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
+import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { AddressStore } from '@/types';
 
 type Props = {

@@ -137,7 +137,7 @@ export type CheckoutData = {
 
 export type InsertAddressDb = Database['public']['Tables']['addresses']['Insert'];
 
-export type Address = Database['public']['Tables']['addresses']['Row'];
+export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressDb = Database['public']['Tables']['addresses']['Update'];
 

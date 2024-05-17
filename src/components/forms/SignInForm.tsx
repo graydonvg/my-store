@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -32,10 +32,11 @@ const defaultFormData = {
 };
 
 type Props = {
+  headerComponent: 'h1' | 'h2';
   children: ReactNode;
 };
 
-export default function SignInForm({ children }: Props) {
+export default function SignInForm({ headerComponent, children }: Props) {
   const theme = useTheme();
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
@@ -110,7 +111,10 @@ export default function SignInForm({ children }: Props) {
         gap: 3,
         paddingBottom: 3,
       }}>
-      <FormHeader text="Sign in" />
+      <FormHeader
+        headerComponent={headerComponent}
+        text="Sign in"
+      />
       <Box
         component="form"
         onSubmit={handleSignInWithPassword}

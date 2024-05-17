@@ -2,10 +2,10 @@ import { ChangeEvent, FormEvent } from 'react';
 import { addNewAddress } from '@/services/users/add';
 import { AddressStore } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/slices/addressFormSlice';
+import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/features/addressForm/addressFormSlice';
 import AddressForm from '../AddressForm';
 
 export default function AddNewAddressForm() {
@@ -48,6 +48,7 @@ export default function AddNewAddressForm() {
 
   return (
     <AddressForm
+      headerText="Add address"
       addressFormData={addressFormData}
       onInputChange={handleInputChange}
       onSubmit={handleAddNewAddress}

@@ -1,6 +1,6 @@
 import DialogComponent from './DialogComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { openDialog } from '@/lib/redux/slices/dialogSlice';
+import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import CreateAuthUserFormAdminPanel from '../forms/CreateAuthUserFormAdminPanel';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';

@@ -1,7 +1,10 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { decrementQuantity, incrementQuantity } from '@/lib/redux/slices/productSelectionDetailsSlice';
+import {
+  decrementQuantity,
+  incrementQuantity,
+} from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
 
 export default function QuantityPickerProductDetails() {
   const dispatch = useAppDispatch();

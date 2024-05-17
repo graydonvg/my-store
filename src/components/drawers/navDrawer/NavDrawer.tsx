@@ -1,12 +1,14 @@
+'use client';
+
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSlice';
 import { Box, useTheme, useMediaQuery, IconButton } from '@mui/material';
 import NavDrawerOptions from './navDrawerOptions/NavDrawerOptions';
 import DrawerComponent from '@/components/drawers/DrawerComponent';
 import { Menu } from '@mui/icons-material';
 import { useEffect } from 'react';
 import DrawerHeader from '../DrawerHeader';
-import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();

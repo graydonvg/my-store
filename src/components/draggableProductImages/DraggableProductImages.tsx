@@ -1,6 +1,6 @@
 import DraggableProductImage from './DraggableProductImage';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setUpdatedImageData } from '@/lib/redux/slices/productImagesSlice';
+import { setUpdatedImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import { DndContext, DragEndEvent, UniqueIdentifier, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';

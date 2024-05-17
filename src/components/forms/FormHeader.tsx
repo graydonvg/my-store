@@ -2,9 +2,10 @@ import { Box, Typography } from '@mui/material';
 
 type Props = {
   text: string;
+  headerComponent: 'h1' | 'h2';
 };
 
-export default function FormHeader({ text }: Props) {
+export default function FormHeader({ text, headerComponent }: Props) {
   return (
     <Box
       sx={{
@@ -19,7 +20,7 @@ export default function FormHeader({ text }: Props) {
         backgroundColor: (theme) => theme.palette.custom.dialog.background.accent,
       }}>
       <Typography
-        component="h2"
+        component={headerComponent}
         variant="h5">
         {text}
       </Typography>

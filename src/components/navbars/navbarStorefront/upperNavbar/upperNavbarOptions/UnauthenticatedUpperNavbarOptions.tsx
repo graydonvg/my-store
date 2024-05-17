@@ -1,15 +1,13 @@
-'use client';
-
 import { List, ListItem } from '@mui/material';
 import DividerUpperNavbarOptions from './DividerUpperNavbarOptions';
 import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 import SignInDialog from '@/components/dialogs/SignInDialog';
 import SignUpDialog from '@/components/dialogs/SignUpDialog';
 
-export default function UserAuthenticationUpperNavbarOptions() {
+export default function UnauthenticatedUpperNavbarOptions() {
   return (
     <List
-      sx={{ display: 'flex', height: '100%' }}
+      sx={{ display: 'flex', height: 1 }}
       disablePadding>
       <ListItem
         disablePadding

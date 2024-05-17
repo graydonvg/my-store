@@ -1,14 +1,8 @@
 import ShippingPageClient from '@/components/checkoutFlow/ShippingPageClient';
-import AddressesStateSetter from '@/components/stateSetters/AddressesStateSetter';
-import getAddresses from '@/lib/db/queries/getAddresses';
+import fetchAddresses from '@/lib/db/queries/fetchAddresses';
 
 export default async function ShippingPage() {
-  const { addresses } = await getAddresses();
+  const { addresses } = await fetchAddresses();
 
-  return (
-    <>
-      <ShippingPageClient />
-      <AddressesStateSetter addresses={addresses} />
-    </>
-  );
+  return <ShippingPageClient addresses={addresses} />;
 }

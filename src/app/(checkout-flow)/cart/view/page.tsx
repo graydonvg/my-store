@@ -1,6 +1,4 @@
 import CartPageClient from '@/components/checkoutFlow/CartPageClient';
-import CartItemsStateSetter from '@/components/stateSetters/CartItemsStateSetter';
-import WishlistDataStateSetter from '@/components/stateSetters/WishlistStateSetter';
 import getCartAndWishlistData from '@/lib/db/queries/getCartAndWishlistData';
 
 export default async function CartPage() {
@@ -8,9 +6,10 @@ export default async function CartPage() {
 
   return (
     <>
-      <CartPageClient cartItems={cartItems} />
-      <CartItemsStateSetter cartItems={cartItems} />
-      <WishlistDataStateSetter wishlistData={wishlistData} />
+      <CartPageClient
+        cartItems={cartItems}
+        wishlistData={wishlistData}
+      />
     </>
   );
 }

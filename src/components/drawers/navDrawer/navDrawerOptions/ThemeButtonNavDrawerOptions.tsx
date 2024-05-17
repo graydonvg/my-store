@@ -1,7 +1,7 @@
 import { useTheme, ListItemButton, ListItemText, Divider, ListItem, IconButton } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggleIcon';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
+import { toggleTheme } from '@/lib/redux/features/theme/themeSlice';
 
 export default function ThemeButtonNavDrawerOptions() {
   const dispatch = useAppDispatch();

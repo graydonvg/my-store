@@ -11,7 +11,17 @@ type Props = {
 export default function UpperNavbarContainer({ children }: Props) {
   return (
     <Box sx={{ backgroundColor: (theme) => theme.palette.custom.navbar.upper.background }}>
-      <CommonNavbarContainer>{children}</CommonNavbarContainer>
+      <CommonNavbarContainer>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: { xs: 'space-between', md: 'flex-end' },
+            height: { xs: '64px', md: '40px' },
+          }}>
+          {children}
+        </Box>
+      </CommonNavbarContainer>
     </Box>
   );
 }

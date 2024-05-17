@@ -6,7 +6,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import ProductFormFieldsAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormFieldsAdminPanel';
-import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 
 type Props = {
   isSubmitting: boolean;

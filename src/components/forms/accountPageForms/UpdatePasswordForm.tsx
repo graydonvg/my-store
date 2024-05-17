@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/slices/accountSlice';
+import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
 import { updateUserPassword } from '@/services/users/update';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';

@@ -1,11 +1,11 @@
-import { AppBar, Box, useMediaQuery, useTheme } from '@mui/material';
-import NavbarTitle from '../ui/NavbarTitle';
+import { AppBar, Box } from '@mui/material';
 import BreadcrumbsComponent from '../ui/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
 import { LocalShippingOutlined, ShoppingCart } from '@mui/icons-material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
-import PaymentButton from '../ui/buttons/PaymentButton';
+import PaymentButton from '../checkoutFlow/PaymentButton';
 import { ElevationScroll } from '../ui/ElevationScroll';
+import NavbarTitle from './NavbarTitle';
 
 const breadcrumbData = [
   { href: '/cart/view', icon: <ShoppingCart />, label: 'cart' },
@@ -13,16 +13,13 @@ const breadcrumbData = [
 ];
 
 export default function NavbarCheckout() {
-  const theme = useTheme();
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
     <ElevationScroll>
       <AppBar
         color="transparent"
         elevation={0}
         position="sticky">
-        <Box sx={{ backgroundColor: theme.palette.custom.navbar.upper.background }}>
+        <Box sx={{ backgroundColor: (theme) => theme.palette.custom.navbar.upper.background }}>
           <CommonNavbarContainer>
             <Box
               sx={{
@@ -31,9 +28,10 @@ export default function NavbarCheckout() {
                 height: '64px',
               }}>
               <NavbarTitle
-                hideText={isBelowSmall ? true : false}
+                component="h3"
                 variant="h5"
-                iconButtonSxStyles={{ display: 'flex', color: theme.palette.custom.navbar.upper.text }}
+                color={(theme) => theme.palette.custom.navbar.upper.text}
+                showOnSmallScreen={false}
               />
               <Box
                 sx={{ margin: '0 auto' }}

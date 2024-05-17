@@ -14,8 +14,8 @@ import updateProductImageData from '@/services/product-image-data/update';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Box } from '@mui/material';
 import ManageProductImagesAdminPanel from '@/components/adminPanel/ManageProductImagesAdminPanel';
-import { clearProductFormData } from '@/lib/redux/slices/productFormSlice';
-import { clearImageData } from '@/lib/redux/slices/productImagesSlice';
+import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
+import { clearImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 
 export default function AdminPanelUpdateProductPage() {
   const router = useRouter();

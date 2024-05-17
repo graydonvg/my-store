@@ -1,7 +1,7 @@
 import { Box, IconButton, useTheme } from '@mui/material';
 import { Spinner } from '../../ui/progress/Spinner';
 import { Close } from '@mui/icons-material';
-import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -17,10 +17,6 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
   const router = useRouter();
   const theme = useTheme();
 
-  useEffect(() => {
-    setIsRemovingCartItem(false);
-  }, [item, setIsRemovingCartItem]);
-
   async function handleRemoveCartItem(event: MouseEvent) {
     event.stopPropagation();
 
@@ -28,12 +24,13 @@ export default function DeleteButtonSmallCartItem({ item, isRemovingCartItem, se
 
     const { success, message } = await deleteItemFromCart(item.cartItemId);
 
-    if (success === true) {
+    if (success) {
       router.refresh();
     } else {
       toast.error(message);
-      setIsRemovingCartItem(false);
     }
+
+    setIsRemovingCartItem(false);
   }
 
   return (

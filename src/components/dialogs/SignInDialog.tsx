@@ -1,7 +1,9 @@
+'use client';
+
 import DialogComponent from './DialogComponent';
 import TextButton from '../ui/buttons/TextButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { openDialog, closeDialog } from '@/lib/redux/slices/dialogSlice';
+import { openDialog, closeDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import SignInForm from '../forms/SignInForm';
 import MuiLink from '../ui/MuiLink';
 import { useTheme } from '@mui/material';
@@ -34,7 +36,7 @@ export default function SignInDialog() {
         }}
       />
       <DialogComponent isOpen={isSignInDialogOpen}>
-        <SignInForm>
+        <SignInForm headerComponent="h2">
           <MuiLink onClick={openSignUpDialog}>Don&apos;t have an account? Sign Up</MuiLink>
         </SignInForm>
       </DialogComponent>

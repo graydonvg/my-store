@@ -9,7 +9,11 @@ import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/generateUniqueFileName';
 import EditProductImagesDrawerAdminPanel from '../drawers/EditProductImagesDrawerAdminPanel';
-import { clearImageUploadProgess, setImageData, setImageUploadProgress } from '@/lib/redux/slices/productImagesSlice';
+import {
+  clearImageUploadProgess,
+  setImageData,
+  setImageUploadProgress,
+} from '@/lib/redux/features/productImages/productImagesSlice';
 
 type Props = {
   isSubmitting: boolean;

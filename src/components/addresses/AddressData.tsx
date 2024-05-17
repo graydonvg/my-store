@@ -2,9 +2,9 @@ import { Box, TableCell, TableRow } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import AddressButtons from './AddressButtons';
-import SelectShippingAddressCheckbox from './SelectShippingAddressCheckbox';
 import Address from './Address';
 import Recipient from './Recipient';
+import SelectShippingAddressCheckbox from '../checkoutFlow/SelectShippingAddressCheckbox';
 
 export default function AddressData() {
   const addresses = useAppSelector((state) => state.addresses.data);

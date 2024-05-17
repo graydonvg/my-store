@@ -1,11 +1,11 @@
 import { Box, Divider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
+import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import OutlinedButton from '../../ui/buttons/OutlinedButton';
-import { selectCartTotal, selectDiscountTotal } from '@/lib/redux/selectors/cartSelectors';
+import { selectCartTotal, selectDiscountTotal } from '@/lib/redux/features/cart/cartSelectors';
 import { formatCurrency } from '@/utils/formatCurrency';
-import CheckoutButton from '../../ui/buttons/CheckoutButton';
+import CheckoutButton from '../../checkoutFlow/CheckoutButton';
 
 export default function FooterCartDrawer() {
   const router = useRouter();

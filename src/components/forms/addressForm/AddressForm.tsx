@@ -8,13 +8,14 @@ import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
 import DeliveryAddressFieldsAddressForm from './DeliveryAddressFieldsAddressForm';
 
 type Props = {
+  headerText: string;
   addressFormData: AddressStore;
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   isDialogLoading: boolean;
 };
 
-export default function AddressForm({ addressFormData, onInputChange, onSubmit, isDialogLoading }: Props) {
+export default function AddressForm({ headerText, addressFormData, onInputChange, onSubmit, isDialogLoading }: Props) {
   return (
     <Box
       sx={{
@@ -23,7 +24,10 @@ export default function AddressForm({ addressFormData, onInputChange, onSubmit, 
         gap: 3,
         paddingBottom: 3,
       }}>
-      <FormHeader text="Add Address" />
+      <FormHeader
+        text={headerText}
+        headerComponent="h2"
+      />
       <Box
         component="form"
         onSubmit={onSubmit}

@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Box, FormControl, Grid, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -136,7 +136,10 @@ export default function CreateAuthUserFormAdminPanel() {
         alignItems: 'flex-start',
         gap: 2,
       }}>
-      <FormHeader text="Create a new user" />
+      <FormHeader
+        text="Create a new user"
+        headerComponent="h2"
+      />
       <Box
         component="form"
         onSubmit={handleCreateAuthUser}

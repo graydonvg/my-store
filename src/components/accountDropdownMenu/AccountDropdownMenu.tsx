@@ -2,11 +2,11 @@ import { useTheme, Typography } from '@mui/material';
 import { ArrowDropDown, AccountCircle, ViewList, Favorite, Security } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
+import { toggleTheme } from '@/lib/redux/features/theme/themeSlice';
 import HoverDropdownMenu from '../ui/HoverDropdownMenu';
 import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
-import SignOutButton from '../ui/buttons/SignOutButton';
+import SignOutButton from '../SignOutButton';
 import { HAS_ADMIN_PANEL_ACCESS } from '@/data';
 
 const iconSize = 'small';

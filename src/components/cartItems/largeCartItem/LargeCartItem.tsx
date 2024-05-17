@@ -2,7 +2,7 @@ import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
-import { selectDiscountedPrice, selectPrice } from '@/lib/redux/selectors/cartSelectors';
+import { selectDiscountedPrice, selectPrice } from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
 import SaleBadgeLargeCartItem from './SaleBadgeLargeCartItem';
 import BottomDetailsLargeCartItem from './BottomDetailsLargeCartItem';

@@ -1,36 +1,14 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import UserDataAccountPage from '../UserDataAccountPage';
-import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/slices/accountSlice';
-import { Fragment, useEffect } from 'react';
-import UpdateFirstNameForm from '@/components/forms/accountPageForms/UpdateFirstNameForm';
-import UpdateLastNameForm from '@/components/forms/accountPageForms/UpdateLastNameForm';
-import UpdateContactNumberForm from '@/components/forms/accountPageForms/UpdateContactNumberForm';
+import { setFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 import { UserAccountFieldToEdit } from '@/types';
-
-const fieldDataMap = {
-  firstName: {
-    label: 'Name',
-    form: <UpdateFirstNameForm />,
-  },
-  lastName: {
-    label: 'Surname',
-    form: <UpdateLastNameForm />,
-  },
-  contactNumber: {
-    label: 'Contact number',
-    form: <UpdateContactNumberForm />,
-  },
-};
+import UpdatePersonalInfoForm from '@/components/forms/accountPageForms/UpdatePersonalInfoForm';
+import { Call, Person } from '@mui/icons-material';
 
 export default function PersonalInformation() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user.data);
   const { fieldToEdit } = useAppSelector((state) => state.account);
-
-  useEffect(() => {
-    dispatch(setFieldToEdit(null));
-    dispatch(setIsUpdatingAccount(false));
-  }, [dispatch, userData]);
 
   function selectFieldToEdit(field: UserAccountFieldToEdit) {
     dispatch(setFieldToEdit(field));
@@ -38,19 +16,50 @@ export default function PersonalInformation() {
 
   return (
     <>
-      {Object.entries(fieldDataMap).map(([fieldName, fieldData]) => (
-        <Fragment key={fieldName}>
-          {fieldToEdit !== fieldName ? (
-            <UserDataAccountPage
-              label={fieldData.label}
-              onClick={() => selectFieldToEdit(fieldName as keyof typeof fieldDataMap)}>
-              {userData?.[fieldName as keyof typeof fieldDataMap] ?? ''}
-            </UserDataAccountPage>
-          ) : null}
+      {fieldToEdit !== 'firstName' ? (
+        <UserDataAccountPage
+          label="Name"
+          onClick={() => selectFieldToEdit('firstName')}>
+          {userData?.firstName ?? ''}
+        </UserDataAccountPage>
+      ) : (
+        <UpdatePersonalInfoForm
+          field="firstName"
+          label="Name"
+          data={userData?.firstName ?? ''}
+          icon={<Person />}
+        />
+      )}
 
-          {fieldToEdit === fieldName ? fieldData.form : null}
-        </Fragment>
-      ))}
+      {fieldToEdit !== 'lastName' ? (
+        <UserDataAccountPage
+          label="Surname"
+          onClick={() => selectFieldToEdit('lastName')}>
+          {userData?.lastName ?? ''}
+        </UserDataAccountPage>
+      ) : (
+        <UpdatePersonalInfoForm
+          field="lastName"
+          label="Surname"
+          data={userData?.lastName ?? ''}
+          icon={<Person />}
+        />
+      )}
+
+      {fieldToEdit !== 'contactNumber' ? (
+        <UserDataAccountPage
+          label="Contact number"
+          onClick={() => selectFieldToEdit('contactNumber')}>
+          {userData?.contactNumber ?? ''}
+        </UserDataAccountPage>
+      ) : (
+        <UpdatePersonalInfoForm
+          field="contactNumber"
+          label="Contact number"
+          data={userData?.contactNumber ?? ''}
+          icon={<Call />}
+        />
+      )}
     </>
   );
 }

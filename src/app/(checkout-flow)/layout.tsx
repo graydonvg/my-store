@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from 'react';
 import { Container, Grid } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import deleteOrder from '@/services/orders/delete';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import NavbarCheckout from '@/components/navbars/NavbarCheckout';
@@ -17,7 +17,7 @@ export default function LayoutCheckoutFlow({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const checkoutData = useAppSelector((state) => state.checkoutData);
+  const checkoutData = useAppSelector((state) => state.checkout);
   const isPaymentPath = pathname.startsWith('/checkout/payment');
   const isCheckoutPath = pathname.startsWith('/checkout');
   const dispatch = useAppDispatch();

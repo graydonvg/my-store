@@ -3,11 +3,11 @@ import ContainedButton from '../../ui/buttons/ContainedButton';
 import { toast } from 'react-toastify';
 import addItemToWishlist from '@/services/wishlist/add';
 import { Product } from '@/types';
-import { openDialog } from '@/lib/redux/slices/dialogSlice';
+import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { setWishlistData } from '@/lib/redux/slices/wishlistDataSlice';
+import { setWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSlice';
 
 type Props = {
   size: string | null;

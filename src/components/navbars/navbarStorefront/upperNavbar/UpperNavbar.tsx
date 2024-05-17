@@ -1,13 +1,20 @@
 import UpperNavbarContainer from './UpperNavbarContainer';
-import UpperNavbarOptionsClient from './upperNavbarOptions/UpperNavbarOptionsClient';
-import UpperNavbarOptionsServer from './upperNavbarOptions/UpperNavbarOptionsServer';
+import AuthenticatedUpperNavbarOptions from './upperNavbarOptions/AuthenticatedUpperNavbarOptions';
+import UnauthenticatedUpperNavbarOptions from './upperNavbarOptions/UnauthenticatedUpperNavbarOptions';
+import fetchUserSessionData from '@/lib/db/queries/fetchUserSessionData';
+import DataInitializer from '@/components/DataInitializer';
+import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
 
-export default function UpperNavbar() {
+export default async function UpperNavbar() {
+  const { authUser, userData, cartItems, wishlistData } = await fetchUserSessionData();
+
   return (
-    <UpperNavbarContainer>
-      <UpperNavbarOptionsClient>
-        <UpperNavbarOptionsServer />
-      </UpperNavbarOptionsClient>
-    </UpperNavbarContainer>
+    <DataInitializer {...{ userData, cartItems, wishlistData }}>
+      <UpperNavbarContainer>
+        <UpperNavbarOptions>
+          {!authUser ? <UnauthenticatedUpperNavbarOptions /> : <AuthenticatedUpperNavbarOptions />}
+        </UpperNavbarOptions>
+      </UpperNavbarContainer>
+    </DataInitializer>
   );
 }

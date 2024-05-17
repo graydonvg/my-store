@@ -7,7 +7,7 @@ import ProductSelectionOptions from './productSelectionOptions/ProductSelectionO
 import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
 import TopProductDetails from './TopProductDetails';
 import { useEffect } from 'react';
-import { resetProductSelectionDetails } from '@/lib/redux/slices/productSelectionDetailsSlice';
+import { resetProductSelectionDetails } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
 import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {

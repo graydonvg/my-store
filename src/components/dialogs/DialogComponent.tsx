@@ -3,7 +3,7 @@ import { Box, IconButton, Dialog, useTheme, LinearProgress, dialogClasses } from
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/data';
-import { closeDialog } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog } from '@/lib/redux/features/dialog/dialogSlice';
 
 type Props = {
   isOpen: boolean;

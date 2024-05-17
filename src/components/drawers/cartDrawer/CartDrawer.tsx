@@ -2,8 +2,8 @@ import { Box, Toolbar, Typography, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import DrawerComponent from '../DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setIsCartOpen } from '@/lib/redux/slices/cartSlice';
-import { selectCartCount } from '@/lib/redux/selectors/cartSelectors';
+import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
+import { selectCartCount } from '@/lib/redux/features/cart/cartSelectors';
 import SmallCartItemList from '../../cartItems/smallCartItemList/SmallCartItemList';
 import FooterCartDrawer from './FooterCartDrawer';
 import UpperNavbarIconButton from '@/components/navbars/navbarStorefront/upperNavbar/UpperNavbarIconButton';
@@ -53,6 +53,7 @@ export default function CartDrawer() {
           <Typography fontSize={12}>{cartCount}</Typography>
         </Box>
       </UpperNavbarIconButton>
+
       <DrawerComponent
         isOpen={{ right: isCartOpen }}
         closeDrawer={closeCartDrawer}

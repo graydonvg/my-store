@@ -1,12 +1,12 @@
 import { List, Box } from '@mui/material';
-import { setIsNavDrawerOpen } from '@/lib/redux/slices/navDrawerSlice';
+import { setIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
-import SignOutButton from '@/components/ui/buttons/SignOutButton';
-import { NAV_OPTIONS_ACCOUNT, NAV_OPTIONS_DEFAULT, HAS_ADMIN_PANEL_ACCESS } from '@/data';
+import SignOutButton from '@/components/SignOutButton';
+import { ACCOUNT_VIEW_NAV_OPTIONS, STORE_VIEW_NAV_OPTIONS, HAS_ADMIN_PANEL_ACCESS } from '@/data';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
-import { NAV_OPTIONS_ADMIN_PANEL } from '@/components/adminPanel/NavOptionsAdminPanel';
+import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
 
 export default function NavDrawerOptions() {
   const userData = useAppSelector((state) => state.user.data);
@@ -21,7 +21,7 @@ export default function NavDrawerOptions() {
   return (
     <Box component="nav">
       <List disablePadding>
-        {HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) ? (
+        {HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) || isAdminPath ? (
           <NavDrawerOption
             onClick={closeDrawer}
             label={isAdminPath ? 'Storefront' : 'Admin Panel'}
@@ -30,7 +30,7 @@ export default function NavDrawerOptions() {
         ) : null}
 
         {isAdminPath
-          ? NAV_OPTIONS_ADMIN_PANEL.map((option) => (
+          ? ADMIN_PANEL_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -41,7 +41,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {!isAdminPath
-          ? NAV_OPTIONS_DEFAULT.map((option) => (
+          ? STORE_VIEW_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -52,7 +52,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {userData && !isAdminPath
-          ? NAV_OPTIONS_ACCOUNT.map((option) => (
+          ? ACCOUNT_VIEW_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -62,7 +62,7 @@ export default function NavDrawerOptions() {
             ))
           : null}
 
-        {userData ? <SignOutButton buttonVariant="temporaryDrawer" /> : null}
+        {userData || isAdminPath ? <SignOutButton buttonVariant="temporaryDrawer" /> : null}
 
         {!isAdminPath ? <ThemeButtonNavDrawerOptions /> : null}
       </List>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { toggleTheme } from '@/lib/redux/slices/themeSlice';
+import { toggleTheme } from '@/lib/redux/features/theme/themeSlice';
 import { IconButton, IconButtonProps, useTheme } from '@mui/material';
 import { ThemeToggleIcon } from './ThemeToggleIcon';
 

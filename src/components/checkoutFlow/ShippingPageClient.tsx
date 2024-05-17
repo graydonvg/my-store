@@ -3,14 +3,26 @@
 import SmallCartItemList from '@/components/cartItems/smallCartItemList/SmallCartItemList';
 import Addresses from '@/components/addresses/Addresses';
 import { Paper, useMediaQuery, useTheme } from '@mui/material';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
 import { BORDER_RADIUS } from '@/data';
+import { useEffect } from 'react';
+import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
+import { AddressType } from '@/types';
 
-export default function ShippingPageClient() {
+type Props = {
+  addresses: AddressType[] | null;
+};
+
+export default function ShippingPageClient({ addresses }: Props) {
+  const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    dispatch(setAddresses(addresses));
+  }, [addresses, dispatch]);
 
   return (
     <Paper

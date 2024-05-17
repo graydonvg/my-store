@@ -1,6 +1,6 @@
 import { FREE_DELIVERY_THRESHOLD } from '@/data';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { selectOrderTotal } from '@/lib/redux/selectors/cartSelectors';
+import { selectOrderTotal } from '@/lib/redux/features/cart/cartSelectors';
 import { Divider, Typography } from '@mui/material';
 
 type Props = {

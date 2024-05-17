@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function SignUp() {
   return (
-    <SignUpForm>
+    <SignUpForm headerComponent="h1">
       <Link href="/welcome/sign-in">
         <MuiLink>Already have an account? Sign in</MuiLink>
       </Link>

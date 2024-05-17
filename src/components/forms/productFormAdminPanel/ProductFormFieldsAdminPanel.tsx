@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '@/components/ui/inputFields/NumberField';
 import { HOME_PAGE_CATEGORIES, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
 import { ChangeEvent, MouseEvent } from 'react';
-import { setProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { InsertProductStore } from '@/types';
 
 type Props = {

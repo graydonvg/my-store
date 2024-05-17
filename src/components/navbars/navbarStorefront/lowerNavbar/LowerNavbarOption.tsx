@@ -1,18 +1,15 @@
-import { Box, Divider, ListItem, Typography, useTheme } from '@mui/material';
+import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Link from 'next/link';
 
 type Props = {
   path: string;
   label: string;
-  isLastNavOption: boolean;
+  showDividerRight: boolean;
   underline: boolean;
 };
 
-export default function LowerNavbarOption({ path, label, isLastNavOption, underline }: Props) {
-  const theme = useTheme();
-  const darkMode = theme.palette.mode === 'dark';
+export default function LowerNavbarOption({ path, label, showDividerRight, underline }: Props) {
   const isSaleOption = label.toLowerCase() === 'sale';
-  const saleOptionHoverColor = darkMode ? theme.palette.secondary.light : theme.palette.secondary.dark;
 
   return (
     <ListItem
@@ -21,7 +18,7 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
       <Box sx={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}>
         <Typography
           component="span"
-          sx={{
+          sx={(theme) => ({
             textTransform: 'none',
             color: theme.palette.custom.navbar.lower.text,
             textDecoration: underline ? 'underline' : 'none',
@@ -36,15 +33,15 @@ export default function LowerNavbarOption({ path, label, isLastNavOption, underl
               color: theme.palette.text.primary,
               textDecorationColor: theme.palette.text.primary,
               ...(isSaleOption && {
-                color: saleOptionHoverColor,
+                color: theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.dark,
                 textDecorationColor: theme.palette.secondary.dark,
               }),
             },
-          }}>
+          })}>
           <Link href={path}>{label}</Link>
         </Typography>
       </Box>
-      {!isLastNavOption ? (
+      {showDividerRight ? (
         <Divider
           orientation="vertical"
           variant="middle"

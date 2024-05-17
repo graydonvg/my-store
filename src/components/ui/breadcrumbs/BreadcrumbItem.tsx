@@ -15,7 +15,7 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
-  const { shippingDetails, isProcessing } = useAppSelector((state) => state.checkoutData);
+  const { shippingDetails, isProcessing } = useAppSelector((state) => state.checkout);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const isPointerEventsDisabled =
     (label === 'payment' && !shippingDetails) ||

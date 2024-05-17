@@ -33,10 +33,10 @@ export const ERROR_MESSAGES = {
 };
 
 ///////////////////////////////////////////////////////////////////////
-// NAV_OPTIONS_ADMIN_PANEL in components/adminPanel/NavOptionsAdminPanel.tsx because of icons
+// ADMIN_PANEL_NAV_OPTIONS in components/AdminPanelNavOptions.tsx because of icons
 ///////////////////////////////////////////////////////////////////////
 
-export const NAV_OPTIONS_DEFAULT = [
+export const STORE_VIEW_NAV_OPTIONS = [
   {
     label: 'Home',
     path: '/',
@@ -63,7 +63,7 @@ export const NAV_OPTIONS_DEFAULT = [
   },
 ];
 
-export const NAV_OPTIONS_ACCOUNT = [
+export const ACCOUNT_VIEW_NAV_OPTIONS = [
   {
     label: 'My Account',
     path: '/account',

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { clearProductFormData, setProductFormData } from '@/lib/redux/slices/productFormSlice';
+import { clearProductFormData, setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import deleteProduct from '@/services/products/delete';
 import revalidateAllData from '@/services/revalidateAllData';
 import { Product } from '@/types';
@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import ContainedButton from '../buttons/ContainedButton';
 import { DeleteForever, Edit } from '@mui/icons-material';
-import { clearAllProductImagesData, setImageData } from '@/lib/redux/slices/productImagesSlice';
+import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import OutlinedButton from '../buttons/OutlinedButton';
 
 type Props = {

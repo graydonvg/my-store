@@ -14,7 +14,7 @@ export default async function getCartAndWishlistData() {
     };
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('users')
     .select(
       'wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
@@ -22,7 +22,7 @@ export default async function getCartAndWishlistData() {
     .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
-  if (!data) {
+  if (error) {
     return {
       cartItems: null,
       wishlistData: null,

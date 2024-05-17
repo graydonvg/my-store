@@ -16,8 +16,8 @@ const initialState: CheckoutData = {
   userId: null,
 };
 
-const checkoutDataSlice = createSlice({
-  name: 'checkoutData',
+const checkoutSlice = createSlice({
+  name: 'checkout',
   initialState,
   reducers: {
     setCheckoutData(state, action: PayloadAction<Partial<CheckoutData>>) {
@@ -29,8 +29,8 @@ const checkoutDataSlice = createSlice({
   },
 });
 
-const { actions, reducer } = checkoutDataSlice;
+const { actions, reducer } = checkoutSlice;
 
 export const { setCheckoutData, resetCheckoutData } = actions;
 
-export const checkoutDataReducer = reducer;
+export const checkoutReducer = reducer;

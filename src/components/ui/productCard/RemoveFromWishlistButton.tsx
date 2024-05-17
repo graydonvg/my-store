@@ -1,7 +1,7 @@
 import { Box, IconButton, useTheme } from '@mui/material';
 import { Spinner } from '../progress/Spinner';
 import { Close } from '@mui/icons-material';
-import { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { deleteItemFromWishlist } from '@/services/wishlist/delete';
@@ -20,10 +20,6 @@ export default function RemoveFromWishlistButton({
   const router = useRouter();
   const theme = useTheme();
 
-  useEffect(() => {
-    setIsRemovingWishlistItem(false);
-  }, [wishlistItemId, setIsRemovingWishlistItem]);
-
   async function handleRemoveWishlistItem(event: MouseEvent) {
     event.preventDefault();
 
@@ -36,8 +32,9 @@ export default function RemoveFromWishlistButton({
       toast.success('Item removed from wishlist');
     } else {
       toast.error(message);
-      setIsRemovingWishlistItem(false);
     }
+
+    setIsRemovingWishlistItem(false);
   }
 
   return (

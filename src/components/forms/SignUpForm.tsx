@@ -4,7 +4,7 @@ import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, Grid, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { closeDialog, setIsDialogLoading } from '@/lib/redux/slices/dialogSlice';
+import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
@@ -59,10 +59,11 @@ const defaultFormData = {
 };
 
 type Props = {
+  headerComponent: 'h1' | 'h2';
   children: ReactNode;
 };
 
-export default function SignUpForm({ children }: Props) {
+export default function SignUpForm({ headerComponent, children }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -127,7 +128,10 @@ export default function SignUpForm({ children }: Props) {
         gap: 3,
         paddingBottom: 3,
       }}>
-      <FormHeader text="Sign up" />
+      <FormHeader
+        headerComponent={headerComponent}
+        text="Sign up"
+      />
       <Box
         component="form"
         onSubmit={handleSignUp}

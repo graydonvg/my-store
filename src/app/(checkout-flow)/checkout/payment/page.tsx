@@ -1,7 +1,7 @@
 'use client';
 
-import { clearCart } from '@/lib/redux/slices/cartSlice';
-import { resetCheckoutData, setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
+import { clearCart } from '@/lib/redux/features/cart/cartSlice';
+import { resetCheckoutData, setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteAllCartItems } from '@/services/cart/delete';
 import updateOrderStatus from '@/services/orders/update';
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 export default function PaymentSuccessPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const checkoutData = useAppSelector((state) => state.checkoutData);
+  const checkoutData = useAppSelector((state) => state.checkout);
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment-status');
   const theme = useTheme();

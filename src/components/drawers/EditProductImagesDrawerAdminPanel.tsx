@@ -7,7 +7,7 @@ import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { Box, Divider, useTheme } from '@mui/material';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import DrawerHeader from './DrawerHeader';
-import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/slices/productImagesSlice';
+import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';
 import DraggableProductImages from '../draggableProductImages/DraggableProductImages';
 
 type Props = {

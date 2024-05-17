@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AddressLoader from './AddressLoader';
 import UpdateAddressDialog from '../dialogs/addressDialog/UpdateAddressDialog';
-import { setAddressToDeleteId } from '@/lib/redux/slices/addressesSlice';
+import { setAddressToDeleteId } from '@/lib/redux/features/addresses/addressesSlice';
 
 type Props = {
   addressId: string;

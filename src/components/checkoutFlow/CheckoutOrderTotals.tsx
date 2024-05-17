@@ -6,11 +6,11 @@ import {
   selectCartTotal,
   selectDiscountTotal,
   selectOrderTotal,
-} from '@/lib/redux/selectors/cartSelectors';
+} from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
 import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
-import CheckoutButton from '@/components/ui/buttons/CheckoutButton';
-import PaymentButton from '@/components/ui/buttons/PaymentButton';
+import CheckoutButton from '@/components/checkoutFlow/CheckoutButton';
+import PaymentButton from '@/components/checkoutFlow/PaymentButton';
 
 export default function CheckoutOrderTotals() {
   const pathname = usePathname();

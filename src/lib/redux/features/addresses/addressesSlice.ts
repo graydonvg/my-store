@@ -1,8 +1,8 @@
-import { Address } from '@/types';
+import { AddressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type State = {
-  data: Address[] | null;
+  data: AddressType[] | null;
   addressToDeleteId: string | null;
 };
 
@@ -15,7 +15,7 @@ const addressesSlice = createSlice({
   name: 'addresses',
   initialState,
   reducers: {
-    setAddresses(state, action: PayloadAction<Address[] | null>) {
+    setAddresses(state, action: PayloadAction<AddressType[] | null>) {
       state.data = action.payload;
     },
     setAddressToDeleteId(state, action: PayloadAction<string | null>) {

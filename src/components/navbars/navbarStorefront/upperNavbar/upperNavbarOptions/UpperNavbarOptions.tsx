@@ -1,36 +1,30 @@
 'use client';
 
-import { useAppSelector } from '@/lib/redux/hooks';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
-import UserAuthentication from './UserAuthenticationUpperNavbarOptions';
-import AuthenticatedUserUpperNavbarOptions from './AuthenticatedUserUpperNavbarOptions';
 import NavDrawer from '@/components/drawers/navDrawer/NavDrawer';
-import NavbarTitle from '@/components/ui/NavbarTitle';
+import { Box } from '@mui/material';
+import { ReactNode } from 'react';
+import NavbarTitle from '@/components/navbars/NavbarTitle';
 
-export default function UpperNavbarOptions() {
-  const userData = useAppSelector((state) => state.user.data);
-  const theme = useTheme();
-  const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
+type Props = {
+  children: ReactNode;
+};
 
+export default function UpperNavbarOptions({ children }: Props) {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: { xs: 'space-between', md: 'flex-end' },
-        height: { xs: '64px', md: '40px' },
-      }}>
-      {isBelowMedium ? <NavDrawer /> : null}
-
-      <NavbarTitle
-        variant="h5"
-        iconButtonSxStyles={{ display: { xs: 'flex', md: 'none' }, color: theme.palette.custom.navbar.upper.text }}
-      />
-
-      <Box sx={{ height: 1 }}>
-        {!userData ? <UserAuthentication /> : null}
-        {userData ? <AuthenticatedUserUpperNavbarOptions /> : null}
+    <>
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        <NavDrawer />
       </Box>
-    </Box>
+      <Box
+        component="nav"
+        sx={{ display: { xs: 'block', md: 'none' } }}>
+        <NavbarTitle
+          component="h3"
+          variant="h5"
+          color={(theme) => theme.palette.custom.navbar.upper.text}
+        />
+      </Box>
+      {children}
+    </>
   );
 }

@@ -1,10 +1,10 @@
-import { setCheckoutData } from '@/lib/redux/slices/checkoutDataSlice';
+import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import payWithStripe from '@/utils/payWithStripe';
 import { toast } from 'react-toastify';
-import BreadcrumbItem from '../breadcrumbs/BreadcrumbItem';
+import BreadcrumbItem from '../ui/breadcrumbs/BreadcrumbItem';
 import { Payment } from '@mui/icons-material';
-import ContainedButton from './ContainedButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
 import addOrder from '@/services/orders/add';
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 export default function PaymentButton({ buttonVariant }: Props) {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const checkoutData = useAppSelector((state) => state.checkoutData);
+  const checkoutData = useAppSelector((state) => state.checkout);
 
   async function addNewOrder() {
     const { success, message, data } = await addOrder({
