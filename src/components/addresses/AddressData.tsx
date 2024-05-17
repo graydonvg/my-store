@@ -1,7 +1,7 @@
 import { Box, TableCell, TableRow } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
-import AddressButtons from './AddressButtons';
+import AddressButtons from './buttons/AddressButtons';
 import Address from './Address';
 import Recipient from './Recipient';
 import SelectShippingAddressCheckbox from '../checkoutFlow/SelectShippingAddressCheckbox';

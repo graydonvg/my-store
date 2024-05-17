@@ -2,13 +2,14 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography 
 import { useAppSelector } from '@/lib/redux/hooks';
 import { BORDER_RADIUS } from '@/data';
 import AddressData from './AddressData';
-import AddAddressDialog from '../dialogs/addressDialog/AddAddressDialog';
+import AddAddressDialogButton from './buttons/AddAddressDialogButton';
+import AddAddressDialog from '../dialogs/AddAddressDialog';
 
 export default function Addresses() {
   const addresses = useAppSelector((state) => state.addresses.data);
 
   return (
-    <Box>
+    <>
       <TableContainer
         sx={{
           marginBottom: 2,
@@ -30,8 +31,9 @@ export default function Addresses() {
         </Table>
       </TableContainer>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 2 }}>
+        <AddAddressDialogButton />
         <AddAddressDialog />
       </Box>
-    </Box>
+    </>
   );
 }

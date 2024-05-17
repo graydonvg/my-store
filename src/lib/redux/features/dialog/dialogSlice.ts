@@ -1,28 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type DialogState = {
+type State = {
   signInDialog: boolean;
   signUpDialog: boolean;
   addUserDialog: boolean;
-  addNewAddressDialog: boolean;
+  addAddressDialog: boolean;
   updateAddressDialog: boolean;
   isDialogLoading: boolean;
 };
 
-const initialState: DialogState = {
+const initialState: State = {
   signInDialog: false,
   signUpDialog: false,
   addUserDialog: false,
-  addNewAddressDialog: false,
+  addAddressDialog: false,
   updateAddressDialog: false,
   isDialogLoading: false,
 };
 
-function handleCloseDialog(state: DialogState) {
-  const openDialogKey = Object.keys(state).find((key) => state[key as keyof DialogState] === true);
+function handleCloseDialog(state: State) {
+  const openDialogKey = Object.keys(state).find((key) => state[key as keyof State] === true);
 
   if (openDialogKey) {
-    state[openDialogKey as keyof DialogState] = false;
+    state[openDialogKey as keyof State] = false;
   } else {
     return;
   }
@@ -32,7 +32,7 @@ const dialogSlice = createSlice({
   name: 'dialog',
   initialState,
   reducers: {
-    openDialog(state, action: PayloadAction<keyof DialogState>) {
+    openDialog(state, action: PayloadAction<keyof State>) {
       state[action.payload] = true;
     },
     closeDialog(state) {

@@ -2,10 +2,10 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Grid } from '@mui/material';
-import Account from '@/components/accountPage/sections/account/Account';
-import PersonalInformation from '@/components/accountPage/sections/PersonalInformation';
+import AccountSection from '@/components/accountPage/sections/accountSection/Account';
+import PersonalInformationSection from '@/components/accountPage/sections/PersonalInformationSection';
 import Addresses from '@/components/addresses/Addresses';
-import SectionContainerAccountPage from '@/components/accountPage/SectionContainerAccountPage';
+import SectionWrapperAccountPage from '@/components/accountPage/SectionWrapperAccountPage';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
@@ -44,21 +44,21 @@ export default function AccountPageClient({ addresses }: Props) {
               flexDirection: 'column',
               gap: 2,
             }}>
-            <SectionContainerAccountPage title="Account">
-              <Account />
-            </SectionContainerAccountPage>
-            <SectionContainerAccountPage title="Personal information">
-              <PersonalInformation />
-            </SectionContainerAccountPage>
+            <SectionWrapperAccountPage title="Account">
+              <AccountSection />
+            </SectionWrapperAccountPage>
+            <SectionWrapperAccountPage title="Personal information">
+              <PersonalInformationSection />
+            </SectionWrapperAccountPage>
           </Box>
         </Grid>
         <Grid
           item
           xs={12}
           md={6}>
-          <SectionContainerAccountPage title="Addresses">
+          <SectionWrapperAccountPage title="Addresses">
             <Addresses />
-          </SectionContainerAccountPage>
+          </SectionWrapperAccountPage>
         </Grid>
       </Grid>
     </Box>

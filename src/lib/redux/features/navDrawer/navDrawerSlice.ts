@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type State = {
+  isNavDrawerOpen: boolean;
+};
+
+const initialState: State = {
   isNavDrawerOpen: false,
 };
 

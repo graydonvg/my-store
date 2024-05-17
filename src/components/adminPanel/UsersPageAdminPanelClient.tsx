@@ -19,7 +19,7 @@ import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter
 import { USER_ROLE_OPTIONS } from '@/data';
 import CustomDataGrid from '../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
-import UsersDataGridToolbarAdminPanel from '../dataGrid/UsersDataGridToolbarAdminPanel';
+import UsersDataGridToolbarAdminPanel from './UsersDataGridToolbarAdminPanel';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';

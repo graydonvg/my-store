@@ -22,7 +22,7 @@ import {
 import dayjs from 'dayjs';
 import DatePickerForDataGridFilter from '../dataGrid/DatePickerForDataGridFilter';
 import { formatCurrency } from '@/utils/formatCurrency';
-import OrdersDataGridToolbarAdminPanel from '../dataGrid/OrdersDataGridToolbarAdminPanel';
+import OrdersDataGridToolbarAdminPanel from './OrdersDataGridToolbarAdminPanel';
 import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import { updateOrderAdmin } from '@/services/admin/update';

@@ -1,13 +1,13 @@
 import { CartItem } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type CartState = {
+type State = {
   isCartOpen: boolean;
   cartItems: CartItem[];
   cartItemQuantityWillUpdate: boolean;
 };
 
-export const initialState: CartState = {
+export const initialState: State = {
   isCartOpen: false,
   cartItems: [],
   cartItemQuantityWillUpdate: false,

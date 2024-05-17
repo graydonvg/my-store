@@ -1,6 +1,6 @@
 'use client';
 
-import Products from '@/components/Products';
+import Products from '@/components/product/Products';
 import RevalidateButton from '@/components/adminPanel/productsPageAdminPanel/RevalidateButton';
 import AddNewProductButtonAdminPanel from '@/components/adminPanel/productsPageAdminPanel/AddNewProductButtonAdminPanel';
 import { Box } from '@mui/material';

@@ -2,24 +2,23 @@ import { ButtonProps, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Props = ButtonProps & {
-  backgroundColor: string;
   children: ReactNode;
 };
 
-export default function UpperNavbarIconButton({ backgroundColor, children, ...props }: Props) {
+export default function UpperNavbarIconButton({ children, ...props }: Props) {
   return (
     <IconButton
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         alignItems: 'center',
         whiteSpace: 'nowrap',
         paddingX: { xs: 0, md: 2 },
         borderRadius: 0,
-        backgroundColor: backgroundColor,
+        backgroundColor: theme.palette.custom.navbar.upper.background,
         '&:hover': {
-          backgroundColor: backgroundColor,
+          backgroundColor: theme.palette.custom.navbar.upper.background,
         },
-      }}
+      })}
       {...props}>
       {children}
     </IconButton>

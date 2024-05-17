@@ -1,5 +1,5 @@
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
-import ProductCard from '@/components/ui/productCard/ProductCard';
+import ProductCard from '@/components/product/productCard/ProductCard';
 import getWishlist from '@/lib/db/queries/getWishlist';
 import { Box, Grid } from '@mui/material';
 

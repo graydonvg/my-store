@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
-import SignOutButton from '../SignOutButton';
+import SignOutButton from '../ui/buttons/complex/SignOutButton';
 
 type Props = {
   drawerWidth: number;

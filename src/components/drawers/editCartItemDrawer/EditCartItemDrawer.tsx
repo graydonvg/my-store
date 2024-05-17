@@ -1,11 +1,9 @@
-import { Box, IconButton, useTheme } from '@mui/material';
-import DrawerComponent from '../DrawerComponent';
+import { Box, useTheme } from '@mui/material';
+import DrawerComponent from '../../ui/DrawerComponent';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
-import { Edit } from '@mui/icons-material';
 import { CartItem } from '@/types';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { deleteItemFromCart } from '@/services/cart/delete';
 import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
@@ -13,6 +11,13 @@ import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
 import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
 import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/cart/cartSlice';
 import addItemToWishlist from '@/services/wishlist/add';
+import {
+  setCartItemToEditId,
+  setIsMovingToWishlist,
+  setIsRemovingCartItem,
+  setIsUpdatingCartItemQuantity,
+  setIsUpdatingCartItemSize,
+} from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
 
 type Props = {
   cartItem: CartItem;
@@ -25,25 +30,23 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const userId = useAppSelector((state) => state.user.data?.userId);
   const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
   const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
-  const [cartItemToEditId, setCartItemToEditId] = useState<string | null>(null);
-  const [isUpdatingCartItemQuantity, setIsUpdatingCartItemQuantity] = useState(false);
-  const [isUpdatingCartItemSize, setIsUpdatingCartItemSize] = useState(false);
-  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
+  const {
+    cartItemToEditId,
+    isMovingToWishlist,
+    isRemovingCartItem,
+    isUpdatingCartItemQuantity,
+    isUpdatingCartItemSize,
+  } = useAppSelector((state) => state.editCartItemDrawer);
   const isUpdatingCartItem =
     isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize || isMovingToWishlist;
 
-  function openDrawer(id: string | null) {
-    setCartItemToEditId(id);
-  }
-
   function closeDrawer() {
     if (isUpdatingCartItem || cartItemQuantityWillUpdate) return;
-    setCartItemToEditId(null);
+    dispatch(setCartItemToEditId(null));
   }
 
   async function updateItemQuantity(cartItemId: string, newQuantity: number) {
-    setIsUpdatingCartItemQuantity(true);
+    dispatch(setIsUpdatingCartItemQuantity(true));
     dispatch(setCartItemQuantityWillUpdate(false));
 
     const { success, message } = await updateCartItemQuantity({
@@ -56,7 +59,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     }
 
     router.refresh();
-    setIsUpdatingCartItemQuantity(false);
+    dispatch(setIsUpdatingCartItemQuantity(false));
   }
 
   async function updateItemSize(size: string) {
@@ -64,7 +67,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
 
     if (size === cartItem?.size) return;
 
-    setIsUpdatingCartItemSize(true);
+    dispatch(setIsUpdatingCartItemSize(true));
 
     const itemOfSelectedSizeExists = cartItems.find(
       (item) =>
@@ -91,12 +94,12 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
         toast.error(message);
       }
 
-      setIsUpdatingCartItemSize(false);
+      dispatch(setIsUpdatingCartItemSize(false));
     }
   }
 
   async function removeCartItem() {
-    setIsRemovingCartItem(true);
+    dispatch(setIsRemovingCartItem(true));
 
     const { success, message } = await deleteItemFromCart(cartItem?.cartItemId!);
 
@@ -106,7 +109,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       toast.error(message);
     }
 
-    setIsRemovingCartItem(false);
+    dispatch(setIsRemovingCartItem(false));
   }
 
   async function moveToWishlist() {
@@ -119,7 +122,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       return;
     }
 
-    setIsMovingToWishlist(true);
+    dispatch(setIsMovingToWishlist(true));
 
     const { success, message } = await addItemToWishlist({
       size: cartItem.size,
@@ -134,52 +137,44 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
       toast.error(message);
     }
 
-    setIsMovingToWishlist(false);
+    dispatch(setIsMovingToWishlist(false));
   }
 
   return (
-    <>
-      <IconButton onClick={() => openDrawer(cartItem?.cartItemId)}>
-        <Edit
-          fontSize="small"
-          sx={{ color: (theme) => theme.palette.text.secondary }}
-        />
-      </IconButton>
-      <DrawerComponent
-        isOpen={{
-          right: cartItemToEditId === cartItem?.cartItemId,
-        }}
-        closeDrawer={closeDrawer}
-        drawerProps={{ sx: { zIndex: theme.zIndex.appBar + 1 } }}
-        paperProps={{
-          sx: {
-            width: { xs: '80vw', sm: '350px' },
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07))',
-          },
+    <DrawerComponent
+      isOpen={{
+        right: cartItemToEditId === cartItem?.cartItemId,
+      }}
+      closeDrawer={closeDrawer}
+      drawerProps={{ sx: { zIndex: theme.zIndex.appBar + 1 } }}
+      paperProps={{
+        sx: {
+          width: { xs: '80vw', sm: '350px' },
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07))',
+        },
+      }}>
+      <Box
+        sx={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          justifyContent: 'space-between',
         }}>
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            justifyContent: 'space-between',
-          }}>
-          {isUpdatingCartItem ? <LoaderEditCartItemDrawer isUpdatingCartItem={isUpdatingCartItem} /> : null}
-          <SizePickerEditCartItemDrawer
-            cartItem={cartItem}
-            isUpdatingCartItem={isUpdatingCartItem}
-            setCartItemSizeOnClick={updateItemSize}
-          />
-          <BottomEditCartItemDrawer
-            cartItem={cartItem}
-            isUpdatingCartItem={isUpdatingCartItem}
-            updateCartItemQuantity={updateItemQuantity}
-            removeCartItem={removeCartItem}
-            moveToWishlist={moveToWishlist}
-          />
-        </Box>
-      </DrawerComponent>
-    </>
+        {isUpdatingCartItem ? <LoaderEditCartItemDrawer isUpdatingCartItem={isUpdatingCartItem} /> : null}
+        <SizePickerEditCartItemDrawer
+          cartItem={cartItem}
+          isUpdatingCartItem={isUpdatingCartItem}
+          setCartItemSizeOnClick={updateItemSize}
+        />
+        <BottomEditCartItemDrawer
+          cartItem={cartItem}
+          isUpdatingCartItem={isUpdatingCartItem}
+          updateCartItemQuantity={updateItemQuantity}
+          removeCartItem={removeCartItem}
+          moveToWishlist={moveToWishlist}
+        />
+      </Box>
+    </DrawerComponent>
   );
 }

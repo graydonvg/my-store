@@ -1,4 +1,4 @@
-import Products from '@/components/Products';
+import Products from '@/components/product/Products';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { getProductsByCategory } from '@/services/products/get';
 

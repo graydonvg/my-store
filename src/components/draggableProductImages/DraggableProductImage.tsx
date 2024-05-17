@@ -3,7 +3,7 @@ import { InsertProductImageDataStore } from '@/types';
 import Image from 'next/image';
 import { BORDER_RADIUS } from '@/data';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
-import TextButton from '../ui/buttons/TextButton';
+import TextButton from '../ui/buttons/simple/TextButton';
 import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';

@@ -10,6 +10,7 @@ import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
 import TopDetailsLargeCartItem from './TopDetailsLargeCartItem';
 import ImageLargeCartItem from './ImageLargeCartItem';
 import PriceLargeCartItem from './PriceLargeCartItem';
+import EditCartItemDrawerButton from './EditCartItemDrawerButton';
 
 type Props = {
   item: CartItem;
@@ -39,6 +40,7 @@ export default function LargeCartItem({ item }: Props) {
           gap: 1,
           zIndex: 1,
         }}>
+        <EditCartItemDrawerButton cartItem={item} />
         <EditCartItemDrawer cartItem={item} />
       </Box>
       <Box

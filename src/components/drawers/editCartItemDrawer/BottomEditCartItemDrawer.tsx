@@ -1,7 +1,7 @@
 import { Box, Divider, useTheme } from '@mui/material';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItem } from '@/types';
-import TextButton from '../../ui/buttons/TextButton';
+import TextButton from '../../ui/buttons/simple/TextButton';
 import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
 
 type Props = {

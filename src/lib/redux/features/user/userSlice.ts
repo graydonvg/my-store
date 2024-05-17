@@ -1,7 +1,7 @@
 import { UserData } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type State = {
+type State = {
   data: UserData | null;
 };
 

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { FormEvent, ReactNode, useState } from 'react';
-import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DeleteForever } from '@mui/icons-material';
 import { getEmptyFormFields } from '@/utils/getEmptyFormFields';

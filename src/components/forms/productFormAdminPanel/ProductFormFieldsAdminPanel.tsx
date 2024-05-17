@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
+import ToggleButtons from '@/components/ui/buttons/simple/ToggleButtons';
 import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';

@@ -4,6 +4,7 @@ import NavDrawer from '@/components/drawers/navDrawer/NavDrawer';
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import NavbarTitle from '@/components/navbars/NavbarTitle';
+import NavDrawerButton from '@/components/ui/buttons/complex/NavDrawerButton';
 
 type Props = {
   children: ReactNode;
@@ -13,6 +14,7 @@ export default function UpperNavbarOptions({ children }: Props) {
   return (
     <>
       <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        <NavDrawerButton />
         <NavDrawer />
       </Box>
       <Box

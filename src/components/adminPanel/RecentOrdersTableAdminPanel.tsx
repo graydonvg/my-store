@@ -18,26 +18,7 @@ import Link from 'next/link';
 import MuiLink from '../ui/MuiLink';
 import CardTitle from './CardTitle';
 
-const headCells = [
-  {
-    label: 'ID',
-  },
-  {
-    label: 'Date',
-  },
-  {
-    label: 'Name',
-  },
-  {
-    label: 'Ship To',
-  },
-  {
-    label: 'Status',
-  },
-  {
-    label: 'Order Total',
-  },
-];
+const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
 type Props = {
   orders: OrdersDataGridDataAdmin[] | null;
@@ -56,13 +37,13 @@ export default function RecentOrdersTableAdminPanel({ orders }: Props) {
           stickyHeader>
           <TableHead>
             <TableRow>
-              {headCells.map((headCell, index) => (
+              {headCellLabels.map((label) => (
                 <TableCell
-                  key={index}
+                  key={label}
                   sx={{
                     backgroundColor: theme.palette.custom.dataGrid.header,
                   }}>
-                  {headCell.label}
+                  {label}
                 </TableCell>
               ))}
             </TableRow>

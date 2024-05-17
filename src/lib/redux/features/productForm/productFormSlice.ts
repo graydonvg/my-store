@@ -34,10 +34,12 @@ function setAvailableSizes(value: string, productFormData: InsertProductStore) {
 }
 
 type State = {
+  isSubmitting: boolean;
   productFormData: InsertProductStore;
 };
 
 const initialState: State = {
+  isSubmitting: false,
   productFormData: {
     category: '',
     deliveryInfo: '',
@@ -72,11 +74,14 @@ const productFormSlice = createSlice({
     clearProductFormData(state) {
       state.productFormData = initialState.productFormData;
     },
+    setIsSubmitting(state, action: PayloadAction<State['isSubmitting']>) {
+      state.isSubmitting = action.payload;
+    },
   },
 });
 
 const { actions, reducer } = productFormSlice;
 
-export const { setProductFormData, clearProductFormData } = actions;
+export const { setProductFormData, clearProductFormData, setIsSubmitting } = actions;
 
 export const productFormReducer = reducer;

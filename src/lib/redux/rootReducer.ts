@@ -12,6 +12,7 @@ import { userReducer } from './features/user/userSlice';
 import { productImagesReducer } from './features/productImages/productImagesSlice';
 import { wishlistDataReducer } from './features/wishlistData/wishlistDataSlice';
 import { addressesReducer } from './features/addresses/addressesSlice';
+import { editCartItemDrawerReducer } from './features/editCartItemDrawer/editCartItemDrawerSlice';
 
 export const rootReducer = combineReducers({
   productForm: productFormReducer,
@@ -27,4 +28,5 @@ export const rootReducer = combineReducers({
   checkout: checkoutReducer,
   productSelectionDetails: productSelectionDetailsReducer,
   addresses: addressesReducer,
+  editCartItemDrawer: editCartItemDrawerReducer,
 });

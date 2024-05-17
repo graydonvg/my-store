@@ -3,7 +3,7 @@ import { setIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSlic
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
-import SignOutButton from '@/components/SignOutButton';
+import SignOutButton from '@/components/ui/buttons/complex/SignOutButton';
 import { ACCOUNT_VIEW_NAV_OPTIONS, STORE_VIEW_NAV_OPTIONS, HAS_ADMIN_PANEL_ACCESS } from '@/data';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';

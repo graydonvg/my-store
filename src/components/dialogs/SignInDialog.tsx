@@ -1,21 +1,14 @@
 'use client';
 
-import DialogComponent from './DialogComponent';
-import TextButton from '../ui/buttons/TextButton';
+import { closeDialog, openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { openDialog, closeDialog } from '@/lib/redux/features/dialog/dialogSlice';
+import DialogComponent from '../ui/DialogComponent';
 import SignInForm from '../forms/SignInForm';
 import MuiLink from '../ui/MuiLink';
-import { useTheme } from '@mui/material';
 
 export default function SignInDialog() {
-  const theme = useTheme();
   const dispatch = useAppDispatch();
   const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
-
-  function openSignInDialog() {
-    dispatch(openDialog('signInDialog'));
-  }
 
   function openSignUpDialog() {
     dispatch(closeDialog());
@@ -23,23 +16,10 @@ export default function SignInDialog() {
   }
 
   return (
-    <>
-      <TextButton
-        label="sign in"
-        onClick={openSignInDialog}
-        sxStyles={{
-          width: { xs: 'fit-content', md: '100px' },
-          minWidth: 'unset',
-          paddingX: { xs: 0, md: 1 },
-          color: theme.palette.custom.navbar.upper.text,
-          height: { xs: 'auto', md: 1 },
-        }}
-      />
-      <DialogComponent isOpen={isSignInDialogOpen}>
-        <SignInForm headerComponent="h2">
-          <MuiLink onClick={openSignUpDialog}>Don&apos;t have an account? Sign Up</MuiLink>
-        </SignInForm>
-      </DialogComponent>
-    </>
+    <DialogComponent isOpen={isSignInDialogOpen}>
+      <SignInForm headerComponent="h2">
+        <MuiLink onClick={openSignUpDialog}>Don&apos;t have an account? Sign Up</MuiLink>
+      </SignInForm>
+    </DialogComponent>
   );
 }

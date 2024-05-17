@@ -9,8 +9,8 @@ import {
 } from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
 import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
-import CheckoutButton from '@/components/checkoutFlow/CheckoutButton';
-import PaymentButton from '@/components/checkoutFlow/PaymentButton';
+import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
+import PaymentButton from '@/components/ui/buttons/complex/PaymentButton';
 
 export default function CheckoutOrderTotals() {
   const pathname = usePathname();

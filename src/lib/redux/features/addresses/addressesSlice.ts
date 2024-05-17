@@ -1,7 +1,7 @@
 import { AddressType } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type State = {
+type State = {
   data: AddressType[] | null;
   addressToDeleteId: string | null;
 };

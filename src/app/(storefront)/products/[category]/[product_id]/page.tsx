@@ -1,4 +1,4 @@
-import ProductDetails from '@/components/productDetails/ProductDetails';
+import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { getAllProducts, getProductById } from '@/services/products/get';
 import { Product } from '@/types';
 

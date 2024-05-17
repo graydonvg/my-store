@@ -13,7 +13,7 @@ import {
   gridClasses,
 } from '@mui/x-data-grid';
 import { ReactNode, useEffect, useMemo } from 'react';
-import CustomNoRowsOverlay from '../dataGrid/CustomNoRowsOverlay';
+import CustomNoRowsOverlay from './CustomNoRowsOverlay';
 import { toast } from 'react-toastify';
 import { calculateTablePagination } from '@/utils/calculate';
 
