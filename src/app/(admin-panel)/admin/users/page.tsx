@@ -1,4 +1,4 @@
-import UsersPageAdminPanelClient from '@/components/adminPanel/UsersPageAdminPanelClient';
+import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAdminPanelClient';
 import { DATA_GRID_DEFAULTS } from '@/data';
 import { getUsersForAdmin } from '@/lib/db/queries/getUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';

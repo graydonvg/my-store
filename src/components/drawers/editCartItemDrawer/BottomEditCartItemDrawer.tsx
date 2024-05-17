@@ -2,7 +2,7 @@ import { Box, Divider, useTheme } from '@mui/material';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItem } from '@/types';
 import TextButton from '../../ui/buttons/simple/TextButton';
-import QuantityPickerEditCartItemDrawer from './QuantityPickerEditCartItemDrawer';
+import EditCartItemDrawerQuantityPicker from './EditCartItemDrawerQuantityPicker';
 
 type Props = {
   cartItem: CartItem;
@@ -34,7 +34,7 @@ export default function BottomEditCartItemDrawer({
           gap: 2,
           opacity: isUpdatingCartItem ? 0.5 : 1,
         }}>
-        <QuantityPickerEditCartItemDrawer
+        <EditCartItemDrawerQuantityPicker
           cartItem={cartItem}
           updateCartItemQuantity={updateCartItemQuantity}
         />

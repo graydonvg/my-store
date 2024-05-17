@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { Container } from '@mui/material';
-import NavbarStorefront from '@/components/navbars/navbarStorefront/NavbarStorefront';
+import StorefrontNavbar from '@/components/navbars/navbarStorefront/StorefrontNavbar';
 
 export default function LayoutStorefront({ children }: { children: ReactNode }) {
   return (
     <>
-      <NavbarStorefront />
+      <StorefrontNavbar />
       <Container
         component="main"
         sx={{

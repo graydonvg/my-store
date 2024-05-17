@@ -4,12 +4,12 @@ import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
-import SaleBadgeLargeCartItem from './SaleBadgeLargeCartItem';
-import BottomDetailsLargeCartItem from './BottomDetailsLargeCartItem';
-import SelectionDetailsLargeCartItem from './SelectionDetailsLargeCartItem';
-import TopDetailsLargeCartItem from './TopDetailsLargeCartItem';
-import ImageLargeCartItem from './ImageLargeCartItem';
-import PriceLargeCartItem from './PriceLargeCartItem';
+import LargeCartItemSaleBadge from './LargeCartItemSaleBadge';
+import LargeCartItemBottomDetails from './LargeCartItemBottomDetails';
+import LargeCartItemSelectionDetails from './LargeCartItemSelectionDetails';
+import LargeCartItemTopDetails from './LargeCartItemTopDetails';
+import LargeCartItemImage from './LargeCartItemImage';
+import LargeCartItemPrice from './LargeCartItemPrice';
 import EditCartItemDrawerButton from './EditCartItemDrawerButton';
 
 type Props = {
@@ -52,14 +52,14 @@ export default function LargeCartItem({ item }: Props) {
           justifyContent: 'flex-start',
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-          <ImageLargeCartItem
+          <LargeCartItemImage
             productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
             imageUrl={imageUrl!}
             productName={item?.product?.name!}
           />
 
           {isBelowSmall ? (
-            <TopDetailsLargeCartItem
+            <LargeCartItemTopDetails
               productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
@@ -76,18 +76,18 @@ export default function LargeCartItem({ item }: Props) {
           }}>
           <Box>
             {!isBelowSmall ? (
-              <TopDetailsLargeCartItem
+              <LargeCartItemTopDetails
                 productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
                 name={item?.product?.name!}
                 brand={item?.product?.brand!}
               />
             ) : null}
           </Box>
-          <SelectionDetailsLargeCartItem
+          <LargeCartItemSelectionDetails
             quantity={item.quantity}
             size={item.size}
           />
-          <BottomDetailsLargeCartItem returnInfo={item.product?.returnInfo!} />
+          <LargeCartItemBottomDetails returnInfo={item.product?.returnInfo!} />
           <Box
             sx={{
               display: 'flex',
@@ -97,8 +97,8 @@ export default function LargeCartItem({ item }: Props) {
               justifyContent: isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            {isOnSale ? <SaleBadgeLargeCartItem percentage={item?.product?.salePercentage!} /> : null}
-            <PriceLargeCartItem
+            {isOnSale ? <LargeCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
+            <LargeCartItemPrice
               price={price}
               discountedPrice={discountedPrice}
               isOnSale={isOnSale}

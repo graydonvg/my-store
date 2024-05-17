@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { selectDiscountedPrice, selectPrice } from '@/lib/redux/features/cart/cartSelectors';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
-import DeleteCartItemButton from './DeleteButtonSmallCartItem';
-import SaleBadgeSmallCartItem from './SaleBadgeSmallCartItem';
-import SelectionDetailsSmallCartItem from './SelectionDetailsSmallCartItem';
-import ImageSmallCartItem from './ImageSmallCartItem';
-import PriceSmallCartItem from './PriceSmallCartItem';
+import DeleteCartItemButton from './SmallCartItemDeleteButton';
+import SmallCartItemSaleBadge from './SmallCartItemSaleBadge';
+import SmallCartItemSelectionDetails from './SelectionDetailsSmallCartItem';
+import SmallCartItemImage from './SmallCartItemImage';
+import SmallCartItemPrice from './SmallCartItemPrice';
 
 type Props = {
   item: CartItem;
@@ -44,7 +44,7 @@ export default function SmallCartItem({ item }: Props) {
         opacity: isRemovingCartItem ? '50%' : null,
         paddingY: 2,
       }}>
-      <ImageSmallCartItem
+      <SmallCartItemImage
         imageUrl={imageUrl!}
         onClick={navigateToProductPage}
         productName={item.product?.name!}
@@ -85,14 +85,14 @@ export default function SmallCartItem({ item }: Props) {
             }}>
             {item?.product?.name}
           </Typography>
-          <SelectionDetailsSmallCartItem
+          <SmallCartItemSelectionDetails
             quantity={item.quantity}
             size={item.size}
           />
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
-          {isOnSale ? <SaleBadgeSmallCartItem percentage={item?.product?.salePercentage!} /> : null}
-          <PriceSmallCartItem
+          {isOnSale ? <SmallCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
+          <SmallCartItemPrice
             price={price}
             discountedPrice={discountedPrice}
             isOnSale={isOnSale}

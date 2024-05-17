@@ -13,7 +13,7 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import revalidateAllData from '@/services/revalidateAllData';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
-import ManageProductImagesAdminPanel from '@/components/adminPanel/manageProductImages/ManageProductImagesAdminPanel';
+import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
 import { Box } from '@mui/material';
 import { clearAllProductImagesData } from '@/lib/redux/features/productImages/productImagesSlice';
 import { clearProductFormData, setIsSubmitting } from '@/lib/redux/features/productForm/productFormSlice';
@@ -116,7 +116,7 @@ export default function AdminPanelAddNewProductPage() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
-      <ManageProductImagesAdminPanel />
+      <ManageProductImages />
       <ProductFormAdminPanel
         onSubmit={handleAddProduct}
         isSubmitting={isSubmitting}

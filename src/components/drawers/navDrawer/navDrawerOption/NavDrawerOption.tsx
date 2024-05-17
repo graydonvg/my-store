@@ -1,6 +1,6 @@
 import { ListItem, Divider } from '@mui/material';
-import ButtonNoLinkNavDrawerOption from './ButtonNoLinkNavDrawerOption';
-import ButtonWithLinkNavDrawerOption from './ButtonWithLinkNavDrawerOption';
+import NavDrawerOptionButtonNoLink from './NavDrawerOptionButtonNoLink';
+import NavDrawerOptionButtonWithLink from './NavDrawerOptionButtonWithLink';
 
 type Props = {
   onClick?: () => void;
@@ -16,13 +16,13 @@ export default function NavDrawerOption({ onClick, path, label }: Props) {
         disablePadding
         onClick={onClick}>
         {path ? (
-          <ButtonWithLinkNavDrawerOption
+          <NavDrawerOptionButtonWithLink
             label={label}
             path={path!}
           />
         ) : null}
         {!path ? (
-          <ButtonNoLinkNavDrawerOption
+          <NavDrawerOptionButtonNoLink
             label={label}
             path={path!}
           />

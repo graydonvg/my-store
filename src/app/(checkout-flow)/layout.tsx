@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import deleteOrder from '@/services/orders/delete';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
-import NavbarCheckout from '@/components/navbars/NavbarCheckout';
+import CheckoutNavbar from '@/components/navbars/CheckoutNavbar';
 
 type Props = {
   children: ReactNode;
@@ -55,7 +55,7 @@ export default function LayoutCheckoutFlow({ children }: Props) {
 
   return (
     <>
-      <NavbarCheckout />
+      <CheckoutNavbar />
       <Container
         component="main"
         sx={{

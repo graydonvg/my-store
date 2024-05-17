@@ -7,9 +7,9 @@ import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculate';
 import { BORDER_RADIUS } from '@/data';
-import SalePercentageBadgeProductCard from './SalePercentageBadgeProductCard';
+import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
 import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';
-import ImageProductCard from './ImageProductCard';
+import ProductCardImage from './ProductCardImage';
 import MoveToCartButton from './MoveToCartButton';
 import RemoveFromWishlistButton from './RemoveFromWishlistButton';
 import { useState } from 'react';
@@ -45,7 +45,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
               display: 'flex',
               flexDirection: 'column',
             }}>
-            <ImageProductCard
+            <ProductCardImage
               productName={product.name}
               imageUrl={imageUrl!}
               imageSizes={imageSizes}
@@ -57,7 +57,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   position: 'absolute',
                   alignSelf: 'flex-start',
                 }}>
-                <SalePercentageBadgeProductCard percentage={product.salePercentage} />
+                <ProductCardSalePercentageBadge percentage={product.salePercentage} />
               </Box>
             ) : null}
 

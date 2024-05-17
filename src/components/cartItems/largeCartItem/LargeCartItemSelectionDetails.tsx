@@ -5,28 +5,29 @@ type Props = {
   size: string;
 };
 
-export default function SmallCartItemSelectionDetails({ quantity, size }: Props) {
+export default function LargeCartItemSelectionDetails({ quantity, size }: Props) {
   return (
-    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
       {[
-        { label: 'QTY', value: quantity },
+        { label: 'Qauntity', value: quantity },
         { label: 'Size', value: size },
       ].map((item) => (
         <Box
           key={item.label}
-          sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          sx={{ display: 'flex', gap: 1, alignItems: 'center', paddingRight: 2 }}>
           <Typography
             lineHeight={1}
             component="span"
-            fontSize={13}
+            fontSize={{ xs: 14, sm: 16 }}
+            fontWeight={600}
             color={(theme) => theme.palette.text.secondary}>
             {item.label}:
           </Typography>
           <Typography
             lineHeight={1}
             component="span"
-            fontWeight={600}
-            fontSize={13}>
+            fontSize={16}
+            fontWeight={600}>
             {item.value}
           </Typography>
         </Box>

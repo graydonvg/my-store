@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppSelector } from '@/lib/redux/hooks';
-import CreateAuthUserFormAdminPanel from '../forms/CreateAuthUserFormAdminPanel';
+import CreateAuthUserForm from '../forms/CreateAuthUserForm';
 import DialogComponent from '../ui/DialogComponent';
 
 export default function CreateAuthUserDialog() {
@@ -9,7 +9,7 @@ export default function CreateAuthUserDialog() {
 
   return (
     <DialogComponent isOpen={isAddUserDialogOpen}>
-      <CreateAuthUserFormAdminPanel />
+      <CreateAuthUserForm />
     </DialogComponent>
   );
 }

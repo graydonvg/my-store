@@ -1,9 +1,9 @@
 import { Product } from '@/types';
 import { Box } from '@mui/material';
-import QuantityPickerProductDetails from './QuantityPickerProductDetails';
+import ProductDetailsQuantityPicker from './ProductDetailsQuantityPicker';
 import AddToCartButton from './AddToCartButton';
 import { useAppSelector } from '@/lib/redux/hooks';
-import SizePickerProductDetails from './SizePickerProductDetails';
+import ProductDetailsSizePicker from './ProductDetailsSizePicker';
 import AddToWishlistButton from './AddToWishlistButton';
 
 type Props = {
@@ -15,8 +15,8 @@ export default function ProductSelectionOptions({ product }: Props) {
 
   return (
     <>
-      <SizePickerProductDetails product={product} />
-      {size ? <QuantityPickerProductDetails /> : null}
+      <ProductDetailsSizePicker product={product} />
+      {size ? <ProductDetailsQuantityPicker /> : null}
       <Box
         sx={{
           display: 'flex',

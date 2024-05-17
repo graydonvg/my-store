@@ -6,9 +6,9 @@ import { CartItem } from '@/types';
 import { toast } from 'react-toastify';
 import { updateCartItemQuantity, updateCartItemSize } from '@/services/cart/update';
 import { deleteItemFromCart } from '@/services/cart/delete';
-import SizePickerEditCartItemDrawer from './SizePickerEditCartItemDrawer';
+import EditCartItemDrawerSizePicker from './EditCartItemDrawerSizePicker';
 import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
-import LoaderEditCartItemDrawer from './LoaderEditCartItemDrawer';
+import EditCartItemDrawerLoader from './EditCartItemDrawerLoader';
 import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/cart/cartSlice';
 import addItemToWishlist from '@/services/wishlist/add';
 import {
@@ -161,8 +161,8 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
           flex: 1,
           justifyContent: 'space-between',
         }}>
-        {isUpdatingCartItem ? <LoaderEditCartItemDrawer isUpdatingCartItem={isUpdatingCartItem} /> : null}
-        <SizePickerEditCartItemDrawer
+        {isUpdatingCartItem ? <EditCartItemDrawerLoader isUpdatingCartItem={isUpdatingCartItem} /> : null}
+        <EditCartItemDrawerSizePicker
           cartItem={cartItem}
           isUpdatingCartItem={isUpdatingCartItem}
           setCartItemSizeOnClick={updateItemSize}

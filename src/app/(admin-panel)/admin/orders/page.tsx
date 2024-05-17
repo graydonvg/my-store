@@ -1,4 +1,4 @@
-import OrdersPageAdminPanelClient from '@/components/adminPanel/OrdersPageAdminPanelClient';
+import OrdersPageAdminPanelClient from '@/components/adminPanel/orders/OrdersPageAdminPanelClient';
 import { DATA_GRID_DEFAULTS } from '@/data';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
