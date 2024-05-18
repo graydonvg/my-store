@@ -1,4 +1,4 @@
-import ShippingPageClient from '@/components/checkoutFlow/ShippingPageClient';
+import ShippingPageClient from '@/components/checkoutFlow/shipping/ShippingPageClient';
 import fetchAddresses from '@/lib/db/queries/fetchAddresses';
 
 export default async function ShippingPage() {

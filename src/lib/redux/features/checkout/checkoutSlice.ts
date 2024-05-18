@@ -12,8 +12,6 @@ const initialState: CheckoutData = {
   },
   shippingDetails: null,
   isProcessing: false,
-  orderId: null,
-  userId: null,
 };
 
 const checkoutSlice = createSlice({

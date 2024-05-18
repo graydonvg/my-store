@@ -4,7 +4,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import AddressButtons from './buttons/AddressButtons';
 import Address from './Address';
 import Recipient from './Recipient';
-import SelectShippingAddressCheckbox from '../checkoutFlow/SelectShippingAddressCheckbox';
+import SelectShippingAddressCheckbox from '../checkoutFlow/shipping/SelectShippingAddressCheckbox';
 
 export default function AddressData() {
   const addresses = useAppSelector((state) => state.addresses.data);

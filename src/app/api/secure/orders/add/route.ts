@@ -36,14 +36,14 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const { orderId } = data[0];
 
-    const createOrderItems = orderData.orderItems.map((item) => {
+    const modifiedOrderItems = orderData.orderItems.map((item) => {
       return {
         ...item,
         orderId: orderId,
       };
     });
 
-    const insertOrderItemsPromise = supabase.from('orderItems').insert(createOrderItems);
+    const insertOrderItemsPromise = supabase.from('orderItems').insert(modifiedOrderItems);
 
     const insertShippingDetailsPromise = supabase
       .from('shippingDetails')

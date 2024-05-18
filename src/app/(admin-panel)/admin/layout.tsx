@@ -9,7 +9,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function LayoutAdminPanel({ children }: Props) {
+export default function AdminPanelLayout({ children }: Props) {
   const drawerWidth: number = 240;
   const theme = useTheme();
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);

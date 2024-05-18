@@ -1,11 +1,8 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { Container, Grid } from '@mui/material';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
-import deleteOrder from '@/services/orders/delete';
+import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import CheckoutNavbar from '@/components/navbars/CheckoutNavbar';
 
@@ -13,45 +10,9 @@ type Props = {
   children: ReactNode;
 };
 
-export default function LayoutCheckoutFlow({ children }: Props) {
+export default function CheckoutFlowLayout({ children }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const checkoutData = useAppSelector((state) => state.checkout);
   const isPaymentPath = pathname.startsWith('/checkout/payment');
-  const isCheckoutPath = pathname.startsWith('/checkout');
-  const dispatch = useAppDispatch();
-  const searchParams = useSearchParams();
-  const paymentStatus = searchParams.get('payment-status');
-  const shouldRedirect =
-    isCheckoutPath && !paymentStatus && cartItems.length === 0 && checkoutData.isProcessing === false;
-
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push('/cart/view');
-    } else if (paymentStatus === 'cancel' && checkoutData.isProcessing) {
-      dispatch(setCheckoutData({ isProcessing: false }));
-
-      if (checkoutData.orderId) {
-        const deleteCanceledOrder = async () => {
-          await deleteOrder(checkoutData.orderId!);
-        };
-
-        deleteCanceledOrder();
-      }
-    } else {
-      return;
-    }
-  }, [
-    dispatch,
-    shouldRedirect,
-    cartItems.length,
-    isCheckoutPath,
-    router,
-    paymentStatus,
-    checkoutData.orderId,
-    checkoutData.isProcessing,
-  ]);
 
   return (
     <>
@@ -62,19 +23,17 @@ export default function LayoutCheckoutFlow({ children }: Props) {
           paddingY: { xs: 2, sm: 3 },
         }}
         maxWidth="lg">
-        {!shouldRedirect ? (
+        <Grid
+          container
+          spacing={2}>
           <Grid
-            container
-            spacing={2}>
-            <Grid
-              item
-              xs={12}
-              md={!isPaymentPath ? 9 : 12}>
-              {children}
-            </Grid>
-            {!isPaymentPath ? <CheckoutOrderTotals /> : null}
+            item
+            xs={12}
+            md={!isPaymentPath ? 9 : 12}>
+            {children}
           </Grid>
-        ) : null}
+          {!isPaymentPath ? <CheckoutOrderTotals /> : null}
+        </Grid>
       </Container>
     </>
   );

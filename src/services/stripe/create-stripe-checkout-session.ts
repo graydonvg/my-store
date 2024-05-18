@@ -1,7 +1,7 @@
-import { CustomResponse, StripeLineItem, StripeCheckoutSessionResponse } from '@/types';
+import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
 
-export async function callStripeSession(
-  lineItems: StripeLineItem[]
+export async function createStripeCheckoutSession(
+  checkoutData: StripeCheckoutData
 ): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
   try {
     const response = await fetch('/api/secure/stripe', {
@@ -9,7 +9,7 @@ export async function callStripeSession(
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(lineItems),
+      body: JSON.stringify(checkoutData),
     });
 
     const data = await response.json();

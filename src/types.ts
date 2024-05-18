@@ -127,8 +127,6 @@ export type CheckoutData = {
     orderTotal: number;
   };
   shippingDetails: OrderShippingDetails | null;
-  orderId: string | null;
-  userId: string | null;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,6 +205,7 @@ export type InsertOrderDb = {
     deliveryFee: number;
     discountTotal: number;
     orderTotal: number;
+    orderStatus: OrderStatus;
   };
   orderItems: { pricePaid: number; productId: string; quantity: number; size: string }[];
   shippingDetails: OrderShippingDetails;
@@ -303,20 +302,25 @@ export type AddProductResponse = {
 
 // 8. Payment
 
-export type StripeCheckoutSessionResponse = {
-  sessionId: string;
-};
-
 export type StripeLineItem = {
   price_data: {
     currency: string;
     product_data: {
-      name: string | undefined;
+      name: string;
       images: string[];
     };
     unit_amount: number;
   };
   quantity: number;
+};
+
+export type StripeCheckoutData = {
+  orderId: string;
+  lineItems: StripeLineItem[];
+};
+
+export type StripeCheckoutSessionResponse = {
+  sessionId: string;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

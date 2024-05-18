@@ -1,4 +1,3 @@
-import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -21,14 +20,13 @@ type Props = ButtonProps & {
 export default function CheckoutButton({ disabled, label, sxStyles, ...props }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const userId = useAppSelector((state) => state.user.data?.userId);
+  const { cartItems } = useAppSelector((state) => state.cart);
   const cartTotal = selectCartTotal(cartItems);
   const discountTotal = selectDiscountTotal(cartItems);
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
 
-  function checkout() {
+  function dispatchCheckoutData() {
     const createOrderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
@@ -45,13 +43,8 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
       setCheckoutData({
         paymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
         orderItems: createOrderItems,
-        userId: userId,
       })
     );
-
-    if (isCartOpen === true) {
-      dispatch(setIsCartOpen(false));
-    }
 
     router.push('/checkout/shipping');
   }
@@ -60,7 +53,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
     <ContainedButton
       color="secondary"
       disabled={disabled}
-      onClick={checkout}
+      onClick={dispatchCheckoutData}
       label={label}
       sxStyles={sxStyles}
       {...props}

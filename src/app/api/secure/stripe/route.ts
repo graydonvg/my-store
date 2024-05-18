@@ -1,4 +1,4 @@
-import { CustomResponse, StripeCheckoutSessionResponse } from '@/types';
+import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createURL from '@/utils/createURL';
@@ -17,28 +17,39 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const lineItems = await request.json();
+    const checkoutData: StripeCheckoutData = await request.json();
 
     if (!authUser)
       return NextResponse.json({
         success: false,
-        message: `Failed to create a Stripe session. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+        message: `Failed to create a Stripe checkout session. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      });
+
+    if (!checkoutData.orderId || !checkoutData.lineItems)
+      return NextResponse.json({
+        success: false,
+        message: 'Failed to create a Stripe checkout session. Order data missing',
       });
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: lineItems,
+      line_items: checkoutData.lineItems,
       mode: 'payment',
-      success_url: `${createURL('/checkout/payment')}?payment-status=success`,
-      cancel_url: `${createURL('/cart/view')}?payment-status=cancel`,
+      success_url: `${createURL('/checkout/payment')}?payment_status=success&order_id=${checkoutData.orderId}`,
+      cancel_url: `${createURL('/cart/view')}?payment_status=cancelled&order_id=${checkoutData.orderId}`,
+      metadata: { orderId: checkoutData.orderId },
     });
 
-    return NextResponse.json({ success: true, message: 'Payment successful.', data: { sessionId: session.id } });
+    return NextResponse.json({
+      success: true,
+      message: 'Stripe checkout session created successfully.',
+      data: { sessionId: session.id },
+    });
   } catch (error) {
     // Axiom error log
     return NextResponse.json({
       success: false,
-      message: 'Failed to process payment. An unexpect error occured.',
+      message: 'Failed to create a Stripe checkout session. An unexpect error occured.',
     });
   }
 }

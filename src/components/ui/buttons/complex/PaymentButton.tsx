@@ -1,10 +1,11 @@
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import payWithStripe from '@/utils/payWithStripe';
+import checkoutWithStripe from '@/utils/checkoutWithStripe';
 import { toast } from 'react-toastify';
 import BreadcrumbItem from '../../../checkoutFlow/breadcrumbs/BreadcrumbItem';
 import { Payment } from '@mui/icons-material';
 import ContainedButton from '../simple/ContainedButton';
+import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
 
 type Props = {
@@ -16,41 +17,39 @@ export default function PaymentButton({ buttonVariant }: Props) {
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkout);
 
-  async function addNewOrder() {
-    const { success, message, data } = await addOrder({
+  async function handleStripeCheckout() {
+    dispatch(setCheckoutData({ isProcessing: true }));
+
+    const orderData: InsertOrderDb = {
       orderDetails: {
         cartTotal: checkoutData.paymentTotals.cartTotal,
         deliveryFee: checkoutData.paymentTotals.deliveryFee,
         discountTotal: checkoutData.paymentTotals.discountTotal,
         orderTotal: checkoutData.paymentTotals.orderTotal,
+        orderStatus: 'awaiting payment',
       },
       orderItems: checkoutData.orderItems,
       shippingDetails: checkoutData.shippingDetails!,
-    });
+    };
 
-    if (!success) {
+    const { success: addOrderSuccess, message: addOrderMessage, data: addOrderData } = await addOrder(orderData);
+
+    if (!addOrderSuccess) {
       dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error(message);
-      return { success };
+      toast.error(addOrderMessage);
+      return;
     }
 
-    dispatch(setCheckoutData({ orderId: data?.orderId }));
+    const orderId = addOrderData?.orderId!;
 
-    return { success };
-  }
+    const { success: checkoutWithStripeSuccess, message: checkoutWithStripeMessage } = await checkoutWithStripe(
+      orderId,
+      cartItems
+    );
 
-  async function createOrderAndPayWithStripe() {
-    dispatch(setCheckoutData({ isProcessing: true }));
-
-    const { success: addNewOrderSuccess } = await addNewOrder();
-
-    if (addNewOrderSuccess) {
-      const { success: paymentSuccess } = await payWithStripe(cartItems);
-
-      if (!paymentSuccess) {
-        dispatch(setCheckoutData({ isProcessing: false }));
-        toast.error('Failed to process payment. Please try again later.');
-      }
+    if (!checkoutWithStripeSuccess) {
+      dispatch(setCheckoutData({ isProcessing: false }));
+      toast.error(checkoutWithStripeMessage);
     }
   }
 
@@ -59,7 +58,7 @@ export default function PaymentButton({ buttonVariant }: Props) {
       {buttonVariant === 'contained' ? (
         <ContainedButton
           disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
-          onClick={createOrderAndPayWithStripe}
+          onClick={handleStripeCheckout}
           label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
           fullWidth
           color="secondary"
@@ -72,7 +71,7 @@ export default function PaymentButton({ buttonVariant }: Props) {
           href="/checkout/payment"
           icon={<Payment />}
           label="payment"
-          onLinkClick={createOrderAndPayWithStripe}
+          onLinkClick={handleStripeCheckout}
         />
       ) : null}
     </>
