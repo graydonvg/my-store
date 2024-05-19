@@ -4,6 +4,8 @@ import OrderTotals from '../orderTotals/OrderTotals';
 import { BORDER_RADIUS } from '@/data';
 import OrderShippingDetails from './OrderShippingDetails';
 import dayjs from 'dayjs';
+import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
 
 type Props = {
   order: OrderData;
@@ -18,7 +20,7 @@ export default function OrderDetails({ order, borderColor }: Props) {
     <Grid
       item
       xs={0}
-      md={3}>
+      md={4}>
       <Box
         sx={{
           border: `1px solid ${borderColor}`,
@@ -30,19 +32,24 @@ export default function OrderDetails({ order, borderColor }: Props) {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-              <Typography
-                component="span"
-                fontSize={14}
-                fontWeight={600}
-                sx={{ color: theme.palette.text.secondary }}>
-                Order Status:
-              </Typography>
-              <Typography
-                component="span"
-                fontSize={14}
-                sx={{ textTransform: 'capitalize' }}>
-                {order.orderStatus}
-              </Typography>
+              <Box sx={{ minWidth: 'fit-content' }}>
+                <Typography
+                  component="span"
+                  fontSize={14}
+                  fontWeight={600}
+                  noWrap
+                  sx={{ color: theme.palette.text.secondary }}>
+                  Order Status:
+                </Typography>
+              </Box>
+              <Box>
+                <Typography
+                  component="span"
+                  fontSize={14}
+                  sx={{ textTransform: 'capitalize' }}>
+                  {order.orderStatus}
+                </Typography>
+              </Box>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Typography
@@ -75,6 +82,19 @@ export default function OrderDetails({ order, borderColor }: Props) {
             />
           </Box>
         </Box>
+        {order.orderStatus === 'awaiting payment' ? (
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingTop: 2 }}>
+            <OutlinedButton
+              label="cancel"
+              fullWidth
+            />
+            <ContainedButton
+              label="pay now"
+              color="success"
+              fullWidth
+            />
+          </Box>
+        ) : null}
       </Box>
     </Grid>
   );

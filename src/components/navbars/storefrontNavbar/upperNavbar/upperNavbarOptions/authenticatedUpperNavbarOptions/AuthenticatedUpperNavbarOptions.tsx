@@ -13,7 +13,9 @@ export default function AuthenticatedUpperNavbarOptions() {
   const { cartItems } = useAppSelector((state) => state.cart);
 
   return (
-    <Box component="nav">
+    <Box
+      component="nav"
+      sx={{ height: 1 }}>
       <List
         sx={{ display: 'flex', height: 1 }}
         disablePadding>
@@ -36,7 +38,7 @@ export default function AuthenticatedUpperNavbarOptions() {
             sx={{ display: { xs: 'none', md: 'flex' } }}>
             <>
               <DividerUpperNavbarOptions />
-              <Box sx={{ padding: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 1 }}>
+              <Box sx={{ paddingX: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 1 }}>
                 <CheckoutButton
                   label="checkout"
                   sxStyles={{ height: '30px', minHeight: '30px' }}

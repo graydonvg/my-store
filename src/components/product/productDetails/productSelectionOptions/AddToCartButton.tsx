@@ -87,7 +87,7 @@ export default function AddToCartButton({ product }: Props) {
       isLoading={isAddingToCart}
       fullWidth
       label={!isAddingToCart ? 'add to cart' : ''}
-      color="primary"
+      color="success"
       startIcon={<AddShoppingCart />}
     />
   );

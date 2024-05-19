@@ -243,6 +243,42 @@ export type Database = {
           }
         ];
       };
+      pendingCheckoutSessions: {
+        Row: {
+          orderId: string;
+          rowId: number;
+          sessionId: string;
+          userId: string | null;
+        };
+        Insert: {
+          orderId?: string;
+          rowId?: number;
+          sessionId: string;
+          userId?: string | null;
+        };
+        Update: {
+          orderId?: string;
+          rowId?: number;
+          sessionId?: string;
+          userId?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'pendingCheckoutSessions_orderId_fkey';
+            columns: ['orderId'];
+            isOneToOne: true;
+            referencedRelation: 'orders';
+            referencedColumns: ['orderId'];
+          },
+          {
+            foreignKeyName: 'pendingCheckoutSessions_userId_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['userId'];
+          }
+        ];
+      };
       productImageData: {
         Row: {
           createdAt: string;

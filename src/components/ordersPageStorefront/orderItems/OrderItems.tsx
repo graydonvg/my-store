@@ -19,7 +19,7 @@ export default function OrderItems({ borderColor, order }: Props) {
     <Grid
       item
       xs={12}
-      md={9}>
+      md={8}>
       {isBelowMedium ? (
         <OrderDetails
           borderColor={borderColor}

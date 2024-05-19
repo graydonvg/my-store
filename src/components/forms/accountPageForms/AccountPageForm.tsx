@@ -32,7 +32,7 @@ export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isS
           disabled={disableSubmit}
           isLoading={isSubmitting}
           fullWidth={false}
-          color="primary"
+          color="success"
           sxStyles={{ minWidth: '96px' }}
         />
         <OutlinedButton

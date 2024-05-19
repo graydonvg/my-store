@@ -17,7 +17,7 @@ export default function UpperNavbarContainer({ children }: Props) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: { xs: 'space-between', md: 'flex-end' },
-            height: { xs: '64px', md: '40px' },
+            height: { xs: '64px', md: '42px' },
           }}>
           {children}
         </Box>

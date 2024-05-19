@@ -45,8 +45,11 @@ export default function LargeAdminPanelNavbar({ drawerWidth, isDrawerOpen, toggl
                 <Menu />
               </IconButton>
               <AdminPanelNavbarTitle />
-              <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', flex: 1 }}>
-                <ThemeToggleButton size="medium" />
+              <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', flex: 1, paddingRight: '4px' }}>
+                <ThemeToggleButton
+                  edge="end"
+                  size="medium"
+                />
               </Box>
             </Toolbar>
           </Box>

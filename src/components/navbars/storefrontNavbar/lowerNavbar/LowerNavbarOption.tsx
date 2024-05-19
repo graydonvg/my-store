@@ -27,6 +27,7 @@ export default function LowerNavbarOption({ path, label, showDividerRight, under
             textUnderlineOffset: 6,
             ...(isSaleOption && {
               color: theme.palette.secondary.main,
+              fontWeight: 'medium',
               textDecorationColor: theme.palette.secondary.main,
             }),
             '&:hover': {

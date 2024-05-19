@@ -35,10 +35,20 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       payment_method_types: ['card'],
       line_items: checkoutData.lineItems,
       mode: 'payment',
-      success_url: `${createURL('/checkout/payment')}?payment_status=success&order_id=${checkoutData.orderId}`,
+      success_url: `${createURL('/checkout/payment/confirmation')}?payment_status=success&order_id=${
+        checkoutData.orderId
+      }`,
       cancel_url: `${createURL('/cart/view')}?payment_status=cancelled&order_id=${checkoutData.orderId}`,
-      metadata: { orderId: checkoutData.orderId },
+      metadata: { userId: authUser.id, orderId: checkoutData.orderId },
     });
+
+    const { error } = await supabase
+      .from('pendingCheckoutSessions')
+      .insert({ sessionId: session.id, userId: authUser.id, orderId: checkoutData.orderId });
+
+    if (error) {
+      return NextResponse.json({ success: false, message: `Failed to add checkout session ID. ${error.message}.` });
+    }
 
     return NextResponse.json({
       success: true,

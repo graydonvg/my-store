@@ -13,8 +13,8 @@ export default async function DashboardAdminPanel() {
   return (
     <Grid
       container
-      spacing={{ xs: 1, sm: 2, md: 3 }}
-      sx={{ padding: { xs: 1, sm: 2, md: 3 } }}>
+      spacing={{ xs: 2, sm: 3 }}
+      sx={{ padding: { xs: 2, sm: 3 } }}>
       <Grid
         item
         xs={12}

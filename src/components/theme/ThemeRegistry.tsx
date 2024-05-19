@@ -1,9 +1,9 @@
 'use client';
 
 import { ReactNode, useMemo } from 'react';
-import { ThemeProvider, createTheme, lighten } from '@mui/material/styles';
+import { ThemeProvider, createTheme, darken, lighten } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { blue, grey, red } from '@mui/material/colors';
+import { blue, green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
@@ -23,6 +23,9 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
           secondary: {
             main: red[700],
           },
+          success: {
+            main: green[700],
+          },
           custom: {
             border: 'rgba(0, 0, 0, 0.3)',
             text: {
@@ -31,7 +34,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
             dialog: {
               background: {
                 primary: '#fff',
-                accent: grey[100],
+                accent: grey[200],
               },
             },
             navbar: {
@@ -65,13 +68,16 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
       : {
           // palette values for dark mode
           background: {
-            default: 'rgba(0, 0, 0, 1)',
+            default: darken(grey[900], 0.5),
           },
           primary: {
             main: blue[700],
           },
           secondary: {
             main: red[700],
+          },
+          success: {
+            main: green[700],
           },
           custom: {
             border: 'rgba(255, 255, 255, 0.3)',
@@ -121,7 +127,7 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const mode = useAppSelector((state) => state.theme.mode);
   const pathname = usePathname();
 
-  const isCheckoutFlow = pathname.startsWith('/cart') || pathname.startsWith('/checkout/shipping');
+  const isCheckoutFlow = pathname.startsWith('/cart') || pathname.startsWith('/checkout');
   const isAdminDashboardPath = pathname.startsWith('/admin/dashboard');
 
   const hasGreyBgColor = isCheckoutFlow || isAdminDashboardPath;

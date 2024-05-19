@@ -13,6 +13,7 @@ import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import signInWithPassword from '@/services/auth/sign-in';
 import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
+import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 
 const formFields = [
   { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email', required: true, icon: <Email /> },
@@ -44,7 +45,6 @@ export default function SignInForm({ headerComponent, children }: Props) {
   const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
-  const darkMode = theme.palette.mode === 'dark';
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -162,17 +162,13 @@ export default function SignInForm({ headerComponent, children }: Props) {
             </Typography>
           </Divider>
           {/* Remember Supabase redirect url for google sign in */}
-          <ContainedButton
+          <OutlinedButton
             onClick={signInWithGoogle}
             disabled={isLoading}
             label="sign in with google"
             type="button"
             fullWidth
             startIcon={<GoogleIcon />}
-            sxStyles={{
-              backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.7)' : theme.palette.grey[900],
-              '&:hover': { backgroundColor: theme.palette.common.black },
-            }}
           />
         </Box>
         {children}

@@ -1,5 +1,4 @@
 import { Favorite } from '@mui/icons-material';
-import ContainedButton from '../../../ui/buttons/simple/ContainedButton';
 import { toast } from 'react-toastify';
 import addItemToWishlist from '@/services/wishlist/add';
 import { Product } from '@/types';
@@ -8,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { setWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSlice';
+import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
 
 type Props = {
   size: string | null;
@@ -59,14 +59,14 @@ export default function AddToWishlistButton({ product, size }: Props) {
   }
 
   return (
-    <ContainedButton
+    <OutlinedButton
       onClick={addToWishlist}
       disabled={isAddingToWishlist}
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}
       color="secondary"
-      startIcon={<Favorite />}
+      startIcon={<Favorite sx={{ color: (theme) => theme.palette.secondary.main }} />}
     />
   );
 }

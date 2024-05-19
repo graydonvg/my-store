@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ListItemButton, ListItemText } from '@mui/material';
+import { ListItemButton, ListItemText, listItemTextClasses } from '@mui/material';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { usePathname } from 'next/navigation';
@@ -33,12 +33,19 @@ export default function NavDrawerOptionButtonWithLink({ path, label }: Props) {
         <ListItemText
           primary={label}
           sx={(theme) => ({
-            color: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
+            color: theme.palette.custom.navbar.lower.text,
             width: 1,
             textDecoration: pathname === path ? 'underline' : 'none',
-            textDecorationColor: isSaleOption ? theme.palette.secondary.main : theme.palette.custom.navbar.lower.text,
+            textDecorationColor: theme.palette.custom.navbar.lower.text,
             textDecorationThickness: 1,
             textUnderlineOffset: 6,
+            ...(isSaleOption && {
+              color: theme.palette.secondary.main,
+              textDecorationColor: theme.palette.secondary.main,
+              [`& .${listItemTextClasses.primary}`]: {
+                fontWeight: 'medium',
+              },
+            }),
           })}
         />
         <NavDrawerOptionIcon label={label} />

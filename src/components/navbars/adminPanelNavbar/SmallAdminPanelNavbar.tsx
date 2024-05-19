@@ -11,7 +11,7 @@ export default function SmallAdminPanelNavbar() {
       <NavDrawerButton />
       <NavDrawer />
       <AdminPanelNavbarTitle />
-      <Box>
+      <Box sx={{ paddingRight: '4px' }}>
         <ThemeToggleButton
           edge="end"
           size="medium"

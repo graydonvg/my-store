@@ -2,17 +2,11 @@ import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import checkoutWithStripe from '@/utils/checkoutWithStripe';
 import { toast } from 'react-toastify';
-import BreadcrumbItem from '../../../checkoutFlow/breadcrumbs/BreadcrumbItem';
-import { Payment } from '@mui/icons-material';
 import ContainedButton from '../simple/ContainedButton';
 import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
 
-type Props = {
-  buttonVariant: 'contained' | 'breadcrumb';
-};
-
-export default function PaymentButton({ buttonVariant }: Props) {
+export default function PaymentButton() {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkout);
@@ -54,26 +48,13 @@ export default function PaymentButton({ buttonVariant }: Props) {
   }
 
   return (
-    <>
-      {buttonVariant === 'contained' ? (
-        <ContainedButton
-          disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
-          onClick={handleStripeCheckout}
-          label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
-          fullWidth
-          color="secondary"
-          isLoading={checkoutData.isProcessing}
-        />
-      ) : null}
-
-      {buttonVariant === 'breadcrumb' ? (
-        <BreadcrumbItem
-          href="/checkout/payment"
-          icon={<Payment />}
-          label="payment"
-          onLinkClick={handleStripeCheckout}
-        />
-      ) : null}
-    </>
+    <ContainedButton
+      disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
+      onClick={handleStripeCheckout}
+      label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
+      fullWidth
+      color="secondary"
+      isLoading={checkoutData.isProcessing}
+    />
   );
 }

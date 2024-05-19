@@ -3,7 +3,6 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   ToggleButtonGroupProps,
-  alpha,
   toggleButtonClasses,
   toggleButtonGroupClasses,
 } from '@mui/material';
@@ -34,28 +33,29 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               aspectRatio: 4 / 3,
               [`&.${toggleButtonGroupClasses.grouped}`]: {
                 color: theme.palette.custom.textField.label,
-                border: `1px solid ${theme.palette.custom.textField.border} !important`,
+                border: `2px solid ${theme.palette.custom.textField.border} !important`,
                 borderRadius: `${BORDER_RADIUS} !important`,
+                margin: 0,
                 '@media (hover: hover)': {
                   '&:hover': {
                     backgroundColor: 'transparent',
                     color: theme.palette.custom.textField.label,
-                    border: `1px solid ${theme.palette.custom.textField.hover} !important`,
+                    border: `2px solid ${theme.palette.custom.textField.hover} !important`,
                   },
                 },
               },
               [`&.${toggleButtonClasses.selected}`]: {
-                color: theme.palette.warning.light,
-                borderColor: `${theme.palette.warning.light} !important`,
-                backgroundColor: alpha(theme.palette.warning.light, 0.1),
+                color: theme.palette.text.primary,
+                border: `2px solid ${theme.palette.text.primary} !important`,
+                backgroundColor: 'transparent',
                 '&:hover': {
-                  backgroundColor: alpha(theme.palette.warning.light, 0.1),
+                  backgroundColor: 'transparent',
                 },
                 '@media (hover: hover)': {
                   '&:hover': {
-                    color: theme.palette.warning.light,
-                    backgroundColor: alpha(theme.palette.warning.light, 0.1),
-                    border: `1px solid ${theme.palette.warning.light} !important`,
+                    color: theme.palette.text.primary,
+                    backgroundColor: 'transparent',
+                    border: `2px solid ${theme.palette.text.primary} !important`,
                   },
                 },
               },

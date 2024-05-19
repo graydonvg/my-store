@@ -47,11 +47,11 @@ export default function AddressForm({ headerText, addressFormData, onInputChange
           onInputChange={onInputChange}
         />
         <ContainedButton
-          label="add"
+          label={!addressFormData.addressId ? 'add' : 'save'}
           disabled={isDialogLoading}
           type="submit"
           fullWidth
-          color="primary"
+          color="success"
           startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
         />
       </Box>

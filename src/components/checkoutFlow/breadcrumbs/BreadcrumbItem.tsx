@@ -15,17 +15,20 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
-  const { shippingDetails, isProcessing } = useAppSelector((state) => state.checkout);
+  const { isProcessing } = useAppSelector((state) => state.checkout);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const isPointerEventsDisabled =
-    (label === 'payment' && !shippingDetails) ||
+    label === 'payment' ||
+    label === 'confirmation' ||
     (label === 'shipping' && cartItems.length === 0) ||
+    (label === 'shipping' && pathname.startsWith('/checkout/payment/confirmation')) ||
+    (label === 'cart' && pathname.startsWith('/checkout/payment/confirmation')) ||
     isProcessing === true;
 
   return (
     <Link
       onClick={onLinkClick}
-      href={href !== '/checkout/payment' ? href : ''}
+      href={href}
       tabIndex={-1}
       style={{
         pointerEvents: isPointerEventsDisabled ? 'none' : 'auto',
@@ -36,24 +39,28 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
           display: 'flex',
           alignItems: 'center',
           padding: 0,
-          color: pathname === href ? theme.palette.primary.light : theme.palette.grey[600],
+          color: theme.palette.text.disabled,
+          ...(pathname === href && {
+            color: theme.palette.primary.light,
+          }),
           [`&.${buttonBaseClasses.root}`]: { minWidth: { xs: 'unset', sm: '64px' } },
           '@media (hover: hover)': {
             '&:hover': {
-              color: pathname === href ? theme.palette.primary.light : theme.palette.grey[400],
-              backgroundColor: theme.palette.custom.navbar.upper.background,
+              color: theme.palette.text.secondary,
+              backgroundColor: 'transparent',
+              ...(pathname === href && {
+                color: theme.palette.primary.light,
+              }),
             },
           },
         }}>
-        {cloneElement(icon, { sx: { mr: 1 }, fontSize: 'small' })}
-        {!isBelowSmall ? (
-          <Typography
-            textTransform="uppercase"
-            fontSize={14}
-            fontWeight={600}>
-            {label}
-          </Typography>
-        ) : null}
+        {!isBelowSmall ? cloneElement(icon, { sx: { marginRight: 1, fontSize: { xs: 16, md: 18 } } }) : null}
+        <Typography
+          textTransform="uppercase"
+          fontWeight={600}
+          sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}>
+          {label}
+        </Typography>
       </Button>
     </Link>
   );

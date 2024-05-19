@@ -26,7 +26,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
   const deliveryFee = selectDeliveryFee(cartItems);
   const orderTotal = selectOrderTotal(cartItems);
 
-  function dispatchCheckoutData() {
+  function handleCheckoutNow() {
     const createOrderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
@@ -53,7 +53,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
     <ContainedButton
       color="secondary"
       disabled={disabled}
-      onClick={dispatchCheckoutData}
+      onClick={handleCheckoutNow}
       label={label}
       sxStyles={sxStyles}
       {...props}

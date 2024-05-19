@@ -2,18 +2,12 @@
 
 import { resetCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { CustomResponse } from '@/types';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { PulseLoader } from 'react-spinners';
-import { toast } from 'react-toastify';
 
-type Props = {
-  clearCartResponse: CustomResponse;
-};
-
-export default function PaymentSuccessful({ clearCartResponse }: Props) {
+export default function PaymentSuccessful() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -24,12 +18,6 @@ export default function PaymentSuccessful({ clearCartResponse }: Props) {
   useEffect(() => {
     dispatch(resetCheckoutData());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!clearCartResponse.success) {
-      toast.error(clearCartResponse.message);
-    }
-  }, [clearCartResponse.success, clearCartResponse.message]);
 
   useEffect(() => {
     const interval = setInterval(() => {

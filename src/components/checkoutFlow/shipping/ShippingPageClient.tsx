@@ -28,7 +28,8 @@ export default function ShippingPageClient({ addresses }: Props) {
     <Paper
       sx={{
         paddingX: 2,
-        paddingY: 4,
+        paddingTop: '12px',
+        paddingBottom: 4,
         display: 'flex',
         flexDirection: 'column',
         gap: 4,

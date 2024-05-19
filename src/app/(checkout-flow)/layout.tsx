@@ -20,7 +20,7 @@ export default function CheckoutFlowLayout({ children }: Props) {
       <Container
         component="main"
         sx={{
-          paddingY: { xs: 2, sm: 3 },
+          paddingY: { xs: 3, sm: 4 },
         }}
         maxWidth="lg">
         <Grid

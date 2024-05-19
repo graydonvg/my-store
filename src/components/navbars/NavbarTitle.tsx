@@ -36,7 +36,7 @@ export default function NavbarTitle({
           noWrap
           sx={{
             color,
-            display: { xs: showOnSmallScreen ? 'block' : 'none', sm: 'block' },
+            display: { xs: showOnSmallScreen ? 'block' : 'none', md: 'block' },
             marginLeft: 1,
             fontFamily: 'monospace',
             fontWeight: 700,

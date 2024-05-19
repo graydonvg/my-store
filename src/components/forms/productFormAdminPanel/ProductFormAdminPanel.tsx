@@ -71,7 +71,7 @@ export default function ProductFormAdminPanel({
         fullWidth
         isLoading={isSubmitting}
         startIcon={submitButtonStartIcon}
-        color="primary"
+        color="success"
       />
     </Box>
   );

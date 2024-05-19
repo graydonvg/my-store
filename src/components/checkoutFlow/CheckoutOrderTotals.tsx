@@ -57,7 +57,7 @@ export default function CheckoutOrderTotals() {
           />
         ) : null}
 
-        {isShippingPath ? <PaymentButton buttonVariant="contained" /> : null}
+        {isShippingPath ? <PaymentButton /> : null}
       </Paper>
     </Grid>
   );
