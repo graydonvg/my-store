@@ -29,9 +29,9 @@ export default function OrderItems({ borderColor, order }: Props) {
       <Box
         sx={{
           border: `1px solid ${borderColor}`,
-          borderTop: isBelowMedium ? 'none' : `1px solid ${borderColor}`,
+          borderTop: { xs: 'none', md: `1px solid ${borderColor}` },
           padding: 2,
-          borderRadius: isBelowMedium ? 'none' : BORDER_RADIUS,
+          borderRadius: { xs: 'none', md: BORDER_RADIUS },
           borderBottomLeftRadius: BORDER_RADIUS,
           borderBottomRightRadius: BORDER_RADIUS,
         }}>

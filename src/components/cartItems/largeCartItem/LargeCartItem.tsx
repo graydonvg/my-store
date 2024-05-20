@@ -1,4 +1,4 @@
-import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
@@ -17,11 +17,9 @@ type Props = {
 };
 
 export default function LargeCartItem({ item }: Props) {
-  const theme = useTheme();
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const price = selectPrice(item);
   const discountedPrice = selectDiscountedPrice(item);
-  const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
@@ -58,13 +56,13 @@ export default function LargeCartItem({ item }: Props) {
             productName={item?.product?.name!}
           />
 
-          {isBelowSmall ? (
+          <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
             <LargeCartItemTopDetails
               productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
-          ) : null}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -74,14 +72,12 @@ export default function LargeCartItem({ item }: Props) {
             paddingTop: { xs: 0, sm: 1 },
             width: 1,
           }}>
-          <Box>
-            {!isBelowSmall ? (
-              <LargeCartItemTopDetails
-                productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
-                name={item?.product?.name!}
-                brand={item?.product?.brand!}
-              />
-            ) : null}
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <LargeCartItemTopDetails
+              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
+              name={item?.product?.name!}
+              brand={item?.product?.brand!}
+            />
           </Box>
           <LargeCartItemSelectionDetails
             quantity={item.quantity}

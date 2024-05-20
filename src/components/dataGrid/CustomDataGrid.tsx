@@ -254,7 +254,7 @@ export default function CustomDataGrid({
           },
 
           [`& .${gridClasses.selectedRowCount}`]: {
-            display: !isBelowSmall ? 'flex' : 'none',
+            display: { xs: 'flex', sm: 'none' },
           },
 
           [`& .${gridClasses.footerContainer}`]: {
