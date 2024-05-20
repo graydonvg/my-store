@@ -8,10 +8,10 @@ export default function StorefrontLayout({ children }: { children: ReactNode }) 
       <StorefrontNavbar />
       <Container
         component="main"
+        maxWidth="lg"
         sx={{
-          paddingY: { xs: 2, sm: 3 },
-        }}
-        maxWidth="lg">
+          padding: { xs: 2, sm: 3 },
+        }}>
         {children}
       </Container>
     </>

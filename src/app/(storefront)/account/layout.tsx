@@ -1,10 +1,16 @@
 import { ReactNode } from 'react';
-import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
+import { Container } from '@mui/material';
 
 type Props = {
   children: ReactNode;
 };
 
 export default function AccountLayout({ children }: Props) {
-  return <CommonLayoutContainer>{children}</CommonLayoutContainer>;
+  return (
+    <Container
+      disableGutters
+      maxWidth="lg">
+      {children}
+    </Container>
+  );
 }

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { Container, Grid } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
-import CheckoutNavbar from '@/components/navbars/CheckoutNavbar';
+import CheckoutNavbar from '@/components/navbars/checkoutNavbar/CheckoutNavbar';
 
 type Props = {
   children: ReactNode;
@@ -19,13 +19,13 @@ export default function CheckoutFlowLayout({ children }: Props) {
       <CheckoutNavbar />
       <Container
         component="main"
+        maxWidth="lg"
         sx={{
-          paddingY: { xs: 3, sm: 4 },
-        }}
-        maxWidth="lg">
+          padding: { xs: 2, sm: 3 },
+        }}>
         <Grid
           container
-          spacing={2}>
+          spacing={{ xs: 2, sm: 3 }}>
           <Grid
             item
             xs={12}

@@ -1,6 +1,12 @@
 import { ReactNode } from 'react';
-import CommonLayoutContainer from '@/components/ui/containers/CommonLayoutContainer';
+import { Container } from '@mui/material';
 
 export default function ProductLayout({ children }: { children: ReactNode }) {
-  return <CommonLayoutContainer>{children}</CommonLayoutContainer>;
+  return (
+    <Container
+      disableGutters
+      maxWidth="lg">
+      {children}
+    </Container>
+  );
 }
