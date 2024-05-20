@@ -32,7 +32,7 @@ export default function BottomEditCartItemDrawer({
     );
 
     if (itemExists) {
-      toast.error('Already in wishlist');
+      toast.info('Already added to wishlist');
       return;
     }
 

@@ -29,18 +29,24 @@ export default function OutlinedButton({ isLoading, label, startIcon, sxStyles, 
         )
       }
       sx={{
-        height: '48px',
+        minHeight: '48px',
         borderRadius: BORDER_RADIUS,
         color: theme.palette.text.primary,
         borderColor: theme.palette.text.primary,
         backgroundColor: 'transparent',
         '&:hover': {
-          color: theme.palette.background.default,
-          backgroundColor: theme.palette.text.primary,
           borderColor: theme.palette.text.primary,
         },
+        '@media (hover: hover)': {
+          '&:hover': {
+            color: theme.palette.background.default,
+            backgroundColor: theme.palette.text.primary,
+            borderColor: theme.palette.text.primary,
+          },
+        },
         '&:active': {
-          backgroundColor: theme.palette.text.primary,
+          color: theme.palette.background.default,
+          backgroundColor: 'transparent',
           borderColor: theme.palette.text.primary,
         },
         ...sxStyles,

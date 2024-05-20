@@ -26,7 +26,7 @@ export default function TextButton({ label, loaderColor, startIcon, isLoading, s
         )
       }
       sx={{
-        height: '48px',
+        minHeight: '48px',
         whiteSpace: 'nowrap',
         '&:hover': {
           backgroundColor: 'transparent',

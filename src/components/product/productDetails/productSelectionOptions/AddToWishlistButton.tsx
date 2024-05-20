@@ -35,7 +35,7 @@ export default function AddToWishlistButton({ product, size }: Props) {
     const itemExists = wishlistData.some((item) => item.productId === product.productId && item.size === size);
 
     if (itemExists) {
-      toast.error('Already in wishlist');
+      toast.info('Already added to wishlist');
       return;
     }
 

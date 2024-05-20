@@ -29,7 +29,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
           <ToggleButton
             key={button.value}
             sx={(theme) => ({
-              height: '56px',
+              minHeight: '56px',
               aspectRatio: 4 / 3,
               [`&.${toggleButtonGroupClasses.grouped}`]: {
                 color: theme.palette.custom.textField.label,
