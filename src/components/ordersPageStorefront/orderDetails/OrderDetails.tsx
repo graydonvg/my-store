@@ -17,7 +17,7 @@ export default function OrderDetails({ order, borderColor }: Props) {
     <Grid
       item
       xs={0}
-      md={4}>
+      md={3}>
       <Box
         sx={{
           border: `1px solid ${borderColor}`,
