@@ -10,6 +10,7 @@ import {
   selectOrderTotal,
   selectDiscountTotal,
 } from '@/lib/redux/features/cart/cartSelectors';
+import { ShoppingCartCheckout } from '@mui/icons-material';
 
 type Props = ButtonProps & {
   disabled?: boolean;
@@ -56,6 +57,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
       onClick={handleCheckoutNow}
       label={label}
       sxStyles={sxStyles}
+      startIcon={<ShoppingCartCheckout />}
       {...props}
     />
   );

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import ContainedButton from '../simple/ContainedButton';
 import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
+import { Payment } from '@mui/icons-material';
 
 export default function PaymentButton() {
   const dispatch = useAppDispatch();
@@ -55,6 +56,7 @@ export default function PaymentButton() {
       fullWidth
       color="secondary"
       isLoading={checkoutData.isProcessing}
+      startIcon={<Payment />}
     />
   );
 }

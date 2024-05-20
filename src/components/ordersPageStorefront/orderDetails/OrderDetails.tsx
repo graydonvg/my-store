@@ -6,6 +6,7 @@ import OrderShippingDetails from './OrderShippingDetails';
 import dayjs from 'dayjs';
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import { Payment } from '@mui/icons-material';
 
 type Props = {
   order: OrderData;
@@ -82,16 +83,19 @@ export default function OrderDetails({ order, borderColor }: Props) {
             />
           </Box>
         </Box>
-        {order.orderStatus === 'awaiting payment' ? (
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingTop: 2 }}>
+        {order.orderStatus === 'awaiting payment' &&
+        order.pendingCheckoutSessionId &&
+        order.pendingCheckoutSessionId.length > 0 ? (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, paddingTop: 2 }}>
             <OutlinedButton
               label="cancel"
-              fullWidth
+              sxStyles={{ minWidth: 'fit-content', flex: 1 }}
             />
             <ContainedButton
               label="pay now"
-              color="success"
-              fullWidth
+              color="secondary"
+              sxStyles={{ minWidth: 'fit-content', flex: 1 }}
+              startIcon={<Payment />}
             />
           </Box>
         ) : null}

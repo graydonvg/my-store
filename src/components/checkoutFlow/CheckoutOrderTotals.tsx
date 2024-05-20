@@ -32,6 +32,7 @@ export default function CheckoutOrderTotals() {
           paddingX: 3,
           paddingY: 4,
           borderRadius: BORDER_RADIUS,
+          minWidth: 'fit-content',
         }}>
         <Typography
           component="h1"

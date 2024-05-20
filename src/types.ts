@@ -197,6 +197,7 @@ export type OrderData = {
   orderStatus: OrderStatus;
   shippingDetails: OrderShippingDetails | null;
   orderItems: OrderItem[];
+  pendingCheckoutSessionId: string | null;
 };
 
 export type InsertOrderDb = {
