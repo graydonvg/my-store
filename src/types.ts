@@ -1,4 +1,3 @@
-import { ChangeEvent } from 'react';
 import { Database } from './lib/supabase/database.types';
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
@@ -29,16 +28,6 @@ export type UserRole = UserRoleDb | null;
 export type UserRoleSelectOptions = UserRoleDb | 'none';
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
-
-export type UserAccountTextFieldData = {
-  id: string;
-  label: string;
-  name: string;
-  type: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDownFunction: () => void;
-};
 
 export type UserAuthData = {
   email: string;
@@ -228,12 +217,6 @@ export type AddOrderResponse = {
 export type WishlistData = {
   size: string;
   productId: string;
-};
-
-export type WishlistItem = {
-  wishlistItemId: string;
-  size: string;
-  product: Product;
 };
 
 export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Insert'];
