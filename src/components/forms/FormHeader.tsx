@@ -14,7 +14,6 @@ export default function FormHeader({ text, headerComponent }: Props) {
         alignItems: 'center',
         padding: 2,
         width: 1,
-        minHeight: '64px',
         backgroundColor: (theme) => theme.palette.custom.dialog.background.accent,
       }}>
       <Typography

@@ -27,7 +27,7 @@ export default function CheckoutNavbar() {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                height: '42px',
+                height: '50px',
               }}>
               <NavbarTitle
                 component="h3"
@@ -58,7 +58,7 @@ export default function CheckoutNavbar() {
                 alignItems: 'center',
                 flexGrow: 1,
                 position: 'relative',
-                minHeight: { xs: '38px', sm: '56px' },
+                minHeight: '48px',
                 height: 'fit-content',
                 paddingY: 1,
               }}>
