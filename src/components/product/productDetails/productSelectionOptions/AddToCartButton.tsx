@@ -89,7 +89,6 @@ export default function AddToCartButton({ product }: Props) {
       label={!isAddingToCart ? 'add to cart' : ''}
       color="secondary"
       startIcon={<AddShoppingCart />}
-      sxStyles={{ minWidth: 'fit-content', flex: 1 }}
     />
   );
 }

@@ -20,8 +20,7 @@ export default function ProductSelectionOptions({ product }: Props) {
       <Box
         sx={{
           display: 'flex',
-          // flexDirection: { xs: 'column', sm: 'row' },
-          flexWrap: 'wrap',
+          flexDirection: { xs: 'column', sm: 'row' },
           gap: 2,
           paddingY: 4,
         }}>

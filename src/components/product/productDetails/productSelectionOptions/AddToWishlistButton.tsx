@@ -67,7 +67,6 @@ export default function AddToWishlistButton({ product, size }: Props) {
       label={!isAddingToWishlist ? 'add to wishlist' : ''}
       color="secondary"
       startIcon={<Favorite sx={{ color: (theme) => theme.palette.secondary.main }} />}
-      sxStyles={{ minWidth: 'fit-content', flex: 1 }}
     />
   );
 }
