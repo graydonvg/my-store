@@ -253,6 +253,10 @@ export default function CustomDataGrid({
             backgroundColor: theme.palette.background.default,
           },
 
+          [`& .${gridClasses.selectedRowCount}`]: {
+            display: !isBelowSmall ? 'flex' : 'none',
+          },
+
           [`& .${gridClasses.footerContainer}`]: {
             backgroundColor: theme.palette.custom.dataGrid.toolbar,
             justifyContent: { xs: 'center', sm: 'space-between' },
