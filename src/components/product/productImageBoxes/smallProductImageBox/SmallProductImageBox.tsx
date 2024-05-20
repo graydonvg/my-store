@@ -57,7 +57,7 @@ export default function SmallProductImageBox({
               }}
               fill
               priority
-              sizes="(min-width: 1280px) 87px, (min-width: 900px) 6.94vw, (min-width: 740px) 93px, (min-width: 600px) calc(6.67vw + 45px), calc(20vw - 13px)"
+              sizes="(min-width: 900px) 928px, (min-width: 600px) 934px, (min-width: 420px) 1102px, 746px)"
               src={productImageData.imageUrl}
               alt={`Image for ${productName ? productName : productImageData.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
