@@ -64,8 +64,7 @@ export default function UpdatePasswordForm() {
       disableSubmit={
         formData.currentPassword.length === 0 ||
         formData.newPassword.length === 0 ||
-        formData.confirmPassword.length === 0 ||
-        isUpdatingAccount
+        formData.confirmPassword.length === 0
       }
       isSubmitting={isUpdatingAccount}
       onCancel={handleCancelUpdateField}>

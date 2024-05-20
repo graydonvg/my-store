@@ -1,12 +1,12 @@
 import { Box, Divider, useTheme } from '@mui/material';
 import { Delete, FavoriteBorder } from '@mui/icons-material';
 import { CartItem } from '@/types';
-import TextButton from '../../ui/buttons/simple/TextButton';
 import EditCartItemDrawerQuantityPicker from './EditCartItemDrawerQuantityPicker';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsMovingToWishlist } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
 import addItemToWishlist from '@/services/wishlist/add';
 import { toast } from 'react-toastify';
+import TextButton from '@/components/ui/buttons/simple/TextButton';
 
 type Props = {
   cartItem: CartItem;

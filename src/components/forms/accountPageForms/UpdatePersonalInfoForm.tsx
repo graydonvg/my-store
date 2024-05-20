@@ -64,7 +64,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
       onSubmit={handleUpdateUserPersonalInfo}
       onCancel={cancelUpdateField}
       isSubmitting={isUpdatingAccount}
-      disableSubmit={formData.length === 0 || isUpdatingAccount}>
+      disableSubmit={formData.length === 0}>
       <CustomTextField
         fullWidth={true}
         label={label}

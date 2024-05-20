@@ -59,7 +59,6 @@ export default function EditProductImagesDrawer() {
         }}>
         <ContainedButton
           onClick={deleteAllImages}
-          disabled={isDeletingAllImages}
           isLoading={isDeletingAllImages}
           label={!isDeletingAllImages ? 'Delete all' : ''}
           color="secondary"

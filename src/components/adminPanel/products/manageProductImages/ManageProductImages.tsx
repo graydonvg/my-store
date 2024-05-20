@@ -76,7 +76,6 @@ export default function ManageProductImages() {
       <EditProductImagesDrawer />
       <ContainedButton
         color="primary"
-        disabled={uploadInProgress || isSubmitting}
         label={
           <>
             {!uploadInProgress ? 'upload images' : ''}
@@ -84,6 +83,7 @@ export default function ManageProductImages() {
           </>
         }
         isLoading={uploadInProgress}
+        disabled={isSubmitting}
         startIcon={<CloudUpload />}
         fullWidth
         component="label"

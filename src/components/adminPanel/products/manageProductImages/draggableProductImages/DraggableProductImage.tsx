@@ -3,7 +3,6 @@ import { InsertProductImageDataStore } from '@/types';
 import Image from 'next/image';
 import { BORDER_RADIUS } from '@/data';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
-import TextButton from '../../../../ui/buttons/simple/TextButton';
 import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
@@ -17,6 +16,7 @@ import {
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
+import TextButton from '@/components/ui/buttons/simple/TextButton';
 
 export type Props = {
   imageData: InsertProductImageDataStore & { id: string };
@@ -76,7 +76,6 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
         sx={{
           borderRadius: BORDER_RADIUS,
           paddingY: 2,
-          opacity: isDeletingCurrentImage ? 0.5 : 1,
           backgroundColor: imageData.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
           transition,
@@ -119,7 +118,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
             <Image
               style={{
                 objectFit: 'cover',
-                opacity: !isImageLoaded ? 0 : 100,
+                opacity: !isImageLoaded ? 0 : isDeletingCurrentImage ? 0.5 : 100,
               }}
               fill
               sizes="(min-width: 600px) 100px, calc(35vw - 25px)"
@@ -150,8 +149,6 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               label={!isDeletingCurrentImage ? 'delete' : ''}
               onClick={deleteImage}
               isLoading={isDeletingCurrentImage}
-              loaderColor={theme.palette.text.primary}
-              disabled={isDeletingCurrentImage}
               startIcon={<DeleteForever />}
               sxStyles={{
                 color: theme.palette.text.secondary,

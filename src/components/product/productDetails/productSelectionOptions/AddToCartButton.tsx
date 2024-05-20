@@ -83,7 +83,6 @@ export default function AddToCartButton({ product }: Props) {
   return (
     <ContainedButton
       onClick={addToCart}
-      disabled={isAddingToCart}
       isLoading={isAddingToCart}
       fullWidth
       label={!isAddingToCart ? 'add to cart' : ''}

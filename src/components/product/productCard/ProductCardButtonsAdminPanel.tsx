@@ -98,7 +98,7 @@ export default function ProductCardButtonsAdminPanel({ product }: Props) {
         startIcon={<Edit />}
       />
       <ContainedButton
-        disabled={isDeletingProduct || isLoading}
+        disabled={isLoading}
         onClick={permanentlyDeleteProduct}
         fullWidth
         label={!isDeletingProduct ? 'delete' : ''}

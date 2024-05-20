@@ -149,7 +149,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
           <ContainedButton
             type="submit"
             label={!isSignInDialogOpen && isLoading ? '' : 'sign in'}
-            disabled={isLoading}
+            disabled={isSignInDialogOpen && isLoading}
             isLoading={!isSignInDialogOpen && isLoading}
             fullWidth
             color="primary"

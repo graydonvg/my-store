@@ -26,6 +26,7 @@ export default function ContainedButton({ isLoading, label, startIcon, sxStyles,
         )
       }
       sx={{
+        pointerEvents: !isLoading ? 'auto' : 'none',
         borderRadius: BORDER_RADIUS,
         minHeight: '48px',
         ...sxStyles,

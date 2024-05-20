@@ -164,7 +164,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
         </Grid>
         <ContainedButton
           label={!isSignUpDialogOpen && isLoading ? '' : 'sign up'}
-          disabled={isLoading}
+          disabled={isSignUpDialogOpen && isLoading}
           isLoading={!isSignUpDialogOpen && isLoading}
           type="submit"
           sxStyles={{

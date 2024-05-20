@@ -29,6 +29,7 @@ export default function OutlinedButton({ isLoading, label, startIcon, sxStyles, 
         )
       }
       sx={{
+        pointerEvents: !isLoading ? 'auto' : 'none',
         minHeight: '48px',
         borderRadius: BORDER_RADIUS,
         color: theme.palette.text.primary,

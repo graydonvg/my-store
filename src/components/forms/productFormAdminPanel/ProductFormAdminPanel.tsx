@@ -63,7 +63,6 @@ export default function ProductFormAdminPanel({
         type="submit"
         disabled={
           uploadInProgress ||
-          isSubmitting ||
           isClearingAllFields ||
           (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0

@@ -61,7 +61,6 @@ export default function AddToWishlistButton({ product, size }: Props) {
   return (
     <OutlinedButton
       onClick={addToWishlist}
-      disabled={isAddingToWishlist}
       isLoading={isAddingToWishlist}
       fullWidth
       label={!isAddingToWishlist ? 'add to wishlist' : ''}

@@ -52,7 +52,7 @@ export default function PaymentButton() {
 
   return (
     <ContainedButton
-      disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
+      disabled={!checkoutData.shippingDetails || cartItems.length === 0}
       onClick={addOrderAndCheckoutWithStripe}
       label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
       fullWidth

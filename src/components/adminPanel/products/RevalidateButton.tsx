@@ -28,7 +28,6 @@ export default function RevalidateButton() {
 
   return (
     <OutlinedButton
-      disabled={isLoading}
       onClick={revalidateAndRefresh}
       fullWidth
       label={!isLoading ? 'revalidate' : ''}

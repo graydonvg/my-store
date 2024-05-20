@@ -67,7 +67,6 @@ export default function UsersDataGridToolbar({ isDeleting, onDeleteClick, number
             color="secondary"
             onClick={onDeleteClick}
             isLoading={isDeleting}
-            disabled={isDeleting}
             sxStyles={{ height: '32px', minHeight: '32px', minWidth: '124.53px' }}
           />
         ) : (
