@@ -26,7 +26,7 @@ export default async function WishlistPage() {
                 product={item.product}
                 wishlistSize={item.size}
                 wishlistItemId={item.wishlistItemId}
-                imageSizes="(min-width: 1200px) 172px, (min-width: 600px) calc(25vw - 30px), calc(50vw - 24px)"
+                imageSizes="532px"
               />
             </Grid>
           ))}

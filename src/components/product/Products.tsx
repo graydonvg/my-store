@@ -22,7 +22,7 @@ export default function Products({ products }: Props) {
           lg={2}>
           <ProductCard
             product={product}
-            imageSizes="(min-width: 1200px) 172px, (min-width: 600px) calc(25vw - 30px), calc(50vw - 24px)"
+            imageSizes="532px"
           />
         </Grid>
       ))}

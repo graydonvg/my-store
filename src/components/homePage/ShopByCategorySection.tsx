@@ -62,7 +62,7 @@ export default function ShopByCategorySection() {
                   opacity: !isCategoryImageLoaded ? 0 : 100,
                 }}
                 fill
-                sizes="(min-width: 1280px) 368px, (min-width: 600px) calc(30.3vw - 14px), calc(100vw - 32px)"
+                sizes="(min-width: 600px) 736px, 1106px"
                 src={category.imageSrc}
                 alt={`Image for category ${category.label}`}
                 onLoad={() => setIsCategoryImageLoaded(true)}
