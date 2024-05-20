@@ -1,4 +1,4 @@
-export function formatCurrency(price: number) {
+export function roundAndFormatCurrency(price: number) {
   const roundedPrice = Math.round(price);
   const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',

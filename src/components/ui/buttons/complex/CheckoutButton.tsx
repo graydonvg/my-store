@@ -31,12 +31,13 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
     const createOrderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+      const roundedPrice = Math.round(pricePaid!);
 
       return {
         productId: item?.product?.productId!,
         quantity: item?.quantity!,
         size: item?.size!,
-        pricePaid: pricePaid!,
+        pricePaid: roundedPrice,
       };
     });
 

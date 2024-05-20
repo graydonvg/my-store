@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { OrdersDataGridDataAdmin } from '@/types';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -56,7 +56,7 @@ export default function RecentOrdersTable({ orders }: Props) {
                 <TableCell>{`${order.firstName} ${order.lastName}`}</TableCell>
                 <TableCell>{`${order?.city}, ${order?.province}`}</TableCell>
                 <TableCell>{order.orderStatus}</TableCell>
-                <TableCell>{formatCurrency(order.orderTotal)}</TableCell>
+                <TableCell>{roundAndFormatCurrency(order.orderTotal)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

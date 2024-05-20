@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import CardTitle from './CardTitle';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 
 const monthNames = [
   'January',
@@ -90,7 +90,7 @@ export default function TotalSales({ title, type, amount }: Props) {
             fontSize: 22,
           },
         }}>
-        {formatCurrency(amount)}
+        {roundAndFormatCurrency(amount)}
       </Typography>
       <Typography color={(theme) => theme.palette.text.secondary}>
         {type === 'daily' ? currentDate : null}

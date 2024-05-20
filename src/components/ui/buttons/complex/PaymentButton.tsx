@@ -1,18 +1,19 @@
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import checkoutWithStripe from '@/utils/checkoutWithStripe';
+import { createNewStripeCheckoutSession } from '@/utils/stripe/stripeCheckout';
 import { toast } from 'react-toastify';
 import ContainedButton from '../simple/ContainedButton';
 import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';
+import { getLineItemsFromCartItems } from '@/utils/stripe/getStripeLineItems';
 
 export default function PaymentButton() {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const checkoutData = useAppSelector((state) => state.checkout);
 
-  async function handleStripeCheckout() {
+  async function addOrderAndCheckoutWithStripe() {
     dispatch(setCheckoutData({ isProcessing: true }));
 
     const orderData: InsertOrderDb = {
@@ -36,22 +37,23 @@ export default function PaymentButton() {
     }
 
     const orderId = addOrderData?.orderId!;
+    const lineItems = getLineItemsFromCartItems(cartItems);
 
-    const { success: checkoutWithStripeSuccess, message: checkoutWithStripeMessage } = await checkoutWithStripe(
+    const { success: stripeCheckoutSuccess, message: stripeCheckoutMessage } = await createNewStripeCheckoutSession(
       orderId,
-      cartItems
+      lineItems
     );
 
-    if (!checkoutWithStripeSuccess) {
+    if (!stripeCheckoutSuccess) {
       dispatch(setCheckoutData({ isProcessing: false }));
-      toast.error(checkoutWithStripeMessage);
+      toast.error(stripeCheckoutMessage);
     }
   }
 
   return (
     <ContainedButton
       disabled={!checkoutData.shippingDetails || cartItems.length === 0 || checkoutData.isProcessing}
-      onClick={handleStripeCheckout}
+      onClick={addOrderAndCheckoutWithStripe}
       label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
       fullWidth
       color="secondary"

@@ -21,7 +21,7 @@ import {
 } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import DatePickerForDataGridFilter from '../../dataGrid/DatePickerForDataGridFilter';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import OrdersDataGridToolbar from './OrdersDataGridToolbar';
 import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
@@ -127,7 +127,7 @@ function getColumns(isUpdating: boolean) {
       field: 'orderTotal',
       headerName: 'Order total',
       width: 120,
-      valueFormatter: (value) => formatCurrency(value),
+      valueFormatter: (value) => roundAndFormatCurrency(value),
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
   ];

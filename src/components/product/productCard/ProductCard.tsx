@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { Product } from '@/types';
 import Link from 'next/link';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { calculateDiscountedProductPrice } from '@/utils/calculate';
 import { BORDER_RADIUS } from '@/data';
 import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
@@ -145,7 +145,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   fontFamily={'Georgia'}
                   fontStyle="italic"
                   fontSize={20}>
-                  {formatCurrency(isOnSale ? discountedPrice : product.price)}
+                  {roundAndFormatCurrency(isOnSale ? discountedPrice : product.price)}
                 </Typography>
 
                 {isOnSale ? (
@@ -159,7 +159,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                       textDecoration: 'line-through',
                       color: (theme) => theme.palette.text.disabled,
                     }}>
-                    {formatCurrency(product.price)}
+                    {roundAndFormatCurrency(product.price)}
                   </Typography>
                 ) : null}
               </Box>

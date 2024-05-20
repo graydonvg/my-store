@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Box, alpha, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
 import { usePathname } from 'next/navigation';
@@ -21,7 +21,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <OrderTotalsRow
         label="Cart total"
-        price={formatCurrency(cartTotal)}
+        price={roundAndFormatCurrency(cartTotal)}
         fontSize={14}
       />
 
@@ -36,7 +36,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
           }}>
           <OrderTotalsRow
             label="Discount total"
-            price={`-${formatCurrency(discountTotal)}`}
+            price={`-${roundAndFormatCurrency(discountTotal)}`}
             fontSize={14}
             fontWeight={600}
             backgroundColor={alpha(theme.palette.primary.main, theme.palette.action.focusOpacity)}
@@ -51,7 +51,13 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
         }}>
         <OrderTotalsRow
           label="Delivery fee"
-          price={orderTotal > 0 ? (deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)) : formatCurrency(0)}
+          price={
+            orderTotal > 0
+              ? deliveryFee === 0
+                ? 'FREE'
+                : roundAndFormatCurrency(deliveryFee)
+              : roundAndFormatCurrency(0)
+          }
           fontSize={14}
         />
       </Box>
@@ -65,7 +71,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
           }}>
           <OrderTotalsRow
             label="Order total"
-            price={formatCurrency(orderTotal)}
+            price={roundAndFormatCurrency(orderTotal)}
             fontSize={14}
             fontWeight={600}
           />
@@ -74,7 +80,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
 
       <OrderTotalsRow
         label={(totalToPay ? 'Total to pay' : 'Order total').toUpperCase()}
-        price={formatCurrency(totalToPay ? totalToPay : orderTotal)}
+        price={roundAndFormatCurrency(totalToPay ? totalToPay : orderTotal)}
         fontSize={18}
         fontWeight={700}
       />

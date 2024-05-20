@@ -10,9 +10,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompletedEvent) {
   try {
-    const sessionCompleted = event.data.object;
-    const orderId = sessionCompleted.metadata!.orderId;
-    const userId = sessionCompleted.metadata!.userId;
+    const checkoutSession = event.data.object;
+    const orderId = checkoutSession.metadata!.orderId;
+    const userId = checkoutSession.metadata!.userId;
 
     const { error: updateOrderStatusError } = await supabase
       .from('orders')
@@ -21,7 +21,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompl
       .eq('userId', userId);
 
     if (updateOrderStatusError) {
-      return { success: false, message: `Failed to update order payment status. ${updateOrderStatusError.message}.` };
+      return { success: false, message: `Failed to update order status. ${updateOrderStatusError.message}.` };
     }
 
     const { error: deletePendingCheckoutSessionError } = await supabase
@@ -52,9 +52,9 @@ async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompl
 
 async function handleCheckoutSessionExpired(event: Stripe.CheckoutSessionExpiredEvent) {
   try {
-    const sessionExpired = event.data.object;
-    const orderId = sessionExpired.metadata!.orderId;
-    const userId = sessionExpired.metadata!.userId;
+    const checkoutSession = event.data.object;
+    const orderId = checkoutSession.metadata!.orderId;
+    const userId = checkoutSession.metadata!.userId;
 
     const { error: deletePendingCheckoutSessionError } = await supabase
       .from('pendingCheckoutSessions')
@@ -69,20 +69,33 @@ async function handleCheckoutSessionExpired(event: Stripe.CheckoutSessionExpired
       };
     }
 
-    const { error: deleteOrderError } = await supabase
-      .from('orders')
-      .delete()
-      .eq('orderId', orderId)
-      .eq('userId', userId);
-
-    if (deleteOrderError) {
-      return { success: false, message: `Failed to delete expired order. ${deleteOrderError.message}.` };
-    }
-
     return { success: true, message: 'Expired checkout session handled successfully.' };
   } catch (error) {
     //Axiom error log
     return { success: true, message: 'Error handling expired checkout session.' };
+  }
+}
+
+async function handleChargeRefunded(event: Stripe.ChargeRefundedEvent) {
+  try {
+    const refund = event.data.object;
+    const orderId = refund.metadata.orderId;
+    const userId = refund.metadata.userId;
+
+    const { error: updateOrderStatusError } = await supabase
+      .from('orders')
+      .update({ orderStatus: 'refunded' })
+      .eq('orderId', orderId)
+      .eq('userId', userId);
+
+    if (updateOrderStatusError) {
+      return { success: false, message: `Failed to update order status. ${updateOrderStatusError.message}.` };
+    }
+
+    return { success: true, message: 'Charge refund handled successfully.' };
+  } catch (error) {
+    //Axiom error log
+    return { success: true, message: 'Error handling charge refund.' };
   }
 }
 
@@ -131,6 +144,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<CustomRes
           {
             success: false,
             message: sessionExpiredMessage,
+          },
+          { status: 400 }
+        );
+      }
+      break;
+
+    case 'charge.refunded':
+      const { success: chargeRefundedSuccess, message: chargeRefundedMessage } = await handleChargeRefunded(event);
+
+      if (!chargeRefundedSuccess) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: chargeRefundedMessage,
           },
           { status: 400 }
         );

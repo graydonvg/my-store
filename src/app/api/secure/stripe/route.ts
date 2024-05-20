@@ -40,6 +40,9 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       }`,
       cancel_url: `${createURL('/cart/view')}?payment_status=cancelled&order_id=${checkoutData.orderId}`,
       metadata: { userId: authUser.id, orderId: checkoutData.orderId },
+      payment_intent_data: {
+        metadata: { userId: authUser.id, orderId: checkoutData.orderId },
+      },
     });
 
     const { error } = await supabase

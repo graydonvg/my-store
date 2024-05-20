@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
@@ -31,7 +31,7 @@ export default function SmallCartItemPrice({ isOnSale, price, discountedPrice }:
             fontWeight={700}
             color={(theme) => theme.palette.text.disabled}
             sx={{ textDecoration: 'line-through' }}>
-            {formatCurrency(price)}
+            {roundAndFormatCurrency(price)}
           </Typography>
         </Box>
       ) : null}
@@ -42,7 +42,7 @@ export default function SmallCartItemPrice({ isOnSale, price, discountedPrice }:
         variant="h6"
         fontSize={16}
         fontWeight={700}>
-        {formatCurrency(isOnSale ? discountedPrice : price)}
+        {roundAndFormatCurrency(isOnSale ? discountedPrice : price)}
       </Typography>
     </Box>
   );

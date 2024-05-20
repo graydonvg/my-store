@@ -1,5 +1,5 @@
 import { OrderItem } from '@/types';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
@@ -17,7 +17,7 @@ export default function OrderItemDetails({ orderItem }: Props) {
         {[
           { label: 'qty', value: orderItem?.quantity },
           { label: 'size', value: orderItem?.size },
-          { label: 'price paid', value: formatCurrency(orderItem?.pricePaid) },
+          { label: 'price paid', value: roundAndFormatCurrency(orderItem?.pricePaid) },
         ].map((item) => (
           <Box
             key={item.label}

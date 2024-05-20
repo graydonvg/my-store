@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Product } from '@/types';
 import { calculateDiscountedProductPrice } from '@/utils/calculate';
 
@@ -45,7 +45,7 @@ export default function TopProductDetails({ product }: Props) {
           fontStyle="italic"
           fontSize={42}
           sx={{ color: theme.palette.text.primary }}>
-          {formatCurrency(isOnSale ? discountedPrice : product.price)}
+          {roundAndFormatCurrency(isOnSale ? discountedPrice : product.price)}
         </Typography>
         {isOnSale ? (
           <Box
@@ -62,7 +62,7 @@ export default function TopProductDetails({ product }: Props) {
               fontStyle="italic"
               fontSize={22}
               sx={{ textDecoration: 'line-through', paddingRight: 1, color: theme.palette.text.disabled }}>
-              {formatCurrency(product.price)}
+              {roundAndFormatCurrency(product.price)}
             </Typography>
             <Typography
               lineHeight={1}
