@@ -40,7 +40,7 @@ export default function LargeProductImageBox({
           <Image
             style={{ objectFit: 'cover', opacity: !isImageLoaded ? 0 : 100 }}
             fill
-            sizes="(min-width: 900px) 928px, (min-width: 600px) 934px, (min-width: 420px) 1102px, 746px)"
+            sizes="(min-width: 900px) 789px, (min-width: 600px) 845px, (min-width: 420px) 758px, 634px)"
             src={productImageData.imageUrl}
             alt={`${productName}`}
             priority

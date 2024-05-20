@@ -27,7 +27,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
           fill
           priority
           onLoad={() => setIsHeroImageLoaded(true)}
-          sizes="(min-width: 600px) 2304px, (min-width: 600px) 1674px, 1104px"
+          sizes="(min-width: 900px) 1958px, (min-width: 600px) 1423px, (min-width: 420px) 915px, 636px"
           style={{ objectFit: 'cover', opacity: !isHeroImageLoaded ? 0 : 100 }}
         />
         <Box

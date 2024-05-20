@@ -121,7 +121,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
                 opacity: !isImageLoaded ? 0 : isDeletingCurrentImage ? 0.5 : 100,
               }}
               fill
-              sizes="(min-width: 600px) 100px, calc(35vw - 25px)"
+              sizes="(min-width: 600px) 224px,(min-width: 420px) 390px, 272px"
               src={imageData.imageUrl}
               alt={`Image for ${imageData.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
