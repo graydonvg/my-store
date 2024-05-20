@@ -3,12 +3,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ReactNode } from 'react';
 
 type Props = {
-  onClick?: () => void;
   label: string;
+  canEdit: boolean;
+  onClick?: () => void;
   children: ReactNode;
 };
 
-export default function DisplayUserDataAccountPage({ label, onClick, children }: Props) {
+export default function DisplayUserDataAccountPage({ label, canEdit, onClick, children }: Props) {
   return (
     <Box
       onClick={onClick}
@@ -16,16 +17,17 @@ export default function DisplayUserDataAccountPage({ label, onClick, children }:
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        cursor: onClick ? 'pointer' : 'default',
+        cursor: canEdit ? 'pointer' : 'default',
         alignItems: 'center',
         paddingBottom: 2,
+        pointerEvents: canEdit ? 'auto' : 'none',
       }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', paddingBottom: 2 }}>
         <Typography
           component="span"
           fontSize={12}
           color={(theme) => theme.palette.custom.textField.label}>
-          {label}
+          {label} *
         </Typography>
         <Typography
           component="span"
@@ -33,7 +35,7 @@ export default function DisplayUserDataAccountPage({ label, onClick, children }:
           {children}
         </Typography>
       </Box>
-      {!!onClick ? <EditIcon /> : null}
+      {canEdit ? <EditIcon /> : null}
     </Box>
   );
 }

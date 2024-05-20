@@ -87,8 +87,9 @@ export default function AddToCartButton({ product }: Props) {
       isLoading={isAddingToCart}
       fullWidth
       label={!isAddingToCart ? 'add to cart' : ''}
-      color="success"
+      color="secondary"
       startIcon={<AddShoppingCart />}
+      sxStyles={{ minWidth: 'fit-content', flex: 1 }}
     />
   );
 }

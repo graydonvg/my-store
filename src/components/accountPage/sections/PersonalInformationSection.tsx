@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import DisplayUserDataAccountPage from '../DisplayUserDataAccountPage';
-import { setFieldToEdit } from '@/lib/redux/features/account/accountSlice';
+import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 import { UserAccountFieldToEdit } from '@/types';
 import UpdatePersonalInfoForm from '@/components/forms/accountPageForms/UpdatePersonalInfoForm';
 import { Call, Person } from '@mui/icons-material';
@@ -11,7 +11,7 @@ export default function PersonalInformationSection() {
   const { fieldToEdit } = useAppSelector((state) => state.account);
 
   function selectFieldToEdit(field: UserAccountFieldToEdit) {
-    dispatch(setFieldToEdit(field));
+    dispatch(setAccountFieldToEdit(field));
   }
 
   return (
@@ -19,6 +19,7 @@ export default function PersonalInformationSection() {
       {fieldToEdit !== 'firstName' ? (
         <DisplayUserDataAccountPage
           label="Name"
+          canEdit={true}
           onClick={() => selectFieldToEdit('firstName')}>
           {userData?.firstName ?? ''}
         </DisplayUserDataAccountPage>
@@ -34,6 +35,7 @@ export default function PersonalInformationSection() {
       {fieldToEdit !== 'lastName' ? (
         <DisplayUserDataAccountPage
           label="Surname"
+          canEdit={true}
           onClick={() => selectFieldToEdit('lastName')}>
           {userData?.lastName ?? ''}
         </DisplayUserDataAccountPage>
@@ -49,6 +51,7 @@ export default function PersonalInformationSection() {
       {fieldToEdit !== 'contactNumber' ? (
         <DisplayUserDataAccountPage
           label="Contact number"
+          canEdit={true}
           onClick={() => selectFieldToEdit('contactNumber')}>
           {userData?.contactNumber ?? ''}
         </DisplayUserDataAccountPage>

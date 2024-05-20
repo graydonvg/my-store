@@ -3,6 +3,7 @@ import AddressButton from '@/components/addresses/buttons/AddressButton';
 import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { AddressStore } from '@/types';
+import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 
 type Props = {
   addressId: string;
@@ -16,6 +17,7 @@ export default function UpdateAddressDialogButton({ addressId }: Props) {
     const addressToEdit = addresses?.filter((address) => address.addressId === addressId)[0];
 
     dispatch(setAddressFormData(addressToEdit as AddressStore));
+    dispatch(setAccountFieldToEdit(null));
     dispatch(openDialog('updateAddressDialog'));
   }
 

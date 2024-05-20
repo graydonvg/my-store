@@ -30,7 +30,7 @@ export default function Addresses() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'end', marginBottom: 2 }}>
         <AddAddressDialogButton />
         <AddAddressDialog />
       </Box>

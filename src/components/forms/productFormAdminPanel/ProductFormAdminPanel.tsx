@@ -7,6 +7,7 @@ import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
 import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import ProductFormFieldsAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormFieldsAdminPanel';
 import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
+import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
 
 type Props = {
   isSubmitting: boolean;
@@ -46,8 +47,8 @@ export default function ProductFormAdminPanel({
         isClearingAllFields={isClearingAllFields}
         isOnSale={isOnSale}
       />
-      <ContainedButton
-        label={!isClearingAllFields ? 'clear all' : ''}
+      <OutlinedButton
+        label={!isClearingAllFields ? 'clear form' : ''}
         onClick={clearAllFormFields}
         disabled={
           uploadInProgress || isSubmitting || isClearingAllFields || emptyFormFields.length === numberOfFormFields
@@ -71,7 +72,7 @@ export default function ProductFormAdminPanel({
         fullWidth
         isLoading={isSubmitting}
         startIcon={submitButtonStartIcon}
-        color="success"
+        color="secondary"
       />
     </Box>
   );

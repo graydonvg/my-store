@@ -10,6 +10,7 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
 import { AddressType } from '@/types';
+import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 
 type Props = {
   addresses: AddressType[] | null;
@@ -21,6 +22,7 @@ export default function AccountPageClient({ addresses }: Props) {
 
   useEffect(() => {
     dispatch(setAddresses(addresses));
+    dispatch(setAccountFieldToEdit(null));
   }, [addresses, dispatch]);
 
   return (

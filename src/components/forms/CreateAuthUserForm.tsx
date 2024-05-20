@@ -197,7 +197,7 @@ export default function CreateAuthUserForm() {
             marginBottom: 3,
           }}
           fullWidth
-          color="success"
+          color="secondary"
         />
       </Box>
     </Box>

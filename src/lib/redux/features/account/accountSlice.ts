@@ -15,7 +15,7 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setFieldToEdit(state, action: PayloadAction<UserAccountFieldToEdit | null>) {
+    setAccountFieldToEdit(state, action: PayloadAction<UserAccountFieldToEdit | null>) {
       state.fieldToEdit = action.payload;
     },
     setIsUpdatingAccount(state, action: PayloadAction<boolean>) {
@@ -26,6 +26,6 @@ const accountSlice = createSlice({
 
 const { actions, reducer } = accountSlice;
 
-export const { setFieldToEdit, setIsUpdatingAccount } = actions;
+export const { setAccountFieldToEdit, setIsUpdatingAccount } = actions;
 
 export const accountReducer = reducer;

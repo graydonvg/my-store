@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, ReactNode, useState } from 'react';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
+import { setAccountFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
 import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import { toast } from 'react-toastify';
@@ -21,7 +21,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
   function cancelUpdateField() {
-    dispatch(setFieldToEdit(null));
+    dispatch(setAccountFieldToEdit(null));
 
     setFormData(data);
   }
@@ -38,7 +38,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
     const isDataChanged = formData !== data;
 
     if (!isDataChanged) {
-      dispatch(setFieldToEdit(null));
+      dispatch(setAccountFieldToEdit(null));
       return;
     }
 
@@ -50,7 +50,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
 
     if (success === true) {
       router.refresh();
-      dispatch(setFieldToEdit(null));
+      dispatch(setAccountFieldToEdit(null));
       toast.success(`${label} updated`);
     } else {
       toast.error(message);
@@ -74,6 +74,8 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
         onChange={handleInputChange}
         hasValue={formData.length > 0}
         icon={icon}
+        autoFocus
+        required
       />
     </AccountPageForm>
   );

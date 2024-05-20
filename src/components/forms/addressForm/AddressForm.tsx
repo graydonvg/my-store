@@ -1,6 +1,5 @@
 import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
-import { Add } from '@mui/icons-material';
 import { AddressStore } from '@/types';
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import FormHeader from '../FormHeader';
@@ -36,7 +35,7 @@ export default function AddressForm({ headerText, addressFormData, onInputChange
             onSubmit;
           }
         }}
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3, paddingX: 3 }}>
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3, paddingX: 2 }}>
         <ContactDetailsFieldsAddressForm
           addressFormData={addressFormData}
           onInputChange={onInputChange}
@@ -47,12 +46,11 @@ export default function AddressForm({ headerText, addressFormData, onInputChange
           onInputChange={onInputChange}
         />
         <ContainedButton
-          label={!addressFormData.addressId ? 'add' : 'save'}
+          label="save"
           disabled={isDialogLoading}
           type="submit"
           fullWidth
-          color="success"
-          startIcon={!addressFormData.addressId && !isDialogLoading ? <Add /> : null}
+          color="secondary"
         />
       </Box>
     </Box>

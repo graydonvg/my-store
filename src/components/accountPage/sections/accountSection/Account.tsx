@@ -10,9 +10,13 @@ export default function AccountSection() {
 
   return (
     <>
-      <DisplayUserDataAccountPage label="Email">{userData?.email ?? ''}</DisplayUserDataAccountPage>
+      <DisplayUserDataAccountPage
+        label="Email"
+        canEdit={false}>
+        {userData?.email ?? ''}
+      </DisplayUserDataAccountPage>
 
-      {!isOAuthSignIn && (fieldToEdit === 'password' ? <UpdatePasswordForm /> : <PasswordMask />)}
+      {!isOAuthSignIn && (fieldToEdit !== 'password' ? <PasswordMask /> : <UpdatePasswordForm />)}
     </>
   );
 }

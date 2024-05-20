@@ -42,7 +42,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           size="small"
           aria-label="close dialog"
           onClick={close}
-          sx={{ color: theme.palette.text.secondary, borderRadius: '4px', position: 'absolute', right: 0, top: 0 }}>
+          sx={{ color: theme.palette.text.secondary, borderRadius: '4px', position: 'absolute', right: 6, top: 6 }}>
           <Close fontSize="medium" />
         </IconButton>
         {children}

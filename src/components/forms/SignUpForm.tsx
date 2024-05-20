@@ -135,7 +135,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       <Box
         component="form"
         onSubmit={handleSignUp}
-        sx={{ paddingX: 3 }}>
+        sx={{ paddingX: 2 }}>
         <Grid
           container
           spacing={2}>

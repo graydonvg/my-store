@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
+import { setAccountFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
 import { updateUserPassword } from '@/services/users/update';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -19,7 +19,7 @@ export default function UpdatePasswordForm() {
   const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
 
   function handleCancelUpdateField() {
-    dispatch(setFieldToEdit(null));
+    dispatch(setAccountFieldToEdit(null));
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -48,7 +48,7 @@ export default function UpdatePasswordForm() {
     });
 
     if (success === true) {
-      dispatch(setFieldToEdit(null));
+      dispatch(setAccountFieldToEdit(null));
       setFormData(initialFormData);
       toast.success(message);
     } else {
@@ -78,6 +78,8 @@ export default function UpdatePasswordForm() {
         onChange={handleInputChange}
         hasValue={formData.currentPassword.length > 0}
         icon={<Lock />}
+        autoFocus
+        required
       />
       <CustomTextField
         fullWidth={true}
@@ -88,6 +90,7 @@ export default function UpdatePasswordForm() {
         onChange={handleInputChange}
         hasValue={formData.newPassword.length > 0}
         icon={<Lock />}
+        required
       />
       <CustomTextField
         fullWidth={true}
@@ -98,6 +101,7 @@ export default function UpdatePasswordForm() {
         onChange={handleInputChange}
         hasValue={formData.confirmPassword.length > 0}
         icon={<Lock />}
+        required
       />
     </AccountPageForm>
   );

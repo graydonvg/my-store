@@ -118,7 +118,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
       <Box
         component="form"
         onSubmit={handleSignInWithPassword}
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3, paddingX: 3 }}>
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3, paddingX: 2 }}>
         <Grid
           container
           spacing={2}>

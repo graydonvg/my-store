@@ -78,15 +78,17 @@ export default function FooterCartDrawer() {
             {formatCurrency(orderTotal - discountTotal)}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <OutlinedButton
             onClick={navigateToCartView}
             fullWidth
             label="view cart"
+            sxStyles={{ minWidth: 'fit-content', flex: 1 }}
           />
           <CheckoutButton
             fullWidth
             label="checkout"
+            sxStyles={{ minWidth: 'fit-content', flex: 1 }}
           />
         </Box>
       </Box>

@@ -25,21 +25,21 @@ export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isS
       onKeyDown={handleOnKeyDown}
       sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>
       {children}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, paddingBottom: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, flexWrap: 'wrap', paddingBottom: 4 }}>
+        <OutlinedButton
+          label="cancel"
+          fullWidth={true}
+          onClick={onCancel}
+          sxStyles={{ minWidth: 'fit-content', flex: 1 }}
+        />
         <ContainedButton
           type="submit"
           label={!isSubmitting ? 'save' : ''}
           disabled={disableSubmit}
           isLoading={isSubmitting}
-          fullWidth={false}
-          color="success"
-          sxStyles={{ minWidth: '96px' }}
-        />
-        <OutlinedButton
-          label="cancel"
-          fullWidth={false}
-          onClick={onCancel}
-          sxStyles={{ minWidth: '96px' }}
+          fullWidth={true}
+          color="secondary"
+          sxStyles={{ minWidth: 'fit-content', flex: 1 }}
         />
       </Box>
     </Box>
