@@ -26,7 +26,7 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
           fill
           src={imageUrl}
           alt={`Image of ${orderItem.product?.name}`}
-          sizes="(min-width: 900px) 184px, (min-width: 600px) 437px, (min-width: 420px) 269px, 175px"
+          sizes="(min-width: 1210px) 125px, (min-width: 900px) calc(10.88vw - 11px), calc(32.41vw - 30px)"
           onLoad={() => setIsImageLoaded(true)}
         />
 

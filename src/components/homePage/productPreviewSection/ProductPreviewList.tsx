@@ -59,7 +59,7 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
           sm={3}>
           <ProductCard
             product={product}
-            imageSizes="540px"
+            imageSizes="(min-width: 1210px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 24px)"
           />
         </Grid>
       ))}
