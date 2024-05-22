@@ -14,6 +14,7 @@ import signInWithPassword from '@/services/auth/sign-in';
 import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
+import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
 
 const formFields = [
   { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email', required: true, icon: <Email /> },
@@ -42,7 +43,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
-  const isSignInDialogOpen = useAppSelector((state) => state.dialog.signInDialog);
+  const isSignInDialogOpen = useAppSelector(selectIsSignInDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 

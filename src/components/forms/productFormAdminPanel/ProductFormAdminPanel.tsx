@@ -8,6 +8,8 @@ import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
 import ProductFormFieldsAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormFieldsAdminPanel';
 import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
   isSubmitting: boolean;
@@ -22,8 +24,9 @@ export default function ProductFormAdminPanel({
   submitButtonLabel,
   submitButtonStartIcon,
 }: Props) {
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const dispatch = useAppDispatch();
   const isOnSale = productFormData.isOnSale === 'Yes';

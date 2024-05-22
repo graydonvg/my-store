@@ -12,6 +12,8 @@ import ContainedButton from '../../ui/buttons/simple/ContainedButton';
 import { DeleteForever, Edit } from '@mui/icons-material';
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import OutlinedButton from '../../ui/buttons/simple/OutlinedButton';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
   product: Product;
@@ -20,8 +22,8 @@ type Props = {
 export default function ProductCardButtonsAdminPanel({ product }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { imageData } = useAppSelector((state) => state.productImages);
-  const { productId } = useAppSelector((state) => state.productForm.productFormData);
+  const imageData = useAppSelector(selectImageData);
+  const productFormData = useAppSelector(selectProductFormData);
   const { productImageData, ...restOfProductData } = product;
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +31,7 @@ export default function ProductCardButtonsAdminPanel({ product }: Props) {
   async function editProduct() {
     setIsLoading(true);
 
-    if (imageData.length > 0 && !productId) {
+    if (imageData.length > 0 && !productFormData.productId) {
       const { success, message } = await deleteAllProductImages(imageData);
 
       if (success === false) {

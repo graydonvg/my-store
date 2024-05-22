@@ -3,10 +3,11 @@ import { Divider } from '@mui/material';
 import { Fragment } from 'react';
 import SmallCartItem from '../smallCartItem/SmallCartItem';
 import { usePathname } from 'next/navigation';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 
 export default function SmallCartItems() {
   const pathname = usePathname();
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector(selectCartItems);
   const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return cartItems.map((item, index) => {

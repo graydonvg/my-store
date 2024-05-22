@@ -1,16 +1,16 @@
 import { Box, Divider } from '@mui/material';
-import { useAppSelector } from '@/lib/redux/hooks';
 import AddressLoader from '../AddressLoader';
 import UpdateAddressDialogButton from './UpdateAddressDialogButton';
 import UpdateAddressDialog from '../../dialogs/UpdateAddressDialog';
 import DeleteAddressButton from './DeleteAddressButton';
+import { useState } from 'react';
 
 type Props = {
   addressId: string;
 };
 
 export default function AddressButtons({ addressId }: Props) {
-  const addressToDeleteId = useAppSelector((state) => state.addresses.addressToDeleteId);
+  const [addressToDeleteId, setAddressToDeleteId] = useState<string | null>(null);
 
   return (
     <>
@@ -24,7 +24,10 @@ export default function AddressButtons({ addressId }: Props) {
             flexItem
             sx={{ borderColor: (theme) => theme.palette.custom.border }}
           />
-          <DeleteAddressButton addressId={addressId} />
+          <DeleteAddressButton
+            addressId={addressId}
+            setAddressToDeleteId={setAddressToDeleteId}
+          />
         </Box>
       ) : null}
     </>

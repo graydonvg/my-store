@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Container, Grid, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -6,6 +8,8 @@ import { usePathname } from 'next/navigation';
 import { Product } from '@/types';
 import SmallProductImageBoxStorefront from './smallProductImageBox/SmallProductImageBoxStorefront';
 import SmallProductImageBoxesAdminPanel from './smallProductImageBox/SmallProductImageBoxesAdminPanel';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
   product?: Product;
@@ -17,8 +21,9 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith('/admin');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
 
   useEffect(() => {
     if ((isAdminPath && imageData.length === 0) || product?.productImageData.length === 0) {

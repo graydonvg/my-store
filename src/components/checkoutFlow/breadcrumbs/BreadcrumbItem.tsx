@@ -1,3 +1,5 @@
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import { selectIsCheckoutProcessing } from '@/lib/redux/features/checkout/checkoutSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Button, Typography, buttonBaseClasses, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -15,15 +17,15 @@ export default function BreadcrumbItem({ href, icon, label, onLinkClick }: Props
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const pathname = usePathname();
-  const { isProcessing } = useAppSelector((state) => state.checkout);
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const isCheckoutProcessing = useAppSelector(selectIsCheckoutProcessing);
+  const cartItems = useAppSelector(selectCartItems);
   const isPointerEventsDisabled =
     label === 'payment' ||
     label === 'confirmation' ||
     (label === 'shipping' && cartItems.length === 0) ||
     (label === 'shipping' && pathname.startsWith('/checkout/payment/confirmation')) ||
     (label === 'cart' && pathname.startsWith('/checkout/payment/confirmation')) ||
-    isProcessing === true;
+    isCheckoutProcessing === true;
 
   return (
     <Link

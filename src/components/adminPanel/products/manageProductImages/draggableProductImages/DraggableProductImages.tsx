@@ -60,7 +60,7 @@ export default function DraggableProductImages({ isDeletingAllImages }: Props) {
           {imageDataWithId.map((data) => (
             <DraggableProductImage
               key={data.fileName}
-              imageData={data}
+              imageDataProps={data}
               activeItemId={activeItemId}
             />
           ))}

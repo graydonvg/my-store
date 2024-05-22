@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import AccountPageForm from './AccountPageForm';
 import { Lock } from '@mui/icons-material';
+import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
 
 const initialFormData = {
   currentPassword: '',
@@ -16,7 +17,7 @@ const initialFormData = {
 export default function UpdatePasswordForm() {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState(initialFormData);
-  const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
+  const isUpdatingAccount = useAppSelector(selectIsUpdatingAccount);
 
   function handleCancelUpdateField() {
     dispatch(setAccountFieldToEdit(null));

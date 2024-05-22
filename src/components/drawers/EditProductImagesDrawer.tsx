@@ -8,13 +8,21 @@ import { Box, Divider, useTheme } from '@mui/material';
 import DrawerHeader from './DrawerHeader';
 import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';
 import DraggableProductImages from '../adminPanel/products/manageProductImages/draggableProductImages/DraggableProductImages';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import {
+  selectImageData,
+  selectIsDeletingImage,
+  selectIsEditImagesDrawerOpen,
+} from '@/lib/redux/features/productImages/productImagesSelectors';
 
 export default function EditProductImagesDrawer() {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, isDeletingImage, isEditImagesDrawerOpen } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const isEditImagesDrawerOpen = useAppSelector(selectIsEditImagesDrawerOpen);
+  const imageData = useAppSelector(selectImageData);
+  const isDeletingImage = useAppSelector(selectIsDeletingImage);
 
   function closeEditImageDrawer() {
     if (isDeletingAllImages || isDeletingImage) return;

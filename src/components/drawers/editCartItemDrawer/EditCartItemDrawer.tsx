@@ -16,6 +16,14 @@ import {
   setIsUpdatingCartItemQuantity,
   setIsUpdatingCartItemSize,
 } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
+import { selectCartItemQuantityWillUpdate, selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import {
+  selectCartItemToEditId,
+  selectIsMovingToWishlist,
+  selectIsRemovingCartItem,
+  selectIsUpdatingCartItemQuantity,
+  selectIsUpdatingCartItemSize,
+} from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSelectors';
 
 type Props = {
   cartItem: CartItem;
@@ -25,14 +33,13 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const theme = useTheme();
-  const { cartItems, cartItemQuantityWillUpdate } = useAppSelector((state) => state.cart);
-  const {
-    cartItemToEditId,
-    isMovingToWishlist,
-    isRemovingCartItem,
-    isUpdatingCartItemQuantity,
-    isUpdatingCartItemSize,
-  } = useAppSelector((state) => state.editCartItemDrawer);
+  const cartItems = useAppSelector(selectCartItems);
+  const cartItemQuantityWillUpdate = useAppSelector(selectCartItemQuantityWillUpdate);
+  const cartItemToEditId = useAppSelector(selectCartItemToEditId);
+  const isMovingToWishlist = useAppSelector(selectIsMovingToWishlist);
+  const isRemovingCartItem = useAppSelector(selectIsRemovingCartItem);
+  const isUpdatingCartItemQuantity = useAppSelector(selectIsUpdatingCartItemQuantity);
+  const isUpdatingCartItemSize = useAppSelector(selectIsUpdatingCartItemSize);
   const isUpdatingCartItem =
     isRemovingCartItem || isUpdatingCartItemQuantity || isUpdatingCartItemSize || isMovingToWishlist;
 

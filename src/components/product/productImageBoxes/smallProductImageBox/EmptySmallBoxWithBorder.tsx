@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import SmallProductImageBox from './SmallProductImageBox';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
   boxBorderColor: string;
@@ -7,7 +8,8 @@ type Props = {
 };
 
 export default function EmptySmallBoxWithBorder({ boxBorderColor, maxImageCount }: Props) {
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
   const numberOfEmptyBoxes = maxImageCount - imageData.length - imageUploadProgress.length;
 
   return Array.from(Array(numberOfEmptyBoxes)).map((_, index) => (

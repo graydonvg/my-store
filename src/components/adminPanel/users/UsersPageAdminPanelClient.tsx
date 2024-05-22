@@ -29,6 +29,7 @@ import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';
 import { updateUserAdmin } from '@/services/admin/update';
 import { deleteUserAdmin } from '@/services/admin/delete';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
   const columns: GridColDef<UsersDataGridDataAdmin>[] = [
@@ -138,7 +139,7 @@ export default function UsersPageAdminPanelClient({
   filter,
 }: Props) {
   const router = useRouter();
-  const userData = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector(selectUserData);
   const userRole = getUserRoleBoolean(userData?.role!);
   const [selectedUserIds, setSelectedUserIds] = useState<GridRowSelectionModel>([]);
   const [isDeleting, setIsDeleting] = useState(false);

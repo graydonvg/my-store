@@ -7,10 +7,11 @@ import NavDrawerOptions from './navDrawerOptions/NavDrawerOptions';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import { useEffect } from 'react';
 import DrawerHeader from '../DrawerHeader';
+import { selectIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSelectors';
 
 export default function NavDrawer() {
   const dispatch = useAppDispatch();
-  const isNavDrawerOpen = useAppSelector((state) => state.navDrawer.isNavDrawerOpen);
+  const isNavDrawerOpen = useAppSelector(selectIsNavDrawerOpen);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.up('md'));
 

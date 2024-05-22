@@ -1,20 +1,19 @@
 import { useRouter } from 'next/navigation';
 import AddressButton from './AddressButton';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { setAddressToDeleteId } from '@/lib/redux/features/addresses/addressesSlice';
 import { deleteAddress } from '@/services/users/delete';
 import { toast } from 'react-toastify';
+import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
   addressId: string;
+  setAddressToDeleteId: Dispatch<SetStateAction<string | null>>;
 };
 
-export default function DeleteAddressButton({ addressId }: Props) {
+export default function DeleteAddressButton({ addressId, setAddressToDeleteId }: Props) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   async function deleteAddressById() {
-    dispatch(setAddressToDeleteId(addressId));
+    setAddressToDeleteId(addressId);
 
     const { success, message } = await deleteAddress(addressId);
 
@@ -25,7 +24,7 @@ export default function DeleteAddressButton({ addressId }: Props) {
       toast.error(message);
     }
 
-    dispatch(setAddressToDeleteId(null));
+    setAddressToDeleteId(null);
   }
 
   return (

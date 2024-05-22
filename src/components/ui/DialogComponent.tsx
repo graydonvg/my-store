@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
 import { BORDER_RADIUS } from '@/data';
 import { closeDialog } from '@/lib/redux/features/dialog/dialogSlice';
+import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
 type Props = {
   isOpen: boolean;
@@ -13,7 +14,7 @@ type Props = {
 export default function DialogComponent({ isOpen, children }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
+  const isDialogLoading = useAppSelector(selectIsDialogLoading);
 
   function close() {
     if (isDialogLoading) return;

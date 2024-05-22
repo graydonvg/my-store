@@ -2,8 +2,9 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AddressButton from '@/components/addresses/buttons/AddressButton';
 import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
-import { AddressStore } from '@/types';
 import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
+import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelectors';
+import { AddressStore } from '@/types';
 
 type Props = {
   addressId: string;
@@ -11,7 +12,7 @@ type Props = {
 
 export default function UpdateAddressDialogButton({ addressId }: Props) {
   const dispatch = useAppDispatch();
-  const addresses = useAppSelector((state) => state.addresses.data);
+  const addresses = useAppSelector(selectAddresses);
 
   async function selectAddressToEdit() {
     const addressToEdit = addresses?.filter((address) => address.addressId === addressId)[0];
@@ -22,11 +23,9 @@ export default function UpdateAddressDialogButton({ addressId }: Props) {
   }
 
   return (
-    <>
-      <AddressButton
-        label="edit"
-        onClick={selectAddressToEdit}
-      />
-    </>
+    <AddressButton
+      label="edit"
+      onClick={selectAddressToEdit}
+    />
   );
 }

@@ -2,12 +2,12 @@ import { UserAccountFieldToEdit } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
-  fieldToEdit: UserAccountFieldToEdit | null;
+  accountFieldToEdit: UserAccountFieldToEdit | null;
   isUpdatingAccount: boolean;
 };
 
 const initialState: State = {
-  fieldToEdit: null,
+  accountFieldToEdit: null,
   isUpdatingAccount: false,
 };
 
@@ -15,10 +15,10 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setAccountFieldToEdit(state, action: PayloadAction<UserAccountFieldToEdit | null>) {
-      state.fieldToEdit = action.payload;
+    setAccountFieldToEdit(state, action: PayloadAction<State['accountFieldToEdit']>) {
+      state.accountFieldToEdit = action.payload;
     },
-    setIsUpdatingAccount(state, action: PayloadAction<boolean>) {
+    setIsUpdatingAccount(state, action: PayloadAction<State['isUpdatingAccount']>) {
       state.isUpdatingAccount = action.payload;
     },
   },

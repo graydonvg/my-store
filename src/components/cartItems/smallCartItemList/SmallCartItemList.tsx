@@ -2,13 +2,14 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography } from '@mui/material';
 import { BORDER_RADIUS } from '@/data';
 import SmallCartItems from './SmallCartItems';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 
 type Props = {
   paddingX?: number | string;
 };
 
 export default function SmallCartItemList({ paddingX = 0 }: Props) {
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector(selectCartItems);
 
   return (
     <List

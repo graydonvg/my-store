@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
 import { AddressType } from '@/types';
 import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   addresses: AddressType[] | null;
@@ -18,7 +19,7 @@ type Props = {
 
 export default function AccountPageClient({ addresses }: Props) {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector(selectUserData);
 
   useEffect(() => {
     dispatch(setAddresses(addresses));

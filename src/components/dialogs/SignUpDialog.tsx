@@ -5,10 +5,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import DialogComponent from '../ui/DialogComponent';
 import SignUpForm from '../forms/SignUpForm';
 import MuiLink from '../ui/MuiLink';
+import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
 
 export default function SignUpDialog() {
   const dispatch = useAppDispatch();
-  const isSignUpDialogOpen = useAppSelector((state) => state.dialog.signUpDialog);
+  const isSignUpDialogOpen = useAppSelector(selectIsSignInDialogOpen);
 
   function openSignInDialog() {
     dispatch(closeDialog());

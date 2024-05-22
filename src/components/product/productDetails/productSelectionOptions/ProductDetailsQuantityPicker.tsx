@@ -1,21 +1,19 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-  decrementQuantity,
-  incrementQuantity,
-} from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function ProductDetailsQuantityPicker() {
-  const dispatch = useAppDispatch();
-  const quantity = useAppSelector((state) => state.productSelectionDetails.quantity);
+type Props = {
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
+};
 
+export default function ProductDetailsQuantityPicker({ quantity, setQuantity }: Props) {
   function incrementItemQuantity() {
-    dispatch(incrementQuantity());
+    setQuantity((prev) => prev + 1);
   }
 
   function decrementItemQuantity() {
-    dispatch(decrementQuantity());
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   }
 
   return (

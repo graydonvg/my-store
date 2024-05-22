@@ -2,16 +2,16 @@ import { CheckoutData } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: CheckoutData = {
-  selectedAddressId: null,
+  orderAddressId: null,
   orderItems: [],
-  paymentTotals: {
+  orderPaymentTotals: {
     cartTotal: 0,
     deliveryFee: 0,
     orderTotal: 0,
     discountTotal: 0,
   },
-  shippingDetails: null,
-  isProcessing: false,
+  orderShippingDetails: null,
+  isCheckoutProcessing: false,
 };
 
 const checkoutSlice = createSlice({
@@ -22,7 +22,7 @@ const checkoutSlice = createSlice({
       return { ...state, ...action.payload };
     },
     resetCheckoutData() {
-      return { ...initialState };
+      return initialState;
     },
   },
 });

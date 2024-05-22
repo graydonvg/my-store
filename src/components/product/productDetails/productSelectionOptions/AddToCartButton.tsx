@@ -1,25 +1,29 @@
 import { toast } from 'react-toastify';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
-import { resetProductSelectionDetails } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../../../ui/buttons/simple/ContainedButton';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { CartItem, Product } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   product: Product;
+  size: string | null;
+  setSize: Dispatch<SetStateAction<string | null>>;
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
 };
 
-export default function AddToCartButton({ product }: Props) {
+export default function AddToCartButton({ product, size, setSize, quantity, setQuantity }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const userData = useAppSelector((state) => state.user.data);
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const { quantity, size } = useAppSelector((state) => state.productSelectionDetails);
+  const userData = useAppSelector(selectUserData);
+  const cartItems = useAppSelector(selectCartItems);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addedToCartToastMessage = 'Added to cart';
 
@@ -32,6 +36,8 @@ export default function AddToCartButton({ product }: Props) {
     if (success === true) {
       router.refresh();
       toast.success(addedToCartToastMessage);
+      setSize(null);
+      setQuantity(1);
     } else {
       toast.error(message);
     }
@@ -47,6 +53,8 @@ export default function AddToCartButton({ product }: Props) {
     if (success === true) {
       router.refresh();
       toast.success(addedToCartToastMessage);
+      setSize(null);
+      setQuantity(1);
     } else {
       toast.error(message);
     }
@@ -69,12 +77,8 @@ export default function AddToCartButton({ product }: Props) {
 
     if (itemExists && itemExists.size === size) {
       await incrementItemQuantity(itemExists);
-
-      dispatch(resetProductSelectionDetails());
     } else {
       await addNewItemToCart();
-
-      dispatch(resetProductSelectionDetails());
     }
 
     setIsAddingToCart(false);

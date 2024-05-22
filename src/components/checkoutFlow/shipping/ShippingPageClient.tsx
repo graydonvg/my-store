@@ -9,6 +9,7 @@ import { BORDER_RADIUS } from '@/data';
 import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
 import { AddressType } from '@/types';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 
 type Props = {
   addresses: AddressType[] | null;
@@ -16,7 +17,7 @@ type Props = {
 
 export default function ShippingPageClient({ addresses }: Props) {
   const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector(selectCartItems);
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
 

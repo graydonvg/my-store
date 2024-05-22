@@ -1,3 +1,5 @@
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
@@ -19,8 +21,8 @@ type Props = {
 export default function MoveToCartButton({ product, wishlistSize, wishlistItemId }: Props) {
   const theme = useTheme();
   const router = useRouter();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const userData = useAppSelector((state) => state.user.data);
+  const cartItems = useAppSelector(selectCartItems);
+  const userData = useAppSelector(selectUserData);
   const [isLoading, setIsLoading] = useState(false);
   const addedToCartToastMessage = 'Moved to cart';
 

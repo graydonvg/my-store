@@ -74,7 +74,7 @@ const productFormSlice = createSlice({
     clearProductFormData(state) {
       state.productFormData = initialState.productFormData;
     },
-    setIsSubmitting(state, action: PayloadAction<State['isSubmitting']>) {
+    setIsProductFormSubmitting(state, action: PayloadAction<State['isSubmitting']>) {
       state.isSubmitting = action.payload;
     },
   },
@@ -82,6 +82,6 @@ const productFormSlice = createSlice({
 
 const { actions, reducer } = productFormSlice;
 
-export const { setProductFormData, clearProductFormData, setIsSubmitting } = actions;
+export const { setProductFormData, clearProductFormData, setIsProductFormSubmitting } = actions;
 
 export const productFormReducer = reducer;

@@ -14,6 +14,8 @@ import { USER_ROLE_OPTIONS } from '@/data';
 import SelectField from '../ui/inputFields/SelectField';
 import { UserRole } from '@/types';
 import { createNewUserAdmin } from '@/services/admin/add';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
 const formFields = [
   {
@@ -71,11 +73,11 @@ const defaultFormData = {
 
 export default function CreateAuthUserForm() {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
   const router = useRouter();
-  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
+  const dispatch = useAppDispatch();
+  const userData = useAppSelector(selectUserData);
+  const isDialogLoading = useAppSelector(selectIsDialogLoading);
   const [formData, setFormData] = useState(defaultFormData);
-  const userData = useAppSelector((state) => state.user.data);
   const restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) => {
     if (userData?.role === 'admin') {
       return role === 'none';

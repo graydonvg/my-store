@@ -4,11 +4,13 @@ import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice
 import { UserAccountFieldToEdit } from '@/types';
 import UpdatePersonalInfoForm from '@/components/forms/accountPageForms/UpdatePersonalInfoForm';
 import { Call, Person } from '@mui/icons-material';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { selectAccountFieldToEdit } from '@/lib/redux/features/account/accountSelectors';
 
 export default function PersonalInformationSection() {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
-  const { fieldToEdit } = useAppSelector((state) => state.account);
+  const userData = useAppSelector(selectUserData);
+  const accountFieldToEdit = useAppSelector(selectAccountFieldToEdit);
 
   function selectFieldToEdit(field: UserAccountFieldToEdit) {
     dispatch(setAccountFieldToEdit(field));
@@ -16,7 +18,7 @@ export default function PersonalInformationSection() {
 
   return (
     <>
-      {fieldToEdit !== 'firstName' ? (
+      {accountFieldToEdit !== 'firstName' ? (
         <DisplayUserDataAccountPage
           label="Name"
           canEdit={true}
@@ -32,7 +34,7 @@ export default function PersonalInformationSection() {
         />
       )}
 
-      {fieldToEdit !== 'lastName' ? (
+      {accountFieldToEdit !== 'lastName' ? (
         <DisplayUserDataAccountPage
           label="Surname"
           canEdit={true}
@@ -48,7 +50,7 @@ export default function PersonalInformationSection() {
         />
       )}
 
-      {fieldToEdit !== 'contactNumber' ? (
+      {accountFieldToEdit !== 'contactNumber' ? (
         <DisplayUserDataAccountPage
           label="Contact number"
           canEdit={true}

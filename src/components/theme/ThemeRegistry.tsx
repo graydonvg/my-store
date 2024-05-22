@@ -7,6 +7,7 @@ import { blue, green, grey, red } from '@mui/material/colors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { usePathname } from 'next/navigation';
+import { selectThemeMode } from '@/lib/redux/features/theme/themeSelectors';
 
 const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
   palette: {
@@ -124,7 +125,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
 export type GetDesignTokensType = ReturnType<typeof getDesignTokens>;
 
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
-  const mode = useAppSelector((state) => state.theme.mode);
+  const mode = useAppSelector(selectThemeMode);
   const pathname = usePathname();
 
   const isCheckoutFlow = pathname.startsWith('/cart') || pathname.startsWith('/checkout');

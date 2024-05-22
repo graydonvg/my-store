@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import { Call, Email, Lock, Person } from '@mui/icons-material';
+import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
 
 const formFields = [
   {
@@ -67,7 +68,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const isSignUpDialogOpen = useAppSelector((state) => state.dialog.signUpDialog);
+  const isSignUpDialogOpen = useAppSelector(selectIsSignInDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(defaultFormData);
 

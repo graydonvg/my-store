@@ -3,6 +3,8 @@ import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { AddressStore } from '@/types';
 import { ChangeEvent } from 'react';
 import { Call, Person } from '@mui/icons-material';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
 
 const contactDetailsFormFields = [
   { label: 'First Name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true, icon: <Person /> },
@@ -17,12 +19,12 @@ const contactDetailsFormFields = [
 ];
 
 type Props = {
-  addressFormData: AddressStore;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ContactDetailsFieldsAddressForm({ addressFormData, onInputChange }: Props) {
+export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props) {
   const theme = useTheme();
+  const addressFormData = useAppSelector(selectAddressFromData);
 
   return (
     <Grid

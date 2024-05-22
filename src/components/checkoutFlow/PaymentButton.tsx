@@ -2,36 +2,38 @@ import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { createNewStripeCheckoutSession } from '@/utils/stripe/stripeCheckout';
 import { toast } from 'react-toastify';
-import ContainedButton from '../simple/ContainedButton';
+import ContainedButton from '../ui/buttons/simple/ContainedButton';
 import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';
 import { getLineItemsFromCartItems } from '@/utils/stripe/getStripeLineItems';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import { selectCheckoutData } from '@/lib/redux/features/checkout/checkoutSelectors';
 
 export default function PaymentButton() {
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const checkoutData = useAppSelector((state) => state.checkout);
+  const cartItems = useAppSelector(selectCartItems);
+  const checkoutData = useAppSelector(selectCheckoutData);
 
   async function addOrderAndCheckoutWithStripe() {
-    dispatch(setCheckoutData({ isProcessing: true }));
+    dispatch(setCheckoutData({ isCheckoutProcessing: true }));
 
     const orderData: InsertOrderDb = {
       orderDetails: {
-        cartTotal: checkoutData.paymentTotals.cartTotal,
-        deliveryFee: checkoutData.paymentTotals.deliveryFee,
-        discountTotal: checkoutData.paymentTotals.discountTotal,
-        orderTotal: checkoutData.paymentTotals.orderTotal,
+        cartTotal: checkoutData.orderPaymentTotals.cartTotal,
+        deliveryFee: checkoutData.orderPaymentTotals.deliveryFee,
+        discountTotal: checkoutData.orderPaymentTotals.discountTotal,
+        orderTotal: checkoutData.orderPaymentTotals.orderTotal,
         orderStatus: 'awaiting payment',
       },
       orderItems: checkoutData.orderItems,
-      shippingDetails: checkoutData.shippingDetails!,
+      shippingDetails: checkoutData.orderShippingDetails!,
     };
 
     const { success: addOrderSuccess, message: addOrderMessage, data: addOrderData } = await addOrder(orderData);
 
     if (!addOrderSuccess) {
-      dispatch(setCheckoutData({ isProcessing: false }));
+      dispatch(setCheckoutData({ isCheckoutProcessing: false }));
       toast.error(addOrderMessage);
       return;
     }
@@ -45,19 +47,19 @@ export default function PaymentButton() {
     );
 
     if (!stripeCheckoutSuccess) {
-      dispatch(setCheckoutData({ isProcessing: false }));
+      dispatch(setCheckoutData({ isCheckoutProcessing: false }));
       toast.error(stripeCheckoutMessage);
     }
   }
 
   return (
     <ContainedButton
-      disabled={!checkoutData.shippingDetails || cartItems.length === 0}
+      disabled={!checkoutData.orderShippingDetails || cartItems.length === 0}
       onClick={addOrderAndCheckoutWithStripe}
-      label={!checkoutData.isProcessing ? 'pay with stripe' : ''}
+      label={!checkoutData.isCheckoutProcessing ? 'pay with stripe' : ''}
       fullWidth
       color="secondary"
-      isLoading={checkoutData.isProcessing}
+      isLoading={checkoutData.isCheckoutProcessing}
       startIcon={<Payment />}
     />
   );

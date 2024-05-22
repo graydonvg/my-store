@@ -6,19 +6,20 @@ import {
   selectCartTotal,
   selectDiscountTotal,
   selectOrderTotal,
+  selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
 import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
 import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
-import PaymentButton from '@/components/ui/buttons/complex/PaymentButton';
+import PaymentButton from '@/components/checkoutFlow/PaymentButton';
 
 export default function CheckoutOrderTotals() {
   const pathname = usePathname();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const cartTotal = selectCartTotal(cartItems);
-  const discountTotal = selectDiscountTotal(cartItems);
-  const deliveryFee = selectDeliveryFee(cartItems);
-  const orderTotal = selectOrderTotal(cartItems);
+  const cartItems = useAppSelector(selectCartItems);
+  const discountTotal = useAppSelector(selectDiscountTotal);
+  const cartTotal = useAppSelector(selectCartTotal);
+  const deliveryFee = useAppSelector(selectDeliveryFee);
+  const orderTotal = useAppSelector(selectOrderTotal);
   const isCartViewPath = pathname.startsWith('/cart/view');
   const isShippingPath = pathname.startsWith('/checkout/shipping');
 

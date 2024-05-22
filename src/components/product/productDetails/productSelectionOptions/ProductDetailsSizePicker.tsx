@@ -1,20 +1,17 @@
 import { Product } from '@/types';
 import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../../ui/buttons/simple/ToggleButtons';
-import { MouseEvent } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sort';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { setSize } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
 
 type Props = {
   product: Product;
+  size: string | null;
+  setSize: Dispatch<SetStateAction<string | null>>;
 };
 
-export default function ProductDetailsSizePicker({ product }: Props) {
-  const dispatch = useAppDispatch();
-  const size = useAppSelector((state) => state.productSelectionDetails.size);
-
+export default function ProductDetailsSizePicker({ product, size, setSize }: Props) {
   function getItemSizeToggleButtonOptions() {
     const availableSizes = product.sizes
       .map((size) => ORDERED_SIZES_FOR_TOGGLE_BUTTONS.filter((option) => option.value === size)[0])
@@ -23,8 +20,8 @@ export default function ProductDetailsSizePicker({ product }: Props) {
     return availableSizes;
   }
 
-  function handleSelectSize(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
-    dispatch(setSize(selectedSize));
+  function selectSizeHandler(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+    setSize((prev) => (prev !== selectedSize ? selectedSize : null));
   }
 
   return (
@@ -43,7 +40,7 @@ export default function ProductDetailsSizePicker({ product }: Props) {
         Select A Size
       </Typography>
       <ToggleButtons
-        onChange={handleSelectSize}
+        onChange={selectSizeHandler}
         buttons={getItemSizeToggleButtonOptions()}
         selection={size ? [size] : []}
       />

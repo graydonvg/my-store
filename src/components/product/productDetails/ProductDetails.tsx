@@ -1,26 +1,15 @@
-'use client';
-
 import { Product } from '@/types';
 import { Box, Divider, Grid } from '@mui/material';
 import ProductImageBoxes from '../productImageBoxes/ProductImageBoxes';
 import ProductSelectionOptions from './productSelectionOptions/ProductSelectionOptions';
 import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
 import TopProductDetails from './TopProductDetails';
-import { useEffect } from 'react';
-import { resetProductSelectionDetails } from '@/lib/redux/features/productSelectionDetails/productSelectionDetailsSlice';
-import { useAppDispatch } from '@/lib/redux/hooks';
 
 type Props = {
   product: Product;
 };
 
 export default function ProductDetails({ product }: Props) {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(resetProductSelectionDetails());
-  }, [dispatch]);
-
   return (
     <Grid
       container

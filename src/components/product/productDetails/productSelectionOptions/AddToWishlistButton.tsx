@@ -5,20 +5,24 @@ import { Product } from '@/types';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { setWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSlice';
 import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { selectWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSelectors';
 
 type Props = {
-  size: string | null;
   product: Product;
+  size: string | null;
+  setSize: Dispatch<SetStateAction<string | null>>;
+  setQuantity: Dispatch<SetStateAction<number>>;
 };
 
-export default function AddToWishlistButton({ product, size }: Props) {
+export default function AddToWishlistButton({ product, size, setSize, setQuantity }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.data);
-  const wishlistData = useAppSelector((state) => state.wishlist.wishlistData);
+  const userData = useAppSelector(selectUserData);
+  const wishlistData = useAppSelector(selectWishlistData);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
 
   async function addToWishlist() {
@@ -51,6 +55,8 @@ export default function AddToWishlistButton({ product, size }: Props) {
       dispatch(setWishlistData([...wishlistData, { size, productId: product.productId }]));
       router.refresh();
       toast.success('Added to wishlist');
+      setSize(null);
+      setQuantity(1);
     } else {
       toast.error(message);
     }

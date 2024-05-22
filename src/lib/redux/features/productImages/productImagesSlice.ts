@@ -49,19 +49,19 @@ const productImagesSlice = createSlice({
     setImageUploadProgress(state, action: PayloadAction<ProductImageUploadProgress>) {
       state.imageUploadProgress = updateImageUploadProgress(action.payload, state.imageUploadProgress);
     },
-    setImageData(state, action: PayloadAction<InsertProductImageDataStore[]>) {
+    setImageData(state, action: PayloadAction<State['imageData']>) {
       state.imageData = [...state.imageData, ...action.payload];
     },
-    setUpdatedImageData(state, action: PayloadAction<InsertProductImageDataStore[]>) {
+    setUpdatedImageData(state, action: PayloadAction<State['imageData']>) {
       state.imageData = updateImageIndexesAndSort(action.payload);
     },
     deleteImageData(state, action: PayloadAction<{ fileName: string }>) {
       state.imageData = deleteImage(action.payload.fileName, state.imageData);
     },
-    setIsDeletingImage(state, action: PayloadAction<boolean>) {
+    setIsDeletingImage(state, action: PayloadAction<State['isDeletingImage']>) {
       state.isDeletingImage = action.payload;
     },
-    setIsEditImagesDrawerOpen(state, action: PayloadAction<boolean>) {
+    setIsEditImagesDrawerOpen(state, action: PayloadAction<State['isEditImagesDrawerOpen']>) {
       state.isEditImagesDrawerOpen = action.payload;
     },
     clearImageData(state) {

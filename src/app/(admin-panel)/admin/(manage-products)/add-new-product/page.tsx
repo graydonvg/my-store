@@ -16,13 +16,20 @@ import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
 import { Box } from '@mui/material';
 import { clearAllProductImagesData } from '@/lib/redux/features/productImages/productImagesSlice';
-import { clearProductFormData, setIsSubmitting } from '@/lib/redux/features/productForm/productFormSlice';
+import { clearProductFormData, setIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSlice';
+import {
+  selectIsProductFormSubmitting,
+  selectProductFormData,
+} from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 export default function AdminPanelAddNewProductPage() {
   const router = useRouter();
-  const { productFormData, isSubmitting } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
   const dispatch = useAppDispatch();
+  const productFormData = useAppSelector(selectProductFormData);
+  const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
 
@@ -76,7 +83,7 @@ export default function AdminPanelAddNewProductPage() {
 
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(setIsSubmitting(true));
+    dispatch(setIsProductFormSubmitting(true));
 
     let productId = '';
 
@@ -96,7 +103,7 @@ export default function AdminPanelAddNewProductPage() {
         dispatch(clearProductFormData());
         dispatch(clearAllProductImagesData());
         toast.success('Product added');
-        dispatch(setIsSubmitting(false));
+        dispatch(setIsProductFormSubmitting(false));
         router.push('/admin/products');
       } else {
         const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
@@ -111,7 +118,7 @@ export default function AdminPanelAddNewProductPage() {
       toast.error(addProductMessage);
     }
 
-    dispatch(setIsSubmitting(false));
+    dispatch(setIsProductFormSubmitting(false));
   }
 
   return (

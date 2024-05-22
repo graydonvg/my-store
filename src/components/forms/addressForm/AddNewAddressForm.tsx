@@ -7,12 +7,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/features/addressForm/addressFormSlice';
 import AddressForm from './AddressForm';
+import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
 
 export default function AddNewAddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const addressFormData = useAppSelector((state) => state.addressForm);
-  const isDialogLoading = useAppSelector((state) => state.dialog.isDialogLoading);
+  const addressFormData = useAppSelector(selectAddressFromData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -49,10 +49,8 @@ export default function AddNewAddressForm() {
   return (
     <AddressForm
       headerText="Add address"
-      addressFormData={addressFormData}
       onInputChange={handleInputChange}
       onSubmit={handleAddNewAddress}
-      isDialogLoading={isDialogLoading}
     />
   );
 }

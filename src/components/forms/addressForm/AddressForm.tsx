@@ -1,20 +1,21 @@
 import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
-import { AddressStore } from '@/types';
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import FormHeader from '../FormHeader';
 import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
 import DeliveryAddressFieldsAddressForm from './DeliveryAddressFieldsAddressForm';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
 type Props = {
   headerText: string;
-  addressFormData: AddressStore;
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  isDialogLoading: boolean;
 };
 
-export default function AddressForm({ headerText, addressFormData, onInputChange, onSubmit, isDialogLoading }: Props) {
+export default function AddressForm({ headerText, onInputChange, onSubmit }: Props) {
+  const isDialogLoading = useAppSelector(selectIsDialogLoading);
+
   return (
     <Box
       sx={{
@@ -36,15 +37,9 @@ export default function AddressForm({ headerText, addressFormData, onInputChange
           }
         }}
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3, paddingX: 2 }}>
-        <ContactDetailsFieldsAddressForm
-          addressFormData={addressFormData}
-          onInputChange={onInputChange}
-        />
+        <ContactDetailsFieldsAddressForm onInputChange={onInputChange} />
         <Divider flexItem />
-        <DeliveryAddressFieldsAddressForm
-          addressFormData={addressFormData}
-          onInputChange={onInputChange}
-        />
+        <DeliveryAddressFieldsAddressForm onInputChange={onInputChange} />
         <ContainedButton
           label="save"
           disabled={isDialogLoading}

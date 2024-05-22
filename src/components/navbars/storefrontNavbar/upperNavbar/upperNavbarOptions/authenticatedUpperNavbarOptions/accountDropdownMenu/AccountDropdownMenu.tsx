@@ -8,6 +8,7 @@ import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
 import SignOutButton from '../../../../../../ui/buttons/complex/SignOutButton';
 import { HAS_ADMIN_PANEL_ACCESS } from '@/data';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 const iconSize = 'small';
 
@@ -30,7 +31,7 @@ const accountMenuOptions = [
 ];
 
 export default function AccountDropdownMenu() {
-  const userData = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';

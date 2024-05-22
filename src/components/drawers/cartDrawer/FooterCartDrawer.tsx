@@ -9,19 +9,12 @@ import CheckoutButton from '../../ui/buttons/complex/CheckoutButton';
 
 export default function FooterCartDrawer() {
   const router = useRouter();
-  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
-  const orderTotal = selectCartTotal(cartItems);
-  const discountTotal = selectDiscountTotal(cartItems);
-
-  function closeCartDrawer() {
-    if (isCartOpen === true) {
-      dispatch(setIsCartOpen(false));
-    }
-  }
+  const orderTotal = useAppSelector(selectCartTotal);
+  const discountTotal = useAppSelector(selectDiscountTotal);
 
   function navigateToCartView() {
-    closeCartDrawer();
+    dispatch(setIsCartOpen(false));
     router.push('/cart/view');
   }
 

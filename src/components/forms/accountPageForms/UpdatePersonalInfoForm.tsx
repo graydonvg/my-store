@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import { toast } from 'react-toastify';
 import AccountPageForm from './AccountPageForm';
+import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
 
 type Props = {
   field: 'firstName' | 'lastName' | 'contactNumber';
@@ -18,7 +19,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState(data);
-  const isUpdatingAccount = useAppSelector((state) => state.account.isUpdatingAccount);
+  const isUpdatingAccount = useAppSelector(selectIsUpdatingAccount);
 
   function cancelUpdateField() {
     dispatch(setAccountFieldToEdit(null));

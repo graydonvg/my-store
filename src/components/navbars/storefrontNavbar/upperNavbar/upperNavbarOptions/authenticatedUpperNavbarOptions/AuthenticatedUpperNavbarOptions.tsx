@@ -8,9 +8,10 @@ import DividerUpperNavbarOptions from '../DividerUpperNavbarOptions';
 import CartDrawerButton from './CartDrawerButton';
 import WishlistButton from './WishlistButton';
 import AccountDropdownMenu from './accountDropdownMenu/AccountDropdownMenu';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 
 export default function AuthenticatedUpperNavbarOptions() {
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector(selectCartItems);
 
   return (
     <Box

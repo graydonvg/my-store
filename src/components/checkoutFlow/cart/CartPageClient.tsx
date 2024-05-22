@@ -21,11 +21,8 @@ export default function CartPageClient({ cartItems, wishlistData }: Props) {
   useEffect(() => {
     dispatch(setCartItems(cartItems ?? []));
     dispatch(setWishlistData(wishlistData ?? []));
-  }, [cartItems, wishlistData, dispatch]);
-
-  useEffect(() => {
     dispatch(resetCheckoutData());
-  }, [dispatch]);
+  }, [cartItems, wishlistData, dispatch]);
 
   return (
     <>

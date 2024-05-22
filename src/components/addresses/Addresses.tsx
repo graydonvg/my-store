@@ -4,9 +4,10 @@ import { BORDER_RADIUS } from '@/data';
 import AddressData from './AddressData';
 import AddAddressDialogButton from './buttons/AddAddressDialogButton';
 import AddAddressDialog from '../dialogs/AddAddressDialog';
+import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelectors';
 
 export default function Addresses() {
-  const addresses = useAppSelector((state) => state.addresses.data);
+  const addresses = useAppSelector(selectAddresses);
 
   return (
     <>

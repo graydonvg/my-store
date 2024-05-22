@@ -15,11 +15,14 @@ import {
   setImageUploadProgress,
 } from '@/lib/redux/features/productImages/productImagesSlice';
 import EditProductImagesDrawerButton from './EditProductImagesDrawerButton';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSelectors';
 
 export default function ManageProductImages() {
   const dispatch = useAppDispatch();
-  const { isSubmitting } = useAppSelector((state) => state.productForm);
-  const { imageUploadProgress, imageData } = useAppSelector((state) => state.productImages);
+  const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
   const maxImageCount = 5;
 

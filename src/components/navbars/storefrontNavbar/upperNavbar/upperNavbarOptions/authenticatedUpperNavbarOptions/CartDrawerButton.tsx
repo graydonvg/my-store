@@ -1,14 +1,14 @@
 import { Box, Typography } from '@mui/material';
 import UpperNavbarIconButton from '../../UpperNavbarIconButton';
 import { ShoppingCart } from '@mui/icons-material';
-import { selectCartCount } from '@/lib/redux/features/cart/cartSelectors';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { selectCartCount, selectIsCartOpen } from '@/lib/redux/features/cart/cartSelectors';
 
 export default function CartDrawerButton() {
   const dispatch = useAppDispatch();
-  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
-  const cartCount = selectCartCount(cartItems);
+  const isCartOpen = useAppSelector(selectIsCartOpen);
+  const cartCount = useAppSelector(selectCartCount);
 
   function toggleCartDrawer() {
     dispatch(setIsCartOpen(!isCartOpen));

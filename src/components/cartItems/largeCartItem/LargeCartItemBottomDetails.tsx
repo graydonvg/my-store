@@ -1,6 +1,6 @@
 import { FREE_DELIVERY_THRESHOLD } from '@/data';
-import { useAppSelector } from '@/lib/redux/hooks';
 import { selectOrderTotal } from '@/lib/redux/features/cart/cartSelectors';
+import { useAppSelector } from '@/lib/redux/hooks';
 import { Divider, Typography } from '@mui/material';
 
 type Props = {
@@ -8,8 +8,7 @@ type Props = {
 };
 
 export default function LargeCartItemBottomDetails({ returnInfo }: Props) {
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const orderTotal = selectOrderTotal(cartItems);
+  const orderTotal = useAppSelector(selectOrderTotal);
 
   return (
     <Typography

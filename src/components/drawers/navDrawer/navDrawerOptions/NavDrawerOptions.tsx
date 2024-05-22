@@ -7,9 +7,10 @@ import SignOutButton from '@/components/ui/buttons/complex/SignOutButton';
 import { ACCOUNT_VIEW_NAV_OPTIONS, STORE_VIEW_NAV_OPTIONS, HAS_ADMIN_PANEL_ACCESS } from '@/data';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 export default function NavDrawerOptions() {
-  const userData = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith('/admin');

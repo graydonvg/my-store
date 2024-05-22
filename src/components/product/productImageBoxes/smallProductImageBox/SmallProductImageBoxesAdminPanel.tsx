@@ -2,6 +2,8 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import SmallProductImageBox from './SmallProductImageBox';
 import SmallBoxWithUploadProgress from './SmallBoxWithUploadProgress';
 import EmptySmallBoxWithBorder from './EmptySmallBoxWithBorder';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
   maxImageCount: number;
@@ -22,8 +24,9 @@ export default function SmallProductImageBoxesAdminPanel({
   selectedImageIndex,
   getBoxBorderColor,
 }: Props) {
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
 
   return (
     <>

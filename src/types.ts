@@ -101,21 +101,21 @@ export type UpdateCartItemQuantity = {
 // 3. Checkout
 
 export type CheckoutData = {
-  selectedAddressId: string | null;
-  isProcessing: boolean;
+  orderAddressId: string | null;
+  isCheckoutProcessing: boolean;
   orderItems: {
     pricePaid: number;
     productId: string;
     quantity: number;
     size: string;
   }[];
-  paymentTotals: {
+  orderPaymentTotals: {
     cartTotal: number;
     deliveryFee: number;
     discountTotal: number;
     orderTotal: number;
   };
-  shippingDetails: OrderShippingDetails | null;
+  orderShippingDetails: OrderShippingDetails | null;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

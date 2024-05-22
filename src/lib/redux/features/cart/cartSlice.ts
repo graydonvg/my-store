@@ -17,13 +17,14 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setIsCartOpen(state, action: PayloadAction<boolean>) {
+    setIsCartOpen(state, action: PayloadAction<State['isCartOpen']>) {
       state.isCartOpen = action.payload;
     },
-    setCartItems(state, action: PayloadAction<CartItem[]>) {
+    setCartItems(state, action: PayloadAction<State['cartItems']>) {
       state.cartItems = action.payload;
     },
-    setCartItemQuantityWillUpdate(state, action: PayloadAction<boolean>) {
+    setCartItemQuantityWillUpdate(state, action: PayloadAction<State['cartItemQuantityWillUpdate']>) {
+      // Remove and use useState!!!!!!
       state.cartItemQuantityWillUpdate = action.payload;
     },
     clearCart(state) {

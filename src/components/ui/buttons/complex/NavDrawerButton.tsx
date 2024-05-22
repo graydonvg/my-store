@@ -1,3 +1,4 @@
+import { selectIsCartOpen } from '@/lib/redux/features/cart/cartSelectors';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { setIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -6,7 +7,7 @@ import { IconButton } from '@mui/material';
 
 export default function NavDrawerButton() {
   const dispatch = useAppDispatch();
-  const { isCartOpen } = useAppSelector((state) => state.cart);
+  const isCartOpen = useAppSelector(selectIsCartOpen);
 
   function openNavDrawer() {
     dispatch(setIsNavDrawerOpen(true));

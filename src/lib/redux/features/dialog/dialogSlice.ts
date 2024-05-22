@@ -38,7 +38,7 @@ const dialogSlice = createSlice({
     closeDialog(state) {
       handleCloseDialog(state);
     },
-    setIsDialogLoading(state, action: PayloadAction<boolean>) {
+    setIsDialogLoading(state, action: PayloadAction<State['isDialogLoading']>) {
       state.isDialogLoading = action.payload;
     },
   },

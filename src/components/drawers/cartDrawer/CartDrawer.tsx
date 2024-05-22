@@ -4,9 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import SmallCartItemList from '../../cartItems/smallCartItemList/SmallCartItemList';
 import FooterCartDrawer from './FooterCartDrawer';
+import { selectCartItems, selectIsCartOpen } from '@/lib/redux/features/cart/cartSelectors';
 
 export default function CartDrawer() {
-  const { isCartOpen, cartItems } = useAppSelector((state) => state.cart);
+  const cartItems = useAppSelector(selectCartItems);
+  const isCartOpen = useAppSelector(selectIsCartOpen);
   const dispatch = useAppDispatch();
   const theme = useTheme();
 

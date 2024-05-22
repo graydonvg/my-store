@@ -13,7 +13,7 @@ const wishlistDataSlice = createSlice({
   name: 'wishlistData',
   initialState,
   reducers: {
-    setWishlistData(state, action: PayloadAction<WishlistData[]>) {
+    setWishlistData(state, action: PayloadAction<State['wishlistData']>) {
       state.wishlistData = action.payload;
     },
   },

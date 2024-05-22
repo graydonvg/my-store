@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Typography, useTheme } from '@mui/material';
 import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Product } from '@/types';

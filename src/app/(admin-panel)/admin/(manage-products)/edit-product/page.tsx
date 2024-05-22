@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { UpdateProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
@@ -14,15 +14,21 @@ import updateProductImageData from '@/services/product-image-data/update';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Box } from '@mui/material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
-import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
+import { clearProductFormData, setIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSlice';
 import { clearImageData } from '@/lib/redux/features/productImages/productImagesSlice';
+import {
+  selectIsProductFormSubmitting,
+  selectProductFormData,
+} from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 export default function AdminPanelUpdateProductPage() {
   const router = useRouter();
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { imageData, imageUploadProgress } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
+  const imageUploadProgress = useAppSelector(selectImageUploadProgress);
+  const imageData = useAppSelector(selectImageData);
   const dispatch = useAppDispatch();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const emptyFormFields = getEmptyFormFields(productFormData);
   const numberOfFormFields = getNumberOfFormFields(productFormData);
 
@@ -75,7 +81,7 @@ export default function AdminPanelUpdateProductPage() {
 
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitting(true);
+    dispatch(setIsProductFormSubmitting(true));
 
     const { success: updateProductSuccess, message: updateProductMessage } = await updateProduct({
       ...productFormData,
@@ -103,7 +109,7 @@ export default function AdminPanelUpdateProductPage() {
         dispatch(clearProductFormData());
         dispatch(clearImageData());
         toast.success('Product updated');
-        setIsSubmitting(false);
+        dispatch(setIsProductFormSubmitting(false));
         router.push('/admin/products');
       } else if (addImageDataSuccess === false && updateImageDataSuccess === true) {
         toast.error(addImageDataMessage);
@@ -117,7 +123,7 @@ export default function AdminPanelUpdateProductPage() {
       toast.error(updateProductMessage);
     }
 
-    setIsSubmitting(false);
+    dispatch(setIsProductFormSubmitting(false));
   }
 
   return (

@@ -17,20 +17,23 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import TextButton from '@/components/ui/buttons/simple/TextButton';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 export type Props = {
-  imageData: InsertProductImageDataStore & { id: string };
+  imageDataProps: InsertProductImageDataStore & { id: string };
   activeItemId: UniqueIdentifier | null;
 };
 
-export default function DraggableProductImage({ imageData, activeItemId }: Props) {
+export default function DraggableProductImage({ imageDataProps, activeItemId }: Props) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const { productFormData } = useAppSelector((state) => state.productForm);
-  const { isDeletingImage, imageData: imageDataArray } = useAppSelector((state) => state.productImages);
+  const productFormData = useAppSelector(selectProductFormData);
+  const selectedImageData = useAppSelector(selectImageData);
+  const isDeletingImage = useAppSelector(selectIsDeletingImage);
   const [imageToDeleteId, setImageToDeleteId] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageData.id;
+  const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageDataProps.id;
   const {
     attributes: { role, ...restOfAttributes },
     listeners,
@@ -38,32 +41,32 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
     transform,
     transition,
   } = useSortable({
-    id: imageData.id,
+    id: imageDataProps.id,
   });
   const darkMode = theme.palette.mode === 'dark';
   const containerBgColor = darkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)';
 
   async function deleteImage() {
     dispatch(setIsDeletingImage(true));
-    setImageToDeleteId(imageData.id);
+    setImageToDeleteId(imageDataProps.id);
 
-    if (imageData.fileName.length > 0) {
-      await deleteProductImageFromStorage(imageData.fileName);
+    if (imageDataProps.fileName.length > 0) {
+      await deleteProductImageFromStorage(imageDataProps.fileName);
     }
 
-    if (productFormData.productId && imageData.productImageId) {
-      const { success, message } = await deleteProductImageDataFromDb(imageData.productImageId);
+    if (productFormData.productId && imageDataProps.productImageId) {
+      const { success, message } = await deleteProductImageDataFromDb(imageDataProps.productImageId);
 
       if (success === false) {
         toast.error(message);
       }
     }
 
-    dispatch(deleteImageData({ fileName: imageData.fileName }));
+    dispatch(deleteImageData({ fileName: imageDataProps.fileName }));
     setImageToDeleteId(null);
     dispatch(setIsDeletingImage(false));
 
-    if (imageDataArray.length === 1) {
+    if (selectedImageData.length === 1) {
       dispatch(setIsEditImagesDrawerOpen(false));
     }
   }
@@ -76,7 +79,7 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
         sx={{
           borderRadius: BORDER_RADIUS,
           paddingY: 2,
-          backgroundColor: imageData.id === activeItemId ? containerBgColor : 'transparent',
+          backgroundColor: imageDataProps.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
           transition,
         }}>
@@ -122,8 +125,8 @@ export default function DraggableProductImage({ imageData, activeItemId }: Props
               }}
               fill
               sizes="(min-width: 600px) 113px, calc(35vw - 15px)"
-              src={imageData.imageUrl}
-              alt={`Image for ${imageData.fileName}`}
+              src={imageDataProps.imageUrl}
+              alt={`Image for ${imageDataProps.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
             />
 

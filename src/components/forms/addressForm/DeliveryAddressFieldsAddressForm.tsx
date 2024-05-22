@@ -1,16 +1,18 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { ChangeEvent } from 'react';
-import { AddressStore } from '@/types';
 import NumberField from '../../ui/inputFields/NumberField';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
 
 type Props = {
-  addressFormData: AddressStore;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function DeliveryAddressFieldsAddressForm({ addressFormData, onInputChange }: Props) {
+export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Props) {
   const theme = useTheme();
+  const addressFormData = useAppSelector(selectAddressFromData);
+
   return (
     <Grid
       container

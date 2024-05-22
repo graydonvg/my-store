@@ -12,7 +12,7 @@ const navDrawerSlice = createSlice({
   name: 'navDrawer',
   initialState,
   reducers: {
-    setIsNavDrawerOpen(state, action: PayloadAction<boolean>) {
+    setIsNavDrawerOpen(state, action: PayloadAction<State['isNavDrawerOpen']>) {
       state.isNavDrawerOpen = action.payload;
     },
   },

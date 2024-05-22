@@ -5,9 +5,10 @@ import AddressButtons from './buttons/AddressButtons';
 import Address from './Address';
 import Recipient from './Recipient';
 import SelectShippingAddressCheckbox from '../checkoutFlow/shipping/SelectShippingAddressCheckbox';
+import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelectors';
 
 export default function AddressData() {
-  const addresses = useAppSelector((state) => state.addresses.data);
+  const addresses = useAppSelector(selectAddresses);
   const pathname = usePathname();
   const isShippingPath = pathname.startsWith('/checkout/shipping');
 

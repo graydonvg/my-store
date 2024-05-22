@@ -8,6 +8,7 @@ import { HOME_PAGE_CATEGORIES, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/data';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { InsertProductStore } from '@/types';
+import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 
 type Props = {
   isSubmitting: boolean;
@@ -17,7 +18,7 @@ type Props = {
 
 export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSubmitting, isOnSale }: Props) {
   const dispatch = useAppDispatch();
-  const { productFormData } = useAppSelector((state) => state.productForm);
+  const productFormData = useAppSelector(selectProductFormData);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
   const categoryOptionsCapitalised = HOME_PAGE_CATEGORIES.map((category) =>
     category.label.replace(category.label.charAt(0), category.label.charAt(0).toUpperCase())

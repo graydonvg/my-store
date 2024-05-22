@@ -9,8 +9,10 @@ import {
   selectDeliveryFee,
   selectOrderTotal,
   selectDiscountTotal,
+  selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
 import { ShoppingCartCheckout } from '@mui/icons-material';
+import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 
 type Props = ButtonProps & {
   disabled?: boolean;
@@ -21,14 +23,14 @@ type Props = ButtonProps & {
 export default function CheckoutButton({ disabled, label, sxStyles, ...props }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const cartTotal = selectCartTotal(cartItems);
-  const discountTotal = selectDiscountTotal(cartItems);
-  const deliveryFee = selectDeliveryFee(cartItems);
-  const orderTotal = selectOrderTotal(cartItems);
+  const cartItems = useAppSelector(selectCartItems);
+  const cartTotal = useAppSelector(selectCartTotal);
+  const discountTotal = useAppSelector(selectDiscountTotal);
+  const deliveryFee = useAppSelector(selectDeliveryFee);
+  const orderTotal = useAppSelector(selectOrderTotal);
 
   function handleCheckoutNow() {
-    const createOrderItems = cartItems.map((item) => {
+    const orderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
       const roundedPrice = Math.round(pricePaid!);
@@ -43,10 +45,12 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
 
     dispatch(
       setCheckoutData({
-        paymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
-        orderItems: createOrderItems,
+        orderPaymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
+        orderItems,
       })
     );
+
+    dispatch(setIsCartOpen(false));
 
     router.push('/checkout/shipping');
   }
