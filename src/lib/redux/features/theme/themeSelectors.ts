@@ -1,10 +1,5 @@
-import { createSelector } from 'reselect';
 import { RootState } from '../../store';
 
-function selectThemeReducer(state: RootState) {
-  return state.theme;
+export function selectThemeMode(state: RootState) {
+  return state.theme.mode;
 }
-
-export const selectThemeMode = createSelector([selectThemeReducer], (themeSlice) => {
-  return themeSlice.mode;
-});

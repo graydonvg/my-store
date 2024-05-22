@@ -1,10 +1,5 @@
-import { createSelector } from 'reselect';
 import { RootState } from '../../store';
 
-function selectNavDrawerReducer(state: RootState) {
-  return state.navDrawer;
+export function selectIsNavDrawerOpen(state: RootState) {
+  return state.navDrawer.isNavDrawerOpen;
 }
-
-export const selectIsNavDrawerOpen = createSelector([selectNavDrawerReducer], (navDrawerSlice) => {
-  return navDrawerSlice.isNavDrawerOpen;
-});

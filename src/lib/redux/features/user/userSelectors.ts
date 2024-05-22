@@ -1,10 +1,5 @@
-import { createSelector } from 'reselect';
 import { RootState } from '../../store';
 
-function selectUserReducer(state: RootState) {
-  return state.user;
+export function selectUserData(state: RootState) {
+  return state.user.data;
 }
-
-export const selectUserData = createSelector([selectUserReducer], (userSlice) => {
-  return userSlice.data;
-});
