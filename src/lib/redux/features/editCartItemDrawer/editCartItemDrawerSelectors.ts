@@ -12,6 +12,10 @@ export function selectIsRemovingCartItem(state: RootState) {
   return state.editCartItemDrawer.isRemovingCartItem;
 }
 
+export function selectCartItemQuantityWillUpdate(state: RootState) {
+  return state.editCartItemDrawer.cartItemQuantityWillUpdate;
+}
+
 export function selectIsUpdatingCartItemQuantity(state: RootState) {
   return state.editCartItemDrawer.isUpdatingCartItemQuantity;
 }

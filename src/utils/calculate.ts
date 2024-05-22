@@ -1,11 +1,11 @@
-import { CartItem, Product, QueryPageDataGrid } from '@/types';
+import { Product, QueryPageDataGrid } from '@/types';
 
 export function calculateDiscountedProductPrice(product: Product) {
   return product?.price - product?.price * (product?.salePercentage / 100);
 }
 
-export function calculateDiscountedCartItemPrice(cartItem: CartItem) {
-  return cartItem?.product?.price! - cartItem?.product?.price! * (cartItem?.product?.salePercentage! / 100);
+export function calculateDiscountedCartItemPrice(price: number, percentage: number) {
+  return price - price * (percentage / 100);
 }
 
 export function calculateTablePagination(items: {}[] | null, page: QueryPageDataGrid, totalRowCount: number) {

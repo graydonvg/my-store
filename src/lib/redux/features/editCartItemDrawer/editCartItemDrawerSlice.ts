@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
   cartItemToEditId: string | null;
+  cartItemQuantityWillUpdate: boolean;
   isUpdatingCartItemQuantity: boolean;
   isUpdatingCartItemSize: boolean;
   isRemovingCartItem: boolean;
@@ -10,6 +11,7 @@ type State = {
 
 const initialState: State = {
   cartItemToEditId: null,
+  cartItemQuantityWillUpdate: false,
   isUpdatingCartItemQuantity: false,
   isUpdatingCartItemSize: false,
   isRemovingCartItem: false,
@@ -22,6 +24,9 @@ const editCartItemDrawerSlice = createSlice({
   reducers: {
     setCartItemToEditId(state, action: PayloadAction<State['cartItemToEditId']>) {
       state.cartItemToEditId = action.payload;
+    },
+    setCartItemQuantityWillUpdate(state, action: PayloadAction<State['cartItemQuantityWillUpdate']>) {
+      state.cartItemQuantityWillUpdate = action.payload;
     },
     setIsUpdatingCartItemQuantity(state, action: PayloadAction<State['isUpdatingCartItemQuantity']>) {
       state.isUpdatingCartItemQuantity = action.payload;
@@ -42,6 +47,7 @@ const { actions, reducer } = editCartItemDrawerSlice;
 
 export const {
   setCartItemToEditId,
+  setCartItemQuantityWillUpdate,
   setIsUpdatingCartItemQuantity,
   setIsUpdatingCartItemSize,
   setIsRemovingCartItem,

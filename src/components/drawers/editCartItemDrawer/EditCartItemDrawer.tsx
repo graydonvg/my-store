@@ -9,15 +9,16 @@ import { deleteItemFromCart } from '@/services/cart/delete';
 import EditCartItemDrawerSizePicker from './EditCartItemDrawerSizePicker';
 import BottomEditCartItemDrawer from './BottomEditCartItemDrawer';
 import EditCartItemDrawerLoader from './EditCartItemDrawerLoader';
-import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/cart/cartSlice';
 import {
+  setCartItemQuantityWillUpdate,
   setCartItemToEditId,
   setIsRemovingCartItem,
   setIsUpdatingCartItemQuantity,
   setIsUpdatingCartItemSize,
 } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
-import { selectCartItemQuantityWillUpdate, selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 import {
+  selectCartItemQuantityWillUpdate,
   selectCartItemToEditId,
   selectIsMovingToWishlist,
   selectIsRemovingCartItem,

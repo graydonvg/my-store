@@ -2,8 +2,8 @@ import { Box, IconButton, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { CartItem } from '@/types';
 import { useEffect, useState } from 'react';
-import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/cart/cartSlice';
 import { useAppDispatch } from '@/lib/redux/hooks';
+import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
 
 type Props = {
   cartItem: CartItem;

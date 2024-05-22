@@ -32,7 +32,9 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
   function handleCheckoutNow() {
     const orderItems = cartItems.map((item) => {
       const pricePaid =
-        item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price;
+        item?.product?.isOnSale === 'Yes'
+          ? calculateDiscountedCartItemPrice(item.product.price, item.product.salePercentage)
+          : item?.product?.price;
       const roundedPrice = Math.round(pricePaid!);
 
       return {

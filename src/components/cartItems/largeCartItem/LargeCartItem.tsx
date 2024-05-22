@@ -2,7 +2,6 @@ import { Box, Paper } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
-import { selectDiscountedPrice, selectPrice } from '@/lib/redux/features/cart/cartSelectors';
 import { BORDER_RADIUS } from '@/data';
 import LargeCartItemSaleBadge from './LargeCartItemSaleBadge';
 import LargeCartItemBottomDetails from './LargeCartItemBottomDetails';
@@ -18,8 +17,6 @@ type Props = {
 
 export default function LargeCartItem({ item }: Props) {
   const isOnSale = item?.product?.isOnSale === 'Yes';
-  const price = selectPrice(item);
-  const discountedPrice = selectDiscountedPrice(item);
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   return (
@@ -95,9 +92,10 @@ export default function LargeCartItem({ item }: Props) {
             }}>
             {isOnSale ? <LargeCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
             <LargeCartItemPrice
-              price={price}
-              discountedPrice={discountedPrice}
+              price={item.product?.price!}
+              salePercentage={item.product?.salePercentage!}
               isOnSale={isOnSale}
+              quantity={item.quantity}
             />
           </Box>
         </Box>

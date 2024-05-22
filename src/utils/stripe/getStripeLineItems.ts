@@ -4,7 +4,9 @@ import { calculateDiscountedCartItemPrice } from '../calculate';
 export function getLineItemsFromCartItems(cartItems: CartItem[]) {
   const lineItems = cartItems.map((item) => {
     const unitAmount =
-      item?.product?.isOnSale === 'Yes' ? calculateDiscountedCartItemPrice(item) : item?.product?.price!;
+      item?.product?.isOnSale === 'Yes'
+        ? calculateDiscountedCartItemPrice(item.product.price, item.product.salePercentage)
+        : item?.product?.price!;
     const images = [...item?.product?.productImageData!]
       .filter((image) => image.index === 0)
       .map((image) => image.imageUrl);

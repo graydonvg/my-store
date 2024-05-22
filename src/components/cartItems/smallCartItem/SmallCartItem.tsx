@@ -2,7 +2,6 @@ import { Box, ListItem, Typography } from '@mui/material';
 import { CartItem } from '@/types';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { selectDiscountedPrice, selectPrice } from '@/lib/redux/features/cart/cartSelectors';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import DeleteCartItemButton from './SmallCartItemDeleteButton';
@@ -20,8 +19,6 @@ export default function SmallCartItem({ item }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isOnSale = item?.product?.isOnSale === 'Yes';
-  const price = selectPrice(item);
-  const discountedPrice = selectDiscountedPrice(item);
   const isShippingPath = pathname.startsWith('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
@@ -93,9 +90,10 @@ export default function SmallCartItem({ item }: Props) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           {isOnSale ? <SmallCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
           <SmallCartItemPrice
-            price={price}
-            discountedPrice={discountedPrice}
+            price={item.product?.price!}
+            salePercentage={item.product?.salePercentage!}
             isOnSale={isOnSale}
+            quantity={item.quantity}
           />
         </Box>
       </Box>

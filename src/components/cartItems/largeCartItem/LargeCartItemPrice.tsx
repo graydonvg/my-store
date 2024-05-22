@@ -1,13 +1,19 @@
+import { calculateDiscountedCartItemPrice } from '@/utils/calculate';
 import { roundAndFormatCurrency } from '@/utils/formatCurrency';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
   isOnSale: boolean;
   price: number;
-  discountedPrice: number;
+  salePercentage: number;
+  quantity: number;
 };
 
-export default function LargeCartItemPrice({ isOnSale, price, discountedPrice }: Props) {
+export default function LargeCartItemPrice({ isOnSale, price, salePercentage, quantity }: Props) {
+  const discountedPrice = calculateDiscountedCartItemPrice(price, salePercentage);
+  const totalPrice = price * quantity;
+  const totalDiscountedPrice = discountedPrice * quantity;
+
   return (
     <Box
       sx={{
@@ -24,7 +30,7 @@ export default function LargeCartItemPrice({ isOnSale, price, discountedPrice }:
           fontWeight={400}
           color={(theme) => theme.palette.text.disabled}
           sx={{ textDecoration: 'line-through' }}>
-          {roundAndFormatCurrency(price)}
+          {roundAndFormatCurrency(totalPrice)}
         </Typography>
       ) : null}
 
@@ -34,7 +40,7 @@ export default function LargeCartItemPrice({ isOnSale, price, discountedPrice }:
         variant="h6"
         fontSize={{ xs: 20, sm: 24 }}
         fontWeight={700}>
-        {roundAndFormatCurrency(isOnSale ? discountedPrice : price)}
+        {roundAndFormatCurrency(isOnSale ? totalDiscountedPrice : totalPrice)}
       </Typography>
     </Box>
   );
