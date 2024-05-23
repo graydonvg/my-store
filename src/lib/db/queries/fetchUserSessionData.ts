@@ -10,7 +10,7 @@ export default async function fetchUserSessionData() {
 
   const role = await getUserRoleFromSession(supabase);
 
-  const { data: userDataArray, error } = await supabase
+  const { data: userDataArray } = await supabase
     .from('users')
     .select(
       '*, wishlist( productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
@@ -18,7 +18,7 @@ export default async function fetchUserSessionData() {
     .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
-  if (error) {
+  if (!userDataArray || !userDataArray[0]) {
     return {
       authUser,
       userData: null,

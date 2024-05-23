@@ -2,7 +2,11 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterBuilder, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
 
-export async function getUsersForAdmin(page: QueryPageDataGrid, sort: QuerySortDataGrid, filter: QueryFilterDataGrid) {
+export async function fetchUsersForAdmin(
+  page: QueryPageDataGrid,
+  sort: QuerySortDataGrid,
+  filter: QueryFilterDataGrid
+) {
   const supabase = await createSupabaseServerClient();
 
   const {

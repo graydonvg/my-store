@@ -1,6 +1,6 @@
 import OrdersPageAdminPanelClient from '@/components/adminPanel/orders/OrdersPageAdminPanelClient';
 import { constants } from '@/constants';
-import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
+import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/validate';
 
@@ -37,7 +37,7 @@ export default async function OrdersPageAdminPanel({ searchParams }: Props) {
     success: getOrdersSuccess,
     message: getOrdersMessage,
     data: ordersData,
-  } = await getOrdersForAdmin(validatedPage, validatedSort, validatedFilter);
+  } = await fetchOrdersForAdmin(validatedPage, validatedSort, validatedFilter);
 
   if (!getOrdersSuccess) {
     return (

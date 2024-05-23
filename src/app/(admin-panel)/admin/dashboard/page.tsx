@@ -4,11 +4,11 @@ import SalesChart from '@/components/adminPanel/dashboard/SalesChart';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
 import { constants } from '@/constants';
-import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
+import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 
 export default async function DashboardAdminPanel() {
   const { page, sort, filter } = constants.dataGridDefaults;
-  const { data } = await getOrdersForAdmin(page, sort, filter);
+  const { data } = await fetchOrdersForAdmin(page, sort, filter);
 
   return (
     <Grid

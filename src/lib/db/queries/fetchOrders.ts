@@ -2,7 +2,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
 
-export async function getOrdersForUser() {
+export async function fetchOrdersForUser() {
   const supabase = await createSupabaseServerClient();
 
   const {
@@ -20,7 +20,11 @@ export async function getOrdersForUser() {
   return orders;
 }
 
-export async function getOrdersForAdmin(page: QueryPageDataGrid, sort: QuerySortDataGrid, filter: QueryFilterDataGrid) {
+export async function fetchOrdersForAdmin(
+  page: QueryPageDataGrid,
+  sort: QuerySortDataGrid,
+  filter: QueryFilterDataGrid
+) {
   const supabase = await createSupabaseServerClient();
 
   let ordersQuery = supabase

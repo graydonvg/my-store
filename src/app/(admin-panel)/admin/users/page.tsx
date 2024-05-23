@@ -1,6 +1,6 @@
 import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAdminPanelClient';
 import { constants } from '@/constants';
-import { getUsersForAdmin } from '@/lib/db/queries/getUsers';
+import { fetchUsersForAdmin } from '@/lib/db/queries/fetchUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/validate';
 
@@ -37,7 +37,7 @@ export default async function UsersPageAdminPanel({ searchParams }: Props) {
     success: getUsersSuccess,
     message: getUsersMessage,
     data: usersData,
-  } = await getUsersForAdmin(validatedPage, validatedSort, validatedFilter);
+  } = await fetchUsersForAdmin(validatedPage, validatedSort, validatedFilter);
 
   if (!getUsersSuccess) {
     return (

@@ -1,10 +1,10 @@
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import ProductCard from '@/components/product/productCard/ProductCard';
-import getWishlist from '@/lib/db/queries/getWishlist';
+import fetchWishlist from '@/lib/db/queries/fetchWishlist';
 import { Box, Grid } from '@mui/material';
 
 export default async function WishlistPage() {
-  const wishlist = await getWishlist();
+  const wishlist = await fetchWishlist();
 
   return (
     <Box>

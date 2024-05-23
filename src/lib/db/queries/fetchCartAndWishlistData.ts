@@ -1,6 +1,6 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export default async function getCartAndWishlistData() {
+export default async function fetchCartAndWishlistData() {
   const supabase = await createSupabaseServerClient();
 
   const {
