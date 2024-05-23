@@ -1,8 +1,7 @@
 import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import createURL from '@/utils/createURL';
-import { ERROR_MESSAGES } from '@/data';
+import { ERROR_MESSAGES, constants } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -35,10 +34,8 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       payment_method_types: ['card'],
       line_items: checkoutData.lineItems,
       mode: 'payment',
-      success_url: `${createURL('/checkout/payment/confirmation')}?payment_status=success&order_id=${
-        checkoutData.orderId
-      }`,
-      cancel_url: `${createURL('/cart/view')}?payment_status=cancelled&order_id=${checkoutData.orderId}`,
+      success_url: `${constants.url}/checkout/payment/confirmation?payment_status=success&order_id=${checkoutData.orderId}`,
+      cancel_url: `${constants.url}/cart/view?payment_status=cancelled&order_id=${checkoutData.orderId}`,
       metadata: { userId: authUser.id, orderId: checkoutData.orderId },
       payment_intent_data: {
         metadata: { userId: authUser.id, orderId: checkoutData.orderId },

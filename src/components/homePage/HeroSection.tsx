@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, STORE_DESCRIPTION, STORE_SLOGAN } from '@/data';
+import { constants } from '@/constants';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/simple/ContainedButton';
@@ -18,7 +18,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
         sx={{
           position: 'relative',
           height: { xs: '300px', sm: '500px', md: '700px' },
-          borderRadius: BORDER_RADIUS,
+          borderRadius: constants.borderRadius,
           overflow: 'hidden',
         }}>
         <Image
@@ -41,7 +41,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
             paddingX: { xs: '20px', sm: '50px' },
             height: 1,
             background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
           }}>
           <Typography
             component="h1"
@@ -52,7 +52,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
               color: (theme) => theme.palette.grey[900],
               maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
             }}>
-            {STORE_SLOGAN}
+            {constants.storeSlogan}
           </Typography>
           <Typography
             component="p"
@@ -63,7 +63,7 @@ export default function HeroSection({ navigateToAllProducts }: Props) {
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
-            {STORE_DESCRIPTION}
+            {constants.storeDescription}
           </Typography>
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton

@@ -13,7 +13,7 @@ import {
   listItemClasses,
 } from '@mui/material';
 import { ExpandMore, LocalShippingOutlined } from '@mui/icons-material';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import HeadingBottomProductDetails from './HeadingBottomProductDetails';
 import { Product } from '@/types';
 
@@ -63,7 +63,7 @@ export default function BottomProductDetails({ product }: Props) {
         elevation={0}
         disableGutters
         defaultExpanded={true}
-        sx={{ borderRadius: BORDER_RADIUS, backgroundColor: 'transparent' }}>
+        sx={{ borderRadius: constants.borderRadius, backgroundColor: 'transparent' }}>
         <AccordionSummary
           expandIcon={<ExpandMore />}
           sx={{

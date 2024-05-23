@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
 import { InsertProductImageDataStore } from '@/types';
 import Image from 'next/image';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
@@ -77,7 +77,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
         container
         ref={setNodeRef}
         sx={{
-          borderRadius: BORDER_RADIUS,
+          borderRadius: constants.borderRadius,
           paddingY: 2,
           backgroundColor: imageDataProps.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
@@ -115,7 +115,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               position: 'relative',
               aspectRatio: 3 / 4,
               alignSelf: 'center',
-              borderRadius: BORDER_RADIUS,
+              borderRadius: constants.borderRadius,
               overflow: 'hidden',
             }}>
             <Image

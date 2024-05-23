@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, Typography } from '@mui/material';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import SmallCartItems from './SmallCartItems';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 
@@ -26,7 +26,7 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
           sx={{
             padding: 1,
             marginTop: 2,
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
             backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
           }}>
           <Typography

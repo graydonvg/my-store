@@ -2,7 +2,7 @@ import { Box, Paper } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItem } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import LargeCartItemSaleBadge from './LargeCartItemSaleBadge';
 import LargeCartItemBottomDetails from './LargeCartItemBottomDetails';
 import LargeCartItemSelectionDetails from './LargeCartItemSelectionDetails';
@@ -23,7 +23,7 @@ export default function LargeCartItem({ item }: Props) {
     <Paper
       sx={{
         padding: 2,
-        borderRadius: BORDER_RADIUS,
+        borderRadius: constants.borderRadius,
         position: 'relative',
       }}>
       <Box

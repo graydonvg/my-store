@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CustomResponse } from '@/types';
-import { ERROR_MESSAGES } from '@/data';
+import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function DELETE(request: NextRequest): Promise<NextResponse<CustomResponse>> {

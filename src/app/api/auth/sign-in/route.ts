@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CustomResponse, UserAuthData } from '@/types';
-import { ERROR_MESSAGES } from '@/data';
+import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {

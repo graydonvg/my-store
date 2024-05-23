@@ -1,9 +1,9 @@
-import { DATA_GRID_DEFAULTS } from '@/data';
+import { constants } from '@/constants';
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 export function getDataGridQueryDataFromSearchParams(searchParams: SearchParams) {
-  const { page: pageDefault, sort: sortDefalut, filter: filterDefault } = DATA_GRID_DEFAULTS;
+  const { page: pageDefault, sort: sortDefalut, filter: filterDefault } = constants.dataGridDefaults;
 
   const pageString = (searchParams['page'] ?? `${pageDefault.number}`) as string;
   const pageNumber = Number(pageString);

@@ -7,12 +7,12 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
-import { STORE_NAME } from '@/data';
+import { constants } from '@/constants';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
-  title: STORE_NAME,
+  title: constants.storeName,
   description: 'Ecommerce',
 };
 

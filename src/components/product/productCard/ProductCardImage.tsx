@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -20,8 +20,8 @@ export default function ProductCardImage({ imageUrl, imageSizes, productName }: 
         justifyContent: 'center',
         alignItems: 'center',
         aspectRatio: 25 / 36,
-        borderTopLeftRadius: BORDER_RADIUS,
-        borderTopRightRadius: BORDER_RADIUS,
+        borderTopLeftRadius: constants.borderRadius,
+        borderTopRightRadius: constants.borderRadius,
         overflow: 'hidden',
       }}>
       <Image

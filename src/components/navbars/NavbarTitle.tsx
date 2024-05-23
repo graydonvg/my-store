@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import ShoppingBasket from '@mui/icons-material/ShoppingBasket';
 import { Theme } from '@mui/material';
-import { STORE_NAME } from '@/data';
+import { constants } from '@/constants';
 
 type Props = {
   color: (theme: Theme) => string;
@@ -44,7 +44,7 @@ export default function NavbarTitle({
             textDecoration: 'none',
           }}
           {...typographyProps}>
-          {STORE_NAME}
+          {constants.storeName}
         </Typography>
       </Box>
     </Link>

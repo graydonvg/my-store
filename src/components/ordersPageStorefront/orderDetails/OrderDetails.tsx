@@ -1,7 +1,7 @@
 import { OrderData } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import OrderShippingDetails from './OrderShippingDetails';
 import dayjs from 'dayjs';
 import PayNowButton from './PayNowButton';
@@ -22,9 +22,9 @@ export default function OrderDetails({ order, borderColor }: Props) {
         sx={{
           border: `1px solid ${borderColor}`,
           padding: 2,
-          borderRadius: { xs: 'none', md: BORDER_RADIUS },
-          borderTopLeftRadius: BORDER_RADIUS,
-          borderTopRightRadius: BORDER_RADIUS,
+          borderRadius: { xs: 'none', md: constants.borderRadius },
+          borderTopLeftRadius: constants.borderRadius,
+          borderTopRightRadius: constants.borderRadius,
         }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box>

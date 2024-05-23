@@ -3,11 +3,11 @@ import Paper from '@mui/material/Paper';
 import SalesChart from '@/components/adminPanel/dashboard/SalesChart';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
-import { BORDER_RADIUS, DATA_GRID_DEFAULTS } from '@/data';
+import { constants } from '@/constants';
 import { getOrdersForAdmin } from '@/lib/db/queries/getOrders';
 
 export default async function DashboardAdminPanel() {
-  const { page, sort, filter } = DATA_GRID_DEFAULTS;
+  const { page, sort, filter } = constants.dataGridDefaults;
   const { data } = await getOrdersForAdmin(page, sort, filter);
 
   return (
@@ -25,7 +25,7 @@ export default async function DashboardAdminPanel() {
             display: 'flex',
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -45,7 +45,7 @@ export default async function DashboardAdminPanel() {
             display: 'flex',
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -65,7 +65,7 @@ export default async function DashboardAdminPanel() {
             display: 'flex',
             flexDirection: 'column',
             height: { xs: 180, sm: 240 },
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -84,7 +84,7 @@ export default async function DashboardAdminPanel() {
             display: 'flex',
             flexDirection: 'column',
             height: { xs: 240, sm: 360 },
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
           }}>
           <SalesChart />
         </Paper>
@@ -96,7 +96,7 @@ export default async function DashboardAdminPanel() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            borderRadius: BORDER_RADIUS,
+            borderRadius: constants.borderRadius,
             overflow: 'hidden',
             padding: 2,
           }}>

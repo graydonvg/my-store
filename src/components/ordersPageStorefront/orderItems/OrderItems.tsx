@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { OrderData } from '@/types';
 import OrderDetails from '../orderDetails/OrderDetails';
 import OrderItemImage from './OrderItemImage';
@@ -31,9 +31,9 @@ export default function OrderItems({ borderColor, order }: Props) {
           border: `1px solid ${borderColor}`,
           borderTop: { xs: 'none', md: `1px solid ${borderColor}` },
           padding: 2,
-          borderRadius: { xs: 'none', md: BORDER_RADIUS },
-          borderBottomLeftRadius: BORDER_RADIUS,
-          borderBottomRightRadius: BORDER_RADIUS,
+          borderRadius: { xs: 'none', md: constants.borderRadius },
+          borderBottomLeftRadius: constants.borderRadius,
+          borderBottomRightRadius: constants.borderRadius,
         }}>
         <Grid
           container

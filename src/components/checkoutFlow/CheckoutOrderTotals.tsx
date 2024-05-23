@@ -8,7 +8,7 @@ import {
   selectOrderTotal,
   selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
 import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
 import PaymentButton from '@/components/checkoutFlow/PaymentButton';
@@ -32,7 +32,7 @@ export default function CheckoutOrderTotals() {
         sx={{
           paddingX: 3,
           paddingY: 4,
-          borderRadius: BORDER_RADIUS,
+          borderRadius: constants.borderRadius,
           minWidth: 'fit-content',
         }}>
         <Typography

@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 
 type Props = {
   percentage: number;
@@ -10,7 +10,7 @@ export default function LargeCartItemSaleBadge({ percentage }: Props) {
     <Box
       sx={{
         display: 'flex',
-        borderRadius: BORDER_RADIUS,
+        borderRadius: constants.borderRadius,
         paddingX: 1,
         marginRight: 1,
         backgroundColor: (theme) => theme.palette.primary.main,

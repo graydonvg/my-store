@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, HOME_PAGE_CATEGORIES } from '@/data';
+import { constants } from '@/constants';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -28,7 +28,7 @@ export default function ShopByCategorySection() {
         component="ul"
         container
         spacing={{ xs: 2, sm: 3 }}>
-        {HOME_PAGE_CATEGORIES.map((category) => (
+        {constants.homePageShopByCategory.map((category) => (
           <Grid
             component="li"
             item
@@ -40,7 +40,7 @@ export default function ShopByCategorySection() {
               sx={{
                 position: 'relative',
                 aspectRatio: 4 / 5,
-                borderRadius: BORDER_RADIUS,
+                borderRadius: constants.borderRadius,
                 overflow: 'hidden',
                 cursor: 'pointer',
                 '&:before': {
@@ -51,7 +51,7 @@ export default function ShopByCategorySection() {
                   width: 1,
                   height: 1,
                   background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.6))',
-                  borderRadius: BORDER_RADIUS,
+                  borderRadius: constants.borderRadius,
                   zIndex: 1,
                 },
               }}>

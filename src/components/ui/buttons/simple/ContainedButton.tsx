@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { Button, ButtonProps, SxProps, Theme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -27,7 +27,7 @@ export default function ContainedButton({ isLoading, label, startIcon, sxStyles,
       }
       sx={{
         pointerEvents: !isLoading ? 'auto' : 'none',
-        borderRadius: BORDER_RADIUS,
+        borderRadius: constants.borderRadius,
         minHeight: '48px',
         ...sxStyles,
       }}

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { ERROR_MESSAGES, HAS_ADMIN_PANEL_ACCESS } from './data';
+import { ERROR_MESSAGES, constants } from './constants';
 import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/getUserRole';
 
@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
     checkPathStartsWith('/checkout');
 
   const userRole = await getUserRoleFromSession(supabase);
-  const hasAdminPanelAccess = HAS_ADMIN_PANEL_ACCESS.includes(userRole ?? '');
+  const hasAdminPanelAccess = constants.hasAdminPanelAccess.includes(userRole ?? '');
 
   if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {

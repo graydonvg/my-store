@@ -16,7 +16,7 @@ import {
   getGridStringOperators,
 } from '@mui/x-data-grid';
 import DatePickerForDataGridFilter from '../../dataGrid/DatePickerForDataGridFilter';
-import { USER_ROLE_OPTIONS } from '@/data';
+import { constants } from '@/constants';
 import CustomDataGrid from '../../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
 import UsersDataGridToolbar from './UsersDataGridToolbar';
@@ -89,7 +89,7 @@ function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: b
       editable: userRole.isAdmin ? false : !isUpdating ? true : false,
       type: 'singleSelect',
       valueOptions: (params) => {
-        const filteredOptions = USER_ROLE_OPTIONS.filter((role) => {
+        const filteredOptions = constants.userRoleOptions.filter((role) => {
           if (userRole.isAdmin) {
             return role === 'none';
           } else if (userRole.isManager) {

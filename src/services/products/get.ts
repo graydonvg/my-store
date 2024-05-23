@@ -1,9 +1,9 @@
+import { constants } from '@/constants';
 import { CustomResponse, Product } from '@/types';
-import createURL from '@/utils/createURL';
 
 export async function getAllProducts(): Promise<CustomResponse<Product[]>> {
   try {
-    const url = createURL('/api/products/get-all');
+    const url = `${constants.url}/api/products/get-all`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -19,7 +19,7 @@ export async function getAllProducts(): Promise<CustomResponse<Product[]>> {
 
 export async function getProductById(productId: string): Promise<CustomResponse<Product>> {
   try {
-    const url = createURL(`/api/products/get-by-id?product_id=${productId}`);
+    const url = `${constants.url}/api/products/get-by-id?product_id=${productId}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -36,7 +36,7 @@ export async function getProductById(productId: string): Promise<CustomResponse<
 
 export async function getProductsByCategory(category: string): Promise<CustomResponse<Product[]>> {
   try {
-    const url = createURL(`/api/products/get-by-category?category=${category}`);
+    const url = `${constants.url}/api/products/get-by-category?category=${category}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -52,7 +52,7 @@ export async function getProductsByCategory(category: string): Promise<CustomRes
 
 export async function getProductsOnSale(): Promise<CustomResponse<Product[]>> {
   try {
-    const url = createURL('/api/products/get-on-sale');
+    const url = `${constants.url}/api/products/get-on-sale`;
 
     const response = await fetch(url, {
       method: 'GET',

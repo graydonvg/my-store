@@ -5,7 +5,7 @@ import Addresses from '@/components/addresses/Addresses';
 import { Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import AccordionComponent from '@/components/ui/AccordionComponent';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
 import { AddressType } from '@/types';
@@ -34,7 +34,7 @@ export default function ShippingPageClient({ addresses }: Props) {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        borderRadius: BORDER_RADIUS,
+        borderRadius: constants.borderRadius,
       }}>
       <AccordionComponent
         title="Select your address"

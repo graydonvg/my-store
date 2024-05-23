@@ -1,4 +1,4 @@
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 
@@ -12,7 +12,7 @@ export default function CartPageEmptyMessage() {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: BORDER_RADIUS,
+        borderRadius: constants.borderRadius,
         paddingX: 2,
         paddingY: 4,
       }}>

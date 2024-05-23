@@ -1,6 +1,6 @@
 import { Dashboard, LocalShipping, People, ShoppingCart } from '@mui/icons-material';
 
-export const ADMIN_PANEL_NAV_OPTIONS = [
+export const adminPanelNavOptions = [
   {
     label: 'Dashboard',
     icon: <Dashboard />,

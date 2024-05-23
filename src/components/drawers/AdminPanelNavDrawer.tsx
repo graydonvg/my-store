@@ -11,8 +11,8 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
 import SignOutButton from '../ui/buttons/complex/SignOutButton';
+import { adminPanelNavOptions } from '../AdminPanelNavOptions';
 
 type Props = {
   drawerWidth: number;
@@ -55,7 +55,7 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
       </Toolbar>
       <Divider />
       <List component="nav">
-        {ADMIN_PANEL_NAV_OPTIONS.map((item, index) => (
+        {adminPanelNavOptions.map((item, index) => (
           <Link
             key={index}
             href={item.path}>

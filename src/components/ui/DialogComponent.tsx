@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, IconButton, Dialog, useTheme, LinearProgress, dialogClasses } from '@mui/material';
 import { ReactNode } from 'react';
 import { Close } from '@mui/icons-material';
-import { BORDER_RADIUS } from '@/data';
+import { constants } from '@/constants';
 import { closeDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
@@ -34,7 +34,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
         sx={{
           margin: '0 auto',
           maxWidth: 400,
-          borderRadius: BORDER_RADIUS,
+          borderRadius: constants.borderRadius,
           backgroundColor: theme.palette.custom.dialog.background.primary,
         }}>
         {isDialogLoading ? <LinearProgress /> : null}
