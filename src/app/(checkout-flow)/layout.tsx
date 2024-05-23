@@ -32,7 +32,14 @@ export default function CheckoutFlowLayout({ children }: Props) {
             md={!isPaymentPath ? 9 : 12}>
             {children}
           </Grid>
-          {!isPaymentPath ? <CheckoutOrderTotals /> : null}
+          {!isPaymentPath ? (
+            <Grid
+              item
+              xs={12}
+              md={3}>
+              <CheckoutOrderTotals />
+            </Grid>
+          ) : null}
         </Grid>
       </Container>
     </>

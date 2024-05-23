@@ -26,6 +26,7 @@ export default function ShopByCategorySection() {
       </Divider>
       <Grid
         component="ul"
+        role="navigation"
         container
         spacing={{ xs: 2, sm: 3 }}>
         {constants.homePageShopByCategory.map((category) => (

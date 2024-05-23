@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import {
@@ -24,43 +24,38 @@ export default function CheckoutOrderTotals() {
   const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={3}>
-      <Paper
-        sx={{
-          paddingX: 3,
-          paddingY: 4,
-          borderRadius: constants.borderRadius,
-          minWidth: 'fit-content',
-        }}>
-        <Typography
-          component="h1"
-          fontFamily="Source Sans Pro,sans-serif"
-          fontSize={30}
-          lineHeight={1}>
-          Your Order
-        </Typography>
-        <Box sx={{ paddingY: 2 }}>
-          <OrderTotals
-            cartTotal={cartTotal}
-            discountTotal={roundedDiscountTotal}
-            deliveryFee={deliveryFee}
-            orderTotal={orderTotal}
-            totalToPay={orderTotal}
-          />
-        </Box>
-        {isCartViewPath ? (
-          <CheckoutButton
-            disabled={cartItems.length === 0}
-            label="checkout now"
-            fullWidth
-          />
-        ) : null}
+    <Paper
+      sx={{
+        paddingX: 3,
+        paddingY: 4,
+        borderRadius: constants.borderRadius,
+        minWidth: 'fit-content',
+      }}>
+      <Typography
+        component="h1"
+        fontFamily="Source Sans Pro,sans-serif"
+        fontSize={30}
+        lineHeight={1}>
+        Your Order
+      </Typography>
+      <Box sx={{ paddingY: 2 }}>
+        <OrderTotals
+          cartTotal={cartTotal}
+          discountTotal={roundedDiscountTotal}
+          deliveryFee={deliveryFee}
+          orderTotal={orderTotal}
+          totalToPay={orderTotal}
+        />
+      </Box>
+      {isCartViewPath ? (
+        <CheckoutButton
+          disabled={cartItems.length === 0}
+          label="checkout now"
+          fullWidth
+        />
+      ) : null}
 
-        {isShippingPath ? <PaymentButton /> : null}
-      </Paper>
-    </Grid>
+      {isShippingPath ? <PaymentButton /> : null}
+    </Paper>
   );
 }
