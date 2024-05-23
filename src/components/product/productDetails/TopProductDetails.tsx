@@ -1,9 +1,9 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import { roundAndFormatCurrency } from '@/utils/formatCurrency';
+import { formatCurrency } from '@/utils/format';
 import { Product } from '@/types';
-import { calculateDiscountedProductPrice } from '@/utils/calculate';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 
 type Props = {
   product: Product;
@@ -12,7 +12,7 @@ type Props = {
 export default function TopProductDetails({ product }: Props) {
   const theme = useTheme();
   const isOnSale = product.isOnSale === 'Yes';
-  const discountedPrice = calculateDiscountedProductPrice(product);
+  const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function TopProductDetails({ product }: Props) {
           fontStyle="italic"
           fontSize={42}
           sx={{ color: theme.palette.text.primary }}>
-          {roundAndFormatCurrency(isOnSale ? discountedPrice : product.price)}
+          {formatCurrency(isOnSale ? roundedDiscountedPrice : product.price)}
         </Typography>
         {isOnSale ? (
           <Box
@@ -64,7 +64,7 @@ export default function TopProductDetails({ product }: Props) {
               fontStyle="italic"
               fontSize={22}
               sx={{ textDecoration: 'line-through', paddingRight: 1, color: theme.palette.text.disabled }}>
-              {roundAndFormatCurrency(product.price)}
+              {formatCurrency(product.price)}
             </Typography>
             <Typography
               lineHeight={1}

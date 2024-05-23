@@ -1,11 +1,11 @@
 import { CartItem, OrderItem } from '@/types';
-import { calculateDiscountedCartItemPrice } from '../calculate';
+import { calculateRoundedDiscountedPrice } from '../calculate';
 
 export function getLineItemsFromCartItems(cartItems: CartItem[]) {
   const lineItems = cartItems.map((item) => {
     const unitAmount =
       item?.product?.isOnSale === 'Yes'
-        ? calculateDiscountedCartItemPrice(item.product.price, item.product.salePercentage)
+        ? calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage)
         : item?.product?.price!;
     const images = [...item?.product?.productImageData!]
       .filter((image) => image.index === 0)

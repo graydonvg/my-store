@@ -23,7 +23,7 @@ import UsersDataGridToolbar from './UsersDataGridToolbar';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { getNumberOfFormFields } from '@/utils/checkForms';
 import dayjs from 'dayjs';
 import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';

@@ -13,7 +13,7 @@ export const selectCartCount = createSelector([selectCartItems], (items) =>
   items.reduce((totalCount, item) => totalCount + (item ? item.quantity : 0), 0)
 );
 
-export const selectDiscountTotal = createSelector([selectCartItems], (items) =>
+export const selectRoundedDiscountTotal = createSelector([selectCartItems], (items) =>
   items.reduce(
     (discountTotal, item) =>
       discountTotal +
@@ -28,11 +28,12 @@ export const selectCartTotal = createSelector([selectCartItems], (items) =>
   items.reduce((totalPrice, item) => totalPrice + item?.product?.price! * item.quantity, 0)
 );
 
-export const selectDeliveryFee = createSelector([selectCartTotal, selectDiscountTotal], (cartTotal, discountTotal) =>
-  cartTotal - discountTotal > 500 ? 0 : 60
+export const selectDeliveryFee = createSelector(
+  [selectCartTotal, selectRoundedDiscountTotal],
+  (cartTotal, discountTotal) => (cartTotal - discountTotal > 500 ? 0 : 60)
 );
 
 export const selectOrderTotal = createSelector(
-  [selectCartTotal, selectDiscountTotal],
+  [selectCartTotal, selectRoundedDiscountTotal],
   (cartTotal, discountTotal) => cartTotal - discountTotal
 );

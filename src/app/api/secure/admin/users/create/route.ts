@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { AddNewUserAdminResponse, CustomResponse, UserAuthData, CreateUserAdminDb } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
-import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { getEmptyFormFields } from '@/utils/checkForms';
+import { getNumberOfFormFields } from '@/utils/checkForms';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 

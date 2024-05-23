@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
 import { ERROR_MESSAGES } from '@/data';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyFormFields } from '@/utils/getEmptyFormFields';
-import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { getEmptyFormFields } from '@/utils/checkForms';
+import { getNumberOfFormFields } from '@/utils/checkForms';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();

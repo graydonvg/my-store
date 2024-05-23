@@ -1,11 +1,10 @@
-import { Product, QueryPageDataGrid } from '@/types';
+import { QueryPageDataGrid } from '@/types';
 
-export function calculateDiscountedProductPrice(product: Product) {
-  return product?.price - product?.price * (product?.salePercentage / 100);
-}
+export function calculateRoundedDiscountedPrice(price: number, percentage: number) {
+  const discountedPrice = price - price * (percentage / 100);
+  const roundedDiscountedPrice = Math.round(discountedPrice);
 
-export function calculateDiscountedCartItemPrice(price: number, percentage: number) {
-  return price - price * (percentage / 100);
+  return roundedDiscountedPrice;
 }
 
 export function calculateTablePagination(items: {}[] | null, page: QueryPageDataGrid, totalRowCount: number) {

@@ -4,7 +4,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
   selectCartTotal,
-  selectDiscountTotal,
+  selectRoundedDiscountTotal,
   selectOrderTotal,
   selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
@@ -16,7 +16,7 @@ import PaymentButton from '@/components/checkoutFlow/PaymentButton';
 export default function CheckoutOrderTotals() {
   const pathname = usePathname();
   const cartItems = useAppSelector(selectCartItems);
-  const discountTotal = useAppSelector(selectDiscountTotal);
+  const roundedDiscountTotal = useAppSelector(selectRoundedDiscountTotal);
   const cartTotal = useAppSelector(selectCartTotal);
   const deliveryFee = useAppSelector(selectDeliveryFee);
   const orderTotal = useAppSelector(selectOrderTotal);
@@ -45,7 +45,7 @@ export default function CheckoutOrderTotals() {
         <Box sx={{ paddingY: 2 }}>
           <OrderTotals
             cartTotal={cartTotal}
-            discountTotal={discountTotal}
+            discountTotal={roundedDiscountTotal}
             deliveryFee={deliveryFee}
             orderTotal={orderTotal}
             totalToPay={orderTotal}

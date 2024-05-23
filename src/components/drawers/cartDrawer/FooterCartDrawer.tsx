@@ -3,15 +3,15 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import OutlinedButton from '../../ui/buttons/simple/OutlinedButton';
-import { selectCartTotal, selectDiscountTotal } from '@/lib/redux/features/cart/cartSelectors';
-import { roundAndFormatCurrency } from '@/utils/formatCurrency';
+import { selectOrderTotal, selectRoundedDiscountTotal } from '@/lib/redux/features/cart/cartSelectors';
+import { formatCurrency } from '@/utils/format';
 import CheckoutButton from '../../ui/buttons/complex/CheckoutButton';
 
 export default function FooterCartDrawer() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const orderTotal = useAppSelector(selectCartTotal);
-  const discountTotal = useAppSelector(selectDiscountTotal);
+  const orderTotal = useAppSelector(selectOrderTotal);
+  const roundedDiscountTotal = useAppSelector(selectRoundedDiscountTotal);
 
   function navigateToCartView() {
     dispatch(setIsCartOpen(false));
@@ -26,7 +26,7 @@ export default function FooterCartDrawer() {
           position: 'relative',
           padding: 2,
         }}>
-        {discountTotal > 0 ? (
+        {roundedDiscountTotal > 0 ? (
           <Box
             sx={{
               display: 'flex',
@@ -45,7 +45,7 @@ export default function FooterCartDrawer() {
               component="span"
               fontSize={16}
               fontWeight={700}>
-              {roundAndFormatCurrency(discountTotal)}
+              {formatCurrency(roundedDiscountTotal)}
             </Typography>
           </Box>
         ) : null}
@@ -68,7 +68,7 @@ export default function FooterCartDrawer() {
             component="span"
             fontSize={24}
             fontWeight={700}>
-            {roundAndFormatCurrency(orderTotal - discountTotal)}
+            {formatCurrency(orderTotal)}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>

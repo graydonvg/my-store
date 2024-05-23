@@ -1,4 +1,14 @@
-export function getEmptyFormFields(formData: {}): string[] {
+export function getNumberOfFormFields(formData: {}) {
+  const formFieldsArray = [];
+
+  for (const key in formData) {
+    formFieldsArray.push(key);
+  }
+
+  return formFieldsArray.length;
+}
+
+export function getEmptyFormFields(formData: {}) {
   const unfilledFields: string[] = [];
 
   for (const key in formData) {

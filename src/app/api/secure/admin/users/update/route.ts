@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { UpdateUserAdminDb, CustomResponse } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getNumberOfFormFields } from '@/utils/getNumberOfFormFields';
+import { getNumberOfFormFields } from '@/utils/checkForms';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
 async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {

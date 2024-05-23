@@ -4,8 +4,8 @@ import { Box, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { Product } from '@/types';
 import Link from 'next/link';
-import { roundAndFormatCurrency } from '@/utils/formatCurrency';
-import { calculateDiscountedProductPrice } from '@/utils/calculate';
+import { formatCurrency } from '@/utils/format';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 import { BORDER_RADIUS } from '@/data';
 import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
 import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';
@@ -26,7 +26,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
   const isAdminPath = pathname.startsWith('/admin');
   const isWishlistPath = pathname.startsWith('/wishlist');
   const isOnSale = product.isOnSale === 'Yes';
-  const discountedPrice = calculateDiscountedProductPrice(product);
+  const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
   const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
   const isInStock = product.sizes.includes(wishlistSize ?? '');
   const [isRemovingWishlistItem, setIsRemovingWishlistItem] = useState(false);
@@ -145,7 +145,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   fontFamily={'Georgia'}
                   fontStyle="italic"
                   fontSize={20}>
-                  {roundAndFormatCurrency(isOnSale ? discountedPrice : product.price)}
+                  {formatCurrency(isOnSale ? roundedDiscountedPrice : product.price)}
                 </Typography>
 
                 {isOnSale ? (
@@ -159,7 +159,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                       textDecoration: 'line-through',
                       color: (theme) => theme.palette.text.disabled,
                     }}>
-                    {roundAndFormatCurrency(product.price)}
+                    {formatCurrency(product.price)}
                   </Typography>
                 ) : null}
               </Box>

@@ -2,13 +2,13 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ContainedButton from '../simple/ContainedButton';
-import { calculateDiscountedCartItemPrice } from '@/utils/calculate';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import {
   selectCartTotal,
   selectDeliveryFee,
   selectOrderTotal,
-  selectDiscountTotal,
+  selectRoundedDiscountTotal,
   selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
 import { ShoppingCartCheckout } from '@mui/icons-material';
@@ -25,7 +25,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector(selectCartItems);
   const cartTotal = useAppSelector(selectCartTotal);
-  const discountTotal = useAppSelector(selectDiscountTotal);
+  const roundedDiscountTotal = useAppSelector(selectRoundedDiscountTotal);
   const deliveryFee = useAppSelector(selectDeliveryFee);
   const orderTotal = useAppSelector(selectOrderTotal);
 
@@ -33,7 +33,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
     const orderItems = cartItems.map((item) => {
       const pricePaid =
         item?.product?.isOnSale === 'Yes'
-          ? calculateDiscountedCartItemPrice(item.product.price, item.product.salePercentage)
+          ? calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage)
           : item?.product?.price;
       const roundedPrice = Math.round(pricePaid!);
 
@@ -47,7 +47,7 @@ export default function CheckoutButton({ disabled, label, sxStyles, ...props }: 
 
     dispatch(
       setCheckoutData({
-        orderPaymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal },
+        orderPaymentTotals: { cartTotal, deliveryFee, orderTotal, discountTotal: roundedDiscountTotal },
         orderItems,
       })
     );
