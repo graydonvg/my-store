@@ -70,7 +70,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
         message: 'Failed to create order. Failed to add shipping details.',
       });
     } else {
-      return NextResponse.json({ success: true, message: 'Order created successfully.', data: { orderId } });
+      return NextResponse.json({ success: true, message: 'Order created successfully', data: { orderId } });
     }
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to create order. An unexpect error occured.' });

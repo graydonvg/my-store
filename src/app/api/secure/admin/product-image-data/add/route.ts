@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to add image data to database. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Product image data added successfully.' });
+    return NextResponse.json({ success: true, message: 'Product image data added successfully' });
   } catch (error) {
     return NextResponse.json({
       success: false,

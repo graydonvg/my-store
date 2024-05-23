@@ -19,7 +19,7 @@ export async function GET(): Promise<NextResponse<CustomResponse>> {
       return NextResponse.json({ success: false, message: `Sign out failed. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Sign out successful.' });
+    return NextResponse.json({ success: true, message: 'Sign out successful' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Sign out failed. An unexpected error occurred.' });
   }

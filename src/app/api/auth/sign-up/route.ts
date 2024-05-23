@@ -54,7 +54,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Sign up successful.' });
+    return NextResponse.json({ success: true, message: 'Sign up successful' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Sign up failed. An unexpected error occurred.' });
   }

@@ -3,7 +3,7 @@ import { CustomResponse, UpdateAddressDb, UpdateUserDb, userPasswordType } from 
 export async function updateUserAddress(addressData: UpdateAddressDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/users/address/update', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },
@@ -21,7 +21,7 @@ export async function updateUserAddress(addressData: UpdateAddressDb): Promise<C
 export async function updateUserPersonalInformation(userData: UpdateUserDb): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/users/personal/update', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },

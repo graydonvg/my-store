@@ -32,7 +32,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
       return NextResponse.json({ success: false, message: `Failed to delete order. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Order deleted successfully.' });
+    return NextResponse.json({ success: true, message: 'Order deleted successfully' });
   } catch (error) {
     return NextResponse.json({
       success: false,

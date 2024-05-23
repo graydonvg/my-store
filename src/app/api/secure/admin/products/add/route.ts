@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const productId = data[0];
 
-    return NextResponse.json({ success: true, message: 'Product added successfully.', data: productId });
+    return NextResponse.json({ success: true, message: 'Product added successfully', data: productId });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add product. An unexpect error occured.' });
   }

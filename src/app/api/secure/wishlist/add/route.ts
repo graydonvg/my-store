@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to add item to wishlist. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Item added to wishlist successfully.' });
+    return NextResponse.json({ success: true, message: 'Item added to wishlist successfully' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add item to wishlist. An unexpect error occured.' });
   }

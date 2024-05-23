@@ -28,7 +28,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
 
     const failedMessage = 'Failed to create user';
-    const successMessage = 'User created successfully.';
+    const successMessage = 'User created successfully';
 
     request.log.info('Attempt: Create user.', {
       callerId: authUser?.id,

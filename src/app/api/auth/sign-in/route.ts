@@ -35,7 +35,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Sign in failed. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Sign in successful.' });
+    return NextResponse.json({ success: true, message: 'Sign in successful' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Sign in failed. An unexpected error occurred.' });
   }

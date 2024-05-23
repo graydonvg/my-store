@@ -3,7 +3,7 @@ import { CustomResponse, UpdateOrderStatus } from '@/types';
 export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/orders/update', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },

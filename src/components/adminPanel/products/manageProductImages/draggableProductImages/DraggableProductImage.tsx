@@ -5,7 +5,6 @@ import { constants } from '@/constants';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
-import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useState } from 'react';
 import {
@@ -19,6 +18,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import TextButton from '@/components/ui/buttons/simple/TextButton';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 
 export type Props = {
   imageDataProps: InsertProductImageDataStore & { id: string };

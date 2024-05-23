@@ -52,7 +52,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     return NextResponse.json({
       success: true,
-      message: 'Stripe checkout session created successfully.',
+      message: 'Stripe checkout session created successfully',
       data: { sessionId: session.id },
     });
   } catch (error) {

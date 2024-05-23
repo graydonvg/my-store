@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to add address. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Address added successfully.' });
+    return NextResponse.json({ success: true, message: 'Address added successfully' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add address. An unexpect error occured.' });
   }

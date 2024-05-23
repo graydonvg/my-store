@@ -42,7 +42,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       });
     }
 
-    return NextResponse.json({ success: true, message: 'Password updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Password updated successfully' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to update password. An unexpect error occured.' });
   }

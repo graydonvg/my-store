@@ -1,6 +1,6 @@
 import { CustomResponse, InsertProductImageDataStore } from '@/types';
-import deleteProductImageDataFromDb from '@/services/product-image-data/delete';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
+import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 
 export async function deleteProductImagesFromStorage(
   imageData: InsertProductImageDataStore[]

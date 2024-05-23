@@ -5,7 +5,7 @@ import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getNumberOfFormFields } from '@/utils/checkForms';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
-async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
+async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
   try {
     const supabase = await createSupabaseServerClient();
 
@@ -28,7 +28,7 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     } = getUserRoleBoolean(callerRole);
 
     const failedMessage = 'Failed to update user';
-    const successMessage = 'User updated successfully.';
+    const successMessage = 'User updated successfully';
 
     request.log.info('Attempt: Update user.', {
       callerId: authUser?.id,
@@ -190,4 +190,4 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
   }
 }
 
-export const POST = withAxiom(handlePost);
+export const PUT = withAxiom(handlePut);

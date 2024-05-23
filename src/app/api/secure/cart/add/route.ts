@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to add item to cart. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Item added to cart successfully.' });
+    return NextResponse.json({ success: true, message: 'Item added to cart successfully' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add item to cart. An unexpect error occured.' });
   }

@@ -5,12 +5,10 @@ import { InsertProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import addProduct from '@/services/products/add';
-import addProductImageData from '@/services/product-image-data/add';
-import deleteProduct from '@/services/products/delete';
+import { addProduct, addProductImageData } from '@/services/admin/add';
 import { getEmptyFormFields } from '@/utils/checkForms';
 import { getNumberOfFormFields } from '@/utils/checkForms';
-import revalidateAllData from '@/services/revalidateAllData';
+import revalidateAllData from '@/services/admin/revalidateAllData';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
@@ -22,6 +20,7 @@ import {
   selectProductFormData,
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { deleteProduct } from '@/services/admin/delete';
 
 export default function AdminPanelAddNewProductPage() {
   const router = useRouter();

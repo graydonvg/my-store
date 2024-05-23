@@ -3,7 +3,7 @@ import { CustomResponse, InsertProductImageDataStore } from '@/types';
 import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
+export async function PUT(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -35,7 +35,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       return NextResponse.json({ success: false, message: `Failed to update image data. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Product image data updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Product image data updated successfully' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to update image data. An unexpect error occured.' });
   }

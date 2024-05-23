@@ -3,7 +3,7 @@ import { CustomResponse, UpdateCartItemQuantity, UpdateCartItemSize } from '@/ty
 export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/cart/update/size', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },
@@ -21,7 +21,7 @@ export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Prom
 export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantity): Promise<CustomResponse> {
   try {
     const response = await fetch('/api/secure/cart/update/quantity', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },

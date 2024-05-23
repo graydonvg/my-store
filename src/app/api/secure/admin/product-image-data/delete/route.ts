@@ -35,7 +35,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<CustomR
       });
     }
 
-    return NextResponse.json({ success: true, message: 'Product image data deleted successfully.' });
+    return NextResponse.json({ success: true, message: 'Product image data deleted successfully' });
   } catch (error) {
     return NextResponse.json({
       success: false,

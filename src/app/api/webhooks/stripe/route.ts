@@ -43,10 +43,10 @@ async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompl
       return { success: false, message: `Failed to clear cart. ${deleteCartErrorCompleted.message}.` };
     }
 
-    return { success: true, message: 'Completed checkout session handled successfully.' };
+    return { success: true, message: 'Completed checkout session handled successfully' };
   } catch (error) {
     //Axiom error log
-    return { success: false, message: 'Error handling completed checkout session.' };
+    return { success: false, message: 'Error handling completed checkout session' };
   }
 }
 
@@ -69,10 +69,10 @@ async function handleCheckoutSessionExpired(event: Stripe.CheckoutSessionExpired
       };
     }
 
-    return { success: true, message: 'Expired checkout session handled successfully.' };
+    return { success: true, message: 'Expired checkout session handled successfully' };
   } catch (error) {
     //Axiom error log
-    return { success: true, message: 'Error handling expired checkout session.' };
+    return { success: true, message: 'Error handling expired checkout session' };
   }
 }
 
@@ -92,10 +92,10 @@ async function handleChargeRefunded(event: Stripe.ChargeRefundedEvent) {
       return { success: false, message: `Failed to update order status. ${updateOrderStatusError.message}.` };
     }
 
-    return { success: true, message: 'Charge refund handled successfully.' };
+    return { success: true, message: 'Charge refund handled successfully' };
   } catch (error) {
     //Axiom error log
-    return { success: true, message: 'Error handling charge refund.' };
+    return { success: true, message: 'Error handling charge refund' };
   }
 }
 
@@ -168,5 +168,5 @@ export async function POST(request: NextRequest): Promise<NextResponse<CustomRes
       break;
   }
 
-  return NextResponse.json({ success: true, message: 'Webhook called successfully.' }, { status: 200 });
+  return NextResponse.json({ success: true, message: 'Webhook called successfully' }, { status: 200 });
 }

@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { clearProductFormData, setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
-import deleteProduct from '@/services/products/delete';
-import revalidateAllData from '@/services/revalidateAllData';
+import revalidateAllData from '@/services/admin/revalidateAllData';
 import { Product } from '@/types';
 import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { Box } from '@mui/material';
@@ -14,6 +13,7 @@ import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/pr
 import OutlinedButton from '../../ui/buttons/simple/OutlinedButton';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { deleteProduct } from '@/services/admin/delete';
 
 type Props = {
   product: Product;

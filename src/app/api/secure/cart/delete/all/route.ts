@@ -23,7 +23,7 @@ export async function DELETE(): Promise<NextResponse<CustomResponse>> {
       return NextResponse.json({ success: false, message: `Failed to clear cart. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Cart cleared successfully.' });
+    return NextResponse.json({ success: true, message: 'Cart cleared successfully' });
   } catch (error) {
     return NextResponse.json({
       success: false,
