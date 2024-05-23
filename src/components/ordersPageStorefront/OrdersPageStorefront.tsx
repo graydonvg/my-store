@@ -24,15 +24,19 @@ export default function OrdersPageStorefront({ orders }: Props) {
             spacing={3}
             sx={{ marginBottom: 4 }}>
             {!isBelowMedium ? (
-              <OrderDetails
-                order={order}
-                borderColor={theme.palette.custom.border}
-              />
+              <Grid
+                item
+                xs={3}>
+                <OrderDetails order={order} />
+              </Grid>
             ) : null}
-            <OrderItems
-              order={order}
-              borderColor={theme.palette.custom.border}
-            />
+            <Grid
+              item
+              xs={12}
+              md={9}>
+              {isBelowMedium ? <OrderDetails order={order} /> : null}
+              <OrderItems order={order} />
+            </Grid>
           </Grid>
         );
       })}

@@ -1,5 +1,5 @@
 import { OrderData } from '@/types';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
 import { constants } from '@/constants';
 import OrderShippingDetails from './OrderShippingDetails';
@@ -9,86 +9,80 @@ import CancelOrderButton from './CancelOrderButton';
 
 type Props = {
   order: OrderData;
-  borderColor: string;
 };
 
-export default function OrderDetails({ order, borderColor }: Props) {
+export default function OrderDetails({ order }: Props) {
   return (
-    <Grid
-      item
-      xs={0}
-      md={3}>
-      <Box
-        sx={{
-          border: `1px solid ${borderColor}`,
-          padding: 2,
-          borderRadius: { xs: 'none', md: constants.borderRadius },
-          borderTopLeftRadius: constants.borderRadius,
-          borderTopRightRadius: constants.borderRadius,
-        }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-              <Box sx={{ minWidth: 'fit-content' }}>
-                <Typography
-                  component="span"
-                  fontSize={14}
-                  fontWeight={600}
-                  noWrap
-                  sx={{ color: (theme) => theme.palette.text.secondary }}>
-                  Order Status:
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  component="span"
-                  fontSize={14}
-                  sx={{ textTransform: 'capitalize' }}>
-                  {order.orderStatus}
-                </Typography>
-              </Box>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+    <Box
+      sx={(theme) => ({
+        border: `1px solid ${theme.palette.custom.border}`,
+        padding: 2,
+        borderRadius: { xs: 'none', md: constants.borderRadius },
+        borderTopLeftRadius: constants.borderRadius,
+        borderTopRightRadius: constants.borderRadius,
+      })}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Box sx={{ minWidth: 'fit-content' }}>
               <Typography
                 component="span"
                 fontSize={14}
                 fontWeight={600}
+                noWrap
                 sx={{ color: (theme) => theme.palette.text.secondary }}>
-                Order Date:
+                Order Status:
               </Typography>
+            </Box>
+            <Box>
               <Typography
                 component="span"
-                fontSize={14}>
-                {dayjs(order?.createdAt).format('YYYY-MM-DD')}
+                fontSize={14}
+                sx={{ textTransform: 'capitalize' }}>
+                {order.orderStatus}
               </Typography>
             </Box>
           </Box>
-          {order.shippingDetails ? <OrderShippingDetails shippingDetails={order.shippingDetails} /> : null}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
             <Typography
-              component="h3"
-              fontSize={18}
-              fontWeight={600}>
-              Order Summary
+              component="span"
+              fontSize={14}
+              fontWeight={600}
+              sx={{ color: (theme) => theme.palette.text.secondary }}>
+              Order Date:
             </Typography>
-            <OrderTotals
-              cartTotal={order.cartTotal}
-              discountTotal={order.discountTotal}
-              deliveryFee={order.deliveryFee}
-              orderTotal={order.orderTotal}
-            />
+            <Typography
+              component="span"
+              fontSize={14}>
+              {dayjs(order?.createdAt).format('YYYY-MM-DD')}
+            </Typography>
           </Box>
         </Box>
-        {order.orderStatus === 'awaiting payment' ? (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, paddingTop: 2 }}>
-            <CancelOrderButton orderId={order.orderId} />
-            <PayNowButton
-              order={order}
-              sessionId={order.pendingCheckoutSessionId}
-            />
-          </Box>
-        ) : null}
+        {order.shippingDetails ? <OrderShippingDetails shippingDetails={order.shippingDetails} /> : null}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography
+            component="h3"
+            fontSize={18}
+            fontWeight={600}>
+            Order Summary
+          </Typography>
+          <OrderTotals
+            cartTotal={order.cartTotal}
+            discountTotal={order.discountTotal}
+            deliveryFee={order.deliveryFee}
+            orderTotal={order.orderTotal}
+          />
+        </Box>
       </Box>
-    </Grid>
+      {order.orderStatus === 'awaiting payment' ? (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, paddingTop: 2 }}>
+          <CancelOrderButton orderId={order.orderId} />
+          <PayNowButton
+            order={order}
+            sessionId={order.pendingCheckoutSessionId}
+          />
+        </Box>
+      ) : null}
+    </Box>
   );
 }
