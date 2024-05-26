@@ -4,7 +4,7 @@ import { StripeLineItem } from '@/types';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export async function createNewStripeCheckoutSession(orderId: string, lineItems: StripeLineItem[]) {
+export async function createNewStripeCheckoutSession(orderId: number, lineItems: StripeLineItem[]) {
   try {
     const stripe = await stripePromise;
 

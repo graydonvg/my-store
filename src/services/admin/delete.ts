@@ -1,7 +1,7 @@
 import { CustomResponse } from '@/types';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 
-export async function deleteProduct(productId: string): Promise<CustomResponse> {
+export async function deleteProduct(productId: number): Promise<CustomResponse> {
   try {
     const response = await fetch(`/api/secure/admin/products/delete?product_id=${productId}`, {
       method: 'DELETE',
@@ -18,7 +18,7 @@ export async function deleteProduct(productId: string): Promise<CustomResponse> 
   }
 }
 
-export async function deleteProductImageDataFromDb(productImageId: string): Promise<CustomResponse> {
+export async function deleteProductImageDataFromDb(productImageId: number): Promise<CustomResponse> {
   try {
     const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${productImageId}`, {
       method: 'DELETE',

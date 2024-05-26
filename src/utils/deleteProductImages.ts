@@ -45,7 +45,7 @@ export async function deleteProductImagesDataFromDb(imageData: InsertProductImag
 
 export async function deleteAllProductImages(
   imageData: InsertProductImageDataStore[],
-  productId?: string | null
+  productId?: number | null
 ): Promise<CustomResponse> {
   let dbDeleteResponse: CustomResponse = {
     success: true,

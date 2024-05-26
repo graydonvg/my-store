@@ -7,20 +7,17 @@ import CardTitle from './CardTitle';
 import { Box } from '@mui/material';
 
 // Generate Sales Data
-function createData(time: string, amount?: number): { time: string; amount: number | null } {
-  return { time, amount: amount ?? null };
+function createData(date: string, amount?: number): { date: string; amount: number | null } {
+  return { date, amount: amount ?? null };
 }
 
 const data = [
-  createData('00:00', 0),
-  createData('03:00', 12000),
-  createData('06:00', 64000),
-  createData('09:00', 184000),
-  createData('12:00', 360000),
-  createData('15:00', 582000),
-  createData('18:00', 796000),
-  createData('21:00', 842000),
-  createData('24:00'),
+  createData('1st'),
+  createData('7th', 12000),
+  createData('14th', 64000),
+  createData('21st', 184000),
+  createData('28th', 360000),
+  createData('31st', 720000),
 ];
 
 export default function SalesChart() {
@@ -28,22 +25,27 @@ export default function SalesChart() {
 
   return (
     <>
-      <CardTitle>Today</CardTitle>
-      <Box sx={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
+      <CardTitle>This month</CardTitle>
+      <Box sx={{ width: 1, flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
           dataset={data}
           margin={{
-            top: 16,
-            right: 20,
+            top: 20,
+            right: 15,
             left: 100,
-            bottom: 30,
+            bottom: 50,
           }}
           xAxis={[
             {
               scaleType: 'point',
-              dataKey: 'time',
-              tickNumber: 2,
+              dataKey: 'date',
+              tickNumber: 1,
+              labelStyle: {
+                ...(theme.typography.body1 as ChartsTextStyle),
+                fill: theme.palette.text.primary,
+              },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+              label: 'Date',
             },
           ]}
           yAxis={[
@@ -54,7 +56,7 @@ export default function SalesChart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 1000000,
+              max: 2500000,
               tickNumber: 4,
             },
           ]}
@@ -70,6 +72,9 @@ export default function SalesChart() {
             [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
             [`& .${axisClasses.left} .${axisClasses.label}`]: {
               transform: 'translateX(-60px)',
+            },
+            [`& .${axisClasses.bottom} .${axisClasses.label}`]: {
+              transform: 'translateY(10px)',
             },
           }}
         />

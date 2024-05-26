@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Product } from '@/types';
 
 type Props = {
-  latestArrivals: Product[] | undefined;
-  productsOnSale: Product[] | undefined;
+  latestArrivals: Product[];
+  productsOnSale: Product[];
   navigateToAllProducts: () => void;
 };
 
@@ -24,7 +24,7 @@ export default function ProductPreviewSection({ latestArrivals, productsOnSale, 
         { title: 'The Biggest Sale', products: productsOnSale, onClick: navigateToSale },
         { title: 'Latest Arrivals', products: latestArrivals, onClick: navigateToAllProducts },
       ].map((preview, index) =>
-        preview.products ? (
+        preview.products.length > 0 ? (
           <ProductPreviewList
             key={index}
             title={preview.title}

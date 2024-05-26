@@ -10,7 +10,11 @@ type Props = {
 export default function OrderItemDetails({ orderItem }: Props) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Link href={`/products/${orderItem.product?.category.toLowerCase()}/${orderItem.product?.productId}`}>
+      <Link
+        href={`/products/${orderItem.product?.category.toLowerCase()}/${orderItem.product?.name
+          .toLowerCase()
+          .split(' ')
+          .join('-')}/${orderItem.product?.productId}`}>
         <Typography fontSize={18}>{orderItem.product?.name}</Typography>
       </Link>
       <Box>

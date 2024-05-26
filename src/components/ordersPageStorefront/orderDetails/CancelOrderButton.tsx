@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 type Props = {
-  orderId: string;
+  orderId: number;
 };
 
 export default function CancelOrderButton({ orderId }: Props) {

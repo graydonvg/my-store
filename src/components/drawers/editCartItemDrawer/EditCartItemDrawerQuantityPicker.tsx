@@ -7,7 +7,7 @@ import { setCartItemQuantityWillUpdate } from '@/lib/redux/features/editCartItem
 
 type Props = {
   cartItem: CartItem;
-  updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
+  updateCartItemQuantity: (cartItemId: number, quantity: number) => Promise<void>;
 };
 
 export default function EditCartItemDrawerQuantityPicker({ cartItem, updateCartItemQuantity }: Props) {

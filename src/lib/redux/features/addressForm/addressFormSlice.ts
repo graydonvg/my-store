@@ -2,7 +2,7 @@ import { AddressStore } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: AddressStore = {
-  addressId: '',
+  addressId: null,
   recipientFirstName: '',
   recipientLastName: '',
   recipientContactNumber: '',

@@ -3,6 +3,7 @@
 import Typography from '@mui/material/Typography';
 import CardTitle from './CardTitle';
 import { formatCurrency } from '@/utils/format';
+import { Box } from '@mui/material';
 
 const monthNames = [
   'January',
@@ -71,12 +72,11 @@ export default function TotalSales({ title, type, amount }: Props) {
   const currentMonth = getMonth();
 
   return (
-    <>
+    <Box sx={{ height: 1 }}>
       <CardTitle>{title}</CardTitle>
       <Typography
         component="p"
         variant="h4"
-        fontSize={{ xs: 32, sm: 22, md: 22, lg: 36 }}
         noWrap
         sx={{
           fontSize: 36,
@@ -97,6 +97,6 @@ export default function TotalSales({ title, type, amount }: Props) {
         {type === 'weekly' ? `${formattedFirstDay} - ${formattedLastDay}` : null}
         {type === 'monthly' ? currentMonth : null}
       </Typography>
-    </>
+    </Box>
   );
 }

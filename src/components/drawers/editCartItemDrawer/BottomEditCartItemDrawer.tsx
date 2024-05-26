@@ -13,7 +13,7 @@ import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 type Props = {
   cartItem: CartItem;
   isUpdatingCartItem: boolean;
-  updateCartItemQuantity: (cartItemId: string, quantity: number) => Promise<void>;
+  updateCartItemQuantity: (cartItemId: number, quantity: number) => Promise<void>;
   removeCartItem: () => Promise<void>;
 };
 
@@ -42,7 +42,7 @@ export default function BottomEditCartItemDrawer({
 
     const { success, message } = await addItemToWishlist({
       size: cartItem.size,
-      productId: cartItem.product?.productId,
+      productId: cartItem.product?.productId!,
       userId: userData?.userId,
     });
 

@@ -63,7 +63,7 @@ export default function EditCartItemDrawer({ cartItem }: Props) {
     dispatch(setIsRemovingCartItem(false));
   }
 
-  async function updateItemQuantity(cartItemId: string, newQuantity: number) {
+  async function updateItemQuantity(cartItemId: number, newQuantity: number) {
     dispatch(setIsUpdatingCartItemQuantity(true));
     dispatch(setCartItemQuantityWillUpdate(false));
 

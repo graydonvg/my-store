@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { deleteItemFromWishlist } from '@/services/wishlist/delete';
 
 type Props = {
-  wishlistItemId: string;
+  wishlistItemId: number;
   isRemovingWishlistItem: boolean;
   setIsRemovingWishlistItem: Dispatch<SetStateAction<boolean>>;
 };

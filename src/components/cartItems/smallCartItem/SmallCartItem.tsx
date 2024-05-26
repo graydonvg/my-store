@@ -24,7 +24,11 @@ export default function SmallCartItem({ item }: Props) {
   const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   function navigateToProductPage() {
-    router.push(`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`);
+    router.push(
+      `/products/${item?.product?.category.toLowerCase()}/${item?.product?.name.toLowerCase().split(' ').join('-')}/${
+        item?.product?.productId
+      }`
+    );
     dispatch(setIsCartOpen(false));
   }
 

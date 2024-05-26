@@ -15,8 +15,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<CustomResp
       .from('products')
       .select('*, productImageData(fileName, imageUrl, productImageId, index)')
       .eq('category', category)
-      .order('createdAt', { ascending: false })
-      .order('index', { referencedTable: 'productImageData', ascending: true });
+      .order('createdAt', { ascending: false });
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to get all products. ${error.message}.` });

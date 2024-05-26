@@ -5,7 +5,7 @@ export type Database = {
     Tables: {
       addresses: {
         Row: {
-          addressId: string;
+          addressId: number;
           city: string;
           complexOrBuilding: string | null;
           createdAt: string;
@@ -19,7 +19,7 @@ export type Database = {
           userId: string;
         };
         Insert: {
-          addressId?: string;
+          addressId?: number;
           city: string;
           complexOrBuilding?: string | null;
           createdAt?: string;
@@ -33,7 +33,7 @@ export type Database = {
           userId?: string;
         };
         Update: {
-          addressId?: string;
+          addressId?: number;
           city?: string;
           complexOrBuilding?: string | null;
           createdAt?: string;
@@ -56,53 +56,27 @@ export type Database = {
           }
         ];
       };
-      admins: {
-        Row: {
-          adminId: string;
-          createdAt: string;
-          userId: string;
-        };
-        Insert: {
-          adminId?: string;
-          createdAt?: string;
-          userId?: string;
-        };
-        Update: {
-          adminId?: string;
-          createdAt?: string;
-          userId?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'public_admins_userId_fkey';
-            columns: ['userId'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['userId'];
-          }
-        ];
-      };
       cart: {
         Row: {
-          cartItemId: string;
+          cartItemId: number;
           createdAt: string;
-          productId: string;
+          productId: number;
           quantity: number;
           size: string;
           userId: string;
         };
         Insert: {
-          cartItemId?: string;
+          cartItemId?: number;
           createdAt?: string;
-          productId: string;
+          productId: number;
           quantity: number;
           size: string;
           userId?: string;
         };
         Update: {
-          cartItemId?: string;
+          cartItemId?: number;
           createdAt?: string;
-          productId?: string;
+          productId?: number;
           quantity?: number;
           size?: string;
           userId?: string;
@@ -124,56 +98,30 @@ export type Database = {
           }
         ];
       };
-      managers: {
-        Row: {
-          createdAt: string;
-          managerId: string;
-          userId: string;
-        };
-        Insert: {
-          createdAt?: string;
-          managerId?: string;
-          userId?: string;
-        };
-        Update: {
-          createdAt?: string;
-          managerId?: string;
-          userId?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'owners_userId_fkey';
-            columns: ['userId'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['userId'];
-          }
-        ];
-      };
       orderItems: {
         Row: {
-          orderId: string;
-          orderItemId: string;
+          orderId: number;
+          orderItemId: number;
           pricePaid: number;
-          productId: string;
+          productId: number;
           quantity: number;
           size: string;
           userId: string;
         };
         Insert: {
-          orderId: string;
-          orderItemId?: string;
+          orderId: number;
+          orderItemId?: number;
           pricePaid: number;
-          productId: string;
+          productId: number;
           quantity: number;
           size: string;
           userId?: string;
         };
         Update: {
-          orderId?: string;
-          orderItemId?: string;
+          orderId?: number;
+          orderItemId?: number;
           pricePaid?: number;
-          productId?: string;
+          productId?: number;
           quantity?: number;
           size?: string;
           userId?: string;
@@ -208,7 +156,7 @@ export type Database = {
           createdAt: string;
           deliveryFee: number;
           discountTotal: number;
-          orderId: string;
+          orderId: number;
           orderStatus: Database['public']['Enums']['orderStatus'];
           orderTotal: number;
           userId: string;
@@ -218,8 +166,8 @@ export type Database = {
           createdAt?: string;
           deliveryFee: number;
           discountTotal: number;
-          orderId?: string;
-          orderStatus?: Database['public']['Enums']['orderStatus'];
+          orderId?: number;
+          orderStatus: Database['public']['Enums']['orderStatus'];
           orderTotal: number;
           userId?: string;
         };
@@ -228,7 +176,7 @@ export type Database = {
           createdAt?: string;
           deliveryFee?: number;
           discountTotal?: number;
-          orderId?: string;
+          orderId?: number;
           orderStatus?: Database['public']['Enums']['orderStatus'];
           orderTotal?: number;
           userId?: string;
@@ -245,22 +193,22 @@ export type Database = {
       };
       pendingCheckoutSessions: {
         Row: {
-          orderId: string;
+          orderId: number;
           rowId: number;
           sessionId: string;
-          userId: string | null;
+          userId: string;
         };
         Insert: {
-          orderId?: string;
+          orderId: number;
           rowId?: number;
           sessionId: string;
-          userId?: string | null;
+          userId?: string;
         };
         Update: {
-          orderId?: string;
+          orderId?: number;
           rowId?: number;
           sessionId?: string;
-          userId?: string | null;
+          userId?: string;
         };
         Relationships: [
           {
@@ -281,28 +229,25 @@ export type Database = {
       };
       productImageData: {
         Row: {
-          createdAt: string;
           fileName: string;
           imageUrl: string;
           index: number;
-          productId: string;
-          productImageId: string;
+          productId: number;
+          productImageId: number;
         };
         Insert: {
-          createdAt?: string;
           fileName: string;
           imageUrl: string;
           index: number;
-          productId: string;
-          productImageId?: string;
+          productId: number;
+          productImageId?: number;
         };
         Update: {
-          createdAt?: string;
           fileName?: string;
           imageUrl?: string;
           index?: number;
-          productId?: string;
-          productImageId?: string;
+          productId?: number;
+          productImageId?: number;
         };
         Relationships: [
           {
@@ -321,10 +266,10 @@ export type Database = {
           createdAt: string;
           deliveryInfo: string;
           details: string;
-          isOnSale: string;
+          isOnSale: Database['public']['Enums']['isOnSaleOption'];
           name: string;
           price: number;
-          productId: string;
+          productId: number;
           returnInfo: string;
           salePercentage: number;
           sizes: string[];
@@ -335,10 +280,10 @@ export type Database = {
           createdAt?: string;
           deliveryInfo: string;
           details: string;
-          isOnSale: string;
+          isOnSale: Database['public']['Enums']['isOnSaleOption'];
           name: string;
           price: number;
-          productId?: string;
+          productId?: number;
           returnInfo: string;
           salePercentage: number;
           sizes: string[];
@@ -349,10 +294,10 @@ export type Database = {
           createdAt?: string;
           deliveryInfo?: string;
           details?: string;
-          isOnSale?: string;
+          isOnSale?: Database['public']['Enums']['isOnSaleOption'];
           name?: string;
           price?: number;
-          productId?: string;
+          productId?: number;
           returnInfo?: string;
           salePercentage?: number;
           sizes?: string[];
@@ -381,13 +326,13 @@ export type Database = {
         Row: {
           city: string;
           complexOrBuilding: string | null;
-          orderId: string;
+          orderId: number;
           postalCode: number;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
           recipientLastName: string;
-          shippingDetailsId: string;
+          shippingDetailId: number;
           streetAddress: string;
           suburb: string;
           userId: string;
@@ -395,13 +340,13 @@ export type Database = {
         Insert: {
           city: string;
           complexOrBuilding?: string | null;
-          orderId: string;
+          orderId: number;
           postalCode: number;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
           recipientLastName: string;
-          shippingDetailsId?: string;
+          shippingDetailId?: number;
           streetAddress: string;
           suburb: string;
           userId?: string;
@@ -409,13 +354,13 @@ export type Database = {
         Update: {
           city?: string;
           complexOrBuilding?: string | null;
-          orderId?: string;
+          orderId?: number;
           postalCode?: number;
           province?: string;
           recipientContactNumber?: string;
           recipientFirstName?: string;
           recipientLastName?: string;
-          shippingDetailsId?: string;
+          shippingDetailId?: number;
           streetAddress?: string;
           suburb?: string;
           userId?: string;
@@ -501,35 +446,35 @@ export type Database = {
       wishlist: {
         Row: {
           createdAt: string;
-          productId: string;
+          productId: number;
           size: string;
           userId: string;
-          wishlistItemId: string;
+          wishlistItemId: number;
         };
         Insert: {
           createdAt?: string;
-          productId?: string;
+          productId: number;
           size: string;
           userId?: string;
-          wishlistItemId?: string;
+          wishlistItemId?: number;
         };
         Update: {
           createdAt?: string;
-          productId?: string;
+          productId?: number;
           size?: string;
           userId?: string;
-          wishlistItemId?: string;
+          wishlistItemId?: number;
         };
         Relationships: [
           {
-            foreignKeyName: 'public_wishlist_productId_fkey';
+            foreignKeyName: 'wishlist_productId_fkey';
             columns: ['productId'];
             isOneToOne: false;
             referencedRelation: 'products';
             referencedColumns: ['productId'];
           },
           {
-            foreignKeyName: 'public_wishlist_userId_fkey';
+            foreignKeyName: 'wishlist_userId_fkey';
             columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
@@ -553,6 +498,13 @@ export type Database = {
           event: Json;
         };
         Returns: Json;
+      };
+      getBestSellers: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          productId: number;
+          totalQuantitySold: number;
+        }[];
       };
       verifyUserPassword: {
         Args: {
@@ -613,6 +565,7 @@ export type Database = {
         | 'userRoles.update'
         | 'userRoles.delete';
       appRole: 'owner' | 'admin' | 'manager';
+      isOnSaleOption: 'No' | 'Yes';
       orderStatus:
         | 'awaiting payment'
         | 'paid'

@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
-  addressId: string;
-  setAddressToDeleteId: Dispatch<SetStateAction<string | null>>;
+  addressId: number;
+  setAddressToDeleteId: Dispatch<SetStateAction<number | null>>;
 };
 
 export default function DeleteAddressButton({ addressId, setAddressToDeleteId }: Props) {

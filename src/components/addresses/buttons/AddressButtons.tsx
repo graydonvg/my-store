@@ -6,11 +6,11 @@ import DeleteAddressButton from './DeleteAddressButton';
 import { useState } from 'react';
 
 type Props = {
-  addressId: string;
+  addressId: number;
 };
 
 export default function AddressButtons({ addressId }: Props) {
-  const [addressToDeleteId, setAddressToDeleteId] = useState<string | null>(null);
+  const [addressToDeleteId, setAddressToDeleteId] = useState<number | null>(null);
 
   return (
     <>

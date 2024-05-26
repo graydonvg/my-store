@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
-  cartItemToEditId: string | null;
+  cartItemToEditId: number | null;
   cartItemQuantityWillUpdate: boolean;
   isUpdatingCartItemQuantity: boolean;
   isUpdatingCartItemSize: boolean;

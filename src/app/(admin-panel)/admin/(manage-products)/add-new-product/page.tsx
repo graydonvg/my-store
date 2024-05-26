@@ -5,10 +5,9 @@ import { InsertProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { addProduct, addProductImageData } from '@/services/admin/add';
+import { addProduct } from '@/services/admin/add';
 import { getEmptyFormFields } from '@/utils/checkForms';
 import { getNumberOfFormFields } from '@/utils/checkForms';
-import revalidateAllData from '@/services/admin/revalidateAllData';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
@@ -20,7 +19,6 @@ import {
   selectProductFormData,
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
-import { deleteProduct } from '@/services/admin/delete';
 
 export default function AdminPanelAddNewProductPage() {
   const router = useRouter();
@@ -58,63 +56,24 @@ export default function AdminPanelAddNewProductPage() {
     };
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
-  async function addImageData(productId: string) {
-    const dataToAdd = imageData.map((data) => {
-      const { productImageId, ...restOfData } = data;
-      return { ...restOfData, productId };
-    });
-
-    const { success, message } = await addProductImageData(dataToAdd);
-
-    return { success, message };
-  }
-
-  async function revalidateAndRefresh() {
-    const data = await revalidateAllData();
-
-    if (data.success === true) {
-      router.refresh();
-      toast.success(data.message);
-    } else {
-      toast.error(data.message);
-    }
-  }
-
-  async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
+  async function addProductHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatch(setIsProductFormSubmitting(true));
 
-    let productId = '';
+    const { success, message } = await addProduct({
+      productData: productFormData as InsertProductDb,
+      imageData,
+    });
 
-    const {
-      success: addProductSuccess,
-      message: addProductMessage,
-      data: productData,
-    } = await addProduct(productFormData as InsertProductDb);
-
-    if (addProductSuccess === true && productData) {
-      productId = productData.productId;
-
-      const { success: addImageDataSuccess, message: addImageDataMessage } = await addImageData(productData.productId);
-
-      if (addImageDataSuccess === true) {
-        await revalidateAndRefresh();
-        dispatch(clearProductFormData());
-        dispatch(clearAllProductImagesData());
-        toast.success('Product added');
-        dispatch(setIsProductFormSubmitting(false));
-        router.push('/admin/products');
-      } else {
-        const { success: deleteProductSuccess, message: deleteProductMessage } = await deleteProduct(productId);
-
-        if (deleteProductSuccess === false) {
-          toast.error(deleteProductMessage);
-        }
-
-        toast.error(addImageDataMessage);
-      }
+    if (success) {
+      dispatch(clearProductFormData());
+      dispatch(clearAllProductImagesData());
+      dispatch(setIsProductFormSubmitting(false));
+      toast.success(message);
+      router.push('/admin/products');
+      router.refresh();
     } else {
-      toast.error(addProductMessage);
+      toast.error(message);
     }
 
     dispatch(setIsProductFormSubmitting(false));
@@ -124,7 +83,7 @@ export default function AdminPanelAddNewProductPage() {
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
       <ManageProductImages />
       <ProductFormAdminPanel
-        onSubmit={handleAddProduct}
+        onSubmit={addProductHandler}
         isSubmitting={isSubmitting}
         submitButtonLabel={!isSubmitting ? 'add product' : ''}
         submitButtonStartIcon={!isSubmitting ? <Add /> : null}

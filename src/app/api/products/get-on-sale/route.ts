@@ -10,8 +10,7 @@ export async function GET(): Promise<NextResponse<CustomResponse<Product[]>>> {
       .from('products')
       .select('*, productImageData(fileName, imageUrl, productImageId, index)')
       .eq('isOnSale', 'Yes')
-      .order('salePercentage', { ascending: false })
-      .order('index', { referencedTable: 'productImageData', ascending: true });
+      .order('salePercentage', { ascending: false });
 
     if (error) {
       return NextResponse.json({ success: false, message: `Failed to get all sale products. ${error.message}.` });

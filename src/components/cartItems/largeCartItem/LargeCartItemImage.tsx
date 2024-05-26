@@ -30,7 +30,7 @@ export default function LargeCartItemImage({ imageUrl, productName, productHref 
           fill
           sizes="(min-width: 600px) 160px, 60px"
           src={imageUrl!}
-          alt={`${productName}`}
+          alt={`Image for ${productName}`}
           priority
           onLoad={() => setIsImageLoading(false)}
         />

@@ -6,7 +6,7 @@ import ProductCard from '../../product/productCard/ProductCard';
 
 type Props = {
   title: string;
-  products: Product[] | undefined;
+  products: Product[];
   onClick: () => void;
 };
 
@@ -50,7 +50,7 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
         </Paper>
       </Grid>
 
-      {products?.map((product, index) => (
+      {products.map((product, index) => (
         <Grid
           component="li"
           item

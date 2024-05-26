@@ -7,7 +7,7 @@ import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelecto
 import { AddressStore } from '@/types';
 
 type Props = {
-  addressId: string;
+  addressId: number;
 };
 
 export default function UpdateAddressDialogButton({ addressId }: Props) {

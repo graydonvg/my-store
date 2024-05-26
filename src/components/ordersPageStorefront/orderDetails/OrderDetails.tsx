@@ -23,40 +23,34 @@ export default function OrderDetails({ order }: Props) {
       })}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            <Box sx={{ minWidth: 'fit-content' }}>
-              <Typography
-                component="span"
-                fontSize={14}
-                fontWeight={600}
-                noWrap
-                sx={{ color: (theme) => theme.palette.text.secondary }}>
-                Order Status:
-              </Typography>
+          {[
+            { label: 'Order no:', value: order.orderId },
+            { label: 'Order Status:', value: order.orderStatus },
+            { label: 'Order Date:', value: dayjs(order?.createdAt).format('YYYY-MM-DD') },
+          ].map((item, index) => (
+            <Box
+              key={index}
+              sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Box sx={{ minWidth: 'fit-content' }}>
+                <Typography
+                  component="span"
+                  fontSize={14}
+                  fontWeight={600}
+                  noWrap
+                  sx={{ color: (theme) => theme.palette.text.secondary }}>
+                  {item.label}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography
+                  component="span"
+                  fontSize={14}
+                  sx={{ textTransform: 'capitalize' }}>
+                  {item.value}
+                </Typography>
+              </Box>
             </Box>
-            <Box>
-              <Typography
-                component="span"
-                fontSize={14}
-                sx={{ textTransform: 'capitalize' }}>
-                {order.orderStatus}
-              </Typography>
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            <Typography
-              component="span"
-              fontSize={14}
-              fontWeight={600}
-              sx={{ color: (theme) => theme.palette.text.secondary }}>
-              Order Date:
-            </Typography>
-            <Typography
-              component="span"
-              fontSize={14}>
-              {dayjs(order?.createdAt).format('YYYY-MM-DD')}
-            </Typography>
-          </Box>
+          ))}
         </Box>
         {order.shippingDetails ? <OrderShippingDetails shippingDetails={order.shippingDetails} /> : null}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>

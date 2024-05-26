@@ -50,8 +50,7 @@ export default function ProductCardButtonsAdminPanel({ product }: Props) {
   async function revalidateAndRefresh() {
     const data = await revalidateAllData();
 
-    if (data.success === true) {
-      toast.success(data.message);
+    if (data.success) {
       router.refresh();
     } else {
       toast.error(data.message);
@@ -69,12 +68,12 @@ export default function ProductCardButtonsAdminPanel({ product }: Props) {
     const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
     const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
 
-    if (deleteImagesSuccess === true && deleteProductSuccess === true) {
+    if (deleteImagesSuccess && deleteProductSuccess) {
       await revalidateAndRefresh();
-      toast.success('Product deleted successfully.');
-    } else if (deleteImagesSuccess === false) {
+      toast.success('Product deleted successfully');
+    } else if (!deleteImagesSuccess) {
       toast.error(deleteImagesMessage);
-    } else if (deleteProductSuccess === false) {
+    } else if (!deleteProductSuccess) {
       toast.error(deleteProductMessage);
     }
 

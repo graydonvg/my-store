@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 type Props = {
   product: Product;
   wishlistSize: string;
-  wishlistItemId: string;
+  wishlistItemId: number;
 };
 
 export default function MoveToCartButton({ product, wishlistSize, wishlistItemId }: Props) {

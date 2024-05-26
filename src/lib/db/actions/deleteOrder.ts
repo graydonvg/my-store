@@ -1,6 +1,6 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
-export default async function deleteOrder(orderId: string) {
+export default async function deleteOrder(orderId: number) {
   const supabase = await createSupabaseServerClient();
 
   const {

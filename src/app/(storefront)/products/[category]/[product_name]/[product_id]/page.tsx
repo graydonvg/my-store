@@ -1,9 +1,8 @@
 import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { getAllProducts, getProductById } from '@/services/products/get';
-import { Product } from '@/types';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
-export const dynamicParams = false;
 
 type Params = {
   params: { product_id: string };
@@ -11,13 +10,14 @@ type Params = {
 
 export async function generateMetadata({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
-  const product = data ? data : ({} as Product);
 
-  if (!product.productId) {
+  if (!data?.productId) {
     return {
       title: 'Product Not Found',
     };
   }
+
+  const product = data;
 
   return {
     title: product?.name,
@@ -28,7 +28,9 @@ export async function generateMetadata({ params: { product_id } }: Params) {
 export default async function ProductPage({ params: { product_id } }: Params) {
   const { data } = await getProductById(product_id);
 
-  const product = data ? data : ({} as Product);
+  if (!data) return notFound();
+
+  const product = data;
 
   return <ProductDetails product={product} />;
 }
@@ -40,6 +42,7 @@ export async function generateStaticParams() {
 
   return products.map((product) => ({
     category: product.category.toString().toLowerCase(),
+    product_name: product.name.toLowerCase().split(' ').join('-'),
     product_id: product.productId.toString(),
   }));
 }

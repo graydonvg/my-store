@@ -18,12 +18,12 @@ type ProductCardProps = {
   product: Product;
   imageSizes: string;
   wishlistSize?: string;
-  wishlistItemId?: string;
+  wishlistItemId?: number;
 };
 
 export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
   const pathname = usePathname();
-  const isAdminPath = pathname.startsWith('/admin');
+  const isAdminProductsPath = pathname.startsWith('/admin/products');
   const isWishlistPath = pathname.startsWith('/wishlist');
   const isOnSale = product.isOnSale === 'Yes';
   const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
@@ -39,7 +39,10 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
           flexDirection: 'column',
           height: 1,
         }}>
-        <Link href={`/products/${product.category?.toLowerCase()}/${product.productId}`}>
+        <Link
+          href={`/products/${product.category?.toLowerCase()}/${product.name.toLowerCase().split(' ').join('-')}/${
+            product.productId
+          }`}>
           <Box
             sx={{
               display: 'flex',
@@ -70,7 +73,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   paddingRight: '10px',
                 }}>
                 <RemoveFromWishlistButton
-                  wishlistItemId={wishlistItemId ?? ''}
+                  wishlistItemId={wishlistItemId!}
                   isRemovingWishlistItem={isRemovingWishlistItem}
                   setIsRemovingWishlistItem={setIsRemovingWishlistItem}
                 />
@@ -168,14 +171,14 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                 <MoveToCartButton
                   product={product}
                   wishlistSize={wishlistSize ?? ''}
-                  wishlistItemId={wishlistItemId ?? ''}
+                  wishlistItemId={wishlistItemId!}
                 />
               ) : null}
             </Box>
           </Box>
         </Link>
 
-        {isAdminPath ? <ProductCardButtonsAdminPanel product={product} /> : null}
+        {isAdminProductsPath ? <ProductCardButtonsAdminPanel product={product} /> : null}
       </Box>
     </Box>
   );

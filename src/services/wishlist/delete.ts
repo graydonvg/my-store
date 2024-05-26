@@ -1,6 +1,6 @@
 import { CustomResponse } from '@/types';
 
-export async function deleteItemFromWishlist(wishlistItemId: string): Promise<CustomResponse> {
+export async function deleteItemFromWishlist(wishlistItemId: number): Promise<CustomResponse> {
   try {
     const response = await fetch(`/api/secure/wishlist/delete?wishlist_item_id=${wishlistItemId}`, {
       method: 'DELETE',

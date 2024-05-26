@@ -8,14 +8,14 @@ import ProductPreviewSection from './productPreviewSection/ProductPreviewSection
 import ShopByCategorySection from './ShopByCategorySection';
 
 type HomePageClientProps = {
-  allProducts: Product[] | undefined;
-  saleProducts: Product[] | undefined;
+  allProducts: Product[];
+  saleProducts: Product[];
 };
 
 export default function HomePageClient({ allProducts, saleProducts }: HomePageClientProps) {
   const router = useRouter();
-  const productsOnSale = saleProducts?.slice(0, 3);
-  const latestArrivals = allProducts?.filter((product) => product.isOnSale === 'No').slice(0, 3);
+  const productsOnSale = saleProducts.slice(0, 3);
+  const latestArrivals = allProducts.slice(0, 3);
 
   function navigateToAllProducts() {
     router.push('/products/all-products');

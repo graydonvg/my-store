@@ -48,14 +48,20 @@ export default function LargeCartItem({ item }: Props) {
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
           <LargeCartItemImage
-            productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
+            productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
+              .toLowerCase()
+              .split(' ')
+              .join('-')}/${item?.product?.productId}`}
             imageUrl={imageUrl!}
             productName={item?.product?.name!}
           />
 
           <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
             <LargeCartItemTopDetails
-              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
+              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
+                .toLowerCase()
+                .split(' ')
+                .join('-')}/${item?.product?.productId}`}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -71,7 +77,10 @@ export default function LargeCartItem({ item }: Props) {
           }}>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <LargeCartItemTopDetails
-              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.productId}`}
+              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
+                .toLowerCase()
+                .split(' ')
+                .join('-')}/${item?.product?.productId}`}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />

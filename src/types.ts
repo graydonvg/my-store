@@ -62,7 +62,7 @@ export type userPasswordType = {
 
 export type CartItem = {
   createdAt: string;
-  cartItemId: string;
+  cartItemId: number;
   quantity: number;
   size: string;
   product: {
@@ -72,7 +72,7 @@ export type CartItem = {
     salePercentage: number;
     deliveryInfo: string;
     returnInfo: string;
-    productId: string;
+    productId: number;
     sizes: string[];
     brand: string;
     category: string;
@@ -87,12 +87,12 @@ export type CartItem = {
 export type InsertCartItemDb = Database['public']['Tables']['cart']['Insert'];
 
 export type UpdateCartItemSize = {
-  cartItemId: string;
+  cartItemId: number;
   size: string;
 };
 
 export type UpdateCartItemQuantity = {
-  cartItemId: string;
+  cartItemId: number;
   quantity: number;
 };
 
@@ -101,11 +101,11 @@ export type UpdateCartItemQuantity = {
 // 3. Checkout
 
 export type CheckoutData = {
-  orderAddressId: string | null;
+  orderAddressId: number | null;
   isCheckoutProcessing: boolean;
   orderItems: {
     pricePaid: number;
-    productId: string;
+    productId: number;
     quantity: number;
     size: string;
   }[];
@@ -129,7 +129,7 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 export type UpdateAddressDb = Database['public']['Tables']['addresses']['Update'];
 
 export type AddressStore = {
-  addressId: string;
+  addressId: number | null;
   recipientContactNumber: string;
   recipientFirstName: string;
   recipientLastName: string;
@@ -148,12 +148,12 @@ export type AddressStore = {
 export type OrderStatus = Database['public']['Enums']['orderStatus'];
 
 export type OrderItem = {
-  orderItemId: string;
+  orderItemId: number;
   quantity: number;
   size: string;
   pricePaid: number;
   product: {
-    productId: string;
+    productId: number;
     name: string;
     category: string;
     returnInfo: string;
@@ -178,7 +178,7 @@ export type OrderShippingDetails = {
 
 export type OrderData = {
   createdAt: string;
-  orderId: string;
+  orderId: number;
   cartTotal: number;
   discountTotal: number;
   deliveryFee: number;
@@ -197,17 +197,17 @@ export type InsertOrderDb = {
     orderTotal: number;
     orderStatus: OrderStatus;
   };
-  orderItems: { pricePaid: number; productId: string; quantity: number; size: string }[];
+  orderItems: { pricePaid: number; productId: number; quantity: number; size: string }[];
   shippingDetails: OrderShippingDetails;
 };
 
 export type UpdateOrderStatus = {
-  orderId: string;
+  orderId: number;
   orderStatus: OrderStatus;
 };
 
 export type AddOrderResponse = {
-  orderId: string;
+  orderId: number;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,8 +215,8 @@ export type AddOrderResponse = {
 // 6. Wishlist
 
 export type WishlistData = {
+  productId: number;
   size: string;
-  productId: string;
 };
 
 export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Insert'];
@@ -233,29 +233,29 @@ export type ProductImageUploadProgress = {
 export type InsertProductImageDataStore = {
   imageUrl: string;
   fileName: string;
-  productImageId?: string;
+  productImageId?: number;
   index: number;
 };
 
 export type InsertProductImageDataDb = Database['public']['Tables']['productImageData']['Insert'];
 
 export type Product = {
-  brand: string;
-  category: string;
+  productId: number;
   createdAt: string;
-  deliveryInfo: string;
-  details: string;
-  isOnSale: string;
+  category: string;
   name: string;
+  brand: string;
+  details: string;
   price: number;
-  productId: string;
-  returnInfo: string;
+  isOnSale: string;
   salePercentage: number;
   sizes: string[];
+  deliveryInfo: string;
+  returnInfo: string;
   productImageData: {
     fileName: string;
     imageUrl: string;
-    productImageId: string;
+    productImageId: number;
     index: number;
   }[];
 };
@@ -265,7 +265,7 @@ export type UpdateProductDb = Database['public']['Tables']['products']['Update']
 export type InsertProductDb = Database['public']['Tables']['products']['Insert'];
 
 export type InsertProductStore = {
-  productId?: string;
+  productId?: number;
   brand: string;
   category: string;
   deliveryInfo: string;
@@ -278,8 +278,14 @@ export type InsertProductStore = {
   salePercentage: '' | number;
 };
 
-export type AddProductResponse = {
-  productId: string;
+export type AddProduct = {
+  productData: InsertProductDb;
+  imageData: InsertProductImageDataStore[];
+};
+
+export type UpdateProduct = {
+  productData: UpdateProductDb;
+  imageData: InsertProductImageDataStore[];
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +305,7 @@ export type StripeLineItem = {
 };
 
 export type StripeCheckoutData = {
-  orderId: string;
+  orderId: number;
   lineItems: StripeLineItem[];
 };
 
@@ -312,7 +318,7 @@ export type StripeCheckoutSessionResponse = {
 // 9. Admin
 
 export type OrdersDataGridDataAdmin = {
-  orderId: string;
+  orderId: number;
   createdAt: string;
   firstName: string | null;
   lastName: string | null;
@@ -327,7 +333,7 @@ export type OrdersDataGridDataAdmin = {
 };
 
 export type UpdateOrderAdminDb = {
-  orderId: string;
+  orderId: number;
   recipientFirstName?: string;
   recipientLastName?: string;
   recipientContactNumber?: string;

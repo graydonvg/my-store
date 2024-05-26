@@ -7,8 +7,8 @@ export default async function HomePage() {
 
   return (
     <HomePageClient
-      allProducts={allProducts}
-      saleProducts={saleProducts}
+      allProducts={allProducts ?? []}
+      saleProducts={saleProducts ?? []}
     />
   );
 }

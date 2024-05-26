@@ -16,8 +16,8 @@ export default function CardTitle({ children }: Props) {
     <Typography
       component="h2"
       variant="h6"
-      color={darkMode ? theme.palette.primary.light : theme.palette.primary.main}
       gutterBottom
+      color={darkMode ? theme.palette.primary.light : theme.palette.primary.main}
       sx={{ textTransform: 'capitalize' }}>
       {children}
     </Typography>
