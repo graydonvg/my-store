@@ -4,5 +4,5 @@ import ProductsPageAdminPanelClient from '@/components/adminPanel/products/Produ
 export default async function ProductsPageAdminPanel() {
   const { data: products } = await getAllProducts();
 
-  return <>{products ? <ProductsPageAdminPanelClient products={products} /> : null}</>;
+  return <ProductsPageAdminPanelClient products={products} />;
 }

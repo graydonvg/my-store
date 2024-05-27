@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import MuiLink from '../../ui/MuiLink';
 import CardTitle from './CardTitle';
+import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 
 const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
@@ -49,18 +50,25 @@ export default function RecentOrdersTable({ orders }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders?.map((order) => (
-              <TableRow key={order?.orderId}>
-                <TableCell>{order?.orderId}</TableCell>
-                <TableCell>{dayjs(order?.createdAt).format('YYYY-MM-DD')}</TableCell>
-                <TableCell>{`${order.firstName} ${order.lastName}`}</TableCell>
-                <TableCell>{`${order?.city}, ${order?.province}`}</TableCell>
-                <TableCell>{order.orderStatus}</TableCell>
-                <TableCell>{formatCurrency(order.orderTotal)}</TableCell>
-              </TableRow>
-            ))}
+            {orders
+              ? orders.map((order) => (
+                  <TableRow key={order?.orderId}>
+                    <TableCell>{order?.orderId}</TableCell>
+                    <TableCell>{dayjs(order?.createdAt).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>{`${order.firstName} ${order.lastName}`}</TableCell>
+                    <TableCell>{`${order?.city}, ${order?.province}`}</TableCell>
+                    <TableCell>{order.orderStatus}</TableCell>
+                    <TableCell>{formatCurrency(order.orderTotal)}</TableCell>
+                  </TableRow>
+                ))
+              : null}
           </TableBody>
         </Table>
+        {!orders ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, paddingTop: 2 }}>
+            <CustomNoRowsOverlay text="No data received" />
+          </Box>
+        ) : null}
       </TableContainer>
       <Box sx={{ width: 'fit-content', marginTop: 2 }}>
         <Link href="/admin/orders">

@@ -7,6 +7,8 @@ import { constants } from '@/constants';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import dayjs from 'dayjs';
+import { calculateDailySales, calculateMonthlySales, calculateWeeklySales } from '@/utils/calculate';
 
 export default async function DashboardAdminPanel() {
   const { page, sort, filter } = constants.dataGridDefaults;
@@ -15,27 +17,44 @@ export default async function DashboardAdminPanel() {
   // Clean up
   const supabase = await createSupabaseServerClient();
 
+  // Sales data \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  const startOfMonth = dayjs().startOf('month');
+  const now = dayjs();
+
+  const { data: orderTotalsThisMonth } = await supabase
+    .from('orders')
+    .select('createdAt, orderTotal')
+    .or('orderStatus.eq.paid, orderStatus.eq.processing, orderStatus.eq.shipped, orderStatus.eq.delivered')
+    .gte('createdAt', startOfMonth)
+    .lte('createdAt', now);
+
+  // Best sellers \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   const { data: bestSellers } = await supabase.rpc('getBestSellers');
 
-  const bestSellerProductIds = bestSellers?.map((item) => item.productId);
+  let sortedProductsWithTotalQuantitySold = null;
 
-  const { data: products } = await supabase
-    .from('products')
-    .select('*, productImageData(fileName, imageUrl, productImageId, index)')
-    .in('productId', bestSellerProductIds ?? []);
+  if (bestSellers) {
+    const bestSellerProductIds = bestSellers.map((item) => item.productId);
 
-  const sortedProductsWithTotalQuantitySold = products
-    ?.map((product) => {
-      const totalQuantitySold =
-        bestSellers?.find((item) => item.productId === product.productId)?.totalQuantitySold ?? null;
+    const { data: products } = await supabase
+      .from('products')
+      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
+      .in('productId', bestSellerProductIds);
 
-      return {
-        ...product,
-        totalQuantitySold,
-      };
-    })
-    ?.sort((a, b) => b.totalQuantitySold! - a.totalQuantitySold!);
-  // fix b.totalQuantitySold! - a.totalQuantitySold!
+    if (products) {
+      sortedProductsWithTotalQuantitySold = products
+        .map((product) => {
+          const totalQuantitySold =
+            bestSellers.find((item) => item.productId === product.productId)?.totalQuantitySold ?? 0;
+
+          return {
+            ...product,
+            totalQuantitySold,
+          };
+        })
+        .sort((a, b) => (b.totalQuantitySold ?? 0) - (a.totalQuantitySold ?? 0));
+    }
+  }
 
   return (
     <Grid
@@ -59,8 +78,8 @@ export default async function DashboardAdminPanel() {
           }}>
           <TotalSales
             title="Daily Sales"
-            type="daily"
-            amount={89285}
+            amount={orderTotalsThisMonth ? calculateDailySales(orderTotalsThisMonth) : null}
+            label={dayjs().format('DD MMM')}
           />
         </Paper>
       </Grid>
@@ -81,8 +100,8 @@ export default async function DashboardAdminPanel() {
           }}>
           <TotalSales
             title="Weekly Sales"
-            type="weekly"
-            amount={632485}
+            amount={orderTotalsThisMonth ? calculateWeeklySales(orderTotalsThisMonth) : null}
+            label={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
         </Paper>
       </Grid>
@@ -104,8 +123,8 @@ export default async function DashboardAdminPanel() {
           }}>
           <TotalSales
             title="Monthly Sales"
-            type="monthly"
-            amount={2362495}
+            amount={orderTotalsThisMonth ? calculateMonthlySales(orderTotalsThisMonth) : null}
+            label={dayjs().format('MMM')}
           />
         </Paper>
       </Grid>
@@ -123,7 +142,7 @@ export default async function DashboardAdminPanel() {
             minHeight: { sm: 300, md: 360, lg: 420, xl: 1 },
             borderRadius: constants.borderRadius,
           }}>
-          <SalesChart />
+          <SalesChart orderData={orderTotalsThisMonth} />
         </Paper>
       </Grid>
       <Grid
@@ -136,7 +155,7 @@ export default async function DashboardAdminPanel() {
             borderRadius: constants.borderRadius,
             zIndex: -2,
           }}>
-          <BestSellers bestSellers={sortedProductsWithTotalQuantitySold ?? []} />
+          <BestSellers bestSellers={sortedProductsWithTotalQuantitySold} />
         </Paper>
       </Grid>
       <Grid

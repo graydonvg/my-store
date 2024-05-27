@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import { Product } from '@/types';
 
 type Props = {
-  products: Product[];
+  products: Product[] | null;
 };
 
 export default function ProductsPageAdminPanelClient({ products }: Props) {

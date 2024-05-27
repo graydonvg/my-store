@@ -12,13 +12,13 @@ export const adminPanelNavOptions = [
     path: '/admin/products',
   },
   {
-    label: 'Users',
-    icon: <People />,
-    path: '/admin/users',
-  },
-  {
     label: 'Orders',
     icon: <LocalShipping />,
     path: '/admin/orders',
+  },
+  {
+    label: 'Users',
+    icon: <People />,
+    path: '/admin/users',
   },
 ];

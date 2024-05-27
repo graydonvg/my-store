@@ -1,35 +1,42 @@
 'use client';
 
 import { Box, Grid, Paper, Typography } from '@mui/material';
-import { Product } from '@/types';
+import { BestSellersType } from '@/types';
 import ProductCard from '@/components/product/productCard/ProductCard';
 import { constants } from '@/constants';
 import CardTitle from './CardTitle';
+import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 
-function getOrdinal(n: number) {
-  const s = ['th', 'st', 'nd', 'rd'],
-    v = n % 100;
-  return s[(v - 20) % 10] || s[v] || s[0];
+function getPositionAndOrdinal(bestSellers: BestSellersType, index: number): [number, string] {
+  const quantities = bestSellers.slice(0, 3).map((product) => product.totalQuantitySold);
+  const position = quantities.indexOf(bestSellers[index].totalQuantitySold);
+  const ordinal = position === 0 ? 'st' : position === 1 ? 'nd' : position === 2 ? 'rd' : '';
+
+  return [position + 1, ordinal];
 }
 
-function getClassName(bestSellers: Array<Product & { totalQuantitySold: number | null }>, index: number) {
-  const mostSoldQuantity = bestSellers.length > 0 ? bestSellers[0].totalQuantitySold : null;
-  const secondMostSoldQuantity = bestSellers.length > 1 ? bestSellers[1].totalQuantitySold : null;
-  const thirdMostSoldQuantity = bestSellers.length > 2 ? bestSellers[2].totalQuantitySold : null;
+function getPositionWithOrdinal(bestSellers: BestSellersType, index: number) {
+  const [position, ordinal] = getPositionAndOrdinal(bestSellers, index);
 
-  if (mostSoldQuantity !== null && bestSellers[index].totalQuantitySold === mostSoldQuantity) {
-    return 'animated-card-first';
-  } else if (secondMostSoldQuantity !== null && bestSellers[index].totalQuantitySold === secondMostSoldQuantity) {
-    return 'animated-card-second';
-  } else if (thirdMostSoldQuantity !== null && bestSellers[index].totalQuantitySold === thirdMostSoldQuantity) {
-    return 'animated-card-third';
-  } else {
-    return '';
-  }
+  return (
+    <Typography
+      component="h3"
+      variant="h5">
+      {position}
+      <sup>{ordinal}</sup>
+    </Typography>
+  );
+}
+
+function getClassName(bestSellers: BestSellersType, index: number) {
+  const classNames = ['animated-card-first', 'animated-card-second', 'animated-card-third'];
+  const [position] = getPositionAndOrdinal(bestSellers, index);
+
+  return position > 0 ? classNames[position - 1] : '';
 }
 
 type Props = {
-  bestSellers: Array<Product & { totalQuantitySold: number | null }>;
+  bestSellers: BestSellersType | null;
 };
 
 export default function BestSellers({ bestSellers }: Props) {
@@ -39,50 +46,53 @@ export default function BestSellers({ bestSellers }: Props) {
       <Grid
         container
         spacing={2}>
-        {bestSellers?.map((product, index) => (
-          <Grid
-            item
-            key={product.productId}
-            xs={12}
-            sm={4}
-            sx={{
-              borderRadius: constants.borderRadius,
-              zIndex: 1,
-            }}>
-            <Paper
-              elevation={8}
-              className={`animated-card ${getClassName(bestSellers, index)}`}
-              sx={{ padding: 2, height: 1, position: 'relative' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingBottom: 2,
-                }}>
-                <Typography
-                  component="h3"
-                  variant="h5">
-                  {index + 1}
-                  <sup>{getOrdinal(index + 1)}</sup>
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 0.5 }}>
-                  <Typography variant="body1">Sold:</Typography>
-                  <Box sx={{ display: 'flex', columnGap: 0.5 }}>
-                    <Typography variant="body1">{product.totalQuantitySold ?? 'Data missing'}</Typography>
-                    <Typography variant="body1">{product.totalQuantitySold ? 'units' : null}</Typography>
+        {bestSellers ? (
+          bestSellers.map((product, index) => (
+            <Grid
+              item
+              key={product.productId}
+              xs={12}
+              sm={4}
+              sx={{
+                borderRadius: constants.borderRadius,
+                zIndex: 1,
+              }}>
+              <Paper
+                elevation={8}
+                className={`animated-card ${getClassName(bestSellers, index)}`}
+                sx={{ padding: 2, height: 1, position: 'relative' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingBottom: 2,
+                  }}>
+                  {getPositionWithOrdinal(bestSellers, index)}
+                  <Box sx={{ display: 'flex', gap: 0.5 }}>
+                    <Typography variant="body1">Sold:</Typography>
+                    <Box sx={{ display: 'flex', columnGap: 0.5 }}>
+                      <Typography variant="body1">{product.totalQuantitySold ?? 'Data missing'}</Typography>
+                      <Typography variant="body1">
+                        {product.totalQuantitySold ? `unit${product.totalQuantitySold > 1 ? 's' : ''}` : null}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
 
-              <ProductCard
-                product={product}
-                imageSizes="(min-width: 2040px) 11.2vw, (min-width: 1920px) 207px, (min-width: 1536px) 190px, (min-width: 1200px) 414px, (min-width: 600px) 303px, 490px"
-              />
-            </Paper>
-          </Grid>
-        ))}
+                <ProductCard
+                  product={product}
+                  imageSizes="(min-width: 2040px) 11.2vw, (min-width: 1920px) 207px, (min-width: 1536px) 190px, (min-width: 1200px) 414px, (min-width: 600px) 303px, 490px"
+                />
+              </Paper>
+            </Grid>
+          ))
+        ) : (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, paddingLeft: 2 }}>
+            <CustomNoRowsOverlay text="No data received" />
+          </Box>
+        )}
       </Grid>
     </>
   );

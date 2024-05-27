@@ -210,6 +210,11 @@ export type AddOrderResponse = {
   orderId: number;
 };
 
+export type MonthlyOrderData = {
+  createdAt: string;
+  orderTotal: number;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 6. Wishlist
@@ -287,6 +292,8 @@ export type UpdateProduct = {
   productData: UpdateProductDb;
   imageData: InsertProductImageDataStore[];
 };
+
+export type BestSellersType = Array<Product & { totalQuantitySold: number | null }>;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -400,6 +407,8 @@ export type QueryFilterDataGrid = {
 
 // 11. Misc
 export type CustomResponse<T = unknown> = { success: boolean; message: string; data?: T };
+
+export type CustomResponseWithData<T = unknown> = { success: boolean; message: string; data: T };
 
 export type QueryFilterBuilder = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
 

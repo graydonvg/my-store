@@ -3,7 +3,7 @@ import ProductCard from './productCard/ProductCard';
 import { Product } from '@/types';
 
 type Props = {
-  products: Product[];
+  products: Product[] | null;
 };
 
 export default function Products({ products }: Props) {

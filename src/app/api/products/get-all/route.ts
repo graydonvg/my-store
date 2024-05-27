@@ -1,8 +1,8 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { CustomResponse, Product } from '@/types';
+import { CustomResponseWithData, Product } from '@/types';
 import { NextResponse } from 'next/server';
 
-export async function GET(): Promise<NextResponse<CustomResponse<Product[]>>> {
+export async function GET(): Promise<NextResponse<CustomResponseWithData<Product[] | null>>> {
   const supabase = await createSupabaseServerClient();
 
   try {
@@ -12,11 +12,19 @@ export async function GET(): Promise<NextResponse<CustomResponse<Product[]>>> {
       .order('createdAt', { ascending: false });
 
     if (error) {
-      return NextResponse.json({ success: false, message: `Failed to get all products. ${error.message}.` });
+      return NextResponse.json({
+        success: false,
+        message: `Failed to get all products. ${error.message}.`,
+        data: null,
+      });
     }
 
     return NextResponse.json({ success: true, message: 'Fetched products sucessfully', data: products });
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Failed to get all products. An unexpect error occured.' });
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to get all products. An unexpect error occured.',
+      data: null,
+    });
   }
 }

@@ -32,7 +32,7 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'orderId',
       headerName: 'ID',
-      width: 300,
+      width: 80,
       sortable: false,
       filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
     },
