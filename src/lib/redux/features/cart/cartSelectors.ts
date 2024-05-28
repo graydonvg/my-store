@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../../store';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 
 export function selectIsCartOpen(state: RootState) {
   return state.cart.isCartOpen;
@@ -9,6 +10,25 @@ export function selectCartItems(state: RootState) {
   return state.cart.cartItems;
 }
 
+export const selectCartItemsWithPriceDetails = createSelector([selectCartItems], (items) =>
+  items.map((item) => {
+    if (item.product?.isOnSale === 'Yes') {
+      return {
+        ...item,
+        totalStandardPrice: item.product.price * item.quantity,
+        totalDiscountedPrice:
+          calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage) * item.quantity,
+      };
+    } else {
+      return {
+        ...item,
+        totalStandardPrice: item.product?.price! * item.quantity,
+        totalDiscountedPrice: 0,
+      };
+    }
+  })
+);
+
 export const selectCartCount = createSelector([selectCartItems], (items) =>
   items.reduce((totalCount, item) => totalCount + (item ? item.quantity : 0), 0)
 );
@@ -17,15 +37,15 @@ export const selectRoundedDiscountTotal = createSelector([selectCartItems], (ite
   items.reduce(
     (discountTotal, item) =>
       discountTotal +
-      (item?.product?.isOnSale === 'Yes'
-        ? Math.round(item?.product?.price! * (item.product.salePercentage / 100)) * item.quantity
+      (item.product?.isOnSale === 'Yes'
+        ? Math.round(item.product.price * (item.product.salePercentage / 100)) * item.quantity
         : 0),
     0
   )
 );
 
 export const selectCartTotal = createSelector([selectCartItems], (items) =>
-  items.reduce((totalPrice, item) => totalPrice + item?.product?.price! * item.quantity, 0)
+  items.reduce((totalPrice, item) => totalPrice + item.product?.price! * item.quantity, 0)
 );
 
 export const selectDeliveryFee = createSelector(

@@ -1,19 +1,13 @@
-import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 import { formatCurrency } from '@/utils/format';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
+  totalStandardPrice: number;
+  totalDiscountedPrice: number;
   isOnSale: boolean;
-  price: number;
-  salePercentage: number;
-  quantity: number;
 };
 
-export default function SmallCartItemPrice({ isOnSale, price, salePercentage, quantity }: Props) {
-  const roundedDiscountedPrice = calculateRoundedDiscountedPrice(price, salePercentage);
-  const totalPrice = price * quantity;
-  const totalDiscountedPrice = roundedDiscountedPrice * quantity;
-
+export default function SmallCartItemPrice({ totalStandardPrice, totalDiscountedPrice, isOnSale }: Props) {
   return (
     <Box
       sx={{
@@ -37,7 +31,7 @@ export default function SmallCartItemPrice({ isOnSale, price, salePercentage, qu
             fontWeight={700}
             color={(theme) => theme.palette.text.disabled}
             sx={{ textDecoration: 'line-through' }}>
-            {formatCurrency(totalPrice)}
+            {formatCurrency(totalStandardPrice)}
           </Typography>
         </Box>
       ) : null}
@@ -48,7 +42,7 @@ export default function SmallCartItemPrice({ isOnSale, price, salePercentage, qu
         variant="h6"
         fontSize={16}
         fontWeight={700}>
-        {formatCurrency(isOnSale ? totalDiscountedPrice : totalPrice)}
+        {formatCurrency(isOnSale ? totalDiscountedPrice : totalStandardPrice)}
       </Typography>
     </Box>
   );

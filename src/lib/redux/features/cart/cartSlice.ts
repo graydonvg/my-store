@@ -21,7 +21,6 @@ const cartSlice = createSlice({
     setCartItems(state, action: PayloadAction<State['cartItems']>) {
       state.cartItems = action.payload;
     },
-
     clearCart(state) {
       state.cartItems = initialState.cartItems;
     },

@@ -1,36 +1,21 @@
-import { Box, Paper, Typography } from '@mui/material';
-import { usePathname } from 'next/navigation';
+import { Box, Typography } from '@mui/material';
 import { useAppSelector } from '@/lib/redux/hooks';
 import {
   selectDeliveryFee,
   selectCartTotal,
   selectRoundedDiscountTotal,
   selectOrderTotal,
-  selectCartItems,
 } from '@/lib/redux/features/cart/cartSelectors';
-import { constants } from '@/constants';
 import OrderTotals from '@/components/ordersPageStorefront/orderTotals/OrderTotals';
-import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
-import PaymentButton from '@/components/checkoutFlow/PaymentButton';
 
 export default function CheckoutOrderTotals() {
-  const pathname = usePathname();
-  const cartItems = useAppSelector(selectCartItems);
   const roundedDiscountTotal = useAppSelector(selectRoundedDiscountTotal);
   const cartTotal = useAppSelector(selectCartTotal);
   const deliveryFee = useAppSelector(selectDeliveryFee);
   const orderTotal = useAppSelector(selectOrderTotal);
-  const isCartViewPath = pathname.startsWith('/cart/view');
-  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
-    <Paper
-      sx={{
-        paddingX: 3,
-        paddingY: 4,
-        borderRadius: constants.borderRadius,
-        minWidth: 'fit-content',
-      }}>
+    <>
       <Typography
         component="h1"
         fontFamily="Source Sans Pro,sans-serif"
@@ -47,15 +32,6 @@ export default function CheckoutOrderTotals() {
           totalToPay={orderTotal}
         />
       </Box>
-      {isCartViewPath ? (
-        <CheckoutButton
-          disabled={cartItems.length === 0}
-          label="checkout now"
-          fullWidth
-        />
-      ) : null}
-
-      {isShippingPath ? <PaymentButton /> : null}
-    </Paper>
+    </>
   );
 }

@@ -17,8 +17,9 @@ export default function SmallCartItemImage({ imageUrl, productName, onClick }: P
 
   return (
     <Box
-      onClick={!isShippingPath ? onClick : undefined}
+      onClick={onClick}
       sx={{
+        pointerEvents: !isShippingPath ? 'auto' : 'none',
         display: 'flex',
         position: 'relative',
         aspectRatio: 3 / 4,

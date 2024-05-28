@@ -20,6 +20,7 @@ export default async function fetchCartAndWishlistData() {
       'wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
     )
     .eq('userId', authUser?.id ?? '')
+    .eq('cart.products.productImageData.index', 0)
     .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
   if (error) {

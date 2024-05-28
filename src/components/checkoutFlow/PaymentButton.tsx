@@ -1,14 +1,14 @@
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { createNewStripeCheckoutSession } from '@/utils/stripe/stripeCheckout';
 import { toast } from 'react-toastify';
 import ContainedButton from '../ui/buttons/simple/ContainedButton';
 import { InsertOrderDb } from '@/types';
 import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';
-import { getLineItemsFromCartItems } from '@/utils/stripe/getStripeLineItems';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 import { selectCheckoutData } from '@/lib/redux/features/checkout/checkoutSelectors';
+import { getLineItemsFromCartItems } from '@/utils/stripe/getStripeLineItems';
+import { createNewStripeCheckoutSession } from '@/utils/stripe/stripeCheckout';
 
 export default function PaymentButton() {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ export default function PaymentButton() {
         orderTotal: checkoutData.orderPaymentTotals.orderTotal,
         orderStatus: 'awaiting payment',
       },
-      orderItems: checkoutData.orderItems,
+      orderItems: checkoutData.checkoutItems,
       shippingDetails: checkoutData.orderShippingDetails!,
     };
 

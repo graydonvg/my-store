@@ -1,5 +1,5 @@
 import { Box, ListItem, Typography } from '@mui/material';
-import { CartItem } from '@/types';
+import { CartItemWithPriceDetails } from '@/types';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
@@ -11,7 +11,7 @@ import SmallCartItemImage from './SmallCartItemImage';
 import SmallCartItemPrice from './SmallCartItemPrice';
 
 type Props = {
-  item: CartItem;
+  item: CartItemWithPriceDetails;
 };
 
 export default function SmallCartItem({ item }: Props) {
@@ -21,7 +21,6 @@ export default function SmallCartItem({ item }: Props) {
   const isOnSale = item?.product?.isOnSale === 'Yes';
   const isShippingPath = pathname.startsWith('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
-  const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
   function navigateToProductPage() {
     router.push(
@@ -29,6 +28,7 @@ export default function SmallCartItem({ item }: Props) {
         item?.product?.productId
       }`
     );
+
     dispatch(setIsCartOpen(false));
   }
 
@@ -46,9 +46,9 @@ export default function SmallCartItem({ item }: Props) {
         paddingY: 2,
       }}>
       <SmallCartItemImage
-        imageUrl={imageUrl!}
+        imageUrl={item.product?.productImageData[0].imageUrl ?? ''}
         onClick={navigateToProductPage}
-        productName={item.product?.name!}
+        productName={item.product?.name ?? ''}
       />
       <Box
         sx={{
@@ -94,10 +94,9 @@ export default function SmallCartItem({ item }: Props) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
           {isOnSale ? <SmallCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
           <SmallCartItemPrice
-            price={item.product?.price!}
-            salePercentage={item.product?.salePercentage!}
+            totalStandardPrice={item.totalStandardPrice}
+            totalDiscountedPrice={item.totalDiscountedPrice}
             isOnSale={isOnSale}
-            quantity={item.quantity}
           />
         </Box>
       </Box>

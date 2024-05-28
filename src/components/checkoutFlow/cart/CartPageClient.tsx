@@ -5,10 +5,11 @@ import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
 import { Grid } from '@mui/material';
 import { CartItem, WishlistData } from '@/types';
 import { useEffect } from 'react';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setCartItems } from '@/lib/redux/features/cart/cartSlice';
 import { setWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSlice';
 import { resetCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
+import { selectCartItemsWithPriceDetails } from '@/lib/redux/features/cart/cartSelectors';
 
 type Props = {
   cartItems: CartItem[] | null;
@@ -17,6 +18,7 @@ type Props = {
 
 export default function CartPageClient({ cartItems, wishlistData }: Props) {
   const dispatch = useAppDispatch();
+  const cartItemsWithPriceDetails = useAppSelector(selectCartItemsWithPriceDetails);
 
   useEffect(() => {
     dispatch(setCartItems(cartItems ?? []));
@@ -26,14 +28,12 @@ export default function CartPageClient({ cartItems, wishlistData }: Props) {
 
   return (
     <>
-      {!cartItems || cartItems.length === 0 ? (
-        <CartPageEmptyMessage />
-      ) : (
+      {cartItemsWithPriceDetails?.length > 0 ? (
         <Grid
           component="ul"
           container
           rowSpacing={2}>
-          {cartItems.map((item) => {
+          {cartItemsWithPriceDetails.map((item) => {
             return (
               <Grid
                 component="li"
@@ -45,6 +45,8 @@ export default function CartPageClient({ cartItems, wishlistData }: Props) {
             );
           })}
         </Grid>
+      ) : (
+        <CartPageEmptyMessage />
       )}
     </>
   );

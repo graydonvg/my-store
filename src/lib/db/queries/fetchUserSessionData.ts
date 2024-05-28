@@ -13,9 +13,10 @@ export default async function fetchUserSessionData() {
   const { data: userDataArray } = await supabase
     .from('users')
     .select(
-      '*, wishlist( productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
+      '*, wishlist( productId, size), cart(createdAt, cartItemId, quantity, size, product: products(productId, name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, sizes, brand, category, productImageData(imageUrl)))'
     )
     .eq('userId', authUser?.id ?? '')
+    .eq('cart.products.productImageData.index', 0)
     .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
   if (!userDataArray || !userDataArray[0]) {

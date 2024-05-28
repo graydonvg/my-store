@@ -1,10 +1,15 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Paper } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import CheckoutNavbar from '@/components/navbars/checkoutNavbar/CheckoutNavbar';
+import { constants } from '@/constants';
+import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
+import PaymentButton from '@/components/checkoutFlow/PaymentButton';
 
 type Props = {
   children: ReactNode;
@@ -12,7 +17,10 @@ type Props = {
 
 export default function CheckoutFlowLayout({ children }: Props) {
   const pathname = usePathname();
+  const cartItems = useAppSelector(selectCartItems);
   const isPaymentPath = pathname.startsWith('/checkout/payment');
+  const isCartViewPath = pathname.startsWith('/cart/view');
+  const isShippingPath = pathname.startsWith('/checkout/shipping');
 
   return (
     <>
@@ -37,7 +45,25 @@ export default function CheckoutFlowLayout({ children }: Props) {
               item
               xs={12}
               md={3}>
-              <CheckoutOrderTotals />
+              <Paper
+                sx={{
+                  paddingX: 3,
+                  paddingY: 4,
+                  borderRadius: constants.borderRadius,
+                  minWidth: 'fit-content',
+                }}>
+                <CheckoutOrderTotals />
+
+                {isCartViewPath ? (
+                  <CheckoutButton
+                    disabled={cartItems.length === 0}
+                    label="checkout now"
+                    fullWidth
+                  />
+                ) : null}
+
+                {isShippingPath ? <PaymentButton /> : null}
+              </Paper>
             </Grid>
           ) : null}
         </Grid>

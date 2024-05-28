@@ -1,6 +1,6 @@
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import { OrderData } from '@/types';
-import { getLineItemsFromOrderItems } from '@/utils/stripe/getStripeLineItems';
+import { getLineItemsFromDatabaseOrderItems } from '@/utils/stripe/getStripeLineItems';
 import { createNewStripeCheckoutSession, resumeStripeCheckout } from '@/utils/stripe/stripeCheckout';
 import { Payment } from '@mui/icons-material';
 import { toast } from 'react-toastify';
@@ -13,7 +13,7 @@ type Props = {
 export default function PayNowButton({ order, sessionId }: Props) {
   async function payNow() {
     if (!sessionId) {
-      const lineItems = getLineItemsFromOrderItems(order.orderItems);
+      const lineItems = getLineItemsFromDatabaseOrderItems(order.orderItems);
 
       const { success, message } = await createNewStripeCheckoutSession(order.orderId, lineItems);
 

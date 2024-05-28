@@ -76,13 +76,16 @@ export type CartItem = {
     sizes: string[];
     brand: string;
     category: string;
-    productImageData:
-      | {
-          imageUrl: string;
-          index: number;
-        }[];
+    productImageData: {
+      imageUrl: string;
+    }[];
   } | null;
 };
+
+export type CartItemWithPriceDetails = {
+  totalStandardPrice: number;
+  totalDiscountedPrice: number;
+} & CartItem;
 
 export type InsertCartItemDb = Database['public']['Tables']['cart']['Insert'];
 
@@ -103,7 +106,7 @@ export type UpdateCartItemQuantity = {
 export type CheckoutData = {
   orderAddressId: number | null;
   isCheckoutProcessing: boolean;
-  orderItems: {
+  checkoutItems: {
     pricePaid: number;
     productId: number;
     quantity: number;
@@ -159,7 +162,6 @@ export type OrderItem = {
     returnInfo: string;
     productImageData: {
       imageUrl: string | undefined;
-      index: number;
     }[];
   } | null;
 };

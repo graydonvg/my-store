@@ -31,7 +31,6 @@ export default function OrderItems({ order }: Props) {
           const isSecondItem = index === 1;
           const isSecondLastItem = numberOfItems - 2 === index;
           const isLastItem = numberOfItems - 1 === index;
-          const imageUrl = item.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
 
           return (
             <Grid
@@ -55,7 +54,7 @@ export default function OrderItems({ order }: Props) {
                   lg={4}>
                   <OrderItemImage
                     orderItem={item}
-                    imageUrl={imageUrl!}
+                    imageUrl={item.product?.productImageData[0].imageUrl ?? ''}
                   />
                 </Grid>
                 <Grid

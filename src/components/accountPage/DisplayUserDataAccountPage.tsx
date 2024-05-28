@@ -14,13 +14,13 @@ export default function DisplayUserDataAccountPage({ label, canEdit, onClick, ch
     <Box
       onClick={onClick}
       sx={{
+        pointerEvents: canEdit ? 'auto' : 'none',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         cursor: canEdit ? 'pointer' : 'default',
         alignItems: 'center',
         paddingBottom: 2,
-        pointerEvents: canEdit ? 'auto' : 'none',
       }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', paddingBottom: 2 }}>
         <Typography

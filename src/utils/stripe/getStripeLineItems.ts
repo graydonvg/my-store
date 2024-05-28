@@ -7,16 +7,13 @@ export function getLineItemsFromCartItems(cartItems: CartItem[]) {
       item?.product?.isOnSale === 'Yes'
         ? calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage)
         : item?.product?.price!;
-    const images = [...item?.product?.productImageData!]
-      .filter((image) => image.index === 0)
-      .map((image) => image.imageUrl);
 
     return {
       price_data: {
         currency: 'zar',
         product_data: {
-          name: item.product!.name,
-          images,
+          name: item.product?.name ?? '',
+          images: [item.product?.productImageData[0].imageUrl ?? ''],
         },
         unit_amount: unitAmount * 100,
       },
@@ -27,18 +24,14 @@ export function getLineItemsFromCartItems(cartItems: CartItem[]) {
   return lineItems;
 }
 
-export function getLineItemsFromOrderItems(orderItems: OrderItem[]) {
+export function getLineItemsFromDatabaseOrderItems(orderItems: OrderItem[]) {
   const lineItems = orderItems.map((item) => {
-    const images = [...item.product?.productImageData!]
-      .filter((image) => image.index === 0)
-      .map((image) => image.imageUrl as string);
-
     return {
       price_data: {
         currency: 'zar',
         product_data: {
-          name: item.product!.name,
-          images,
+          name: item.product?.name ?? '',
+          images: [item.product?.productImageData[0].imageUrl ?? ''],
         },
         unit_amount: item.pricePaid * 100,
       },

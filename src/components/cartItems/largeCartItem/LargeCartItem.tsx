@@ -1,6 +1,6 @@
 import { Box, Paper } from '@mui/material';
 import { Divider } from '@mui/material';
-import { CartItem } from '@/types';
+import { CartItemWithPriceDetails } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
 import { constants } from '@/constants';
 import LargeCartItemSaleBadge from './LargeCartItemSaleBadge';
@@ -12,12 +12,15 @@ import LargeCartItemPrice from './LargeCartItemPrice';
 import EditCartItemDrawerButton from './EditCartItemDrawerButton';
 
 type Props = {
-  item: CartItem;
+  item: CartItemWithPriceDetails;
 };
 
 export default function LargeCartItem({ item }: Props) {
   const isOnSale = item?.product?.isOnSale === 'Yes';
-  const imageUrl = item?.product?.productImageData.find((image) => image.index === 0)?.imageUrl;
+  const productHref = `/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
+    .toLowerCase()
+    .split(' ')
+    .join('-')}/${item?.product?.productId}`;
 
   return (
     <Paper
@@ -48,20 +51,14 @@ export default function LargeCartItem({ item }: Props) {
         }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
           <LargeCartItemImage
-            productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
-              .toLowerCase()
-              .split(' ')
-              .join('-')}/${item?.product?.productId}`}
-            imageUrl={imageUrl!}
+            productHref={productHref}
             productName={item?.product?.name!}
+            imageUrl={item.product?.productImageData[0].imageUrl!}
           />
 
           <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
             <LargeCartItemTopDetails
-              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
-                .toLowerCase()
-                .split(' ')
-                .join('-')}/${item?.product?.productId}`}
+              productHref={productHref}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -77,10 +74,7 @@ export default function LargeCartItem({ item }: Props) {
           }}>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <LargeCartItemTopDetails
-              productHref={`/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
-                .toLowerCase()
-                .split(' ')
-                .join('-')}/${item?.product?.productId}`}
+              productHref={productHref}
               name={item?.product?.name!}
               brand={item?.product?.brand!}
             />
@@ -101,10 +95,9 @@ export default function LargeCartItem({ item }: Props) {
             }}>
             {isOnSale ? <LargeCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
             <LargeCartItemPrice
-              price={item.product?.price!}
-              salePercentage={item.product?.salePercentage!}
+              totalStandardPrice={item.totalStandardPrice}
+              totalDiscountedPrice={item.totalDiscountedPrice}
               isOnSale={isOnSale}
-              quantity={item.quantity}
             />
           </Box>
         </Box>

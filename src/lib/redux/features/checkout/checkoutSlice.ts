@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: CheckoutData = {
   orderAddressId: null,
-  orderItems: [],
+  checkoutItems: [],
   orderPaymentTotals: {
     cartTotal: 0,
     deliveryFee: 0,
