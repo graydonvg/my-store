@@ -4,6 +4,7 @@ import { AppBar, Box, useTheme } from '@mui/material';
 import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
 import NavbarTitle from './NavbarTitle';
 import { ElevationScroll } from '../ui/ElevationScroll';
+import ThemeToggleButton from '../theme/ThemeToggleButton';
 
 export default function WelcomePageNavbar() {
   const theme = useTheme();
@@ -20,6 +21,7 @@ export default function WelcomePageNavbar() {
             <Box
               sx={{
                 display: 'flex',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 height: '64px',
               }}>
@@ -28,6 +30,12 @@ export default function WelcomePageNavbar() {
                 variant="h5"
                 color={(theme) => theme.palette.custom.navbar.upper.text}
               />
+              <Box sx={{ paddingRight: '4px' }}>
+                <ThemeToggleButton
+                  edge="end"
+                  size="medium"
+                />
+              </Box>
             </Box>
           </CommonNavbarContainer>
         </Box>
