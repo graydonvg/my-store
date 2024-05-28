@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 
 type Props = {
   totalStandardPrice: number;
-  totalDiscountedPrice: number;
+  totalDiscountedPrice: number | null;
   isOnSale: boolean;
 };
 
@@ -42,7 +42,7 @@ export default function SmallCartItemPrice({ totalStandardPrice, totalDiscounted
         variant="h6"
         fontSize={16}
         fontWeight={700}>
-        {formatCurrency(isOnSale ? totalDiscountedPrice : totalStandardPrice)}
+        {formatCurrency(isOnSale ? totalDiscountedPrice! : totalStandardPrice)}
       </Typography>
     </Box>
   );

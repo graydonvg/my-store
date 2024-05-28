@@ -84,7 +84,7 @@ export type CartItem = {
 
 export type CartItemWithPriceDetails = {
   totalStandardPrice: number;
-  totalDiscountedPrice: number;
+  totalDiscountedPrice: number | null;
 } & CartItem;
 
 export type InsertCartItemDb = Database['public']['Tables']['cart']['Insert'];

@@ -23,7 +23,7 @@ export const selectCartItemsWithPriceDetails = createSelector([selectCartItems],
       return {
         ...item,
         totalStandardPrice: item.product?.price! * item.quantity,
-        totalDiscountedPrice: 0,
+        totalDiscountedPrice: null,
       };
     }
   })
