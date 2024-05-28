@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import {
   ToggleButton,
   ToggleButtonGroup,
@@ -34,7 +34,7 @@ export default function ToggleButtons({ buttons, selection, ...props }: ToggleBu
               [`&.${toggleButtonGroupClasses.grouped}`]: {
                 color: theme.palette.custom.textField.label,
                 border: `2px solid ${theme.palette.custom.textField.border} !important`,
-                borderRadius: `${constants.borderRadius} !important`,
+                borderRadius: `${CONSTANTS.BORDER_RADIUS} !important`,
                 margin: 0,
                 '@media (hover: hover)': {
                   '&:hover': {

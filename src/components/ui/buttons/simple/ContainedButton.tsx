@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { Button, ButtonProps, SxProps, Theme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -27,7 +27,7 @@ export default function ContainedButton({ isLoading, label, startIcon, sxStyles,
       }
       sx={{
         pointerEvents: !isLoading ? 'auto' : 'none',
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         minHeight: '48px',
         ...sxStyles,
       }}

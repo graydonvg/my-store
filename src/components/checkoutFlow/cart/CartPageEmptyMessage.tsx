@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 
@@ -12,7 +12,7 @@ export default function CartPageEmptyMessage() {
         height: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         paddingX: 2,
         paddingY: 4,
       }}>

@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { InputAdornment, MenuItem, TextField, TextFieldProps, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
@@ -19,7 +19,7 @@ export default function SelectField({ options, icon, hasValue, backgroundColor, 
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       sx={(theme) => ({
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         boxShadow: focused ? theme.palette.custom.textField.boxShadow : 0,
         backgroundColor,
 

@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { OrderItem } from '@/types';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
         .split(' ')
         .join('-')}/${orderItem.product?.productId}`}>
       <Box
-        sx={{ position: 'relative', aspectRatio: 25 / 36, borderRadius: constants.borderRadius, overflow: 'hidden' }}>
+        sx={{ position: 'relative', aspectRatio: 25 / 36, borderRadius: CONSTANTS.BORDER_RADIUS, overflow: 'hidden' }}>
         <Image
           priority
           style={{

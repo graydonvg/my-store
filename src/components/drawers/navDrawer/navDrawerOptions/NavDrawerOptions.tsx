@@ -4,10 +4,10 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
 import SignOutButton from '@/components/ui/buttons/complex/SignOutButton';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { adminPanelNavOptions } from '@/components/AdminPanelNavOptions';
+import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
 
 export default function NavDrawerOptions() {
   const userData = useAppSelector(selectUserData);
@@ -22,7 +22,7 @@ export default function NavDrawerOptions() {
   return (
     <Box component="nav">
       <List disablePadding>
-        {constants.hasAdminPanelAccess.includes(userData?.role!) || isAdminPath ? (
+        {CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) || isAdminPath ? (
           <NavDrawerOption
             onClick={closeDrawer}
             label={isAdminPath ? 'Storefront' : 'Admin Panel'}
@@ -31,7 +31,7 @@ export default function NavDrawerOptions() {
         ) : null}
 
         {isAdminPath
-          ? adminPanelNavOptions.map((option) => (
+          ? ADMIN_PANEL_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -42,7 +42,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {!isAdminPath
-          ? constants.storeFrontNavOptions.map((option) => (
+          ? CONSTANTS.STOREFRONT_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}
@@ -53,7 +53,7 @@ export default function NavDrawerOptions() {
           : null}
 
         {userData && !isAdminPath
-          ? constants.accountViewNavOptions.map((option) => (
+          ? CONSTANTS.ACCOUNT_VIEW_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}

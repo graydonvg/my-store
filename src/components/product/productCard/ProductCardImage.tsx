@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -23,8 +23,8 @@ export default function ProductCardImage({ imageUrl, imageSizes, productName }: 
         justifyContent: 'center',
         alignItems: 'center',
         aspectRatio: !isAdminDashboardPath ? 25 / 36 : 14 / 18,
-        borderTopLeftRadius: constants.borderRadius,
-        borderTopRightRadius: constants.borderRadius,
+        borderTopLeftRadius: CONSTANTS.BORDER_RADIUS,
+        borderTopRightRadius: CONSTANTS.BORDER_RADIUS,
         overflow: 'hidden',
       }}>
       <Image

@@ -10,7 +10,7 @@ import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import SelectField from '../ui/inputFields/SelectField';
 import { UserRole } from '@/types';
 import { createNewUserAdmin } from '@/services/admin/add';
@@ -78,7 +78,7 @@ export default function CreateAuthUserForm() {
   const userData = useAppSelector(selectUserData);
   const isDialogLoading = useAppSelector(selectIsDialogLoading);
   const [formData, setFormData] = useState(defaultFormData);
-  const restricedUserRoleOptions = constants.userRoleOptions.filter((role) => {
+  const restricedUserRoleOptions = CONSTANTS.USER_ROLE_OPTIONS.filter((role) => {
     if (userData?.role === 'admin') {
       return role === 'none';
     } else if (userData?.role === 'manager') {

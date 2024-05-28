@@ -6,7 +6,7 @@ import { Product } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/format';
 import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
 import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';
 import ProductCardImage from './ProductCardImage';
@@ -32,7 +32,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
   const [isRemovingWishlistItem, setIsRemovingWishlistItem] = useState(false);
 
   return (
-    <Box sx={{ borderRadius: constants.borderRadius, height: 1, opacity: isRemovingWishlistItem ? '50%' : null }}>
+    <Box sx={{ borderRadius: CONSTANTS.BORDER_RADIUS, height: 1, opacity: isRemovingWishlistItem ? '50%' : null }}>
       <Box
         sx={{
           display: 'flex',

@@ -3,7 +3,7 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { BestSellersType } from '@/types';
 import ProductCard from '@/components/product/productCard/ProductCard';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 
@@ -54,7 +54,7 @@ export default function BestSellers({ bestSellers }: Props) {
               xs={12}
               sm={4}
               sx={{
-                borderRadius: constants.borderRadius,
+                borderRadius: CONSTANTS.BORDER_RADIUS,
                 zIndex: 1,
               }}>
               <Paper

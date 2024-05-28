@@ -1,7 +1,7 @@
 import { OrderData } from '@/types';
 import { Box, Typography } from '@mui/material';
 import OrderTotals from '../orderTotals/OrderTotals';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import OrderShippingDetails from './OrderShippingDetails';
 import dayjs from 'dayjs';
 import PayNowButton from './PayNowButton';
@@ -17,9 +17,9 @@ export default function OrderDetails({ order }: Props) {
       sx={(theme) => ({
         border: `1px solid ${theme.palette.custom.border}`,
         padding: 2,
-        borderRadius: { xs: 'none', md: constants.borderRadius },
-        borderTopLeftRadius: constants.borderRadius,
-        borderTopRightRadius: constants.borderRadius,
+        borderRadius: { xs: 'none', md: CONSTANTS.BORDER_RADIUS },
+        borderTopLeftRadius: CONSTANTS.BORDER_RADIUS,
+        borderTopRightRadius: CONSTANTS.BORDER_RADIUS,
       })}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box>

@@ -3,7 +3,7 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../../ui/progress/CircularProgressWithLabel';
 import { InsertProductImageDataDb, InsertProductImageDataStore } from '@/types';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { useState } from 'react';
 
 type Props = {
@@ -30,7 +30,7 @@ export default function LargeProductImageBox({
         aspectRatio: 3 / 4,
         border: `1px solid ${boxBorderColor}`,
         position: 'relative',
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         overflow: 'hidden',
         display: 'grid',
         placeItems: 'center',

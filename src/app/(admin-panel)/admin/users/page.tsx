@@ -1,5 +1,5 @@
 import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAdminPanelClient';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import fetchUsers from '@/lib/db/queries/fetchUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/validate';
@@ -24,9 +24,9 @@ export default async function AdminPanelUsersPage({ searchParams }: Props) {
         totalRowCount={0}
         querySuccess={validationSuccess}
         queryMessage={validationMessage}
-        page={constants.dataGridDefaults.page}
-        sort={constants.dataGridDefaults.sort}
-        filter={constants.dataGridDefaults.filter}
+        page={CONSTANTS.DATA_GRID_DEFAULTS.page}
+        sort={CONSTANTS.DATA_GRID_DEFAULTS.sort}
+        filter={CONSTANTS.DATA_GRID_DEFAULTS.filter}
       />
     );
   }

@@ -3,16 +3,16 @@ import Paper from '@mui/material/Paper';
 import SalesChart from '@/components/adminPanel/dashboard/SalesChart';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
-import { constants } from '@/constants';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
 import dayjs from 'dayjs';
 import { calculateDailySales, calculateMonthlySales, calculateWeeklySales } from '@/utils/calculate';
 import fetchOrderTotalsThisMonth from '@/lib/db/queries/fetchOrderTotalsThisMonth';
 import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
+import { CONSTANTS } from '@/constants';
 
 export default async function AdminPanelDashboard() {
-  const { page, sort, filter } = constants.dataGridDefaults;
+  const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
   const orderTotalsThisMonth = await fetchOrderTotalsThisMonth();
   const sortedBestSellers = await fetchSortedBestSellers();
@@ -34,7 +34,7 @@ export default async function AdminPanelDashboard() {
             flexDirection: 'column',
             gap: { xs: 2, sm: 0 },
             minHeight: 'fit-content',
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -56,7 +56,7 @@ export default async function AdminPanelDashboard() {
             flexDirection: 'column',
             gap: { xs: 2, sm: 0 },
             minHeight: 'fit-content',
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -79,7 +79,7 @@ export default async function AdminPanelDashboard() {
             flexDirection: 'column',
             gap: { xs: 2, sm: 0 },
             minHeight: 'fit-content',
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             containerType: 'inline-size',
           }}>
           <TotalSales
@@ -101,7 +101,7 @@ export default async function AdminPanelDashboard() {
             flexDirection: 'column',
             height: { sm: 300, md: 360, lg: 420 },
             minHeight: { sm: 300, md: 360, lg: 420, xl: 1 },
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
           <SalesChart orderData={orderTotalsThisMonth} />
         </Paper>
@@ -113,7 +113,7 @@ export default async function AdminPanelDashboard() {
         <Paper
           sx={{
             padding: 2,
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             zIndex: -2,
           }}>
           <BestSellers bestSellers={sortedBestSellers} />
@@ -126,7 +126,7 @@ export default async function AdminPanelDashboard() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             overflow: 'hidden',
             padding: 2,
           }}>

@@ -5,7 +5,7 @@ import { Container, Grid, Paper } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import CheckoutNavbar from '@/components/navbars/checkoutNavbar/CheckoutNavbar';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
@@ -49,7 +49,7 @@ export default function CheckoutFlowLayout({ children }: Props) {
                 sx={{
                   paddingX: 3,
                   paddingY: 4,
-                  borderRadius: constants.borderRadius,
+                  borderRadius: CONSTANTS.BORDER_RADIUS,
                   minWidth: 'fit-content',
                 }}>
                 <CheckoutOrderTotals />

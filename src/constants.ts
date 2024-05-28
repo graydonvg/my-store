@@ -1,26 +1,26 @@
 import { UserRoleSelectOptions } from './types';
 
-const storeName = 'MyStore';
+const STORE_NAME = 'MyStore';
 
-export const constants = {
-  url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://my-store-henna.vercel.app',
-  storeName,
-  storeSlogan: 'Where Fashion Meets Passion',
-  storeDescription: `Immerse yourself in a world of self-expression at ${storeName}, where each piece tells a story and every outfit is a statement`,
-  borderRadius: '4px',
-  freeDeliveryThreshold: 500,
-  userRoleOptions: ['none', 'admin', 'manager', 'owner'] as UserRoleSelectOptions[],
-  hasAdminPanelAccess: ['admin', 'manager', 'owner'],
-  orderedSizesForToggleButtons: [
+export const CONSTANTS = {
+  URL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://my-store-henna.vercel.app',
+  STORE_NAME,
+  STORE_SLOGAN: 'Where Fashion Meets Passion',
+  STORE_DESCRIPTION: `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`,
+  BORDER_RADIUS: '4px',
+  FREE_DELIVERY_THRESHOLD: 500,
+  USER_ROLE_OPTIONS: ['none', 'admin', 'manager', 'owner'] as UserRoleSelectOptions[],
+  HAS_ADMIN_PANEL_ACCESS: ['admin', 'manager', 'owner'],
+  ORDERED_SIZES_FOR_TOGGLE_BUTTONS: [
     { label: 'XS', value: 'XS' },
     { label: 'S', value: 'S' },
     { label: 'M', value: 'M' },
     { label: 'L', value: 'L' },
     { label: 'XL', value: 'XL' },
   ],
-  orderedSizesForStore: ['XS', 'S', 'M', 'L', 'XL'],
+  ORDERED_SIZES_FOR_STORE: ['XS', 'S', 'M', 'L', 'XL'],
   // adminPanelNavOptions at components\AdminPanelNavOptions.tsx because of icons,
-  storeFrontNavOptions: [
+  STOREFRONT_NAV_OPTIONS: [
     {
       label: 'Home',
       path: '/',
@@ -46,7 +46,7 @@ export const constants = {
       path: '/products/sale',
     },
   ],
-  accountViewNavOptions: [
+  ACCOUNT_VIEW_NAV_OPTIONS: [
     {
       label: 'My Account',
       path: '/account',
@@ -61,7 +61,7 @@ export const constants = {
     },
   ],
 
-  homePageShopByCategory: [
+  HOME_PAGE_SHOP_BY_CATEGORY: [
     {
       label: 'Men',
       imageSrc: '/portrait-handsome-fashion-businessman-model-dressed-elegant-checkered-suit.jpg',
@@ -78,7 +78,7 @@ export const constants = {
       path: '/products/kids',
     },
   ],
-  dataGridDefaults: {
+  DATA_GRID_DEFAULTS: {
     page: {
       number: 1,
       rows: 5,
@@ -92,6 +92,12 @@ export const constants = {
       operator: null,
       value: null,
     },
+  },
+  ERROR_MESSAGES: {
+    NOT_AUTHENTICATED: 'You need to be logged in to perform this action.',
+    NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
+    VALIDATION_ERROR: 'There was a problem with the data you submitted. Please check and try again.',
+    GENERAL_ERROR: 'An unexpected error occurred. Please try again later.',
   },
 };
 

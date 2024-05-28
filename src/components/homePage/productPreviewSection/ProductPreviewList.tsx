@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { Product } from '@/types';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/simple/ContainedButton';
@@ -25,7 +25,7 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
           elevation={0}
           sx={{
             backgroundColor: (theme) => theme.palette.custom.navbar.lower.background,
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             padding: { xs: 2, lg: 4 },
             display: 'flex',
             flexDirection: 'column',

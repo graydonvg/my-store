@@ -4,7 +4,7 @@ import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import NumberField from '@/components/ui/inputFields/NumberField';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { InsertProductStore } from '@/types';
@@ -20,7 +20,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
   const dispatch = useAppDispatch();
   const productFormData = useAppSelector(selectProductFormData);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
-  const categoryOptionsCapitalised = constants.homePageShopByCategory.map((category) =>
+  const categoryOptionsCapitalised = CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) =>
     category.label.replace(category.label.charAt(0), category.label.charAt(0).toUpperCase())
   );
 
@@ -41,7 +41,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
           aria-label="select size"
           onChange={handleSelectSize}
           selection={productFormData.sizes}
-          buttons={constants.orderedSizesForToggleButtons}
+          buttons={CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
           disabled={isFieldDisabled}
         />
       </Box>

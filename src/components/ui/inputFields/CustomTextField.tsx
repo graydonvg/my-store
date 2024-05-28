@@ -1,4 +1,4 @@
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { InputAdornment, TextField, TextFieldProps, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
@@ -17,7 +17,7 @@ export default function CustomTextField({ icon, backgroundColor, hasValue, ...pr
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       sx={{
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         boxShadow: focused ? theme.palette.custom.textField.boxShadow : 0,
         backgroundColor,
 

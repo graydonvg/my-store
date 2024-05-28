@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import WelcomePageNavbar from '@/components/navbars/WelcomePageNavbar';
 import { Box, Container } from '@mui/material';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 
 export default function WelcomeLayout({ children }: { children: ReactNode }) {
   return (
@@ -17,7 +17,7 @@ export default function WelcomeLayout({ children }: { children: ReactNode }) {
           sx={{
             margin: '0 auto',
             boxShadow: 5,
-            borderRadius: constants.borderRadius,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
             overflow: 'hidden',
             maxWidth: 400,
             backgroundColor: (theme) => theme.palette.custom.dialog.background.primary,

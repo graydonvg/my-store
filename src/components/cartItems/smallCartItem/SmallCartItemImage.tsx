@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
-import { constants } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import { usePathname } from 'next/navigation';
 
 type Props = {
@@ -26,7 +26,7 @@ export default function SmallCartItemImage({ imageUrl, productName, onClick }: P
         width: '60px',
         flexShrink: 0,
         cursor: !isShippingPath ? 'pointer' : 'default',
-        borderRadius: constants.borderRadius,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         overflow: 'hidden',
       }}>
       <Image
