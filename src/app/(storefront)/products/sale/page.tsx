@@ -2,7 +2,7 @@ import Products from '@/components/product/Products';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { getProductsOnSale } from '@/services/products/get';
 
-export default async function SaleProducts() {
+export default async function SaleProductsPage() {
   const { data: products } = await getProductsOnSale();
 
   return (

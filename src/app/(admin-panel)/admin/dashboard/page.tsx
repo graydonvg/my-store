@@ -6,55 +6,16 @@ import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTab
 import { constants } from '@/constants';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
-import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import dayjs from 'dayjs';
 import { calculateDailySales, calculateMonthlySales, calculateWeeklySales } from '@/utils/calculate';
+import fetchOrderTotalsThisMonth from '@/lib/db/queries/fetchOrderTotalsThisMonth';
+import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
 
-export default async function DashboardAdminPanel() {
+export default async function AdminPanelDashboard() {
   const { page, sort, filter } = constants.dataGridDefaults;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
-
-  // Clean up
-  const supabase = await createSupabaseServerClient();
-
-  // Sales data \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  const startOfMonth = dayjs().startOf('month');
-  const now = dayjs();
-
-  const { data: orderTotalsThisMonth } = await supabase
-    .from('orders')
-    .select('createdAt, orderTotal')
-    .or('orderStatus.eq.paid, orderStatus.eq.processing, orderStatus.eq.shipped, orderStatus.eq.delivered')
-    .gte('createdAt', startOfMonth)
-    .lte('createdAt', now);
-
-  // Best sellers \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  const { data: bestSellers } = await supabase.rpc('getBestSellers');
-
-  let sortedProductsWithTotalQuantitySold = null;
-
-  if (bestSellers) {
-    const bestSellerProductIds = bestSellers.map((item) => item.productId);
-
-    const { data: products } = await supabase
-      .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
-      .in('productId', bestSellerProductIds);
-
-    if (products) {
-      sortedProductsWithTotalQuantitySold = products
-        .map((product) => {
-          const totalQuantitySold =
-            bestSellers.find((item) => item.productId === product.productId)?.totalQuantitySold ?? 0;
-
-          return {
-            ...product,
-            totalQuantitySold,
-          };
-        })
-        .sort((a, b) => (b.totalQuantitySold ?? 0) - (a.totalQuantitySold ?? 0));
-    }
-  }
+  const orderTotalsThisMonth = await fetchOrderTotalsThisMonth();
+  const sortedBestSellers = await fetchSortedBestSellers();
 
   return (
     <Grid
@@ -155,7 +116,7 @@ export default async function DashboardAdminPanel() {
             borderRadius: constants.borderRadius,
             zIndex: -2,
           }}>
-          <BestSellers bestSellers={sortedProductsWithTotalQuantitySold} />
+          <BestSellers bestSellers={sortedBestSellers} />
         </Paper>
       </Grid>
       <Grid

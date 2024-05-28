@@ -2,7 +2,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterBuilder, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
 
-export async function fetchUsersForAdmin(
+export default async function fetchUsers(
   page: QueryPageDataGrid,
   sort: QuerySortDataGrid,
   filter: QueryFilterDataGrid

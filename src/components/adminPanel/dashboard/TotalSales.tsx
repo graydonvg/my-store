@@ -16,7 +16,7 @@ export default function TotalSales({ title, label, amount }: Props) {
   return (
     <Box sx={{ height: 1 }}>
       <CardTitle>{title}</CardTitle>
-      {amount ? (
+      {amount !== null ? (
         <>
           <Typography
             component="p"

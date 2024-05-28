@@ -1,6 +1,6 @@
 import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAdminPanelClient';
 import { constants } from '@/constants';
-import { fetchUsersForAdmin } from '@/lib/db/queries/fetchUsers';
+import fetchUsers from '@/lib/db/queries/fetchUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/validate';
 
@@ -8,7 +8,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function UsersPageAdminPanel({ searchParams }: Props) {
+export default async function AdminPanelUsersPage({ searchParams }: Props) {
   const { page, sort, filter } = getDataGridQueryDataFromSearchParams(searchParams);
 
   const {
@@ -37,7 +37,7 @@ export default async function UsersPageAdminPanel({ searchParams }: Props) {
     success: getUsersSuccess,
     message: getUsersMessage,
     data: usersData,
-  } = await fetchUsersForAdmin(validatedPage, validatedSort, validatedFilter);
+  } = await fetchUsers(validatedPage, validatedSort, validatedFilter);
 
   if (!getUsersSuccess) {
     return (

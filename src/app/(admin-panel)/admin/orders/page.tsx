@@ -8,7 +8,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function OrdersPageAdminPanel({ searchParams }: Props) {
+export default async function AdminPanelOrdersPage({ searchParams }: Props) {
   const { page, sort, filter } = getDataGridQueryDataFromSearchParams(searchParams);
 
   const {

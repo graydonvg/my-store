@@ -19,7 +19,7 @@ import {
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { updateProduct } from '@/services/admin/update';
 
-export default function AdminPanelUpdateProductPage() {
+export default function AdminPanelEditProductPage() {
   const router = useRouter();
   const productFormData = useAppSelector(selectProductFormData);
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
