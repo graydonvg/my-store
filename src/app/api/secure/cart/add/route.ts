@@ -7,9 +7,9 @@ import { validateCartItem } from '@/utils/validate';
 
 export const POST = withAxiom(async (request: AxiomRequest) => {
   const supabase = await createSupabaseServerClient();
-  const log = request.log.with({ scope: 'api', endpoint: '/api/secure/cart/add', method: 'POST' });
+  const log = request.log;
 
-  log.info('Function called');
+  log.info('Attempting to add item to cart');
 
   try {
     const {

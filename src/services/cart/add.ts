@@ -7,7 +7,7 @@ const log = new Logger();
 export default async function addItemToCart(cartItemData: InsertCartItemDb): Promise<CustomResponse> {
   const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
 
-  serviceLog.info('Function called');
+  serviceLog.info('Attempting to add item to cart');
 
   try {
     const response = await fetch('/api/secure/cart/add', {
