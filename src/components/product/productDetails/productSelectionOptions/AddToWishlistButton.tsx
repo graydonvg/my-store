@@ -32,7 +32,7 @@ export default function AddToWishlistButton({ product, size, setSize, setQuantit
     }
 
     if (!size) {
-      toast.error('Select a size first.');
+      toast.error('Select a size first');
       return;
     }
 

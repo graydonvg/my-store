@@ -33,7 +33,7 @@ export default function AddToCartButton({ product, size, setSize, quantity, setQ
       quantity: existingItem.quantity + quantity,
     });
 
-    if (success === true) {
+    if (success) {
       router.refresh();
       toast.success(addedToCartToastMessage);
       setSize(null);
@@ -50,7 +50,7 @@ export default function AddToCartButton({ product, size, setSize, quantity, setQ
       size: size!,
     });
 
-    if (success === true) {
+    if (success) {
       router.refresh();
       toast.success(addedToCartToastMessage);
       setSize(null);

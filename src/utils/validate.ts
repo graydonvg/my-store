@@ -1,4 +1,4 @@
-import { DataGridOptions, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
+import { DataGridOptions, InsertCartItemDb, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import dayjs from 'dayjs';
 import {
   getInvalidFilterColumnMessage,
@@ -9,6 +9,8 @@ import {
   getInvalidSortColumnMessage,
   getInvalidSortDirectionMessage,
 } from './queryBuilder/getInvalidMessage';
+import { z } from 'zod';
+import { CONSTANTS } from '@/constants';
 
 const commonSuccessResponse = { success: true, message: 'Success! No validation errors caught.' };
 
@@ -234,4 +236,39 @@ export function validateSearchParamsForDataGridQuery(
   }
 
   return { ...commonSuccessResponse, data: { page, sort, filter } };
+}
+
+export function validateCartItem(cartItem: InsertCartItemDb) {
+  const validation = z
+    .object({
+      productId: z.number(),
+      quantity: z.number().positive(),
+      size: z.enum(['XS', 'S', 'M', 'L', 'XL']),
+    })
+    .safeParse(cartItem);
+
+  if (validation.success) {
+    return { success: true, message: 'Validated.' };
+  } else {
+    let errorMessage = CONSTANTS.ERROR_MESSAGES.VALIDATION_ERROR;
+
+    validation.error.issues.forEach((issue) => {
+      switch (issue.path[0]) {
+        case 'productId':
+          errorMessage += 'Product ID must be a positive number.';
+          break;
+        case 'quantity':
+          errorMessage += 'Quantity must be a positive number.';
+          break;
+        case 'size':
+          errorMessage += 'Invalid size. Please select a size from XS, S, M, L, XL.';
+          break;
+        default:
+          errorMessage += 'Unknown validation error.';
+          break;
+      }
+    });
+
+    return { success: false, message: errorMessage };
+  }
 }

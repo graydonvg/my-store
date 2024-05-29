@@ -1,5 +1,4 @@
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
-import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import addItemToCart from '@/services/cart/add';
 import { updateCartItemQuantity } from '@/services/cart/update';
@@ -22,14 +21,13 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
   const theme = useTheme();
   const router = useRouter();
   const cartItems = useAppSelector(selectCartItems);
-  const userData = useAppSelector(selectUserData);
   const [isLoading, setIsLoading] = useState(false);
   const addedToCartToastMessage = 'Moved to cart';
 
   async function removeWishlistItem() {
     const { success, message } = await deleteItemFromWishlist(wishlistItemId);
 
-    if (success === false) {
+    if (!success) {
       toast.error(message);
     }
   }
@@ -40,7 +38,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
       quantity: existingItem.quantity + 1,
     });
 
-    if (success === true) {
+    if (success) {
       await removeWishlistItem();
       router.refresh();
       toast.success(addedToCartToastMessage);
@@ -54,10 +52,9 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
       productId: product.productId,
       quantity: 1,
       size: wishlistSize,
-      userId: userData?.userId!,
     });
 
-    if (success === true) {
+    if (success) {
       await removeWishlistItem();
       router.refresh();
       toast.success(addedToCartToastMessage);

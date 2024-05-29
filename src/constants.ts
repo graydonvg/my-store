@@ -96,7 +96,7 @@ export const CONSTANTS = {
   ERROR_MESSAGES: {
     NOT_AUTHENTICATED: 'You need to be logged in to perform this action.',
     NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
-    VALIDATION_ERROR: 'There was a problem with the data you submitted. Please check and try again.',
+    VALIDATION_ERROR: 'Validation failed: ',
     GENERAL_ERROR: 'An unexpected error occurred. Please try again later.',
   },
 };

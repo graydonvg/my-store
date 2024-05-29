@@ -1,18 +1,30 @@
+import { CONSTANTS } from '@/constants';
 import { InsertCartItemDb, CustomResponse } from '@/types';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export default async function addItemToCart(cartItemData: InsertCartItemDb): Promise<CustomResponse> {
+  const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
+
+  serviceLog.info('Function called');
+
   try {
     const response = await fetch('/api/secure/cart/add', {
       method: 'POST',
       cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cartItemData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    // throw new Error(`@services/cart/add. ${error}`);
-    return { success: false, message: 'An unexpected error occured.' };
+    serviceLog.error(CONSTANTS.ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+    return { success: false, message: CONSTANTS.ERROR_MESSAGES.GENERAL_ERROR };
+  } finally {
+    await serviceLog.flush();
   }
 }

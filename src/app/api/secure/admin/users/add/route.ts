@@ -7,6 +7,8 @@ import { getNumberOfFormFields } from '@/utils/checkForms';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
+export const POST = withAxiom(handlePost);
+
 async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomResponse<AddNewUserAdminResponse>>> {
   try {
     const supabase = await createSupabaseServerClient();
@@ -150,5 +152,3 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     return NextResponse.json({ success: false, message: `${failedMessage}. An unexpected error occurred.` });
   }
 }
-
-export const POST = withAxiom(handlePost);
