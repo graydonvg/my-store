@@ -12,7 +12,6 @@ export default async function addItemToCart(cartItemData: InsertCartItemDb): Pro
   try {
     const response = await fetch('/api/secure/cart/add', {
       method: 'POST',
-      cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cartItemData),
     });

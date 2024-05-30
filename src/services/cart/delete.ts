@@ -1,35 +1,27 @@
-import { CustomResponse } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseNoData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function deleteItemFromCart(cartItemId: number): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function deleteItemFromCart(cartItemId: number): Promise<ResponseNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromCart' });
+
+  serviceLog.info('Attempting to delete cart item by id');
+
   try {
     const response = await fetch(`/api/secure/cart/delete/by-id?cart_item_id=${cartItemId}`, {
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/cart/delete. ${error}`);
-  }
-}
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
 
-export async function deleteAllCartItems(): Promise<CustomResponse> {
-  try {
-    const response = await fetch('/api/secure/cart/delete/all', {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    throw new Error(`@services/cart/delete. ${error}`);
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+  } finally {
+    await serviceLog.flush();
   }
 }
