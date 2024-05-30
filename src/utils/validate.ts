@@ -10,7 +10,6 @@ import {
   getInvalidSortDirectionMessage,
 } from './queryBuilder/getInvalidMessage';
 import { z } from 'zod';
-import { CONSTANTS } from '@/constants';
 
 const commonSuccessResponse = { success: true, message: 'Success! No validation errors caught.' };
 
@@ -239,36 +238,14 @@ export function validateSearchParamsForDataGridQuery(
 }
 
 export function validateCartItem(cartItem: InsertCartItemDb) {
-  const validation = z
+  return z
     .object({
-      productId: z.number(),
-      quantity: z.number().positive(),
-      size: z.enum(['XS', 'S', 'M', 'L', 'XL']),
+      productId: z.number({ message: 'Product ID must be a positive number' }),
+      quantity: z
+        .number({ message: 'Quantity must be a positive number' })
+        .positive({ message: 'Quantity must be a positive number' }),
+      size: z.enum(['XS', 'S', 'M', 'L', 'XL'], { message: 'Invalid size. Please select a size from XS, S, M, L, XL' }),
     })
-    .safeParse(cartItem);
-
-  if (validation.success) {
-    return { success: true, message: 'Validated.' };
-  } else {
-    let errorMessage = CONSTANTS.ERROR_MESSAGES.VALIDATION_ERROR;
-
-    validation.error.issues.forEach((issue) => {
-      switch (issue.path[0]) {
-        case 'productId':
-          errorMessage += 'Product ID must be a positive number.';
-          break;
-        case 'quantity':
-          errorMessage += 'Quantity must be a positive number.';
-          break;
-        case 'size':
-          errorMessage += 'Invalid size. Please select a size from XS, S, M, L, XL.';
-          break;
-        default:
-          errorMessage += 'Unknown validation error.';
-          break;
-      }
-    });
-
-    return { success: false, message: errorMessage };
-  }
+    .strict()
+    .parse(cartItem);
 }

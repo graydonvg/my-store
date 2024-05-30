@@ -1,7 +1,7 @@
 import { CONSTANTS } from '@/constants';
-import { CustomResponse, CustomResponseWithData, Product } from '@/types';
+import { CustomResponse, ResponseWithData, Product } from '@/types';
 
-export async function getAllProducts(): Promise<CustomResponseWithData<Product[] | null>> {
+export async function getAllProducts(): Promise<ResponseWithData<Product[] | null>> {
   try {
     const url = `${CONSTANTS.URL}/api/products/get-all`;
 

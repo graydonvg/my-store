@@ -410,7 +410,9 @@ export type QueryFilterDataGrid = {
 // 11. Misc
 export type CustomResponse<T = unknown> = { success: boolean; message: string; data?: T };
 
-export type CustomResponseWithData<T = unknown> = { success: boolean; message: string; data: T };
+export type ResponseNoData = { success: boolean; message: string };
+
+export type ResponseWithData<T = unknown> = { success: boolean; message: string; data: T };
 
 export type QueryFilterBuilder = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
 

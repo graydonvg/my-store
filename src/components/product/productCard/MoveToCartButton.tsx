@@ -48,18 +48,18 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
   }
 
   async function addNewItemToCart() {
-    const { success, message } = await addItemToCart({
+    const result = await addItemToCart({
       productId: product.productId,
       quantity: 1,
       size: wishlistSize,
     });
 
-    if (success) {
+    if (result.some((res) => !res.success)) {
+      result.forEach((res) => !res.success && toast.error(res.message));
+    } else {
       await removeWishlistItem();
       router.refresh();
       toast.success(addedToCartToastMessage);
-    } else {
-      toast.error(message);
     }
   }
 

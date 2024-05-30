@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { InsertCartItemDb } from '@/types';
+import { ResponseNoData, InsertCartItemDb } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { validateCartItem } from '@/utils/validate';
+import { z } from 'zod';
 
-export const POST = withAxiom(async (request: AxiomRequest) => {
+export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseNoData[]>> => {
   const supabase = await createSupabaseServerClient();
   const log = request.log;
 
@@ -18,13 +19,15 @@ export const POST = withAxiom(async (request: AxiomRequest) => {
     } = await supabase.auth.getUser();
 
     if (authError || !authUser) {
-      log.warn('Authentication error or user not authenticated', { authError, user: authUser });
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { authError, user: authUser });
 
       return NextResponse.json(
-        {
-          success: false,
-          message: CONSTANTS.ERROR_MESSAGES.NOT_AUTHENTICATED,
-        },
+        [
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          },
+        ],
         { status: 401 }
       );
     }
@@ -34,27 +37,41 @@ export const POST = withAxiom(async (request: AxiomRequest) => {
     try {
       cartItem = await request.json();
     } catch (parseError) {
-      log.error('Error parsing JSON', { error: parseError });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error: parseError });
 
       return NextResponse.json(
-        {
-          success: false,
-          message: CONSTANTS.ERROR_MESSAGES.NO_DATA_RECEIVED,
-        },
+        [
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+          },
+        ],
         { status: 400 }
       );
     }
 
-    const validation = validateCartItem(cartItem);
+    try {
+      validateCartItem(cartItem);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: error.issues, cartItem });
 
-    if (!validation.success) {
-      log.warn('Validation error', { error: validation.message, cartItem });
+        const response = error.issues.map((issue) => ({
+          success: false,
+          message: issue.message,
+        }));
+
+        return NextResponse.json(response, { status: 400 });
+      }
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: error, cartItem });
 
       return NextResponse.json(
-        {
-          success: false,
-          message: validation.message,
-        },
+        [
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION_ERROR,
+          },
+        ],
         { status: 400 }
       );
     }
@@ -62,13 +79,15 @@ export const POST = withAxiom(async (request: AxiomRequest) => {
     const { error: insertError } = await supabase.from('cart').insert(cartItem);
 
     if (insertError) {
-      log.error('Database insert error', { error: insertError });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertError });
 
       return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to add item to cart. Please try again later.',
-        },
+        [
+          {
+            success: false,
+            message: 'Failed to add item to cart. Please try again later.',
+          },
+        ],
         { status: 500 }
       );
     }
@@ -76,20 +95,24 @@ export const POST = withAxiom(async (request: AxiomRequest) => {
     log.info('Item added to cart successfully', { cartItem, userId: authUser.id });
 
     return NextResponse.json(
-      {
-        success: true,
-        message: 'Item added to cart successfully',
-      },
+      [
+        {
+          success: true,
+          message: 'Item added to cart successfully',
+        },
+      ],
       { status: 201 }
     );
   } catch (error) {
-    log.error('Unexpected error', { error });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
 
     return NextResponse.json(
-      {
-        success: false,
-        message: CONSTANTS.ERROR_MESSAGES.GENERAL_ERROR,
-      },
+      [
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR,
+        },
+      ],
       { status: 500 }
     );
   } finally {

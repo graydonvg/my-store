@@ -1,8 +1,8 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { CustomResponseWithData, Product } from '@/types';
+import { ResponseWithData, Product } from '@/types';
 import { NextResponse } from 'next/server';
 
-export async function GET(): Promise<NextResponse<CustomResponseWithData<Product[] | null>>> {
+export async function GET(): Promise<NextResponse<ResponseWithData<Product[] | null>>> {
   const supabase = await createSupabaseServerClient();
 
   try {
