@@ -7,7 +7,7 @@ const log = new Logger();
 export async function deleteItemFromCart(cartItemId: number): Promise<ResponseNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromCart' });
 
-  serviceLog.info('Attempting to delete cart item by id');
+  serviceLog.info('Attempting to delete cart item');
 
   try {
     const response = await fetch(`/api/secure/cart/delete/by-id?cart_item_id=${cartItemId}`, {

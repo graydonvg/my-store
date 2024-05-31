@@ -44,19 +44,19 @@ export default function AddToCartButton({ product, size, setSize, quantity, setQ
   }
 
   async function addNewItemToCart() {
-    const results = await addItemToCart({
+    const { success, message } = await addItemToCart({
       productId: product.productId,
       quantity: quantity,
       size: size!,
     });
 
-    if (results.some((result) => !result.success)) {
-      results.forEach((result) => !result.success && toast.error(result.message));
-    } else {
+    if (success) {
       router.refresh();
       toast.success(addedToCartToastMessage);
       setSize(null);
       setQuantity(1);
+    } else {
+      toast.error(message);
     }
   }
 

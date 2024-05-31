@@ -1,17 +1,30 @@
-import { CustomResponse, InsertWishlistItemDb } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { InsertWishlistItemDb, ResponseNoData } from '@/types';
 
-export default async function addItemToWishlist(wishlistItemData: InsertWishlistItemDb): Promise<CustomResponse> {
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
+
+export default async function addItemToWishlist(wishlistItemData: InsertWishlistItemDb): Promise<ResponseNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'addItemToWishlist' });
+
+  serviceLog.info('Attempting to add item to wishlist');
+
   try {
     const response = await fetch('/api/secure/wishlist/add', {
       method: 'POST',
-      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(wishlistItemData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    return { success: false, message: 'An unexpected error occured.' };
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+  } finally {
+    await serviceLog.flush();
   }
 }

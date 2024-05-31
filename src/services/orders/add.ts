@@ -1,19 +1,29 @@
-import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { InsertOrderDb, AddOrderResponse, ResponseWithData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export default async function addOrder(orderData: InsertOrderDb): Promise<CustomResponse<AddOrderResponse>> {
+const log = new Logger();
+
+export default async function addOrder(orderData: InsertOrderDb): Promise<ResponseWithData<AddOrderResponse | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'addOrder' });
+
+  log.info('Attempting to add order');
+
   try {
     const response = await fetch('/api/secure/orders/add', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/orders/add. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }

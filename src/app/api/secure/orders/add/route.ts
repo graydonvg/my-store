@@ -1,78 +1,177 @@
 import { NextResponse } from 'next/server';
 import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
-import { ERROR_MESSAGES } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { AxiomRequest, withAxiom } from 'next-axiom';
+import { InsertOrderSchema } from '@/schemas/orderSchema';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse<AddOrderResponse>>> {
-  const supabase = await createSupabaseServerClient();
+export const POST = withAxiom(
+  async (request: AxiomRequest): Promise<NextResponse<CustomResponse<AddOrderResponse | null>>> => {
+    const supabase = await createSupabaseServerClient();
+    const log = request.log;
 
-  try {
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
+    log.info('Attempting to add order');
 
-    const orderData: InsertOrderDb = await request.json();
+    try {
+      const {
+        data: { user: authUser },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-    if (!authUser)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to create order. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      if (authError || !authUser) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { authError, user: authUser });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+            data: null,
+          },
+
+          { status: 401 }
+        );
+      }
+
+      let orderData: InsertOrderDb;
+
+      try {
+        orderData = await request.json();
+      } catch (parseError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error: parseError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+            data: null,
+          },
+
+          { status: 400 }
+        );
+      }
+
+      try {
+        InsertOrderSchema.parse(orderData);
+      } catch (error) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: error, orderData });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION_ERROR,
+            data: null,
+          },
+
+          { status: 400 }
+        );
+      }
+
+      const { error: insertOrderError, data: insertOrderResponseData } = await supabase
+        .from('orders')
+        .insert({ ...orderData.orderDetails })
+        .select('orderId');
+
+      if (insertOrderError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertOrderError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Failed to create order. Please try again later.',
+            data: null,
+          },
+
+          { status: 500 }
+        );
+      }
+
+      const { orderId } = insertOrderResponseData[0];
+
+      const orderItemsWithOrderId = orderData.orderItems.map((item) => {
+        return {
+          ...item,
+          orderId: orderId,
+        };
       });
 
-    if (!orderData)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to create order. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
-      });
+      const insertOrderItemsPromise = supabase.from('orderItems').insert(orderItemsWithOrderId);
 
-    const { error, data } = await supabase
-      .from('orders')
-      .insert({ ...orderData.orderDetails })
-      .select('orderId');
+      const insertShippingDetailsPromise = supabase
+        .from('shippingDetails')
+        .insert({ ...orderData.shippingDetails, orderId: orderId });
 
-    if (error) {
-      return NextResponse.json({ success: false, message: `Failed to create order. ${error.message}.` });
+      const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
+        insertOrderItemsPromise,
+        insertShippingDetailsPromise,
+      ]);
+
+      if (insertOrderItemsResponse.error || insertShippingDetailsResponse.error) {
+        const { error: deleteOrderError } = await supabase.from('orders').delete().eq('orderId', orderId);
+
+        if (deleteOrderError) {
+          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteOrderError });
+        }
+
+        if (insertOrderItemsResponse.error && insertShippingDetailsResponse.error) {
+          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
+            orderItemsError: insertOrderItemsResponse,
+            shippingDetailsError: insertShippingDetailsResponse,
+          });
+
+          return NextResponse.json(
+            {
+              success: false,
+              message: 'Failed to add order items and shipping details. Please try again later.',
+              data: null,
+            },
+
+            { status: 500 }
+          );
+        } else if (insertOrderItemsResponse.error) {
+          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
+            error: insertOrderItemsResponse,
+          });
+
+          return NextResponse.json({
+            success: false,
+            message: 'Failed to add order items. Please try again later.',
+            data: null,
+          });
+        } else if (insertShippingDetailsResponse.error) {
+          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
+            error: insertShippingDetailsResponse,
+          });
+
+          return NextResponse.json({
+            success: false,
+            message: 'Failed to add shipping details. Please try again later.',
+            data: null,
+          });
+        }
+      }
+
+      log.info('Order created successfully', { orderId });
+
+      return NextResponse.json(
+        { success: true, message: 'Order created successfully', data: { orderId } },
+        {
+          status: 201,
+        }
+      );
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR,
+          data: null,
+        },
+
+        { status: 500 }
+      );
+    } finally {
+      await log.flush();
     }
-
-    const { orderId } = data[0];
-
-    const modifiedOrderItems = orderData.orderItems.map((item) => {
-      return {
-        ...item,
-        orderId: orderId,
-      };
-    });
-
-    const insertOrderItemsPromise = supabase.from('orderItems').insert(modifiedOrderItems);
-
-    const insertShippingDetailsPromise = supabase
-      .from('shippingDetails')
-      .insert({ ...orderData.shippingDetails, orderId: orderId });
-
-    const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
-      insertOrderItemsPromise,
-      insertShippingDetailsPromise,
-    ]);
-
-    if (insertOrderItemsResponse.error || insertShippingDetailsResponse.error) {
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to create order. Failed to add order items and shipping details.',
-      });
-    } else if (insertOrderItemsResponse.error) {
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to create order. Failed to add order items.',
-      });
-    } else if (insertShippingDetailsResponse.error) {
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to create order. Failed to add shipping details.',
-      });
-    } else {
-      return NextResponse.json({ success: true, message: 'Order created successfully', data: { orderId } });
-    }
-  } catch (error) {
-    return NextResponse.json({ success: false, message: 'Failed to create order. An unexpect error occured.' });
   }
-}
+);

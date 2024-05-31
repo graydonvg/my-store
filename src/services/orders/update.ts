@@ -1,19 +1,29 @@
-import { CustomResponse, UpdateOrderStatus } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseNoData, UpdateOrderStatus } from '@/types';
+import { Logger } from 'next-axiom';
 
-export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<CustomResponse> {
+const log = new Logger();
+
+export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<ResponseNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateOrderStatus' });
+
+  serviceLog.info('Attempting to update order status');
+
   try {
     const response = await fetch('/api/secure/orders/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/orders/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+  } finally {
+    await serviceLog.flush();
   }
 }

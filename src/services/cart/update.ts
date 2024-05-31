@@ -12,9 +12,7 @@ export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Prom
   try {
     const response = await fetch('/api/secure/cart/update/size', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cartItemData),
     });
 
@@ -38,9 +36,7 @@ export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantit
   try {
     const response = await fetch('/api/secure/cart/update/quantity', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cartItemData),
     });
 

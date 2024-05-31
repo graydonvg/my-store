@@ -1,18 +1,27 @@
-import { CustomResponse } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseNoData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function deleteItemFromWishlist(wishlistItemId: number): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function deleteItemFromWishlist(wishlistItemId: number): Promise<ResponseNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromWishlist' });
+
+  serviceLog.info('Attempting to delete wishlist item');
+
   try {
     const response = await fetch(`/api/secure/wishlist/delete?wishlist_item_id=${wishlistItemId}`, {
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/cart/delete. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+  } finally {
+    await serviceLog.flush();
   }
 }

@@ -1,4 +1,4 @@
-import { DataGridOptions, InsertCartItemDb, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
+import { DataGridOptions, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import dayjs from 'dayjs';
 import {
   getInvalidFilterColumnMessage,
@@ -9,7 +9,6 @@ import {
   getInvalidSortColumnMessage,
   getInvalidSortDirectionMessage,
 } from './queryBuilder/getInvalidMessage';
-import { z } from 'zod';
 
 const commonSuccessResponse = { success: true, message: 'Success! No validation errors caught.' };
 
@@ -235,17 +234,4 @@ export function validateSearchParamsForDataGridQuery(
   }
 
   return { ...commonSuccessResponse, data: { page, sort, filter } };
-}
-
-export function validateCartItem(cartItem: InsertCartItemDb) {
-  return z
-    .object({
-      productId: z.number({ message: 'Product ID must be a positive number' }),
-      quantity: z
-        .number({ message: 'Quantity must be a positive number' })
-        .positive({ message: 'Quantity must be a positive number' }),
-      size: z.enum(['XS', 'S', 'M', 'L', 'XL'], { message: 'Invalid size. Please select a size from XS, S, M, L, XL' }),
-    })
-    .strict()
-    .parse(cartItem);
 }
