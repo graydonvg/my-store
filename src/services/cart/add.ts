@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { InsertCartItemDb, ResponseNoData } from '@/types';
+import { InsertCartItemDb, ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function addItemToCart(cartItemData: InsertCartItemDb): Promise<ResponseNoData> {
+export default async function addItemToCart(cartItemData: InsertCartItemDb): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
 
   serviceLog.info('Attempting to add item to cart');
@@ -20,9 +20,9 @@ export default async function addItemToCart(cartItemData: InsertCartItemDb): Pro
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
   } finally {
     await serviceLog.flush();
   }

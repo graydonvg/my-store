@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseNoData, UpdateOrderStatus } from '@/types';
+import { ResponseWithNoData, UpdateOrderStatus } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<ResponseNoData> {
+export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateOrderStatus' });
 
   serviceLog.info('Attempting to update order status');
@@ -20,9 +20,9 @@ export default async function updateOrderStatus(orderData: UpdateOrderStatus): P
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
   } finally {
     await serviceLog.flush();
   }

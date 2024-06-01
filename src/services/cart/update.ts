@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseNoData, UpdateCartItemQuantity, UpdateCartItemSize } from '@/types';
+import { ResponseWithNoData, UpdateCartItemQuantity, UpdateCartItemSize } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Promise<ResponseNoData> {
+export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateCartItemSize' });
 
   serviceLog.info('Attempting to update cart item size');
@@ -20,15 +20,15 @@ export async function updateCartItemSize(cartItemData: UpdateCartItemSize): Prom
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
   } finally {
     await serviceLog.flush();
   }
 }
 
-export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantity): Promise<ResponseNoData> {
+export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantity): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateCartItemQuantity' });
 
   serviceLog.info('Attempting to update cart item quantity');
@@ -44,9 +44,9 @@ export async function updateCartItemQuantity(cartItemData: UpdateCartItemQuantit
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
   } finally {
     await serviceLog.flush();
   }

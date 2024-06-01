@@ -1,54 +1,74 @@
-import { CustomResponse } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData } from '@/types';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
+import { Logger } from 'next-axiom';
 
-export async function deleteProduct(productId: number): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function deleteProduct(productId: number): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'deleteProduct' });
+
+  serviceLog.info('Attempting to delete product');
+
   try {
     const response = await fetch(`/api/secure/admin/products/delete?product_id=${productId}`, {
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/delete. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function deleteProductImageDataFromDb(productImageId: number): Promise<CustomResponse> {
+export async function deleteProductImageDataFromDb(productImageId: number): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'deleteProductImageDataFromDb' });
+
+  serviceLog.info('Attempting to delete product image data from db');
+
   try {
     const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${productImageId}`, {
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/product-image-data/delete. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function deleteUserAdmin(userIds: GridRowSelectionModel): Promise<CustomResponse> {
+export async function deleteUser(userIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'deleteUser' });
+
+  serviceLog.info('Attempting to delete user');
+
   try {
     const response = await fetch('/api/secure/admin/users/delete', {
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userIds),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/admin/delete. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

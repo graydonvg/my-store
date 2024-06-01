@@ -1,19 +1,29 @@
-import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData, UpdateUserDb, UserAuthData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserDb): Promise<CustomResponse> {
+const log = new Logger();
+
+export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'signUpNewUser' });
+
+  serviceLog.info('Attempting to sign up user');
+
   try {
     const response = await fetch('/api/auth/sign-up', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(signUpData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/auth/sign-up. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

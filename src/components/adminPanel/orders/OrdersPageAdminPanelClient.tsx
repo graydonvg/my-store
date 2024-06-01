@@ -25,7 +25,7 @@ import { formatCurrency } from '@/utils/format';
 import OrdersDataGridToolbar from './OrdersDataGridToolbar';
 import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getNumberOfFormFields } from '@/utils/checkForms';
-import { updateOrderAdmin } from '@/services/admin/update';
+import { updateOrder } from '@/services/admin/update';
 
 function getColumns(isUpdating: boolean) {
   const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
@@ -171,7 +171,7 @@ export default function OrdersPageAdminPanelClient({
     setIsUpdating(true);
     const toastId = toast.loading('Updating order...');
 
-    const { success, message } = await updateOrderAdmin(modifiedChangedValues);
+    const { success, message } = await updateOrder(modifiedChangedValues);
 
     if (success) {
       toast.update(toastId, {

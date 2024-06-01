@@ -1,55 +1,77 @@
-import { CustomResponse, UpdateOrderAdminDb, UpdateProduct, UpdateUserAdminDb } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData, UpdateOrderAdminDb, UpdateProduct, UpdateUserAdminDb } from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function updateProduct(productData: UpdateProduct): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function updateProduct(productData: UpdateProduct): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateProduct' });
+
+  serviceLog.info('Attempting to update product');
+
   try {
     const response = await fetch('/api/secure/admin/products/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function updateUserAdmin(userData: UpdateUserAdminDb): Promise<CustomResponse> {
+export async function updateUser(userData: UpdateUserAdminDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateUser' });
+
+  serviceLog.info('Attempting to update user');
+
   try {
     const response = await fetch('/api/secure/admin/users/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/admin/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function updateOrderAdmin(orderData: UpdateOrderAdminDb): Promise<CustomResponse> {
+export async function updateOrder(orderData: UpdateOrderAdminDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateOrder' });
+
+  serviceLog.info('Attempting to update order');
+
   try {
     const response = await fetch('/api/secure/admin/orders/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/admin/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

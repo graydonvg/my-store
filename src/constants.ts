@@ -95,18 +95,20 @@ export const CONSTANTS = {
   },
   USER_ERROR_MESSAGES: {
     NOT_AUTHENTICATED: 'You need to be logged in to perform this action',
+    NOT_AUTHORIZED: 'You are not authorized to perform this action',
     NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
-    GENERAL_VALIDATION_ERROR: 'Invalid data received. Please try again later.',
-    GENERAL_ERROR: 'An unexpected error occurred. Please try again later.',
+    GENERAL_VALIDATION: 'Invalid data received. Please try again later.',
+    GENERAL: 'An unexpected error occurred. Please try again later.',
   },
   LOGGER_ERROR_MESSAGES: {
-    AUTHENTICATION: 'Authentication error or user not authenticated',
+    NOT_AUTHENTICATED: 'Authentication error or user not authenticated',
+    NOT_AUTHORIZED: 'Authorization error or user not authorized',
     PARSE: 'Error parsing JSON',
     VALIDATION: 'Validation error',
-    GENERAL_ERROR: 'An unexpected error occurred',
     DATABASE_INSERT: 'Database insert error',
     DATABASE_UPDATE: 'Database update error',
     DATABASE_DELETE: 'Database delete error',
+    GENERAL: 'An unexpected error occurred',
   },
 };
 

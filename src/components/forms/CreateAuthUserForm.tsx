@@ -13,7 +13,7 @@ import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-materi
 import { CONSTANTS } from '@/constants';
 import SelectField from '../ui/inputFields/SelectField';
 import { UserRole } from '@/types';
-import { createNewUserAdmin } from '@/services/admin/add';
+import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
@@ -109,7 +109,7 @@ export default function CreateAuthUserForm() {
 
     const { email, password, firstName, lastName, contactNumber, role } = formData;
 
-    const { success, message } = await createNewUserAdmin({
+    const { success, message } = await createNewUser({
       email,
       password,
       firstName,

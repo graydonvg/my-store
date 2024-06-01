@@ -1,39 +1,62 @@
-import { AddNewUserAdminResponse, AddProduct, CreateUserAdminDb, CustomResponse, UserAuthData } from '@/types';
+import { CONSTANTS } from '@/constants';
+import {
+  AddNewUserAdminResponse,
+  AddProduct,
+  CreateUserAdminDb,
+  ResponseWithData,
+  ResponseWithNoData,
+  UserAuthData,
+} from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function addProduct(productData: AddProduct): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function addProduct(productData: AddProduct): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'addProduct' });
+
+  serviceLog.info('Attempting to add product');
+
   try {
     const response = await fetch('/api/secure/admin/products/add', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/add. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function createNewUserAdmin(
+export async function createNewUser(
   userData: UserAuthData & CreateUserAdminDb
-): Promise<CustomResponse<AddNewUserAdminResponse>> {
+): Promise<ResponseWithData<AddNewUserAdminResponse | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'createNewUser' });
+
+  serviceLog.info('Attempting to create user');
+
   try {
     const response = await fetch('/api/secure/admin/users/add', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/admin/add. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }

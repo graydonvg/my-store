@@ -1,19 +1,29 @@
-import { CustomResponse, InsertAddressDb } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { InsertAddressDb, ResponseWithNoData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function addNewAddress(addressData: InsertAddressDb): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function addNewAddress(addressData: InsertAddressDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'addNewAddress' });
+
+  serviceLog.info('Attempting to add address');
+
   try {
     const response = await fetch('/api/secure/users/address/add', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(addressData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/users/add. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { ResponseNoData, InsertCartItemDb } from '@/types';
+import { ResponseWithNoData, InsertCartItemDb } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { InsertCartItemSchema } from '@/schemas/cartItemSchema';
 
-export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseNoData>> => {
+export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
   const log = request.log;
 
@@ -18,7 +18,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     } = await supabase.auth.getUser();
 
     if (authError || !authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { authError, user: authUser });
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { authError, user: authUser });
 
       return NextResponse.json(
         {
@@ -54,7 +54,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION_ERROR,
+          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION,
         },
 
         { status: 400 }
@@ -87,12 +87,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR,
+        message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL,
       },
 
       { status: 500 }

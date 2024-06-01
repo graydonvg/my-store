@@ -1,55 +1,77 @@
-import { CustomResponse, UpdateAddressDb, UpdateUserDb, userPasswordType } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData, UpdateAddressDb, UpdateUserDb, userPasswordType } from '@/types';
+import { Logger } from 'next-axiom';
 
-export async function updateUserAddress(addressData: UpdateAddressDb): Promise<CustomResponse> {
+const log = new Logger();
+
+export async function updateUserAddress(addressData: UpdateAddressDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateCarupdateUserAddresstItemSize' });
+
+  serviceLog.info('Attempting to update address');
+
   try {
     const response = await fetch('/api/secure/users/address/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(addressData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/users/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function updateUserPersonalInformation(userData: UpdateUserDb): Promise<CustomResponse> {
+export async function updateUserPersonalInformation(userData: UpdateUserDb): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateUserPersonalInformation' });
+
+  serviceLog.info('Attempting to update user personal information');
+
   try {
     const response = await fetch('/api/secure/users/personal/update', {
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/users/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function updateUserPassword(passwordData: userPasswordType): Promise<CustomResponse> {
+export async function updateUserPassword(passwordData: userPasswordType): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'updateUserPassword' });
+
+  serviceLog.info('Attempting to update user password');
+
   try {
     const response = await fetch('/api/secure/users/password/update', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(passwordData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/users/update. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

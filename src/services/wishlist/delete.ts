@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseNoData } from '@/types';
+import { ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteItemFromWishlist(wishlistItemId: number): Promise<ResponseNoData> {
+export async function deleteItemFromWishlist(wishlistItemId: number): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromWishlist' });
 
   serviceLog.info('Attempting to delete wishlist item');
@@ -18,9 +18,9 @@ export async function deleteItemFromWishlist(wishlistItemId: number): Promise<Re
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
   } finally {
     await serviceLog.flush();
   }

@@ -1,19 +1,29 @@
-import { CustomResponse, UserAuthData } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData, UserAuthData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export default async function signInWithPassword(signInData: UserAuthData): Promise<CustomResponse> {
+const log = new Logger();
+
+export default async function signInWithPassword(signInData: UserAuthData): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
+
+  serviceLog.info('Attempting to add item to cart');
+
   try {
     const response = await fetch('/api/auth/sign-in', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(signInData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/auth/sign-in. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

@@ -1,15 +1,26 @@
-import { CustomResponse } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { ResponseWithNoData } from '@/types';
+import { Logger } from 'next-axiom';
 
-export default async function signOut(): Promise<CustomResponse> {
+const log = new Logger();
+
+export default async function signOut(): Promise<ResponseWithNoData> {
+  const serviceLog = log.with({ scope: 'service', function: 'signOut' });
+
+  serviceLog.info('Attempting to sign out user');
   try {
     const response = await fetch('/api/secure/auth/sign-out', {
       method: 'GET',
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/auth/sign-out. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+  } finally {
+    await serviceLog.flush();
   }
 }

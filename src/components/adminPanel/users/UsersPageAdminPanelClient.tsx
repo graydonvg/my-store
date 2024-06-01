@@ -27,8 +27,8 @@ import { getNumberOfFormFields } from '@/utils/checkForms';
 import dayjs from 'dayjs';
 import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';
-import { updateUserAdmin } from '@/services/admin/update';
-import { deleteUserAdmin } from '@/services/admin/delete';
+import { updateUser } from '@/services/admin/update';
+import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
@@ -193,7 +193,7 @@ export default function UsersPageAdminPanelClient({
     setIsUpdating(true);
     const toastId = toast.loading('Updating user...');
 
-    const { success, message } = await updateUserAdmin({ ...modifiedChangedValues });
+    const { success, message } = await updateUser({ ...modifiedChangedValues });
 
     if (success) {
       toast.update(toastId, {
@@ -237,7 +237,7 @@ export default function UsersPageAdminPanelClient({
   async function handleDeleteUsers() {
     setIsDeleting(true);
 
-    const { success, message } = await deleteUserAdmin(selectedUserIds);
+    const { success, message } = await deleteUser(selectedUserIds);
 
     if (success) {
       toast.success(message);

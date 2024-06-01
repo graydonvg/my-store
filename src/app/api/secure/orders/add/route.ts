@@ -19,7 +19,7 @@ export const POST = withAxiom(
       } = await supabase.auth.getUser();
 
       if (authError || !authUser) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { authError, user: authUser });
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { authError, user: authUser });
 
         return NextResponse.json(
           {
@@ -58,7 +58,7 @@ export const POST = withAxiom(
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION_ERROR,
+            message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION,
             data: null,
           },
 
@@ -159,12 +159,12 @@ export const POST = withAxiom(
         }
       );
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL_ERROR, { error });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_ERROR,
+          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL,
           data: null,
         },
 
