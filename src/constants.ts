@@ -98,7 +98,7 @@ export const CONSTANTS = {
     NOT_AUTHORIZED: 'You are not authorized to perform this action',
     NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
     GENERAL_VALIDATION: 'Invalid data received. Please try again later.',
-    GENERAL: 'An unexpected error occurred. Please try again later.',
+    UNEXPECTED: 'An unexpected error occurred. Please try again later.',
   },
   LOGGER_ERROR_MESSAGES: {
     NOT_AUTHENTICATED: 'Authentication error or user not authenticated',
@@ -108,7 +108,7 @@ export const CONSTANTS = {
     DATABASE_INSERT: 'Database insert error',
     DATABASE_UPDATE: 'Database update error',
     DATABASE_DELETE: 'Database delete error',
-    GENERAL: 'An unexpected error occurred',
+    UNEXPECTED: 'An unexpected error occurred',
   },
 };
 

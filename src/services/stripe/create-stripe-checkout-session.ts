@@ -1,21 +1,31 @@
+import { CONSTANTS } from '@/constants';
 import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export async function createStripeCheckoutSession(
   checkoutData: StripeCheckoutData
 ): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
+  const serviceLog = log.with({ scope: 'service', function: 'createStripeCheckoutSession' });
+
+  serviceLog.info('Attempting to create stripe checkout session');
+
   try {
     const response = await fetch('/api/secure/stripe', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(checkoutData),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/call-stripe-session. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+  } finally {
+    await serviceLog.flush();
   }
 }

@@ -42,12 +42,12 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
               upper: {
                 text: '#fff',
                 background: '#2e3131',
-                divider: 'rgba(0, 0, 0, 1)',
               },
               lower: {
                 text: grey[600],
                 background: grey[200],
               },
+              divider: 'rgba(0, 0, 0, 0.40)',
             },
             textField: {
               label: 'rgba(0, 0, 0, 0.6)',
@@ -95,12 +95,12 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
               upper: {
                 text: '#fff',
                 background: grey[900],
-                divider: grey[900],
               },
               lower: {
                 text: grey[300],
                 background: lighten(grey[900], 0.08),
               },
+              divider: 'rgba(255, 255, 255, 0.12)',
             },
             textField: {
               label: 'rgba(255, 255, 255, 0.7)',

@@ -36,8 +36,8 @@ export const POST = withAxiom(
 
       try {
         orderData = await request.json();
-      } catch (parseError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error: parseError });
+      } catch (error) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
 
         return NextResponse.json(
           {
@@ -53,7 +53,7 @@ export const POST = withAxiom(
       try {
         InsertOrderSchema.parse(orderData);
       } catch (error) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: error, orderData });
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, orderData });
 
         return NextResponse.json(
           {
@@ -159,12 +159,12 @@ export const POST = withAxiom(
         }
       );
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
           data: null,
         },
 

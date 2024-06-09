@@ -34,8 +34,8 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
 
     try {
       cartItem = await request.json();
-    } catch (parseError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error: parseError });
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
 
       return NextResponse.json(
         {
@@ -49,7 +49,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     try {
       InsertCartItemSchema.parse(cartItem);
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: error, cartItem });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, cartItem });
 
       return NextResponse.json(
         {
@@ -87,12 +87,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
 
       { status: 500 }

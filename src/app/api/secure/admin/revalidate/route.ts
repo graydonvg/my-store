@@ -54,12 +54,12 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     return NextResponse.json({ success: true, message: 'Revalidation successful' });
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
 
       { status: 500 }

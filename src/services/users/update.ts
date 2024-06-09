@@ -5,7 +5,7 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function updateUserAddress(addressData: UpdateAddressDb): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateCarupdateUserAddresstItemSize' });
+  const serviceLog = log.with({ scope: 'service', function: 'updateUserAddress' });
 
   serviceLog.info('Attempting to update address');
 
@@ -20,9 +20,9 @@ export async function updateUserAddress(addressData: UpdateAddressDb): Promise<R
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }
@@ -44,9 +44,9 @@ export async function updateUserPersonalInformation(userData: UpdateUserDb): Pro
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }
@@ -68,9 +68,9 @@ export async function updateUserPassword(passwordData: userPasswordType): Promis
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }

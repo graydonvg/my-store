@@ -47,6 +47,9 @@ export default function LowerNavbarOption({ path, label, showDividerRight, under
           orientation="vertical"
           variant="middle"
           flexItem
+          sx={{
+            borderColor: (theme) => theme.palette.custom.navbar.divider,
+          }}
         />
       ) : null}
     </ListItem>

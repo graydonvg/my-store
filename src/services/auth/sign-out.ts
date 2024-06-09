@@ -8,6 +8,7 @@ export default async function signOut(): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'signOut' });
 
   serviceLog.info('Attempting to sign out user');
+
   try {
     const response = await fetch('/api/secure/auth/sign-out', {
       method: 'GET',
@@ -17,9 +18,9 @@ export default async function signOut(): Promise<ResponseWithNoData> {
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }

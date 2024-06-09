@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function signInWithPassword(signInData: UserAuthData): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
+  const serviceLog = log.with({ scope: 'service', function: 'signInWithPassword' });
 
-  serviceLog.info('Attempting to add item to cart');
+  serviceLog.info('Attempting to sign in user');
 
   try {
     const response = await fetch('/api/auth/sign-in', {
@@ -20,9 +20,9 @@ export default async function signInWithPassword(signInData: UserAuthData): Prom
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.GENERAL, { error });
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }
