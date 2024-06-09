@@ -5,12 +5,22 @@ import { BestSellersType } from '@/types';
 import ProductCard from '@/components/product/productCard/ProductCard';
 import { CONSTANTS } from '@/constants';
 import CardTitle from './CardTitle';
-import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 
 function getPositionAndOrdinal(bestSellers: BestSellersType, index: number): [number, string] {
-  const quantities = bestSellers.slice(0, 3).map((product) => product.totalQuantitySold);
-  const position = quantities.indexOf(bestSellers[index].totalQuantitySold);
-  const ordinal = position === 0 ? 'st' : position === 1 ? 'nd' : position === 2 ? 'rd' : '';
+  const quantities = bestSellers.map((product) => product.totalQuantitySold);
+  // Position is determined by index. Create a set to remove duplicates in case of a tie.
+  const quantitiesSet = new Set(quantities);
+  const quantitiesArray = Array.from(quantitiesSet);
+  const position = quantitiesArray.indexOf(bestSellers[index].totalQuantitySold);
+  let ordinal = '';
+
+  if (position === 0) {
+    ordinal = 'st';
+  } else if (position === 1) {
+    ordinal = 'nd';
+  } else if (position === 2) {
+    ordinal = 'rd';
+  }
 
   return [position + 1, ordinal];
 }
@@ -41,13 +51,18 @@ type Props = {
 
 export default function BestSellers({ bestSellers }: Props) {
   return (
-    <>
+    <Box
+      sx={{
+        height: 1,
+        position: 'relative',
+      }}>
       <CardTitle>Best sellers</CardTitle>
-      <Grid
-        container
-        spacing={2}>
-        {bestSellers ? (
-          bestSellers.map((product, index) => (
+
+      {bestSellers && bestSellers.length > 0 ? (
+        <Grid
+          container
+          spacing={2}>
+          {bestSellers.map((product, index) => (
             <Grid
               item
               key={product.productId}
@@ -87,13 +102,13 @@ export default function BestSellers({ bestSellers }: Props) {
                 />
               </Paper>
             </Grid>
-          ))
-        ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, paddingLeft: 2 }}>
-            <CustomNoRowsOverlay text="No data received" />
-          </Box>
-        )}
-      </Grid>
-    </>
+          ))}
+        </Grid>
+      ) : (
+        <Box sx={{ position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }}>
+          <Typography sx={{ fontSize: { xs: 24, sm: 32 } }}>No data</Typography>
+        </Box>
+      )}
+    </Box>
   );
 }

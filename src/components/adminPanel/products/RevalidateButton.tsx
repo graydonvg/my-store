@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import revalidateAllData from '@/services/admin/revalidateAllData';
 import { Refresh } from '@mui/icons-material';
 import OutlinedButton from '../../ui/buttons/simple/OutlinedButton';
+import revalidateAllData from '@/services/admin/revalidate-all-data';
 
 export default function RevalidateButton() {
   const [isLoading, setIsLoading] = useState(false);

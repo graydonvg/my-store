@@ -40,7 +40,7 @@ export default async function AdminPanelDashboard() {
           <TotalSales
             title="Daily Sales"
             amount={orderTotalsThisMonth ? calculateDailySales(orderTotalsThisMonth) : null}
-            label={dayjs().format('DD MMM')}
+            date={dayjs().format('DD MMM')}
           />
         </Paper>
       </Grid>
@@ -62,7 +62,7 @@ export default async function AdminPanelDashboard() {
           <TotalSales
             title="Weekly Sales"
             amount={orderTotalsThisMonth ? calculateWeeklySales(orderTotalsThisMonth) : null}
-            label={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
+            date={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
         </Paper>
       </Grid>
@@ -85,7 +85,7 @@ export default async function AdminPanelDashboard() {
           <TotalSales
             title="Monthly Sales"
             amount={orderTotalsThisMonth ? calculateMonthlySales(orderTotalsThisMonth) : null}
-            label={dayjs().format('MMM')}
+            date={dayjs().format('MMM')}
           />
         </Paper>
       </Grid>
@@ -114,7 +114,8 @@ export default async function AdminPanelDashboard() {
           sx={{
             padding: 2,
             borderRadius: CONSTANTS.BORDER_RADIUS,
-            zIndex: -2,
+            minHeight: { xs: 200, sm: 300 },
+            height: 1,
           }}>
           <BestSellers bestSellers={sortedBestSellers} />
         </Paper>

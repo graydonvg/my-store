@@ -40,7 +40,7 @@ const OrderDetailsSchema = z
   .object({
     cartTotal: z.number().positive(),
     deliveryFee: z.number().nonnegative(),
-    discountTotal: z.number().positive(),
+    discountTotal: z.number().nonnegative(),
     orderTotal: z.number().positive(),
     orderStatus: OrderStatusSchema,
   })

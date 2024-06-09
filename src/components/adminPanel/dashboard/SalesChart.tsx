@@ -4,8 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import CardTitle from './CardTitle';
-import { Box } from '@mui/material';
-import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
+import { Box, Typography } from '@mui/material';
 import { calculateCumulativeSales } from '@/utils/calculate';
 import { MonthlyOrderData } from '@/types';
 
@@ -20,6 +19,7 @@ export default function SalesChart({ orderData }: Props) {
   return (
     <>
       <CardTitle>This month</CardTitle>
+
       <Box sx={{ width: 1, flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
         {cumulativeSales ? (
           <LineChart
@@ -72,18 +72,8 @@ export default function SalesChart({ orderData }: Props) {
             }}
           />
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1,
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}>
-            <CustomNoRowsOverlay text="No data received" />
+          <Box sx={{ position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }}>
+            <Typography sx={{ fontSize: { xs: 24, sm: 32 } }}>No data</Typography>
           </Box>
         )}
       </Box>
