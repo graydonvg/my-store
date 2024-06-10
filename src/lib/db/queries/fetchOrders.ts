@@ -31,7 +31,7 @@ export async function fetchOrdersForAdmin(
   let ordersQuery = supabase
     .from('orders')
     .select(
-      'createdAt, orderId, orderTotal, orderStatus, ...users(firstName, lastName, contactNumber), ...shippingDetails(province, city, recipientFirstName, recipientLastName, recipientContactNumber)',
+      'createdAt, orderId, orderTotal, orderStatus, ...users!inner(firstName, lastName, contactNumber), ...shippingDetails!inner(complexOrBuilding, streetAddress, suburb, province, city, postalCode, recipientFirstName, recipientLastName, recipientContactNumber)',
       {
         count: 'exact',
       }

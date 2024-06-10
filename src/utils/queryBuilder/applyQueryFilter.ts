@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-import { QueryFilterDataGrid, QueryFilterBuilder } from '@/types';
-import { validateEmail } from '../validate';
+import { QueryFilterDataGrid, QueryFilterBuilder, DataGridOptions } from '@/types';
 
 type FilterFunctionParams = {
   query: QueryFilterBuilder;
@@ -59,11 +58,7 @@ function applyStringFilter({ query, filter }: FilterFunctionParams) {
 }
 
 function applyEmailFilter({ query, filter }: FilterFunctionParams) {
-  const isValidEmail = validateEmail(`${filter.value}`);
-
-  if (!isValidEmail) {
-    return query;
-  } else if (filter.operator === 'contains') {
+  if (filter.operator === 'contains') {
     return query.ilike(filter.column!, `%${filter.value}%`);
   } else if (filter.operator === 'equals') {
     return query.eq(filter.column!, filter.value);
@@ -76,20 +71,18 @@ function applyEmailFilter({ query, filter }: FilterFunctionParams) {
   }
 }
 
-function applyIsNotValueFilter({ query, filter }: FilterFunctionParams) {
-  let column = 'userRoles.role';
-
+function applyIsOrNotValueFilter({ query, filter }: FilterFunctionParams) {
   if (filter.operator === 'is') {
     if (filter.value === 'none') {
-      return query.is(column, null);
+      return query.is(filter.column!, null);
     } else {
-      return query.eq(column, filter.value);
+      return query.eq(filter.column!, filter.value);
     }
   } else if (filter.operator === 'not') {
     if (filter.value === 'none') {
-      return query.not(column, 'is', null);
+      return query.not(filter.column!, 'is', null);
     } else {
-      return query.neq(column, filter.value);
+      return query.neq(filter.column!, filter.value);
     }
   } else {
     return query;
@@ -114,9 +107,8 @@ function applyNumberFilter({ query, filter }: FilterFunctionParams) {
   }
 }
 
-export function applyQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+export function applyOrdersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
   switch (filter.column) {
-    case 'userId':
     case 'orderId':
       return applyIdFilter({ query, filter });
     case 'createdAt':
@@ -124,19 +116,66 @@ export function applyQueryFilter(query: QueryFilterBuilder, filter: QueryFilterD
     case 'firstName':
     case 'lastName':
     case 'contactNumber':
+      return applyStringFilter({
+        query,
+        filter: { column: `users.${filter.column}`, operator: filter.operator, value: filter.value },
+      });
     case 'recipientFirstName':
     case 'recipientLastName':
     case 'recipientContactNumber':
+    case 'complexOrBuilding':
+    case 'streetAddress':
+    case 'suburb':
     case 'province':
     case 'city':
+      return applyStringFilter({
+        query,
+        filter: { column: `shippingDetails.${filter.column}`, operator: filter.operator, value: filter.value },
+      });
+    case 'email':
+      return applyEmailFilter({ query, filter });
+    case 'orderStatus':
+      return applyIsOrNotValueFilter({ query, filter });
+    case 'orderTotal':
+      return applyNumberFilter({ query, filter });
+    case 'postalCode':
+      return applyNumberFilter({
+        query,
+        filter: { column: `shippingDetails.${filter.column}`, operator: filter.operator, value: filter.value },
+      });
+    default:
+      return query;
+  }
+}
+
+export function applyUsersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+  switch (filter.column) {
+    case 'userId':
+      return applyIdFilter({ query, filter });
+    case 'createdAt':
+      return applyDateFilter({ query, filter });
+    case 'firstName':
+    case 'lastName':
+    case 'contactNumber':
       return applyStringFilter({ query, filter });
     case 'email':
       return applyEmailFilter({ query, filter });
     case 'role':
-    case 'orderStatus':
-      return applyIsNotValueFilter({ query, filter });
-    case 'orderTotal':
-      return applyNumberFilter({ query, filter });
+      return applyIsOrNotValueFilter({
+        query,
+        filter: { column: `userRoles.${filter.column}`, operator: filter.operator, value: filter.value },
+      });
+    default:
+      return query;
+  }
+}
+
+export function applyQueryFilter(dataGrid: DataGridOptions, query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+  switch (dataGrid) {
+    case 'orders':
+      return applyOrdersQueryFilter(query, filter);
+    case 'users':
+      return applyUsersQueryFilter(query, filter);
     default:
       return query;
   }

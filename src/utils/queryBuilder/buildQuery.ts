@@ -17,7 +17,7 @@ export default function buildQuery(
   filter: QueryFilterDataGrid
 ): QueryFilterBuilder {
   if (filter.column && filter.operator) {
-    query = applyQueryFilter(query, filter);
+    query = applyQueryFilter(dataGrid, query, filter);
   }
 
   query = applyQuerySort(dataGrid, query, sort);

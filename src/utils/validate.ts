@@ -56,8 +56,12 @@ function validateSortColumn(dataGrid: DataGridOptions, column: string) {
       'recipientFirstName',
       'recipientLastName',
       'recipientContactNumber',
+      'complexOrBuilding',
+      'streetAddress',
+      'suburb',
       'province',
       'city',
+      'postalCode',
       'orderStatus',
       'orderTotal',
     ],
@@ -153,7 +157,7 @@ function validateIsNotValueFilter(dataGrid: DataGridOptions, filter: QueryFilter
   return commonSuccessResponse;
 }
 
-function validatePositiveNumberFilter(filter: QueryFilterDataGrid) {
+function validateNonnegativeNumberFilter(filter: QueryFilterDataGrid) {
   const isValidOperator = ['=', '!=', '>', '>=', '<', '<='].includes(`${filter.operator}`);
   const value = Number(filter.value);
   const isValidValue = !Number.isNaN(value) && value >= 0;
@@ -210,6 +214,9 @@ export function validateSearchParamsForDataGridQuery(
       case 'recipientFirstName':
       case 'recipientLastName':
       case 'recipientContactNumber':
+      case 'complexOrBuilding':
+      case 'streetAddress':
+      case 'suburb':
       case 'province':
       case 'city':
         ({ success, message } = validateStringFilter(filter));
@@ -222,7 +229,8 @@ export function validateSearchParamsForDataGridQuery(
         ({ success, message } = validateIsNotValueFilter(dataGrid, filter));
         break;
       case 'orderTotal':
-        ({ success, message } = validatePositiveNumberFilter(filter));
+      case 'postalCode':
+        ({ success, message } = validateNonnegativeNumberFilter(filter));
         break;
       default:
         return { success: false, message: getInvalidFilterColumnMessage(filter.column), data: null };

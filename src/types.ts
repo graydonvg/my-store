@@ -335,8 +335,12 @@ export type OrdersDataGridDataAdmin = {
   recipientFirstName: string;
   recipientLastName: string;
   recipientContactNumber: string;
+  complexOrBuilding: string;
+  streetAddress: string;
+  suburb: string;
   province: string;
   city: string;
+  postalCode: number;
   orderStatus: OrderStatus;
   orderTotal: number;
 };
@@ -346,8 +350,12 @@ export type UpdateOrderAdminDb = {
   recipientFirstName?: string;
   recipientLastName?: string;
   recipientContactNumber?: string;
+  complexOrBuilding?: string;
+  streetAddress?: string;
+  suburb?: string;
   province?: string;
   city?: string;
+  postalCode?: number;
   orderStatus?: OrderStatus;
 };
 

@@ -16,16 +16,8 @@ async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResp
     const callerRole = await getUserRoleFromSession(supabase);
     const orderData: UpdateOrderAdminDb = await request.json();
 
-    const { orderId, orderStatus, recipientFirstName, recipientLastName, recipientContactNumber, city, province } =
-      orderData;
+    const { orderId, orderStatus, ...shippingDetails } = orderData;
     const orderDetails = { orderStatus };
-    const shippingDetails = {
-      recipientFirstName,
-      recipientLastName,
-      recipientContactNumber,
-      city,
-      province,
-    };
 
     const numberOfOrderDetailsFields = getNumberOfFormFields(orderDetails);
     const numberOfShippingDetailsFields = getNumberOfFormFields(shippingDetails);

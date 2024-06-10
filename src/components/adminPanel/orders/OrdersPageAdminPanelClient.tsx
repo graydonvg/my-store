@@ -16,6 +16,7 @@ import {
   GridColDef,
   GridValidRowModel,
   getGridDateOperators,
+  getGridNumericOperators,
   getGridSingleSelectOperators,
   getGridStringOperators,
 } from '@mui/x-data-grid';
@@ -88,6 +89,33 @@ function getColumns(isUpdating: boolean) {
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
+      field: 'complexOrBuilding',
+      headerName: 'Complex / Building',
+      width: 160,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'streetAddress',
+      headerName: 'Street Address',
+      width: 160,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'suburb',
+      headerName: 'Suburb',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
       field: 'province',
       headerName: 'Province',
       width: 150,
@@ -102,6 +130,15 @@ function getColumns(isUpdating: boolean) {
       width: 150,
       editable: isUpdating ? false : true,
       filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'postalCode',
+      headerName: 'Postal Code',
+      width: 130,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridNumericOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
     },
@@ -128,7 +165,9 @@ function getColumns(isUpdating: boolean) {
       headerName: 'Order total',
       width: 120,
       valueFormatter: (value) => formatCurrency(value),
-      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      filterOperators: getGridNumericOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
     },
   ];
   return columns;

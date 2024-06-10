@@ -43,8 +43,12 @@ function applyOrdersQuerySort(query: QueryFilterBuilder, sort: QuerySortDataGrid
     case 'recipientFirstName':
     case 'recipientLastName':
     case 'recipientContactNumber':
+    case 'complexOrBuilding':
+    case 'streetAddress':
+    case 'suburb':
     case 'province':
     case 'city':
+    case 'postalCode':
       return applySort({ query, sort: { column: `shippingDetails(${sort.column})`, direction: sort.direction } });
     default:
       return query;
