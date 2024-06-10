@@ -5,8 +5,8 @@ import { UpdateProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { getEmptyFormFields } from '@/utils/checkForms';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Box } from '@mui/material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
@@ -26,8 +26,8 @@ export default function AdminPanelEditProductPage() {
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
   const dispatch = useAppDispatch();
-  const emptyFormFields = getEmptyFormFields(productFormData);
-  const numberOfFormFields = getNumberOfFormFields(productFormData);
+  const emptyFormFields = getEmptyObjectKeys(productFormData);
+  const numberOfFormFields = getObjectKeyCount(productFormData);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {

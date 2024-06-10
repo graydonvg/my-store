@@ -1,29 +1,29 @@
-export function getNumberOfFormFields(formData: {}) {
-  const formFieldsArray = [];
+export function getObjectKeyCount(obj: Record<string, any>) {
+  const objectKeysArray = [];
 
-  for (const key in formData) {
-    formFieldsArray.push(key);
+  for (const key in obj) {
+    objectKeysArray.push(key);
   }
 
-  return formFieldsArray.length;
+  return objectKeysArray.length;
 }
 
-export function getEmptyFormFields(formData: {}) {
-  const unfilledFields: string[] = [];
+export function getEmptyObjectKeys(obj: Record<string, any>) {
+  const unfilledKeys: string[] = [];
 
-  for (const key in formData) {
-    const fieldValue = formData[key as keyof typeof formData] as {};
+  for (const key in obj) {
+    const value = obj[key as keyof typeof obj] as {};
 
     if (
-      fieldValue === undefined ||
-      (typeof fieldValue === 'string' && fieldValue.trim() === '') ||
-      (Array.isArray(fieldValue) && fieldValue.length === 0) ||
-      fieldValue === '' ||
-      fieldValue === null
+      value === undefined ||
+      (typeof value === 'string' && value.trim() === '') ||
+      (Array.isArray(value) && value.length === 0) ||
+      value === '' ||
+      value === null
     ) {
-      unfilledFields.push(key);
+      unfilledKeys.push(key);
     }
   }
 
-  return unfilledFields;
+  return unfilledKeys;
 }

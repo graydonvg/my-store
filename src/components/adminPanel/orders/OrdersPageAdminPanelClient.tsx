@@ -25,9 +25,10 @@ import DatePickerForDataGridFilter from '../../dataGrid/DatePickerForDataGridFil
 import { formatCurrency } from '@/utils/format';
 import OrdersDataGridToolbar from './OrdersDataGridToolbar';
 import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import { updateOrder } from '@/services/admin/update';
 import { ordersDataGridNewRowSchema } from '@/schemas/ordersDataGridNewRowSchema';
+import { trimWhitespaceFromObjectValues } from '@/utils/transform';
 
 function getColumns(isUpdating: boolean) {
   const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
@@ -216,13 +217,14 @@ export default function OrdersPageAdminPanelClient({
     }
 
     const changedValue = getChangedDataGridValue(newRow, oldRow);
-    const numberOfFieldsToUpdate = getNumberOfFormFields(changedValue);
+    const trimmedChangedValue = trimWhitespaceFromObjectValues(changedValue);
+    const numberOfFieldsToUpdate = getObjectKeyCount(trimmedChangedValue);
 
     if (numberOfFieldsToUpdate === 0) {
       return oldRow;
     }
 
-    const changedValueWithOrderId: UpdateOrderAdminDb = { ...changedValue, orderId: oldRow.orderId };
+    const changedValueWithOrderId: UpdateOrderAdminDb = { ...trimmedChangedValue, orderId: oldRow.orderId };
 
     setIsUpdating(true);
     const toastId = toast.loading('Updating order...');

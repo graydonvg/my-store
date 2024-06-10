@@ -23,7 +23,7 @@ import UsersDataGridToolbar from './UsersDataGridToolbar';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import dayjs from 'dayjs';
 import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';
@@ -31,6 +31,7 @@ import { updateUser } from '@/services/admin/update';
 import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { usersDataGridNewRowSchema } from '@/schemas/usersDataGridNewRowSchema';
+import { trimWhitespaceFromObjectValues } from '@/utils/transform';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
   const columns: GridColDef<UsersDataGridDataAdmin>[] = [
@@ -167,7 +168,8 @@ export default function UsersPageAdminPanelClient({
     const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
 
     const changedValue = getChangedDataGridValue(modifiedNewRow, modifiedOldRow);
-    const numberOfFieldsToUpdate = getNumberOfFormFields(changedValue);
+    const trimmedChangedValue = trimWhitespaceFromObjectValues(changedValue);
+    const numberOfFieldsToUpdate = getObjectKeyCount(trimmedChangedValue);
 
     if (numberOfFieldsToUpdate === 0) {
       return oldRow;
@@ -196,7 +198,7 @@ export default function UsersPageAdminPanelClient({
     const modifiedChangedValue: UpdateUserAdminDb = {
       userId: oldRow.userId,
       currentRole: modifiedOldRow.role,
-      dataToUpdate: changedValue,
+      dataToUpdate: trimmedChangedValue,
     };
 
     setIsUpdating(true);

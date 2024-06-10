@@ -3,8 +3,8 @@ import { FormEvent, ReactNode, useState } from 'react';
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DeleteForever } from '@mui/icons-material';
-import { getEmptyFormFields } from '@/utils/checkForms';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import ProductFormFieldsAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormFieldsAdminPanel';
 import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
@@ -30,8 +30,8 @@ export default function ProductFormAdminPanel({
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const dispatch = useAppDispatch();
   const isOnSale = productFormData.isOnSale === 'Yes';
-  const emptyFormFields = getEmptyFormFields(productFormData);
-  const numberOfFormFields = getNumberOfFormFields(productFormData);
+  const emptyFormFields = getEmptyObjectKeys(productFormData);
+  const numberOfFormFields = getObjectKeyCount(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   function clearAllFormFields() {

@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
 import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyFormFields } from '@/utils/checkForms';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 
 export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
   const supabase = await createSupabaseServerClient();
@@ -16,9 +16,9 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
 
     const userData: UserAuthData & UpdateUserDb = await request.json();
     const { email, password, ...userDataToUpdate } = userData;
-    const emptyFiledsArray = getEmptyFormFields(userDataToUpdate);
-    const numberOfFromFields = getNumberOfFormFields(userDataToUpdate);
-    const hasDataToUpdate = emptyFiledsArray.length !== numberOfFromFields;
+    const emptyFormFields = getEmptyObjectKeys(userDataToUpdate);
+    const numberOfFromFields = getObjectKeyCount(userDataToUpdate);
+    const hasDataToUpdate = emptyFormFields.length !== numberOfFromFields;
 
     if (authUser)
       return NextResponse.json({

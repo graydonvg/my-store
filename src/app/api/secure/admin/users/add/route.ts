@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { AddNewUserAdminResponse, CustomResponse, UserAuthData, CreateUserAdminDb } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyFormFields } from '@/utils/checkForms';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
@@ -24,9 +24,9 @@ async function handlePost(request: AxiomRequest): Promise<NextResponse<CustomRes
     const { email, password, ...userDataToUpdate } = userData;
     const { role: roleToAssign, ...restOfDataToUpdate } = userDataToUpdate;
 
-    const emptyFieldsArray = getEmptyFormFields(restOfDataToUpdate);
-    const numberOfFormFields = getNumberOfFormFields(restOfDataToUpdate);
-    const hasDataToUpdate = emptyFieldsArray.length !== numberOfFormFields;
+    const emptyFormFields = getEmptyObjectKeys(restOfDataToUpdate);
+    const numberOfFormFields = getObjectKeyCount(restOfDataToUpdate);
+    const hasDataToUpdate = emptyFormFields.length !== numberOfFormFields;
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
 
     const failedMessage = 'Failed to create user';

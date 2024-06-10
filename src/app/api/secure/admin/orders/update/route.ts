@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { CustomResponse, UpdateOrderAdminDb } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
 async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
@@ -19,8 +19,8 @@ async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResp
     const { orderId, orderStatus, ...shippingDetails } = orderData;
     const orderDetails = { orderStatus };
 
-    const numberOfOrderDetailsFields = getNumberOfFormFields(orderDetails);
-    const numberOfShippingDetailsFields = getNumberOfFormFields(shippingDetails);
+    const numberOfOrderDetailsFields = getObjectKeyCount(orderDetails);
+    const numberOfShippingDetailsFields = getObjectKeyCount(shippingDetails);
     const hasOrderDataToUpdate = numberOfOrderDetailsFields > 0;
     const hasShippingDataToUpdate = numberOfShippingDetailsFields > 0;
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(callerRole);

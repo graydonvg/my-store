@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { addProduct } from '@/services/admin/add';
-import { getEmptyFormFields } from '@/utils/checkForms';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
@@ -27,8 +27,8 @@ export default function AdminPanelAddNewProductPage() {
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
-  const emptyFormFields = getEmptyFormFields(productFormData);
-  const numberOfFormFields = getNumberOfFormFields(productFormData);
+  const emptyFormFields = getEmptyObjectKeys(productFormData);
+  const numberOfFormFields = getObjectKeyCount(productFormData);
 
   useEffect(() => {
     if (productFormData.productId) {

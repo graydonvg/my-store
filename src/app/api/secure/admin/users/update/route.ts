@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { UpdateUserAdminDb, CustomResponse } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getNumberOfFormFields } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkForms';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 
 async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResponse>> {
@@ -19,7 +19,7 @@ async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResp
     const { userId: userToUpdateId, currentRole: userToUpdateCurrentRole, dataToUpdate } = userToUpdateData;
     const { role: newRole, ...personalDataToUpdate } = dataToUpdate;
 
-    const numberOfFormFields = getNumberOfFormFields(personalDataToUpdate);
+    const numberOfFormFields = getObjectKeyCount(personalDataToUpdate);
     const hasPersonalDataToUpdate = numberOfFormFields > 0;
     const {
       isAdmin: callerIsAdmin,
