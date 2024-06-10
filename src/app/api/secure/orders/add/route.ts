@@ -3,7 +3,7 @@ import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { InsertOrderSchema } from '@/schemas/orderSchema';
+import { insertOrderSchema } from '@/schemas/insertOrderSchema';
 
 export const POST = withAxiom(
   async (request: AxiomRequest): Promise<NextResponse<CustomResponse<AddOrderResponse | null>>> => {
@@ -51,14 +51,14 @@ export const POST = withAxiom(
       }
 
       try {
-        InsertOrderSchema.parse(orderData);
+        insertOrderSchema.parse(orderData);
       } catch (error) {
         log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, orderData });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION,
+            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
             data: null,
           },
 

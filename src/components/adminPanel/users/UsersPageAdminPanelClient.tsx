@@ -25,11 +25,12 @@ import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { getNumberOfFormFields } from '@/utils/checkForms';
 import dayjs from 'dayjs';
-import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
+import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';
 import { updateUser } from '@/services/admin/update';
 import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { usersDataGridNewRowSchema } from '@/schemas/usersDataGridNewRowSchema';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
   const columns: GridColDef<UsersDataGridDataAdmin>[] = [
@@ -148,17 +149,25 @@ export default function UsersPageAdminPanelClient({
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
+    const validation = usersDataGridNewRowSchema.safeParse(newRow);
+
+    if (!validation.success) {
+      validation.error.issues.forEach((issue) => toast.error(issue.message));
+
+      return oldRow;
+    }
+
     // Changing null to 'none' for role.
     // Users without a role, initially have role: null.
     // Data grid set to display null as 'none'.
     // Data grid select menu value cannot be null so using 'none'.
     // Value received from select menu is 'none'.
-    // If role === null, adminUpdateUser will return no data received.
+    // If role === null, update function will return no data received.
     const modifiedOldRow = oldRow.role === null ? { ...oldRow, role: 'none' } : oldRow;
     const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
 
-    const dataToUpdate = getChangedDataGridValues(modifiedNewRow, modifiedOldRow);
-    const numberOfFieldsToUpdate = getNumberOfFormFields(dataToUpdate);
+    const changedValue = getChangedDataGridValue(modifiedNewRow, modifiedOldRow);
+    const numberOfFieldsToUpdate = getNumberOfFormFields(changedValue);
 
     if (numberOfFieldsToUpdate === 0) {
       return oldRow;
@@ -179,21 +188,21 @@ export default function UsersPageAdminPanelClient({
       (modifiedNewRow.role === 'manager' && !userRole.isOwner) ||
       (modifiedNewRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
     ) {
-      toast.error(`Not authorized to assign role ${modifiedNewRow.role}`);
+      toast.error(`Not authorized to assign role - ${modifiedNewRow.role}`);
 
       return oldRow;
     }
 
-    const modifiedChangedValues: UpdateUserAdminDb = {
+    const modifiedChangedValue: UpdateUserAdminDb = {
       userId: oldRow.userId,
       currentRole: modifiedOldRow.role,
-      dataToUpdate,
+      dataToUpdate: changedValue,
     };
 
     setIsUpdating(true);
     const toastId = toast.loading('Updating user...');
 
-    const { success, message } = await updateUser({ ...modifiedChangedValues });
+    const { success, message } = await updateUser({ ...modifiedChangedValue });
 
     if (success) {
       toast.update(toastId, {

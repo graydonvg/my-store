@@ -97,7 +97,6 @@ export const CONSTANTS = {
     NOT_AUTHENTICATED: 'You need to be logged in to perform this action',
     NOT_AUTHORIZED: 'You are not authorized to perform this action',
     NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
-    GENERAL_VALIDATION: 'Invalid data received. Please try again later.',
     UNEXPECTED: 'An unexpected error occurred. Please try again later.',
   },
   LOGGER_ERROR_MESSAGES: {

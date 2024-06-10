@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-const OrderItemSizesSchema = z.enum(['XS', 'S', 'M', 'L', 'XL']);
+const orderItemSizesSchema = z.enum(['XS', 'S', 'M', 'L', 'XL']);
 
-const OrderStatusSchema = z.enum([
+const orderStatusSchema = z.enum([
   'awaiting payment',
   'paid',
   'processing',
@@ -13,7 +13,7 @@ const OrderStatusSchema = z.enum([
   'refunded',
 ]);
 
-const OrderShippingDetailsSchema = z
+const orderShippingDetailsSchema = z
   .object({
     recipientFirstName: z.string().min(1),
     recipientLastName: z.string().min(1),
@@ -23,33 +23,33 @@ const OrderShippingDetailsSchema = z
     suburb: z.string().min(1),
     province: z.string().min(1),
     city: z.string().min(1),
-    postalCode: z.number(),
+    postalCode: z.number().int().min(1000).max(9999),
   })
   .strict();
 
-const OrderItemSchema = z
+const orderItemSchema = z
   .object({
     pricePaid: z.number().positive(),
     productId: z.number().positive(),
     quantity: z.number().positive(),
-    size: OrderItemSizesSchema,
+    size: orderItemSizesSchema,
   })
   .strict();
 
-const OrderDetailsSchema = z
+const orderDetailsSchema = z
   .object({
     cartTotal: z.number().positive(),
     deliveryFee: z.number().nonnegative(),
     discountTotal: z.number().nonnegative(),
     orderTotal: z.number().positive(),
-    orderStatus: OrderStatusSchema,
+    orderStatus: orderStatusSchema,
   })
   .strict();
 
-export const InsertOrderSchema = z
+export const insertOrderSchema = z
   .object({
-    orderDetails: OrderDetailsSchema,
-    orderItems: z.array(OrderItemSchema).nonempty(),
-    shippingDetails: OrderShippingDetailsSchema,
+    orderDetails: orderDetailsSchema,
+    orderItems: z.array(orderItemSchema).nonempty(),
+    shippingDetails: orderShippingDetailsSchema,
   })
   .strict();

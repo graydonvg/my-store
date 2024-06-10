@@ -3,7 +3,7 @@ import { ResponseWithNoData, InsertCartItemDb } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { InsertCartItemSchema } from '@/schemas/cartItemSchema';
+import { insertCartItemSchema } from '@/schemas/insertCartItemSchema';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -47,14 +47,14 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     }
 
     try {
-      InsertCartItemSchema.parse(cartItem);
+      insertCartItemSchema.parse(cartItem);
     } catch (error) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, cartItem });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.GENERAL_VALIDATION,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
 
         { status: 400 }

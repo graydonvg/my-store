@@ -1,17 +1,17 @@
 import { GridValidRowModel } from '@mui/x-data-grid';
 
-export function getChangedDataGridValues(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
-  const changedValues: GridValidRowModel = {};
+export function getChangedDataGridValue(newObj: GridValidRowModel, oldObj: GridValidRowModel) {
+  const changedValue: GridValidRowModel = {};
 
   for (let key in newObj) {
     if (newObj[key] !== oldObj[key]) {
       if (newObj[key] === '') {
-        changedValues[key] = null;
+        changedValue[key] = null;
       } else {
-        changedValues[key] = newObj[key];
+        changedValue[key] = newObj[key];
       }
     }
   }
 
-  return changedValues;
+  return changedValue;
 }

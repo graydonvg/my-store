@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  OrderStatus,
+  OrderStatusEnum,
   OrdersDataGridDataAdmin,
   QueryFilterDataGrid,
   QueryPageDataGrid,
@@ -24,9 +24,10 @@ import dayjs from 'dayjs';
 import DatePickerForDataGridFilter from '../../dataGrid/DatePickerForDataGridFilter';
 import { formatCurrency } from '@/utils/format';
 import OrdersDataGridToolbar from './OrdersDataGridToolbar';
-import { getChangedDataGridValues } from '@/utils/getChangedDataGridValues';
+import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
 import { getNumberOfFormFields } from '@/utils/checkForms';
 import { updateOrder } from '@/services/admin/update';
+import { ordersDataGridNewRowSchema } from '@/schemas/ordersDataGridNewRowSchema';
 
 function getColumns(isUpdating: boolean) {
   const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
@@ -136,18 +137,23 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'postalCode',
       headerName: 'Postal Code',
+      type: 'number',
+      headerAlign: 'left',
+      align: 'left',
       width: 130,
       editable: isUpdating ? false : true,
       filterOperators: getGridNumericOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
+      // renderCell to remove thousands comma (eg 1,234)
+      renderCell: (params) => params.row.postalCode,
     },
     {
       field: 'orderStatus',
       headerName: 'Status',
+      type: 'singleSelect',
       width: 150,
       editable: isUpdating ? false : true,
-      type: 'singleSelect',
       valueOptions: [
         'awaiting payment',
         'paid',
@@ -157,12 +163,15 @@ function getColumns(isUpdating: boolean) {
         'cancelled',
         'returned',
         'refunded',
-      ] as OrderStatus[],
+      ] as OrderStatusEnum[],
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
       field: 'orderTotal',
       headerName: 'Order total',
+      type: 'number',
+      headerAlign: 'left',
+      align: 'left',
       width: 120,
       valueFormatter: (value) => formatCurrency(value),
       filterOperators: getGridNumericOperators().filter(
@@ -198,19 +207,27 @@ export default function OrdersPageAdminPanelClient({
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
-    const changedValues = getChangedDataGridValues(newRow, oldRow);
-    const numberOfFormFields = getNumberOfFormFields(changedValues);
+    const validation = ordersDataGridNewRowSchema.safeParse(newRow);
 
-    if (numberOfFormFields === 0) {
+    if (!validation.success) {
+      validation.error.issues.forEach((issue) => toast.error(issue.message));
+
       return oldRow;
     }
 
-    const modifiedChangedValues: UpdateOrderAdminDb = { ...changedValues, orderId: oldRow.orderId };
+    const changedValue = getChangedDataGridValue(newRow, oldRow);
+    const numberOfFieldsToUpdate = getNumberOfFormFields(changedValue);
+
+    if (numberOfFieldsToUpdate === 0) {
+      return oldRow;
+    }
+
+    const changedValueWithOrderId: UpdateOrderAdminDb = { ...changedValue, orderId: oldRow.orderId };
 
     setIsUpdating(true);
     const toastId = toast.loading('Updating order...');
 
-    const { success, message } = await updateOrder(modifiedChangedValues);
+    const { success, message } = await updateOrder(changedValueWithOrderId);
 
     if (success) {
       toast.update(toastId, {

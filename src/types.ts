@@ -148,7 +148,7 @@ export type AddressStore = {
 
 // 5. Order
 
-export type OrderStatus = Database['public']['Enums']['orderStatus'];
+export type OrderStatusEnum = Database['public']['Enums']['orderStatus'];
 
 export type OrderItem = {
   orderItemId: number;
@@ -185,7 +185,7 @@ export type OrderData = {
   discountTotal: number;
   deliveryFee: number;
   orderTotal: number;
-  orderStatus: OrderStatus;
+  orderStatus: OrderStatusEnum;
   shippingDetails: OrderShippingDetails | null;
   orderItems: OrderItem[];
   pendingCheckoutSessionId: string | null;
@@ -197,7 +197,7 @@ export type InsertOrderDb = {
     deliveryFee: number;
     discountTotal: number;
     orderTotal: number;
-    orderStatus: OrderStatus;
+    orderStatus: OrderStatusEnum;
   };
   orderItems: { pricePaid: number; productId: number; quantity: number; size: string }[];
   shippingDetails: OrderShippingDetails;
@@ -205,7 +205,7 @@ export type InsertOrderDb = {
 
 export type UpdateOrderStatus = {
   orderId: number;
-  orderStatus: OrderStatus;
+  orderStatus: OrderStatusEnum;
 };
 
 export type AddOrderResponse = {
@@ -341,7 +341,7 @@ export type OrdersDataGridDataAdmin = {
   province: string;
   city: string;
   postalCode: number;
-  orderStatus: OrderStatus;
+  orderStatus: OrderStatusEnum;
   orderTotal: number;
 };
 
@@ -356,7 +356,7 @@ export type UpdateOrderAdminDb = {
   province?: string;
   city?: string;
   postalCode?: number;
-  orderStatus?: OrderStatus;
+  orderStatus?: OrderStatusEnum;
 };
 
 export type AddNewUserAdminResponse = {
