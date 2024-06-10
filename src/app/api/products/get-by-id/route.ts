@@ -21,7 +21,11 @@ export async function GET(request: NextRequest): Promise<NextResponse<CustomResp
       return NextResponse.json({ success: false, message: `Failed to get all products. ${error.message}.` });
     }
 
-    return NextResponse.json({ success: true, message: 'Fetched product sucessfully', data: product[0] });
+    return NextResponse.json({
+      success: true,
+      message: 'Fetched product sucessfully',
+      data: product[0],
+    });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to get all products. An unexpect error occured.' });
   }

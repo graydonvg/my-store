@@ -23,7 +23,6 @@ export async function GET(): Promise<NextResponse<ResponseWithData<Product[] | n
       success: true,
       message: 'Fetched products sucessfully',
       data: products,
-      time: Date.now(),
     });
   } catch (error) {
     return NextResponse.json({

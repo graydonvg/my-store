@@ -13,5 +13,5 @@ export default async function fetchAddresses() {
     .eq('userId', authUser?.id ?? '')
     .order('createdAt', { ascending: true });
 
-  return { addresses };
+  return addresses;
 }

@@ -23,10 +23,10 @@ export default function ProductPreviewSection({ latestArrivals, productsOnSale, 
       {[
         { title: 'The Biggest Sale', products: productsOnSale, onClick: navigateToSale },
         { title: 'Latest Arrivals', products: latestArrivals, onClick: navigateToAllProducts },
-      ].map((preview, index) =>
+      ].map((preview) =>
         preview.products.length > 0 ? (
           <ProductPreviewList
-            key={index}
+            key={preview.title}
             title={preview.title}
             products={preview.products}
             onClick={preview.onClick}

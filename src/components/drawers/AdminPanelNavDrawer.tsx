@@ -55,9 +55,9 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
       </Toolbar>
       <Divider />
       <List component="nav">
-        {ADMIN_PANEL_NAV_OPTIONS.map((item, index) => (
+        {ADMIN_PANEL_NAV_OPTIONS.map((item) => (
           <Link
-            key={index}
+            key={item.label}
             href={item.path}>
             <ListItemButton sx={{ color: theme.palette.text.secondary }}>
               <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>{item.icon}</ListItemIcon>

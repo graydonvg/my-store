@@ -14,10 +14,10 @@ export default async function WishlistPage() {
           component="ul"
           container
           spacing={{ xs: 2, md: 3 }}>
-          {wishlist?.map((item, index) => (
+          {wishlist?.map((item) => (
             <Grid
               component="li"
-              key={index}
+              key={item.wishlistItemId}
               item
               xs={6}
               sm={3}

@@ -8,6 +8,15 @@ export default async function fetchUserSessionData() {
     data: { user: authUser },
   } = await supabase.auth.getUser();
 
+  if (!authUser) {
+    return {
+      authUser: null,
+      userData: null,
+      cartItems: null,
+      wishlistData: null,
+    };
+  }
+
   const role = await getUserRoleFromSession(supabase);
 
   const { data: userDataArray } = await supabase

@@ -12,10 +12,10 @@ export default function Products({ products }: Props) {
       component="ul"
       container
       spacing={{ xs: 2, md: 3 }}>
-      {products?.map((product, index) => (
+      {products?.map((product) => (
         <Grid
           component="li"
-          key={index}
+          key={product.productId}
           item
           xs={6}
           sm={3}

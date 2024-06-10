@@ -7,7 +7,9 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
 
     const response = await fetch(url, {
       method: 'GET',
+      cache: 'force-cache',
     });
+
     const data = await response.json();
 
     return data;
@@ -22,6 +24,7 @@ export async function getProductById(productId: string): Promise<CustomResponse<
 
     const response = await fetch(url, {
       method: 'GET',
+      cache: 'force-cache',
     });
 
     const data = await response.json();
@@ -38,7 +41,9 @@ export async function getProductsByCategory(category: string): Promise<CustomRes
 
     const response = await fetch(url, {
       method: 'GET',
+      cache: 'force-cache',
     });
+
     const data = await response.json();
 
     return data;
@@ -53,7 +58,9 @@ export async function getProductsOnSale(): Promise<CustomResponse<Product[]>> {
 
     const response = await fetch(url, {
       method: 'GET',
+      cache: 'force-cache',
     });
+
     const data = await response.json();
 
     return data;

@@ -32,9 +32,9 @@ export default function LowerCheckoutNavbar() {
             paddingY: 1,
           }}>
           <BreadcrumbsComponent>
-            {breadcrumbData.map((item, index) => (
+            {breadcrumbData.map((item) => (
               <BreadcrumbItem
-                key={index}
+                key={item.label}
                 {...item}
               />
             ))}

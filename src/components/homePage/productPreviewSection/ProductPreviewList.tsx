@@ -50,11 +50,11 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
         </Paper>
       </Grid>
 
-      {products.map((product, index) => (
+      {products.map((product) => (
         <Grid
           component="li"
           item
-          key={index}
+          key={product.productId}
           xs={6}
           sm={3}>
           <ProductCard

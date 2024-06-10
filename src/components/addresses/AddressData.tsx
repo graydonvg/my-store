@@ -14,9 +14,9 @@ export default function AddressData() {
 
   return (
     <>
-      {addresses?.map((address, index) => (
+      {addresses?.map((address) => (
         <TableRow
-          key={index}
+          key={address.addressId}
           sx={{
             display: 'flex',
             '&:last-child td': { border: 0 },

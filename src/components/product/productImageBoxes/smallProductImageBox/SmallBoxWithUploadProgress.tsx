@@ -10,9 +10,9 @@ export default function SmallBoxWithUploadProgress({ boxBorderColor }: Props) {
 
   return (
     <>
-      {imageUploadProgress.map((data, index) => (
+      {imageUploadProgress.map((data) => (
         <SmallProductImageBox
-          key={index}
+          key={data.fileName}
           uploadProgressData={data}
           boxBorderColor={boxBorderColor}
         />

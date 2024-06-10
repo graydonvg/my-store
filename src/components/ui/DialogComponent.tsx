@@ -16,7 +16,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
   const dispatch = useAppDispatch();
   const isDialogLoading = useAppSelector(selectIsDialogLoading);
 
-  function close() {
+  function handleCloseDialog() {
     if (isDialogLoading) return;
 
     dispatch(closeDialog());
@@ -26,7 +26,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
     <Dialog
       scroll="body"
       open={isOpen}
-      onClose={close}
+      onClose={handleCloseDialog}
       sx={{
         [`& .${dialogClasses.paper}`]: { margin: 2, maxWidth: 'none !important' },
       }}>

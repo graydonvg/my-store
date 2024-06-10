@@ -24,12 +24,12 @@ export default function OrderDetails({ order }: Props) {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box>
           {[
-            { label: 'Order no:', value: order.orderId },
+            { label: 'Order No:', value: order.orderId },
             { label: 'Order Status:', value: order.orderStatus },
             { label: 'Order Date:', value: dayjs(order?.createdAt).format('YYYY-MM-DD') },
-          ].map((item, index) => (
+          ].map((item) => (
             <Box
-              key={index}
+              key={item.label}
               sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Box sx={{ minWidth: 'fit-content' }}>
                 <Typography
