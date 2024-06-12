@@ -69,7 +69,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const isSignUpDialogOpen = useAppSelector(selectIsSignInDialogOpen);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {

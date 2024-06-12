@@ -1,14 +1,14 @@
 export function trimWhitespaceFromObjectValues(obj: Record<string, any>) {
-  const trimmedFormData: Record<string, any> = {};
+  const objectWithTrimmedValues: Record<string, any> = {};
 
   for (const key in obj) {
     const value = obj[key];
     if (typeof value === 'string') {
-      trimmedFormData[key] = value.trim();
+      objectWithTrimmedValues[key] = value.trim();
     } else {
-      trimmedFormData[key] = value;
+      objectWithTrimmedValues[key] = value;
     }
   }
 
-  return trimmedFormData;
+  return objectWithTrimmedValues;
 }

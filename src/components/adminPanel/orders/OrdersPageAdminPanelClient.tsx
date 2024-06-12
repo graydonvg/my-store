@@ -1,12 +1,12 @@
 'use client';
 
 import {
-  OrderStatusEnum,
+  OrderStatus,
   OrdersDataGridDataAdmin,
+  UpdateOrderSchema,
   QueryFilterDataGrid,
   QueryPageDataGrid,
   QuerySortDataGrid,
-  UpdateOrderAdminDb,
 } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -27,8 +27,7 @@ import OrdersDataGridToolbar from './OrdersDataGridToolbar';
 import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
 import { getObjectKeyCount } from '@/utils/checkForms';
 import { updateOrder } from '@/services/admin/update';
-import { ordersDataGridNewRowSchema } from '@/schemas/ordersDataGridNewRowSchema';
-import { trimWhitespaceFromObjectValues } from '@/utils/transform';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 function getColumns(isUpdating: boolean) {
   const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
@@ -164,7 +163,7 @@ function getColumns(isUpdating: boolean) {
         'cancelled',
         'returned',
         'refunded',
-      ] as OrderStatusEnum[],
+      ] as OrderStatus[],
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -208,28 +207,25 @@ export default function OrdersPageAdminPanelClient({
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
-    const validation = ordersDataGridNewRowSchema.safeParse(newRow);
+    const validation = UpdateOrderSchema.safeParse(newRow);
 
     if (!validation.success) {
-      validation.error.issues.forEach((issue) => toast.error(issue.message));
-
+      const errorMessage = constructZodErrorMessage(validation.error);
+      toast.error(errorMessage);
       return oldRow;
     }
 
-    const changedValue = getChangedDataGridValue(newRow, oldRow);
-    const trimmedChangedValue = trimWhitespaceFromObjectValues(changedValue);
-    const numberOfFieldsToUpdate = getObjectKeyCount(trimmedChangedValue);
+    const changedValue = getChangedDataGridValue(validation.data, oldRow);
+    const objectKeyCount = getObjectKeyCount(changedValue);
 
-    if (numberOfFieldsToUpdate === 0) {
+    if (objectKeyCount === 0) {
       return oldRow;
     }
-
-    const changedValueWithOrderId: UpdateOrderAdminDb = { ...trimmedChangedValue, orderId: oldRow.orderId };
 
     setIsUpdating(true);
     const toastId = toast.loading('Updating order...');
 
-    const { success, message } = await updateOrder(changedValueWithOrderId);
+    const { success, message } = await updateOrder({ ...changedValue, orderId: oldRow.orderId });
 
     if (success) {
       toast.update(toastId, {

@@ -42,7 +42,7 @@ export default function DialogComponent({ isOpen, children }: Props) {
           disableRipple
           size="small"
           aria-label="close dialog"
-          onClick={close}
+          onClick={handleCloseDialog}
           sx={{ color: theme.palette.text.secondary, borderRadius: '4px', position: 'absolute', right: 6, top: 6 }}>
           <Close fontSize="medium" />
         </IconButton>

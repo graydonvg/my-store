@@ -3,7 +3,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { jwtDecode } from 'jwt-decode';
 
 export async function getUserRoleFromSession(supabase: SupabaseClient) {
-  let role: UserRole = null;
+  let role: UserRole | null = null;
 
   const {
     data: { session },
@@ -11,14 +11,14 @@ export async function getUserRoleFromSession(supabase: SupabaseClient) {
   } = await supabase.auth.getSession();
 
   if (session && !sessionError) {
-    const jwt = jwtDecode(session.access_token) as { user_role: UserRole };
+    const jwt = jwtDecode(session.access_token) as { user_role: UserRole | null };
     role = jwt.user_role;
   }
 
   return role;
 }
 
-export function getUserRoleBoolean(userRole: UserRole) {
+export function getUserRoleBoolean(userRole: UserRole | null) {
   const isAdmin = userRole === 'admin';
   const isManager = userRole === 'manager';
   const isOwner = userRole === 'owner';

@@ -2,10 +2,10 @@
 
 import {
   UsersDataGridDataAdmin,
-  UpdateUserAdminDb,
   QueryPageDataGrid,
   QueryFilterDataGrid,
   QuerySortDataGrid,
+  UserDataToUpdateSchema,
 } from '@/types';
 import {
   GridColDef,
@@ -30,8 +30,7 @@ import { getUserRoleBoolean } from '@/utils/getUserRole';
 import { updateUser } from '@/services/admin/update';
 import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { usersDataGridNewRowSchema } from '@/schemas/usersDataGridNewRowSchema';
-import { trimWhitespaceFromObjectValues } from '@/utils/transform';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
   const columns: GridColDef<UsersDataGridDataAdmin>[] = [
@@ -72,7 +71,7 @@ function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: b
       field: 'email',
       headerName: 'Email',
       width: 200,
-      editable: !isUpdating ? true : false,
+      editable: false,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -150,14 +149,6 @@ export default function UsersPageAdminPanelClient({
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
-    const validation = usersDataGridNewRowSchema.safeParse(newRow);
-
-    if (!validation.success) {
-      validation.error.issues.forEach((issue) => toast.error(issue.message));
-
-      return oldRow;
-    }
-
     // Changing null to 'none' for role.
     // Users without a role, initially have role: null.
     // Data grid set to display null as 'none'.
@@ -167,11 +158,18 @@ export default function UsersPageAdminPanelClient({
     const modifiedOldRow = oldRow.role === null ? { ...oldRow, role: 'none' } : oldRow;
     const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
 
-    const changedValue = getChangedDataGridValue(modifiedNewRow, modifiedOldRow);
-    const trimmedChangedValue = trimWhitespaceFromObjectValues(changedValue);
-    const numberOfFieldsToUpdate = getObjectKeyCount(trimmedChangedValue);
+    const validation = UserDataToUpdateSchema.safeParse(modifiedNewRow);
 
-    if (numberOfFieldsToUpdate === 0) {
+    if (!validation.success) {
+      const errorMessage = constructZodErrorMessage(validation.error);
+      toast.error(errorMessage);
+      return oldRow;
+    }
+
+    const changedValue = getChangedDataGridValue(validation.data, modifiedOldRow);
+    const objectKeyCount = getObjectKeyCount(changedValue);
+
+    if (objectKeyCount === 0) {
       return oldRow;
     }
 
@@ -195,16 +193,14 @@ export default function UsersPageAdminPanelClient({
       return oldRow;
     }
 
-    const modifiedChangedValue: UpdateUserAdminDb = {
-      userId: oldRow.userId,
-      currentRole: modifiedOldRow.role,
-      dataToUpdate: trimmedChangedValue,
-    };
-
     setIsUpdating(true);
     const toastId = toast.loading('Updating user...');
 
-    const { success, message } = await updateUser({ ...modifiedChangedValue });
+    const { success, message } = await updateUser({
+      userId: oldRow.userId,
+      currentRole: modifiedOldRow.role,
+      dataToUpdate: changedValue,
+    });
 
     if (success) {
       toast.update(toastId, {

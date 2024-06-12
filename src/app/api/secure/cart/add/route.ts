@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { ResponseWithNoData, InsertCartItemDb } from '@/types';
+import { ResponseWithNoData, InsertCartItem, InsertCartItemSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { insertCartItemSchema } from '@/schemas/insertCartItemSchema';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
   const log = request.log;
+  const successMessage = 'Item added to cart successfully';
 
   log.info('Attempting to add item to cart');
 
@@ -30,7 +30,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    let cartItem: InsertCartItemDb;
+    let cartItem: InsertCartItem;
 
     try {
       cartItem = await request.json();
@@ -46,10 +46,10 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    try {
-      insertCartItemSchema.parse(cartItem);
-    } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, cartItem });
+    const validation = InsertCartItemSchema.safeParse(cartItem);
+
+    if (!validation.success) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error, payload: cartItem });
 
       return NextResponse.json(
         {
@@ -76,12 +76,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    log.info('Item added to cart successfully', { cartItem, userId: authUser.id });
+    log.info(successMessage, { cartItem, userId: authUser.id });
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Item added to cart successfully',
+        message: successMessage,
       },
 
       { status: 201 }

@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { InsertOrderDb, AddOrderResponse, ResponseWithData } from '@/types';
+import { InsertOrder, AddOrderResponse, ResponseWithData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function addOrder(orderData: InsertOrderDb): Promise<ResponseWithData<AddOrderResponse | null>> {
+export default async function addOrder(orderData: InsertOrder): Promise<ResponseWithData<AddOrderResponse | null>> {
   const serviceLog = log.with({ scope: 'service', function: 'addOrder' });
 
   log.info('Attempting to add order');

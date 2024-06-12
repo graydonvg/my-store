@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { InsertOrderDb, AddOrderResponse, CustomResponse } from '@/types';
+import { InsertOrder, AddOrderResponse, CustomResponse, InsertOrderSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { insertOrderSchema } from '@/schemas/insertOrderSchema';
 
 export const POST = withAxiom(
   async (request: AxiomRequest): Promise<NextResponse<CustomResponse<AddOrderResponse | null>>> => {
     const supabase = await createSupabaseServerClient();
     const log = request.log;
+    const successMessage = 'Order created successfully';
 
     log.info('Attempting to add order');
 
@@ -32,7 +32,7 @@ export const POST = withAxiom(
         );
       }
 
-      let orderData: InsertOrderDb;
+      let orderData: InsertOrder;
 
       try {
         orderData = await request.json();
@@ -50,16 +50,15 @@ export const POST = withAxiom(
         );
       }
 
-      try {
-        insertOrderSchema.parse(orderData);
-      } catch (error) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error, orderData });
+      const validation = InsertOrderSchema.safeParse(orderData);
+
+      if (!validation.success) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error, payload: orderData });
 
         return NextResponse.json(
           {
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
-            data: null,
           },
 
           { status: 400 }
@@ -150,10 +149,10 @@ export const POST = withAxiom(
         }
       }
 
-      log.info('Order created successfully', { orderId });
+      log.info(successMessage, { orderId });
 
       return NextResponse.json(
-        { success: true, message: 'Order created successfully', data: { orderId } },
+        { success: true, message: successMessage, data: { orderId } },
         {
           status: 201,
         }

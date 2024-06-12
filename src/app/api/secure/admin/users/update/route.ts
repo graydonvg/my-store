@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { UpdateUserAdminDb, CustomResponse } from '@/types';
+import { UpdateUserAdmin, CustomResponse } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getObjectKeyCount } from '@/utils/checkForms';
@@ -14,7 +14,7 @@ async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResp
     } = await supabase.auth.getUser();
 
     const callerRole = await getUserRoleFromSession(supabase);
-    const userToUpdateData: UpdateUserAdminDb = await request.json();
+    const userToUpdateData: UpdateUserAdmin = await request.json();
 
     const { userId: userToUpdateId, currentRole: userToUpdateCurrentRole, dataToUpdate } = userToUpdateData;
     const { role: newRole, ...personalDataToUpdate } = dataToUpdate;

@@ -23,5 +23,5 @@ export default function DataInitializer({ userData, cartItems, wishlistData, chi
     dispatch(setWishlistData(wishlistData ?? []));
   }, [dispatch, userData, cartItems, wishlistData]);
 
-  return <>{children}</>;
+  return children;
 }

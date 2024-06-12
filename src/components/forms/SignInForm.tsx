@@ -44,7 +44,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const isSignInDialogOpen = useAppSelector(selectIsSignInDialogOpen);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {

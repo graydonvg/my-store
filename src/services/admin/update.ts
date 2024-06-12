@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseWithNoData, UpdateOrderAdminDb, UpdateProduct, UpdateUserAdminDb } from '@/types';
+import { ResponseWithNoData, UpdateOrder, UpdateProduct, UpdateUserAdmin } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -28,7 +28,7 @@ export async function updateProduct(productData: UpdateProduct): Promise<Respons
   }
 }
 
-export async function updateUser(userData: UpdateUserAdminDb): Promise<ResponseWithNoData> {
+export async function updateUser(userData: UpdateUserAdmin): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateUser' });
 
   serviceLog.info('Attempting to update user');
@@ -52,7 +52,7 @@ export async function updateUser(userData: UpdateUserAdminDb): Promise<ResponseW
   }
 }
 
-export async function updateOrder(orderData: UpdateOrderAdminDb): Promise<ResponseWithNoData> {
+export async function updateOrder(orderData: UpdateOrder): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateOrder' });
 
   serviceLog.info('Attempting to update order');

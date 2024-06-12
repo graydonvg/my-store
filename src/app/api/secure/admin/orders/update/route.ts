@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, UpdateOrderAdminDb } from '@/types';
+import { CustomResponse, UpdateOrder } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getObjectKeyCount } from '@/utils/checkForms';
@@ -14,15 +14,15 @@ async function handlePut(request: AxiomRequest): Promise<NextResponse<CustomResp
     } = await supabase.auth.getUser();
 
     const callerRole = await getUserRoleFromSession(supabase);
-    const orderData: UpdateOrderAdminDb = await request.json();
+    const orderData: UpdateOrder = await request.json();
 
     const { orderId, orderStatus, ...shippingDetails } = orderData;
     const orderDetails = { orderStatus };
 
-    const numberOfOrderDetailsFields = getObjectKeyCount(orderDetails);
-    const numberOfShippingDetailsFields = getObjectKeyCount(shippingDetails);
-    const hasOrderDataToUpdate = numberOfOrderDetailsFields > 0;
-    const hasShippingDataToUpdate = numberOfShippingDetailsFields > 0;
+    const orderDetailsObjectKeyCount = getObjectKeyCount(orderDetails);
+    const shippingDetailsObjectKeyCount = getObjectKeyCount(shippingDetails);
+    const hasOrderDataToUpdate = orderDetailsObjectKeyCount > 0;
+    const hasShippingDataToUpdate = shippingDetailsObjectKeyCount > 0;
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(callerRole);
 
     const failedMessage = 'Failed to update order';

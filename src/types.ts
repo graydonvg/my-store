@@ -1,5 +1,14 @@
+import { z } from 'zod';
 import { Database } from './lib/supabase/database.types';
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
+
+const NoNumbersInString = z
+  .string()
+  .trim()
+  .min(1)
+  .refine((value) => !/\d/.test(value), {
+    message: 'String must not contain numbers',
+  });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,12 +29,14 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 // 1. User
 
-export type UserRoleDb = Database['public']['Enums']['appRole'];
+const ContactNumberSchema = z.string().trim().min(1);
 
-export type UserRole = UserRoleDb | null;
+const UserRoleSchema = z.enum(['admin', 'manager', 'owner']);
+export type UserRole = z.infer<typeof UserRoleSchema>;
 
 // Cannot use null for select component
-export type UserRoleSelectOptions = UserRoleDb | 'none';
+const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', 'owner']);
+export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
@@ -41,7 +52,7 @@ export type UserData = {
   lastName: string | null;
   contactNumber: string | null;
   isOAuthSignIn: boolean;
-  role: UserRole;
+  role: UserRole | null;
 };
 
 export type UpdateUserDb = {
@@ -55,6 +66,20 @@ export type userPasswordType = {
   newPassword: string;
   confirmPassword: string;
 };
+
+export const UserDataToUpdateSchema = z.object({
+  firstName: NoNumbersInString.optional(),
+  lastName: NoNumbersInString.optional(),
+  contactNumber: ContactNumberSchema.optional(),
+  role: UserRoleSelectOptionsSchema.optional(),
+});
+
+export const UpdateUserAdminSchema = z.object({
+  userId: z.string(),
+  currentRole: UserRoleSelectOptionsSchema,
+  dataToUpdate: UserDataToUpdateSchema,
+});
+export type UpdateUserAdmin = z.infer<typeof UpdateUserAdminSchema>;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,7 +112,15 @@ export type CartItemWithPriceDetails = {
   totalDiscountedPrice: number | null;
 } & CartItem;
 
-export type InsertCartItemDb = Database['public']['Tables']['cart']['Insert'];
+export const InsertCartItemSchema = z
+  .object({
+    productId: z.number().positive(),
+    quantity: z.number().positive(),
+    size: z.string(),
+  })
+  .strict();
+
+export type InsertCartItem = z.infer<typeof InsertCartItemSchema>;
 
 export type UpdateCartItemSize = {
   cartItemId: number;
@@ -106,19 +139,14 @@ export type UpdateCartItemQuantity = {
 export type CheckoutData = {
   orderAddressId: number | null;
   isCheckoutProcessing: boolean;
-  checkoutItems: {
-    pricePaid: number;
-    productId: number;
-    quantity: number;
-    size: string;
-  }[];
+  checkoutItems: InsertOrderItem[];
   orderPaymentTotals: {
     cartTotal: number;
     deliveryFee: number;
     discountTotal: number;
     orderTotal: number;
   };
-  orderShippingDetails: OrderShippingDetails | null;
+  orderShippingDetails: OrderShippingDetailsType | null;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,6 +159,9 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressDb = Database['public']['Tables']['addresses']['Update'];
 
+const PostalCodeSchema = z.number().int().min(1000).max(9999);
+type PostalCode = z.infer<typeof PostalCodeSchema>;
+
 export type AddressStore = {
   addressId: number | null;
   recipientContactNumber: string;
@@ -141,14 +172,67 @@ export type AddressStore = {
   province: string;
   streetAddress: string;
   suburb: string;
-  postalCode: '' | number;
+  postalCode: '' | PostalCode;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 5. Order
+const OrderStatusSchema = z.enum([
+  'awaiting payment',
+  'paid',
+  'processing',
+  'shipped',
+  'delivered',
+  'cancelled',
+  'returned',
+  'refunded',
+]);
+export type OrderStatus = z.infer<typeof OrderStatusSchema>;
 
-export type OrderStatusEnum = Database['public']['Enums']['orderStatus'];
+const OrderShippingDetailsSchema = z
+  .object({
+    recipientFirstName: z.string(),
+    recipientLastName: z.string(),
+    recipientContactNumber: z.string(),
+    complexOrBuilding: z.string().nullable(),
+    streetAddress: z.string(),
+    suburb: z.string(),
+    province: z.string(),
+    city: z.string(),
+    postalCode: PostalCodeSchema,
+  })
+  .strict();
+export type OrderShippingDetailsType = z.infer<typeof OrderShippingDetailsSchema>;
+
+const InsertOrderItemSchema = z
+  .object({
+    productId: z.number().positive(),
+    quantity: z.number().positive(),
+    size: z.string(),
+    pricePaid: z.number().positive(),
+  })
+  .strict();
+type InsertOrderItem = z.infer<typeof InsertOrderItemSchema>;
+
+const OrderDetailsSchema = z
+  .object({
+    cartTotal: z.number().positive(),
+    deliveryFee: z.number().nonnegative(),
+    discountTotal: z.number().nonnegative(),
+    orderTotal: z.number().positive(),
+    orderStatus: OrderStatusSchema,
+  })
+  .strict();
+
+export const InsertOrderSchema = z
+  .object({
+    orderDetails: OrderDetailsSchema,
+    orderItems: InsertOrderItemSchema.array().min(1),
+    shippingDetails: OrderShippingDetailsSchema,
+  })
+  .strict();
+export type InsertOrder = z.infer<typeof InsertOrderSchema>;
 
 export type OrderItem = {
   orderItemId: number;
@@ -166,18 +250,6 @@ export type OrderItem = {
   } | null;
 };
 
-export type OrderShippingDetails = {
-  recipientFirstName: string;
-  recipientLastName: string;
-  recipientContactNumber: string;
-  complexOrBuilding: string | null;
-  streetAddress: string;
-  suburb: string;
-  province: string;
-  city: string;
-  postalCode: number;
-};
-
 export type OrderData = {
   createdAt: string;
   orderId: number;
@@ -185,27 +257,31 @@ export type OrderData = {
   discountTotal: number;
   deliveryFee: number;
   orderTotal: number;
-  orderStatus: OrderStatusEnum;
-  shippingDetails: OrderShippingDetails | null;
+  orderStatus: OrderStatus;
+  shippingDetails: OrderShippingDetailsType | null;
   orderItems: OrderItem[];
   pendingCheckoutSessionId: string | null;
 };
 
-export type InsertOrderDb = {
-  orderDetails: {
-    cartTotal: number;
-    deliveryFee: number;
-    discountTotal: number;
-    orderTotal: number;
-    orderStatus: OrderStatusEnum;
-  };
-  orderItems: { pricePaid: number; productId: number; quantity: number; size: string }[];
-  shippingDetails: OrderShippingDetails;
-};
+export const UpdateOrderSchema = z.object({
+  orderId: z.number().positive(),
+  recipientFirstName: NoNumbersInString.optional(),
+  recipientLastName: NoNumbersInString.optional(),
+  recipientContactNumber: ContactNumberSchema.optional(),
+  complexOrBuilding: z.string().trim().nullable().optional(),
+  streetAddress: z.string().min(1).trim().optional(),
+  suburb: NoNumbersInString.optional(),
+  province: NoNumbersInString.optional(),
+  city: NoNumbersInString.optional(),
+  postalCode: z.number().int().min(1000).max(9999).optional(),
+  orderStatus: OrderStatusSchema.optional(),
+  orderTotal: z.number().positive().optional(),
+});
+export type UpdateOrder = z.infer<typeof UpdateOrderSchema>;
 
 export type UpdateOrderStatus = {
   orderId: number;
-  orderStatus: OrderStatusEnum;
+  orderStatus: OrderStatus;
 };
 
 export type AddOrderResponse = {
@@ -335,28 +411,14 @@ export type OrdersDataGridDataAdmin = {
   recipientFirstName: string;
   recipientLastName: string;
   recipientContactNumber: string;
-  complexOrBuilding: string;
+  complexOrBuilding: string | null;
   streetAddress: string;
   suburb: string;
   province: string;
   city: string;
-  postalCode: number;
-  orderStatus: OrderStatusEnum;
+  postalCode: PostalCode;
+  orderStatus: OrderStatus;
   orderTotal: number;
-};
-
-export type UpdateOrderAdminDb = {
-  orderId: number;
-  recipientFirstName?: string;
-  recipientLastName?: string;
-  recipientContactNumber?: string;
-  complexOrBuilding?: string;
-  streetAddress?: string;
-  suburb?: string;
-  province?: string;
-  city?: string;
-  postalCode?: number;
-  orderStatus?: OrderStatusEnum;
 };
 
 export type AddNewUserAdminResponse = {
@@ -370,25 +432,14 @@ export type UsersDataGridDataAdmin = {
   lastName: string | null;
   email: string;
   contactNumber: string | null;
-  role: UserRole;
+  role: UserRole | null;
 };
 
 export type CreateUserAdminDb = {
   contactNumber?: string;
   firstName?: string;
   lastName?: string;
-  role?: UserRole;
-};
-
-export type UpdateUserAdminDb = {
-  userId: string;
-  currentRole: UserRoleSelectOptions;
-  dataToUpdate: {
-    contactNumber?: string;
-    firstName?: string;
-    lastName?: string;
-    role?: UserRoleSelectOptions;
-  };
+  role?: UserRole | null;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

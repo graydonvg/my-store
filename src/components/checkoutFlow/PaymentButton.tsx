@@ -2,7 +2,7 @@ import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import ContainedButton from '../ui/buttons/simple/ContainedButton';
-import { InsertOrderDb } from '@/types';
+import { InsertOrder } from '@/types';
 import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
@@ -18,7 +18,7 @@ export default function PaymentButton() {
   async function addOrderAndCheckoutWithStripe() {
     dispatch(setCheckoutData({ isCheckoutProcessing: true }));
 
-    const orderData: InsertOrderDb = {
+    const orderData: InsertOrder = {
       orderDetails: {
         cartTotal: checkoutData.orderPaymentTotals.cartTotal,
         deliveryFee: checkoutData.orderPaymentTotals.deliveryFee,
