@@ -34,16 +34,16 @@ const ContactNumberSchema = z.string().trim().min(1);
 const UserRoleSchema = z.enum(['admin', 'manager', 'owner']);
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
-// Cannot use null for select component
 const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', 'owner']);
 export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
-export type UserAuthData = {
-  email: string;
-  password: string;
-};
+export const UserAuthDataSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+export type UserAuthData = z.infer<typeof UserAuthDataSchema>;
 
 export type UserData = {
   userId: string;
@@ -55,11 +55,12 @@ export type UserData = {
   role: UserRole | null;
 };
 
-export type UpdateUserDb = {
-  contactNumber?: string;
-  firstName?: string;
-  lastName?: string;
-};
+export const UpdateUserDataSchema = z.object({
+  contactNumber: ContactNumberSchema.optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+});
+export type UpdateUserData = z.infer<typeof UpdateUserDataSchema>;
 
 export type userPasswordType = {
   currentPassword: string;

@@ -1,42 +1,108 @@
 import { NextResponse } from 'next/server';
-
-import { CustomResponse, UserAuthData } from '@/types';
-import { ERROR_MESSAGES } from '@/constants';
+import { ResponseWithNoData, UserAuthData, UserAuthDataSchema } from '@/types';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { AxiomRequest, withAxiom } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
+export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
+  const log = request.log;
+  const successMessage = 'Sign in successful';
+
+  log.info('Attempting to sign in user');
 
   try {
     const {
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const signInData: UserAuthData = await request.json();
+    if (authUser) {
+      log.warn('A user session already exists', { user: authUser });
 
-    if (authUser)
-      return NextResponse.json({
-        success: false,
-        message: 'Sign in failed. A user session already exists.',
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unable to sign in. Please try again later.',
+        },
 
-    if (!signInData)
-      return NextResponse.json({
-        success: false,
-        message: `Sign in failed. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
-      });
+        { status: 401 }
+      );
+    }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    let signInData: UserAuthData;
+
+    try {
+      signInData = await request.json();
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+        },
+        { status: 400 }
+      );
+    }
+
+    const validation = UserAuthDataSchema.safeParse(signInData);
+
+    if (!validation.success) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+
+        { status: 400 }
+      );
+    }
+
+    const { data, error: signInError } = await supabase.auth.signInWithPassword({
       email: signInData.email,
       password: signInData.password,
     });
 
-    if (error) {
-      return NextResponse.json({ success: false, message: `Sign in failed. ${error.message}.` });
+    if (signInError) {
+      log.error('Sign in error', { error: signInError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Sign in failed. ${signInError.message}.`,
+        },
+
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: 'Sign in successful' });
+    log.info(successMessage, { userId: data.user.id });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: successMessage,
+      },
+
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Sign in failed. An unexpected error occurred.' });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      },
+
+      { status: 500 }
+    );
+  } finally {
+    await log.flush();
   }
-}
+});

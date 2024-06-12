@@ -61,7 +61,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const { success, message } = await signInWithPassword({ email: formData.email, password: formData.password });
+    const { success, message } = await signInWithPassword(formData);
 
     if (success === true) {
       dispatch(closeDialog());

@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseWithNoData, UpdateUserDb, UserAuthData } from '@/types';
+import { ResponseWithNoData, UpdateUserData, UserAuthData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserDb): Promise<ResponseWithNoData> {
+export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserData): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'signUpNewUser' });
 
   serviceLog.info('Attempting to sign up user');

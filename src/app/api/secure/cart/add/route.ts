@@ -17,8 +17,21 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       error: authError,
     } = await supabase.auth.getUser();
 
-    if (authError || !authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { authError, user: authUser });
+    if (authError) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+        },
+
+        { status: 401 }
+      );
+    }
+
+    if (!authUser) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
 
       return NextResponse.json(
         {
@@ -76,7 +89,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    log.info(successMessage, { cartItem, userId: authUser.id });
+    log.info(successMessage, { userId: authUser.id, payload: cartItem });
 
     return NextResponse.json(
       {

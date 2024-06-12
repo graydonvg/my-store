@@ -1,61 +1,153 @@
 import { NextResponse } from 'next/server';
 
-import { CustomResponse, UpdateUserDb, UserAuthData } from '@/types';
-import { ERROR_MESSAGES } from '@/constants';
+import { ResponseWithNoData, UpdateUserData, UpdateUserDataSchema, UserAuthData, UserAuthDataSchema } from '@/types';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyObjectKeys } from '@/utils/checkForms';
 import { getObjectKeyCount } from '@/utils/checkForms';
+import { AxiomRequest, withAxiom } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse>> {
+export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
+  const log = request.log;
+  const successMessage = 'Sign up successful';
+
+  log.info('Attempting to sign up user');
 
   try {
     const {
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const userData: UserAuthData & UpdateUserDb = await request.json();
-    const { email, password, ...userDataToUpdate } = userData;
-    const emptyFormFields = getEmptyObjectKeys(userDataToUpdate);
-    const numberOfFromFields = getObjectKeyCount(userDataToUpdate);
-    const hasDataToUpdate = emptyFormFields.length !== numberOfFromFields;
+    if (authUser) {
+      log.warn('A user session already exists', { user: authUser });
 
-    if (authUser)
-      return NextResponse.json({
-        success: false,
-        message: 'Sign up failed. Please sign out before creating a new account.',
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unable to sign up. Please try again later.',
+        },
 
-    if (!userData)
-      return NextResponse.json({
-        success: false,
-        message: `Sign up failed. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
-      });
+        { status: 401 }
+      );
+    }
 
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    let signUpData: UserAuthData & UpdateUserData;
+
+    try {
+      signUpData = await request.json();
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { email, password, ...userDataToUpdate } = signUpData;
+
+    const userAuthValidation = UserAuthDataSchema.safeParse({ email, password });
+
+    if (!userAuthValidation.success) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userAuthValidation.error });
+
+      const errorMessage = constructZodErrorMessage(userAuthValidation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+
+        { status: 400 }
+      );
+    }
+
+    const userDataValidation = UpdateUserDataSchema.safeParse(userDataToUpdate);
+
+    if (!userDataValidation.success) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });
+
+      const errorMessage = constructZodErrorMessage(userDataValidation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+
+        { status: 400 }
+      );
+    }
+
+    const { data: signUpResponse, error: signUpError } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
 
     if (signUpError) {
-      return NextResponse.json({ success: false, message: `Sign up failed. ${signUpError.message}.` });
+      log.error('Sign up error', { error: signUpError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Sign up failed. ${signUpError.message}.`,
+        },
+
+        { status: 500 }
+      );
     }
 
+    const emptyFormFields = getEmptyObjectKeys(userDataToUpdate);
+    const numberOfFromFields = getObjectKeyCount(userDataToUpdate);
+    const hasDataToUpdate = emptyFormFields.length !== numberOfFromFields;
+
     if (hasDataToUpdate) {
-      const userId = signUpData?.user?.id ?? '';
+      const userId = signUpResponse?.user?.id ?? '';
 
       const { error: updateUserError } = await supabase.from('users').update(userDataToUpdate).eq('userId', userId);
 
       if (updateUserError) {
-        return NextResponse.json({
-          success: false,
-          message: `Sign up successful, but failed to insert name and contact number. ${updateUserError.message}.`,
-        });
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateUserError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Sign up successful, but failed to insert name and/or contact number.',
+          },
+
+          { status: 500 }
+        );
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Sign up successful' });
+    log.info(successMessage, { userId: signUpResponse.user?.id });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: successMessage,
+      },
+
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Sign up failed. An unexpected error occurred.' });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      },
+
+      { status: 500 }
+    );
+  } finally {
+    await log.flush();
   }
-}
+});

@@ -94,13 +94,15 @@ export const CONSTANTS = {
     },
   },
   USER_ERROR_MESSAGES: {
-    NOT_AUTHENTICATED: 'You need to be logged in to perform this action',
+    AUTHENTICATION: 'An error occured during authentication. Please try again later.',
+    NOT_AUTHENTICATED: 'You need to be signed in in to perform this action',
     NOT_AUTHORIZED: 'You are not authorized to perform this action',
     NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
     UNEXPECTED: 'An unexpected error occurred. Please try again later.',
   },
   LOGGER_ERROR_MESSAGES: {
-    NOT_AUTHENTICATED: 'Authentication error or user not authenticated',
+    AUTHENTICATION: 'Authentication error',
+    NOT_AUTHENTICATED: 'User not authenticated',
     NOT_AUTHORIZED: 'Authorization error or user not authorized',
     PARSE: 'Error parsing JSON',
     VALIDATION: 'Validation error',

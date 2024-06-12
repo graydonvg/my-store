@@ -18,14 +18,26 @@ export const POST = withAxiom(
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (authError || !authUser) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { authError, user: authUser });
+      if (authError) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          },
+
+          { status: 401 }
+        );
+      }
+
+      if (!authUser) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
 
         return NextResponse.json(
           {
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
-            data: null,
           },
 
           { status: 401 }

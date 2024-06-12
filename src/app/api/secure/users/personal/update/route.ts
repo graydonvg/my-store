@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, UpdateUserDb } from '@/types';
+import { CustomResponse, UpdateUserData } from '@/types';
 import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
@@ -11,7 +11,7 @@ export async function PUT(request: Request): Promise<NextResponse<CustomResponse
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const personalData: UpdateUserDb = await request.json();
+    const personalData: UpdateUserData = await request.json();
 
     if (!authUser)
       return NextResponse.json({

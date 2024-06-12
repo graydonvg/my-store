@@ -95,15 +95,9 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const { email, password, firstName, lastName, contactNumber } = formData;
+    const { confirmPassword, ...restOfFormData } = formData;
 
-    const { success, message } = await signUpNewUser({
-      email,
-      password,
-      firstName,
-      lastName,
-      contactNumber,
-    });
+    const { success, message } = await signUpNewUser(restOfFormData);
 
     if (success === true) {
       dispatch(closeDialog());
