@@ -5,7 +5,7 @@ import {
   QueryPageDataGrid,
   QueryFilterDataGrid,
   QuerySortDataGrid,
-  UserDataToUpdateSchema,
+  UserDataToUpdateAdminSchema,
 } from '@/types';
 import {
   GridColDef,
@@ -158,7 +158,7 @@ export default function UsersPageAdminPanelClient({
     const modifiedOldRow = oldRow.role === null ? { ...oldRow, role: 'none' } : oldRow;
     const modifiedNewRow = newRow.role === null ? { ...newRow, role: 'none' } : newRow;
 
-    const validation = UserDataToUpdateSchema.safeParse(modifiedNewRow);
+    const validation = UserDataToUpdateAdminSchema.safeParse(modifiedNewRow);
 
     if (!validation.success) {
       const errorMessage = constructZodErrorMessage(validation.error);

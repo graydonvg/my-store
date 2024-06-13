@@ -40,7 +40,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
         },
         { status: 400 }
       );
@@ -63,10 +63,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const { data, error: signInError } = await supabase.auth.signInWithPassword({
-      email: signInData.email,
-      password: signInData.password,
-    });
+    const { data, error: signInError } = await supabase.auth.signInWithPassword(validation.data);
 
     if (signInError) {
       log.error('Sign in error', { error: signInError });

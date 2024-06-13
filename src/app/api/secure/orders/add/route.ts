@@ -7,7 +7,7 @@ import { AxiomRequest, withAxiom } from 'next-axiom';
 export const POST = withAxiom(
   async (request: AxiomRequest): Promise<NextResponse<CustomResponse<AddOrderResponse | null>>> => {
     const supabase = await createSupabaseServerClient();
-    const log = request.log;
+    let log = request.log;
     const successMessage = 'Order created successfully';
 
     log.info('Attempting to add order');
@@ -44,6 +44,8 @@ export const POST = withAxiom(
         );
       }
 
+      log = request.log.with({ userId: authUser.id });
+
       let orderData: InsertOrder;
 
       try {
@@ -54,7 +56,7 @@ export const POST = withAxiom(
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
             data: null,
           },
 
@@ -65,7 +67,7 @@ export const POST = withAxiom(
       const validation = InsertOrderSchema.safeParse(orderData);
 
       if (!validation.success) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error, payload: orderData });
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: orderData, error: validation.error });
 
         return NextResponse.json(
           {
@@ -79,7 +81,7 @@ export const POST = withAxiom(
 
       const { error: insertOrderError, data: insertOrderResponseData } = await supabase
         .from('orders')
-        .insert({ ...orderData.orderDetails })
+        .insert({ ...validation.data.orderDetails })
         .select('orderId');
 
       if (insertOrderError) {
@@ -98,7 +100,7 @@ export const POST = withAxiom(
 
       const { orderId } = insertOrderResponseData[0];
 
-      const orderItemsWithOrderId = orderData.orderItems.map((item) => {
+      const orderItemsWithOrderId = validation.data.orderItems.map((item) => {
         return {
           ...item,
           orderId: orderId,
@@ -109,7 +111,7 @@ export const POST = withAxiom(
 
       const insertShippingDetailsPromise = supabase
         .from('shippingDetails')
-        .insert({ ...orderData.shippingDetails, orderId: orderId });
+        .insert({ ...validation.data.shippingDetails, orderId: orderId });
 
       const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
         insertOrderItemsPromise,

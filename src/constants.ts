@@ -97,7 +97,7 @@ export const CONSTANTS = {
     AUTHENTICATION: 'An error occured during authentication. Please try again later.',
     NOT_AUTHENTICATED: 'You need to be signed in in to perform this action',
     NOT_AUTHORIZED: 'You are not authorized to perform this action',
-    NO_DATA_RECEIVED: 'No data received. Please check your input and try again.',
+    NO_DATA: 'No data received. Please check your input and try again.',
     UNEXPECTED: 'An unexpected error occurred. Please try again later.',
   },
   LOGGER_ERROR_MESSAGES: {
@@ -105,6 +105,7 @@ export const CONSTANTS = {
     NOT_AUTHENTICATED: 'User not authenticated',
     NOT_AUTHORIZED: 'Authorization error or user not authorized',
     PARSE: 'Error parsing JSON',
+    NO_DATA: 'No data received',
     VALIDATION: 'Validation error',
     DATABASE_INSERT: 'Database insert error',
     DATABASE_UPDATE: 'Database update error',

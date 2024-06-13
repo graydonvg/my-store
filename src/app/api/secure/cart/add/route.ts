@@ -6,8 +6,7 @@ import { AxiomRequest, withAxiom } from 'next-axiom';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
-  const log = request.log;
-  const successMessage = 'Item added to cart successfully';
+  let log = request.log;
 
   log.info('Attempting to add item to cart');
 
@@ -43,6 +42,8 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
+    log = request.log.with({ userId: authUser.id });
+
     let cartItem: InsertCartItem;
 
     try {
@@ -53,7 +54,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
         },
         { status: 400 }
       );
@@ -62,7 +63,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const validation = InsertCartItemSchema.safeParse(cartItem);
 
     if (!validation.success) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error, payload: cartItem });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: cartItem, error: validation.error });
 
       return NextResponse.json(
         {
@@ -74,7 +75,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const { error: insertError } = await supabase.from('cart').insert(cartItem);
+    const { error: insertError } = await supabase.from('cart').insert(validation.data);
 
     if (insertError) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertError });
@@ -89,7 +90,9 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    log.info(successMessage, { userId: authUser.id, payload: cartItem });
+    const successMessage = 'Item added to cart successfully';
+
+    log.info(successMessage, { payload: cartItem });
 
     return NextResponse.json(
       {

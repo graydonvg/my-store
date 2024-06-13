@@ -2,6 +2,25 @@ import { z } from 'zod';
 import { Database } from './lib/supabase/database.types';
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Index:
+// Common schemas
+// User
+// Cart
+// Checkout
+// Address
+// Order
+// Wishlist
+// Product
+// Payment
+// Data grid
+// Misc
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Common schemas
+
 const NoNumbersInString = z
   .string()
   .trim()
@@ -10,26 +29,31 @@ const NoNumbersInString = z
     message: 'String must not contain numbers',
   });
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export const NumericIdSchema = z.coerce.number().int().positive();
+export const StringIdSchema = z.string();
 
-// Index:
-// 1. User
-// 2. Cart
-// 3. Checkout
-// 4. Address
-// 5. Order
-// 6. Wishlist
-// 7. Product
-// 8. Payment
-// 9. Admin
-// 10. Data grid
-// 11. Misc
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// 1. User
-
+const FirstNameSchema = NoNumbersInString;
+const LastNameSchema = NoNumbersInString;
 const ContactNumberSchema = z.string().trim().min(1);
+
+const ComplexOrBuildingSchema = z.string().trim().nullable();
+const StreetAddressSchema = z.string().min(1).trim();
+const SuburbSchema = NoNumbersInString;
+const CitySchema = NoNumbersInString;
+const ProvinceSchema = NoNumbersInString;
+const PostalCodeSchema = z.number().int().min(1000).max(9999);
+
+const ItemQuantitySchema = z.number().int().positive();
+const ItemSizeSchema = z.string();
+
+const ProductIdSchema = z.number().int().positive();
+
+const PriceSchema = z.number().positive();
+const NonnegativeNumberSchema = z.number().nonnegative();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// User
 
 const UserRoleSchema = z.enum(['admin', 'manager', 'owner']);
 export type UserRole = z.infer<typeof UserRoleSchema>;
@@ -40,8 +64,8 @@ export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
 export const UserAuthDataSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z.string().trim().email(),
+  password: z.string().trim(),
 });
 export type UserAuthData = z.infer<typeof UserAuthDataSchema>;
 
@@ -56,9 +80,9 @@ export type UserData = {
 };
 
 export const UpdateUserDataSchema = z.object({
+  firstName: FirstNameSchema.optional(),
+  lastName: LastNameSchema.optional(),
   contactNumber: ContactNumberSchema.optional(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
 });
 export type UpdateUserData = z.infer<typeof UpdateUserDataSchema>;
 
@@ -68,23 +92,44 @@ export type userPasswordType = {
   confirmPassword: string;
 };
 
-export const UserDataToUpdateSchema = z.object({
-  firstName: NoNumbersInString.optional(),
-  lastName: NoNumbersInString.optional(),
+export const UserDataToUpdateAdminSchema = z.object({
+  firstName: FirstNameSchema.optional(),
+  lastName: LastNameSchema.optional(),
   contactNumber: ContactNumberSchema.optional(),
   role: UserRoleSelectOptionsSchema.optional(),
 });
 
 export const UpdateUserAdminSchema = z.object({
-  userId: z.string(),
+  userId: StringIdSchema,
   currentRole: UserRoleSelectOptionsSchema,
-  dataToUpdate: UserDataToUpdateSchema,
+  dataToUpdate: UserDataToUpdateAdminSchema,
 });
 export type UpdateUserAdmin = z.infer<typeof UpdateUserAdminSchema>;
 
+export type AddNewUserAdminResponse = {
+  userId: string;
+};
+
+export type UsersDataGridDataAdmin = {
+  userId: string;
+  createdAt: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  contactNumber: string | null;
+  role: UserRole | null;
+};
+
+export type CreateUserAdminDb = {
+  contactNumber?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole | null;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 2. Cart
+// Cart
 
 export type CartItem = {
   createdAt: string;
@@ -113,29 +158,28 @@ export type CartItemWithPriceDetails = {
   totalDiscountedPrice: number | null;
 } & CartItem;
 
-export const InsertCartItemSchema = z
-  .object({
-    productId: z.number().positive(),
-    quantity: z.number().positive(),
-    size: z.string(),
-  })
-  .strict();
-
+export const InsertCartItemSchema = z.object({
+  productId: ProductIdSchema,
+  quantity: ItemQuantitySchema,
+  size: ItemSizeSchema,
+});
 export type InsertCartItem = z.infer<typeof InsertCartItemSchema>;
 
-export type UpdateCartItemSize = {
-  cartItemId: number;
-  size: string;
-};
+export const UpdateCartItemSizeSchema = z.object({
+  cartItemId: NumericIdSchema,
+  size: ItemSizeSchema,
+});
+export type UpdateCartItemSize = z.infer<typeof UpdateCartItemSizeSchema>;
 
-export type UpdateCartItemQuantity = {
-  cartItemId: number;
-  quantity: number;
-};
+export const UpdateCartItemQuantitySchema = z.object({
+  cartItemId: NumericIdSchema,
+  quantity: ItemQuantitySchema,
+});
+export type UpdateCartItemQuantity = z.infer<typeof UpdateCartItemQuantitySchema>;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 3. Checkout
+// Checkout
 
 export type CheckoutData = {
   orderAddressId: number | null;
@@ -152,7 +196,7 @@ export type CheckoutData = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 4. Address
+// Address
 
 export type InsertAddressDb = Database['public']['Tables']['addresses']['Insert'];
 
@@ -160,25 +204,24 @@ export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
 export type UpdateAddressDb = Database['public']['Tables']['addresses']['Update'];
 
-const PostalCodeSchema = z.number().int().min(1000).max(9999);
 type PostalCode = z.infer<typeof PostalCodeSchema>;
 
 export type AddressStore = {
   addressId: number | null;
-  recipientContactNumber: string;
   recipientFirstName: string;
   recipientLastName: string;
-  city: string;
+  recipientContactNumber: string;
   complexOrBuilding: string | null;
-  province: string;
   streetAddress: string;
   suburb: string;
+  city: string;
+  province: string;
   postalCode: '' | PostalCode;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 5. Order
+// Order
 const OrderStatusSchema = z.enum([
   'awaiting payment',
   'paid',
@@ -191,48 +234,40 @@ const OrderStatusSchema = z.enum([
 ]);
 export type OrderStatus = z.infer<typeof OrderStatusSchema>;
 
-const OrderShippingDetailsSchema = z
-  .object({
-    recipientFirstName: z.string(),
-    recipientLastName: z.string(),
-    recipientContactNumber: z.string(),
-    complexOrBuilding: z.string().nullable(),
-    streetAddress: z.string(),
-    suburb: z.string(),
-    province: z.string(),
-    city: z.string(),
-    postalCode: PostalCodeSchema,
-  })
-  .strict();
+const OrderShippingDetailsSchema = z.object({
+  recipientFirstName: FirstNameSchema,
+  recipientLastName: LastNameSchema,
+  recipientContactNumber: ContactNumberSchema,
+  complexOrBuilding: ComplexOrBuildingSchema,
+  streetAddress: StreetAddressSchema,
+  suburb: SuburbSchema,
+  city: CitySchema,
+  province: ProvinceSchema,
+  postalCode: PostalCodeSchema,
+});
 export type OrderShippingDetailsType = z.infer<typeof OrderShippingDetailsSchema>;
 
-const InsertOrderItemSchema = z
-  .object({
-    productId: z.number().positive(),
-    quantity: z.number().positive(),
-    size: z.string(),
-    pricePaid: z.number().positive(),
-  })
-  .strict();
+const InsertOrderItemSchema = z.object({
+  productId: NumericIdSchema,
+  quantity: ItemQuantitySchema,
+  size: ItemSizeSchema,
+  pricePaid: PriceSchema,
+});
 type InsertOrderItem = z.infer<typeof InsertOrderItemSchema>;
 
-const OrderDetailsSchema = z
-  .object({
-    cartTotal: z.number().positive(),
-    deliveryFee: z.number().nonnegative(),
-    discountTotal: z.number().nonnegative(),
-    orderTotal: z.number().positive(),
-    orderStatus: OrderStatusSchema,
-  })
-  .strict();
+const OrderDetailsSchema = z.object({
+  cartTotal: PriceSchema,
+  deliveryFee: NonnegativeNumberSchema,
+  discountTotal: NonnegativeNumberSchema,
+  orderTotal: PriceSchema,
+  orderStatus: OrderStatusSchema,
+});
 
-export const InsertOrderSchema = z
-  .object({
-    orderDetails: OrderDetailsSchema,
-    orderItems: InsertOrderItemSchema.array().min(1),
-    shippingDetails: OrderShippingDetailsSchema,
-  })
-  .strict();
+export const InsertOrderSchema = z.object({
+  orderDetails: OrderDetailsSchema,
+  orderItems: InsertOrderItemSchema.array().min(1),
+  shippingDetails: OrderShippingDetailsSchema,
+});
 export type InsertOrder = z.infer<typeof InsertOrderSchema>;
 
 export type OrderItem = {
@@ -264,19 +299,38 @@ export type OrderData = {
   pendingCheckoutSessionId: string | null;
 };
 
+export type OrdersDataGridDataAdmin = {
+  orderId: number;
+  createdAt: string;
+  firstName: string | null;
+  lastName: string | null;
+  contactNumber: string;
+  recipientFirstName: string;
+  recipientLastName: string;
+  recipientContactNumber: string;
+  complexOrBuilding: string | null;
+  streetAddress: string;
+  suburb: string;
+  province: string;
+  city: string;
+  postalCode: PostalCode;
+  orderStatus: OrderStatus;
+  orderTotal: number;
+};
+
 export const UpdateOrderSchema = z.object({
-  orderId: z.number().positive(),
-  recipientFirstName: NoNumbersInString.optional(),
-  recipientLastName: NoNumbersInString.optional(),
+  orderId: NumericIdSchema,
+  recipientFirstName: FirstNameSchema.optional(),
+  recipientLastName: LastNameSchema.optional(),
   recipientContactNumber: ContactNumberSchema.optional(),
-  complexOrBuilding: z.string().trim().nullable().optional(),
-  streetAddress: z.string().min(1).trim().optional(),
-  suburb: NoNumbersInString.optional(),
-  province: NoNumbersInString.optional(),
+  complexOrBuilding: ComplexOrBuildingSchema.optional(),
+  streetAddress: StreetAddressSchema.optional(),
+  suburb: SuburbSchema.optional(),
   city: NoNumbersInString.optional(),
-  postalCode: z.number().int().min(1000).max(9999).optional(),
+  province: ProvinceSchema.optional(),
+  postalCode: PostalCodeSchema.optional(),
   orderStatus: OrderStatusSchema.optional(),
-  orderTotal: z.number().positive().optional(),
+  orderTotal: PriceSchema.optional(),
 });
 export type UpdateOrder = z.infer<typeof UpdateOrderSchema>;
 
@@ -296,7 +350,7 @@ export type MonthlyOrderData = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 6. Wishlist
+// Wishlist
 
 export type WishlistData = {
   productId: number;
@@ -307,7 +361,7 @@ export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Ins
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 7. Product
+// Product
 
 export type ProductImageUploadProgress = {
   fileName: string;
@@ -376,7 +430,7 @@ export type BestSellersType = Array<Product & { totalQuantitySold: number | null
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 8. Payment
+// Payment
 
 export type StripeLineItem = {
   price_data: {
@@ -401,51 +455,7 @@ export type StripeCheckoutSessionResponse = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 9. Admin
-
-export type OrdersDataGridDataAdmin = {
-  orderId: number;
-  createdAt: string;
-  firstName: string | null;
-  lastName: string | null;
-  contactNumber: string;
-  recipientFirstName: string;
-  recipientLastName: string;
-  recipientContactNumber: string;
-  complexOrBuilding: string | null;
-  streetAddress: string;
-  suburb: string;
-  province: string;
-  city: string;
-  postalCode: PostalCode;
-  orderStatus: OrderStatus;
-  orderTotal: number;
-};
-
-export type AddNewUserAdminResponse = {
-  userId: string;
-};
-
-export type UsersDataGridDataAdmin = {
-  userId: string;
-  createdAt: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string;
-  contactNumber: string | null;
-  role: UserRole | null;
-};
-
-export type CreateUserAdminDb = {
-  contactNumber?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: UserRole | null;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// 10. Data grid
+// Data grid
 
 export type DataGridOptions = 'users' | 'orders';
 
@@ -467,7 +477,7 @@ export type QueryFilterDataGrid = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 11. Misc
+// Misc
 export type CustomResponse<T = unknown> = { success: boolean; message: string; data?: T };
 
 export type ResponseWithNoData = { success: boolean; message: string };

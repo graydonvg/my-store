@@ -43,7 +43,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA_RECEIVED,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
         },
         { status: 400 }
       );
@@ -85,10 +85,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const { data: signUpResponse, error: signUpError } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+    const { data: signUpResponse, error: signUpError } = await supabase.auth.signUp(userAuthValidation.data);
 
     if (signUpError) {
       log.error('Sign up error', { error: signUpError });
@@ -103,14 +100,17 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const emptyFormFields = getEmptyObjectKeys(userDataToUpdate);
-    const numberOfFromFields = getObjectKeyCount(userDataToUpdate);
+    const emptyFormFields = getEmptyObjectKeys(userDataValidation.data);
+    const numberOfFromFields = getObjectKeyCount(userDataValidation.data);
     const hasDataToUpdate = emptyFormFields.length !== numberOfFromFields;
 
     if (hasDataToUpdate) {
       const userId = signUpResponse?.user?.id ?? '';
 
-      const { error: updateUserError } = await supabase.from('users').update(userDataToUpdate).eq('userId', userId);
+      const { error: updateUserError } = await supabase
+        .from('users')
+        .update(userDataValidation.data)
+        .eq('userId', userId);
 
       if (updateUserError) {
         log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateUserError });
