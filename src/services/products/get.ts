@@ -1,7 +1,13 @@
 import { CONSTANTS } from '@/constants';
-import { CustomResponse, ResponseWithData, Product } from '@/types';
+import { ResponseWithData, Product } from '@/types';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export async function getAllProducts(): Promise<ResponseWithData<Product[] | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getAllProducts' });
+
+  serviceLog.info('Attempting to fetch all products');
   try {
     const url = `${CONSTANTS.URL}/api/products/get-all`;
 
@@ -10,15 +16,23 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
       cache: 'force-cache',
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/get-all. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function getProductById(id: string): Promise<CustomResponse<Product>> {
+export async function getProductById(id: string): Promise<ResponseWithData<Product | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getProductById' });
+
+  serviceLog.info('Attempting to fetch product by id');
+
   try {
     const url = `${CONSTANTS.URL}/api/products/get-by-id?product_id=${id}`;
 
@@ -27,15 +41,23 @@ export async function getProductById(id: string): Promise<CustomResponse<Product
       cache: 'force-cache',
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/get-by-id. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function getProductsByCategory(category: string): Promise<CustomResponse<Product[]>> {
+export async function getProductsByCategory(category: string): Promise<ResponseWithData<Product[] | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getProductsByCategory' });
+
+  serviceLog.info('Attempting to fetch products by category');
+
   try {
     const url = `${CONSTANTS.URL}/api/products/get-by-category?category=${category}`;
 
@@ -44,15 +66,23 @@ export async function getProductsByCategory(category: string): Promise<CustomRes
       cache: 'force-cache',
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/get-by-category. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }
 
-export async function getProductsOnSale(): Promise<CustomResponse<Product[]>> {
+export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getProductsOnSale' });
+
+  serviceLog.info('Attempting to fetch products on sale');
+
   try {
     const url = `${CONSTANTS.URL}/api/products/get-on-sale`;
 
@@ -61,10 +91,14 @@ export async function getProductsOnSale(): Promise<CustomResponse<Product[]>> {
       cache: 'force-cache',
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
-    throw new Error(`@services/products/get-on-sale. ${error}`);
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
   }
 }

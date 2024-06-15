@@ -7,7 +7,6 @@ import { AxiomRequest, withAxiom } from 'next-axiom';
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
   let log = request.log;
-  const successMessage = 'Item remove from cart successfully';
 
   log.info('Attempting to delete cart item');
 
@@ -89,6 +88,8 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
         { status: 500 }
       );
     }
+
+    const successMessage = 'Item remove from cart successfully';
 
     log.info(successMessage);
 

@@ -107,6 +107,7 @@ export const CONSTANTS = {
     PARSE: 'Error parsing JSON',
     NO_DATA: 'No data received',
     VALIDATION: 'Validation error',
+    DATABASE_SELECT: 'Database select error',
     DATABASE_INSERT: 'Database insert error',
     DATABASE_UPDATE: 'Database update error',
     DATABASE_DELETE: 'Database delete error',

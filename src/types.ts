@@ -364,6 +364,8 @@ export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Ins
 
 // Product
 
+export const ProductCategorySchema = z.enum(['Men', 'Women', 'Kids']);
+
 export type ProductImageUploadProgress = {
   fileName: string;
   progress: number;

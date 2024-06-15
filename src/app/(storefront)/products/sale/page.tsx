@@ -8,7 +8,7 @@ export default async function SaleProductsPage() {
   return (
     <>
       <PageHeaderWithBorder label="SALE" />
-      {products ? <Products products={products} /> : null}
+      {products ? <Products products={products} /> : 'No results.'}
     </>
   );
 }

@@ -1,16 +1,20 @@
+'use client';
+
 import { CONSTANTS } from '@/constants';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/simple/ContainedButton';
 import { useState } from 'react';
 import heroImage from '../../../public/stylish-woman-with-shopping-bags.jpg';
+import { useRouter } from 'next/navigation';
 
-type Props = {
-  navigateToAllProducts: () => void;
-};
-
-export default function HeroSection({ navigateToAllProducts }: Props) {
+export default function HeroSection() {
+  const router = useRouter();
   const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
+
+  function navigateToAllProducts() {
+    router.push('/products/all-products');
+  }
 
   return (
     <Box component="section">

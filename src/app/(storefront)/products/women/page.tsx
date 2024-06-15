@@ -9,7 +9,7 @@ export default async function WomensProductsPage() {
   return (
     <>
       <PageHeaderWithBorder label={category} />
-      {products ? <Products products={products} /> : null}
+      {products ? <Products products={products} /> : 'No results.'}
     </>
   );
 }

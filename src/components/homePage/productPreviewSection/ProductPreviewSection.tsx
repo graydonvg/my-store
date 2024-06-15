@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '@mui/material';
 import ProductPreviewList from './ProductPreviewList';
 import { useRouter } from 'next/navigation';
@@ -6,11 +8,14 @@ import { Product } from '@/types';
 type Props = {
   latestArrivals: Product[];
   productsOnSale: Product[];
-  navigateToAllProducts: () => void;
 };
 
-export default function ProductPreviewSection({ latestArrivals, productsOnSale, navigateToAllProducts }: Props) {
+export default function ProductPreviewSection({ latestArrivals, productsOnSale }: Props) {
   const router = useRouter();
+
+  function navigateToAllProducts() {
+    router.push('/products/all-products');
+  }
 
   function navigateToSale() {
     router.push('/products/sale');

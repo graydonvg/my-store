@@ -1,3 +1,5 @@
+'use client';
+
 import { CONSTANTS } from '@/constants';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';

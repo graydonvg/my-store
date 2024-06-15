@@ -3,7 +3,7 @@ import ProductCard from './productCard/ProductCard';
 import { Product } from '@/types';
 
 type Props = {
-  products: Product[] | null;
+  products: Product[];
 };
 
 export default function Products({ products }: Props) {
@@ -12,7 +12,7 @@ export default function Products({ products }: Props) {
       component="ul"
       container
       spacing={{ xs: 2, md: 3 }}>
-      {products?.map((product) => (
+      {products.map((product) => (
         <Grid
           component="li"
           key={product.productId}
