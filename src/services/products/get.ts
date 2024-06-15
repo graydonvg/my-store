@@ -18,9 +18,9 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
   }
 }
 
-export async function getProductById(productId: string): Promise<CustomResponse<Product>> {
+export async function getProductById(id: string): Promise<CustomResponse<Product>> {
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-by-id?product_id=${productId}`;
+    const url = `${CONSTANTS.URL}/api/products/get-by-id?product_id=${id}`;
 
     const response = await fetch(url, {
       method: 'GET',

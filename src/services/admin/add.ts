@@ -11,7 +11,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function addProduct(productData: AddProduct): Promise<ResponseWithNoData> {
+export async function addProduct(data: AddProduct): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addProduct' });
 
   serviceLog.info('Attempting to add product');
@@ -20,7 +20,7 @@ export async function addProduct(productData: AddProduct): Promise<ResponseWithN
     const response = await fetch('/api/secure/admin/products/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
@@ -36,7 +36,7 @@ export async function addProduct(productData: AddProduct): Promise<ResponseWithN
 }
 
 export async function createNewUser(
-  userData: UserAuthData & CreateUserAdminDb
+  data: UserAuthData & CreateUserAdminDb
 ): Promise<ResponseWithData<AddNewUserAdminResponse | null>> {
   const serviceLog = log.with({ scope: 'service', function: 'createNewUser' });
 
@@ -46,7 +46,7 @@ export async function createNewUser(
     const response = await fetch('/api/secure/admin/users/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

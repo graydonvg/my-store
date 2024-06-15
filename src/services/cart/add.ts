@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function addItemToCart(cartItemData: InsertCartItem): Promise<ResponseWithNoData> {
+export default async function addItemToCart(data: InsertCartItem): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addItemToCart' });
 
   serviceLog.info('Attempting to add item to cart');
@@ -13,7 +13,7 @@ export default async function addItemToCart(cartItemData: InsertCartItem): Promi
     const response = await fetch('/api/secure/cart/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cartItemData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

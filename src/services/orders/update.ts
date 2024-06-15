@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function updateOrderStatus(orderData: UpdateOrderStatus): Promise<ResponseWithNoData> {
+export default async function updateOrderStatus(data: UpdateOrderStatus): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateOrderStatus' });
 
   serviceLog.info('Attempting to update order status');
@@ -13,7 +13,7 @@ export default async function updateOrderStatus(orderData: UpdateOrderStatus): P
     const response = await fetch('/api/secure/orders/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

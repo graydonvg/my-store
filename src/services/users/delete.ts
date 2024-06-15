@@ -4,13 +4,13 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteAddress(addressId: number): Promise<CustomResponse> {
+export async function deleteAddress(id: number): Promise<CustomResponse> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteAddress' });
 
   serviceLog.info('Attempting to delete address');
 
   try {
-    const response = await fetch(`/api/secure/users/address/delete?address_id=${addressId}`, {
+    const response = await fetch(`/api/secure/users/address/delete?address_id=${id}`, {
       method: 'DELETE',
     });
 

@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseWithNoData, UpdateAddressDb, UpdateUserData, userPasswordType } from '@/types';
+import { ResponseWithNoData, UpdateAddressDb, UpdateUserData, UpdatePassword } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function updateUserAddress(addressData: UpdateAddressDb): Promise<ResponseWithNoData> {
+export async function updateUserAddress(data: UpdateAddressDb): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateUserAddress' });
 
   serviceLog.info('Attempting to update address');
@@ -13,7 +13,7 @@ export async function updateUserAddress(addressData: UpdateAddressDb): Promise<R
     const response = await fetch('/api/secure/users/address/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(addressData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
@@ -28,7 +28,7 @@ export async function updateUserAddress(addressData: UpdateAddressDb): Promise<R
   }
 }
 
-export async function updateUserPersonalInformation(userData: UpdateUserData): Promise<ResponseWithNoData> {
+export async function updateUserPersonalInformation(data: UpdateUserData): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateUserPersonalInformation' });
 
   serviceLog.info('Attempting to update user personal information');
@@ -37,7 +37,7 @@ export async function updateUserPersonalInformation(userData: UpdateUserData): P
     const response = await fetch('/api/secure/users/personal/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
@@ -52,7 +52,7 @@ export async function updateUserPersonalInformation(userData: UpdateUserData): P
   }
 }
 
-export async function updateUserPassword(passwordData: userPasswordType): Promise<ResponseWithNoData> {
+export async function updateUserPassword(data: UpdatePassword): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateUserPassword' });
 
   serviceLog.info('Attempting to update user password');
@@ -61,7 +61,7 @@ export async function updateUserPassword(passwordData: userPasswordType): Promis
     const response = await fetch('/api/secure/users/password/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(passwordData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

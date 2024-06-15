@@ -4,7 +4,7 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Index:
+// Sections:
 // Common schemas
 // User
 // Cart
@@ -86,7 +86,7 @@ export const UpdateUserDataSchema = z.object({
 });
 export type UpdateUserData = z.infer<typeof UpdateUserDataSchema>;
 
-export type userPasswordType = {
+export type UpdatePassword = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -334,10 +334,11 @@ export const UpdateOrderSchema = z.object({
 });
 export type UpdateOrder = z.infer<typeof UpdateOrderSchema>;
 
-export type UpdateOrderStatus = {
-  orderId: number;
-  orderStatus: OrderStatus;
-};
+export const UpdateOrderStatusSchema = z.object({
+  orderId: NumericIdSchema,
+  orderStatus: OrderStatusSchema,
+});
+export type UpdateOrderStatus = z.infer<typeof UpdateOrderStatusSchema>;
 
 export type AddOrderResponse = {
   orderId: number;

@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function addOrder(orderData: InsertOrder): Promise<ResponseWithData<AddOrderResponse | null>> {
+export default async function addOrder(data: InsertOrder): Promise<ResponseWithData<AddOrderResponse | null>> {
   const serviceLog = log.with({ scope: 'service', function: 'addOrder' });
 
   log.info('Attempting to add order');
@@ -13,7 +13,7 @@ export default async function addOrder(orderData: InsertOrder): Promise<Response
     const response = await fetch('/api/secure/orders/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

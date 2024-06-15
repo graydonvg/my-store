@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function addNewAddress(addressData: InsertAddressDb): Promise<ResponseWithNoData> {
+export async function addNewAddress(data: InsertAddressDb): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addNewAddress' });
 
   serviceLog.info('Attempting to add address');
@@ -13,7 +13,7 @@ export async function addNewAddress(addressData: InsertAddressDb): Promise<Respo
     const response = await fetch('/api/secure/users/address/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(addressData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

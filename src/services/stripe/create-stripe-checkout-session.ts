@@ -5,7 +5,7 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function createStripeCheckoutSession(
-  checkoutData: StripeCheckoutData
+  data: StripeCheckoutData
 ): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
   const serviceLog = log.with({ scope: 'service', function: 'createStripeCheckoutSession' });
 
@@ -15,7 +15,7 @@ export async function createStripeCheckoutSession(
     const response = await fetch('/api/secure/stripe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(checkoutData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

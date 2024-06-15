@@ -5,13 +5,13 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteProduct(productId: number): Promise<ResponseWithNoData> {
+export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteProduct' });
 
   serviceLog.info('Attempting to delete product');
 
   try {
-    const response = await fetch(`/api/secure/admin/products/delete?product_id=${productId}`, {
+    const response = await fetch(`/api/secure/admin/products/delete?product_id=${id}`, {
       method: 'DELETE',
     });
 
@@ -27,13 +27,13 @@ export async function deleteProduct(productId: number): Promise<ResponseWithNoDa
   }
 }
 
-export async function deleteProductImageDataFromDb(productImageId: number): Promise<ResponseWithNoData> {
+export async function deleteProductImageDataFromDb(id: number): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteProductImageDataFromDb' });
 
   serviceLog.info('Attempting to delete product image data from db');
 
   try {
-    const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${productImageId}`, {
+    const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${id}`, {
       method: 'DELETE',
     });
 

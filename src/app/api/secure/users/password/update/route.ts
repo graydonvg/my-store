@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, userPasswordType } from '@/types';
+import { CustomResponse, UpdatePassword } from '@/types';
 import { ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
@@ -11,7 +11,7 @@ export async function POST(request: Request): Promise<NextResponse<CustomRespons
       data: { user: authUser },
     } = await supabase.auth.getUser();
 
-    const passwordData: userPasswordType = await request.json();
+    const passwordData: UpdatePassword = await request.json();
 
     if (!authUser)
       return NextResponse.json({

@@ -4,13 +4,13 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteItemFromWishlist(wishlistItemId: number): Promise<ResponseWithNoData> {
+export async function deleteItemFromWishlist(id: number): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromWishlist' });
 
   serviceLog.info('Attempting to delete wishlist item');
 
   try {
-    const response = await fetch(`/api/secure/wishlist/delete?wishlist_item_id=${wishlistItemId}`, {
+    const response = await fetch(`/api/secure/wishlist/delete?wishlist_item_id=${id}`, {
       method: 'DELETE',
     });
 

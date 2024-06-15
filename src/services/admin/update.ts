@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function updateProduct(productData: UpdateProduct): Promise<ResponseWithNoData> {
+export async function updateProduct(data: UpdateProduct): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateProduct' });
 
   serviceLog.info('Attempting to update product');
@@ -13,7 +13,7 @@ export async function updateProduct(productData: UpdateProduct): Promise<Respons
     const response = await fetch('/api/secure/admin/products/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
@@ -28,7 +28,7 @@ export async function updateProduct(productData: UpdateProduct): Promise<Respons
   }
 }
 
-export async function updateUser(userData: UpdateUserAdmin): Promise<ResponseWithNoData> {
+export async function updateUser(data: UpdateUserAdmin): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateUser' });
 
   serviceLog.info('Attempting to update user');
@@ -37,7 +37,7 @@ export async function updateUser(userData: UpdateUserAdmin): Promise<ResponseWit
     const response = await fetch('/api/secure/admin/users/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
@@ -52,7 +52,7 @@ export async function updateUser(userData: UpdateUserAdmin): Promise<ResponseWit
   }
 }
 
-export async function updateOrder(orderData: UpdateOrder): Promise<ResponseWithNoData> {
+export async function updateOrder(data: UpdateOrder): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'updateOrder' });
 
   serviceLog.info('Attempting to update order');
@@ -61,7 +61,7 @@ export async function updateOrder(orderData: UpdateOrder): Promise<ResponseWithN
     const response = await fetch('/api/secure/admin/orders/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

@@ -5,7 +5,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function addItemToWishlist(wishlistItemData: InsertWishlistItemDb): Promise<ResponseWithNoData> {
+export default async function addItemToWishlist(data: InsertWishlistItemDb): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addItemToWishlist' });
 
   serviceLog.info('Attempting to add item to wishlist');
@@ -14,7 +14,7 @@ export default async function addItemToWishlist(wishlistItemData: InsertWishlist
     const response = await fetch('/api/secure/wishlist/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(wishlistItemData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

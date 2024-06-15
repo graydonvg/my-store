@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function signUpNewUser(signUpData: UserAuthData & UpdateUserData): Promise<ResponseWithNoData> {
+export default async function signUpNewUser(data: UserAuthData & UpdateUserData): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'signUpNewUser' });
 
   serviceLog.info('Attempting to sign up user');
@@ -13,7 +13,7 @@ export default async function signUpNewUser(signUpData: UserAuthData & UpdateUse
     const response = await fetch('/api/auth/sign-up', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(signUpData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();

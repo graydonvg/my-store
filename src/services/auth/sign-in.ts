@@ -4,7 +4,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function signInWithPassword(signInData: UserAuthData): Promise<ResponseWithNoData> {
+export default async function signInWithPassword(data: UserAuthData): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'signInWithPassword' });
 
   serviceLog.info('Attempting to sign in user');
@@ -13,7 +13,7 @@ export default async function signInWithPassword(signInData: UserAuthData): Prom
     const response = await fetch('/api/auth/sign-in', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(signInData),
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
