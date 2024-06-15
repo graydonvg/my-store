@@ -24,7 +24,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
           success: false,
           message: 'Unable to sign out. Please try again later.',
         },
-
         { status: 401 }
       );
     }
@@ -39,7 +38,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
           success: false,
           message: `Sign out failed. ${error.message}.`,
         },
-
         { status: 500 }
       );
     }
@@ -51,8 +49,7 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
         success: true,
         message: successMessage,
       },
-
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
@@ -62,7 +59,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

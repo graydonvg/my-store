@@ -25,8 +25,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: 'Unable to sign in. Please try again later.',
         },
-
-        { status: 401 }
+        { status: 409 }
       );
     }
 
@@ -58,7 +57,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -73,7 +71,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: `Sign in failed. ${signInError.message}.`,
         },
-
         { status: 500 }
       );
     }
@@ -85,8 +82,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: true,
         message: successMessage,
       },
-
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
@@ -96,7 +92,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

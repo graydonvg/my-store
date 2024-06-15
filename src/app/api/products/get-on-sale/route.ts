@@ -26,7 +26,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
           message: 'Failed to fetch products',
           data: null,
         },
-
         { status: 500 }
       );
     }
@@ -41,7 +40,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
         message: successMessage,
         data: products,
       },
-
       { status: 200 }
     );
   } catch (error) {
@@ -53,7 +51,6 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         data: null,
       },
-
       { status: 500 }
     );
   } finally {

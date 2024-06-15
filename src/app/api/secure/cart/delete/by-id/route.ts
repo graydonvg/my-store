@@ -24,8 +24,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
         },
-
-        { status: 401 }
+        { status: 500 }
       );
     }
 
@@ -37,7 +36,6 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
         },
-
         { status: 401 }
       );
     }
@@ -69,7 +67,6 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
-
         { status: 400 }
       );
     }
@@ -84,7 +81,6 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
           success: false,
           message: 'Failed to remove item from cart. Please try again later.',
         },
-
         { status: 500 }
       );
     }
@@ -98,8 +94,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
         success: true,
         message: successMessage,
       },
-
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
@@ -109,7 +104,6 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

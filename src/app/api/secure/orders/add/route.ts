@@ -26,8 +26,7 @@ export const POST = withAxiom(
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
           },
-
-          { status: 401 }
+          { status: 500 }
         );
       }
 
@@ -39,7 +38,6 @@ export const POST = withAxiom(
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
           },
-
           { status: 401 }
         );
       }
@@ -59,7 +57,6 @@ export const POST = withAxiom(
             message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
             data: null,
           },
-
           { status: 400 }
         );
       }
@@ -74,7 +71,6 @@ export const POST = withAxiom(
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
           },
-
           { status: 400 }
         );
       }
@@ -93,7 +89,6 @@ export const POST = withAxiom(
             message: 'Failed to create order. Please try again later.',
             data: null,
           },
-
           { status: 500 }
         );
       }
@@ -137,7 +132,6 @@ export const POST = withAxiom(
               message: 'Failed to add order items and shipping details. Please try again later.',
               data: null,
             },
-
             { status: 500 }
           );
         } else if (insertOrderItemsResponse.error) {
@@ -145,21 +139,27 @@ export const POST = withAxiom(
             error: insertOrderItemsResponse,
           });
 
-          return NextResponse.json({
-            success: false,
-            message: 'Failed to add order items. Please try again later.',
-            data: null,
-          });
+          return NextResponse.json(
+            {
+              success: false,
+              message: 'Failed to add order items. Please try again later.',
+              data: null,
+            },
+            { status: 500 }
+          );
         } else if (insertShippingDetailsResponse.error) {
           log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
             error: insertShippingDetailsResponse,
           });
 
-          return NextResponse.json({
-            success: false,
-            message: 'Failed to add shipping details. Please try again later.',
-            data: null,
-          });
+          return NextResponse.json(
+            {
+              success: false,
+              message: 'Failed to add shipping details. Please try again later.',
+              data: null,
+            },
+            { status: 500 }
+          );
         }
       }
 
@@ -180,7 +180,6 @@ export const POST = withAxiom(
           message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
           data: null,
         },
-
         { status: 500 }
       );
     } finally {

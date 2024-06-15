@@ -24,8 +24,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
         },
-
-        { status: 401 }
+        { status: 500 }
       );
     }
 
@@ -37,7 +36,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
         },
-
         { status: 401 }
       );
     }
@@ -70,7 +68,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
-
         { status: 400 }
       );
     }
@@ -89,7 +86,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           success: false,
           message: 'Failed to update order status. Please try again later.',
         },
-
         { status: 500 }
       );
     }
@@ -103,7 +99,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         success: true,
         message: successMessage,
       },
-
       { status: 201 }
     );
   } catch (error) {
@@ -114,7 +109,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

@@ -24,8 +24,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
         },
-
-        { status: 401 }
+        { status: 500 }
       );
     }
 
@@ -37,7 +36,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
         },
-
         { status: 401 }
       );
     }
@@ -70,7 +68,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
-
         { status: 400 }
       );
     }
@@ -85,7 +82,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: 'Failed to add item to cart. Please try again later.',
         },
-
         { status: 500 }
       );
     }
@@ -99,7 +95,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: true,
         message: successMessage,
       },
-
       { status: 201 }
     );
   } catch (error) {
@@ -110,7 +105,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

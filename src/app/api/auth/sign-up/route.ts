@@ -29,7 +29,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           message: 'Unable to sign up. Please try again later.',
         },
 
-        { status: 401 }
+        { status: 409 }
       );
     }
 
