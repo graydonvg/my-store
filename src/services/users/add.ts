@@ -1,10 +1,10 @@
 import { CONSTANTS } from '@/constants';
-import { InsertAddressDb, ResponseWithNoData } from '@/types';
+import { InsertAddress, ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function addNewAddress(data: InsertAddressDb): Promise<ResponseWithNoData> {
+export async function addNewAddress(data: InsertAddress): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'addNewAddress' });
 
   serviceLog.info('Attempting to add address');

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 import { addNewAddress } from '@/services/users/add';
-import { AddressStore } from '@/types';
+import { AddressStore, InsertAddressSchema } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
 import { useRouter } from 'next/navigation';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/features/addressForm/addressFormSlice';
 import AddressForm from './AddressForm';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 export default function AddNewAddressForm() {
   const router = useRouter();
@@ -25,14 +26,18 @@ export default function AddNewAddressForm() {
   async function handleAddNewAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const { addressId, postalCode, ...restOfAddressData } = addressFormData;
+    const validation = InsertAddressSchema.safeParse(addressFormData);
+
+    if (!validation.success) {
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
+      return;
+    }
 
     dispatch(setIsDialogLoading(true));
 
-    const { success, message } = await addNewAddress({
-      ...restOfAddressData,
-      postalCode: Number(postalCode),
-    });
+    const { success, message } = await addNewAddress(validation.data);
 
     if (success === true) {
       router.refresh();

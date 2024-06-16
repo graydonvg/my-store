@@ -1,42 +1,112 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { CustomResponse } from '@/types';
-import { ERROR_MESSAGES } from '@/constants';
+import { NextResponse } from 'next/server';
+import { NumericIdSchema, ResponseWithNoData } from '@/types';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { AxiomRequest, withAxiom } from 'next-axiom';
 
-export async function DELETE(request: NextRequest): Promise<NextResponse<CustomResponse>> {
+export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
+  let log = request.log;
+
+  log.info('Attempting to delete address');
 
   try {
     const {
       data: { user: authUser },
+      error: authError,
     } = await supabase.auth.getUser();
+
+    if (authError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!authUser) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+        },
+        { status: 401 }
+      );
+    }
+
+    log = request.log.with({ userId: authUser.id });
 
     const searchParams = request.nextUrl.searchParams;
     const addressId = searchParams.get('address_id');
 
-    if (!authUser)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to delete address. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
-      });
+    if (!addressId) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NO_DATA);
 
-    if (!addressId)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to delete address. ${ERROR_MESSAGES.NO_ID_RECEIVED}`,
-      });
-
-    const { error } = await supabase.from('addresses').delete().eq('addressId', addressId);
-
-    if (error) {
-      return NextResponse.json({ success: false, message: `Failed to delete address. ${error.message}.` });
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: 'Address deleted successfully' });
+    const validation = NumericIdSchema.safeParse(addressId);
+
+    if (!validation.success) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { value: addressId, error: validation.error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { error: deleteError } = await supabase.from('addresses').delete().eq('addressId', validation.data);
+
+    if (deleteError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Failed to delete address. Please try again later.',
+        },
+        { status: 500 }
+      );
+    }
+
+    const successMessage = 'Address deleted successfully';
+
+    log.info(successMessage);
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: successMessage,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to delete address. An unexpect error occured.',
-    });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      },
+      { status: 500 }
+    );
+  } finally {
+    await log.flush();
   }
-}
+});

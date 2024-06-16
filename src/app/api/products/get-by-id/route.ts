@@ -3,6 +3,7 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { NumericIdSchema, Product, ResponseWithData } from '@/types';
 import { NextResponse } from 'next/server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithData<Product | null>>> => {
   const supabase = await createSupabaseServerClient();
@@ -32,10 +33,12 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     if (!validation.success) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { value: productId, error: validation.error });
 
+      const errorMessage = constructZodErrorMessage(validation.error);
+
       return NextResponse.json(
         {
           success: false,
-          message: 'Invalid product ID',
+          message: errorMessage,
           data: null,
         },
         { status: 400 }

@@ -7,6 +7,11 @@ import { updateUserPersonalInformation } from '@/services/users/update';
 import { toast } from 'react-toastify';
 import AccountPageForm from './AccountPageForm';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
+import { UpdateUserDataSchema } from '@/types';
+import { constructZodErrorMessage } from '@/utils/construct';
+import { useLogger } from 'next-axiom';
+import { CONSTANTS } from '@/constants';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   field: 'firstName' | 'lastName' | 'contactNumber';
@@ -18,8 +23,10 @@ type Props = {
 export default function UpdatePersonalInfoForm({ field, label, data, icon }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const log = useLogger();
   const [formData, setFormData] = useState(data);
   const isUpdatingAccount = useAppSelector(selectIsUpdatingAccount);
+  const userData = useAppSelector(selectUserData);
 
   function cancelUpdateField() {
     dispatch(setAccountFieldToEdit(null));
@@ -40,6 +47,21 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
 
     if (!isDataChanged) {
       dispatch(setAccountFieldToEdit(null));
+      return;
+    }
+
+    const validation = UpdateUserDataSchema.safeParse({ [field]: formData });
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        userId: userData?.userId,
+        payload: { [field]: formData },
+        error: validation.error,
+      });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
       return;
     }
 

@@ -19,7 +19,7 @@ export default function UpdatePasswordForm() {
   const [formData, setFormData] = useState(initialFormData);
   const isUpdatingAccount = useAppSelector(selectIsUpdatingAccount);
 
-  function handleCancelUpdateField() {
+  function cancelUpdate() {
     dispatch(setAccountFieldToEdit(null));
   }
 
@@ -36,7 +36,7 @@ export default function UpdatePasswordForm() {
     event.preventDefault();
 
     if (formData.newPassword !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('New password and confirmation password do not match');
       return;
     }
 
@@ -48,7 +48,7 @@ export default function UpdatePasswordForm() {
       confirmPassword: formData.confirmPassword,
     });
 
-    if (success === true) {
+    if (success) {
       dispatch(setAccountFieldToEdit(null));
       setFormData(initialFormData);
       toast.success(message);
@@ -68,7 +68,7 @@ export default function UpdatePasswordForm() {
         formData.confirmPassword.length === 0
       }
       isSubmitting={isUpdatingAccount}
-      onCancel={handleCancelUpdateField}>
+      onCancel={cancelUpdate}>
       <CustomTextField
         fullWidth={true}
         label="Current Password"

@@ -41,7 +41,7 @@ const StreetAddressSchema = z.string().min(1).trim();
 const SuburbSchema = NoNumbersInString;
 const CitySchema = NoNumbersInString;
 const ProvinceSchema = NoNumbersInString;
-const PostalCodeSchema = z.number().int().min(1000).max(9999);
+const PostalCodeSchema = z.coerce.number().int().min(1000).max(9999);
 
 const ItemQuantitySchema = z.number().int().positive();
 const ItemSizeSchema = z.string();
@@ -198,11 +198,34 @@ export type CheckoutData = {
 
 // Address
 
-export type InsertAddressDb = Database['public']['Tables']['addresses']['Insert'];
-
 export type AddressType = Database['public']['Tables']['addresses']['Row'];
 
-export type UpdateAddressDb = Database['public']['Tables']['addresses']['Update'];
+export const InsertAddressSchema = z.object({
+  recipientFirstName: FirstNameSchema,
+  recipientLastName: LastNameSchema,
+  recipientContactNumber: ContactNumberSchema,
+  complexOrBuilding: ComplexOrBuildingSchema,
+  streetAddress: StreetAddressSchema,
+  suburb: SuburbSchema,
+  city: CitySchema,
+  province: ProvinceSchema,
+  postalCode: PostalCodeSchema,
+});
+export type InsertAddress = z.infer<typeof InsertAddressSchema>;
+
+export const UpdateAddressSchema = z.object({
+  addressId: NumericIdSchema,
+  recipientFirstName: FirstNameSchema,
+  recipientLastName: LastNameSchema,
+  recipientContactNumber: ContactNumberSchema,
+  complexOrBuilding: ComplexOrBuildingSchema,
+  streetAddress: StreetAddressSchema,
+  suburb: SuburbSchema,
+  city: CitySchema,
+  province: ProvinceSchema,
+  postalCode: PostalCodeSchema,
+});
+export type UpdateAddress = z.infer<typeof UpdateAddressSchema>;
 
 type PostalCode = z.infer<typeof PostalCodeSchema>;
 

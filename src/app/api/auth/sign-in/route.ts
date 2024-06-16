@@ -8,14 +8,26 @@ import { constructZodErrorMessage } from '@/utils/construct';
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
   const log = request.log;
-  const successMessage = 'Sign in successful';
 
   log.info('Attempting to sign in user');
 
   try {
     const {
       data: { user: authUser },
+      error: authError,
     } = await supabase.auth.getUser();
+
+    if (authError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+        },
+        { status: 500 }
+      );
+    }
 
     if (authUser) {
       log.warn('A user session already exists', { user: authUser });
@@ -39,7 +51,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
         { status: 400 }
       );
@@ -48,7 +60,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const validation = UserAuthDataSchema.safeParse(signInData);
 
     if (!validation.success) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
 
       const errorMessage = constructZodErrorMessage(validation.error);
 
@@ -74,6 +86,8 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         { status: 500 }
       );
     }
+
+    const successMessage = 'Sign in successful';
 
     log.info(successMessage, { userId: data.user.id });
 

@@ -17,7 +17,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
 
       return NextResponse.json(
         {

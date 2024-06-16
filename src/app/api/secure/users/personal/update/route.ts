@@ -1,41 +1,116 @@
 import { NextResponse } from 'next/server';
-import { CustomResponse, UpdateUserData } from '@/types';
-import { ERROR_MESSAGES } from '@/constants';
+import { ResponseWithNoData, UpdateUserData, UpdateUserDataSchema } from '@/types';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { AxiomRequest, withAxiom } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
-export async function PUT(request: Request): Promise<NextResponse<CustomResponse>> {
+export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
+  let log = request.log;
+
+  log.info('Attempting to update user personal information');
 
   try {
     const {
       data: { user: authUser },
+      error: authError,
     } = await supabase.auth.getUser();
 
-    const personalData: UpdateUserData = await request.json();
+    if (authError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
 
-    if (!authUser)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to update personal information. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
-      });
-
-    if (!personalData)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to update personal information. ${ERROR_MESSAGES.NO_DATA_RECEIVED}`,
-      });
-
-    const { error } = await supabase.from('users').update(personalData).eq('userId', authUser.id);
-
-    if (error) {
-      return NextResponse.json({ success: false, message: `Failed to update personal information. ${error.message}.` });
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+        },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: 'Personal information updated successfully' });
+    if (!authUser) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+        },
+        { status: 401 }
+      );
+    }
+
+    log = request.log.with({ userId: authUser.id });
+
+    let personalData: UpdateUserData;
+
+    try {
+      personalData = await request.json();
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        },
+        { status: 400 }
+      );
+    }
+
+    const validation = UpdateUserDataSchema.safeParse(personalData);
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: personalData, error: validation.error });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { error: updateError } = await supabase.from('users').update(validation.data).eq('userId', authUser.id);
+
+    if (updateError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Failed to update personal information. Please try again later.',
+        },
+        { status: 500 }
+      );
+    }
+
+    const successMessage = 'Personal information updated successfully';
+
+    log.info(successMessage, { payload: personalData });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: successMessage,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to update personal information. An unexpect error occured.',
-    });
+    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      },
+      { status: 500 }
+    );
+  } finally {
+    await log.flush();
   }
-}
+});

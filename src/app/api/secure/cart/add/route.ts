@@ -17,7 +17,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
 
       return NextResponse.json(
         {
@@ -52,7 +52,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NO_DATA,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
         },
         { status: 400 }
       );

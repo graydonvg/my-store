@@ -7,14 +7,26 @@ import { CONSTANTS } from '@/constants';
 
 export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
-  const successMessage = 'Sign out successful';
 
   log.info('Attempting to sign out user');
 
   try {
     const {
       data: { user: authUser },
+      error: authError,
     } = await supabase.auth.getUser();
+
+    if (authError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+        },
+        { status: 500 }
+      );
+    }
 
     if (!authUser) {
       log.warn('No user session exists', { user: authUser });
@@ -41,6 +53,8 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
         { status: 500 }
       );
     }
+
+    const successMessage = 'Sign out successful';
 
     log.info(successMessage);
 
