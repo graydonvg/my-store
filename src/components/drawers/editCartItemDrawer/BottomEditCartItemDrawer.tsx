@@ -8,7 +8,6 @@ import addItemToWishlist from '@/services/wishlist/add';
 import { toast } from 'react-toastify';
 import TextButton from '@/components/ui/buttons/simple/TextButton';
 import { selectWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSelectors';
-import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   cartItem: CartItem;
@@ -25,7 +24,6 @@ export default function BottomEditCartItemDrawer({
 }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const userData = useAppSelector(selectUserData);
   const wishlistData = useAppSelector(selectWishlistData);
 
   async function moveToWishlist() {
@@ -43,7 +41,6 @@ export default function BottomEditCartItemDrawer({
     const { success, message } = await addItemToWishlist({
       size: cartItem.size,
       productId: cartItem.product?.productId!,
-      userId: userData?.userId,
     });
 
     if (success) {

@@ -381,7 +381,11 @@ export type WishlistData = {
   size: string;
 };
 
-export type InsertWishlistItemDb = Database['public']['Tables']['wishlist']['Insert'];
+export const InsertWishlistItemSchema = z.object({
+  productId: NumericIdSchema,
+  size: ItemSizeSchema,
+});
+export type InsertWishlistItemDb = z.infer<typeof InsertWishlistItemSchema>;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
