@@ -55,7 +55,7 @@ const NonnegativeNumberSchema = z.number().nonnegative();
 
 // User
 
-const UserRoleSchema = z.enum(['admin', 'manager', 'owner']);
+export const UserRoleSchema = z.enum(['admin', 'manager', 'owner']).nullable();
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
 const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', 'owner']);
@@ -76,7 +76,7 @@ export type UserData = {
   lastName: string | null;
   contactNumber: string | null;
   isOAuthSignIn: boolean;
-  role: UserRole | null;
+  role: UserRole;
 };
 
 export const UpdateUserDataSchema = z.object({
@@ -110,21 +110,21 @@ export type AddNewUserAdminResponse = {
   userId: string;
 };
 
-export type UsersDataGridDataAdmin = {
+export type UsersDataGrid = {
   userId: string;
   createdAt: string;
   firstName: string | null;
   lastName: string | null;
   email: string;
   contactNumber: string | null;
-  role: UserRole | null;
+  role: UserRole;
 };
 
-export type CreateUserAdminDb = {
+export type CreateUser = {
   contactNumber?: string;
   firstName?: string;
   lastName?: string;
-  role?: UserRole | null;
+  role?: UserRole;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -322,7 +322,7 @@ export type OrderData = {
   pendingCheckoutSessionId: string | null;
 };
 
-export type OrdersDataGridDataAdmin = {
+export type OrdersDataGrid = {
   orderId: number;
   createdAt: string;
   firstName: string | null;

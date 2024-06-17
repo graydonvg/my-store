@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { formatCurrency } from '@/utils/format';
-import { OrdersDataGridDataAdmin } from '@/types';
+import { OrdersDataGrid } from '@/types';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import MuiLink from '../../ui/MuiLink';
@@ -22,7 +22,7 @@ import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
 type Props = {
-  orders: OrdersDataGridDataAdmin[] | null;
+  orders: OrdersDataGrid[] | null;
 };
 
 export default function RecentOrdersTable({ orders }: Props) {

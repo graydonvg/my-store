@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  UsersDataGridDataAdmin,
+  UsersDataGrid,
   QueryPageDataGrid,
   QueryFilterDataGrid,
   QuerySortDataGrid,
@@ -33,7 +33,7 @@ import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { constructZodErrorMessage } from '@/utils/construct';
 
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
-  const columns: GridColDef<UsersDataGridDataAdmin>[] = [
+  const columns: GridColDef<UsersDataGrid>[] = [
     {
       field: 'userId',
       headerName: 'ID',
@@ -121,7 +121,7 @@ function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: b
 }
 
 type Props = {
-  users: UsersDataGridDataAdmin[] | null;
+  users: UsersDataGrid[] | null;
   totalRowCount: number;
   querySuccess: boolean;
   queryMessage: string;

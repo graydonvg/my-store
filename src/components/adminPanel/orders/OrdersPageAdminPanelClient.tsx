@@ -2,7 +2,7 @@
 
 import {
   OrderStatus,
-  OrdersDataGridDataAdmin,
+  OrdersDataGrid,
   UpdateOrderSchema,
   QueryFilterDataGrid,
   QueryPageDataGrid,
@@ -30,7 +30,7 @@ import { updateOrder } from '@/services/admin/update';
 import { constructZodErrorMessage } from '@/utils/construct';
 
 function getColumns(isUpdating: boolean) {
-  const columns: GridColDef<OrdersDataGridDataAdmin>[] = [
+  const columns: GridColDef<OrdersDataGrid>[] = [
     {
       field: 'orderId',
       headerName: 'ID',
@@ -183,7 +183,7 @@ function getColumns(isUpdating: boolean) {
 }
 
 type Props = {
-  orders: OrdersDataGridDataAdmin[] | null;
+  orders: OrdersDataGrid[] | null;
   totalRowCount: number;
   querySuccess: boolean;
   queryMessage: string;
@@ -211,7 +211,9 @@ export default function OrdersPageAdminPanelClient({
 
     if (!validation.success) {
       const errorMessage = constructZodErrorMessage(validation.error);
+
       toast.error(errorMessage);
+
       return oldRow;
     }
 

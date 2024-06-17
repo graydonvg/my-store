@@ -1,12 +1,5 @@
 import { CONSTANTS } from '@/constants';
-import {
-  AddNewUserAdminResponse,
-  AddProduct,
-  CreateUserAdminDb,
-  ResponseWithData,
-  ResponseWithNoData,
-  UserAuthData,
-} from '@/types';
+import { AddProduct, CreateUser, ResponseWithNoData, UserAuthData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -35,9 +28,7 @@ export async function addProduct(data: AddProduct): Promise<ResponseWithNoData> 
   }
 }
 
-export async function createNewUser(
-  data: UserAuthData & CreateUserAdminDb
-): Promise<ResponseWithData<AddNewUserAdminResponse | null>> {
+export async function createNewUser(data: UserAuthData & CreateUser): Promise<ResponseWithNoData> {
   const serviceLog = log.with({ scope: 'service', function: 'createNewUser' });
 
   serviceLog.info('Attempting to create user');
@@ -55,7 +46,7 @@ export async function createNewUser(
   } catch (error) {
     serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
     await serviceLog.flush();
   }
