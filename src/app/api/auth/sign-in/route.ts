@@ -14,20 +14,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
   try {
     const {
       data: { user: authUser },
-      error: authError,
     } = await supabase.auth.getUser();
-
-    if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
-        },
-        { status: 500 }
-      );
-    }
 
     if (authUser) {
       log.warn('A user session already exists', { user: authUser });

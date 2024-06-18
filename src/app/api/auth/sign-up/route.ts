@@ -17,20 +17,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
   try {
     const {
       data: { user: authUser },
-      error: authError,
     } = await supabase.auth.getUser();
-
-    if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
-        },
-        { status: 500 }
-      );
-    }
 
     if (authUser) {
       log.warn('A user session already exists', { user: authUser });
@@ -40,7 +27,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: 'Unable to sign up. Please try again later.',
         },
-
         { status: 409 }
       );
     }
@@ -75,7 +61,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -92,7 +77,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -107,7 +91,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: `Sign up failed. ${signUpError.message}.`,
         },
-
         { status: 500 }
       );
     }
@@ -132,7 +115,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
             success: false,
             message: 'Sign up successful, but failed to insert name and/or contact number.',
           },
-
           { status: 500 }
         );
       }
@@ -147,7 +129,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: true,
         message: successMessage,
       },
-
       { status: 201 }
     );
   } catch (error) {
@@ -158,7 +139,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         success: false,
         message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
       },
-
       { status: 500 }
     );
   } finally {

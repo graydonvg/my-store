@@ -101,7 +101,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -118,7 +117,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -135,7 +133,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           success: false,
           message: errorMessage,
         },
-
         { status: 400 }
       );
     }
@@ -147,10 +144,13 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     ) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign: userRoleValidation.data });
 
-      return NextResponse.json({
-        success: false,
-        message: `Not authorized to assign role '${userRoleValidation.data}'.`,
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Not authorized to assign role '${userRoleValidation.data}'.`,
+        },
+        { status: 401 }
+      );
     }
 
     const { data: createUserData, error: createUserError } = await supabaseService.auth.admin.createUser({
@@ -161,10 +161,13 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     if (createUserError) {
       log.error('Database create user error', { error: createUserError });
 
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to create user. Please try again later.',
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Failed to create user. Please try again later.',
+        },
+        { status: 500 }
+      );
     }
 
     const emptyFormFields = getEmptyObjectKeys(restOfUserDataToUpdate);
@@ -181,10 +184,13 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       if (updateError) {
         log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateError });
 
-        return NextResponse.json({
-          success: false,
-          message: 'User created successfully, but failed to update users table entry.',
-        });
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'User created successfully, but failed to update users table entry.',
+          },
+          { status: 500 }
+        );
       }
 
       if (userRoleValidation.data) {
@@ -196,10 +202,13 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         if (insertUserRoleError) {
           log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertUserRoleError });
 
-          return NextResponse.json({
-            success: false,
-            message: 'User created successfully, but failed to assign user role.',
-          });
+          return NextResponse.json(
+            {
+              success: false,
+              message: 'User created successfully, but failed to assign user role.',
+            },
+            { status: 500 }
+          );
         }
       }
     }

@@ -188,7 +188,7 @@ export default function UsersPageAdminPanelClient({
       (modifiedNewRow.role === 'manager' && !userRole.isOwner) ||
       (modifiedNewRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
     ) {
-      toast.error(`Not authorized to assign role - ${modifiedNewRow.role}`);
+      toast.error(`Not authorized to assign role '${modifiedNewRow.role}'`);
 
       return oldRow;
     }

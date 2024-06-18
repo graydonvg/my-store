@@ -95,7 +95,7 @@ export type UpdatePassword = {
 export const UserDataToUpdateAdminSchema = z.object({
   firstName: FirstNameSchema.optional(),
   lastName: LastNameSchema.optional(),
-  contactNumber: ContactNumberSchema.optional(),
+  contactNumber: ContactNumberSchema.nullable().optional(),
   role: UserRoleSelectOptionsSchema.optional(),
 });
 
