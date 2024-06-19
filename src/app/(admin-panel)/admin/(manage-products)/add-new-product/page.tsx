@@ -1,7 +1,6 @@
 'use client';
 
 import { FormEvent, useEffect } from 'react';
-import { InsertProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -19,6 +18,7 @@ import {
   selectProductFormData,
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { InsertProductData } from '@/types';
 
 export default function AdminPanelAddNewProductPage() {
   const router = useRouter();
@@ -61,7 +61,7 @@ export default function AdminPanelAddNewProductPage() {
     dispatch(setIsProductFormSubmitting(true));
 
     const { success, message } = await addProduct({
-      productData: productFormData as InsertProductDb,
+      productData: productFormData as InsertProductData,
       imageData,
     });
 

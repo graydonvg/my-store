@@ -393,6 +393,10 @@ export type InsertWishlistItemDb = z.infer<typeof InsertWishlistItemSchema>;
 
 export const ProductCategorySchema = z.enum(['Men', 'Women', 'Kids']);
 
+const IsProductOnSaleSchema = z.enum(['Yes', 'No']);
+
+const ProductSalePercentageSchema = z.number().min(0).max(100);
+
 export type ProductImageUploadProgress = {
   fileName: string;
   progress: number;
@@ -430,8 +434,6 @@ export type Product = {
 
 export type UpdateProductDb = Database['public']['Tables']['products']['Update'];
 
-export type InsertProductDb = Database['public']['Tables']['products']['Insert'];
-
 export type InsertProductStore = {
   productId?: number;
   brand: string;
@@ -446,10 +448,31 @@ export type InsertProductStore = {
   salePercentage: '' | number;
 };
 
-export type AddProduct = {
-  productData: InsertProductDb;
-  imageData: InsertProductImageDataStore[];
-};
+const InsertProductDataSchema = z.object({
+  category: ProductCategorySchema,
+  name: z.string(),
+  brand: z.string(),
+  details: z.string(),
+  sizes: z.string().array(),
+  deliveryInfo: z.string(),
+  returnInfo: z.string(),
+  price: PriceSchema,
+  isOnSale: IsProductOnSaleSchema,
+  salePercentage: ProductSalePercentageSchema,
+});
+export type InsertProductData = z.infer<typeof InsertProductDataSchema>;
+
+const InsertProductImageDataSchema = z.object({
+  index: z.number().int().nonnegative(),
+  fileName: z.string(),
+  imageUrl: z.string().url(),
+});
+
+export const AddProductSchema = z.object({
+  productData: InsertProductDataSchema,
+  imageData: InsertProductImageDataSchema.array(),
+});
+export type AddProduct = z.infer<typeof AddProductSchema>;
 
 export type UpdateProduct = {
   productData: UpdateProductDb;

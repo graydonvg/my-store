@@ -30,6 +30,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
+
     dispatch(setProductFormData({ field: name as keyof InsertProductStore, value }));
   }
 

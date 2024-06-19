@@ -10,13 +10,21 @@ function handleSetProductDataOnChange(
 ) {
   if (field === 'sizes') {
     return setAvailableSizes(value as string, productFormData);
-  } else if (field === 'isOnSale' && value === 'No') {
-    return { ...productFormData, [field]: value, salePercentage: 0 };
-  } else if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
-    return { ...productFormData, [field]: value, salePercentage: initialState.productFormData.salePercentage };
-  } else {
-    return { ...productFormData, [field]: value };
   }
+
+  if (field === 'isOnSale' && value === 'No') {
+    return { ...productFormData, [field]: value, salePercentage: 0 };
+  }
+
+  if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
+    return { ...productFormData, [field]: value, salePercentage: initialState.productFormData.salePercentage };
+  }
+
+  if (field === 'price' || field === 'salePercentage') {
+    return { ...productFormData, [field]: Number(value) };
+  }
+
+  return { ...productFormData, [field]: value };
 }
 
 function setAvailableSizes(value: string, productFormData: InsertProductStore) {
@@ -24,13 +32,13 @@ function setAvailableSizes(value: string, productFormData: InsertProductStore) {
     const filteredSizes = productFormData.sizes.filter((size) => size !== value);
 
     return { ...productFormData, sizes: filteredSizes };
-  } else {
-    const sizes = [...productFormData.sizes, value];
-
-    const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
-
-    return { ...productFormData, sizes: sortedSizes };
   }
+
+  const sizes = [...productFormData.sizes, value];
+
+  const sortedSizes = sizes.sort(sortItemSizesArrayForStore);
+
+  return { ...productFormData, sizes: sortedSizes };
 }
 
 type State = {
