@@ -78,6 +78,7 @@ export default function ManageProductImages() {
       <EditProductImagesDrawerButton />
       <EditProductImagesDrawer />
       <ContainedButton
+        tabIndex={-1}
         color="primary"
         label={
           <>

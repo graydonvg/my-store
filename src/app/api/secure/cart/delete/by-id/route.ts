@@ -60,7 +60,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     const validation = NumericIdSchema.safeParse(cartItemId);
 
     if (!validation.success) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { value: cartItemId, error: validation.error });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
 
       return NextResponse.json(
         {

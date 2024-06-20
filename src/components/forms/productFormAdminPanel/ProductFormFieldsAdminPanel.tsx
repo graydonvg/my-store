@@ -39,7 +39,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Typography color={(theme) => theme.palette.custom.textField.label}>Available Sizes *</Typography>
         <ToggleButtons
-          aria-label="select size"
+          aria-label="select available sizes"
           onChange={handleSelectSize}
           selection={productFormData.sizes}
           buttons={CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
