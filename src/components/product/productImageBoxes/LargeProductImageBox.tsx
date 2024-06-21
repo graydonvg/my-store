@@ -2,16 +2,15 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { CircularProgressWithLabel } from '../../ui/progress/CircularProgressWithLabel';
-import { InsertProductImageDataDb, InsertProductImageDataStore } from '@/types';
+import { ProductImageData } from '@/types';
 import { CONSTANTS } from '@/constants';
 import { useState } from 'react';
 
 type Props = {
   selectedImageIndex: number;
-  productImageData?: InsertProductImageDataDb | InsertProductImageDataStore;
+  productImageData?: ProductImageData;
   productName: string;
   boxBorderColor: string;
-  maxImageCount?: number;
 };
 
 export default function LargeProductImageBox({
@@ -19,7 +18,6 @@ export default function LargeProductImageBox({
   productImageData,
   productName,
   boxBorderColor,
-  maxImageCount,
 }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { imageUploadProgress } = useAppSelector((state) => state.productImages);
@@ -67,7 +65,7 @@ export default function LargeProductImageBox({
           <Typography
             variant="body2"
             sx={{ color: (theme) => theme.palette.custom.textField.label }}>
-            {`(Max. ${maxImageCount} images)`}
+            {`(Max. ${CONSTANTS.MAXIMUM_PRODUCT_IMAGES} images)`}
           </Typography>
         </Box>
       ) : null}

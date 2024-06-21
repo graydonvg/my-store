@@ -1,10 +1,8 @@
-import { CustomResponse, InsertProductImageDataStore } from '@/types';
+import { CustomResponse, ProductImageData } from '@/types';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 
-export async function deleteProductImagesFromStorage(
-  imageData: InsertProductImageDataStore[]
-): Promise<CustomResponse> {
+export async function deleteProductImagesFromStorage(imageData: ProductImageData[]): Promise<CustomResponse> {
   const storageImagesToDelete = imageData.map((data) => data.fileName);
 
   const storageDeletePromises = storageImagesToDelete.map(
@@ -22,7 +20,7 @@ export async function deleteProductImagesFromStorage(
   }
 }
 
-export async function deleteProductImagesDataFromDb(imageData: InsertProductImageDataStore[]) {
+export async function deleteProductImagesDataFromDb(imageData: ProductImageData[]) {
   const dbProductImageDataToDelete = imageData.map((data) => data.productImageId);
 
   const dbProductImageDataDeletePromises = dbProductImageDataToDelete.map((productImageId) =>
@@ -44,7 +42,7 @@ export async function deleteProductImagesDataFromDb(imageData: InsertProductImag
 // If a productId exists, delete related image data (image url, etc) from database.
 
 export async function deleteAllProductImages(
-  imageData: InsertProductImageDataStore[],
+  imageData: ProductImageData[],
   productId?: number | null
 ): Promise<CustomResponse> {
   let dbDeleteResponse: CustomResponse = {

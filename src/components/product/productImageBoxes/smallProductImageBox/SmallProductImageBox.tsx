@@ -2,13 +2,13 @@ import { Box, Grid, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { CircularProgressWithLabel } from '../../../ui/progress/CircularProgressWithLabel';
-import { ProductImageUploadProgress, InsertProductImageDataStore } from '@/types';
+import { ProductImageUploadProgress, ProductImageData } from '@/types';
 import { CONSTANTS } from '@/constants';
 import { useState } from 'react';
 
 type SmallProductImageBoxProps = {
   productName?: string;
-  productImageData?: InsertProductImageDataStore;
+  productImageData?: ProductImageData;
   uploadProgressData?: ProductImageUploadProgress;
   selectImage?: () => void;
   imageIndex?: number;

@@ -50,6 +50,7 @@ export const GET = withAxiom(
         .from('products')
         .select('*, productImageData(fileName, imageUrl, productImageId, index)')
         .eq('category', validation.data)
+        .order('index', { referencedTable: 'productImageData', ascending: true })
         .order('createdAt', { ascending: false });
 
       if (error) {

@@ -1,4 +1,4 @@
-import { InsertProductImageDataStore, ProductImageUploadProgress } from '@/types';
+import { ProductImageData, ProductImageUploadProgress } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 function updateImageUploadProgress(
@@ -16,13 +16,13 @@ function updateImageUploadProgress(
   return [...imageUploadProgress];
 }
 
-function updateImageIndexesAndSort(imageData: InsertProductImageDataStore[]) {
+function updateImageIndexesAndSort(imageData: ProductImageData[]) {
   return imageData
     .map((data, newIndex) => (data.index === newIndex ? data : { ...data, index: newIndex }))
     .sort((a, b) => a.index - b.index);
 }
 
-function deleteImage(fileName: string, imageData: InsertProductImageDataStore[]) {
+function deleteImage(fileName: string, imageData: ProductImageData[]) {
   const filteredImageData = imageData.filter((image) => image.fileName !== fileName);
 
   return updateImageIndexesAndSort(filteredImageData);
@@ -32,7 +32,7 @@ type State = {
   isDeletingImage: boolean;
   isEditImagesDrawerOpen: boolean;
   imageUploadProgress: ProductImageUploadProgress[];
-  imageData: InsertProductImageDataStore[];
+  imageData: ProductImageData[];
 };
 
 const initialState: State = {

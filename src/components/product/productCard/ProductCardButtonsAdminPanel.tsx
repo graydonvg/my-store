@@ -39,9 +39,11 @@ export default function ProductCardButtonsAdminPanel({ product }: Props) {
       }
     }
 
+    console.log(productImageData);
+
     dispatch(clearProductFormData());
     dispatch(clearAllProductImagesData());
-    dispatch(setImageData(product.productImageData));
+    dispatch(setImageData(productImageData));
     dispatch(setProductFormData(restOfProductData));
     router.push('/admin/edit-product');
     setIsLoading(false);

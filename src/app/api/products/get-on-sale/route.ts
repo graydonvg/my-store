@@ -15,6 +15,7 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
       .from('products')
       .select('*, productImageData(fileName, imageUrl, productImageId, index)')
       .eq('isOnSale', 'Yes')
+      .order('index', { referencedTable: 'productImageData', ascending: true })
       .order('salePercentage', { ascending: false });
 
     if (error) {

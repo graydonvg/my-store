@@ -60,10 +60,10 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    let productDataToAdd: AddProduct;
+    let dataToAdd: AddProduct;
 
     try {
-      productDataToAdd = await request.json();
+      dataToAdd = await request.json();
     } catch (error) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
 
@@ -76,7 +76,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const validation = AddProductSchema.safeParse(productDataToAdd);
+    const validation = AddProductSchema.safeParse(dataToAdd);
 
     if (!validation.success) {
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
@@ -141,7 +141,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
 
     const successMessage = 'Product added successfully';
 
-    log.info(successMessage, { payload: productDataToAdd });
+    log.info(successMessage, { payload: dataToAdd });
 
     return NextResponse.json(
       {

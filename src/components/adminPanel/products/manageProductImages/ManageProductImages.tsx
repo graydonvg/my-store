@@ -17,6 +17,7 @@ import {
 import EditProductImagesDrawerButton from './EditProductImagesDrawerButton';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSelectors';
+import { CONSTANTS } from '@/constants';
 
 export default function ManageProductImages() {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ export default function ManageProductImages() {
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-  const maxImageCount = 5;
+  const maxImageCount = CONSTANTS.MAXIMUM_PRODUCT_IMAGES;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -74,7 +75,7 @@ export default function ManageProductImages() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
-      <ProductImageBoxes maxImageCount={maxImageCount} />
+      <ProductImageBoxes />
       <EditProductImagesDrawerButton />
       <EditProductImagesDrawer />
       <ContainedButton

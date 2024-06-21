@@ -13,10 +13,9 @@ import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features
 
 type Props = {
   product?: Product;
-  maxImageCount?: number;
 };
 
-export default function ProductImageBoxes({ product, maxImageCount }: Props) {
+export default function ProductImageBoxes({ product }: Props) {
   const theme = useTheme();
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith('/admin');
@@ -24,6 +23,8 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
   const productFormData = useAppSelector(selectProductFormData);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
+
+  console.log(imageData);
 
   useEffect(() => {
     if ((isAdminPath && imageData.length === 0) || product?.productImageData.length === 0) {
@@ -80,7 +81,6 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
                 selectImage={selectedImage}
                 selectedImageIndex={selectedImageIndex}
                 getBoxBorderColor={getBoxBorderColor}
-                maxImageCount={maxImageCount!}
               />
             ) : null}
           </Grid>
@@ -104,7 +104,6 @@ export default function ProductImageBoxes({ product, maxImageCount }: Props) {
               productName={productFormData.name}
               productImageData={imageData[selectedImageIndex]}
               selectedImageIndex={selectedImageIndex}
-              maxImageCount={maxImageCount}
               boxBorderColor={getBoxBorderColor({
                 defaultBorderColor: !imageData[selectedImageIndex],
                 focusedBorderColor: imageUploadProgress[selectedImageIndex] && !imageData[selectedImageIndex],

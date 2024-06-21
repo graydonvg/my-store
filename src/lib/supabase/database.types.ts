@@ -262,7 +262,7 @@ export type Database = {
       products: {
         Row: {
           brand: string;
-          category: string;
+          category: Database['public']['Enums']['productCategory'];
           createdAt: string;
           deliveryInfo: string;
           details: string;
@@ -276,7 +276,7 @@ export type Database = {
         };
         Insert: {
           brand: string;
-          category: string;
+          category: Database['public']['Enums']['productCategory'];
           createdAt?: string;
           deliveryInfo: string;
           details: string;
@@ -290,7 +290,7 @@ export type Database = {
         };
         Update: {
           brand?: string;
-          category?: string;
+          category?: Database['public']['Enums']['productCategory'];
           createdAt?: string;
           deliveryInfo?: string;
           details?: string;
@@ -575,6 +575,7 @@ export type Database = {
         | 'cancelled'
         | 'returned'
         | 'refunded';
+      productCategory: 'Men' | 'Women' | 'Kids';
     };
     CompositeTypes: {
       [_ in never]: never;

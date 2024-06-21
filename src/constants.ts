@@ -9,6 +9,7 @@ export const CONSTANTS = {
   STORE_DESCRIPTION: `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`,
   BORDER_RADIUS: '4px',
   FREE_DELIVERY_THRESHOLD: 500,
+  MAXIMUM_PRODUCT_IMAGES: 5,
   USER_ROLE_OPTIONS: ['none', 'admin', 'manager', 'owner'] as UserRoleSelectOptions[],
   HAS_ADMIN_PANEL_ACCESS: ['admin', 'manager', 'owner'],
   ORDERED_SIZES_FOR_TOGGLE_BUTTONS: [

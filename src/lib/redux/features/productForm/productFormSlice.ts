@@ -1,11 +1,11 @@
-import { InsertProductStore } from '@/types';
+import { ProductForm } from '@/types';
 import { sortItemSizesArrayForStore } from '@/utils/sort';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 function handleSetProductDataOnChange(
-  field: keyof InsertProductStore,
-  value: InsertProductStore[keyof InsertProductStore],
-  productFormData: InsertProductStore,
+  field: keyof ProductForm,
+  value: ProductForm[keyof ProductForm],
+  productFormData: ProductForm,
   initialState: State
 ) {
   if (field === 'sizes') {
@@ -13,11 +13,15 @@ function handleSetProductDataOnChange(
   }
 
   if (field === 'isOnSale' && value === 'No') {
-    return { ...productFormData, [field]: value, salePercentage: 0 };
+    return { ...productFormData, [field]: value as ProductForm['isOnSale'], salePercentage: 0 };
   }
 
   if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
-    return { ...productFormData, [field]: value, salePercentage: initialState.productFormData.salePercentage };
+    return {
+      ...productFormData,
+      [field]: value as ProductForm['isOnSale'],
+      salePercentage: initialState.productFormData.salePercentage,
+    };
   }
 
   if (field === 'price' || field === 'salePercentage') {
@@ -27,7 +31,7 @@ function handleSetProductDataOnChange(
   return { ...productFormData, [field]: value };
 }
 
-function setAvailableSizes(value: string, productFormData: InsertProductStore) {
+function setAvailableSizes(value: string, productFormData: ProductForm) {
   if (productFormData.sizes.includes(value)) {
     const filteredSizes = productFormData.sizes.filter((size) => size !== value);
 
@@ -43,7 +47,7 @@ function setAvailableSizes(value: string, productFormData: InsertProductStore) {
 
 type State = {
   isSubmitting: boolean;
-  productFormData: InsertProductStore;
+  productFormData: ProductForm;
 };
 
 const initialState: State = {
@@ -68,9 +72,7 @@ const productFormSlice = createSlice({
   reducers: {
     setProductFormData(
       state,
-      action: PayloadAction<
-        InsertProductStore | { field: keyof InsertProductStore; value: InsertProductStore[keyof InsertProductStore] }
-      >
+      action: PayloadAction<ProductForm | { field: keyof ProductForm; value: ProductForm[keyof ProductForm] }>
     ) {
       if ('field' in action.payload && 'value' in action.payload) {
         const { field, value } = action.payload;

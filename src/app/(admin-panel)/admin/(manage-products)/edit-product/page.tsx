@@ -1,7 +1,6 @@
 'use client';
 
 import { FormEvent, useEffect } from 'react';
-import { UpdateProductDb } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -18,6 +17,8 @@ import {
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { updateProduct } from '@/services/admin/update';
+import { UpdateProductSchema } from '@/types';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 export default function AdminPanelEditProductPage() {
   const router = useRouter();
@@ -50,15 +51,24 @@ export default function AdminPanelEditProductPage() {
 
   async function updateProductHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(setIsProductFormSubmitting(true));
 
-    const { success, message } = await updateProduct({
+    const validation = UpdateProductSchema.safeParse({
       productData: {
         ...productFormData,
         productId: productFormData.productId!,
-      } as UpdateProductDb,
+      },
       imageData,
     });
+
+    if (!validation.success) {
+      const errorMessage = constructZodErrorMessage(validation.error);
+      toast.error(errorMessage);
+      return;
+    }
+
+    dispatch(setIsProductFormSubmitting(true));
+
+    const { success, message } = await updateProduct(validation.data);
 
     if (success) {
       dispatch(clearProductFormData());

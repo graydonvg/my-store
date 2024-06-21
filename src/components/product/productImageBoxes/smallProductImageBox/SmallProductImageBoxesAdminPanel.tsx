@@ -6,7 +6,6 @@ import { selectProductFormData } from '@/lib/redux/features/productForm/productF
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 
 type Props = {
-  maxImageCount: number;
   selectImage: (index: number) => void;
   selectedImageIndex: number;
   getBoxBorderColor: ({
@@ -19,7 +18,6 @@ type Props = {
 };
 
 export default function SmallProductImageBoxesAdminPanel({
-  maxImageCount,
   selectImage,
   selectedImageIndex,
   getBoxBorderColor,
@@ -46,10 +44,7 @@ export default function SmallProductImageBoxesAdminPanel({
         <SmallBoxWithUploadProgress boxBorderColor={getBoxBorderColor({ focusedBorderColor: true })} />
       ) : null}
 
-      <EmptySmallBoxWithBorder
-        maxImageCount={maxImageCount}
-        boxBorderColor={getBoxBorderColor({ defaultBorderColor: true })}
-      />
+      <EmptySmallBoxWithBorder boxBorderColor={getBoxBorderColor({ defaultBorderColor: true })} />
     </>
   );
 }

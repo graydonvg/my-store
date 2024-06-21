@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
-import { InsertProductImageDataStore } from '@/types';
+import { ProductImageData } from '@/types';
 import Image from 'next/image';
 import { CONSTANTS } from '@/constants';
 import { DeleteForever, DragHandle } from '@mui/icons-material';
@@ -21,7 +21,7 @@ import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/pro
 import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 
 export type Props = {
-  imageDataProps: InsertProductImageDataStore & { id: string };
+  imageDataProps: ProductImageData & { id: string };
   activeItemId: UniqueIdentifier | null;
 };
 

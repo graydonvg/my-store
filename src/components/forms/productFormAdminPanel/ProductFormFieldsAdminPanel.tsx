@@ -7,7 +7,7 @@ import NumberField from '@/components/ui/inputFields/NumberField';
 import { CONSTANTS } from '@/constants';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
-import { InsertProductStore } from '@/types';
+import { ProductForm } from '@/types';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 
 type Props = {
@@ -31,7 +31,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    dispatch(setProductFormData({ field: name as keyof InsertProductStore, value }));
+    dispatch(setProductFormData({ field: name as keyof ProductForm, value }));
   }
 
   return (
