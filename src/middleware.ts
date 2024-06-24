@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json({ success: false, message: 'Not Authorized.' });
+      response = NextResponse.json({ success: false, message: 'Not Authorized.' }, { status: 401 });
     } else {
       const redirectUrl = new URL('/welcome/sign-in', request.url);
       response = NextResponse.redirect(redirectUrl);
@@ -45,7 +45,7 @@ export async function middleware(request: NextRequest) {
 
   if (authRequiredPath && !authUser) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED });
+      response = NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED }, { status: 401 });
     } else {
       const redirectUrl = new URL('/welcome/sign-in', request.url);
       response = NextResponse.redirect(redirectUrl);

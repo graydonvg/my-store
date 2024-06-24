@@ -1,65 +1,143 @@
-import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
+import { CustomResponse, StripeCheckoutData, StripeCheckoutDataSchema, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { ERROR_MESSAGES, CONSTANTS } from '@/constants';
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { AxiomRequest, withAxiom } from 'next-axiom';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
 });
 
-export async function POST(request: Request): Promise<NextResponse<CustomResponse<StripeCheckoutSessionResponse>>> {
-  const supabase = await createSupabaseServerClient();
+export const POST = withAxiom(
+  async (request: AxiomRequest): Promise<NextResponse<CustomResponse<StripeCheckoutSessionResponse | null>>> => {
+    const supabase = await createSupabaseServerClient();
+    let log = request.log;
 
-  try {
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
+    log.info('Attempting to create Stripe checkout session');
 
-    const checkoutData: StripeCheckoutData = await request.json();
+    try {
+      const {
+        data: { user: authUser },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-    if (!authUser)
-      return NextResponse.json({
-        success: false,
-        message: `Failed to create a Stripe checkout session. ${ERROR_MESSAGES.NOT_AUTHENTICATED}`,
+      if (authError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+            data: null,
+          },
+          { status: 500 }
+        );
+      }
+
+      if (!authUser) {
+        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+            data: null,
+          },
+          { status: 401 }
+        );
+      }
+
+      log = request.log.with({ userId: authUser.id });
+
+      let checkoutData: StripeCheckoutData;
+
+      try {
+        checkoutData = await request.json();
+      } catch (error) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            data: null,
+          },
+          { status: 400 }
+        );
+      }
+
+      const validation = StripeCheckoutDataSchema.safeParse(checkoutData);
+
+      if (!validation.success) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: checkoutData, error: validation.error });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            data: null,
+          },
+          { status: 400 }
+        );
+      }
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: validation.data.lineItems,
+        mode: 'payment',
+        success_url: `${CONSTANTS.URL}/checkout/payment/confirmation?payment_status=success&order_id=${validation.data.orderId}`,
+        cancel_url: `${CONSTANTS.URL}/cart/view?payment_status=cancelled&order_id=${validation.data.orderId}`,
+        metadata: { userId: authUser.id, orderId: validation.data.orderId },
+        payment_intent_data: {
+          metadata: { userId: authUser.id, orderId: validation.data.orderId },
+        },
       });
 
-    if (!checkoutData.orderId || !checkoutData.lineItems)
-      return NextResponse.json({
-        success: false,
-        message: 'Failed to create a Stripe checkout session. Order data missing',
-      });
+      const { error: insertError } = await supabase
+        .from('pendingCheckoutSessions')
+        .insert({ sessionId: session.id, userId: authUser.id, orderId: validation.data.orderId });
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: checkoutData.lineItems,
-      mode: 'payment',
-      success_url: `${CONSTANTS.URL}/checkout/payment/confirmation?payment_status=success&order_id=${checkoutData.orderId}`,
-      cancel_url: `${CONSTANTS.URL}/cart/view?payment_status=cancelled&order_id=${checkoutData.orderId}`,
-      metadata: { userId: authUser.id, orderId: checkoutData.orderId },
-      payment_intent_data: {
-        metadata: { userId: authUser.id, orderId: checkoutData.orderId },
-      },
-    });
+      if (insertError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertError });
 
-    const { error } = await supabase
-      .from('pendingCheckoutSessions')
-      .insert({ sessionId: session.id, userId: authUser.id, orderId: checkoutData.orderId });
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Failed to insert checkout session ID. Please try again later.',
+            data: null,
+          },
+          { status: 500 }
+        );
+      }
 
-    if (error) {
-      return NextResponse.json({ success: false, message: `Failed to add checkout session ID. ${error.message}.` });
+      const successMessage = 'Stripe checkout session created successfully';
+
+      log.info(successMessage, { checkoutData });
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: successMessage,
+          data: { sessionId: session.id },
+        },
+        {
+          status: 201,
+        }
+      );
+    } catch (error) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          data: null,
+        },
+        { status: 500 }
+      );
+    } finally {
+      await log.flush();
     }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Stripe checkout session created successfully',
-      data: { sessionId: session.id },
-    });
-  } catch (error) {
-    // Axiom error log
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to create a Stripe checkout session. An unexpect error occured.',
-    });
   }
-}
+);

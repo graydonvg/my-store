@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { InsertOrder, AddOrderResponse, CustomResponse, InsertOrderSchema } from '@/types';
+import { InsertOrder, AddOrderResponse, InsertOrderSchema, ResponseWithData } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 
 export const POST = withAxiom(
-  async (request: AxiomRequest): Promise<NextResponse<CustomResponse<AddOrderResponse | null>>> => {
+  async (request: AxiomRequest): Promise<NextResponse<ResponseWithData<AddOrderResponse | null>>> => {
     const supabase = await createSupabaseServerClient();
     let log = request.log;
-    const successMessage = 'Order created successfully';
 
     log.info('Attempting to add order');
 
@@ -25,6 +24,7 @@ export const POST = withAxiom(
           {
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+            data: null,
           },
           { status: 500 }
         );
@@ -37,6 +37,7 @@ export const POST = withAxiom(
           {
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+            data: null,
           },
           { status: 401 }
         );
@@ -70,6 +71,7 @@ export const POST = withAxiom(
           {
             success: false,
             message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            data: null,
           },
           { status: 400 }
         );
@@ -163,10 +165,16 @@ export const POST = withAxiom(
         }
       }
 
+      const successMessage = 'Order created successfully';
+
       log.info(successMessage, { orderId });
 
       return NextResponse.json(
-        { success: true, message: successMessage, data: { orderId } },
+        {
+          success: true,
+          message: successMessage,
+          data: { orderId },
+        },
         {
           status: 201,
         }

@@ -9,7 +9,7 @@ export async function createStripeCheckoutSession(
 ): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
   const serviceLog = log.with({ scope: 'service', function: 'createStripeCheckoutSession' });
 
-  serviceLog.info('Attempting to create stripe checkout session');
+  serviceLog.info('Attempting to create Stripe checkout session');
 
   try {
     const response = await fetch('/api/secure/stripe', {

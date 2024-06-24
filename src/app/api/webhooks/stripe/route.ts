@@ -1,7 +1,8 @@
-import { CustomResponse } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createSupabaseService from '@/lib/supabase/supabase-service';
+import { ResponseWithNoData } from '@/types';
+import { CONSTANTS } from '@/constants';
 
 const supabase = createSupabaseService();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -21,7 +22,10 @@ async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompl
       .eq('userId', userId);
 
     if (updateOrderStatusError) {
-      return { success: false, message: `Failed to update order status. ${updateOrderStatusError.message}.` };
+      return {
+        success: false,
+        message: `Failed to update order status. ${updateOrderStatusError.message}.`,
+      };
     }
 
     const { error: deletePendingCheckoutSessionError } = await supabase
@@ -40,13 +44,21 @@ async function handleCheckoutSessionCompleted(event: Stripe.CheckoutSessionCompl
     const { error: deleteCartErrorCompleted } = await supabase.from('cart').delete().eq('userId', userId);
 
     if (deleteCartErrorCompleted) {
-      return { success: false, message: `Failed to clear cart. ${deleteCartErrorCompleted.message}.` };
+      return {
+        success: false,
+        message: `Failed to clear cart. ${deleteCartErrorCompleted.message}.`,
+      };
     }
 
     return { success: true, message: 'Completed checkout session handled successfully' };
   } catch (error) {
-    //Axiom error log
-    return { success: false, message: 'Error handling completed checkout session' };
+    let message = 'Unknown error';
+
+    if (error instanceof Error) {
+      message = error.message;
+    }
+
+    return { success: false, message: `Error handling completed checkout session: ${message}` };
   }
 }
 
@@ -71,8 +83,13 @@ async function handleCheckoutSessionExpired(event: Stripe.CheckoutSessionExpired
 
     return { success: true, message: 'Expired checkout session handled successfully' };
   } catch (error) {
-    //Axiom error log
-    return { success: true, message: 'Error handling expired checkout session' };
+    let message = 'Unknown error';
+
+    if (error instanceof Error) {
+      message = error.message;
+    }
+
+    return { success: false, message: `Error handling expired checkout session: ${message}` };
   }
 }
 
@@ -89,84 +106,136 @@ async function handleChargeRefunded(event: Stripe.ChargeRefundedEvent) {
       .eq('userId', userId);
 
     if (updateOrderStatusError) {
-      return { success: false, message: `Failed to update order status. ${updateOrderStatusError.message}.` };
+      return {
+        success: false,
+        message: `Failed to update order status. ${updateOrderStatusError.message}.`,
+      };
     }
 
     return { success: true, message: 'Charge refund handled successfully' };
   } catch (error) {
-    //Axiom error log
-    return { success: true, message: 'Error handling charge refund' };
+    let message = 'Unknown error';
+
+    if (error instanceof Error) {
+      message = error.message;
+    }
+
+    return { success: false, message: `Error handling charge refund: ${message}` };
   }
 }
 
-export async function POST(request: NextRequest): Promise<NextResponse<CustomResponse>> {
-  const rawBody = await request.text();
-  const signature = request.headers.get('stripe-signature');
-
-  let event;
-
+export async function POST(request: NextRequest): Promise<NextResponse<ResponseWithNoData>> {
   try {
-    event = stripe.webhooks.constructEvent(rawBody, signature!, process.env.STRIPE_WEBHOOK_SECRET!);
-  } catch (err) {
-    let message = 'Unknown error';
-    if (err instanceof Error) {
-      message = err.message;
+    const rawBody = await request.text();
+
+    if (!rawBody) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Received empty request body',
+        },
+        { status: 400 }
+      );
     }
+
+    const signature = request.headers.get('stripe-signature');
+
+    if (!signature) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Missing Stripe signature',
+        },
+        { status: 400 }
+      );
+    }
+
+    let event: Stripe.Event;
+
+    try {
+      event = stripe.webhooks.constructEvent(rawBody, signature!, process.env.STRIPE_WEBHOOK_SECRET!);
+    } catch (error) {
+      let message = 'Unknown error';
+
+      if (error instanceof Error) {
+        message = error.message;
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Webhook signature verification failed: ${message}`,
+        },
+        { status: 500 }
+      );
+    }
+
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const { success, message } = await handleCheckoutSessionCompleted(event);
+
+        if (!success) {
+          return NextResponse.json(
+            {
+              success: false,
+              message,
+            },
+            { status: 500 }
+          );
+        }
+        break;
+      }
+
+      case 'checkout.session.expired': {
+        const { success, message } = await handleCheckoutSessionExpired(event);
+
+        if (!success) {
+          return NextResponse.json(
+            {
+              success: false,
+              message,
+            },
+            { status: 500 }
+          );
+        }
+        break;
+      }
+
+      case 'charge.refunded': {
+        const { success, message } = await handleChargeRefunded(event);
+
+        if (!success) {
+          return NextResponse.json(
+            {
+              success: false,
+              message,
+            },
+            { status: 500 }
+          );
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+
     return NextResponse.json(
-      { success: false, message: `Webhook signature verification failed: ${message}` },
-      { status: 400 }
+      {
+        success: true,
+        message: 'Webhook called successfully',
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      },
+      { status: 500 }
     );
   }
-
-  switch (event.type) {
-    case 'checkout.session.completed':
-      const { success: sessionCompletedSuccess, message: sessionCompletedMessage } =
-        await handleCheckoutSessionCompleted(event);
-
-      if (!sessionCompletedSuccess) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: sessionCompletedMessage,
-          },
-          { status: 400 }
-        );
-      }
-      break;
-
-    case 'checkout.session.expired':
-      const { success: sessionExpiredSuccess, message: sessionExpiredMessage } = await handleCheckoutSessionExpired(
-        event
-      );
-
-      if (!sessionExpiredSuccess) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: sessionExpiredMessage,
-          },
-          { status: 400 }
-        );
-      }
-      break;
-
-    case 'charge.refunded':
-      const { success: chargeRefundedSuccess, message: chargeRefundedMessage } = await handleChargeRefunded(event);
-
-      if (!chargeRefundedSuccess) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: chargeRefundedMessage,
-          },
-          { status: 400 }
-        );
-      }
-      break;
-
-    default:
-      break;
-  }
-
-  return NextResponse.json({ success: true, message: 'Webhook called successfully' }, { status: 200 });
 }

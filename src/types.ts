@@ -482,22 +482,24 @@ export type BestSellersType = Array<Product & { totalQuantitySold: number | null
 
 // Payment
 
-export type StripeLineItem = {
-  price_data: {
-    currency: string;
-    product_data: {
-      name: string;
-      images: string[];
-    };
-    unit_amount: number;
-  };
-  quantity: number;
-};
+const LineItemSchema = z.object({
+  price_data: z.object({
+    currency: z.string(),
+    product_data: z.object({
+      name: z.string(),
+      images: z.string().array(),
+    }),
+    unit_amount: PriceSchema,
+  }),
+  quantity: ItemQuantitySchema,
+});
+export type StripeLineItem = z.infer<typeof LineItemSchema>;
 
-export type StripeCheckoutData = {
-  orderId: number;
-  lineItems: StripeLineItem[];
-};
+export const StripeCheckoutDataSchema = z.object({
+  orderId: NumericIdSchema,
+  lineItems: LineItemSchema.array(),
+});
+export type StripeCheckoutData = z.infer<typeof StripeCheckoutDataSchema>;
 
 export type StripeCheckoutSessionResponse = {
   sessionId: string;

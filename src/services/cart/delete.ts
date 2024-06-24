@@ -10,7 +10,7 @@ export async function deleteItemFromCart(id: number): Promise<ResponseWithNoData
   serviceLog.info('Attempting to delete cart item');
 
   try {
-    const response = await fetch(`/api/secure/cart/delete/by-id?cart_item_id=${id}`, {
+    const response = await fetch(`/api/secure/cart/delete?cart_item_id=${id}`, {
       method: 'DELETE',
     });
 
