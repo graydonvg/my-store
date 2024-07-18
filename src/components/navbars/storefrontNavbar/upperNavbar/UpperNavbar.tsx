@@ -4,17 +4,26 @@ import UnauthenticatedUpperNavbarOptions from './upperNavbarOptions/unauthentica
 import fetchUserSessionData from '@/lib/db/queries/fetchUserSessionData';
 import DataInitializer from '@/components/DataInitializer';
 import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
+import { Suspense } from 'react';
 
-export default async function UpperNavbar() {
+export default function UpperNavbar() {
+  return (
+    <UpperNavbarContainer>
+      <UpperNavbarOptions>
+        <Suspense fallback={null}>
+          <UserSessionNavOptions />
+        </Suspense>
+      </UpperNavbarOptions>
+    </UpperNavbarContainer>
+  );
+}
+
+async function UserSessionNavOptions() {
   const { authUser, userData, cartItems, wishlistData } = await fetchUserSessionData();
 
   return (
     <DataInitializer {...{ userData, cartItems, wishlistData }}>
-      <UpperNavbarContainer>
-        <UpperNavbarOptions>
-          {!authUser ? <UnauthenticatedUpperNavbarOptions /> : <AuthenticatedUpperNavbarOptions />}
-        </UpperNavbarOptions>
-      </UpperNavbarContainer>
+      {!authUser ? <UnauthenticatedUpperNavbarOptions /> : <AuthenticatedUpperNavbarOptions />}
     </DataInitializer>
   );
 }

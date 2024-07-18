@@ -8,7 +8,7 @@ import {
   getInvalidRowsPerPageMessage,
   getInvalidSortColumnMessage,
   getInvalidSortDirectionMessage,
-} from './queryBuilder/getInvalidMessage';
+} from './getInvalidMessage';
 
 const commonSuccessResponse = { success: true, message: 'Success! No validation errors caught.' };
 

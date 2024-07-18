@@ -8,6 +8,7 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
   const serviceLog = log.with({ scope: 'service', function: 'getAllProducts' });
 
   serviceLog.info('Attempting to fetch all products');
+
   try {
     const url = `${CONSTANTS.URL}/api/products/get-all`;
 

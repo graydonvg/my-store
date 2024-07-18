@@ -46,6 +46,7 @@ export default function HeroSection() {
             height: 1,
             background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
             borderRadius: CONSTANTS.BORDER_RADIUS,
+            opacity: !isHeroImageLoaded ? 0 : 100,
           }}>
           <Typography
             component="h1"
