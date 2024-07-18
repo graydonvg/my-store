@@ -103,3 +103,53 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
     await serviceLog.flush();
   }
 }
+
+export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getLimitedProductsOnSale' });
+
+  serviceLog.info('Attempting to fetch limited products on sale');
+
+  try {
+    const url = `${CONSTANTS.URL}/api/products/get-limited-on-sale`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      cache: 'force-cache',
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
+  }
+}
+
+export async function getLimitedLatestProducts(): Promise<ResponseWithData<Product[] | null>> {
+  const serviceLog = log.with({ scope: 'service', function: 'getLimitedLatestProducts' });
+
+  serviceLog.info('Attempting to fetch limited latest products');
+
+  try {
+    const url = `${CONSTANTS.URL}/api/products/get-limited-latest`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      cache: 'force-cache',
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await serviceLog.flush();
+  }
+}

@@ -26,78 +26,79 @@ export default function ShopByCategorySection() {
           shop by category
         </Typography>
       </Divider>
-      <Grid
-        component="ul"
-        role="navigation"
-        container
-        spacing={{ xs: 2, sm: 3 }}>
-        {CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) => (
-          <Grid
-            component="li"
-            item
-            key={category.label}
-            xs={12}
-            sm={4}>
-            <Box
-              onClick={() => navigateToCategory(category.path)}
-              sx={{
-                position: 'relative',
-                aspectRatio: 4 / 5,
-                borderRadius: CONSTANTS.BORDER_RADIUS,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                '&:before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: 1,
-                  height: 1,
-                  background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.6))',
-                  borderRadius: CONSTANTS.BORDER_RADIUS,
-                  zIndex: 1,
-                },
-              }}>
-              <Image
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: '50% 0%',
-                  opacity: !isCategoryImageLoaded ? 0 : 100,
-                }}
-                fill
-                sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"
-                src={category.imageSrc}
-                alt={`Image for category ${category.label}`}
-                onLoad={() => setIsCategoryImageLoaded(true)}
-              />
-
-              {!isCategoryImageLoaded ? (
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  variant="rectangular"
-                />
-              ) : null}
+      <Box component="nav">
+        <Grid
+          component="ul"
+          container
+          spacing={{ xs: 2, sm: 3 }}>
+          {CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) => (
+            <Grid
+              component="li"
+              item
+              key={category.label}
+              xs={12}
+              sm={4}>
               <Box
+                onClick={() => navigateToCategory(category.path)}
                 sx={{
-                  position: 'absolute',
-                  top: '85%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: 2,
+                  position: 'relative',
+                  aspectRatio: 4 / 5,
+                  borderRadius: CONSTANTS.BORDER_RADIUS,
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  '&:before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: 1,
+                    height: 1,
+                    background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.6))',
+                    borderRadius: CONSTANTS.BORDER_RADIUS,
+                    zIndex: 1,
+                  },
                 }}>
-                <Typography
-                  component="h3"
-                  fontSize={36}
-                  fontWeight={600}
-                  sx={{ color: (theme) => theme.palette.common.white }}>
-                  {category.label.toUpperCase()}
-                </Typography>
+                <Image
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: '50% 0%',
+                    opacity: !isCategoryImageLoaded ? 0 : 100,
+                  }}
+                  fill
+                  sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"
+                  src={category.imageSrc}
+                  alt={`Image for category ${category.label}`}
+                  onLoad={() => setIsCategoryImageLoaded(true)}
+                />
+
+                {!isCategoryImageLoaded ? (
+                  <Skeleton
+                    height="100%"
+                    width="100%"
+                    variant="rectangular"
+                  />
+                ) : null}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '85%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 2,
+                  }}>
+                  <Typography
+                    component="h3"
+                    fontSize={36}
+                    fontWeight={600}
+                    sx={{ color: (theme) => theme.palette.common.white }}>
+                    {category.label.toUpperCase()}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 }
