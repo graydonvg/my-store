@@ -5,14 +5,13 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function revalidateAllData(): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({
-    scope: 'service',
-    function: 'revalidateAllData',
+  const logger = log.with({
+    context: 'service: revalidateAllData',
     revalidatePath: '/',
     revalidateType: 'layout',
   });
 
-  serviceLog.info('Attempting to revalidate all data');
+  logger.info('Attempting to revalidate all data');
 
   try {
     const response = await fetch('/api/secure/admin/revalidate');
@@ -21,10 +20,10 @@ export default async function revalidateAllData(): Promise<ResponseWithNoData> {
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

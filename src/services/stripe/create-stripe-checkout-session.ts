@@ -7,9 +7,9 @@ const log = new Logger();
 export async function createStripeCheckoutSession(
   data: StripeCheckoutData
 ): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
-  const serviceLog = log.with({ scope: 'service', function: 'createStripeCheckoutSession' });
+  const logger = log.with({ context: 'service: createStripeCheckoutSession' });
 
-  serviceLog.info('Attempting to create Stripe checkout session');
+  logger.info('Attempting to create Stripe checkout session');
 
   try {
     const response = await fetch('/api/secure/stripe', {
@@ -22,10 +22,10 @@ export async function createStripeCheckoutSession(
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

@@ -6,9 +6,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function addItemToWishlist(data: InsertWishlistItemDb): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'addItemToWishlist' });
+  const logger = log.with({ context: 'service: addItemToWishlist' });
 
-  serviceLog.info('Attempting to add item to wishlist');
+  logger.info('Attempting to add item to wishlist');
 
   try {
     const response = await fetch('/api/secure/wishlist/add', {
@@ -21,10 +21,10 @@ export default async function addItemToWishlist(data: InsertWishlistItemDb): Pro
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

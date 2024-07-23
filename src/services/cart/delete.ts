@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function deleteItemFromCart(id: number): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'deleteItemFromCart' });
+  const logger = log.with({ context: 'service: deleteItemFromCart' });
 
-  serviceLog.info('Attempting to delete cart item');
+  logger.info('Attempting to delete cart item');
 
   try {
     const response = await fetch(`/api/secure/cart/delete?cart_item_id=${id}`, {
@@ -18,10 +18,10 @@ export async function deleteItemFromCart(id: number): Promise<ResponseWithNoData
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

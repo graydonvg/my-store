@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function addNewAddress(data: InsertAddress): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'addNewAddress' });
+  const logger = log.with({ context: 'service: addNewAddress' });
 
-  serviceLog.info('Attempting to add address');
+  logger.info('Attempting to add address');
 
   try {
     const response = await fetch('/api/secure/users/address/add', {
@@ -20,10 +20,10 @@ export async function addNewAddress(data: InsertAddress): Promise<ResponseWithNo
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

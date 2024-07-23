@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function updateUserAddress(data: UpdateAddress): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateUserAddress' });
+  const logger = log.with({ context: 'service: updateUserAddress' });
 
-  serviceLog.info('Attempting to update address');
+  logger.info('Attempting to update address');
 
   try {
     const response = await fetch('/api/secure/users/address/update', {
@@ -20,18 +20,18 @@ export async function updateUserAddress(data: UpdateAddress): Promise<ResponseWi
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function updateUserPersonalInformation(data: UpdateUserData): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateUserPersonalInformation' });
+  const logger = log.with({ context: 'service: updateUserPersonalInformation' });
 
-  serviceLog.info('Attempting to update user personal information');
+  logger.info('Attempting to update user personal information');
 
   try {
     const response = await fetch('/api/secure/users/personal/update', {
@@ -44,18 +44,18 @@ export async function updateUserPersonalInformation(data: UpdateUserData): Promi
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function updateUserPassword(data: UpdatePassword): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateUserPassword' });
+  const logger = log.with({ context: 'service: updateUserPassword' });
 
-  serviceLog.info('Attempting to update user password');
+  logger.info('Attempting to update user password');
 
   try {
     const response = await fetch('/api/secure/users/password/update', {
@@ -68,10 +68,10 @@ export async function updateUserPassword(data: UpdatePassword): Promise<Response
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

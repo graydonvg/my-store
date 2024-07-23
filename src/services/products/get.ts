@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function getAllProducts(): Promise<ResponseWithData<Product[] | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getAllProducts' });
+  const logger = log.with({ context: 'service: getAllProducts' });
 
-  serviceLog.info('Attempting to fetch all products');
+  logger.info('Attempting to fetch all products');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-all`;
@@ -21,18 +21,18 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function getProductById(id: string): Promise<ResponseWithData<Product | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getProductById' });
+  const logger = log.with({ context: 'service: getProductById' });
 
-  serviceLog.info('Attempting to fetch product by id');
+  logger.info('Attempting to fetch product by id');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-by-id?product_id=${id}`;
@@ -46,18 +46,18 @@ export async function getProductById(id: string): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function getProductsByCategory(category: string): Promise<ResponseWithData<Product[] | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getProductsByCategory' });
+  const logger = log.with({ context: 'service: getProductsByCategory' });
 
-  serviceLog.info('Attempting to fetch products by category');
+  logger.info('Attempting to fetch products by category');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-by-category?category=${category}`;
@@ -71,18 +71,18 @@ export async function getProductsByCategory(category: string): Promise<ResponseW
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getProductsOnSale' });
+  const logger = log.with({ context: 'service: getProductsOnSale' });
 
-  serviceLog.info('Attempting to fetch products on sale');
+  logger.info('Attempting to fetch products on sale');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-on-sale`;
@@ -96,18 +96,18 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getLimitedProductsOnSale' });
+  const logger = log.with({ context: 'service: getLimitedProductsOnSale' });
 
-  serviceLog.info('Attempting to fetch limited products on sale');
+  logger.info('Attempting to fetch limited products on sale');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-limited-on-sale`;
@@ -121,18 +121,18 @@ export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function getLimitedLatestProducts(): Promise<ResponseWithData<Product[] | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'getLimitedLatestProducts' });
+  const logger = log.with({ context: 'service: getLimitedLatestProducts' });
 
-  serviceLog.info('Attempting to fetch limited latest products');
+  logger.info('Attempting to fetch limited latest products');
 
   try {
     const url = `${CONSTANTS.URL}/api/products/get-limited-latest`;
@@ -146,10 +146,10 @@ export async function getLimitedLatestProducts(): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

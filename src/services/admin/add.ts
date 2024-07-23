@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function addProduct(data: AddProduct): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'addProduct' });
+  const logger = log.with({ context: 'service: addProduct' });
 
-  serviceLog.info('Attempting to add product');
+  logger.info('Attempting to add product');
 
   try {
     const response = await fetch('/api/secure/admin/products/add', {
@@ -20,18 +20,18 @@ export async function addProduct(data: AddProduct): Promise<ResponseWithNoData> 
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function createNewUser(data: UserAuthData & CreateUser): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'createNewUser' });
+  const logger = log.with({ context: 'service: createNewUser' });
 
-  serviceLog.info('Attempting to create user');
+  logger.info('Attempting to create user');
 
   try {
     const response = await fetch('/api/secure/admin/users/add', {
@@ -44,10 +44,10 @@ export async function createNewUser(data: UserAuthData & CreateUser): Promise<Re
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

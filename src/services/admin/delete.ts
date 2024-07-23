@@ -6,9 +6,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'deleteProduct' });
+  const logger = log.with({ context: 'service: deleteProduct' });
 
-  serviceLog.info('Attempting to delete product');
+  logger.info('Attempting to delete product');
 
   try {
     const response = await fetch(`/api/secure/admin/products/delete?product_id=${id}`, {
@@ -19,18 +19,18 @@ export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function deleteProductImageDataFromDb(id: number): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'deleteProductImageDataFromDb' });
+  const logger = log.with({ context: 'service: deleteProductImageDataFromDb' });
 
-  serviceLog.info('Attempting to delete product image data from db');
+  logger.info('Attempting to delete product image data from db');
 
   try {
     const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${id}`, {
@@ -41,18 +41,18 @@ export async function deleteProductImageDataFromDb(id: number): Promise<Response
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function deleteUser(userIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'deleteUser' });
+  const logger = log.with({ context: 'service: deleteUser' });
 
-  serviceLog.info('Attempting to delete user');
+  logger.info('Attempting to delete user');
 
   try {
     const response = await fetch('/api/secure/admin/users/delete', {
@@ -65,10 +65,10 @@ export async function deleteUser(userIds: GridRowSelectionModel): Promise<Respon
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

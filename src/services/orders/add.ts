@@ -5,7 +5,7 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function addOrder(data: InsertOrder): Promise<ResponseWithData<AddOrderResponse | null>> {
-  const serviceLog = log.with({ scope: 'service', function: 'addOrder' });
+  const logger = log.with({ context: 'service: addOrder' });
 
   log.info('Attempting to add order');
 
@@ -20,10 +20,10 @@ export default async function addOrder(data: InsertOrder): Promise<ResponseWithD
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

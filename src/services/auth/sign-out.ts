@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function signOut(): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'signOut' });
+  const logger = log.with({ context: 'service: signOut' });
 
-  serviceLog.info('Attempting to sign out user');
+  logger.info('Attempting to sign out user');
 
   try {
     const response = await fetch('/api/secure/auth/sign-out', {
@@ -18,10 +18,10 @@ export default async function signOut(): Promise<ResponseWithNoData> {
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

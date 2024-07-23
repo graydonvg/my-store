@@ -30,7 +30,7 @@ export async function uploadProductImageToStorage(
   fileName: string,
   observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
 ): Promise<{ imageUrl: string; fileName: string }> {
-  const logger = log.with({ context: 'uploadProductImageToStorage' });
+  const logger = log.with({ context: 'firebase: uploadProductImageToStorage' });
   logger.info('Attempting to upload product image to storage', { fileName });
 
   const imageRef = ref(storage, `product-images/${fileName}`);
@@ -61,7 +61,7 @@ export async function uploadProductImageToStorage(
 }
 
 export async function deleteProductImageFromStorage(fileName: string) {
-  const logger = log.with({ context: 'deleteProductImageFromStorage' });
+  const logger = log.with({ context: 'firebase: deleteProductImageFromStorage' });
   logger.info('Attempting to delete product image from storage', { fileName });
 
   const imageRef = ref(storage, `product-images/${fileName}`);

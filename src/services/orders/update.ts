@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export default async function updateOrderStatus(data: UpdateOrderStatus): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateOrderStatus' });
+  const logger = log.with({ context: 'service: updateOrderStatus' });
 
-  serviceLog.info('Attempting to update order status');
+  logger.info('Attempting to update order status');
 
   try {
     const response = await fetch('/api/secure/orders/update', {
@@ -20,10 +20,10 @@ export default async function updateOrderStatus(data: UpdateOrderStatus): Promis
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

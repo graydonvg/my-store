@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function deleteAddress(id: number): Promise<CustomResponse> {
-  const serviceLog = log.with({ scope: 'service', function: 'deleteAddress' });
+  const logger = log.with({ context: 'service: deleteAddress' });
 
-  serviceLog.info('Attempting to delete address');
+  logger.info('Attempting to delete address');
 
   try {
     const response = await fetch(`/api/secure/users/address/delete?address_id=${id}`, {
@@ -18,10 +18,10 @@ export async function deleteAddress(id: number): Promise<CustomResponse> {
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }

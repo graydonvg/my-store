@@ -5,9 +5,9 @@ import { Logger } from 'next-axiom';
 const log = new Logger();
 
 export async function updateProduct(data: UpdateProduct): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateProduct' });
+  const logger = log.with({ context: 'service: updateProduct' });
 
-  serviceLog.info('Attempting to update product');
+  logger.info('Attempting to update product');
 
   try {
     const response = await fetch('/api/secure/admin/products/update', {
@@ -20,18 +20,18 @@ export async function updateProduct(data: UpdateProduct): Promise<ResponseWithNo
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function updateUser(data: UpdateUserAdmin): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateUser' });
+  const logger = log.with({ context: 'service: updateUser' });
 
-  serviceLog.info('Attempting to update user');
+  logger.info('Attempting to update user');
 
   try {
     const response = await fetch('/api/secure/admin/users/update', {
@@ -44,18 +44,18 @@ export async function updateUser(data: UpdateUserAdmin): Promise<ResponseWithNoD
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
 
 export async function updateOrder(data: UpdateOrder): Promise<ResponseWithNoData> {
-  const serviceLog = log.with({ scope: 'service', function: 'updateOrder' });
+  const logger = log.with({ context: 'service: updateOrder' });
 
-  serviceLog.info('Attempting to update order');
+  logger.info('Attempting to update order');
 
   try {
     const response = await fetch('/api/secure/admin/orders/update', {
@@ -68,10 +68,10 @@ export async function updateOrder(data: UpdateOrder): Promise<ResponseWithNoData
 
     return result;
   } catch (error) {
-    serviceLog.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
 
     return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
   } finally {
-    await serviceLog.flush();
+    await logger.flush();
   }
 }
