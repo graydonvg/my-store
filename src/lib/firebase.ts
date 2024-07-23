@@ -1,3 +1,4 @@
+import { CONSTANTS } from '@/constants';
 import { initializeApp } from 'firebase/app';
 import {
   StorageObserver,
@@ -8,6 +9,9 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA9L6rqC6ZmaNrRWw1XO9ODlSU7ocFPLI4',
@@ -26,27 +30,49 @@ export async function uploadProductImageToStorage(
   fileName: string,
   observer: StorageObserver<UploadTaskSnapshot> | ((snapshot: UploadTaskSnapshot) => unknown) | null | undefined
 ): Promise<{ imageUrl: string; fileName: string }> {
+  const logger = log.with({ context: 'uploadProductImageToStorage' });
+  logger.info('Attempting to upload product image to storage', { fileName });
+
   const imageRef = ref(storage, `product-images/${fileName}`);
   const uploadImage = uploadBytesResumable(imageRef, file);
 
   return await new Promise((resolve, reject) => {
-    uploadImage.on('state_changed', observer, reject, async () => {
-      try {
-        const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
-        resolve({ imageUrl: downloadURL, fileName });
-      } catch (error) {
+    uploadImage.on(
+      'state_changed',
+      observer,
+      (error) => {
+        logger.error('Upload state change error', { error, fileName });
         reject(error);
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadImage.snapshot.ref);
+          logger.info('Product image uploaded successfully', { fileName, downloadURL });
+          resolve({ imageUrl: downloadURL, fileName });
+        } catch (error) {
+          logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error, fileName });
+          reject(error);
+        } finally {
+          await logger.flush();
+        }
       }
-    });
+    );
   });
 }
 
 export async function deleteProductImageFromStorage(fileName: string) {
+  const logger = log.with({ context: 'deleteProductImageFromStorage' });
+  logger.info('Attempting to delete product image from storage', { fileName });
+
   const imageRef = ref(storage, `product-images/${fileName}`);
 
   try {
     await deleteObject(imageRef);
+    logger.info('Product image deleted successfully', { fileName });
   } catch (error) {
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error, fileName });
     throw error;
+  } finally {
+    await logger.flush();
   }
 }

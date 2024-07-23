@@ -36,7 +36,7 @@ export default function LargeAdminPanelNavbar({ drawerWidth, isDrawerOpen, toggl
               <IconButton
                 edge="start"
                 color="inherit"
-                aria-label="open drawer"
+                aria-label="open drawer button"
                 onClick={toggleDrawer}
                 sx={{
                   marginRight: '36px',

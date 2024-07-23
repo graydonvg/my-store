@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { UpdateUserAdmin, ResponseWithNoData, UpdateUserAdminSchema } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getObjectKeyCount } from '@/utils/checkForms';
+import { getObjectKeyCount } from '@/utils/checkObject';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 import { CONSTANTS } from '@/constants';
 import { constructZodErrorMessage } from '@/utils/construct';

@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { ResponseWithNoData, UpdateUserData, UpdateUserDataSchema, UserAuthData, UserAuthDataSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyObjectKeys } from '@/utils/checkForms';
-import { getObjectKeyCount } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkObject';
+import { getObjectKeyCount } from '@/utils/checkObject';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/construct';
 

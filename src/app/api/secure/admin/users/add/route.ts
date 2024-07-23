@@ -9,8 +9,8 @@ import {
 } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyObjectKeys } from '@/utils/checkForms';
-import { getObjectKeyCount } from '@/utils/checkForms';
+import { getEmptyObjectKeys } from '@/utils/checkObject';
+import { getObjectKeyCount } from '@/utils/checkObject';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 import { CONSTANTS } from '@/constants';

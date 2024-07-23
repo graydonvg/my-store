@@ -49,7 +49,9 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
           justifyContent: 'flex-end',
           paddingX: 1,
         }}>
-        <IconButton onClick={toggleDrawer}>
+        <IconButton
+          onClick={toggleDrawer}
+          aria-label="close drawer button">
           <ChevronLeft />
         </IconButton>
       </Toolbar>
