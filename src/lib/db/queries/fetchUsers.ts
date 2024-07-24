@@ -1,6 +1,10 @@
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterBuilder, QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export default async function fetchUsers(
   page: QueryPageDataGrid,
@@ -9,47 +13,64 @@ export default async function fetchUsers(
 ) {
   const supabase = await createSupabaseServerClient();
 
-  const {
-    data: { user: authUser },
-  } = await supabase.auth.getUser();
+  const logger = log.with({ context: 'dbQuery: fetchUsers' });
+  logger.info('Fetching users for admin');
 
-  let usersQuery: QueryFilterBuilder;
+  try {
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
 
-  const checkIsNone = filter.operator === 'is' && filter.value === 'none';
-  const checkNotNone = filter.operator === 'not' && filter.value !== 'none';
+    let usersQuery: QueryFilterBuilder;
 
-  if (filter.column === 'role' && !checkIsNone && !checkNotNone) {
-    // Operator/value pairs other than 'is none' or 'not is none' require inner join to filter role
-    usersQuery = supabase
-      .from('users')
-      .select('*, ...userRoles!inner(role)', {
-        count: 'exact',
-      })
-      .neq('userId', authUser?.id);
-  } else {
-    usersQuery = supabase
-      .from('users')
-      .select('*, ...userRoles(role)', {
-        count: 'exact',
-      })
-      .neq('userId', authUser?.id);
-  }
+    const checkIsNone = filter.operator === 'is' && filter.value === 'none';
+    const checkNotNone = filter.operator === 'not' && filter.value !== 'none';
 
-  const builtUsersQuery = buildQuery('users', usersQuery, page, sort, filter);
+    if (filter.column === 'role' && !checkIsNone && !checkNotNone) {
+      // Operator/value pairs other than 'is none' or 'not is none' require inner join to filter role
+      usersQuery = supabase
+        .from('users')
+        .select('*, ...userRoles!inner(role)', {
+          count: 'exact',
+        })
+        .neq('userId', authUser?.id);
+    } else {
+      usersQuery = supabase
+        .from('users')
+        .select('*, ...userRoles(role)', {
+          count: 'exact',
+        })
+        .neq('userId', authUser?.id);
+    }
 
-  const { data: users, count, error } = await builtUsersQuery;
+    const builtUsersQuery = buildQuery('users', usersQuery, page, sort, filter);
 
-  if (error) {
+    const { data: users, count, error } = await builtUsersQuery;
+
+    if (error) {
+      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      return {
+        success: false,
+        message: error.message,
+        data: { users: null, totalRowCount: count ?? 0 },
+      };
+    }
+
+    logger.info('Fetched users for admin successfully');
+
+    return {
+      success: true,
+      message: 'Success!',
+      data: { users, totalRowCount: count ?? 0 },
+    };
+  } catch (error) {
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
     return {
       success: false,
-      message: error.message,
-      data: { users: null, totalRowCount: count ?? 0 },
+      message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      data: { users: null, totalRowCount: 0 },
     };
+  } finally {
+    await logger.flush();
   }
-
-  return {
-    success: true,
-    message: 'Success!',
-    data: { users, totalRowCount: count ?? 0 },
-  };
 }

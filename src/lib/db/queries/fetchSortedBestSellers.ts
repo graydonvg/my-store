@@ -1,21 +1,33 @@
+import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export default async function fetchSortedBestSellers() {
   const supabase = await createSupabaseServerClient();
 
-  const { data: bestSellers } = await supabase.rpc('getBestSellers');
+  const logger = log.with({ context: 'dbQuery: fetchSortedBestSellers' });
+  logger.info('Fetching best sellers');
 
-  let sortedBestSellers = null;
+  try {
+    const { data: bestSellers } = await supabase.rpc('getBestSellers');
 
-  if (bestSellers) {
-    const bestSellerProductIds = bestSellers.map((item) => item.productId);
+    let sortedBestSellers = null;
 
-    const { data: products } = await supabase
-      .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
-      .in('productId', bestSellerProductIds);
+    if (bestSellers) {
+      const bestSellerProductIds = bestSellers.map((item) => item.productId);
 
-    if (products) {
+      const { data: products, error: productsError } = await supabase
+        .from('products')
+        .select('*, productImageData(fileName, imageUrl, productImageId, index)')
+        .in('productId', bestSellerProductIds);
+
+      if (productsError) {
+        logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error: productsError });
+        return null;
+      }
+
       sortedBestSellers = products
         .map((product) => {
           const totalQuantitySold =
@@ -28,7 +40,14 @@ export default async function fetchSortedBestSellers() {
         })
         .sort((a, b) => (b.totalQuantitySold ?? 0) - (a.totalQuantitySold ?? 0));
     }
-  }
 
-  return sortedBestSellers;
+    logger.info('Fetched best sellers successfully');
+
+    return sortedBestSellers;
+  } catch (error) {
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    return null;
+  } finally {
+    await logger.flush();
+  }
 }
