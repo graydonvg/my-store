@@ -38,11 +38,13 @@ function getPositionWithOrdinal(bestSellers: BestSellersType, index: number) {
   );
 }
 
-function getClassName(bestSellers: BestSellersType, index: number) {
-  const classNames = ['animated-card-first', 'animated-card-second', 'animated-card-third'];
+function getBorderColor(bestSellers: BestSellersType, index: number) {
+  // Applies the same border color for tied products
+  const bronze = 'rgba(205, 127, 50, 1)';
+  const borderColors = ['gold', 'silver', bronze];
   const [position] = getPositionAndOrdinal(bestSellers, index);
 
-  return position > 0 ? classNames[position - 1] : '';
+  return position > 0 ? borderColors[position - 1] : '';
 }
 
 type Props = {
@@ -74,8 +76,7 @@ export default function BestSellers({ bestSellers }: Props) {
               }}>
               <Paper
                 elevation={8}
-                className={`animated-card ${getClassName(bestSellers, index)}`}
-                sx={{ padding: 2, height: 1, position: 'relative' }}>
+                sx={{ padding: 2, height: 1, border: `2px solid ${getBorderColor(bestSellers, index)}` }}>
                 <Box
                   sx={{
                     display: 'flex',
