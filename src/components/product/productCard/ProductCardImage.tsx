@@ -22,7 +22,7 @@ export default function ProductCardImage({ imageUrl, imageSizes, productName }: 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        aspectRatio: !isAdminDashboardPath ? 25 / 36 : 14 / 18,
+        aspectRatio: !isAdminDashboardPath ? 25 / 36 : 7 / 9,
         borderTopLeftRadius: CONSTANTS.BORDER_RADIUS,
         borderTopRightRadius: CONSTANTS.BORDER_RADIUS,
         overflow: 'hidden',

@@ -20,7 +20,7 @@ export default function ProductDetailsSizePicker({ product, size, setSize }: Pro
     return availableSizes;
   }
 
-  function selectSizeHandler(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
+  function handleSelectSize(_event: MouseEvent<HTMLElement, globalThis.MouseEvent>, selectedSize: string) {
     setSize((prev) => (prev !== selectedSize ? selectedSize : null));
   }
 
@@ -40,7 +40,7 @@ export default function ProductDetailsSizePicker({ product, size, setSize }: Pro
         Select A Size
       </Typography>
       <ToggleButtons
-        onChange={selectSizeHandler}
+        onChange={handleSelectSize}
         buttons={getItemSizeToggleButtonOptions()}
         selection={size ? [size] : []}
       />

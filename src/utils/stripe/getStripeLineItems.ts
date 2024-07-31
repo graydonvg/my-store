@@ -3,10 +3,9 @@ import { calculateRoundedDiscountedPrice } from '../calculate';
 
 export function getLineItemsFromCartItems(cartItems: CartItem[]) {
   const lineItems = cartItems.map((item) => {
-    const unitAmount =
-      item?.product?.isOnSale === 'Yes'
-        ? calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage)
-        : item?.product?.price!;
+    const unitAmount = item?.product?.isOnSale
+      ? calculateRoundedDiscountedPrice(item.product.price, item.product.salePercentage)
+      : item?.product?.price!;
 
     return {
       price_data: {

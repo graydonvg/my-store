@@ -35,25 +35,6 @@ import { constructZodErrorMessage } from '@/utils/construct';
 function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
   const columns: GridColDef<UsersDataGrid>[] = [
     {
-      field: 'userId',
-      headerName: 'ID',
-      width: 300,
-      sortable: false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Created at',
-      width: 160,
-      renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-      filterOperators: getGridDateOperators()
-        .filter((operator) => operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty')
-        .map((operator) => ({
-          ...operator,
-          InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
-        })),
-    },
-    {
       field: 'firstName',
       headerName: 'First name',
       width: 150,
@@ -64,22 +45,6 @@ function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: b
       field: 'lastName',
       headerName: 'Last name',
       width: 150,
-      editable: !isUpdating ? true : false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    },
-    {
-      field: 'email',
-      headerName: 'Email',
-      width: 200,
-      editable: false,
-      filterOperators: getGridStringOperators().filter(
-        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-      ),
-    },
-    {
-      field: 'contactNumber',
-      headerName: 'Contact number',
-      width: 165,
       editable: !isUpdating ? true : false,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
@@ -113,8 +78,43 @@ function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: b
       // Data grid set to display null as 'none'.
       // Data grid select menu value cannot be null so using 'none'.
       // Value received from select menu is 'none'.
-      // If role === null, adminUpdateUser will return no data received.
+      // If role === null, updateUser endpoint will return no data received.
       valueGetter: (role) => (role === null ? 'none' : role),
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+      editable: false,
+      filterOperators: getGridStringOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
+    },
+    {
+      field: 'contactNumber',
+      headerName: 'Contact number',
+      width: 165,
+      editable: !isUpdating ? true : false,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created at',
+      width: 160,
+      renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      filterOperators: getGridDateOperators()
+        .filter((operator) => operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty')
+        .map((operator) => ({
+          ...operator,
+          InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
+        })),
+    },
+    {
+      field: 'userId',
+      headerName: 'ID',
+      width: 300,
+      sortable: false,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
     },
   ];
   return columns;
@@ -234,7 +234,7 @@ export default function UsersPageAdminPanelClient({
 
   function handleRowUpdateError(_error: unknown) {
     // Axiom error log
-    toast.error('Failed to process update. An unexpected data grid error occured.');
+    toast.error('Failed to process update. An unexpected error occured.');
   }
 
   function handleRowSelection(rowSelectionModel: GridRowSelectionModel) {

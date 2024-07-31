@@ -114,8 +114,6 @@ export default async function AdminPanelDashboard() {
           sx={{
             padding: 2,
             borderRadius: CONSTANTS.BORDER_RADIUS,
-            minHeight: { xs: 200, sm: 300 },
-            height: 1,
           }}>
           <BestSellers bestSellers={sortedBestSellers} />
         </Paper>

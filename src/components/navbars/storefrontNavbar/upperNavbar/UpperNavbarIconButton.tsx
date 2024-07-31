@@ -14,6 +14,7 @@ export default function UpperNavbarIconButton({ children, ...props }: Props) {
         whiteSpace: 'nowrap',
         paddingX: { xs: 0, md: 2 },
         borderRadius: 0,
+        height: 1,
         backgroundColor: theme.palette.custom.navbar.upper.background,
         '&:hover': {
           backgroundColor: theme.palette.custom.navbar.upper.background,

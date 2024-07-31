@@ -50,6 +50,7 @@ function getColumns(isUpdating: boolean) {
           InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
         })),
     },
+
     {
       field: 'firstName',
       headerName: 'First name',
@@ -69,25 +70,34 @@ function getColumns(isUpdating: boolean) {
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
-      field: 'recipientFirstName',
-      headerName: 'Recipient first name',
+      field: 'orderStatus',
+      headerName: 'Status',
+      type: 'singleSelect',
       width: 150,
       editable: isUpdating ? false : true,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      valueOptions: [
+        'awaiting payment',
+        'paid',
+        'processing',
+        'shipped',
+        'delivered',
+        'cancelled',
+        'returned',
+        'refunded',
+      ] as OrderStatus[],
+      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
-      field: 'recipientLastName',
-      headerName: 'Recipient last name',
-      width: 150,
-      editable: isUpdating ? false : true,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    },
-    {
-      field: 'recipientContactNumber',
-      headerName: 'Recipient contact number',
-      width: 150,
-      editable: isUpdating ? false : true,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      field: 'orderTotal',
+      headerName: 'Order total',
+      type: 'number',
+      headerAlign: 'left',
+      align: 'left',
+      width: 120,
+      valueFormatter: (value) => formatCurrency(value),
+      filterOperators: getGridNumericOperators().filter(
+        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
+      ),
     },
     {
       field: 'complexOrBuilding',
@@ -149,34 +159,25 @@ function getColumns(isUpdating: boolean) {
       renderCell: (params) => params.row.postalCode,
     },
     {
-      field: 'orderStatus',
-      headerName: 'Status',
-      type: 'singleSelect',
+      field: 'recipientFirstName',
+      headerName: 'Recipient first name',
       width: 150,
       editable: isUpdating ? false : true,
-      valueOptions: [
-        'awaiting payment',
-        'paid',
-        'processing',
-        'shipped',
-        'delivered',
-        'cancelled',
-        'returned',
-        'refunded',
-      ] as OrderStatus[],
-      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
-      field: 'orderTotal',
-      headerName: 'Order total',
-      type: 'number',
-      headerAlign: 'left',
-      align: 'left',
-      width: 120,
-      valueFormatter: (value) => formatCurrency(value),
-      filterOperators: getGridNumericOperators().filter(
-        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-      ),
+      field: 'recipientLastName',
+      headerName: 'Recipient last name',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+    },
+    {
+      field: 'recipientContactNumber',
+      headerName: 'Recipient contact number',
+      width: 150,
+      editable: isUpdating ? false : true,
+      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
   ];
   return columns;
@@ -259,7 +260,7 @@ export default function OrdersPageAdminPanelClient({
 
   function handleRowUpdateError(_error: unknown) {
     // Axiom error log
-    toast.error('Failed to process update. An unexpected data grid error occured.');
+    toast.error('Failed to process update. An unexpected error occured.');
   }
 
   return (

@@ -8,7 +8,6 @@ import { formatCurrency } from '@/utils/format';
 import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
 import { CONSTANTS } from '@/constants';
 import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
-import ProductCardButtonsAdminPanel from './ProductCardButtonsAdminPanel';
 import ProductCardImage from './ProductCardImage';
 import MoveToCartButton from './MoveToCartButton';
 import RemoveFromWishlistButton from './RemoveFromWishlistButton';
@@ -23,9 +22,7 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, imageSizes, wishlistSize, wishlistItemId }: ProductCardProps) {
   const pathname = usePathname();
-  const isAdminProductsPath = pathname.startsWith('/admin/products');
   const isWishlistPath = pathname.startsWith('/wishlist');
-  const isOnSale = product.isOnSale === 'Yes';
   const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
   const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
   const isInStock = product.sizes.includes(wishlistSize ?? '');
@@ -54,7 +51,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
               imageSizes={imageSizes}
             />
 
-            {isOnSale ? (
+            {product.isOnSale ? (
               <Box
                 sx={{
                   position: 'absolute',
@@ -148,10 +145,10 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
                   fontFamily={'Georgia'}
                   fontStyle="italic"
                   fontSize={20}>
-                  {formatCurrency(isOnSale ? roundedDiscountedPrice : product.price)}
+                  {formatCurrency(product.isOnSale ? roundedDiscountedPrice : product.price)}
                 </Typography>
 
-                {isOnSale ? (
+                {product.isOnSale ? (
                   <Typography
                     lineHeight={1}
                     component="span"
@@ -177,8 +174,6 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
             </Box>
           </Box>
         </Link>
-
-        {isAdminProductsPath ? <ProductCardButtonsAdminPanel product={product} /> : null}
       </Box>
     </Box>
   );

@@ -1,8 +1,8 @@
-import { CustomResponse, ProductImageData } from '@/types';
+import { ProductImageData } from '@/types';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
 import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 
-export async function deleteProductImagesFromStorage(imageData: ProductImageData[]): Promise<CustomResponse> {
+export async function deleteProductImagesFromStorage(imageData: ProductImageData[]) {
   const storageImagesToDelete = imageData.map((data) => data.fileName);
 
   const storageDeletePromises = storageImagesToDelete.map(
@@ -41,11 +41,8 @@ export async function deleteProductImagesDataFromDb(imageData: ProductImageData[
 // Delete images that have been uploaded to storage.
 // If a productId exists, delete related image data (image url, etc) from database.
 
-export async function deleteAllProductImages(
-  imageData: ProductImageData[],
-  productId?: number | null
-): Promise<CustomResponse> {
-  let dbDeleteResponse: CustomResponse = {
+export async function deleteAllProductImages(imageData: ProductImageData[], productId?: number | null) {
+  let dbDeleteResponse = {
     success: true,
     message: 'No image data has been added to the database.',
   };

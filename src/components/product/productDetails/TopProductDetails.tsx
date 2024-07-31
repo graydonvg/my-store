@@ -11,7 +11,6 @@ type Props = {
 
 export default function TopProductDetails({ product }: Props) {
   const theme = useTheme();
-  const isOnSale = product.isOnSale === 'Yes';
   const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
 
   return (
@@ -47,9 +46,9 @@ export default function TopProductDetails({ product }: Props) {
           fontStyle="italic"
           fontSize={42}
           sx={{ color: theme.palette.text.primary }}>
-          {formatCurrency(isOnSale ? roundedDiscountedPrice : product.price)}
+          {formatCurrency(product.isOnSale ? roundedDiscountedPrice : product.price)}
         </Typography>
-        {isOnSale ? (
+        {product.isOnSale ? (
           <Box
             sx={{
               display: 'flex',

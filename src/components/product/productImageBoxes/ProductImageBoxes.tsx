@@ -24,8 +24,6 @@ export default function ProductImageBoxes({ product }: Props) {
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
 
-  console.log(imageData);
-
   useEffect(() => {
     if ((isAdminPath && imageData.length === 0) || product?.productImageData.length === 0) {
       setSelectedImageIndex(0);

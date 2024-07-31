@@ -23,6 +23,7 @@ export default function SignInDialogButton() {
         paddingX: { xs: 0, md: 1 },
         color: theme.palette.custom.navbar.upper.text,
         height: { xs: 'auto', md: 1 },
+        minHeight: 'unset',
       }}
     />
   );

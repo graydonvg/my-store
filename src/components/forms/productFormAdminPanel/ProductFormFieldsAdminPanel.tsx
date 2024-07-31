@@ -13,10 +13,9 @@ import { selectProductFormData } from '@/lib/redux/features/productForm/productF
 type Props = {
   isSubmitting: boolean;
   isClearingAllFields: boolean;
-  isOnSale: boolean;
 };
 
-export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSubmitting, isOnSale }: Props) {
+export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSubmitting }: Props) {
   const dispatch = useAppDispatch();
   const productFormData = useAppSelector(selectProductFormData);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
@@ -32,6 +31,18 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
     const { name, value } = event.target;
 
     dispatch(setProductFormData({ field: name as keyof ProductForm, value }));
+  }
+
+  function getSelectFieldValue(isOnSale: boolean | '') {
+    if (isOnSale) {
+      return 'Yes';
+    }
+
+    if (!isOnSale && isOnSale !== '') {
+      return 'No';
+    }
+
+    return '';
   }
 
   return (
@@ -118,19 +129,19 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
       <SelectField
         label="On sale"
         name="isOnSale"
-        value={productFormData.isOnSale}
+        value={getSelectFieldValue(productFormData.isOnSale)}
         onChange={handleInputChange}
         options={['No', 'Yes']}
         disabled={isFieldDisabled}
         required
-        hasValue={productFormData.isOnSale.length > 0}
+        hasValue={productFormData.isOnSale !== ''}
       />
       <NumberField
         label="Sale %"
         name="salePercentage"
         onChange={handleInputChange}
         value={productFormData.salePercentage}
-        disabled={!isOnSale || isFieldDisabled}
+        disabled={!productFormData.isOnSale || isFieldDisabled}
         placeholder="e.g. 20"
         required
         hasValue={productFormData.salePercentage !== ''}

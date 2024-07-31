@@ -56,7 +56,7 @@ export default function AdminPanelAddNewProductPage() {
     };
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
-  async function addProductHandler(event: FormEvent<HTMLFormElement>) {
+  async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatch(setIsProductFormSubmitting(true));
 
@@ -83,7 +83,7 @@ export default function AdminPanelAddNewProductPage() {
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
       <ManageProductImages />
       <ProductFormAdminPanel
-        onSubmit={addProductHandler}
+        onSubmit={handleAddProduct}
         isSubmitting={isSubmitting}
         submitButtonLabel={!isSubmitting ? 'add product' : ''}
         submitButtonStartIcon={!isSubmitting ? <Add /> : null}

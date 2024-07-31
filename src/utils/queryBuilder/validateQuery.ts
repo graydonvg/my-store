@@ -65,6 +65,7 @@ function validateSortColumn(dataGrid: DataGridOptions, column: string) {
       'orderStatus',
       'orderTotal',
     ],
+    products: ['createdAt', 'name', 'brand', 'category', 'price', 'isOnSale', 'salePercentage'],
   };
 
   const isValidSortColumn = columns[dataGrid].includes(column);
@@ -142,6 +143,7 @@ function validateIsNotValueFilter(dataGrid: DataGridOptions, filter: QueryFilter
   const values = {
     users: ['owner', 'manager', 'admin', 'none'],
     orders: ['awaiting payment', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'refunded'],
+    products: ['Men', 'Women', 'Kids'],
   };
   const isValidOperator = ['is', 'not'].includes(`${filter.operator}`);
   const isValidValue = values[dataGrid].includes(`${filter.value}`);
@@ -161,6 +163,21 @@ function validateNonnegativeNumberFilter(filter: QueryFilterDataGrid) {
   const isValidOperator = ['=', '!=', '>', '>=', '<', '<='].includes(`${filter.operator}`);
   const value = Number(filter.value);
   const isValidValue = !Number.isNaN(value) && value >= 0;
+
+  if (!isValidOperator) {
+    return { success: false, message: getInvalidFilterOperatorMessage(filter.operator) };
+  }
+
+  if (!isValidValue) {
+    return { success: false, message: getInvalidFilterValueMessage(filter.value) };
+  }
+
+  return commonSuccessResponse;
+}
+
+function validateBooleanFilter(filter: QueryFilterDataGrid) {
+  const isValidOperator = ['is'].includes(`${filter.operator}`);
+  const isValidValue = ['any', 'true', 'false'].includes(`${filter.value}`);
 
   if (!isValidOperator) {
     return { success: false, message: getInvalidFilterOperatorMessage(filter.operator) };
@@ -208,6 +225,8 @@ export function validateSearchParamsForDataGridQuery(
       case 'createdAt':
         ({ success, message } = validateDateFilter(filter));
         break;
+      case 'name':
+      case 'brand':
       case 'firstName':
       case 'lastName':
       case 'contactNumber':
@@ -226,11 +245,17 @@ export function validateSearchParamsForDataGridQuery(
         break;
       case 'role':
       case 'orderStatus':
+      case 'category':
         ({ success, message } = validateIsNotValueFilter(dataGrid, filter));
         break;
+      case 'price':
+      case 'salePercentage':
       case 'orderTotal':
       case 'postalCode':
         ({ success, message } = validateNonnegativeNumberFilter(filter));
+        break;
+      case 'isOnSale':
+        ({ success, message } = validateBooleanFilter(filter));
         break;
       default:
         return { success: false, message: getInvalidFilterColumnMessage(filter.column), data: null };

@@ -1,4 +1,4 @@
-import { ChevronLeft, Store } from '@mui/icons-material';
+import { ChevronLeft, Dashboard, LocalShipping, People, ShoppingCart, Store } from '@mui/icons-material';
 import {
   Divider,
   Drawer,
@@ -12,7 +12,18 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import SignOutButton from '../ui/buttons/complex/SignOutButton';
-import { ADMIN_PANEL_NAV_OPTIONS } from '../AdminPanelNavOptions';
+import { CONSTANTS } from '@/constants';
+
+function getIcon(icon: string) {
+  const icons = {
+    Dashboard: <Dashboard />,
+    Products: <ShoppingCart />,
+    Orders: <LocalShipping />,
+    Users: <People />,
+  };
+
+  return icons[icon as keyof typeof icons];
+}
 
 type Props = {
   drawerWidth: number;
@@ -57,12 +68,14 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
       </Toolbar>
       <Divider />
       <List component="nav">
-        {ADMIN_PANEL_NAV_OPTIONS.map((item) => (
+        {CONSTANTS.ADMIN_PANEL_NAV_OPTIONS.map((item) => (
           <Link
             key={item.label}
             href={item.path}>
             <ListItemButton sx={{ color: theme.palette.text.secondary }}>
-              <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>{item.icon}</ListItemIcon>
+              <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
+                {getIcon(item.label)}
+              </ListItemIcon>
               <ListItemText primary={item.label} />
             </ListItemButton>
           </Link>

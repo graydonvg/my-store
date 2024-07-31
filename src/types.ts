@@ -138,7 +138,7 @@ export type CartItem = {
   size: string;
   product: {
     name: string;
-    isOnSale: string;
+    isOnSale: boolean;
     price: number;
     salePercentage: number;
     deliveryInfo: string;
@@ -394,9 +394,6 @@ export type InsertWishlistItemDb = z.infer<typeof InsertWishlistItemSchema>;
 export const ProductCategorySchema = z.enum(['Men', 'Women', 'Kids']);
 type ProductCategory = z.infer<typeof ProductCategorySchema>;
 
-const IsProductOnSaleSchema = z.enum(['Yes', 'No']);
-type IsProductOnSale = z.infer<typeof IsProductOnSaleSchema>;
-
 const ProductSalePercentageSchema = z.number().min(0).max(100);
 
 export type ProductImageUploadProgress = {
@@ -420,7 +417,7 @@ type ProductData = {
   brand: string;
   details: string;
   price: number;
-  isOnSale: IsProductOnSale;
+  isOnSale: boolean;
   salePercentage: number;
   sizes: string[];
   deliveryInfo: string;
@@ -437,7 +434,7 @@ export type ProductForm = {
   category: ProductCategory | '';
   deliveryInfo: string;
   details: string;
-  isOnSale: IsProductOnSale | '';
+  isOnSale: boolean | '';
   name: string;
   returnInfo: string;
   sizes: string[];
@@ -454,7 +451,7 @@ const ProductDataSchema = z.object({
   deliveryInfo: z.string(),
   returnInfo: z.string(),
   price: PriceSchema,
-  isOnSale: IsProductOnSaleSchema,
+  isOnSale: z.boolean(),
   salePercentage: ProductSalePercentageSchema,
 });
 
@@ -509,7 +506,7 @@ export type StripeCheckoutSessionResponse = {
 
 // Data grid
 
-export type DataGridOptions = 'users' | 'orders';
+export type DataGridOptions = 'users' | 'orders' | 'products';
 
 export type QueryPageDataGrid = {
   number: number;

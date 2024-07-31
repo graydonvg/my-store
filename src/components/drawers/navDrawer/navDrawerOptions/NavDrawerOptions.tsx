@@ -7,7 +7,6 @@ import SignOutButton from '@/components/ui/buttons/complex/SignOutButton';
 import { CONSTANTS } from '@/constants';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { ADMIN_PANEL_NAV_OPTIONS } from '@/components/AdminPanelNavOptions';
 
 export default function NavDrawerOptions() {
   const userData = useAppSelector(selectUserData);
@@ -31,7 +30,7 @@ export default function NavDrawerOptions() {
         ) : null}
 
         {isAdminPath
-          ? ADMIN_PANEL_NAV_OPTIONS.map((option) => (
+          ? CONSTANTS.ADMIN_PANEL_NAV_OPTIONS.map((option) => (
               <NavDrawerOption
                 onClick={closeDrawer}
                 key={option.label}

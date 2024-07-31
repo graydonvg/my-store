@@ -55,8 +55,25 @@ function applyOrdersQuerySort(query: QueryFilterBuilder, sort: QuerySortDataGrid
   }
 }
 
+function applyProductsQuerySort(query: QueryFilterBuilder, sort: QuerySortDataGrid) {
+  switch (sort.column) {
+    case 'createdAt':
+    case 'name':
+    case 'brand':
+    case 'category':
+    case 'price':
+    case 'isOnSale':
+    case 'salePercentage':
+      return applySort({ query, sort });
+    default:
+      return query;
+  }
+}
+
 export function applyQuerySort(dataGrid: DataGridOptions, query: QueryFilterBuilder, sort: QuerySortDataGrid) {
   switch (dataGrid) {
+    case 'products':
+      return applyProductsQuerySort(query, sort);
     case 'users':
       return applyUsersQuerySort(query, sort);
     case 'orders':

@@ -39,6 +39,7 @@ export default function HoverDropdownMenu({ children, label }: Props) {
     <>
       <Box
         sx={{
+          height: 1,
           zIndex: (theme) => theme.zIndex.modal + 1,
         }}
         onClick={handleMenuOpen}

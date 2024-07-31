@@ -266,7 +266,7 @@ export type Database = {
           createdAt: string;
           deliveryInfo: string;
           details: string;
-          isOnSale: Database['public']['Enums']['isOnSaleOption'];
+          isOnSale: boolean;
           name: string;
           price: number;
           productId: number;
@@ -280,7 +280,7 @@ export type Database = {
           createdAt?: string;
           deliveryInfo: string;
           details: string;
-          isOnSale: Database['public']['Enums']['isOnSaleOption'];
+          isOnSale?: boolean;
           name: string;
           price: number;
           productId?: number;
@@ -294,7 +294,7 @@ export type Database = {
           createdAt?: string;
           deliveryInfo?: string;
           details?: string;
-          isOnSale?: Database['public']['Enums']['isOnSaleOption'];
+          isOnSale?: boolean;
           name?: string;
           price?: number;
           productId?: number;

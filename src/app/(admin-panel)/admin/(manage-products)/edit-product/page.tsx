@@ -49,7 +49,7 @@ export default function AdminPanelEditProductPage() {
     };
   }, [isSubmitting, emptyFormFields, numberOfFormFields, imageData, imageUploadProgress]);
 
-  async function updateProductHandler(event: FormEvent<HTMLFormElement>) {
+  async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const validation = UpdateProductSchema.safeParse({
@@ -88,7 +88,7 @@ export default function AdminPanelEditProductPage() {
     <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 2, padding: { xs: 2, md: 3 } }}>
       <ManageProductImages />
       <ProductFormAdminPanel
-        onSubmit={updateProductHandler}
+        onSubmit={handleUpdateProduct}
         isSubmitting={isSubmitting}
         submitButtonLabel={!isSubmitting ? 'save' : ''}
       />

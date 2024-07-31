@@ -7,7 +7,7 @@ import NavbarTitle from '@/components/navbars/NavbarTitle';
 import NavDrawerButton from '@/components/ui/buttons/complex/NavDrawerButton';
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export default function UpperNavbarOptions({ children }: Props) {

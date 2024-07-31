@@ -16,7 +16,6 @@ type Props = {
 };
 
 export default function LargeCartItem({ item }: Props) {
-  const isOnSale = item?.product?.isOnSale === 'Yes';
   const productHref = `/products/${item?.product?.category.toLowerCase()}/${item?.product?.name
     .toLowerCase()
     .split(' ')
@@ -90,14 +89,14 @@ export default function LargeCartItem({ item }: Props) {
               flexWrap: 'wrap',
               gap: 1,
               alignItems: 'center',
-              justifyContent: isOnSale ? 'space-between' : 'flex-end',
+              justifyContent: item?.product?.isOnSale ? 'space-between' : 'flex-end',
               paddingBottom: 2,
             }}>
-            {isOnSale ? <LargeCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
+            {item?.product?.isOnSale ? <LargeCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
             <LargeCartItemPrice
               totalStandardPrice={item.totalStandardPrice}
               totalDiscountedPrice={item.totalDiscountedPrice}
-              isOnSale={isOnSale}
+              isOnSale={item?.product?.isOnSale!}
             />
           </Box>
         </Box>

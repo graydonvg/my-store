@@ -17,7 +17,7 @@ export default function SignUpDialogButton() {
     <TextButton
       label="sign up"
       onClick={openSignUpDialog}
-      sxStyles={{ width: '100px', color: theme.palette.custom.navbar.upper.text, height: 1 }}
+      sxStyles={{ width: '100px', color: theme.palette.custom.navbar.upper.text, height: 1, minHeight: 'unset' }}
     />
   );
 }

@@ -29,7 +29,6 @@ export default function ProductFormAdminPanel({
   const imageData = useAppSelector(selectImageData);
   const [isClearingAllFields, setIsClearingAllFields] = useState(false);
   const dispatch = useAppDispatch();
-  const isOnSale = productFormData.isOnSale === 'Yes';
   const emptyFormFields = getEmptyObjectKeys(productFormData);
   const numberOfFormFields = getObjectKeyCount(productFormData);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
@@ -48,7 +47,6 @@ export default function ProductFormAdminPanel({
       <ProductFormFieldsAdminPanel
         isSubmitting={isSubmitting}
         isClearingAllFields={isClearingAllFields}
-        isOnSale={isOnSale}
       />
       <OutlinedButton
         label={!isClearingAllFields ? 'clear form' : ''}
@@ -67,7 +65,7 @@ export default function ProductFormAdminPanel({
         disabled={
           uploadInProgress ||
           isClearingAllFields ||
-          (isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
+          (productFormData.isOnSale ? emptyFormFields.length > 0 : emptyFormFields.length > 1) ||
           imageData.length === 0
         }
         label={submitButtonLabel}

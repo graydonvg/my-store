@@ -12,7 +12,7 @@ export function selectCartItems(state: RootState) {
 
 export const selectCartItemsWithPriceDetails = createSelector([selectCartItems], (items) =>
   items.map((item) => {
-    if (item.product?.isOnSale === 'Yes') {
+    if (item.product?.isOnSale) {
       return {
         ...item,
         totalStandardPrice: item.product.price * item.quantity,
@@ -37,7 +37,7 @@ export const selectRoundedDiscountTotal = createSelector([selectCartItems], (ite
   items.reduce(
     (discountTotal, item) =>
       discountTotal +
-      (item.product?.isOnSale === 'Yes'
+      (item.product?.isOnSale
         ? Math.round(item.product.price * (item.product.salePercentage / 100)) * item.quantity
         : 0),
     0

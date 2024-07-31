@@ -27,6 +27,30 @@ export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
   }
 }
 
+export async function deleteSelectedProducts(productIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
+  const logger = log.with({ context: 'service: deleteSelectedProducts' });
+
+  logger.info('Attempting to delete selected products');
+
+  try {
+    const response = await fetch(`/api/secure/admin/products/delete/many`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(productIds),
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+  } finally {
+    await logger.flush();
+  }
+}
+
 export async function deleteProductImageDataFromDb(id: number): Promise<ResponseWithNoData> {
   const logger = log.with({ context: 'service: deleteProductImageDataFromDb' });
 

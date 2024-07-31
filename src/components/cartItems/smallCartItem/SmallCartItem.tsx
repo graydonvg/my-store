@@ -18,7 +18,6 @@ export default function SmallCartItem({ item }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isOnSale = item?.product?.isOnSale === 'Yes';
   const isShippingPath = pathname.startsWith('/checkout/shipping');
   const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
 
@@ -92,11 +91,11 @@ export default function SmallCartItem({ item }: Props) {
           />
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: 1 }}>
-          {isOnSale ? <SmallCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
+          {item?.product?.isOnSale ? <SmallCartItemSaleBadge percentage={item?.product?.salePercentage!} /> : null}
           <SmallCartItemPrice
             totalStandardPrice={item.totalStandardPrice}
             totalDiscountedPrice={item.totalDiscountedPrice}
-            isOnSale={isOnSale}
+            isOnSale={item?.product?.isOnSale!}
           />
         </Box>
       </Box>

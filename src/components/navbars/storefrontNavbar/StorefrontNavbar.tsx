@@ -5,16 +5,14 @@ import { ElevationScroll } from '@/components/ui/ElevationScroll';
 
 export default function StorefrontNavbar() {
   return (
-    <>
-      <ElevationScroll>
-        <AppBar
-          color="transparent"
-          elevation={0}
-          position="sticky">
-          <UpperNavbar />
-          <LowerNavbar />
-        </AppBar>
-      </ElevationScroll>
-    </>
+    <ElevationScroll>
+      <AppBar
+        color="transparent"
+        elevation={0}
+        position="sticky">
+        <UpperNavbar />
+        <LowerNavbar />
+      </AppBar>
+    </ElevationScroll>
   );
 }

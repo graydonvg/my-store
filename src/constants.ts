@@ -20,7 +20,6 @@ export const CONSTANTS = {
     { label: 'XL', value: 'XL' },
   ],
   ORDERED_SIZES_FOR_STORE: ['XS', 'S', 'M', 'L', 'XL'],
-  // adminPanelNavOptions at components\AdminPanelNavOptions.tsx because of icons,
   STOREFRONT_NAV_OPTIONS: [
     {
       label: 'Home',
@@ -61,7 +60,24 @@ export const CONSTANTS = {
       path: '/wishlist',
     },
   ],
-
+  ADMIN_PANEL_NAV_OPTIONS: [
+    {
+      label: 'Dashboard',
+      path: '/admin/dashboard',
+    },
+    {
+      label: 'Products',
+      path: '/admin/products',
+    },
+    {
+      label: 'Orders',
+      path: '/admin/orders',
+    },
+    {
+      label: 'Users',
+      path: '/admin/users',
+    },
+  ],
   HOME_PAGE_SHOP_BY_CATEGORY: [
     {
       label: 'Men',

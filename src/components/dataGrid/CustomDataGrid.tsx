@@ -168,7 +168,7 @@ export default function CustomDataGrid({
         showCellVerticalBorder
         showColumnVerticalBorder
         disableColumnMenu
-        scrollbarSize={0}
+        scrollbarSize={16}
         initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
         slots={{
           toolbar: () => toolbar,
@@ -225,6 +225,18 @@ export default function CustomDataGrid({
           '--unstable_DataGrid-radius': 0,
 
           [`& .${gridClasses['scrollbar--vertical']}`]: { display: 'block' },
+
+          [`& .${gridClasses.booleanCell}[data-value="true"]`]: {
+            color: theme.palette.success.main,
+          },
+
+          [`& .${gridClasses.booleanCell}[data-value="false"]`]: {
+            color: theme.palette.error.main,
+          },
+
+          [`& .${gridClasses.scrollbarFiller}`]: {
+            display: 'none',
+          },
 
           [`& .${gridClasses.toolbarContainer}`]: {
             paddingRight: 2,

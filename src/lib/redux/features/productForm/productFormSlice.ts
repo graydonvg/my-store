@@ -13,14 +13,20 @@ function handleSetProductDataOnChange(
   }
 
   if (field === 'isOnSale' && value === 'No') {
-    return { ...productFormData, [field]: value as ProductForm['isOnSale'], salePercentage: 0 };
+    return { ...productFormData, isOnSale: false, salePercentage: 0 };
   }
 
-  if (field === 'isOnSale' && value === 'Yes' && productFormData.salePercentage === 0) {
+  if (field === 'isOnSale' && value === 'Yes') {
+    if (productFormData.salePercentage === 0) {
+      return {
+        ...productFormData,
+        isOnSale: true,
+        salePercentage: initialState.productFormData.salePercentage,
+      };
+    }
     return {
       ...productFormData,
-      [field]: value as ProductForm['isOnSale'],
-      salePercentage: initialState.productFormData.salePercentage,
+      isOnSale: true,
     };
   }
 

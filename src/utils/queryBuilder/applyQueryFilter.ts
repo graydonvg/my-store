@@ -107,7 +107,34 @@ function applyNumberFilter({ query, filter }: FilterFunctionParams) {
   }
 }
 
-export function applyOrdersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+function applyBooleanFilter({ query, filter }: FilterFunctionParams) {
+  if (filter.value === 'true') {
+    return query.eq(filter.column!, true);
+  } else {
+    return query.eq(filter.column!, false);
+  }
+}
+
+function applyProductsQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+  switch (filter.column) {
+    case 'createdAt':
+      return applyDateFilter({ query, filter });
+    case 'name':
+    case 'brand':
+      return applyStringFilter({ query, filter });
+    case 'category':
+      return applyIsOrNotValueFilter({ query, filter });
+    case 'isOnSale':
+      return applyBooleanFilter({ query, filter });
+    case 'price':
+    case 'salePercentage':
+      return applyNumberFilter({ query, filter });
+    default:
+      return query;
+  }
+}
+
+function applyOrdersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
   switch (filter.column) {
     case 'orderId':
       return applyIdFilter({ query, filter });
@@ -148,7 +175,7 @@ export function applyOrdersQueryFilter(query: QueryFilterBuilder, filter: QueryF
   }
 }
 
-export function applyUsersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
+function applyUsersQueryFilter(query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
   switch (filter.column) {
     case 'userId':
       return applyIdFilter({ query, filter });
@@ -172,6 +199,8 @@ export function applyUsersQueryFilter(query: QueryFilterBuilder, filter: QueryFi
 
 export function applyQueryFilter(dataGrid: DataGridOptions, query: QueryFilterBuilder, filter: QueryFilterDataGrid) {
   switch (dataGrid) {
+    case 'products':
+      return applyProductsQueryFilter(query, filter);
     case 'orders':
       return applyOrdersQueryFilter(query, filter);
     case 'users':
