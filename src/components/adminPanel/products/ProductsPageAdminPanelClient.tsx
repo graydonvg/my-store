@@ -74,7 +74,7 @@ function getColumns() {
     {
       field: 'category',
       headerName: 'Category',
-      width: 100,
+      width: 110,
       filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
       type: 'singleSelect',
       valueOptions: ['Men', 'Women', 'Kids'],
@@ -95,7 +95,8 @@ function getColumns() {
       field: 'isOnSale',
       headerName: 'On sale',
       type: 'boolean',
-      width: 80,
+      headerAlign: 'center',
+      width: 100,
     },
     {
       field: 'salePercentage',
@@ -103,7 +104,7 @@ function getColumns() {
       type: 'number',
       headerAlign: 'center',
       align: 'center',
-      width: 80,
+      width: 100,
       filterOperators: getGridNumericOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -195,7 +196,6 @@ export default function ProductsPageAdminPanelClient({
       deleteProductImagesFromStorageResult.status === 'fulfilled' &&
       deleteSelectedProductsResult.status === 'fulfilled'
     ) {
-      // await revalidateAndRefresh();
       router.refresh();
       setSelectedProductIds([]);
       setIsDeleting(false);

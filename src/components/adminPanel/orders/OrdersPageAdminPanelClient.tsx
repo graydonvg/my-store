@@ -66,7 +66,7 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'contactNumber',
       headerName: 'Contact number',
-      width: 150,
+      width: 160,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -102,7 +102,7 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'complexOrBuilding',
       headerName: 'Complex / Building',
-      width: 160,
+      width: 180,
       editable: isUpdating ? false : true,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
@@ -161,21 +161,21 @@ function getColumns(isUpdating: boolean) {
     {
       field: 'recipientFirstName',
       headerName: 'Recipient first name',
-      width: 150,
+      width: 180,
       editable: isUpdating ? false : true,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
       field: 'recipientLastName',
       headerName: 'Recipient last name',
-      width: 150,
+      width: 180,
       editable: isUpdating ? false : true,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
       field: 'recipientContactNumber',
       headerName: 'Recipient contact number',
-      width: 150,
+      width: 180,
       editable: isUpdating ? false : true,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
