@@ -19,14 +19,10 @@ export async function fetchProductsForAdmin(
   try {
     let productsQuery = supabase
       .from('products')
-      .select(
-        'productId, name, brand, category, price, isOnSale, salePercentage, productImageData(fileName, imageUrl)',
-        {
-          count: 'exact',
-        }
-      )
-      .order('index', { referencedTable: 'productImageData', ascending: true })
-      .limit(1, { referencedTable: 'productImageData' });
+      .select('*, productImageData(fileName, imageUrl, productImageId, index)', {
+        count: 'exact',
+      })
+      .order('index', { referencedTable: 'productImageData', ascending: true });
 
     const builtProductsQuery = buildQuery('products', productsQuery, page, sort, filter);
 
