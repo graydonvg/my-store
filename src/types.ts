@@ -473,7 +473,14 @@ export const UpdateProductSchema = z.object({
 });
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
 
-export type BestSellersType = Array<Product & { totalQuantitySold: number | null }>;
+export type BestSellersType = {
+  totalQuantitySold: number;
+  productId: number;
+  name: string;
+  productImageData: {
+    imageUrl: string;
+  }[];
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
