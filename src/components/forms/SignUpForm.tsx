@@ -130,7 +130,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       <Box
         component="form"
         onSubmit={handleSignUp}
-        sx={{ paddingX: 2 }}>
+        sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingX: 2 }}>
         <Grid
           container
           spacing={2}>
@@ -162,10 +162,6 @@ export default function SignUpForm({ headerComponent, children }: Props) {
           disabled={isSignUpDialogOpen && isLoading}
           isLoading={!isSignUpDialogOpen && isLoading}
           type="submit"
-          sxStyles={{
-            marginTop: 3,
-            marginBottom: 3,
-          }}
           fullWidth
           color="primary"
         />

@@ -18,6 +18,7 @@ import Link from 'next/link';
 import MuiLink from '../../ui/MuiLink';
 import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
+import { ArrowForward } from '@mui/icons-material';
 
 const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
@@ -31,7 +32,18 @@ export default function RecentOrdersTable({ orders }: Props) {
 
   return (
     <>
-      <CardTitle>Recent Orders</CardTitle>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <CardTitle>Recent Orders</CardTitle>
+        <Link href="/admin/orders">
+          <MuiLink>
+            View All
+            <ArrowForward
+              fontSize="small"
+              sx={{ marginLeft: 1 }}
+            />
+          </MuiLink>
+        </Link>
+      </Box>
       <TableContainer>
         <Table
           size={isBelowSmall ? 'small' : 'medium'}
@@ -70,11 +82,6 @@ export default function RecentOrdersTable({ orders }: Props) {
           </Box>
         ) : null}
       </TableContainer>
-      <Box sx={{ width: 'fit-content', marginTop: 2 }}>
-        <Link href="/admin/orders">
-          <MuiLink>See more orders</MuiLink>
-        </Link>
-      </Box>
     </>
   );
 }
