@@ -10,12 +10,15 @@ import { calculateDailySales, calculateMonthlySales, calculateWeeklySales } from
 import fetchOrderTotalsThisMonth from '@/lib/db/queries/fetchOrderTotalsThisMonth';
 import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
 import { CONSTANTS } from '@/constants';
+import fetchRecentProducts from '@/lib/db/queries/fetchRecentProducts';
+import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
 
 export default async function AdminPanelDashboard() {
   const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
   const orderTotalsThisMonth = await fetchOrderTotalsThisMonth();
   const sortedBestSellers = await fetchSortedBestSellers();
+  const recentProducts = await fetchRecentProducts();
 
   return (
     <Grid
@@ -92,7 +95,7 @@ export default async function AdminPanelDashboard() {
       <Grid
         item
         sm={12}
-        xl={7}
+        xl={6}
         sx={{ display: { xs: 'none', sm: 'block' } }}>
         <Paper
           sx={{
@@ -108,8 +111,20 @@ export default async function AdminPanelDashboard() {
       </Grid>
       <Grid
         item
-        xs={12}
-        xl={5}>
+        xs={6}
+        xl={3}>
+        <Paper
+          sx={{
+            padding: 2,
+            borderRadius: CONSTANTS.BORDER_RADIUS,
+          }}>
+          <RecentProducts recentProducts={recentProducts} />
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={6}
+        xl={3}>
         <Paper
           sx={{
             padding: 2,

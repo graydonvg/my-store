@@ -146,7 +146,7 @@ export type CartItem = {
     productId: number;
     sizes: string[];
     brand: string;
-    category: string;
+    category: ProductCategory;
     productImageData: {
       imageUrl: string;
     }[];
@@ -301,7 +301,7 @@ export type OrderItem = {
   product: {
     productId: number;
     name: string;
-    category: string;
+    category: ProductCategory;
     returnInfo: string;
     productImageData: {
       imageUrl: string | undefined;
@@ -392,7 +392,7 @@ export type InsertWishlistItemDb = z.infer<typeof InsertWishlistItemSchema>;
 // Product
 
 export const ProductCategorySchema = z.enum(['Men', 'Women', 'Kids']);
-type ProductCategory = z.infer<typeof ProductCategorySchema>;
+export type ProductCategory = z.infer<typeof ProductCategorySchema>;
 
 const ProductSalePercentageSchema = z.number().min(0).max(100);
 
@@ -472,15 +472,6 @@ export const UpdateProductSchema = z.object({
   imageData: ProductImageDataSchema.array(),
 });
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
-
-export type BestSellersType = {
-  totalQuantitySold: number;
-  productId: number;
-  name: string;
-  productImageData: {
-    imageUrl: string;
-  }[];
-};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

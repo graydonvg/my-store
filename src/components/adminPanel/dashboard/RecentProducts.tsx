@@ -16,17 +16,25 @@ import { CONSTANTS } from '@/constants';
 import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import Image from 'next/image';
+import Link from 'next/link';
+import MuiLink from '@/components/ui/MuiLink';
+import { ArrowForward } from '@mui/icons-material';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
+import { formatCurrency } from '@/utils/format';
 import { useRouter } from 'next/navigation';
+import { ProductCategory } from '@/types';
 
-const headCellLabels = ['#', 'Products', 'Units'];
+const headCellLabels = ['#', 'Products', 'Price'];
 
 type Props = {
-  bestSellers:
+  recentProducts:
     | {
-        totalQuantitySold: number;
         productId: number;
         name: string;
-        category: string;
+        category: ProductCategory;
+        price: number;
+        isOnSale: boolean;
+        salePercentage: number;
         productImageData: {
           imageUrl: string;
         }[];
@@ -34,7 +42,7 @@ type Props = {
     | null;
 };
 
-export default function BestSellers({ bestSellers }: Props) {
+export default function RecentProducts({ recentProducts }: Props) {
   const router = useRouter();
   const theme = useTheme();
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,7 +53,18 @@ export default function BestSellers({ bestSellers }: Props) {
 
   return (
     <>
-      <CardTitle>Best Sellers</CardTitle>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <CardTitle>Recent Products</CardTitle>
+        <Link href="/admin/products">
+          <MuiLink>
+            View All
+            <ArrowForward
+              fontSize="small"
+              sx={{ marginLeft: 1 }}
+            />
+          </MuiLink>
+        </Link>
+      </Box>
       <TableContainer>
         <Table
           size={isBelowSmall ? 'small' : 'medium'}
@@ -64,11 +83,11 @@ export default function BestSellers({ bestSellers }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bestSellers
-              ? bestSellers.map((bestSeller, index) => (
+            {recentProducts
+              ? recentProducts.map((product, index) => (
                   <TableRow
-                    key={bestSeller?.productId}
-                    onClick={() => navigateToProductPage(bestSeller.category, bestSeller.name, bestSeller.productId)}
+                    key={index}
+                    onClick={() => navigateToProductPage(product.category, product.name, product.productId)}
                     hover
                     sx={{ cursor: 'pointer' }}>
                     <TableCell width={1}>{index + 1}</TableCell>
@@ -82,8 +101,8 @@ export default function BestSellers({ bestSellers }: Props) {
                           width: 50,
                         }}>
                         <Image
-                          src={bestSeller.productImageData[0].imageUrl}
-                          alt={`Image for ${bestSeller.name}`}
+                          src={product.productImageData[0].imageUrl}
+                          alt={`Image for ${product.name}`}
                           fill
                           style={{ objectFit: 'cover', borderRadius: CONSTANTS.BORDER_RADIUS }}
                           sizes="50px"
@@ -96,16 +115,20 @@ export default function BestSellers({ bestSellers }: Props) {
                           WebkitBoxOrient: 'vertical',
                           WebkitLineClamp: 2,
                         }}>
-                        {bestSeller.name}
+                        {product.name}
                       </Typography>
                     </TableCell>
-                    <TableCell>{bestSeller.totalQuantitySold}</TableCell>
+                    <TableCell>
+                      {product.isOnSale
+                        ? formatCurrency(calculateRoundedDiscountedPrice(product.price, product.salePercentage))
+                        : formatCurrency(product.price)}
+                    </TableCell>
                   </TableRow>
                 ))
               : null}
           </TableBody>
         </Table>
-        {!bestSellers ? (
+        {!recentProducts ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, paddingTop: 2 }}>
             <CustomNoRowsOverlay text="No data received" />
           </Box>
