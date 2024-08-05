@@ -50,6 +50,17 @@ export function calculateSalesForCurrentMonth(orderData: OrderDateTotal[]) {
   }, 0);
 }
 
+export function calculateSalesForCurrentYear(orderData: OrderDateTotal[]) {
+  const startOfWeek = dayjs().startOf('year');
+
+  return orderData.reduce((total, order) => {
+    if (dayjs(order.createdAt).isAfter(startOfWeek)) {
+      total += order.orderTotal;
+    }
+    return total;
+  }, 0);
+}
+
 export function calculateMonthlySales(orderData: OrderDateTotal[]) {
   // Create an array to store the total sales for each month
   const monthlySalesMap = Array(12).fill(0);

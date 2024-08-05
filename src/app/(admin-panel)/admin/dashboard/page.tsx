@@ -4,11 +4,11 @@ import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
-import dayjs from 'dayjs';
 import {
   calculateSalesForCurrentDay,
   calculateSalesForCurrentMonth,
   calculateSalesForCurrentWeek,
+  calculateSalesForCurrentYear,
 } from '@/utils/calculate';
 import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
 import { CONSTANTS } from '@/constants';
@@ -16,6 +16,8 @@ import fetchRecentProducts from '@/lib/db/queries/fetchRecentProducts';
 import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
 import SalesBarChart from '@/components/adminPanel/dashboard/SalesBarChart';
 import fetchOrderTotalsThisYear from '@/lib/db/queries/fetchOrderTotalsThisYear';
+import TotalsCard from '@/components/adminPanel/dashboard/TotalsCard';
+import dayjs from 'dayjs';
 
 export default async function AdminPanelDashboard() {
   const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
@@ -33,68 +35,53 @@ export default async function AdminPanelDashboard() {
         item
         xs={12}
         sm={6}
-        md={4}>
-        <Paper
-          sx={{
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: 2, sm: 0 },
-            minHeight: 'fit-content',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-            containerType: 'inline-size',
-          }}>
+        xl={3}>
+        <TotalsCard>
           <TotalSales
             title="Daily Sales"
             amount={orderTotalsThisYear ? calculateSalesForCurrentDay(orderTotalsThisYear) : null}
             date={dayjs().format('DD MMM')}
           />
-        </Paper>
+        </TotalsCard>
       </Grid>
       <Grid
         item
         xs={12}
         sm={6}
-        md={4}>
-        <Paper
-          sx={{
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: 2, sm: 0 },
-            minHeight: 'fit-content',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-            containerType: 'inline-size',
-          }}>
+        xl={3}>
+        <TotalsCard>
           <TotalSales
             title="Weekly Sales"
             amount={orderTotalsThisYear ? calculateSalesForCurrentWeek(orderTotalsThisYear) : null}
             date={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
-        </Paper>
+        </TotalsCard>
       </Grid>
       <Grid
         item
         xs={12}
         sm={6}
-        md={4}
-        sx={{ display: { xs: 'block', sm: 'none', md: 'block' } }}>
-        <Paper
-          sx={{
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: 2, sm: 0 },
-            minHeight: 'fit-content',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-            containerType: 'inline-size',
-          }}>
+        xl={3}>
+        <TotalsCard>
           <TotalSales
             title="Monthly Sales"
             amount={orderTotalsThisYear ? calculateSalesForCurrentMonth(orderTotalsThisYear) : null}
             date={dayjs().format('MMM')}
           />
-        </Paper>
+        </TotalsCard>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        xl={3}>
+        <TotalsCard>
+          <TotalSales
+            title="Yearly Sales"
+            amount={orderTotalsThisYear ? calculateSalesForCurrentYear(orderTotalsThisYear) : null}
+            date={dayjs().format('YYYY')}
+          />
+        </TotalsCard>
       </Grid>
       <Grid
         item

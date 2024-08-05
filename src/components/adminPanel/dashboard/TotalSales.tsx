@@ -15,28 +15,15 @@ export default function TotalSales({ title, date, amount }: Props) {
   return (
     <Box sx={{ height: 1 }}>
       <CardTitle gutterBottom>{title}</CardTitle>
-
-      <>
-        <Typography
-          component="p"
-          variant="h4"
-          noWrap
-          sx={{
-            fontWeight: 700,
-            '@container (max-width: 231px)': {
-              fontSize: 30,
-            },
-            '@container (max-width: 195px)': {
-              fontSize: 24,
-            },
-            '@container (max-width: 155px)': {
-              fontSize: 22,
-            },
-          }}>
-          {amount !== null ? formatCurrency(amount) : 'No data'}
-        </Typography>
-        <Typography color={(theme) => theme.palette.text.secondary}>{date}</Typography>
-      </>
+      <Typography
+        component="p"
+        variant="h4"
+        fontWeight={700}
+        fontSize={28}
+        noWrap>
+        {amount !== null ? formatCurrency(amount) : 'No data'}
+      </Typography>
+      <Typography color={(theme) => theme.palette.text.secondary}>{date}</Typography>
     </Box>
   );
 }
