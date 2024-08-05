@@ -5,12 +5,13 @@ import fetchUserSessionData from '@/lib/db/queries/fetchUserSessionData';
 import DataInitializer from '@/components/DataInitializer';
 import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
 import { Suspense } from 'react';
+import { Box } from '@mui/material';
 
 export default function UpperNavbar() {
   return (
     <UpperNavbarContainer>
       <UpperNavbarOptions>
-        <Suspense fallback={null}>
+        <Suspense fallback={<Box sx={{ width: '60px' }} />}>
           <UserSessionNavOptions />
         </Suspense>
       </UpperNavbarOptions>

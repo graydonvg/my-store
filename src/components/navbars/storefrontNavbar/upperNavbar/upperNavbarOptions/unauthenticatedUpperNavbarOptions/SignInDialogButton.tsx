@@ -18,7 +18,7 @@ export default function SignInDialogButton() {
       label="sign in"
       onClick={openSignInDialog}
       sxStyles={{
-        width: { xs: 'fit-content', md: '100px' },
+        width: { xs: '60px', md: '100px' },
         minWidth: 'unset',
         paddingX: { xs: 0, md: 1 },
         color: theme.palette.custom.navbar.upper.text,

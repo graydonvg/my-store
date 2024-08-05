@@ -4,6 +4,7 @@ import { selectImageData } from '@/lib/redux/features/productImages/productImage
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteProduct } from '@/services/admin/delete';
+import revalidateAllData from '@/services/admin/revalidate-all-data';
 import { Product } from '@/types';
 import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { DeleteForever, Edit, Preview } from '@mui/icons-material';
@@ -45,6 +46,21 @@ export default function ProductsDataGridActions({ params }: Props) {
     setIsLoading(false);
   }
 
+  async function revalidateAndRefresh() {
+    setIsLoading(true);
+
+    const data = await revalidateAllData();
+
+    if (data.success === true) {
+      toast.success(data.message);
+      router.refresh();
+    } else {
+      toast.error(data.message);
+    }
+
+    setIsLoading(false);
+  }
+
   async function permanentlyDeleteProduct() {
     const toastId = toast.loading('Deleting product...');
     setIsDeletingProduct(true);
@@ -58,7 +74,7 @@ export default function ProductsDataGridActions({ params }: Props) {
     const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
 
     if (deleteImagesSuccess && deleteProductSuccess) {
-      router.refresh();
+      await revalidateAndRefresh();
       toast.update(toastId, {
         render: 'Product deleted successfully',
         type: 'success',
@@ -69,7 +85,7 @@ export default function ProductsDataGridActions({ params }: Props) {
         transition: Flip,
       });
     } else if (!deleteImagesSuccess) {
-      router.refresh();
+      await revalidateAndRefresh();
       toast.update(toastId, {
         render: deleteImagesMessage,
         type: 'error',
@@ -80,6 +96,7 @@ export default function ProductsDataGridActions({ params }: Props) {
         transition: Flip,
       });
     } else if (!deleteProductSuccess) {
+      await revalidateAndRefresh();
       toast.update(toastId, {
         render: deleteProductMessage,
         type: 'error',
