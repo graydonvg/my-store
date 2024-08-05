@@ -14,7 +14,7 @@ type Props = {
 export default function TotalSales({ title, date, amount }: Props) {
   return (
     <Box sx={{ height: 1 }}>
-      <CardTitle>{title}</CardTitle>
+      <CardTitle gutterBottom>{title}</CardTitle>
 
       <>
         <Typography
@@ -22,7 +22,7 @@ export default function TotalSales({ title, date, amount }: Props) {
           variant="h4"
           noWrap
           sx={{
-            fontSize: 36,
+            fontWeight: 700,
             '@container (max-width: 231px)': {
               fontSize: 30,
             },

@@ -367,7 +367,7 @@ export type AddOrderResponse = {
   orderId: number;
 };
 
-export type MonthlyOrderData = {
+export type OrderDateTotal = {
   createdAt: string;
   orderTotal: number;
 };

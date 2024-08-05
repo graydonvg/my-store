@@ -1,14 +1,14 @@
 'use client';
 
 import { useTheme } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { ReactNode } from 'react';
 
-interface Props {
+type Props = TypographyProps & {
   children?: ReactNode;
-}
+};
 
-export default function CardTitle({ children }: Props) {
+export default function CardTitle({ children, ...props }: Props) {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
@@ -16,9 +16,9 @@ export default function CardTitle({ children }: Props) {
     <Typography
       component="h2"
       variant="h6"
-      gutterBottom
       color={darkMode ? theme.palette.primary.light : theme.palette.primary.main}
-      sx={{ textTransform: 'capitalize' }}>
+      sx={{ textTransform: 'capitalize' }}
+      {...props}>
       {children}
     </Typography>
   );

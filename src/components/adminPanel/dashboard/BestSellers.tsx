@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Divider,
   Table,
   TableBody,
   TableCell,
@@ -45,8 +46,11 @@ export default function BestSellers({ bestSellers }: Props) {
 
   return (
     <>
-      <CardTitle>Best Sellers</CardTitle>
-      <TableContainer>
+      <Box sx={{ padding: 2 }}>
+        <CardTitle>Best Sellers</CardTitle>
+      </Box>
+      <Divider />
+      <TableContainer sx={{ padding: 2 }}>
         <Table
           size={isBelowSmall ? 'small' : 'medium'}
           stickyHeader>
@@ -56,7 +60,7 @@ export default function BestSellers({ bestSellers }: Props) {
                 <TableCell
                   key={label}
                   sx={{
-                    backgroundColor: theme.palette.custom.dataGrid.header,
+                    backgroundColor: 'inherit',
                   }}>
                   {label}
                 </TableCell>

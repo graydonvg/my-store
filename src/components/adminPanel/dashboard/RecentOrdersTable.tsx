@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Divider,
   Table,
   TableBody,
   TableCell,
@@ -32,7 +33,7 @@ export default function RecentOrdersTable({ orders }: Props) {
 
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 2 }}>
         <CardTitle>Recent Orders</CardTitle>
         <Link href="/admin/orders">
           <MuiLink>
@@ -44,7 +45,8 @@ export default function RecentOrdersTable({ orders }: Props) {
           </MuiLink>
         </Link>
       </Box>
-      <TableContainer>
+      <Divider />
+      <TableContainer sx={{ padding: 2 }}>
         <Table
           size={isBelowSmall ? 'small' : 'medium'}
           stickyHeader>
@@ -54,7 +56,7 @@ export default function RecentOrdersTable({ orders }: Props) {
                 <TableCell
                   key={label}
                   sx={{
-                    backgroundColor: theme.palette.custom.dataGrid.header,
+                    backgroundColor: 'inherit',
                   }}>
                   {label}
                 </TableCell>

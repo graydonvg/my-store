@@ -1,28 +1,29 @@
 'use client';
 
 import { useTheme } from '@mui/material/styles';
-import { LineChart, axisClasses } from '@mui/x-charts';
-import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
+import { axisClasses, BarChart, ChartsTextStyle } from '@mui/x-charts';
 import CardTitle from './CardTitle';
 import { Box, Typography } from '@mui/material';
-import { calculateCumulativeSales } from '@/utils/calculate';
-import { MonthlyOrderData } from '@/types';
+import { OrderDateTotal } from '@/types';
+import dayjs from 'dayjs';
+import { calculateMonthlySales } from '@/utils/calculate';
 
 type Props = {
-  orderData: MonthlyOrderData[] | null;
+  orderData: OrderDateTotal[] | null;
 };
 
-export default function SalesChart({ orderData }: Props) {
+export default function SalesBarChart({ orderData }: Props) {
   const theme = useTheme();
-  const cumulativeSales = orderData ? calculateCumulativeSales(orderData) : null;
+  const cumulativeSales = orderData ? calculateMonthlySales(orderData) : null;
+  const monthNames = Array.from(Array(12)).map((_, index) => dayjs().month(index).format('MMM'));
 
   return (
     <>
-      <CardTitle>This month</CardTitle>
+      <CardTitle gutterBottom>Sales This Year</CardTitle>
 
       <Box sx={{ width: 1, flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
         {cumulativeSales ? (
-          <LineChart
+          <BarChart
             dataset={cumulativeSales}
             margin={{
               top: 20,
@@ -32,10 +33,10 @@ export default function SalesChart({ orderData }: Props) {
             }}
             xAxis={[
               {
-                label: 'Day',
-                dataKey: 'day',
-                scaleType: 'linear',
-                tickMinStep: 1,
+                label: 'Month',
+                dataKey: 'month',
+                data: monthNames,
+                scaleType: 'band',
                 labelStyle: {
                   ...(theme.typography.body1 as ChartsTextStyle),
                   fill: theme.palette.text.primary,
@@ -55,13 +56,11 @@ export default function SalesChart({ orderData }: Props) {
             ]}
             series={[
               {
-                dataKey: 'amount',
-                showMark: false,
+                dataKey: 'totalSales',
                 color: theme.palette.primary.light,
               },
             ]}
             sx={{
-              [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
               [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
               [`& .${axisClasses.left} .${axisClasses.label}`]: {
                 transform: 'translateX(-60px)',

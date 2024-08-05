@@ -1,4 +1,4 @@
-import { MonthlyOrderData, QueryPageDataGrid } from '@/types';
+import { OrderDateTotal, QueryPageDataGrid } from '@/types';
 import dayjs from 'dayjs';
 
 export function calculateRoundedDiscountedPrice(price: number, percentage: number) {
@@ -17,31 +17,7 @@ export function calculateTablePagination(items: {}[] | null, page: QueryPageData
   return { isEndOfData, lastPageNumber };
 }
 
-type CumulativeSales = {
-  day: number;
-  amount: number;
-};
-
-export function calculateCumulativeSales(orderData: MonthlyOrderData[]) {
-  const dailySalesMap: { [key: number]: number } = orderData.reduce((acc: { [key: number]: number }, order) => {
-    const date = dayjs(order.createdAt).date();
-
-    acc[date] = (acc[date] ?? 0) + order.orderTotal;
-    return acc;
-  }, {});
-
-  const cumulativeSales: CumulativeSales[] = [];
-  let amount = 0;
-
-  for (let day = 1; day <= dayjs().date(); day++) {
-    amount += dailySalesMap[day] ?? 0;
-    cumulativeSales.push({ day, amount });
-  }
-
-  return cumulativeSales;
-}
-
-export function calculateDailySales(orderData: MonthlyOrderData[]) {
+export function calculateSalesForCurrentDay(orderData: OrderDateTotal[]) {
   const startOfDay = dayjs().startOf('day');
 
   return orderData.reduce((total, order) => {
@@ -52,7 +28,7 @@ export function calculateDailySales(orderData: MonthlyOrderData[]) {
   }, 0);
 }
 
-export function calculateWeeklySales(orderData: MonthlyOrderData[]) {
+export function calculateSalesForCurrentWeek(orderData: OrderDateTotal[]) {
   const startOfWeek = dayjs().startOf('week');
 
   return orderData.reduce((total, order) => {
@@ -63,6 +39,29 @@ export function calculateWeeklySales(orderData: MonthlyOrderData[]) {
   }, 0);
 }
 
-export function calculateMonthlySales(orderData: MonthlyOrderData[]) {
-  return orderData.reduce((total, order) => total + order.orderTotal, 0);
+export function calculateSalesForCurrentMonth(orderData: OrderDateTotal[]) {
+  const startOfWeek = dayjs().startOf('month');
+
+  return orderData.reduce((total, order) => {
+    if (dayjs(order.createdAt).isAfter(startOfWeek)) {
+      total += order.orderTotal;
+    }
+    return total;
+  }, 0);
+}
+
+export function calculateMonthlySales(orderData: OrderDateTotal[]) {
+  // Create an array to store the total sales for each month
+  const monthlySalesMap = Array(12).fill(0);
+
+  // Aggregate sales for each month
+  orderData.forEach((order) => {
+    const month = dayjs(order.createdAt).month(); // 0 (January) to 11 (December)
+    monthlySalesMap[month] += order.orderTotal;
+  });
+
+  // Convert the monthly sales map to an array of objects
+  const monthlySales = monthlySalesMap.map((totalSales, month) => ({ month, totalSales }));
+
+  return monthlySales;
 }

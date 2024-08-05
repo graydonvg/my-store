@@ -1,22 +1,26 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import SalesChart from '@/components/adminPanel/dashboard/SalesChart';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
 import dayjs from 'dayjs';
-import { calculateDailySales, calculateMonthlySales, calculateWeeklySales } from '@/utils/calculate';
-import fetchOrderTotalsThisMonth from '@/lib/db/queries/fetchOrderTotalsThisMonth';
+import {
+  calculateSalesForCurrentDay,
+  calculateSalesForCurrentMonth,
+  calculateSalesForCurrentWeek,
+} from '@/utils/calculate';
 import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
 import { CONSTANTS } from '@/constants';
 import fetchRecentProducts from '@/lib/db/queries/fetchRecentProducts';
 import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
+import SalesBarChart from '@/components/adminPanel/dashboard/SalesBarChart';
+import fetchOrderTotalsThisYear from '@/lib/db/queries/fetchOrderTotalsThisYear';
 
 export default async function AdminPanelDashboard() {
   const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
-  const orderTotalsThisMonth = await fetchOrderTotalsThisMonth();
+  const orderTotalsThisYear = await fetchOrderTotalsThisYear();
   const sortedBestSellers = await fetchSortedBestSellers();
   const recentProducts = await fetchRecentProducts();
 
@@ -42,7 +46,7 @@ export default async function AdminPanelDashboard() {
           }}>
           <TotalSales
             title="Daily Sales"
-            amount={orderTotalsThisMonth ? calculateDailySales(orderTotalsThisMonth) : null}
+            amount={orderTotalsThisYear ? calculateSalesForCurrentDay(orderTotalsThisYear) : null}
             date={dayjs().format('DD MMM')}
           />
         </Paper>
@@ -64,7 +68,7 @@ export default async function AdminPanelDashboard() {
           }}>
           <TotalSales
             title="Weekly Sales"
-            amount={orderTotalsThisMonth ? calculateWeeklySales(orderTotalsThisMonth) : null}
+            amount={orderTotalsThisYear ? calculateSalesForCurrentWeek(orderTotalsThisYear) : null}
             date={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
         </Paper>
@@ -87,35 +91,34 @@ export default async function AdminPanelDashboard() {
           }}>
           <TotalSales
             title="Monthly Sales"
-            amount={orderTotalsThisMonth ? calculateMonthlySales(orderTotalsThisMonth) : null}
+            amount={orderTotalsThisYear ? calculateSalesForCurrentMonth(orderTotalsThisYear) : null}
             date={dayjs().format('MMM')}
           />
         </Paper>
       </Grid>
       <Grid
         item
-        sm={12}
-        xl={6}
-        sx={{ display: { xs: 'none', sm: 'block' } }}>
+        xs={12}
+        xl={6}>
         <Paper
           sx={{
             padding: 2,
             display: 'flex',
             flexDirection: 'column',
-            height: { sm: 300, md: 360, lg: 420 },
-            minHeight: { sm: 300, md: 360, lg: 420, xl: 1 },
+            height: { xs: 300, md: 360, lg: 420 },
+            minHeight: { xs: 300, md: 360, lg: 420, xl: 1 },
             borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
-          <SalesChart orderData={orderTotalsThisMonth} />
+          <SalesBarChart orderData={orderTotalsThisYear} />
         </Paper>
       </Grid>
       <Grid
         item
-        xs={6}
+        xs={12}
+        lg={6}
         xl={3}>
         <Paper
           sx={{
-            padding: 2,
             borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
           <RecentProducts recentProducts={recentProducts} />
@@ -123,11 +126,11 @@ export default async function AdminPanelDashboard() {
       </Grid>
       <Grid
         item
-        xs={6}
+        xs={12}
+        lg={6}
         xl={3}>
         <Paper
           sx={{
-            padding: 2,
             borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
           <BestSellers bestSellers={sortedBestSellers} />
@@ -142,7 +145,6 @@ export default async function AdminPanelDashboard() {
             flexDirection: 'column',
             borderRadius: CONSTANTS.BORDER_RADIUS,
             overflow: 'hidden',
-            padding: 2,
           }}>
           <RecentOrdersTable orders={orderData.orders} />
         </Paper>
