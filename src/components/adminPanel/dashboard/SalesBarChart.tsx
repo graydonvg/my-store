@@ -6,7 +6,7 @@ import CardTitle from './CardTitle';
 import { Box, Typography } from '@mui/material';
 import { OrderDateTotal } from '@/types';
 import dayjs from 'dayjs';
-import { calculateMonthlySales } from '@/utils/calculate';
+import { calculateTotalMonthlySales } from '@/utils/calculate';
 import { formatCurrency } from '@/utils/format';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 
 export default function SalesBarChart({ orderData }: Props) {
   const theme = useTheme();
-  const cumulativeSales = orderData ? calculateMonthlySales(orderData) : null;
+  const cumulativeSales = orderData ? calculateTotalMonthlySales(orderData) : null;
   const monthNames = Array.from(Array(12)).map((_, index) => dayjs().month(index).format('MMM'));
 
   return (
