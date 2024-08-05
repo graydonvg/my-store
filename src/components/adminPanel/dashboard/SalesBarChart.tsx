@@ -7,6 +7,7 @@ import { Box, Typography } from '@mui/material';
 import { OrderDateTotal } from '@/types';
 import dayjs from 'dayjs';
 import { calculateMonthlySales } from '@/utils/calculate';
+import { formatCurrency } from '@/utils/format';
 
 type Props = {
   orderData: OrderDateTotal[] | null;
@@ -58,6 +59,7 @@ export default function SalesBarChart({ orderData }: Props) {
               {
                 dataKey: 'totalSales',
                 color: theme.palette.primary.light,
+                valueFormatter: (v) => formatCurrency(v),
               },
             ]}
             sx={{
