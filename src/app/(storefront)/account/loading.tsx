@@ -8,7 +8,7 @@ export default function Loading() {
       <PageHeaderSkeleton />
       <Grid
         container
-        rowGap={2}>
+        rowGap={6}>
         <Grid
           item
           xs={12}
