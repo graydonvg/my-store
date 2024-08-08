@@ -14,30 +14,34 @@ export default function Loading() {
           xs={12}
           md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, maxWidth: { xs: 'unset', md: '75%' } }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <Skeleton
-                variant="text"
-                sx={{ fontSize: 24 }}
+                variant="rectangular"
+                height={36}
+                width={120}
+                sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
               />
               {Array.from(Array(2)).map((_, index) => (
                 <Skeleton
                   key={index}
                   variant="rectangular"
-                  height="42px"
+                  height={42}
                   sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
                 />
               ))}
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <Skeleton
-                variant="text"
-                sx={{ fontSize: 24 }}
+                variant="rectangular"
+                height={36}
+                width={260}
+                sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
               />
               {Array.from(Array(3)).map((_, index) => (
                 <Skeleton
                   key={index}
                   variant="rectangular"
-                  height="42px"
+                  height={42}
                   sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
                 />
               ))}
@@ -50,8 +54,10 @@ export default function Loading() {
           md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Skeleton
-              variant="text"
-              sx={{ fontSize: 24 }}
+              variant="rectangular"
+              height={36}
+              width={150}
+              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
             />
             <Skeleton
               variant="rectangular"
