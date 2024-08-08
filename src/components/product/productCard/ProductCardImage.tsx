@@ -1,7 +1,6 @@
 import { CONSTANTS } from '@/constants';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 type Props = {
@@ -11,8 +10,6 @@ type Props = {
 };
 
 export default function ProductCardImage({ imageUrl, imageSizes, productName }: Props) {
-  const pathname = usePathname();
-  const isAdminDashboardPath = pathname.startsWith('/admin/dashboard');
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
@@ -22,7 +19,7 @@ export default function ProductCardImage({ imageUrl, imageSizes, productName }: 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        aspectRatio: !isAdminDashboardPath ? 25 / 36 : 7 / 9,
+        aspectRatio: 25 / 36,
         borderTopLeftRadius: CONSTANTS.BORDER_RADIUS,
         borderTopRightRadius: CONSTANTS.BORDER_RADIUS,
         overflow: 'hidden',
