@@ -44,7 +44,7 @@ const getDesignTokens = (mode: 'light' | 'dark', hasGreyBgColor: boolean) => ({
                 background: '#2e3131',
               },
               lower: {
-                text: grey[600],
+                text: grey[700],
                 background: grey[200],
               },
               divider: 'rgba(0, 0, 0, 0.40)',

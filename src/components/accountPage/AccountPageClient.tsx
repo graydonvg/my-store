@@ -27,7 +27,7 @@ export default function AccountPageClient({ addresses }: Props) {
   }, [addresses, dispatch]);
 
   return (
-    <Box>
+    <>
       {userData && (userData.firstName || userData.lastName) ? (
         <PageHeaderWithBorder label={`${userData.firstName} ${userData.lastName}`} />
       ) : null}
@@ -64,6 +64,6 @@ export default function AccountPageClient({ addresses }: Props) {
           </SectionWrapperAccountPage>
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 }
