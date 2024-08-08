@@ -86,6 +86,7 @@ export default function MoveToCartButton({ product, wishlistSize, wishlistItemId
           onClick={(e) => moveToCart(e)}
           disabled={isLoading}
           disableRipple
+          aria-label="move to cart"
           sx={{
             width: 'fit-content',
             position: 'absolute',

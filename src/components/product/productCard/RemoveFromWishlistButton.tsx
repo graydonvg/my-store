@@ -50,6 +50,7 @@ export default function RemoveFromWishlistButton({
           onClick={handleRemoveWishlistItem}
           disableRipple
           disabled={isRemovingWishlistItem}
+          aria-label="remove from wishlist"
           sx={{
             position: 'relative',
             padding: 0,
@@ -65,7 +66,7 @@ export default function RemoveFromWishlistButton({
               },
             },
           }}>
-          <Close fontSize="small" />
+          <Close fontSize="medium" />
         </IconButton>
       ) : (
         <Box sx={{ display: 'grid', placeItems: 'center', width: 1, height: 1 }}>
