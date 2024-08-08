@@ -1,14 +1,11 @@
+import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
 import { CONSTANTS } from '@/constants';
 import { Box, Grid, Skeleton } from '@mui/material';
 
 export default function Loading() {
   return (
     <>
-      <Skeleton
-        variant="rectangular"
-        width="100%"
-        sx={{ height: { xs: 55, sm: 61 }, marginBottom: 3, borderRadius: CONSTANTS.BORDER_RADIUS }}
-      />
+      <PageHeaderSkeleton />
       <Grid
         component="ul"
         container
