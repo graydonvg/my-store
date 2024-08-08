@@ -13,7 +13,7 @@ export default function Loading() {
           item
           xs={12}
           md={6}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: { xs: 'unset', md: '75%' } }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, maxWidth: { xs: 'unset', md: '75%' } }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Skeleton
                 variant="text"
