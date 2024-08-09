@@ -7,16 +7,7 @@ import {
   QuerySortDataGrid,
   UserDataToUpdateAdminSchema,
 } from '@/types';
-import {
-  GridColDef,
-  GridRowSelectionModel,
-  GridValidRowModel,
-  getGridDateOperators,
-  getGridSingleSelectOperators,
-  getGridStringOperators,
-} from '@mui/x-data-grid';
-import DatePickerForDataGridFilter from '../../dataGrid/DatePickerForDataGridFilter';
-import { CONSTANTS } from '@/constants';
+import { GridRowSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import CustomDataGrid from '../../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
 import UsersDataGridToolbar from './UsersDataGridToolbar';
@@ -24,101 +15,13 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { getObjectKeyCount } from '@/utils/checkObject';
-import dayjs from 'dayjs';
 import { getChangedDataGridValue } from '@/utils/getChangedDataGridValues';
 import { getUserRoleBoolean } from '@/utils/getUserRole';
 import { updateUser } from '@/services/admin/update';
 import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { constructZodErrorMessage } from '@/utils/construct';
-
-function getColumns(userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean }, isUpdating: boolean) {
-  const columns: GridColDef<UsersDataGrid>[] = [
-    {
-      field: 'firstName',
-      headerName: 'First name',
-      width: 150,
-      editable: !isUpdating ? true : false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    },
-    {
-      field: 'lastName',
-      headerName: 'Last name',
-      width: 150,
-      editable: !isUpdating ? true : false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    },
-    {
-      field: 'role',
-      headerName: 'Role',
-      width: 110,
-      editable: userRole.isAdmin ? false : !isUpdating ? true : false,
-      type: 'singleSelect',
-      valueOptions: (params) => {
-        const filteredOptions = CONSTANTS.USER_ROLE_OPTIONS.filter((role) => {
-          if (userRole.isAdmin) {
-            return role === 'none';
-          } else if (userRole.isManager) {
-            return role === 'none' || role === 'admin';
-          } else {
-            return role;
-          }
-        });
-
-        // Keep the users current role in the list of options to prevent 'out-of-range' value after filtering for select component
-        if (params.row?.role && !filteredOptions.includes(params.row?.role)) {
-          filteredOptions.push(params.row?.role);
-        }
-
-        return filteredOptions;
-      },
-      filterOperators: getGridSingleSelectOperators().filter((operator) => operator.value !== 'isAnyOf'),
-      // Changing null to 'none' for role.
-      // Users without a role, initially have role: null.
-      // Data grid set to display null as 'none'.
-      // Data grid select menu value cannot be null so using 'none'.
-      // Value received from select menu is 'none'.
-      // If role === null, updateUser endpoint will return no data received.
-      valueGetter: (role) => (role === null ? 'none' : role),
-    },
-    {
-      field: 'email',
-      headerName: 'Email',
-      width: 200,
-      editable: false,
-      filterOperators: getGridStringOperators().filter(
-        (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
-      ),
-    },
-    {
-      field: 'contactNumber',
-      headerName: 'Contact number',
-      width: 165,
-      editable: !isUpdating ? true : false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Created at',
-      width: 160,
-      renderCell: (params) => dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-      filterOperators: getGridDateOperators()
-        .filter((operator) => operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty')
-        .map((operator) => ({
-          ...operator,
-          InputComponent: operator.InputComponent ? DatePickerForDataGridFilter : undefined,
-        })),
-    },
-    {
-      field: 'userId',
-      headerName: 'ID',
-      width: 300,
-      sortable: false,
-      filterOperators: getGridStringOperators().filter((operator) => operator.value === 'equals'),
-    },
-  ];
-  return columns;
-}
+import getUsersDataGridColumns from './getUsersDataGridColumns';
 
 type Props = {
   users: UsersDataGrid[] | null;
@@ -145,7 +48,7 @@ export default function UsersPageAdminPanelClient({
   const [selectedUserIds, setSelectedUserIds] = useState<GridRowSelectionModel>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const columns = getColumns(userRole!, isUpdating);
+  const columns = getUsersDataGridColumns(userRole!, isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
