@@ -81,20 +81,11 @@ export default function Loading() {
                 sx={{ fontSize: 16 }}
               />
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                rowGap: 1,
-                columnGap: 2,
-              }}>
-              <Skeleton
-                variant="text"
-                width="100%"
-                sx={{ fontSize: 42 }}
-              />
-            </Box>
+            <Skeleton
+              variant="text"
+              width="100%"
+              sx={{ fontSize: 42, lineHeight: 1.18, transformOrigin: '0 75%' }}
+            />
             <Divider />
           </Box>
           <Box
