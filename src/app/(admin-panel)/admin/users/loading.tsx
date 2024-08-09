@@ -3,8 +3,12 @@
 import UsersDataGridToolbar from '@/components/adminPanel/users/UsersDataGridToolbar';
 import getUsersDataGridColumns from '@/components/adminPanel/users/getUsersDataGridColumns';
 import CustomDataGrid from '@/components/dataGrid/CustomDataGrid';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 export default function Loading() {
+  const userData = useAppSelector(selectUserData);
+
   return (
     <CustomDataGrid
       loading={true}
@@ -23,6 +27,7 @@ export default function Loading() {
         },
         false
       )}
+      checkboxSelection={userData?.role === 'admin' ? false : true}
       toolbar={
         <UsersDataGridToolbar
           isDeleting={false}
