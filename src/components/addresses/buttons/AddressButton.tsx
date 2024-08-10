@@ -14,6 +14,7 @@ export default function AddressButton({ label, onClick }: Props) {
         color: theme.palette.primary.main,
         lineHeight: 1,
         fontWeight: 700,
+        minWidth: 'unset',
         ...(label === 'delete' && {
           color: theme.palette.secondary.main,
         }),

@@ -22,7 +22,7 @@ type Props = {
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props) {
+export default function RecipientDetailsFieldsAddressForm({ onInputChange }: Props) {
   const theme = useTheme();
   const addressFormData = useAppSelector(selectAddressFromData);
 
@@ -33,7 +33,7 @@ export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props
       <Grid
         item
         xs={12}>
-        <Typography fontSize={18}>Contact Details</Typography>
+        <Typography fontSize={18}>Recipient Details</Typography>
       </Grid>
       {contactDetailsFormFields.map((field) => (
         <Grid
