@@ -76,6 +76,7 @@ export type UserData = {
   lastName: string | null;
   contactNumber: string | null;
   isOAuthSignIn: boolean;
+  oAuthName: string | null;
   role: UserRole;
 };
 

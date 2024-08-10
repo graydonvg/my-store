@@ -60,12 +60,13 @@ export default async function fetchUserSessionData() {
     const { cart, wishlist, ...restOfUserData } = userDataArray[0];
 
     const isOAuthSignIn = authUser?.app_metadata.provider !== 'email';
+    const oAuthName = authUser.user_metadata.name;
 
     logger.info('Fetched user session data successfully');
 
     return {
       authUser,
-      userData: { ...restOfUserData, isOAuthSignIn, role },
+      userData: { ...restOfUserData, isOAuthSignIn, oAuthName: oAuthName || null, role },
       cartItems: cart,
       wishlistData: wishlist,
     };

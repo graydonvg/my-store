@@ -35,12 +35,14 @@ export default function AccountDropdownMenu() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
-  let title = 'Account';
+  let title: string;
 
   if (userData?.firstName) {
     title = userData?.firstName;
-  } else if (userData?.email) {
-    title = userData?.email.split('@')[0];
+  } else if (userData?.isOAuthSignIn && userData?.oAuthName) {
+    title = userData?.oAuthName.split(' ')[0];
+  } else {
+    title = 'Account';
   }
 
   function changeTheme() {

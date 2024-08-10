@@ -83,7 +83,6 @@ export default function SignInForm({ headerComponent, children }: Props) {
       dispatch(setIsDialogLoading(true));
     }
 
-    // Remember Supabase redirect url for google sign in
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -162,7 +161,6 @@ export default function SignInForm({ headerComponent, children }: Props) {
               OR
             </Typography>
           </Divider>
-          {/* Remember Supabase redirect url for google sign in */}
           <OutlinedButton
             onClick={signInWithGoogle}
             disabled={isLoading}

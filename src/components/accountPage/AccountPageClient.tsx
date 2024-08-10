@@ -20,19 +20,28 @@ type Props = {
 export default function AccountPageClient({ addresses }: Props) {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectUserData);
+  let title: string;
 
   useEffect(() => {
     dispatch(setAddresses(addresses));
     dispatch(setAccountFieldToEdit(null));
   }, [addresses, dispatch]);
 
+  if (userData) {
+    if (userData.firstName || userData.lastName) {
+      title = `${userData.firstName} ${userData.lastName}`;
+    } else if (userData.isOAuthSignIn && userData.oAuthName) {
+      title = userData.oAuthName;
+    } else {
+      title = userData.email;
+    }
+  } else {
+    title = 'Account';
+  }
+
   return (
     <>
-      {userData && (userData.firstName || userData.lastName) ? (
-        <PageHeaderWithBorder label={`${userData.firstName} ${userData.lastName}`} />
-      ) : null}
-
-      {userData && !userData.firstName && !userData.lastName ? <PageHeaderWithBorder label={userData.email} /> : null}
+      <PageHeaderWithBorder label={title} />
       <Grid
         container
         rowGap={2}>
