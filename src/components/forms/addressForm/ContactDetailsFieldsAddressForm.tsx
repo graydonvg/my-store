@@ -1,10 +1,12 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { AddressStore } from '@/types';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { Call, Person } from '@mui/icons-material';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
 
 const contactDetailsFormFields = [
   { label: 'First Name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true, icon: <Person /> },
@@ -22,9 +24,21 @@ type Props = {
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function RecipientDetailsFieldsAddressForm({ onInputChange }: Props) {
+export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props) {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const addressFormData = useAppSelector(selectAddressFromData);
+  const userData = useAppSelector(selectUserData);
+
+  useEffect(() => {
+    dispatch(
+      setAddressFormData({
+        recipientFirstName: userData?.firstName ?? '',
+        recipientLastName: userData?.lastName ?? '',
+        recipientContactNumber: userData?.contactNumber ?? '',
+      })
+    );
+  }, [dispatch, userData]);
 
   return (
     <Grid
@@ -33,7 +47,7 @@ export default function RecipientDetailsFieldsAddressForm({ onInputChange }: Pro
       <Grid
         item
         xs={12}>
-        <Typography fontSize={18}>Recipient Details</Typography>
+        <Typography fontSize={18}>Contact Details</Typography>
       </Grid>
       {contactDetailsFormFields.map((field) => (
         <Grid

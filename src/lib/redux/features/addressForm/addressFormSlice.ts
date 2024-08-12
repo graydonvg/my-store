@@ -18,7 +18,7 @@ const addressFormSlice = createSlice({
   name: 'addressForm',
   initialState,
   reducers: {
-    setAddressFormData: (state, action: PayloadAction<AddressStore>) => {
+    setAddressFormData: (state, action: PayloadAction<Partial<AddressStore>>) => {
       return { ...state, ...action.payload };
     },
     setAddressFormDataOnChange: (
