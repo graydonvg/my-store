@@ -9,11 +9,14 @@ import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/fe
 import AddressForm from './AddressForm';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
 import { constructZodErrorMessage } from '@/utils/construct';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { updateUserPersonalInformation } from '@/services/users/update';
 
 export default function AddNewAddressForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const addressFormData = useAppSelector(selectAddressFromData);
+  const userData = useAppSelector(selectUserData);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -36,6 +39,16 @@ export default function AddNewAddressForm() {
     }
 
     dispatch(setIsDialogLoading(true));
+
+    if (!userData?.firstName || !userData?.lastName || !userData?.contactNumber) {
+      const userPersonalInfo = {
+        ...(userData?.firstName ? {} : { firstName: validation.data.recipientFirstName }),
+        ...(userData?.lastName ? {} : { lastName: validation.data.recipientLastName }),
+        ...(userData?.contactNumber ? {} : { contactNumber: validation.data.recipientContactNumber }),
+      };
+
+      await updateUserPersonalInformation(userPersonalInfo);
+    }
 
     const { success, message } = await addNewAddress(validation.data);
 
