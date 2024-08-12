@@ -4,12 +4,7 @@ import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
-import {
-  calculateTotalSalesForCurrentDay,
-  calculateTotalSalesForCurrentMonth,
-  calculateTotalSalesForCurrentWeek,
-  calculateTotalSalesForCurrentYear,
-} from '@/utils/calculate';
+import { calculateSalesOverPeriod } from '@/utils/calculate';
 import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
 import { CONSTANTS } from '@/constants';
 import fetchRecentProducts from '@/lib/db/queries/fetchRecentProducts';
@@ -39,7 +34,7 @@ export default async function AdminPanelDashboard() {
         <TotalsCard>
           <TotalSales
             title="Daily Sales"
-            amount={orderTotalsThisYear ? calculateTotalSalesForCurrentDay(orderTotalsThisYear) : null}
+            amount={orderTotalsThisYear ? calculateSalesOverPeriod('day', orderTotalsThisYear) : null}
             date={dayjs().format('DD MMM')}
           />
         </TotalsCard>
@@ -52,7 +47,7 @@ export default async function AdminPanelDashboard() {
         <TotalsCard>
           <TotalSales
             title="Weekly Sales"
-            amount={orderTotalsThisYear ? calculateTotalSalesForCurrentWeek(orderTotalsThisYear) : null}
+            amount={orderTotalsThisYear ? calculateSalesOverPeriod('week', orderTotalsThisYear) : null}
             date={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
         </TotalsCard>
@@ -65,7 +60,7 @@ export default async function AdminPanelDashboard() {
         <TotalsCard>
           <TotalSales
             title="Monthly Sales"
-            amount={orderTotalsThisYear ? calculateTotalSalesForCurrentMonth(orderTotalsThisYear) : null}
+            amount={orderTotalsThisYear ? calculateSalesOverPeriod('month', orderTotalsThisYear) : null}
             date={dayjs().format('MMM')}
           />
         </TotalsCard>
@@ -78,7 +73,7 @@ export default async function AdminPanelDashboard() {
         <TotalsCard>
           <TotalSales
             title="Yearly Sales"
-            amount={orderTotalsThisYear ? calculateTotalSalesForCurrentYear(orderTotalsThisYear) : null}
+            amount={orderTotalsThisYear ? calculateSalesOverPeriod('year', orderTotalsThisYear) : null}
             date={dayjs().format('YYYY')}
           />
         </TotalsCard>

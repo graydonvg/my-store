@@ -17,44 +17,11 @@ export function calculateTablePagination(items: {}[] | null, page: QueryPageData
   return { isEndOfData, lastPageNumber };
 }
 
-export function calculateTotalSalesForCurrentDay(orderData: OrderDateTotal[]) {
-  const startOfDay = dayjs().startOf('day');
+export function calculateSalesOverPeriod(period: 'day' | 'week' | 'month' | 'year', orderData: OrderDateTotal[]) {
+  const startOfPeriod = dayjs().startOf(period);
 
   return orderData.reduce((total, order) => {
-    if (dayjs(order.createdAt).isAfter(startOfDay)) {
-      total += order.orderTotal;
-    }
-    return total;
-  }, 0);
-}
-
-export function calculateTotalSalesForCurrentWeek(orderData: OrderDateTotal[]) {
-  const startOfWeek = dayjs().startOf('week');
-
-  return orderData.reduce((total, order) => {
-    if (dayjs(order.createdAt).isAfter(startOfWeek)) {
-      total += order.orderTotal;
-    }
-    return total;
-  }, 0);
-}
-
-export function calculateTotalSalesForCurrentMonth(orderData: OrderDateTotal[]) {
-  const startOfMonth = dayjs().startOf('month');
-
-  return orderData.reduce((total, order) => {
-    if (dayjs(order.createdAt).isAfter(startOfMonth)) {
-      total += order.orderTotal;
-    }
-    return total;
-  }, 0);
-}
-
-export function calculateTotalSalesForCurrentYear(orderData: OrderDateTotal[]) {
-  const startOfYear = dayjs().startOf('year');
-
-  return orderData.reduce((total, order) => {
-    if (dayjs(order.createdAt).isAfter(startOfYear)) {
+    if (dayjs(order.createdAt).isAfter(startOfPeriod)) {
       total += order.orderTotal;
     }
     return total;
