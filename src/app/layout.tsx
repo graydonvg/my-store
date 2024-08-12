@@ -13,7 +13,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: CONSTANTS.STORE_NAME,
-  description: 'Ecommerce',
+  description: CONSTANTS.STORE_DESCRIPTION,
 };
 
 type Props = {

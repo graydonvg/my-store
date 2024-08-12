@@ -5,8 +5,9 @@ const STORE_NAME = 'MyStore';
 export const CONSTANTS = {
   URL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://my-store-henna.vercel.app',
   STORE_NAME,
+  STORE_DESCRIPTION: 'Online Shopping - Shop the latest fashion at unbeatable prices.',
   STORE_SLOGAN: 'Where Fashion Meets Passion',
-  STORE_DESCRIPTION: `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`,
+  STORE_INTRODUCTION: `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`,
   BORDER_RADIUS: '4px',
   FREE_DELIVERY_THRESHOLD: 500,
   MAXIMUM_PRODUCT_IMAGES: 5,

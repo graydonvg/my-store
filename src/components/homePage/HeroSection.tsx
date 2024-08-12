@@ -68,7 +68,7 @@ export default function HeroSection() {
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
-            {CONSTANTS.STORE_DESCRIPTION}
+            {CONSTANTS.STORE_INTRODUCTION}
           </Typography>
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton

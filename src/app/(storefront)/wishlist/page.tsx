@@ -2,6 +2,12 @@ import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import ProductCard from '@/components/product/productCard/ProductCard';
 import fetchWishlist from '@/lib/db/queries/fetchWishlist';
 import { Box, Grid } from '@mui/material';
+import { Metadata } from 'next';
+import { CONSTANTS } from '@/constants';
+
+export const metadata: Metadata = {
+  title: `${CONSTANTS.STORE_NAME} - Wishlist`,
+};
 
 export default async function WishlistPage() {
   const wishlist = await fetchWishlist();
