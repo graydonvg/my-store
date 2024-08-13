@@ -52,7 +52,6 @@ export default function ProductsDataGridActions({ params }: Props) {
     const data = await revalidateAllData();
 
     if (data.success === true) {
-      toast.success(data.message);
       router.refresh();
     } else {
       toast.error(data.message);
