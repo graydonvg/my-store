@@ -5,14 +5,14 @@ import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/pr
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteProduct } from '@/services/admin/delete';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
-import { Product } from '@/types';
-import { deleteAllProductImages } from '@/utils/deleteProductImages';
+import { Product, ResponseWithNoData } from '@/types';
+import { deleteAllProductImages, deleteProductImagesFromStorage } from '@/utils/deleteProductImages';
 import { DeleteForever, Edit, Preview } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Flip, toast } from 'react-toastify';
+import { Flip, Id, toast } from 'react-toastify';
 
 type Props = {
   params: GridRenderCellParams<Product>;
@@ -61,43 +61,45 @@ export default function ProductsDataGridActions({ params }: Props) {
   }
 
   async function permanentlyDeleteProduct() {
-    const toastId = toast.loading('Deleting product...');
     setIsDeletingProduct(true);
+    const productImagesToastId = toast.loading('Deleting product images...');
+    const productDataToastId = toast.loading('Deleting product data...');
 
-    const deleteImagesPromise = deleteAllProductImages(productImageData);
-    const deleteProductPromise = deleteProduct(params.row.productId);
+    const deleteImagesPromise = deleteProductImagesFromStorage(productImageData);
+    const deleteProductDataPromise = deleteProduct(params.row.productId);
 
-    const [deleteImagesResult, deleteProductResult] = await Promise.all([deleteImagesPromise, deleteProductPromise]);
+    const [deleteImagesResponse, deleteProductDataResponse] = await Promise.all([
+      deleteImagesPromise,
+      deleteProductDataPromise,
+    ]);
 
-    const { success: deleteImagesSuccess, message: deleteImagesMessage } = deleteImagesResult;
-    const { success: deleteProductSuccess, message: deleteProductMessage } = deleteProductResult;
+    handleToastUpdate(deleteImagesResponse, productImagesToastId);
+    handleToastUpdate(deleteProductDataResponse, productDataToastId);
 
-    if (deleteImagesSuccess && deleteProductSuccess) {
+    if (deleteImagesResponse.success && deleteProductDataResponse.success) {
       await revalidateAndRefresh();
+      router.refresh();
+      setIsDeletingProduct(false);
+    }
+
+    setIsDeletingProduct(false);
+  }
+
+  function handleToastUpdate(response: ResponseWithNoData, toastId: Id) {
+    if (response.success) {
+      const { success, message } = response;
       toast.update(toastId, {
-        render: 'Product deleted successfully',
-        type: 'success',
+        render: message,
+        type: success ? 'success' : 'error',
         isLoading: false,
         autoClose: 4000,
         closeButton: true,
         closeOnClick: true,
         transition: Flip,
       });
-    } else if (!deleteImagesSuccess) {
-      await revalidateAndRefresh();
+    } else {
       toast.update(toastId, {
-        render: deleteImagesMessage,
-        type: 'error',
-        isLoading: false,
-        autoClose: 4000,
-        closeButton: true,
-        closeOnClick: true,
-        transition: Flip,
-      });
-    } else if (!deleteProductSuccess) {
-      await revalidateAndRefresh();
-      toast.update(toastId, {
-        render: deleteProductMessage,
+        render: response.message,
         type: 'error',
         isLoading: false,
         autoClose: 4000,
@@ -106,8 +108,6 @@ export default function ProductsDataGridActions({ params }: Props) {
         transition: Flip,
       });
     }
-
-    setIsDeletingProduct(false);
   }
 
   return (

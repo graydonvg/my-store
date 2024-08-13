@@ -14,7 +14,7 @@ export async function deleteProductImagesFromStorage(imageData: ProductImageData
   const storageDeleteSuccess = storageDeleteResults.every((result) => result.status === 'fulfilled');
 
   if (storageDeleteSuccess === true) {
-    return { success: true, message: 'Successfully deleted all product images from storage' };
+    return { success: true, message: 'Product images deleted sucessfully' };
   } else {
     return { success: false, message: 'Failed to delete all product images from storage' };
   }
@@ -32,7 +32,7 @@ export async function deleteProductImagesDataFromDb(imageData: ProductImageData[
   const dbDataDeleteSuccess = dbDataDeleteResults.every((result) => result.status === 'fulfilled');
 
   if (dbDataDeleteSuccess === true) {
-    return { success: true, message: 'Successfully deleted all product images data from database' };
+    return { success: true, message: 'Product image data deleted sucessfully' };
   } else {
     return { success: false, message: 'Failed to delete all product images data from database' };
   }
@@ -44,7 +44,7 @@ export async function deleteProductImagesDataFromDb(imageData: ProductImageData[
 export async function deleteAllProductImages(imageData: ProductImageData[], productId?: number | null) {
   let dbDeleteResponse = {
     success: true,
-    message: 'No image data has been added to the database.',
+    message: 'No image data has been added to the database',
   };
 
   const storageDeleteResponse = await deleteProductImagesFromStorage(imageData);
@@ -60,6 +60,6 @@ export async function deleteAllProductImages(imageData: ProductImageData[], prod
   } else if (dbDeleteResponse.success === false) {
     return { success: false, message: dbDeleteResponse.message };
   } else {
-    return { success: true, message: 'Successfully deleted all images.' };
+    return { success: true, message: 'Successfully deleted all images' };
   }
 }

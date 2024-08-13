@@ -12,6 +12,7 @@ import { deleteProductImagesFromStorage } from '@/utils/deleteProductImages';
 import ProductsDataGridToolbar from './ProductsDataGridToolbar';
 import { deleteSelectedProducts } from '@/services/admin/delete';
 import getProductsDataGridColumns from './getProductsDataGridColumns';
+import revalidateAllData from '@/services/admin/revalidate-all-data';
 
 type Props = {
   products: Product[] | null;
@@ -43,6 +44,20 @@ export default function ProductsPageAdminPanelClient({
     setSelectedProductIds(rowSelectionModel);
   }
 
+  async function revalidateAndRefresh() {
+    // setIsLoading(true);
+
+    const data = await revalidateAllData();
+
+    if (data.success === true) {
+      router.refresh();
+    } else {
+      toast.error(data.message);
+    }
+
+    // setIsLoading(false);
+  }
+
   async function handleDeleteProducts() {
     setIsDeleting(true);
     const productImagesToastId = toast.loading('Deleting product images...');
@@ -70,7 +85,7 @@ export default function ProductsPageAdminPanelClient({
       deleteProductImagesFromStorageResult.status === 'fulfilled' &&
       deleteSelectedProductsResult.status === 'fulfilled'
     ) {
-      router.refresh();
+      await revalidateAndRefresh();
       setSelectedProductIds([]);
       setIsDeleting(false);
     }
