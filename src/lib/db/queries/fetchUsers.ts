@@ -17,10 +17,6 @@ export default async function fetchUsers(
   logger.info('Fetching users for admin');
 
   try {
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
     let usersQuery: QueryFilterBuilder;
 
     const checkIsNone = filter.operator === 'is' && filter.value === 'none';
@@ -28,19 +24,13 @@ export default async function fetchUsers(
 
     if (filter.column === 'role' && !checkIsNone && !checkNotNone) {
       // Operator/value pairs other than 'is none' or 'not is none' require inner join to filter role
-      usersQuery = supabase
-        .from('users')
-        .select('*, ...userRoles!inner(role)', {
-          count: 'exact',
-        })
-        .neq('userId', authUser?.id);
+      usersQuery = supabase.from('users').select('*, ...userRoles!inner(role)', {
+        count: 'exact',
+      });
     } else {
-      usersQuery = supabase
-        .from('users')
-        .select('*, ...userRoles(role)', {
-          count: 'exact',
-        })
-        .neq('userId', authUser?.id);
+      usersQuery = supabase.from('users').select('*, ...userRoles(role)', {
+        count: 'exact',
+      });
     }
 
     const builtUsersQuery = buildQuery('users', usersQuery, page, sort, filter);
