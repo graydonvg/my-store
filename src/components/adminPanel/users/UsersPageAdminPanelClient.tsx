@@ -188,6 +188,7 @@ export default function UsersPageAdminPanelClient({
       toolbar={
         <UsersDataGridToolbar
           isDeleting={isDeleting}
+          isUpdating={isUpdating}
           onDeleteClick={handleDeleteUsers}
           numberOfSelectedRows={selectedUserIds.length}
         />

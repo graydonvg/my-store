@@ -10,15 +10,19 @@ import CreateAuthUserDialogButton from './CreateAuthUserDialogButton';
 import { DeleteForever } from '@mui/icons-material';
 import ContainedButton from '../../ui/buttons/simple/ContainedButton';
 import CreateAuthUserDialog from '@/components/dialogs/CreateAuthUserDialog';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
 type Props = {
   isDeleting: boolean;
+  isUpdating: boolean;
   onDeleteClick: () => void;
   numberOfSelectedRows: number;
 };
 
-export default function UsersDataGridToolbar({ isDeleting, onDeleteClick, numberOfSelectedRows }: Props) {
+export default function UsersDataGridToolbar({ isDeleting, isUpdating, onDeleteClick, numberOfSelectedRows }: Props) {
   const theme = useTheme();
+  const isDialogLoading = useAppSelector(selectIsDialogLoading);
   const darkMode = theme.palette.mode === 'dark';
   const commonStyle = { height: '32px', color: darkMode ? theme.palette.primary.light : theme.palette.primary.main };
 
@@ -67,12 +71,25 @@ export default function UsersDataGridToolbar({ isDeleting, onDeleteClick, number
             color="secondary"
             onClick={onDeleteClick}
             isLoading={isDeleting}
+            disabled={isDeleting || isUpdating}
             sxStyles={{ height: '32px', minHeight: '32px', minWidth: '124.53px' }}
           />
         ) : (
           <>
             <CreateAuthUserDialogButton />
-            <CreateAuthUserDialog />
+            <CreateAuthUserDialog>
+              <ContainedButton
+                label="create user"
+                disabled={isDialogLoading || isDeleting || isUpdating}
+                type="submit"
+                sxStyles={{
+                  marginTop: 3,
+                  marginBottom: 3,
+                }}
+                fullWidth
+                color="secondary"
+              />
+            </CreateAuthUserDialog>
           </>
         )}
       </Box>

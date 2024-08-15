@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Box, FormControl, Grid, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
-import ContainedButton from '../ui/buttons/simple/ContainedButton';
 import CustomTextField from '../ui/inputFields/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -15,7 +14,6 @@ import SelectField from '../ui/inputFields/SelectField';
 import { UserAuthDataSchema, UserPersonalInfoSchema, UserRole } from '@/types';
 import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 import { constructZodErrorMessage } from '@/utils/construct';
 import { useLogger } from 'next-axiom';
 
@@ -73,13 +71,16 @@ const defaultFormData = {
   role: '',
 };
 
-export default function CreateAuthUserForm() {
+type Props = {
+  children: ReactNode;
+};
+
+export default function CreateAuthUserForm({ children }: Props) {
   const log = useLogger();
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectUserData);
-  const isDialogLoading = useAppSelector(selectIsDialogLoading);
   const [formData, setFormData] = useState(defaultFormData);
   const restricedUserRoleOptions = CONSTANTS.USER_ROLE_OPTIONS.filter((role) => {
     if (userData?.role === 'admin') {
@@ -204,7 +205,7 @@ export default function CreateAuthUserForm() {
             </FormControl>
           </Grid>
         </Grid>
-        <ContainedButton
+        {/* <ContainedButton
           label="create user"
           disabled={isDialogLoading}
           type="submit"
@@ -214,7 +215,8 @@ export default function CreateAuthUserForm() {
           }}
           fullWidth
           color="secondary"
-        />
+        /> */}
+        {children}
       </Box>
     </Box>
   );
