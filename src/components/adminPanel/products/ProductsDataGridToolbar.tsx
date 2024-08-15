@@ -49,7 +49,10 @@ export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, num
             },
           }}
         />
-        <RevalidateButton commonStyle={commonStyle} />
+        <RevalidateButton
+          commonStyle={commonStyle}
+          isDeleting={isDeleting}
+        />
       </Box>
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         <GridToolbarExport
@@ -68,10 +71,11 @@ export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, num
             color="secondary"
             onClick={onDeleteClick}
             isLoading={isDeleting}
+            disabled={isDeleting}
             sxStyles={{ height: '32px', minHeight: '32px', minWidth: '154.56px' }}
           />
         ) : (
-          <AddNewProductButton />
+          <AddNewProductButton isDeleting={isDeleting} />
         )}
       </Box>
     </GridToolbarContainer>

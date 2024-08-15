@@ -16,7 +16,7 @@ export async function deleteProductImagesFromStorage(imageData: ProductImageData
   if (storageDeleteSuccess === true) {
     return { success: true, message: 'Product images deleted sucessfully' };
   } else {
-    return { success: false, message: 'Failed to delete all product images from storage' };
+    return { success: false, message: 'Failed to delete product images from storage' };
   }
 }
 
@@ -34,7 +34,7 @@ export async function deleteProductImagesDataFromDb(imageData: ProductImageData[
   if (dbDataDeleteSuccess === true) {
     return { success: true, message: 'Product image data deleted sucessfully' };
   } else {
-    return { success: false, message: 'Failed to delete all product images data from database' };
+    return { success: false, message: 'Failed to delete product images data from database' };
   }
 }
 
@@ -54,12 +54,12 @@ export async function deleteAllProductImages(imageData: ProductImageData[], prod
   }
 
   if (storageDeleteResponse.success === false && dbDeleteResponse.success === false) {
-    return { success: false, message: 'Failed to delete all images. Storage and database error.' };
+    return { success: false, message: 'Failed to delete product images. Storage and database error.' };
   } else if (storageDeleteResponse.success === false) {
     return { success: false, message: storageDeleteResponse.message };
   } else if (dbDeleteResponse.success === false) {
     return { success: false, message: dbDeleteResponse.message };
   } else {
-    return { success: true, message: 'Successfully deleted all images' };
+    return { success: true, message: 'Product images deleted sucessfully' };
   }
 }

@@ -8,13 +8,14 @@ import revalidateAllData from '@/services/admin/revalidate-all-data';
 import { Button } from '@mui/material';
 
 type Props = {
+  isDeleting: boolean;
   commonStyle: {
     height: string;
     color: string;
   };
 };
 
-export default function RevalidateButton({ commonStyle }: Props) {
+export default function RevalidateButton({ isDeleting, commonStyle }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -36,6 +37,7 @@ export default function RevalidateButton({ commonStyle }: Props) {
   return (
     <Button
       variant="text"
+      disabled={isDeleting}
       onClick={revalidateAndRefresh}
       startIcon={
         isLoading ? (
