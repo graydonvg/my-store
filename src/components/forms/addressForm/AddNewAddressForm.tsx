@@ -16,7 +16,6 @@ import { CONSTANTS } from '@/constants';
 
 export default function AddNewAddressForm() {
   const log = useLogger();
-
   const router = useRouter();
   const dispatch = useAppDispatch();
   const addressFormData = useAppSelector(selectAddressFromData);

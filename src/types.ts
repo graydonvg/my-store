@@ -35,6 +35,7 @@ export const StringIdSchema = z.string();
 const FirstNameSchema = NoNumbersInString;
 const LastNameSchema = NoNumbersInString;
 const ContactNumberSchema = z.string().trim().min(1);
+const PasswordSchema = z.string().trim().min(6);
 
 const ComplexOrBuildingSchema = z.string().trim().nullable();
 const StreetAddressSchema = z.string().min(1).trim();
@@ -65,7 +66,7 @@ export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'co
 
 export const UserAuthDataSchema = z.object({
   email: z.string().trim().email(),
-  password: z.string().trim(),
+  password: PasswordSchema,
 });
 export type UserAuthData = z.infer<typeof UserAuthDataSchema>;
 
@@ -87,11 +88,12 @@ export const UserPersonalInfoSchema = z.object({
 });
 export type UserPersonalInfo = z.infer<typeof UserPersonalInfoSchema>;
 
-export type UpdatePassword = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
+export const UpdatePasswordSchema = z.object({
+  currentPassword: PasswordSchema,
+  newPassword: PasswordSchema,
+  confirmPassword: PasswordSchema,
+});
+export type UpdatePassword = z.infer<typeof UpdatePasswordSchema>;
 
 export const UserDataToUpdateAdminSchema = z.object({
   firstName: FirstNameSchema.optional(),

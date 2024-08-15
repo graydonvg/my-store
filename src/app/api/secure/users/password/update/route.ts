@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { ResponseWithNoData, UpdatePassword } from '@/types';
+import { ResponseWithNoData, UpdatePassword, UpdatePasswordSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -53,6 +54,22 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         {
           success: false,
           message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        },
+        { status: 400 }
+      );
+    }
+
+    const validation = UpdatePasswordSchema.safeParse(passwordData);
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
         },
         { status: 400 }
       );
