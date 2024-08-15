@@ -18,11 +18,17 @@ import {
   selectProductFormData,
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
-import { InsertProductData } from '@/types';
+import { AddProductSchema } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { constructZodErrorMessage } from '@/utils/construct';
+import { useLogger } from 'next-axiom';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 export default function AdminPanelAddNewProductPage() {
+  const log = useLogger();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const userData = useAppSelector(selectUserData);
   const productFormData = useAppSelector(selectProductFormData);
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
@@ -59,12 +65,30 @@ export default function AdminPanelAddNewProductPage() {
 
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const productData = {
+      productData: productFormData,
+      imageData,
+    };
+
+    const validation = AddProductSchema.safeParse(productData);
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        userId: userData?.userId,
+        payload: productData,
+        error: validation.error,
+      });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
+      return;
+    }
+
     dispatch(setIsProductFormSubmitting(true));
 
-    const { success, message } = await addProduct({
-      productData: productFormData as InsertProductData,
-      imageData,
-    });
+    const { success, message } = await addProduct(validation.data);
 
     if (success) {
       dispatch(clearProductFormData());

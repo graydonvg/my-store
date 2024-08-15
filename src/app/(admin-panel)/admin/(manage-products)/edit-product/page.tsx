@@ -26,6 +26,7 @@ import { CONSTANTS } from '@/constants';
 export default function AdminPanelEditProductPage() {
   const log = useLogger();
   const router = useRouter();
+  const userData = useAppSelector(selectUserData);
   const productFormData = useAppSelector(selectProductFormData);
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
@@ -33,7 +34,6 @@ export default function AdminPanelEditProductPage() {
   const dispatch = useAppDispatch();
   const emptyFormFields = getEmptyObjectKeys(productFormData);
   const numberOfFormFields = getObjectKeyCount(productFormData);
-  const userData = useAppSelector(selectUserData);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
