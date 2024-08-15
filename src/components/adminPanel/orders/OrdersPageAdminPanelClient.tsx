@@ -12,6 +12,10 @@ import { getObjectKeyCount } from '@/utils/checkObject';
 import { updateOrder } from '@/services/admin/update';
 import { constructZodErrorMessage } from '@/utils/construct';
 import getOrdersDataGridColumns from './getOrdersDataGridColumns';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { useLogger } from 'next-axiom';
+import { CONSTANTS } from '@/constants';
 
 type Props = {
   orders: OrdersDataGrid[] | null;
@@ -32,19 +36,26 @@ export default function OrdersPageAdminPanelClient({
   sort,
   filter,
 }: Props) {
+  const log = useLogger();
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const columns = getOrdersDataGridColumns(isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
+  const userData = useAppSelector(selectUserData);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
     const validation = UpdateOrderSchema.safeParse(newRow);
 
     if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        userId: userData?.userId,
+        payload: newRow,
+        error: validation.error,
+      });
+
       const errorMessage = constructZodErrorMessage(validation.error);
 
       toast.error(errorMessage);
-
       return oldRow;
     }
 

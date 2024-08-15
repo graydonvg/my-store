@@ -3,7 +3,7 @@ import {
   UserAuthData,
   CreateUser,
   UserAuthDataSchema,
-  UpdateUserDataSchema,
+  UserPersonalInfoSchema,
   UserRoleSchema,
   ResponseWithNoData,
 } from '@/types';
@@ -105,7 +105,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const userDataValidation = UpdateUserDataSchema.safeParse(restOfUserDataToUpdate);
+    const userDataValidation = UserPersonalInfoSchema.safeParse(restOfUserDataToUpdate);
 
     if (!userDataValidation.success) {
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });

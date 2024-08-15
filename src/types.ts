@@ -80,12 +80,12 @@ export type UserData = {
   role: UserRole;
 };
 
-export const UpdateUserDataSchema = z.object({
+export const UserPersonalInfoSchema = z.object({
   firstName: FirstNameSchema.optional(),
   lastName: LastNameSchema.optional(),
   contactNumber: ContactNumberSchema.optional(),
 });
-export type UpdateUserData = z.infer<typeof UpdateUserDataSchema>;
+export type UserPersonalInfo = z.infer<typeof UserPersonalInfoSchema>;
 
 export type UpdatePassword = {
   currentPassword: string;

@@ -11,8 +11,12 @@ import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressF
 import { constructZodErrorMessage } from '@/utils/construct';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { updateUserPersonalInformation } from '@/services/users/update';
+import { useLogger } from 'next-axiom';
+import { CONSTANTS } from '@/constants';
 
 export default function AddNewAddressForm() {
+  const log = useLogger();
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const addressFormData = useAppSelector(selectAddressFromData);
@@ -32,6 +36,12 @@ export default function AddNewAddressForm() {
     const validation = InsertAddressSchema.safeParse(addressFormData);
 
     if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        userId: userData?.userId,
+        payload: addressFormData,
+        error: validation.error,
+      });
+
       const errorMessage = constructZodErrorMessage(validation.error);
 
       toast.error(errorMessage);

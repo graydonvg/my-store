@@ -19,8 +19,12 @@ import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features
 import { updateProduct } from '@/services/admin/update';
 import { UpdateProductSchema } from '@/types';
 import { constructZodErrorMessage } from '@/utils/construct';
+import { useLogger } from 'next-axiom';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { CONSTANTS } from '@/constants';
 
 export default function AdminPanelEditProductPage() {
+  const log = useLogger();
   const router = useRouter();
   const productFormData = useAppSelector(selectProductFormData);
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
@@ -29,6 +33,7 @@ export default function AdminPanelEditProductPage() {
   const dispatch = useAppDispatch();
   const emptyFormFields = getEmptyObjectKeys(productFormData);
   const numberOfFormFields = getObjectKeyCount(productFormData);
+  const userData = useAppSelector(selectUserData);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
@@ -52,16 +57,25 @@ export default function AdminPanelEditProductPage() {
   async function handleUpdateProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const validation = UpdateProductSchema.safeParse({
+    const productData = {
       productData: {
         ...productFormData,
         productId: productFormData.productId!,
       },
       imageData,
-    });
+    };
+
+    const validation = UpdateProductSchema.safeParse(productData);
 
     if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        userId: userData?.userId,
+        payload: productData,
+        error: validation.error,
+      });
+
       const errorMessage = constructZodErrorMessage(validation.error);
+
       toast.error(errorMessage);
       return;
     }

@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseWithNoData, UpdateAddress, UpdateUserData, UpdatePassword } from '@/types';
+import { ResponseWithNoData, UpdateAddress, UserPersonalInfo, UpdatePassword } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -28,7 +28,7 @@ export async function updateUserAddress(data: UpdateAddress): Promise<ResponseWi
   }
 }
 
-export async function updateUserPersonalInformation(data: UpdateUserData): Promise<ResponseWithNoData> {
+export async function updateUserPersonalInformation(data: UserPersonalInfo): Promise<ResponseWithNoData> {
   const logger = log.with({ context: 'service: updateUserPersonalInformation' });
 
   logger.info('Attempting to update user personal information');

@@ -7,7 +7,7 @@ import { updateUserPersonalInformation } from '@/services/users/update';
 import { toast } from 'react-toastify';
 import AccountPageForm from './AccountPageForm';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
-import { UpdateUserDataSchema } from '@/types';
+import { UserPersonalInfoSchema } from '@/types';
 import { constructZodErrorMessage } from '@/utils/construct';
 import { useLogger } from 'next-axiom';
 import { CONSTANTS } from '@/constants';
@@ -50,7 +50,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
       return;
     }
 
-    const validation = UpdateUserDataSchema.safeParse({ [field]: formData });
+    const validation = UserPersonalInfoSchema.safeParse({ [field]: formData });
 
     if (!validation.success) {
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {

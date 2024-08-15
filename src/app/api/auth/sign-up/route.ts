@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 
-import { ResponseWithNoData, UpdateUserData, UpdateUserDataSchema, UserAuthData, UserAuthDataSchema } from '@/types';
+import {
+  ResponseWithNoData,
+  UserPersonalInfo,
+  UserPersonalInfoSchema,
+  UserAuthData,
+  UserAuthDataSchema,
+} from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyObjectKeys } from '@/utils/checkObject';
@@ -31,7 +37,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    let signUpData: UserAuthData & UpdateUserData;
+    let signUpData: UserAuthData & UserPersonalInfo;
 
     try {
       signUpData = await request.json();
@@ -65,7 +71,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const userDataValidation = UpdateUserDataSchema.safeParse(userDataToUpdate);
+    const userDataValidation = UserPersonalInfoSchema.safeParse(userDataToUpdate);
 
     if (!userDataValidation.success) {
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });
