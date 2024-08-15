@@ -12,6 +12,10 @@ import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import { Call, Email, Lock, Person } from '@mui/icons-material';
 import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
+import { useLogger } from 'next-axiom';
+import { CONSTANTS } from '@/constants';
+import { UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 const formFields = [
   {
@@ -65,6 +69,7 @@ type Props = {
 };
 
 export default function SignUpForm({ headerComponent, children }: Props) {
+  const log = useLogger();
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -95,9 +100,23 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const { confirmPassword, ...restOfFormData } = formData;
+    const { confirmPassword, password, ...restOfFormData } = formData;
 
-    const { success, message } = await signUpNewUser(restOfFormData);
+    const validation = UserAuthDataSchema.merge(UserPersonalInfoSchema).safeParse({ password, ...restOfFormData });
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        payload: restOfFormData,
+        error: validation.error,
+      });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
+      return;
+    }
+
+    const { success, message } = await signUpNewUser({ password, ...restOfFormData });
 
     if (success === true) {
       dispatch(closeDialog());

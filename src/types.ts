@@ -445,12 +445,12 @@ export type ProductForm = {
 
 const ProductDataSchema = z.object({
   category: ProductCategorySchema,
-  name: z.string(),
-  brand: z.string(),
-  details: z.string(),
+  name: z.string().trim(),
+  brand: z.string().trim(),
+  details: z.string().trim(),
   sizes: z.string().array(),
-  deliveryInfo: z.string(),
-  returnInfo: z.string(),
+  deliveryInfo: z.string().trim(),
+  returnInfo: z.string().trim(),
   price: PriceSchema,
   isOnSale: z.boolean(),
   salePercentage: ProductSalePercentageSchema,
