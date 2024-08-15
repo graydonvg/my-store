@@ -30,6 +30,7 @@ export default function Loading() {
       checkboxSelection={userData?.role === 'admin' ? false : true}
       toolbar={
         <UsersDataGridToolbar
+          isUpdating={false}
           isDeleting={false}
           onDeleteClick={() => null}
           numberOfSelectedRows={0}
