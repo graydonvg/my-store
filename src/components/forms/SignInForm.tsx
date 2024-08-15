@@ -15,6 +15,10 @@ import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
+import { UserAuthDataSchema } from '@/types';
+import { CONSTANTS } from '@/constants';
+import { useLogger } from 'next-axiom';
+import { constructZodErrorMessage } from '@/utils/construct';
 
 const formFields = [
   { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email', required: true, icon: <Email /> },
@@ -39,6 +43,7 @@ type Props = {
 };
 
 export default function SignInForm({ headerComponent, children }: Props) {
+  const log = useLogger();
   const theme = useTheme();
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
@@ -59,6 +64,20 @@ export default function SignInForm({ headerComponent, children }: Props) {
 
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(true));
+    }
+
+    const validation = UserAuthDataSchema.safeParse(formData);
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        payload: { email: formData.email },
+        error: validation.error,
+      });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
+      return;
     }
 
     const { success, message } = await signInWithPassword(formData);
