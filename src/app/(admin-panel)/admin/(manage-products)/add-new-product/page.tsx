@@ -44,8 +44,9 @@ export default function AdminPanelAddNewProductPage() {
         emptyFormFields.length === numberOfFormFields &&
         imageData.length === 0 &&
         imageUploadProgress.length === 0
-      )
+      ) {
         return;
+      }
       event.preventDefault();
     }
 

@@ -12,10 +12,12 @@ import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
 import { CONSTANTS } from '@/constants';
 import SelectField from '../ui/inputFields/SelectField';
-import { UserRole } from '@/types';
+import { UserAuthDataSchema, UserPersonalInfoSchema, UserRole } from '@/types';
 import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
+import { constructZodErrorMessage } from '@/utils/construct';
+import { useLogger } from 'next-axiom';
 
 const formFields = [
   {
@@ -72,6 +74,7 @@ const defaultFormData = {
 };
 
 export default function CreateAuthUserForm() {
+  const log = useLogger();
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -107,14 +110,25 @@ export default function CreateAuthUserForm() {
 
     dispatch(setIsDialogLoading(true));
 
-    const { email, password, firstName, lastName, contactNumber, role } = formData;
+    const { confirmPassword, password, role, ...restOfFormData } = formData;
+
+    const validation = UserAuthDataSchema.merge(UserPersonalInfoSchema).safeParse({ password, ...restOfFormData });
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        payload: restOfFormData,
+        error: validation.error,
+      });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      toast.error(errorMessage);
+      return;
+    }
 
     const { success, message } = await createNewUser({
-      email,
       password,
-      firstName,
-      lastName,
-      contactNumber,
+      ...restOfFormData,
       role: role === 'none' ? null : (role as UserRole),
     });
 
