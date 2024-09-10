@@ -45,8 +45,6 @@ export default function ProductsPageAdminPanelClient({
   }
 
   async function revalidateAndRefresh() {
-    // setIsLoading(true);
-
     const data = await revalidateAllData();
 
     if (data.success === true) {
@@ -54,8 +52,6 @@ export default function ProductsPageAdminPanelClient({
     } else {
       toast.error(data.message);
     }
-
-    // setIsLoading(false);
   }
 
   async function handleDeleteProducts() {

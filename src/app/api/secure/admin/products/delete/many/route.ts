@@ -4,7 +4,6 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
 import { CONSTANTS } from '@/constants';
-import { PostgrestError } from '@supabase/supabase-js';
 
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -89,48 +88,15 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       );
     }
 
-    const deleteProductsPromises = validation.data.map((productId) =>
-      supabase.from('products').delete().eq('productId', productId)
-    );
+    const { error: deleteError } = await supabase.from('products').delete().in('productId', validation.data);
 
-    const deleteProductsPromiseResults = await Promise.allSettled(deleteProductsPromises);
-
-    const deleteProductsRejections = deleteProductsPromiseResults.reduce((acc: any[], result) => {
-      if (result.status === 'rejected' && result.reason) {
-        acc.push(result.reason);
-      }
-      return acc;
-    }, []);
-
-    const deleteProductsErrors = deleteProductsPromiseResults.reduce((acc: PostgrestError[], result) => {
-      if (result.status === 'fulfilled' && result.value.error) {
-        acc.push(result.value.error);
-      }
-      return acc;
-    }, []);
-
-    const numberOfPromiseRejections = deleteProductsRejections.length;
-    const numberOfDeleteErrors = deleteProductsErrors.length;
-
-    if (numberOfPromiseRejections > 0) {
-      log.error('Promise rejected', { rejections: deleteProductsRejections });
+    if (deleteError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteError });
 
       return NextResponse.json(
         {
           success: false,
-          message: `Failed to delete ${numberOfPromiseRejections} product(s). Please try again later.`,
-        },
-        { status: 500 }
-      );
-    }
-
-    if (numberOfDeleteErrors > 0) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { errors: deleteProductsErrors });
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: `Failed to delete ${numberOfDeleteErrors} product(s). Please try again later.`,
+          message: 'Failed to delete product(s). Please try again later.',
         },
         { status: 500 }
       );
