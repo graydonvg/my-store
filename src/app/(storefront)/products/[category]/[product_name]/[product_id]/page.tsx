@@ -2,13 +2,18 @@ import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { CONSTANTS } from '@/constants';
 import { getAllProducts, getProductById } from '@/services/products/get';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 type Params = {
   params: { product_id: string };
 };
 
+const getProduct = cache(async (product_id: string) => {
+  return await getProductById(product_id);
+});
+
 export async function generateMetadata({ params: { product_id } }: Params) {
-  const { data: product } = await getProductById(product_id);
+  const { data: product } = await getProduct(product_id);
 
   if (!product?.productId) {
     return {
@@ -22,7 +27,7 @@ export async function generateMetadata({ params: { product_id } }: Params) {
 }
 
 export default async function ProductPage({ params: { product_id } }: Params) {
-  const { data: product } = await getProductById(product_id);
+  const { data: product } = await getProduct(product_id);
 
   if (!product) return notFound();
 

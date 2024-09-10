@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
-import Toast from '@/components/ui/Toast';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -24,10 +23,7 @@ export default async function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          {children}
-          <Toast />
-        </Providers>
+        <Providers>{children}</Providers>
         <SpeedInsights />
         <AxiomWebVitals />
       </body>
