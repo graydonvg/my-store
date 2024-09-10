@@ -77,13 +77,14 @@ export const POST = withAxiom(
         );
       }
 
-      const { error: insertOrderError, data: insertOrderResponseData } = await supabase
-        .from('orders')
-        .insert({ ...validation.data.orderDetails })
-        .select('orderId');
+      const { data: orderId, error: addOrderError } = await supabase.rpc('addOrder', {
+        order_items: validation.data.orderItems,
+        shipping_details: validation.data.shippingDetails,
+        order_details: validation.data.orderDetails,
+      });
 
-      if (insertOrderError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertOrderError });
+      if (addOrderError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: addOrderError });
 
         return NextResponse.json(
           {
@@ -93,76 +94,6 @@ export const POST = withAxiom(
           },
           { status: 500 }
         );
-      }
-
-      const { orderId } = insertOrderResponseData[0];
-
-      const orderItemsWithOrderId = validation.data.orderItems.map((item) => {
-        return {
-          ...item,
-          orderId: orderId,
-        };
-      });
-
-      const insertOrderItemsPromise = supabase.from('orderItems').insert(orderItemsWithOrderId);
-
-      const insertShippingDetailsPromise = supabase
-        .from('shippingDetails')
-        .insert({ ...validation.data.shippingDetails, orderId: orderId });
-
-      const [insertOrderItemsResponse, insertShippingDetailsResponse] = await Promise.all([
-        insertOrderItemsPromise,
-        insertShippingDetailsPromise,
-      ]);
-
-      if (insertOrderItemsResponse.error || insertShippingDetailsResponse.error) {
-        const { error: deleteOrderError } = await supabase.from('orders').delete().eq('orderId', orderId);
-
-        if (deleteOrderError) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteOrderError });
-        }
-
-        if (insertOrderItemsResponse.error && insertShippingDetailsResponse.error) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
-            orderItemsError: insertOrderItemsResponse,
-            shippingDetailsError: insertShippingDetailsResponse,
-          });
-
-          return NextResponse.json(
-            {
-              success: false,
-              message: 'Failed to add order items and shipping details. Please try again later.',
-              data: null,
-            },
-            { status: 500 }
-          );
-        } else if (insertOrderItemsResponse.error) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
-            error: insertOrderItemsResponse,
-          });
-
-          return NextResponse.json(
-            {
-              success: false,
-              message: 'Failed to add order items. Please try again later.',
-              data: null,
-            },
-            { status: 500 }
-          );
-        } else if (insertShippingDetailsResponse.error) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, {
-            error: insertShippingDetailsResponse,
-          });
-
-          return NextResponse.json(
-            {
-              success: false,
-              message: 'Failed to add shipping details. Please try again later.',
-              data: null,
-            },
-            { status: 500 }
-          );
-        }
       }
 
       const successMessage = 'Order created successfully';

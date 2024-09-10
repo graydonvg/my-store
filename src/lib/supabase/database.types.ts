@@ -487,6 +487,14 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      addOrder: {
+        Args: {
+          order_details: Json;
+          order_items: Json;
+          shipping_details: Json;
+        };
+        Returns: number;
+      };
       authorize: {
         Args: {
           requested_permission: Database['public']['Enums']['appPermission'];
@@ -565,7 +573,6 @@ export type Database = {
         | 'userRoles.update'
         | 'userRoles.delete';
       appRole: 'owner' | 'admin' | 'manager';
-      isOnSaleOption: 'No' | 'Yes';
       orderStatus:
         | 'awaiting payment'
         | 'paid'
