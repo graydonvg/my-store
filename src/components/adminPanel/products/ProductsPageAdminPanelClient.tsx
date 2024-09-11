@@ -56,8 +56,9 @@ export default function ProductsPageAdminPanelClient({
 
   async function handleDeleteProducts() {
     setIsDeleting(true);
-    const productImagesToastId = toast.loading('Deleting product images...');
-    const productDataToastId = toast.loading('Deleting product data...');
+
+    // Show a single toast for the entire delete operation
+    const productToastId = toast.loading('Deleting product...');
 
     const imagesToDelete = selectedProductIds
       .map((selectedProductId) => {
@@ -74,25 +75,20 @@ export default function ProductsPageAdminPanelClient({
       deleteSelectedProductsPromise,
     ]);
 
-    handleToastUpdate(deleteProductImagesFromStorageResult, productImagesToastId, 'product images');
-    handleToastUpdate(deleteSelectedProductsResult, productDataToastId, 'product data');
+    handleToastUpdate([deleteProductImagesFromStorageResult, deleteSelectedProductsResult], productToastId);
 
-    if (
-      deleteProductImagesFromStorageResult.status === 'fulfilled' &&
-      deleteSelectedProductsResult.status === 'fulfilled'
-    ) {
-      await revalidateAndRefresh();
-      setSelectedProductIds([]);
-      setIsDeleting(false);
-    }
+    await revalidateAndRefresh();
+    setSelectedProductIds([]);
+    setIsDeleting(false);
   }
 
-  function handleToastUpdate(result: PromiseSettledResult<ResponseWithNoData>, toastId: Id, entityType: string) {
-    if (result.status === 'fulfilled') {
-      const { success, message } = result.value;
+  function handleToastUpdate(results: PromiseSettledResult<ResponseWithNoData>[], toastId: Id) {
+    const hasError = results.some((result) => result.status === 'rejected' || !result.value.success);
+
+    if (!hasError) {
       toast.update(toastId, {
-        render: message,
-        type: success ? 'success' : 'error',
+        render: 'Product deleted successfully.',
+        type: 'success',
         isLoading: false,
         autoClose: 4000,
         closeButton: true,
@@ -100,8 +96,13 @@ export default function ProductsPageAdminPanelClient({
         transition: Flip,
       });
     } else {
+      const errorMessage = results
+        .filter((result) => result.status === 'rejected' || !result.value.success)
+        .map((result) => (result.status === 'rejected' ? result.reason : result.value.message))
+        .join('. ');
+
       toast.update(toastId, {
-        render: `Failed to delete ${entityType}: ${result.reason}`,
+        render: errorMessage,
         type: 'error',
         isLoading: false,
         autoClose: 4000,
