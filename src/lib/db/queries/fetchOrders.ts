@@ -23,7 +23,7 @@ export async function fetchOrdersForUser() {
         'createdAt, orderId, cartTotal, discountTotal, deliveryFee, orderTotal, orderStatus, orderItems(orderItemId, quantity, size, pricePaid, product: products(productId, name, category, returnInfo, productImageData(imageUrl))), shippingDetails(recipientFirstName, recipientLastName, recipientContactNumber, complexOrBuilding, streetAddress, suburb, province, city, postalCode), ...pendingCheckoutSessions(pendingCheckoutSessionId: sessionId)'
       )
       .eq('userId', authUser?.id ?? '')
-      .eq('orderItems.products.productImageData.index', 0)
+      .eq('orderItems.products.productImageData.imageIndex', 0)
       .order('createdAt', { ascending: false });
 
     if (ordersError) {

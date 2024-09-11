@@ -13,9 +13,9 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
   try {
     const { data: products, error } = await supabase
       .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
+      .select('*, productImageData(fileName, imageUrl, productImageId, imageIndex)')
       .eq('isOnSale', true)
-      .order('index', { referencedTable: 'productImageData', ascending: true })
+      .order('imageIndex', { referencedTable: 'productImageData', ascending: true })
       .order('salePercentage', { ascending: false });
 
     if (error) {

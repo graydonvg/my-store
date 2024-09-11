@@ -406,7 +406,7 @@ export type ProductImageUploadProgress = {
 
 const ProductImageDataSchema = z.object({
   productImageId: NumericIdSchema.optional(),
-  index: z.number().int().nonnegative(),
+  imageIndex: z.number().int().nonnegative(),
   fileName: z.string(),
   imageUrl: z.string().url(),
 });

@@ -18,10 +18,10 @@ export default async function fetchCartAndWishlistData() {
     const { data, error } = await supabase
       .from('users')
       .select(
-        'wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, index)))'
+        'wishlist(productId, size), cart(createdAt, cartItemId, quantity, size, product: products(name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, productId, sizes, brand, category, productImageData(imageUrl, imageIndex)))'
       )
       .eq('userId', authUser?.id ?? '')
-      .eq('cart.products.productImageData.index', 0)
+      .eq('cart.products.productImageData.imageIndex', 0)
       .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
     if (error) {

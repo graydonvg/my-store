@@ -94,13 +94,13 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     const { productData, imageData } = validation.data;
 
-    const { error: updateProductDataError } = await supabase
-      .from('products')
-      .update(productData)
-      .eq('productId', productData.productId);
+    const { error: updateProductError } = await supabase.rpc('updateProductWithImages', {
+      product_data: productData,
+      image_data: imageData,
+    });
 
-    if (updateProductDataError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateProductDataError });
+    if (updateProductError) {
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateProductError });
 
       return NextResponse.json(
         {
@@ -109,76 +109,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         },
         { status: 500 }
       );
-    }
-
-    let shouldUpdateImageData = true;
-    let imageDataToUpdate = imageData;
-
-    const newImageData = imageData.filter((data) => !data.productImageId);
-
-    if (newImageData.length > 0) {
-      const newImageDataWithProductId = newImageData.map((data) => {
-        const { productImageId, ...restOfData } = data;
-
-        return { ...restOfData, productId: productData.productId! };
-      });
-
-      const { data: insertImageDataResponse, error: insertImageDataError } = await supabase
-        .from('productImageData')
-        .insert(newImageDataWithProductId)
-        .select('*');
-
-      if (insertImageDataError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertImageDataError });
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Failed to add image data to database. Please try again later.',
-          },
-          { status: 500 }
-        );
-      }
-
-      if (insertImageDataResponse.length === imageData.length) {
-        // If all images were replaced, all indexes will be correct and no further updates are required.
-        // If only some images were replaced and/or images were rearranged, the image indexes will need to be updated below.
-        shouldUpdateImageData = false;
-      }
-
-      // Add the productImageId (obtained after inserting the new data) to the imageData sent in the request body
-      imageDataToUpdate = imageData.map((item) => {
-        const newImageData = insertImageDataResponse.find((responseData) => responseData.fileName === item.fileName);
-
-        if (newImageData) {
-          return {
-            ...item,
-            productImageId: newImageData.productImageId,
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-
-    if (shouldUpdateImageData) {
-      const updatePromises = imageDataToUpdate.map((data) =>
-        supabase.from('productImageData').update(data).eq('productImageId', data.productImageId!)
-      );
-
-      const updatePromiseResults = await Promise.all(updatePromises);
-
-      if (updatePromiseResults.some((result) => result.error) || updatePromiseResults.length === 0) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { promiseResults: updatePromiseResults });
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Failed to update image data. Please try again later.',
-          },
-          { status: 500 }
-        );
-      }
     }
 
     revalidatePath('/', 'layout');

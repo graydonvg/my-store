@@ -24,7 +24,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
   const pathname = usePathname();
   const isWishlistPath = pathname.startsWith('/wishlist');
   const roundedDiscountedPrice = calculateRoundedDiscountedPrice(product.price, product.salePercentage);
-  const imageUrl = product.productImageData?.find((image) => image.index === 0)?.imageUrl;
+  const imageUrl = product.productImageData?.find((image) => image.imageIndex === 0)?.imageUrl;
   const isInStock = product.sizes.includes(wishlistSize ?? '');
   const [isRemovingWishlistItem, setIsRemovingWishlistItem] = useState(false);
 

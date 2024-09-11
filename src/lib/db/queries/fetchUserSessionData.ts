@@ -34,7 +34,7 @@ export default async function fetchUserSessionData() {
         '*, wishlist( productId, size), cart(createdAt, cartItemId, quantity, size, product: products(productId, name, isOnSale, price, salePercentage, deliveryInfo, returnInfo, sizes, brand, category, productImageData(imageUrl)))'
       )
       .eq('userId', authUser?.id ?? '')
-      .eq('cart.products.productImageData.index', 0)
+      .eq('cart.products.productImageData.imageIndex', 0)
       .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
     if (userDataError) {

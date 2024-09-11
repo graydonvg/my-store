@@ -62,10 +62,10 @@ export default function ManageProductImages() {
 
         const imageIndex = imageData.length > 0 ? imageData.length + index : index;
 
-        return { fileName, imageUrl, index: imageIndex };
+        return { fileName, imageUrl, imageIndex };
       } else {
         toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
-        return { fileName: '', imageUrl: '', index };
+        return { fileName: '', imageUrl: '', imageIndex: index };
       }
     });
 

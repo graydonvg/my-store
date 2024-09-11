@@ -48,9 +48,9 @@ export const GET = withAxiom(
 
       const { data: products, error } = await supabase
         .from('products')
-        .select('*, productImageData(fileName, imageUrl, productImageId, index)')
+        .select('*, productImageData(fileName, imageUrl, productImageId, imageIndex)')
         .eq('category', validation.data)
-        .order('index', { referencedTable: 'productImageData', ascending: true })
+        .order('imageIndex', { referencedTable: 'productImageData', ascending: true })
         .order('createdAt', { ascending: false });
 
       if (error) {

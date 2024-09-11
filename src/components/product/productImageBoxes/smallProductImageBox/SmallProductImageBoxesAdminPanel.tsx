@@ -33,8 +33,8 @@ export default function SmallProductImageBoxesAdminPanel({
           key={data.fileName}
           productName={productFormData.name}
           productImageData={data}
-          selectImage={() => selectImage(data.index)}
-          imageIndex={data.index}
+          selectImage={() => selectImage(data.imageIndex)}
+          imageIndex={data.imageIndex}
           selectedImageIndex={selectedImageIndex}
           boxBorderColor="transparent"
         />

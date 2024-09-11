@@ -230,22 +230,22 @@ export type Database = {
       productImageData: {
         Row: {
           fileName: string;
+          imageIndex: number;
           imageUrl: string;
-          index: number;
           productId: number;
           productImageId: number;
         };
         Insert: {
           fileName: string;
+          imageIndex: number;
           imageUrl: string;
-          index: number;
           productId: number;
           productImageId?: number;
         };
         Update: {
           fileName?: string;
+          imageIndex?: number;
           imageUrl?: string;
-          index?: number;
           productId?: number;
           productImageId?: number;
         };
@@ -513,6 +513,13 @@ export type Database = {
           productId: number;
           totalQuantitySold: number;
         }[];
+      };
+      updateProductWithImages: {
+        Args: {
+          product_data: Json;
+          image_data: Json[];
+        };
+        Returns: undefined;
       };
       verifyUserPassword: {
         Args: {

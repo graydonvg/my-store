@@ -15,7 +15,7 @@ export default async function fetchRecentProducts() {
       .from('products')
       .select('productId, name, category, price, isOnSale, salePercentage, productImageData(imageUrl)')
       .order('createdAt', { ascending: false })
-      .order('index', { referencedTable: 'productImageData', ascending: true })
+      .order('imageIndex', { referencedTable: 'productImageData', ascending: true })
       .limit(1, { referencedTable: 'productImageData' })
       .limit(5);
 

@@ -18,8 +18,8 @@ function updateImageUploadProgress(
 
 function updateImageIndexesAndSort(imageData: ProductImageData[]) {
   return imageData
-    .map((data, newIndex) => (data.index === newIndex ? data : { ...data, index: newIndex }))
-    .sort((a, b) => a.index - b.index);
+    .map((data, newIndex) => (data.imageIndex === newIndex ? data : { ...data, imageIndex: newIndex }))
+    .sort((a, b) => a.imageIndex - b.imageIndex);
 }
 
 function deleteImage(fileName: string, imageData: ProductImageData[]) {

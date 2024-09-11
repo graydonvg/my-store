@@ -21,7 +21,7 @@ export default async function fetchSortedBestSellers() {
       const { data: products, error: productsError } = await supabase
         .from('products')
         .select('productId, name, category, productImageData(imageUrl)')
-        .order('index', { referencedTable: 'productImageData', ascending: true })
+        .order('imageIndex', { referencedTable: 'productImageData', ascending: true })
         .limit(1, { referencedTable: 'productImageData' })
         .in('productId', bestSellerProductIds);
 

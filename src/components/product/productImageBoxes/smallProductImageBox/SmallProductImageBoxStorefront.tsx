@@ -17,14 +17,14 @@ export default function SmallProductImageBoxStorefront({
   return (
     <>
       {product.productImageData
-        .sort((a, b) => a.index - b.index)
+        .sort((a, b) => a.imageIndex - b.imageIndex)
         .map((data) => (
           <SmallProductImageBox
             key={data.fileName}
             productName={product?.name}
             productImageData={data}
-            selectImage={() => selectImage(data.index)}
-            imageIndex={data.index}
+            selectImage={() => selectImage(data.imageIndex)}
+            imageIndex={data.imageIndex}
             selectedImageIndex={selectedImageIndex}
             boxBorderColor={boxBorderColor}
           />

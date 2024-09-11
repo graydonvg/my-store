@@ -17,7 +17,9 @@ export default async function fetchWishlist() {
 
     const { data, error: wishlistError } = await supabase
       .from('wishlist')
-      .select('wishlistItemId, size, product: products(*, productImageData(fileName, imageUrl, productImageId, index))')
+      .select(
+        'wishlistItemId, size, product: products(*, productImageData(fileName, imageUrl, productImageId, imageIndex))'
+      )
       .eq('userId', authUser?.id ?? '')
       .order('createdAt', { ascending: true });
 

@@ -47,9 +47,9 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     const { data: product, error } = await supabase
       .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
+      .select('*, productImageData(fileName, imageUrl, productImageId, imageIndex)')
       .eq('productId', validation.data)
-      .order('index', { referencedTable: 'productImageData', ascending: true });
+      .order('imageIndex', { referencedTable: 'productImageData', ascending: true });
 
     if (error) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });

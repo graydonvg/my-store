@@ -13,8 +13,8 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
   try {
     const { data: products, error } = await supabase
       .from('products')
-      .select('*, productImageData(fileName, imageUrl, productImageId, index)')
-      .order('index', { referencedTable: 'productImageData', ascending: true })
+      .select('*, productImageData(fileName, imageUrl, productImageId, imageIndex)')
+      .order('imageIndex', { referencedTable: 'productImageData', ascending: true })
       .order('createdAt', { ascending: false })
       .limit(3);
 
