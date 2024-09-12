@@ -1,8 +1,14 @@
 import HeroSection from '@/components/homePage/HeroSection';
 import ShopByCategorySection from '@/components/homePage/ShopByCategorySection';
 import ProductPreviewSection from '@/components/homePage/productPreviewSection/ProductPreviewSection';
+import { CONSTANTS } from '@/constants';
 import { getLimitedLatestProducts, getLimitedProductsOnSale } from '@/services/products/get';
 import { Box } from '@mui/material';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: `Home | ${CONSTANTS.STORE_NAME}`,
+};
 
 export default async function HomePage() {
   const { data: saleProducts } = await getLimitedProductsOnSale();

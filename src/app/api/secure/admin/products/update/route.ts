@@ -94,21 +94,42 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     const { productData, imageData } = validation.data;
 
-    const { error: updateProductError } = await supabase.rpc('updateProductWithImages', {
-      product_data: productData,
-      image_data: imageData,
-    });
+    const newImageData = imageData.filter((data) => !data.productImageId);
 
-    if (updateProductError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateProductError });
+    if (newImageData.length) {
+      const { error: updateProductError } = await supabase.rpc('updateProductWithImages', {
+        product_data: productData,
+        image_data: imageData,
+      });
 
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to update product. Please try again later.',
-        },
-        { status: 500 }
-      );
+      if (updateProductError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateProductError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Failed to update product. Please try again later.',
+          },
+          { status: 500 }
+        );
+      }
+    } else {
+      const { error: updateProductDataError } = await supabase
+        .from('products')
+        .update(productData)
+        .eq('productId', productData.productId);
+
+      if (updateProductDataError) {
+        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateProductDataError });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Failed to update product. Please try again later.',
+          },
+          { status: 500 }
+        );
+      }
     }
 
     revalidatePath('/', 'layout');

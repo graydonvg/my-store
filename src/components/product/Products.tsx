@@ -18,8 +18,8 @@ export default function Products({ products }: Props) {
           key={product.productId}
           item
           xs={6}
-          sm={3}
-          lg={2}>
+          md={4}
+          lg={3}>
           <ProductCard
             product={product}
             imageSizes="(min-width: 1200px) 172px, (min-width: 600px) calc(25vw - 27px), calc(50vw - 24px)"

@@ -13,6 +13,7 @@ import {
 import Link from 'next/link';
 import SignOutButton from '../ui/buttons/complex/SignOutButton';
 import { CONSTANTS } from '@/constants';
+import { usePathname } from 'next/navigation';
 
 function getIcon(icon: string) {
   const icons = {
@@ -32,6 +33,7 @@ type Props = {
 };
 
 export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawerWidth }: Props) {
+  const pathname = usePathname();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
@@ -72,7 +74,11 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
           <Link
             key={item.label}
             href={item.path}>
-            <ListItemButton sx={{ color: theme.palette.text.secondary }}>
+            <ListItemButton
+              sx={{
+                color: theme.palette.text.secondary,
+                backgroundColor: pathname === item.path ? theme.palette.action.hover : null,
+              }}>
               <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
                 {getIcon(item.label)}
               </ListItemIcon>

@@ -16,8 +16,8 @@ export default function Loading() {
             key={index}
             item
             xs={6}
-            sm={3}
-            lg={2}>
+            md={4}
+            lg={3}>
             <Box>
               <Skeleton
                 variant="rectangular"

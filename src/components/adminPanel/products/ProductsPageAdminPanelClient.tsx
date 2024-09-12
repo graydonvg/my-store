@@ -87,7 +87,7 @@ export default function ProductsPageAdminPanelClient({
 
     if (!hasError) {
       toast.update(toastId, {
-        render: 'Product deleted successfully.',
+        render: 'Product deleted successfully',
         type: 'success',
         isLoading: false,
         autoClose: 4000,
