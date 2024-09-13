@@ -1,4 +1,4 @@
-import ProductsPageSidebar from '@/components/productsPageStorefront/ProductsPageSidebar';
+import ProductsSidebar from '@/components/productsPageStorefront/productsSidebar/ProductsSidebar';
 import { Box, Container } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -17,7 +17,7 @@ export default function ProductsLayout({ children }: { children: ReactNode }) {
           overflowX: 'hidden',
           display: { xs: 'none', md: 'block' },
         }}>
-        <ProductsPageSidebar />
+        <ProductsSidebar />
       </Box>
 
       <Container
