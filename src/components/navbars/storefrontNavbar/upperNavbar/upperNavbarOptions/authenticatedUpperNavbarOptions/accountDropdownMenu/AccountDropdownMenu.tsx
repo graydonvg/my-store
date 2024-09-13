@@ -20,7 +20,7 @@ const accountMenuOptions = [
   },
   {
     label: 'Orders',
-    href: '/orders',
+    href: '/orders?page=1',
     icon: <ViewList fontSize={iconSize} />,
   },
   {

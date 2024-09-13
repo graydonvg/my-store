@@ -32,7 +32,7 @@ export default function PaymentSuccessful() {
     }, 1000);
 
     const timeout = setTimeout(() => {
-      router.push('/orders');
+      router.push('/orders?page=1');
     }, redirectCountdown * 1000);
 
     return () => {

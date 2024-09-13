@@ -54,7 +54,7 @@ export const CONSTANTS = {
     },
     {
       label: 'Orders',
-      path: '/orders',
+      path: '/orders?page=1',
     },
     {
       label: 'Wishlist',

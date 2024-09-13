@@ -1,7 +1,7 @@
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import ProductCard from '@/components/product/productCard/ProductCard';
 import fetchWishlist from '@/lib/db/queries/fetchWishlist';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Metadata } from 'next';
 import { CONSTANTS } from '@/constants';
 
@@ -13,7 +13,7 @@ export default async function WishlistPage() {
   const wishlist = await fetchWishlist();
 
   return (
-    <Box>
+    <>
       <PageHeaderWithBorder label="Wishlist" />
       {wishlist ? (
         <Grid
@@ -38,6 +38,6 @@ export default async function WishlistPage() {
           ))}
         </Grid>
       ) : null}
-    </Box>
+    </>
   );
 }

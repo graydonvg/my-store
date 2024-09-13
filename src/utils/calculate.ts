@@ -8,7 +8,7 @@ export function calculateRoundedDiscountedPrice(price: number, percentage: numbe
   return roundedDiscountedPrice;
 }
 
-export function calculateTablePagination(items: {}[] | null, page: QueryPageDataGrid, totalRowCount: number) {
+export function calculatePagination(items: {}[] | null, page: QueryPageDataGrid, totalRowCount: number) {
   const queryStart = (page.number - 1) * page.rows;
   const itemsLength = items?.length ?? 0;
   const isEndOfData = queryStart + itemsLength >= totalRowCount;

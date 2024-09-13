@@ -15,7 +15,7 @@ import {
 import { ReactNode, useEffect, useMemo } from 'react';
 import CustomNoRowsOverlay from './CustomNoRowsOverlay';
 import { toast } from 'react-toastify';
-import { calculateTablePagination } from '@/utils/calculate';
+import { calculatePagination } from '@/utils/calculate';
 
 type Props = {
   data: {}[] | null;
@@ -46,7 +46,7 @@ export default function CustomDataGrid({
   const dataGridCurrentPageNumber = page.number - 1;
   const rowsPerPageOptionsSet = new Set([page.rows, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
-  const { isEndOfData, lastPageNumber } = calculateTablePagination(data, page, totalRowCount);
+  const { isEndOfData, lastPageNumber } = calculatePagination(data, page, totalRowCount);
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
