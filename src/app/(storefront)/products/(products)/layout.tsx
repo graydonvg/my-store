@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 export default function ProductsLayout({ children }: { children: ReactNode }) {
   return (
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
       <Box
         sx={{
           position: 'sticky',
@@ -20,7 +20,11 @@ export default function ProductsLayout({ children }: { children: ReactNode }) {
         <ProductsPageSidebar />
       </Box>
 
-      <Container component="main">{children}</Container>
+      <Container
+        component="main"
+        disableGutters>
+        {children}
+      </Container>
     </Box>
   );
 }

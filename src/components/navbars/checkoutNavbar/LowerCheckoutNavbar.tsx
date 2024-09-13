@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
-import CommonNavbarContainer from '../../ui/containers/CommonNavbarContainer';
-import BreadcrumbsComponent from '../../checkoutFlow/breadcrumbs/BreadcrumbsComponent';
-import BreadcrumbItem from '../../checkoutFlow/breadcrumbs/BreadcrumbItem';
 import { LocalShippingOutlined, Payment, ShoppingCart, ThumbUp } from '@mui/icons-material';
+import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
+import BreadcrumbsComponent from '@/components/checkoutFlow/breadcrumbs/BreadcrumbsComponent';
+import BreadcrumbItem from '@/components/checkoutFlow/breadcrumbs/BreadcrumbItem';
 
 const breadcrumbData = [
   { href: '/cart/view', icon: <ShoppingCart />, label: 'cart' },

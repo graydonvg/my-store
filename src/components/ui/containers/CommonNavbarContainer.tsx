@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function CommonNavbarContainer({ children }: Props) {
-  return <Container maxWidth="lg">{children}</Container>;
+  return <Container sx={{ maxWidth: '1248px !important' }}>{children}</Container>;
 }
