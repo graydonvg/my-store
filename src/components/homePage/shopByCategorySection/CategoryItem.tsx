@@ -48,7 +48,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
             objectFit: 'cover',
             objectPosition: '50% 0%',
             opacity: !isCategoryImageLoaded ? 0 : 1,
-            transition: 'opacity 0.5s ease-in-out',
+            transition: 'opacity 0.4s ease-in-out',
           }}
           fill
           sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"

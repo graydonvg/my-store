@@ -36,7 +36,7 @@ export default function ProductCardImage({ imageUrl, imageSizes, productName }: 
           style={{
             objectFit: 'cover',
             opacity: !isImageLoaded ? 0 : 1,
-            transition: 'opacity 0.5s ease-in-out',
+            transition: 'opacity 0.4s ease-in-out',
           }}
           fill
           sizes={imageSizes}

@@ -26,7 +26,7 @@ export default function LargeCartItemImage({ imageUrl, productName, productHref 
           overflow: 'hidden',
         }}>
         <Image
-          style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100, transition: 'opacity 0.5s ease-in-out' }}
+          style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100 }}
           fill
           sizes="(min-width: 600px) 160px, 60px"
           src={imageUrl!}

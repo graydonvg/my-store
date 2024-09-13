@@ -36,7 +36,6 @@ export default function HeroSection() {
             objectFit: 'cover',
             objectPosition: 'center 20%',
             opacity: !isHeroImageLoaded ? 0 : 100,
-            transition: 'opacity 0.5s ease-in-out',
           }}
         />
         <Box

@@ -30,7 +30,7 @@ export default function SmallCartItemImage({ imageUrl, productName, onClick }: P
         overflow: 'hidden',
       }}>
       <Image
-        style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100, transition: 'opacity 0.5s ease-in-out' }}
+        style={{ objectFit: 'cover', opacity: isImageLoading ? 0 : 100 }}
         fill
         sizes="60px"
         src={imageUrl!}

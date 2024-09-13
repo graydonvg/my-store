@@ -122,7 +122,6 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               style={{
                 objectFit: 'cover',
                 opacity: !isImageLoaded ? 0 : isDeletingCurrentImage ? 0.5 : 100,
-                transition: 'opacity 0.5s ease-in-out',
               }}
               fill
               sizes="(min-width: 600px) 113px, calc(35vw - 15px)"
