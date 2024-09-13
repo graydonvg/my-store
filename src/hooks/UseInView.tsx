@@ -26,6 +26,10 @@ function useInView(options: IntersectionObserverInit) {
           if (entry.isIntersecting !== isIntersecting) {
             setIsIntersecting(entry.isIntersecting);
           }
+
+          if (entry.isIntersecting) {
+            observerRef.current?.unobserve(element);
+          }
         },
         options // Pass the options to configure the observer
       );

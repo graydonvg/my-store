@@ -1,6 +1,6 @@
 import HeroSection from '@/components/homePage/HeroSection';
-import ShopByCategorySection from '@/components/homePage/ShopByCategorySection';
 import ProductPreviewSection from '@/components/homePage/productPreviewSection/ProductPreviewSection';
+import ShopByCategorySection from '@/components/homePage/shopByCategorySection/ShopByCategorySection';
 import { CONSTANTS } from '@/constants';
 import { getLimitedLatestProducts, getLimitedProductsOnSale } from '@/services/products/get';
 import { Box } from '@mui/material';
