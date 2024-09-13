@@ -1,6 +1,7 @@
 'use client';
 
 import { CONSTANTS } from '@/constants';
+import useInView from '@/hooks/UseInView';
 import { Box, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -9,6 +10,9 @@ import { useState } from 'react';
 export default function ShopByCategorySection() {
   const router = useRouter();
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
+  const [isInView, setElement] = useInView({
+    threshold: 0, // Load when any part of the image is in view
+  });
 
   function navigateToCategory(path: string) {
     router.push(path);
@@ -39,6 +43,7 @@ export default function ShopByCategorySection() {
               xs={12}
               sm={4}>
               <Box
+                ref={setElement} // Attach the ref to track when this Box enters the viewport
                 onClick={() => navigateToCategory(category.path)}
                 sx={{
                   position: 'relative',
@@ -58,18 +63,22 @@ export default function ShopByCategorySection() {
                     zIndex: 1,
                   },
                 }}>
-                <Image
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: '50% 0%',
-                    opacity: !isCategoryImageLoaded ? 0 : 100,
-                  }}
-                  fill
-                  sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"
-                  src={category.imageSrc}
-                  alt={`Image for category ${category.label}`}
-                  onLoad={() => setIsCategoryImageLoaded(true)}
-                />
+                {/* Only render the image when it's in the viewport */}
+                {isInView && (
+                  <Image
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: '50% 0%',
+                      opacity: !isCategoryImageLoaded ? 0 : 100,
+                      transition: 'opacity 0.5s ease-in-out',
+                    }}
+                    fill
+                    sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"
+                    src={category.imageSrc}
+                    alt={`Image for category ${category.label}`}
+                    onLoad={() => setIsCategoryImageLoaded(true)}
+                  />
+                )}
 
                 {!isCategoryImageLoaded ? (
                   <Skeleton

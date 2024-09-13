@@ -27,6 +27,7 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
             objectFit: 'cover',
             cursor: 'pointer',
             opacity: !isImageLoaded ? 0 : 100,
+            transition: 'opacity 0.5s ease-in-out',
           }}
           fill
           src={imageUrl}

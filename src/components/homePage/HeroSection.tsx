@@ -32,7 +32,12 @@ export default function HeroSection() {
           priority
           onLoad={() => setIsHeroImageLoaded(true)}
           sizes="(min-width: 1210px) 1152px, 95vw"
-          style={{ objectFit: 'cover', objectPosition: 'center 20%', opacity: !isHeroImageLoaded ? 0 : 100 }}
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center 20%',
+            opacity: !isHeroImageLoaded ? 0 : 100,
+            transition: 'opacity 0.5s ease-in-out',
+          }}
         />
         <Box
           sx={{

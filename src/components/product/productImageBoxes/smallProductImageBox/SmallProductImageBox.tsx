@@ -54,6 +54,7 @@ export default function SmallProductImageBox({
                 objectFit: 'cover',
                 cursor: 'pointer',
                 opacity: !isImageLoaded ? 0 : 100,
+                transition: 'opacity 0.5s ease-in-out',
               }}
               fill
               sizes="(min-width: 1200px) 87px, (min-width: 900px) 6.94vw, (min-width: 660px) 94px, (min-width: 600px) calc(7.5vw + 45px), calc(20vw - 13px)"
