@@ -1,9 +1,12 @@
 import { Box, FormControlLabel, FormGroup, Tooltip, Typography } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useState } from 'react';
+// import { useAppSelector } from '@/lib/redux/hooks';
+// import { selectProductsData } from '@/lib/redux/features/products/productsSelector';
 
 export default function PrimaryColourFilter() {
   const [selectedColors, setSelectedColors] = useState(['']);
+  // const productsData = useAppSelector(selectProductsData);
 
   return (
     <ProductsSidebarAccordion

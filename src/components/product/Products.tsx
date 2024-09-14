@@ -1,12 +1,28 @@
+'use client';
+
 import { Grid } from '@mui/material';
 import ProductCard from './productCard/ProductCard';
 import { Product } from '@/types';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { setProducts } from '@/lib/redux/features/products/productsSlice';
 
 type Props = {
   products: Product[];
 };
 
 export default function Products({ products }: Props) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const productData = products.map((product) => {
+      const { productImageData, ...restOfProductData } = product;
+      return restOfProductData;
+    });
+
+    dispatch(setProducts(productData));
+  }, [products, dispatch]);
+
   return (
     <Grid
       component="ul"

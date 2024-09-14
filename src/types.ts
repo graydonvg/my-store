@@ -412,7 +412,7 @@ const ProductImageDataSchema = z.object({
 });
 export type ProductImageData = z.infer<typeof ProductImageDataSchema>;
 
-type ProductData = {
+export type ProductData = {
   productId: number;
   createdAt: string;
   category: ProductCategory;

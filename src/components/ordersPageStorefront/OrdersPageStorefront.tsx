@@ -7,27 +7,24 @@ import OrderItems from './orderItems/OrderItems';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { calculatePagination } from '@/utils/calculate';
 
 type Props = {
   orders: OrderData[];
   pageNumber: number;
-  isEndOfData: boolean;
-  lastPageNumber: number;
   maxOrdersPerPage: number;
   totalRowCount: number;
 };
 
-export default function OrdersPageStorefront({
-  orders,
-  pageNumber,
-  isEndOfData,
-  lastPageNumber,
-  maxOrdersPerPage,
-  totalRowCount,
-}: Props) {
+export default function OrdersPageStorefront({ orders, pageNumber, maxOrdersPerPage, totalRowCount }: Props) {
   const theme = useTheme();
   const isBelowMedium = useMediaQuery(theme.breakpoints.down('md'));
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isEndOfData, lastPageNumber } = calculatePagination(
+    orders,
+    { number: pageNumber, rows: maxOrdersPerPage },
+    totalRowCount
+  );
 
   return (
     <>
@@ -74,6 +71,7 @@ export default function OrdersPageStorefront({
                 style={{ width: isBelowSmall ? '100%' : 'auto' }}>
                 <OutlinedButton
                   label="Prev"
+                  aria-label="Previous page"
                   disabled={pageNumber < 2}
                   sxStyles={{ minHeight: '40px', width: { xs: '100%', sm: 136 } }}
                   startIcon={<ChevronLeft />}
@@ -86,6 +84,7 @@ export default function OrdersPageStorefront({
               {Array.from(Array(lastPageNumber)).map((_, index) => (
                 <Box
                   component="li"
+                  aria-label={`page ${index + 1}`}
                   key={index}
                   sx={{
                     fontSize: 20,
@@ -107,6 +106,7 @@ export default function OrdersPageStorefront({
                 style={{ width: isBelowSmall ? '100%' : 'auto' }}>
                 <OutlinedButton
                   label="Next"
+                  aria-label="Next page"
                   disabled={isEndOfData}
                   sxStyles={{ minHeight: '40px', width: { xs: '100%', sm: 136 } }}
                   endIcon={<ChevronRight />}

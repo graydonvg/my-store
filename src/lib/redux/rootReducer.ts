@@ -12,8 +12,10 @@ import { productImagesReducer } from './features/productImages/productImagesSlic
 import { wishlistDataReducer } from './features/wishlistData/wishlistDataSlice';
 import { addressesReducer } from './features/addresses/addressesSlice';
 import { editCartItemDrawerReducer } from './features/editCartItemDrawer/editCartItemDrawerSlice';
+import { productsReducer } from './features/products/productsSlice';
 
 export const rootReducer = combineReducers({
+  products: productsReducer,
   productForm: productFormReducer,
   productImages: productImagesReducer,
   navDrawer: navDrawerReducer,

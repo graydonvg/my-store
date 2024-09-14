@@ -42,7 +42,7 @@ export default function CustomDataGrid({
   const theme = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const newSearchParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams]);
+  const newSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
   const dataGridCurrentPageNumber = page.number - 1;
   const rowsPerPageOptionsSet = new Set([page.rows, 5, 10, 25, 50, 100]);
   const rowsPerPageOptionsArraySorted = Array.from(rowsPerPageOptionsSet).sort((a, b) => a - b);
