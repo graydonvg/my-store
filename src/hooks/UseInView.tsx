@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 // Custom hook to detect if an element is in view using IntersectionObserver
 function useInView(options: IntersectionObserverInit) {
-  // State to store whether the element is in view and the element itself
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [element, setElement] = useState<HTMLElement | null>(null);
 

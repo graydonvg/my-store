@@ -17,6 +17,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
   const [isInView, setElement] = useInView({
     threshold: 0, // Load when any part of the image is in view
+    rootMargin: '300px 0px',
   });
 
   return (
@@ -51,7 +52,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
             transition: 'opacity 0.4s ease-in-out',
           }}
           fill
-          sizes="(min-width: 1210px) 368px, (min-width: 600px) 30.1vw, calc(100vw - 45px)"
+          sizes="(min-width: 600px) calc(25vw - 100px), 50vw"
           src={category.imageSrc}
           alt={`Image for category ${category.label}`}
           onLoad={() => setIsCategoryImageLoaded(true)}
