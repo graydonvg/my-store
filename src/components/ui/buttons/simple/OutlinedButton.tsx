@@ -7,10 +7,18 @@ type CustomButtonProps = ButtonProps & {
   isLoading?: boolean;
   label: ReactNode;
   startIcon?: ReactNode;
+  endIcon?: ReactNode;
   sxStyles?: SxProps<Theme> | undefined;
 };
 
-export default function OutlinedButton({ isLoading, label, startIcon, sxStyles, ...props }: CustomButtonProps) {
+export default function OutlinedButton({
+  isLoading,
+  label,
+  startIcon,
+  endIcon,
+  sxStyles,
+  ...props
+}: CustomButtonProps) {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
@@ -28,6 +36,7 @@ export default function OutlinedButton({ isLoading, label, startIcon, sxStyles, 
           startIcon
         )
       }
+      endIcon={endIcon}
       sx={{
         pointerEvents: !isLoading ? 'auto' : 'none',
         minHeight: '48px',

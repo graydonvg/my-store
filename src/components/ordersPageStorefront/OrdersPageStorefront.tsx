@@ -6,6 +6,7 @@ import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 import Link from 'next/link';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 
 type Props = {
   orders: OrderData[];
@@ -75,6 +76,7 @@ export default function OrdersPageStorefront({
                   label="Prev"
                   disabled={pageNumber < 2}
                   sxStyles={{ minHeight: '40px', width: { xs: '100%', sm: 136 } }}
+                  startIcon={<ChevronLeft />}
                 />
               </Link>
             ) : null}
@@ -107,6 +109,7 @@ export default function OrdersPageStorefront({
                   label="Next"
                   disabled={isEndOfData}
                   sxStyles={{ minHeight: '40px', width: { xs: '100%', sm: 136 } }}
+                  endIcon={<ChevronRight />}
                 />
               </Link>
             ) : null}
