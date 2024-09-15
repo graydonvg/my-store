@@ -1,21 +1,43 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
-import { CONSTANTS } from '@/constants';
-// import { useAppSelector } from '@/lib/redux/hooks';
-// import { selectProductsData } from '@/lib/redux/features/products/productsSelector';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectAvailableSizes } from '@/lib/redux/features/products/productsSelector';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SizeFilter() {
-  // const productsData = useAppSelector(selectProductsData);
+  const router = useRouter();
+  const availableSizes = useAppSelector(selectAvailableSizes);
+  const searchParams = useSearchParams();
+  const selectedSizes = Array.from(searchParams.values());
+
+  function applySizeFilterToUrl(size: string, index: number) {
+    const updatedParams = new URLSearchParams(searchParams);
+
+    const paramName = `size_s[${index}]`;
+
+    if (!searchParams.has(paramName)) {
+      updatedParams.set(paramName, `${size}`);
+    } else {
+      updatedParams.delete(paramName);
+    }
+
+    router.push(`?${updatedParams}`);
+  }
 
   return (
     <ProductsSidebarAccordion
       label="Sizes"
       defaultExpanded={false}>
       <FormGroup>
-        {CONSTANTS.ORDERED_SIZES_FOR_STORE.map((size) => (
+        {availableSizes.map((size, index) => (
           <FormControlLabel
             key={size}
-            control={<Checkbox />}
+            control={
+              <Checkbox
+                checked={selectedSizes.includes(size)}
+                onChange={() => applySizeFilterToUrl(size, index)}
+              />
+            }
             label={size}
           />
         ))}

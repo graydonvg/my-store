@@ -8,13 +8,19 @@ export default function PrimaryColourFilter() {
   const [selectedColors, setSelectedColors] = useState(['']);
   // const productsData = useAppSelector(selectProductsData);
 
+  function toggleColor(color: string) {
+    setSelectedColors((prevColors) =>
+      prevColors.includes(color) ? prevColors.filter((prevColor) => prevColor !== color) : [...prevColors, color]
+    );
+  }
+
   return (
     <ProductsSidebarAccordion
       label="Primary colour"
       defaultExpanded={true}>
       <FormGroup>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          {['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Multi'].map((color) => (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Grey', 'Multi'].map((color) => (
             <Box
               key={color}
               sx={{ position: 'relative', width: 18, height: 18 }}>
@@ -26,13 +32,7 @@ export default function PrimaryColourFilter() {
                     placement="top"
                     arrow>
                     <Box
-                      onClick={() =>
-                        setSelectedColors((prevColors) =>
-                          prevColors.includes(color)
-                            ? prevColors.filter((prevColor) => prevColor !== color)
-                            : [...prevColors, color]
-                        )
-                      }
+                      onClick={() => toggleColor(color)}
                       sx={{
                         backgroundColor: color,
                         border: '1px solid grey',

@@ -17,6 +17,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
   const [isInView, setElement] = useInView({
     threshold: 0, // Load when any part of the image is in view
+    rootMargin: '400px 0px',
   });
 
   return (

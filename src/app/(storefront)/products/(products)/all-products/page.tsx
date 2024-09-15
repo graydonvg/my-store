@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: `All Products | ${CONSTANTS.STORE_NAME}`,
 };
 
+// type Props = {
+//   searchParams: {
+//     [key: string]: string | string[] | undefined;
+//   };
+// };
+
 export default async function AllProductsPage() {
   const { data: products } = await getAllProducts();
 
