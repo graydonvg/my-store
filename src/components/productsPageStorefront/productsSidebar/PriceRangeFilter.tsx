@@ -3,14 +3,13 @@ import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatCurrency } from '@/utils/format';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { selectPriceRange } from '@/lib/redux/features/products/productsSelector';
+
+const DEFAULT_PRICE_RANGE = [0, 11300];
 
 export default function PriceRangeFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const maxPriceRage = useAppSelector(selectPriceRange);
-  const [selectedPriceRange, setSelectedPriceRange] = useState(maxPriceRage);
+  const [selectedPriceRange, setSelectedPriceRange] = useState(DEFAULT_PRICE_RANGE);
   const selectedLowerPriceRange = useMemo(() => formatCurrency(selectedPriceRange[0]), [selectedPriceRange]);
   const selectedUpperPriceRange = useMemo(() => formatCurrency(selectedPriceRange[1]), [selectedPriceRange]);
 
@@ -35,21 +34,21 @@ export default function PriceRangeFilter() {
   useEffect(() => {
     const urlMinPrice = !isNaN(Number(searchParams.get('min_price')))
       ? Number(searchParams.get('min_price'))
-      : maxPriceRage[0];
+      : DEFAULT_PRICE_RANGE[0];
     const urlMaxPrice = !isNaN(Number(searchParams.get('max_price')))
       ? Number(searchParams.get('max_price'))
-      : maxPriceRage[1];
+      : DEFAULT_PRICE_RANGE[1];
 
-    const currentMinPrice = searchParams.get('min_price') ? urlMinPrice : maxPriceRage[0];
-    const currentMaxPrice = searchParams.get('max_price') ? urlMaxPrice : maxPriceRage[1];
+    const currentMinPrice = searchParams.get('min_price') ? urlMinPrice : DEFAULT_PRICE_RANGE[0];
+    const currentMaxPrice = searchParams.get('max_price') ? urlMaxPrice : DEFAULT_PRICE_RANGE[1];
 
     setSelectedPriceRange([currentMinPrice, currentMaxPrice]);
-  }, [maxPriceRage, searchParams]);
+  }, [searchParams]);
 
   function applyPriceFilterToUrl() {
     const updatedParams = new URLSearchParams(searchParams);
 
-    if (selectedPriceRange[0] !== maxPriceRage[0]) {
+    if (selectedPriceRange[0] !== DEFAULT_PRICE_RANGE[0]) {
       if (searchParams.has('max_price') && !searchParams.has('min_price')) {
         // Keep ordered (min then max price)
         updatedParams.delete('max_price');
@@ -61,7 +60,7 @@ export default function PriceRangeFilter() {
       updatedParams.delete('min_price');
     }
 
-    if (selectedPriceRange[1] !== maxPriceRage[1]) {
+    if (selectedPriceRange[1] !== DEFAULT_PRICE_RANGE[1]) {
       updatedParams.set('max_price', `${selectedPriceRange[1]}`);
     } else {
       updatedParams.delete('max_price');
@@ -84,8 +83,8 @@ export default function PriceRangeFilter() {
           onChange={(_e, newValue) => setSelectedPriceRange(newValue as number[])}
           onChangeCommitted={applyPriceFilterToUrl}
           valueLabelDisplay="off"
-          min={maxPriceRage[0]}
-          max={maxPriceRage[1]}
+          min={DEFAULT_PRICE_RANGE[0]}
+          max={DEFAULT_PRICE_RANGE[1]}
           step={50}
         />
       </Box>

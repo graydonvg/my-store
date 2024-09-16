@@ -1,11 +1,7 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
-// import { useAppSelector } from '@/lib/redux/hooks';
-// import { selectProductsData } from '@/lib/redux/features/products/productsSelector';
 
 export default function MaterialFilter() {
-  // const productsData = useAppSelector(selectProductsData);
-
   return (
     <ProductsSidebarAccordion
       label="Material"

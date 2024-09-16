@@ -1,13 +1,10 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { selectAvailableBrands } from '@/lib/redux/features/products/productsSelector';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function BrandFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const availableBrands = useAppSelector(selectAvailableBrands);
   const selectedBrands = Array.from(searchParams.values());
 
   function applyBrandFilterToUrl(brand: string, index: number) {
@@ -29,7 +26,7 @@ export default function BrandFilter() {
       label="Brands"
       defaultExpanded={false}>
       <FormGroup>
-        {availableBrands?.map((brand, index) => (
+        {['a', 'b', 'c', 'd'].map((brand, index) => (
           <FormControlLabel
             key={brand}
             control={

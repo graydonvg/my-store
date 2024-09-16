@@ -1,12 +1,10 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { selectAvailableSizes } from '@/lib/redux/features/products/productsSelector';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { CONSTANTS } from '@/constants';
 
 export default function SizeFilter() {
   const router = useRouter();
-  const availableSizes = useAppSelector(selectAvailableSizes);
   const searchParams = useSearchParams();
   const selectedSizes = Array.from(searchParams.values());
 
@@ -29,7 +27,7 @@ export default function SizeFilter() {
       label="Sizes"
       defaultExpanded={false}>
       <FormGroup>
-        {availableSizes.map((size, index) => (
+        {CONSTANTS.ORDERED_SIZES_FOR_STORE.map((size, index) => (
           <FormControlLabel
             key={size}
             control={
