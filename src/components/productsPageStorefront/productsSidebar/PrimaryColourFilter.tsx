@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, FormControlLabel, FormGroup, Tooltip, Typography } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useState } from 'react';

@@ -1,15 +1,29 @@
+'use client';
+
 import { Box, Slider, Typography } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { formatCurrency } from '@/utils/format';
+import { PriceRangeFilterType } from '@/types';
 
-const DEFAULT_PRICE_RANGE = [0, 11300];
+type Props = {
+  highestPrices: PriceRangeFilterType;
+};
 
-export default function PriceRangeFilter() {
+export default function PriceRangeFilter({ highestPrices }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedPriceRange, setSelectedPriceRange] = useState(DEFAULT_PRICE_RANGE);
+  const pathname = usePathname();
+  const priceMapping = {
+    '/products/men': highestPrices.highestPriceMen,
+    '/products/women': highestPrices.highestPriceWomen,
+    '/products/kids': highestPrices.highestPriceKids,
+  };
+  const highestPrice = priceMapping[pathname as keyof typeof priceMapping] || highestPrices.highestPrice;
+  const roundedHighestPrice = Math.ceil(highestPrice / 100) * 100;
+  const priceRange = useMemo(() => [0, roundedHighestPrice], [roundedHighestPrice]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState(priceRange);
   const selectedLowerPriceRange = useMemo(() => formatCurrency(selectedPriceRange[0]), [selectedPriceRange]);
   const selectedUpperPriceRange = useMemo(() => formatCurrency(selectedPriceRange[1]), [selectedPriceRange]);
 
@@ -34,21 +48,21 @@ export default function PriceRangeFilter() {
   useEffect(() => {
     const urlMinPrice = !isNaN(Number(searchParams.get('min_price')))
       ? Number(searchParams.get('min_price'))
-      : DEFAULT_PRICE_RANGE[0];
+      : priceRange[0];
     const urlMaxPrice = !isNaN(Number(searchParams.get('max_price')))
       ? Number(searchParams.get('max_price'))
-      : DEFAULT_PRICE_RANGE[1];
+      : priceRange[1];
 
-    const currentMinPrice = searchParams.get('min_price') ? urlMinPrice : DEFAULT_PRICE_RANGE[0];
-    const currentMaxPrice = searchParams.get('max_price') ? urlMaxPrice : DEFAULT_PRICE_RANGE[1];
+    const currentMinPrice = searchParams.get('min_price') ? urlMinPrice : priceRange[0];
+    const currentMaxPrice = searchParams.get('max_price') ? urlMaxPrice : priceRange[1];
 
     setSelectedPriceRange([currentMinPrice, currentMaxPrice]);
-  }, [searchParams]);
+  }, [searchParams, priceRange]);
 
   function applyPriceFilterToUrl() {
     const updatedParams = new URLSearchParams(searchParams);
 
-    if (selectedPriceRange[0] !== DEFAULT_PRICE_RANGE[0]) {
+    if (selectedPriceRange[0] !== priceRange[0]) {
       if (searchParams.has('max_price') && !searchParams.has('min_price')) {
         // Keep ordered (min then max price)
         updatedParams.delete('max_price');
@@ -60,7 +74,7 @@ export default function PriceRangeFilter() {
       updatedParams.delete('min_price');
     }
 
-    if (selectedPriceRange[1] !== DEFAULT_PRICE_RANGE[1]) {
+    if (selectedPriceRange[1] !== priceRange[1]) {
       updatedParams.set('max_price', `${selectedPriceRange[1]}`);
     } else {
       updatedParams.delete('max_price');
@@ -83,8 +97,8 @@ export default function PriceRangeFilter() {
           onChange={(_e, newValue) => setSelectedPriceRange(newValue as number[])}
           onChangeCommitted={applyPriceFilterToUrl}
           valueLabelDisplay="off"
-          min={DEFAULT_PRICE_RANGE[0]}
-          max={DEFAULT_PRICE_RANGE[1]}
+          min={priceRange[0]}
+          max={priceRange[1]}
           step={50}
         />
       </Box>

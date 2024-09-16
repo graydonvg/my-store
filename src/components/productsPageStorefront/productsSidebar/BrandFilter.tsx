@@ -1,8 +1,14 @@
+'use client';
+
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function BrandFilter() {
+type Props = {
+  brands: string[];
+};
+
+export default function BrandFilter({ brands }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedBrands = Array.from(searchParams.values());
@@ -26,7 +32,7 @@ export default function BrandFilter() {
       label="Brands"
       defaultExpanded={false}>
       <FormGroup>
-        {['a', 'b', 'c', 'd'].map((brand, index) => (
+        {brands.map((brand, index) => (
           <FormControlLabel
             key={brand}
             control={

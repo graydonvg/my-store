@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
-import useInView from '@/hooks/UseInView';
 import { CONSTANTS } from '@/constants';
 
 type CategoryItemProps = {
@@ -15,15 +14,9 @@ type CategoryItemProps = {
 
 function CategoryItem({ category, onClick }: CategoryItemProps) {
   const [isCategoryImageLoaded, setIsCategoryImageLoaded] = useState(false);
-  const [isInView, setElement] = useInView({
-    threshold: 0, // Load when any part of the image is in view
-    rootMargin: '400px 0px',
-  });
 
   return (
     <Box
-      // Attach the ref to track when this Box enters the viewport
-      ref={setElement}
       onClick={() => onClick(category.path)}
       sx={{
         position: 'relative',
@@ -43,21 +36,19 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
           zIndex: 1,
         },
       }}>
-      {isInView && (
-        <Image
-          style={{
-            objectFit: 'cover',
-            objectPosition: '50% 0%',
-            opacity: !isCategoryImageLoaded ? 0 : 1,
-            transition: 'opacity 0.4s ease-in-out',
-          }}
-          fill
-          sizes="(min-width: 600px) calc(25vw - 100px), 50vw"
-          src={category.imageSrc}
-          alt={`Image for category ${category.label}`}
-          onLoad={() => setIsCategoryImageLoaded(true)}
-        />
-      )}
+      <Image
+        style={{
+          objectFit: 'cover',
+          objectPosition: '50% 0%',
+          opacity: !isCategoryImageLoaded ? 0 : 1,
+          transition: 'opacity 0.4s ease-in-out',
+        }}
+        fill
+        sizes="(min-width: 600px) calc(25vw - 100px), 50vw"
+        src={category.imageSrc}
+        alt={`Image for category ${category.label}`}
+        onLoad={() => setIsCategoryImageLoaded(true)}
+      />
 
       {!isCategoryImageLoaded && (
         <Skeleton

@@ -476,6 +476,13 @@ export const UpdateProductSchema = z.object({
 });
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
 
+export type PriceRangeFilterType = {
+  highestPrice: number;
+  highestPriceMen: number;
+  highestPriceKids: number;
+  highestPriceWomen: number;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Payment

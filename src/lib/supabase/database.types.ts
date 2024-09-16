@@ -514,6 +514,14 @@ export type Database = {
           totalQuantitySold: number;
         }[];
       };
+      getProductFilterOptions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          distinctBrands: string[];
+          distinctSizes: string[];
+          highestPrices: Json;
+        }[];
+      };
       updateProductWithImages: {
         Args: {
           product_data: Json;

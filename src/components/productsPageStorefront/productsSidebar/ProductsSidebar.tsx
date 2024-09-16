@@ -1,13 +1,19 @@
-'use client';
-
 import { Typography, Divider } from '@mui/material';
 import BrandFilter from './BrandFilter';
 import SizeFilter from './SizeFilter';
 import PrimaryColourFilter from './PrimaryColourFilter';
 import MaterialFilter from './MaterialFilter';
 import PriceRangeFilter from './PriceRangeFilter';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { PriceRangeFilterType } from '@/types';
 
-export default function ProductsSidebar() {
+export default async function ProductsSidebar() {
+  const supabase = await createSupabaseServerClient();
+
+  const { data } = await supabase.rpc('getProductFilterOptions');
+
+  console.log(data);
+
   return (
     <>
       <Typography
@@ -18,15 +24,15 @@ export default function ProductsSidebar() {
         Refine
       </Typography>
       <Divider />
-      <BrandFilter />
+      <BrandFilter brands={data?.[0].distinctBrands ?? []} />
       <Divider />
-      <SizeFilter />
+      <SizeFilter sizes={data?.[0].distinctSizes ?? []} />
       <Divider />
       <PrimaryColourFilter />
       <Divider />
       <MaterialFilter />
       <Divider />
-      <PriceRangeFilter />
+      <PriceRangeFilter highestPrices={(data?.[0].highestPrices as PriceRangeFilterType) ?? {}} />
     </>
   );
 }

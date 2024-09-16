@@ -1,11 +1,19 @@
+'use client';
+
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CONSTANTS } from '@/constants';
+import { sortItemSizesArrayForStore } from '@/utils/sort';
+import { useMemo } from 'react';
 
-export default function SizeFilter() {
+type Props = {
+  sizes: string[];
+};
+
+export default function SizeFilter({ sizes }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const sortedSizes = useMemo(() => sizes.sort(sortItemSizesArrayForStore), [sizes]);
   const selectedSizes = Array.from(searchParams.values());
 
   function applySizeFilterToUrl(size: string, index: number) {
@@ -27,7 +35,7 @@ export default function SizeFilter() {
       label="Sizes"
       defaultExpanded={false}>
       <FormGroup>
-        {CONSTANTS.ORDERED_SIZES_FOR_STORE.map((size, index) => (
+        {sortedSizes.map((size, index) => (
           <FormControlLabel
             key={size}
             control={
