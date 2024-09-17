@@ -10,21 +10,21 @@ type Props = {
   sizes: string[];
 };
 
+const PARAM_NAME = 'size';
+
 export default function SizeFilter({ sizes }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sortedSizes = useMemo(() => sizes.sort(sortItemSizesArrayForStore), [sizes]);
-  const selectedSizes = Array.from(searchParams.values());
+  const selectedSizes = searchParams.getAll(PARAM_NAME);
 
-  function applySizeFilterToUrl(size: string, index: number) {
+  function applySizeFilterToUrl(size: string) {
     const updatedParams = new URLSearchParams(searchParams);
 
-    const paramName = `size_s[${index}]`;
-
-    if (!searchParams.has(paramName)) {
-      updatedParams.set(paramName, `${size}`);
+    if (!selectedSizes.includes(size)) {
+      updatedParams.append(PARAM_NAME, size);
     } else {
-      updatedParams.delete(paramName);
+      updatedParams.delete(PARAM_NAME, size);
     }
 
     router.push(`?${updatedParams}`);
@@ -35,13 +35,13 @@ export default function SizeFilter({ sizes }: Props) {
       label="Sizes"
       defaultExpanded={false}>
       <FormGroup>
-        {sortedSizes.map((size, index) => (
+        {sortedSizes.map((size) => (
           <FormControlLabel
             key={size}
             control={
               <Checkbox
                 checked={selectedSizes.includes(size)}
-                onChange={() => applySizeFilterToUrl(size, index)}
+                onChange={() => applySizeFilterToUrl(size)}
               />
             }
             label={size}

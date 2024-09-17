@@ -8,20 +8,20 @@ type Props = {
   brands: string[];
 };
 
+const PARAM_NAME = 'brand';
+
 export default function BrandFilter({ brands }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedBrands = Array.from(searchParams.values());
+  const selectedBrands = searchParams.getAll(PARAM_NAME);
 
-  function applyBrandFilterToUrl(brand: string, index: number) {
+  function applyBrandFilterToUrl(brand: string) {
     const updatedParams = new URLSearchParams(searchParams);
 
-    const paramName = `brand_s[${index}]`;
-
-    if (!searchParams.has(paramName)) {
-      updatedParams.set(paramName, `${brand}`);
+    if (!selectedBrands.includes(brand)) {
+      updatedParams.append(PARAM_NAME, brand);
     } else {
-      updatedParams.delete(paramName);
+      updatedParams.delete(PARAM_NAME, brand);
     }
 
     router.push(`?${updatedParams}`);
@@ -32,13 +32,13 @@ export default function BrandFilter({ brands }: Props) {
       label="Brands"
       defaultExpanded={false}>
       <FormGroup>
-        {brands.map((brand, index) => (
+        {brands.map((brand) => (
           <FormControlLabel
             key={brand}
             control={
               <Checkbox
                 checked={selectedBrands.includes(brand)}
-                onChange={() => applyBrandFilterToUrl(brand, index)}
+                onChange={() => applyBrandFilterToUrl(brand)}
               />
             }
             label={brand}

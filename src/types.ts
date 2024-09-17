@@ -483,6 +483,12 @@ export type PriceRangeFilterType = {
   highestPriceWomen: number;
 };
 
+export type ProductsFilterOptions = {
+  distinctBrands: string[];
+  distinctSizes: string[];
+  highestPrices: PriceRangeFilterType;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Payment
