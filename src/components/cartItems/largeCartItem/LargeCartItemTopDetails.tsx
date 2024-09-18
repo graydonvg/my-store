@@ -32,8 +32,8 @@ export default function LargeCartItemTopDetails({ name, brand, productHref }: Pr
         component="span"
         fontWeight={600}
         fontSize={14}
-        color={(theme) => theme.palette.text.secondary}
         sx={{
+          color: (theme) => theme.palette.text.secondary,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           display: '-webkit-box',

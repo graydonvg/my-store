@@ -23,7 +23,7 @@ export default function TotalSales({ title, date, amount }: Props) {
         noWrap>
         {amount !== null ? formatCurrency(amount) : 'No data'}
       </Typography>
-      <Typography color={(theme) => theme.palette.text.secondary}>{date}</Typography>
+      <Typography sx={{ color: (theme) => theme.palette.text.secondary }}>{date}</Typography>
     </Box>
   );
 }

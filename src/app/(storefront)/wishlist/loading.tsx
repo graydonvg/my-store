@@ -1,23 +1,20 @@
 import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
 import { CONSTANTS } from '@/constants';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
   return (
     <>
       <PageHeaderSkeleton />
-      <Grid
+      <Grid2
         component="ul"
         container
         spacing={{ xs: 2, md: 3 }}>
         {Array.from(Array(3)).map((_, index) => (
-          <Grid
+          <Grid2
             component="li"
             key={index}
-            item
-            xs={6}
-            sm={3}
-            lg={2}>
+            size={{ xs: 6, sm: 3, lg: 2 }}>
             <Box>
               <Skeleton
                 variant="rectangular"
@@ -34,9 +31,9 @@ export default function Loading() {
                 <Skeleton variant="text" />
               </Box>
             </Box>
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </>
   );
 }

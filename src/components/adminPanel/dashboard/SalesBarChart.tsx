@@ -59,7 +59,7 @@ export default function SalesBarChart({ orderData }: Props) {
               {
                 dataKey: 'totalSales',
                 color: theme.palette.primary.light,
-                valueFormatter: (value) => formatCurrency(value),
+                valueFormatter: (value) => formatCurrency(value ?? 0),
               },
             ]}
             sx={{

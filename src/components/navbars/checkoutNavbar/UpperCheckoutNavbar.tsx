@@ -1,11 +1,13 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import CommonNavbarContainer from '../../ui/containers/CommonNavbarContainer';
 import NavbarTitle from '../NavbarTitle';
 import ThemeToggleButton from '../../theme/ThemeToggleButton';
 
 export default function UpperCheckoutNavbar() {
+  const theme = useTheme();
+
   return (
-    <Box sx={{ backgroundColor: (theme) => theme.palette.custom.navbar.upper.background }}>
+    <Box sx={{ backgroundColor: theme.palette.custom.navbar.upper.background }}>
       <CommonNavbarContainer>
         <Box
           sx={{
@@ -16,7 +18,7 @@ export default function UpperCheckoutNavbar() {
           <NavbarTitle
             component="h3"
             variant="h5"
-            color={(theme) => theme.palette.custom.navbar.upper.text}
+            color={theme.palette.custom.navbar.upper.text}
             showOnSmallScreen={true}
           />
           <Box sx={{ display: 'flex', flex: 1, justifyContent: 'end', alignItems: 'center', paddingRight: '4px' }}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Grid2, Typography, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
@@ -138,13 +138,12 @@ export default function SignInForm({ headerComponent, children }: Props) {
         component="form"
         onSubmit={handleSignInWithPassword}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingX: 2 }}>
-        <Grid
+        <Grid2
           container
           spacing={2}>
           {formFields.map((field) => (
-            <Grid
-              item
-              xs={12}
+            <Grid2
+              size={{ xs: 12 }}
               key={field.name}>
               <CustomTextField
                 key={field.name}
@@ -161,9 +160,9 @@ export default function SignInForm({ headerComponent, children }: Props) {
                 icon={field.icon}
                 hasValue={formData[field.name as keyof typeof formData].length > 0}
               />
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 1 }}>
           <ContainedButton
             type="submit"

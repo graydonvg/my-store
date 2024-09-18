@@ -22,8 +22,7 @@ export default function LargeCartItemPrice({ totalStandardPrice, totalDiscounted
           component="span"
           fontSize={{ xs: 20, sm: 24 }}
           fontWeight={400}
-          color={(theme) => theme.palette.text.disabled}
-          sx={{ textDecoration: 'line-through' }}>
+          sx={{ color: (theme) => theme.palette.text.disabled, textDecoration: 'line-through' }}>
           {formatCurrency(totalStandardPrice)}
         </Typography>
       ) : null}

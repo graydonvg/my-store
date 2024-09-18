@@ -29,8 +29,7 @@ export default function SmallCartItemPrice({ totalStandardPrice, totalDiscounted
             component="span"
             fontSize={16}
             fontWeight={700}
-            color={(theme) => theme.palette.text.disabled}
-            sx={{ textDecoration: 'line-through' }}>
+            sx={{ color: (theme) => theme.palette.text.disabled, textDecoration: 'line-through' }}>
             {formatCurrency(totalStandardPrice)}
           </Typography>
         </Box>

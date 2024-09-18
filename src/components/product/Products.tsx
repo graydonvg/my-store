@@ -1,4 +1,4 @@
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid2, Skeleton } from '@mui/material';
 import ProductCard from './productCard/ProductCard';
 import { Product } from '@/types';
 
@@ -10,42 +10,36 @@ type Props = {
 
 export default function Products({ products }: Props) {
   return (
-    <Grid
+    <Grid2
       component="ul"
       container
       spacing={{ xs: 2, md: 3 }}>
       {products.map((product) => (
-        <Grid
+        <Grid2
           component="li"
           key={product.productId}
-          item
-          xs={6}
-          md={4}
-          lg={3}>
+          size={{ xs: 6, md: 4, lg: 3 }}>
           <ProductCard
             product={product}
             imageSizes="(min-width: 1200px) 204px, (min-width: 900px) calc(33.21vw - 119px), calc(48.62vw - 20px)"
           />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }
 
 export function ProductsSkeleton() {
   return (
-    <Grid
+    <Grid2
       component="ul"
       container
       spacing={{ xs: 2, md: 3 }}>
       {Array.from(Array(6)).map((_, index) => (
-        <Grid
+        <Grid2
           component="li"
           key={index}
-          item
-          xs={6}
-          md={4}
-          lg={3}>
+          size={{ xs: 6, md: 4, lg: 3 }}>
           <Box>
             <Skeleton
               variant="rectangular"
@@ -62,8 +56,8 @@ export function ProductsSkeleton() {
               <Skeleton variant="text" />
             </Box>
           </Box>
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }

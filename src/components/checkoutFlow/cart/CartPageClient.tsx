@@ -2,7 +2,7 @@
 
 import CartPageEmptyMessage from '@/components/checkoutFlow/cart/CartPageEmptyMessage';
 import LargeCartItem from '@/components/cartItems/largeCartItem/LargeCartItem';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { CartItem, WishlistData } from '@/types';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -29,22 +29,21 @@ export default function CartPageClient({ cartItems, wishlistData }: Props) {
   return (
     <>
       {cartItemsWithPriceDetails?.length > 0 ? (
-        <Grid
+        <Grid2
           component="ul"
           container
           rowSpacing={2}>
           {cartItemsWithPriceDetails.map((item) => {
             return (
-              <Grid
+              <Grid2
                 component="li"
                 key={item?.cartItemId}
-                item
-                xs={12}>
+                size={{ xs: 12 }}>
                 <LargeCartItem item={item} />
-              </Grid>
+              </Grid2>
             );
           })}
-        </Grid>
+        </Grid2>
       ) : (
         <CartPageEmptyMessage />
       )}

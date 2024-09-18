@@ -1,51 +1,42 @@
 import { CONSTANTS } from '@/constants';
-import { Box, Container, Divider, Grid, Skeleton } from '@mui/material';
+import { Box, Container, Divider, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
   return (
-    <Grid
+    <Grid2
       container
       columnSpacing={4}
       rowSpacing={2}
       sx={{ height: 1 }}>
-      <Grid
-        item
-        xs={12}
-        md={6}>
+      <Grid2 size={{ xs: 12, md: 6 }}>
         <Container
           maxWidth="sm"
           disableGutters>
-          <Grid
+          <Grid2
             container
             spacing={1}>
-            <Grid
-              item
-              xs={12}
-              sm={2}
+            <Grid2
+              size={{ xs: 12, sm: 2 }}
               sx={{ order: { xs: 2, sm: 1 } }}>
-              <Grid
+              <Grid2
                 container
                 spacing={{ xs: 1, sm: 1.32 }}>
                 {Array.from(Array(3)).map((_, index) => (
-                  <Grid
+                  <Grid2
                     key={index}
-                    item
-                    xs={2.4}
-                    sm={12}>
+                    size={{ xs: 2.4, sm: 12 }}>
                     <Skeleton
                       variant="rectangular"
                       height="100%"
                       width="100%"
                       sx={{ aspectRatio: 3 / 4, borderRadius: CONSTANTS.BORDER_RADIUS }}
                     />
-                  </Grid>
+                  </Grid2>
                 ))}
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={10}
+              </Grid2>
+            </Grid2>
+            <Grid2
+              size={{ xs: 12, sm: 10 }}
               sx={{ order: { xs: 1, sm: 2 } }}>
               <Skeleton
                 variant="rectangular"
@@ -53,14 +44,11 @@ export default function Loading() {
                 width="100%"
                 sx={{ aspectRatio: 3 / 4, borderRadius: CONSTANTS.BORDER_RADIUS }}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Container>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: 6 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box
             sx={{
@@ -193,7 +181,7 @@ export default function Loading() {
             />
           </Box>
         </Box>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

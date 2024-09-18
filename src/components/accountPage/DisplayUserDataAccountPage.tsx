@@ -26,7 +26,7 @@ export default function DisplayUserDataAccountPage({ label, canEdit, onClick, ch
         <Typography
           component="span"
           fontSize={12}
-          color={(theme) => theme.palette.custom.textField.label}>
+          sx={{ color: (theme) => theme.palette.custom.textField.label }}>
           {label} *
         </Typography>
         <Typography

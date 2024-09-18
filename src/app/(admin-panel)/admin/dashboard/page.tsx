@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
@@ -22,15 +22,11 @@ export default async function AdminPanelDashboard() {
   const recentProducts = await fetchRecentProducts();
 
   return (
-    <Grid
+    <Grid2
       container
       spacing={{ xs: 2, sm: 3 }}
       sx={{ padding: { xs: 2, sm: 3 } }}>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        xl={3}>
+      <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
         <TotalsCard>
           <TotalSales
             title="Daily Sales"
@@ -38,12 +34,8 @@ export default async function AdminPanelDashboard() {
             date={dayjs().format('DD MMM')}
           />
         </TotalsCard>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        xl={3}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
         <TotalsCard>
           <TotalSales
             title="Weekly Sales"
@@ -51,12 +43,8 @@ export default async function AdminPanelDashboard() {
             date={`${dayjs().startOf('week').format('DD MMM')} - ${dayjs().endOf('week').format('DD MMM')}`}
           />
         </TotalsCard>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        xl={3}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
         <TotalsCard>
           <TotalSales
             title="Monthly Sales"
@@ -64,12 +52,8 @@ export default async function AdminPanelDashboard() {
             date={dayjs().format('MMM')}
           />
         </TotalsCard>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        xl={3}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
         <TotalsCard>
           <TotalSales
             title="Yearly Sales"
@@ -77,11 +61,8 @@ export default async function AdminPanelDashboard() {
             date={dayjs().format('YYYY')}
           />
         </TotalsCard>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        xl={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, xl: 6 }}>
         <Paper
           sx={{
             padding: 2,
@@ -93,34 +74,24 @@ export default async function AdminPanelDashboard() {
           }}>
           <SalesBarChart orderData={orderTotalsThisYear} />
         </Paper>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        lg={6}
-        xl={3}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>
         <Paper
           sx={{
             borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
           <RecentProducts recentProducts={recentProducts} />
         </Paper>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        lg={6}
-        xl={3}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>
         <Paper
           sx={{
             borderRadius: CONSTANTS.BORDER_RADIUS,
           }}>
           <BestSellers bestSellers={sortedBestSellers} />
         </Paper>
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <Paper
           sx={{
             display: 'flex',
@@ -130,7 +101,7 @@ export default async function AdminPanelDashboard() {
           }}>
           <RecentOrdersTable orders={orderData.orders} />
         </Paper>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

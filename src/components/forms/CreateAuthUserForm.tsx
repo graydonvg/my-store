@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Box, FormControl, Grid, useTheme } from '@mui/material';
+import { Box, FormControl, Grid2, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
@@ -161,14 +161,12 @@ export default function CreateAuthUserForm({ children }: Props) {
         component="form"
         onSubmit={handleCreateAuthUser}
         sx={{ paddingX: 2 }}>
-        <Grid
+        <Grid2
           container
           spacing={2}>
           {formFields.map((field) => (
-            <Grid
-              item
-              xs={12}
-              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
+            <Grid2
+              size={{ xs: 12, sm: field.name === 'firstName' || field.name === 'lastName' ? 6 : false }}
               key={field.name}>
               <CustomTextField
                 label={field.label}
@@ -184,11 +182,9 @@ export default function CreateAuthUserForm({ children }: Props) {
                 hasValue={formData[field.name as keyof typeof formData].length > 0}
                 backgroundColor={theme.palette.custom.dialog.background.accent}
               />
-            </Grid>
+            </Grid2>
           ))}
-          <Grid
-            item
-            xs={12}>
+          <Grid2 size={{ xs: 12 }}>
             <FormControl fullWidth>
               <SelectField
                 label="Role"
@@ -203,19 +199,8 @@ export default function CreateAuthUserForm({ children }: Props) {
                 backgroundColor={theme.palette.custom.dialog.background.accent}
               />
             </FormControl>
-          </Grid>
-        </Grid>
-        {/* <ContainedButton
-          label="create user"
-          disabled={isDialogLoading}
-          type="submit"
-          sxStyles={{
-            marginTop: 3,
-            marginBottom: 3,
-          }}
-          fullWidth
-          color="secondary"
-        /> */}
+          </Grid2>
+        </Grid2>
         {children}
       </Box>
     </Box>

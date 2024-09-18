@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Container, Grid, Paper } from '@mui/material';
+import { Container, Grid2, Paper } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import CheckoutNavbar from '@/components/navbars/checkoutNavbar/CheckoutNavbar';
@@ -31,20 +31,12 @@ export default function CheckoutFlowLayout({ children }: Props) {
         sx={{
           padding: { xs: 2, sm: 3 },
         }}>
-        <Grid
+        <Grid2
           container
           spacing={{ xs: 2, sm: 3 }}>
-          <Grid
-            item
-            xs={12}
-            md={!isPaymentPath ? 9 : 12}>
-            {children}
-          </Grid>
+          <Grid2 size={{ xs: 12, md: !isPaymentPath ? 9 : 12 }}>{children}</Grid2>
           {!isPaymentPath ? (
-            <Grid
-              item
-              xs={12}
-              md={3}>
+            <Grid2 size={{ xs: 12, md: 3 }}>
               <Paper
                 sx={{
                   paddingX: 3,
@@ -64,9 +56,9 @@ export default function CheckoutFlowLayout({ children }: Props) {
 
                 {isShippingPath ? <PaymentButton /> : null}
               </Paper>
-            </Grid>
+            </Grid2>
           ) : null}
-        </Grid>
+        </Grid2>
       </Container>
     </>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { CONSTANTS } from '@/constants';
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid2, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import CategoryItem from './CategoryItem';
 
@@ -25,24 +25,22 @@ export default function ShopByCategorySection() {
         </Typography>
       </Divider>
       <Box component="nav">
-        <Grid
+        <Grid2
           component="ul"
           container
           spacing={{ xs: 2, sm: 3 }}>
           {CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) => (
-            <Grid
+            <Grid2
               component="li"
-              item
               key={category.label}
-              xs={12}
-              sm={4}>
+              size={{ xs: 12, sm: 4 }}>
               <CategoryItem
                 category={category}
                 onClick={navigateToCategory}
               />
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
       </Box>
     </Box>
   );

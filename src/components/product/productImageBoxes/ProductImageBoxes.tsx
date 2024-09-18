@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Container, Grid, useTheme } from '@mui/material';
+import { Container, Grid2, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LargeProductImageBox from './LargeProductImageBox';
 import { usePathname } from 'next/navigation';
@@ -54,15 +54,13 @@ export default function ProductImageBoxes({ product }: Props) {
     <Container
       maxWidth={isAdminPath ? 'xs' : 'sm'}
       disableGutters>
-      <Grid
+      <Grid2
         container
         spacing={1}>
-        <Grid
-          item
-          xs={12}
-          sm={2}
+        <Grid2
+          size={{ xs: 12, sm: 2 }}
           sx={{ order: { xs: 2, sm: 1 } }}>
-          <Grid
+          <Grid2
             container
             spacing={{ xs: 1, sm: 1.32 }}>
             {!isAdminPath && product ? (
@@ -81,12 +79,10 @@ export default function ProductImageBoxes({ product }: Props) {
                 getBoxBorderColor={getBoxBorderColor}
               />
             ) : null}
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={10}
+          </Grid2>
+        </Grid2>
+        <Grid2
+          size={{ xs: 12, sm: 10 }}
           sx={{ order: { xs: 1, sm: 2 } }}>
           {!isAdminPath && product ? (
             <LargeProductImageBox
@@ -108,8 +104,8 @@ export default function ProductImageBoxes({ product }: Props) {
               })}
             />
           ) : null}
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Container>
   );
 }

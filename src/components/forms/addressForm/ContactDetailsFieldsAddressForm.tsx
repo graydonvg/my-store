@@ -1,4 +1,4 @@
-import { Grid, Typography, useTheme } from '@mui/material';
+import { Grid2, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { AddressStore } from '@/types';
 import { ChangeEvent, useEffect } from 'react';
@@ -41,18 +41,15 @@ export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props
   }, [dispatch, userData]);
 
   return (
-    <Grid
+    <Grid2
       container
       spacing={2}>
-      <Grid
-        item
-        xs={12}>
+      <Grid2 size={{ xs: 12 }}>
         <Typography fontSize={18}>Contact Details</Typography>
-      </Grid>
+      </Grid2>
       {contactDetailsFormFields.map((field) => (
-        <Grid
-          item
-          xs={12}
+        <Grid2
+          size={{ xs: 12 }}
           key={field.name}>
           <CustomTextField
             key={field.name}
@@ -71,8 +68,8 @@ export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props
             }
             backgroundColor={theme.palette.custom.dialog.background.accent}
           />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }

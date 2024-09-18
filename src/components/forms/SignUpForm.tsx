@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid2, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
@@ -150,14 +150,12 @@ export default function SignUpForm({ headerComponent, children }: Props) {
         component="form"
         onSubmit={handleSignUp}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingX: 2 }}>
-        <Grid
+        <Grid2
           container
           spacing={2}>
           {formFields.map((field) => (
-            <Grid
-              item
-              xs={12}
-              sm={field.name === 'firstName' || field.name === 'lastName' ? 6 : false}
+            <Grid2
+              size={{ xs: 12, sm: field.name === 'firstName' || field.name === 'lastName' ? 6 : false }}
               key={field.name}>
               <CustomTextField
                 label={field.label}
@@ -173,9 +171,9 @@ export default function SignUpForm({ headerComponent, children }: Props) {
                 icon={field.icon}
                 hasValue={formData[field.name as keyof typeof formData].length > 0}
               />
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
         <ContainedButton
           label={!isSignUpDialogOpen && isLoading ? '' : 'sign up'}
           disabled={isSignUpDialogOpen && isLoading}

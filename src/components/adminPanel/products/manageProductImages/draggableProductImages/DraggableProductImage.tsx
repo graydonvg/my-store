@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, IconButton, Skeleton, useTheme } from '@mui/material';
+import { Box, Divider, Grid2, IconButton, Skeleton, useTheme } from '@mui/material';
 import { ProductImageData } from '@/types';
 import Image from 'next/image';
 import { CONSTANTS } from '@/constants';
@@ -73,7 +73,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
 
   return (
     <>
-      <Grid
+      <Grid2
         container
         ref={setNodeRef}
         sx={{
@@ -83,10 +83,9 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
           transform: CSS.Translate.toString(transform),
           transition,
         }}>
-        <Grid
-          item
-          xs={2}
-          sx={{ display: 'grid', placeItems: 'center' }}>
+        <Grid2
+          size={{ xs: 2 }}
+          sx={{ display: 'grid2', placeItems: 'center' }}>
           <IconButton
             {...listeners}
             {...restOfAttributes}
@@ -105,11 +104,10 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               }}
             />
           </IconButton>
-        </Grid>
-        <Grid
-          item
-          xs={4}
-          sx={{ display: 'grid' }}>
+        </Grid2>
+        <Grid2
+          size={{ xs: 4 }}
+          sx={{ display: 'grid2' }}>
           <Box
             sx={{
               position: 'relative',
@@ -138,14 +136,12 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               />
             ) : null}
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 6 }}>
           <Box
             sx={{
               height: 1,
-              display: 'grid',
+              display: 'grid2',
               placeItems: 'center',
             }}>
             <TextButton
@@ -166,8 +162,8 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               }}
             />
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
       <Divider />
     </>
   );

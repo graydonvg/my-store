@@ -1,18 +1,15 @@
 import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
 import { CONSTANTS } from '@/constants';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
   return (
     <>
       <PageHeaderSkeleton />
-      <Grid
+      <Grid2
         container
         rowGap={6}>
-        <Grid
-          item
-          xs={12}
-          md={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, maxWidth: { xs: 'unset', md: '75%' } }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <Skeleton
@@ -47,11 +44,8 @@ export default function Loading() {
               ))}
             </Box>
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Skeleton
               variant="rectangular"
@@ -71,8 +65,8 @@ export default function Loading() {
               sx={{ borderRadius: CONSTANTS.BORDER_RADIUS, alignSelf: 'end' }}
             />
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </>
   );
 }

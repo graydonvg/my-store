@@ -1,6 +1,6 @@
 import { CONSTANTS } from '@/constants';
 import { Product } from '@/types';
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid2, Paper, Typography } from '@mui/material';
 import ContainedButton from '../../ui/buttons/simple/ContainedButton';
 import ProductCard from '../../product/productCard/ProductCard';
 
@@ -12,15 +12,13 @@ type Props = {
 
 export default function ProductPreviewList({ title, products, onClick }: Props) {
   return (
-    <Grid
+    <Grid2
       component="ul"
       container
       spacing={{ xs: 2, sm: 3 }}>
-      <Grid
+      <Grid2
         component="li"
-        item
-        xs={6}
-        sm={3}>
+        size={{ xs: 6, sm: 3 }}>
         <Paper
           elevation={0}
           sx={{
@@ -48,21 +46,19 @@ export default function ProductPreviewList({ title, products, onClick }: Props) 
             />
           </Box>
         </Paper>
-      </Grid>
+      </Grid2>
 
       {products.map((product) => (
-        <Grid
+        <Grid2
           component="li"
-          item
           key={product.productId}
-          xs={6}
-          sm={3}>
+          size={{ xs: 6, sm: 3 }}>
           <ProductCard
             product={product}
             imageSizes="(min-width: 1210px) 270px, (min-width: 600px) calc(23.44vw - 21px), calc(50vw - 24px)"
           />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }

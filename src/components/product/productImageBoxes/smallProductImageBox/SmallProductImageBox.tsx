@@ -1,4 +1,4 @@
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid2, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { CircularProgressWithLabel } from '../../../ui/progress/CircularProgressWithLabel';
@@ -30,10 +30,7 @@ export default function SmallProductImageBox({
   const isAdminPath = pathname.startsWith('/admin');
 
   return (
-    <Grid
-      item
-      xs={2.4}
-      sm={12}>
+    <Grid2 size={{ xs: 2.4, sm: 12 }}>
       <Box
         onClick={selectImage}
         sx={{
@@ -74,6 +71,6 @@ export default function SmallProductImageBox({
 
         {uploadProgressData && isAdminPath ? <CircularProgressWithLabel value={uploadProgressData.progress} /> : null}
       </Box>
-    </Grid>
+    </Grid2>
   );
 }

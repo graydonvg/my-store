@@ -15,7 +15,7 @@ export default function LargeCartItemBottomDetails({ returnInfo }: Props) {
       lineHeight={1.6}
       component="p"
       fontSize={{ xs: 14, sm: 16 }}
-      color={(theme) => theme.palette.text.secondary}>
+      sx={{ color: (theme) => theme.palette.text.secondary }}>
       {orderTotal > CONSTANTS.FREE_DELIVERY_THRESHOLD ? (
         <>
           Delivery Free

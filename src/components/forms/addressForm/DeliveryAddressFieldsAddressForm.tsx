@@ -1,4 +1,4 @@
-import { Grid, Typography, useTheme } from '@mui/material';
+import { Grid2, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/inputFields/CustomTextField';
 import { ChangeEvent } from 'react';
 import NumberField from '../../ui/inputFields/NumberField';
@@ -14,17 +14,13 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
   const addressFormData = useAppSelector(selectAddressFromData);
 
   return (
-    <Grid
+    <Grid2
       container
       spacing={2}>
-      <Grid
-        item
-        xs={12}>
+      <Grid2 size={{ xs: 12 }}>
         <Typography fontSize={18}>Delivery Address</Typography>
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           label="Complex / Building"
           name="complexOrBuilding"
@@ -36,10 +32,8 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.complexOrBuilding !== '' && addressFormData.complexOrBuilding?.length !== null}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           label="Street address"
           name="streetAddress"
@@ -51,10 +45,8 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.streetAddress.length > 0}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           label="Suburb"
           name="suburb"
@@ -66,10 +58,8 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.suburb.length > 0}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           label="Province"
           name="province"
@@ -81,10 +71,8 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.province.length > 0}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           label="City"
           name="city"
@@ -96,10 +84,8 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.city.length > 0}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-      <Grid
-        item
-        xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <NumberField
           label="Postal Code"
           name="postalCode"
@@ -112,7 +98,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           hasValue={addressFormData.postalCode !== ''}
           backgroundColor={theme.palette.custom.dialog.background.accent}
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

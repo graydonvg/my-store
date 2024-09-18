@@ -2,11 +2,12 @@
 
 import { CONSTANTS } from '@/constants';
 import LowerNavbarOption from './LowerNavbarOption';
-import { Box, List } from '@mui/material';
+import { Box, List, useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import NavbarTitle from '../../NavbarTitle';
 
 export default function LowerNavbarOptions() {
+  const theme = useTheme();
   const pathname = usePathname();
   const isAccountView =
     pathname.startsWith('/account') || pathname.startsWith('/orders') || pathname.startsWith('/wishlist');
@@ -17,7 +18,7 @@ export default function LowerNavbarOptions() {
         <NavbarTitle
           component="h3"
           variant="h6"
-          color={(theme) => theme.palette.custom.navbar.lower.text}
+          color={theme.palette.custom.navbar.lower.text}
         />
       </Box>
       <List

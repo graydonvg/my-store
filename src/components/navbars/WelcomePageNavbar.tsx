@@ -28,7 +28,7 @@ export default function WelcomePageNavbar() {
               <NavbarTitle
                 component="h2"
                 variant="h5"
-                color={(theme) => theme.palette.custom.navbar.upper.text}
+                color={theme.palette.custom.navbar.upper.text}
               />
               <Box sx={{ paddingRight: '4px' }}>
                 <ThemeToggleButton

@@ -1,5 +1,5 @@
 import { Product } from '@/types';
-import { Box, Divider, Grid } from '@mui/material';
+import { Box, Divider, Grid2 } from '@mui/material';
 import ProductImageBoxes from '../productImageBoxes/ProductImageBoxes';
 import ProductSelectionOptions from './productSelectionOptions/ProductSelectionOptions';
 import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
@@ -11,21 +11,15 @@ type Props = {
 
 export default function ProductDetails({ product }: Props) {
   return (
-    <Grid
+    <Grid2
       container
       columnSpacing={4}
       rowSpacing={2}
       sx={{ height: 1 }}>
-      <Grid
-        item
-        xs={12}
-        md={6}>
+      <Grid2 size={{ xs: 12, md: 6 }}>
         <ProductImageBoxes product={product} />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: 6 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box
             sx={{
@@ -41,7 +35,7 @@ export default function ProductDetails({ product }: Props) {
           <Divider />
           <BottomProductDetails product={product} />
         </Box>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

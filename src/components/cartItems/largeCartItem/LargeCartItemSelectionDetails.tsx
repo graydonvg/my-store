@@ -20,7 +20,7 @@ export default function LargeCartItemSelectionDetails({ quantity, size }: Props)
             component="span"
             fontSize={{ xs: 14, sm: 16 }}
             fontWeight={600}
-            color={(theme) => theme.palette.text.secondary}>
+            sx={{ color: (theme) => theme.palette.text.secondary }}>
             {item.label}:
           </Typography>
           <Typography

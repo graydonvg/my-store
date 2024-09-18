@@ -1,7 +1,7 @@
 'use client';
 
 import { OrderData } from '@/types';
-import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid2, useMediaQuery, useTheme } from '@mui/material';
 import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
@@ -31,27 +31,22 @@ export default function OrdersPageStorefront({ orders, pageNumber, maxOrdersPerP
       <Box component="ul">
         {orders.map((order) => {
           return (
-            <Grid
+            <Grid2
               component="li"
               key={order.orderId}
               container
               spacing={3}
               sx={{ marginBottom: 4 }}>
               {!isBelowMedium ? (
-                <Grid
-                  item
-                  xs={3}>
+                <Grid2 size={{ xs: 3 }}>
                   <OrderDetails order={order} />
-                </Grid>
+                </Grid2>
               ) : null}
-              <Grid
-                item
-                xs={12}
-                md={9}>
+              <Grid2 size={{ xs: 12, md: 9 }}>
                 {isBelowMedium ? <OrderDetails order={order} /> : null}
                 <OrderItems order={order} />
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           );
         })}
       </Box>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 } from '@mui/material';
 import AccountSection from '@/components/accountPage/sections/accountSection/Account';
 import PersonalInformationSection from '@/components/accountPage/sections/PersonalInformationSection';
 import Addresses from '@/components/addresses/Addresses';
@@ -42,13 +42,10 @@ export default function AccountPageClient({ addresses }: Props) {
   return (
     <>
       <PageHeaderWithBorder label={title} />
-      <Grid
+      <Grid2
         container
         rowGap={2}>
-        <Grid
-          item
-          xs={12}
-          md={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Box
             sx={{
               maxWidth: { xs: 'unset', md: '75%' },
@@ -63,16 +60,13 @@ export default function AccountPageClient({ addresses }: Props) {
               <PersonalInformationSection />
             </SectionWrapperAccountPage>
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <SectionWrapperAccountPage title="Addresses">
             <Addresses />
           </SectionWrapperAccountPage>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </>
   );
 }
