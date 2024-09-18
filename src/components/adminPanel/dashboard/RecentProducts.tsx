@@ -3,6 +3,7 @@
 import {
   Box,
   Divider,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -53,7 +54,12 @@ export default function RecentProducts({ recentProducts }: Props) {
   }
 
   return (
-    <>
+    <Paper
+      sx={{
+        borderRadius: CONSTANTS.BORDER_RADIUS,
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+      }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 2 }}>
         <CardTitle>Recent Products</CardTitle>
 
@@ -137,6 +143,6 @@ export default function RecentProducts({ recentProducts }: Props) {
           </Box>
         ) : null}
       </TableContainer>
-    </>
+    </Paper>
   );
 }

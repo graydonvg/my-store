@@ -1,3 +1,5 @@
+'use client';
+
 import { CONSTANTS } from '@/constants';
 import { Paper } from '@mui/material';
 import { ReactNode } from 'react';
@@ -17,6 +19,8 @@ export default function TotalsCard({ children }: Props) {
         minHeight: 'fit-content',
         height: 1,
         borderRadius: CONSTANTS.BORDER_RADIUS,
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
       }}>
       {children}
     </Paper>

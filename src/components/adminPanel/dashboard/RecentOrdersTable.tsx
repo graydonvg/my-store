@@ -3,6 +3,7 @@
 import {
   Box,
   Divider,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -20,6 +21,7 @@ import MuiLink from '../../ui/MuiLink';
 import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import { ArrowForward } from '@mui/icons-material';
+import { CONSTANTS } from '@/constants';
 
 const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
@@ -32,7 +34,15 @@ export default function RecentOrdersTable({ orders }: Props) {
   const isBelowSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <>
+    <Paper
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: CONSTANTS.BORDER_RADIUS,
+        overflow: 'hidden',
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+      }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 2 }}>
         <CardTitle>Recent Orders</CardTitle>
         <Link href="/admin/orders">
@@ -84,6 +94,6 @@ export default function RecentOrdersTable({ orders }: Props) {
           </Box>
         ) : null}
       </TableContainer>
-    </>
+    </Paper>
   );
 }

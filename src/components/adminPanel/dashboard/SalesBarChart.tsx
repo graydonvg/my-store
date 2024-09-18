@@ -3,11 +3,12 @@
 import { useTheme } from '@mui/material/styles';
 import { axisClasses, BarChart, ChartsTextStyle } from '@mui/x-charts';
 import CardTitle from './CardTitle';
-import { Box, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { OrderDateTotal } from '@/types';
 import dayjs from 'dayjs';
 import { calculateTotalMonthlySales } from '@/utils/calculate';
 import { formatCurrency } from '@/utils/format';
+import { CONSTANTS } from '@/constants';
 
 type Props = {
   orderData: OrderDateTotal[] | null;
@@ -19,7 +20,17 @@ export default function SalesBarChart({ orderData }: Props) {
   const monthNames = Array.from(Array(12)).map((_, index) => dayjs().month(index).format('MMM'));
 
   return (
-    <>
+    <Paper
+      sx={{
+        padding: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        height: { xs: 300, md: 360, lg: 420 },
+        minHeight: { xs: 300, md: 360, lg: 420, xl: 1 },
+        borderRadius: CONSTANTS.BORDER_RADIUS,
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+      }}>
       <CardTitle gutterBottom>Sales This Year</CardTitle>
 
       <Box sx={{ width: 1, flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
@@ -78,6 +89,6 @@ export default function SalesBarChart({ orderData }: Props) {
           </Box>
         )}
       </Box>
-    </>
+    </Paper>
   );
 }

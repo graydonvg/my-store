@@ -1,5 +1,4 @@
 import Grid2 from '@mui/material/Grid2';
-import Paper from '@mui/material/Paper';
 import TotalSales from '@/components/adminPanel/dashboard/TotalSales';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
 import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
@@ -63,44 +62,16 @@ export default async function AdminPanelDashboard() {
         </TotalsCard>
       </Grid2>
       <Grid2 size={{ xs: 12, xl: 6 }}>
-        <Paper
-          sx={{
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            height: { xs: 300, md: 360, lg: 420 },
-            minHeight: { xs: 300, md: 360, lg: 420, xl: 1 },
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-          }}>
-          <SalesBarChart orderData={orderTotalsThisYear} />
-        </Paper>
+        <SalesBarChart orderData={orderTotalsThisYear} />
       </Grid2>
       <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>
-        <Paper
-          sx={{
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-          }}>
-          <RecentProducts recentProducts={recentProducts} />
-        </Paper>
+        <RecentProducts recentProducts={recentProducts} />
       </Grid2>
       <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>
-        <Paper
-          sx={{
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-          }}>
-          <BestSellers bestSellers={sortedBestSellers} />
-        </Paper>
+        <BestSellers bestSellers={sortedBestSellers} />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
-        <Paper
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
-            overflow: 'hidden',
-          }}>
-          <RecentOrdersTable orders={orderData.orders} />
-        </Paper>
+        <RecentOrdersTable orders={orderData.orders} />
       </Grid2>
     </Grid2>
   );

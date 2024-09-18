@@ -3,6 +3,7 @@
 import {
   Box,
   Divider,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -45,7 +46,12 @@ export default function BestSellers({ bestSellers }: Props) {
   }
 
   return (
-    <>
+    <Paper
+      sx={{
+        borderRadius: CONSTANTS.BORDER_RADIUS,
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+      }}>
       <Box sx={{ padding: 2 }}>
         <CardTitle>Best Sellers</CardTitle>
       </Box>
@@ -115,6 +121,6 @@ export default function BestSellers({ bestSellers }: Props) {
           </Box>
         ) : null}
       </TableContainer>
-    </>
+    </Paper>
   );
 }
