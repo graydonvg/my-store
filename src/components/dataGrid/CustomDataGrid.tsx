@@ -258,10 +258,6 @@ export default function CustomDataGrid({
           },
 
           [`& .${gridClasses.filler}`]: {
-            backgroundColor: theme.palette.custom.dataGrid.header,
-          },
-
-          '& .mui-tgsonj': {
             backgroundColor: theme.palette.background.default,
           },
 
