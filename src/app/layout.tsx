@@ -9,6 +9,7 @@ import './globals.css';
 import { CONSTANTS } from '@/constants';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: CONSTANTS.STORE_NAME,
@@ -26,6 +27,9 @@ export default async function RootLayout({ children }: Props) {
         <Providers>{children}</Providers>
         <SpeedInsights />
         <AxiomWebVitals />
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        )}
       </body>
     </html>
   );
