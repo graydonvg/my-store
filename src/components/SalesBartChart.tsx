@@ -12,11 +12,10 @@ import { Paper, darken } from '@mui/material';
 
 export default function SalesBarChart() {
   const theme = useTheme();
-  const colorPalette = [theme.palette.primary.dark, theme.palette.primary.main, theme.palette.primary.light];
+  const barColors = [theme.palette.primary.dark, theme.palette.primary.main, theme.palette.primary.light];
 
   return (
     <Paper
-      // variant="outlined"
       sx={{
         width: '100%',
         padding: 2,
@@ -52,12 +51,12 @@ export default function SalesBarChart() {
         <Typography
           variant="caption"
           sx={{ color: 'text.secondary' }}>
-          Page views and downloads for the last 6 months
+          Page views and sales for the last year
         </Typography>
       </Stack>
       <BarChart
         borderRadius={8}
-        colors={colorPalette}
+        colors={barColors}
         xAxis={
           [
             {
@@ -75,8 +74,8 @@ export default function SalesBarChart() {
             stack: 'A',
           },
           {
-            id: 'downloads',
-            label: 'Downloads',
+            id: 'sales',
+            label: 'Sales',
             data: [3098, 4215, 2384, 2101, 4752, 3593, 2384],
             stack: 'A',
           },

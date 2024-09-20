@@ -7,29 +7,40 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { areaElementClasses } from '@mui/x-charts/LineChart';
-import { Paper, darken } from '@mui/material';
+import { Paper } from '@mui/material';
+import dayjs from 'dayjs';
 
 export type StatCardProps = {
   title: string;
-  value: string;
-  interval: string;
-  trend: 'up' | 'down' | 'neutral';
-  data: number[];
+  numberOfDays: number;
+  value: number;
+  percentageChange: number;
+  currentPeriodData: number[];
+  periodTotals: {
+    currentPeriod: number;
+    previousPeriod: number;
+  };
 };
 
-function getDaysInMonth(month: number, year: number) {
-  const date = new Date(year, month, 0);
-  const monthName = date.toLocaleDateString('en-US', {
-    month: 'short',
-  });
-  const daysInMonth = date.getDate();
-  const days = [];
-  let i = 1;
-  while (days.length < daysInMonth) {
-    days.push(`${monthName} ${i}`);
-    i += 1;
+function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' | 'neutral' {
+  let trend = 'neutral';
+
+  if (currentPeriod - previousPeriod > 0) trend = 'up';
+  if (currentPeriod - previousPeriod < 0) trend = 'down';
+
+  return trend as 'up' | 'down' | 'neutral';
+}
+
+function getDates(numberOfDays: number) {
+  const today = dayjs();
+  const last30Days = today.subtract(numberOfDays, 'day');
+
+  const datesLast30Days = [];
+
+  for (let i = 0; i < numberOfDays; i++) {
+    datesLast30Days.push(last30Days.add(i, 'day').format('YYYY-MM-DD'));
   }
-  return days;
+  return datesLast30Days;
 }
 
 function AreaGradient({ color, id }: { color: string; id: string }) {
@@ -56,9 +67,17 @@ function AreaGradient({ color, id }: { color: string; id: string }) {
   );
 }
 
-export default function StatCard({ title, value, interval, trend, data }: StatCardProps) {
+export default function StatCard({
+  title,
+  numberOfDays,
+  value,
+  percentageChange,
+  currentPeriodData,
+  periodTotals,
+}: StatCardProps) {
   const theme = useTheme();
-  const daysInWeek = getDaysInMonth(4, 2024);
+  const daysInWeek = getDates(numberOfDays);
+  const trend = getTrend(periodTotals.currentPeriod, periodTotals.previousPeriod);
 
   const trendColors = {
     up: theme.palette.mode === 'light' ? theme.palette.success.main : theme.palette.success.dark,
@@ -74,18 +93,19 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
 
   const color = labelColors[trend];
   const chartColor = trendColors[trend];
-  const trendValues = { up: '+25%', down: '-25%', neutral: '+5%' };
+  const trendSymbol = { up: '+', down: '-', neutral: '' };
 
   return (
     <Paper
-      // variant="outlined"
       sx={{
         height: '100%',
         flexGrow: 1,
         padding: 2,
         paddingBottom: 3,
+        // backgroundColor: (theme) =>
+        //   theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
         backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
+          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
       }}>
       <Typography
         component="h2"
@@ -95,7 +115,7 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
       </Typography>
       <Stack
         direction="column"
-        sx={{ justifyContent: 'space-between', flexGrow: '1', gap: 1 }}>
+        sx={{ justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>
         <Stack sx={{ justifyContent: 'space-between' }}>
           <Stack
             direction="row"
@@ -108,19 +128,19 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
             <Chip
               size="small"
               color={color}
-              label={trendValues[trend]}
+              label={`${trendSymbol[trend]}${percentageChange}%`}
             />
           </Stack>
           <Typography
             variant="caption"
             sx={{ color: 'text.secondary' }}>
-            {interval}
+            Last {numberOfDays} days
           </Typography>
         </Stack>
         <Box sx={{ width: '100%', height: 50 }}>
           <SparkLineChart
             colors={[chartColor]}
-            data={data}
+            data={currentPeriodData}
             area
             showHighlight
             showTooltip
@@ -132,6 +152,9 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
               [`& .${areaElementClasses.root}`]: {
                 fill: `url(#area-gradient-${value})`,
               },
+              height: '100%',
+              width: '100%',
+              flexGrow: 1,
             }}>
             <AreaGradient
               color={chartColor}
