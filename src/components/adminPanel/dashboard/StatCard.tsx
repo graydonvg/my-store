@@ -7,20 +7,32 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { areaElementClasses } from '@mui/x-charts/LineChart';
-import { Paper } from '@mui/material';
+import { darken, Paper } from '@mui/material';
 import dayjs from 'dayjs';
+import { formatCurrency } from '@/utils/format';
 
 export type StatCardProps = {
   title: string;
   numberOfDays: number;
-  value: number;
-  percentageChange: number;
   currentPeriodData: number[];
   periodTotals: {
     currentPeriod: number;
     previousPeriod: number;
   };
+  isCurrency?: boolean;
 };
+
+function calculatePercentageChange(totalCurrentPeriod: number, totalPreviousPeriod: number) {
+  let percentageChange = 0;
+
+  if (totalPreviousPeriod !== 0) {
+    percentageChange = ((totalCurrentPeriod - totalPreviousPeriod) / totalPreviousPeriod) * 100;
+  } else if (totalCurrentPeriod > 0) {
+    percentageChange = 100;
+  }
+
+  return percentageChange;
+}
 
 function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' | 'neutral' {
   let trend = 'neutral';
@@ -70,14 +82,14 @@ function AreaGradient({ color, id }: { color: string; id: string }) {
 export default function StatCard({
   title,
   numberOfDays,
-  value,
-  percentageChange,
   currentPeriodData,
   periodTotals,
+  isCurrency = false,
 }: StatCardProps) {
   const theme = useTheme();
   const daysInWeek = getDates(numberOfDays);
   const trend = getTrend(periodTotals.currentPeriod, periodTotals.previousPeriod);
+  const percentageChange = calculatePercentageChange(periodTotals.currentPeriod, periodTotals.previousPeriod);
 
   const trendColors = {
     up: theme.palette.mode === 'light' ? theme.palette.success.main : theme.palette.success.dark,
@@ -93,7 +105,7 @@ export default function StatCard({
 
   const color = labelColors[trend];
   const chartColor = trendColors[trend];
-  const trendSymbol = { up: '+', down: '-', neutral: '' };
+  const trendSymbol = { up: '+', down: '', neutral: '' };
 
   return (
     <Paper
@@ -102,10 +114,8 @@ export default function StatCard({
         flexGrow: 1,
         padding: 2,
         paddingBottom: 3,
-        // backgroundColor: (theme) =>
-        //   theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
         backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+          theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
       }}>
       <Typography
         component="h2"
@@ -123,12 +133,12 @@ export default function StatCard({
             <Typography
               variant="h4"
               component="p">
-              {value}
+              {isCurrency ? formatCurrency(periodTotals.currentPeriod) : periodTotals.currentPeriod}
             </Typography>
             <Chip
               size="small"
               color={color}
-              label={`${trendSymbol[trend]}${percentageChange}%`}
+              label={`${trendSymbol[trend]}${Math.round(percentageChange)}%`}
             />
           </Stack>
           <Typography
@@ -144,21 +154,19 @@ export default function StatCard({
             area
             showHighlight
             showTooltip
+            valueFormatter={isCurrency ? (v) => formatCurrency(v ?? 0) : undefined}
             xAxis={{
               scaleType: 'band',
               data: daysInWeek,
             }}
             sx={{
               [`& .${areaElementClasses.root}`]: {
-                fill: `url(#area-gradient-${value})`,
+                fill: `url(#area-gradient-${periodTotals.currentPeriod})`,
               },
-              height: '100%',
-              width: '100%',
-              flexGrow: 1,
             }}>
             <AreaGradient
               color={chartColor}
-              id={`area-gradient-${value}`}
+              id={`area-gradient-${periodTotals.currentPeriod}`}
             />
           </SparkLineChart>
         </Box>

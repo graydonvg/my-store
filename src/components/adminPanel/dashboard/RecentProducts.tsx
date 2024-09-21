@@ -2,6 +2,7 @@
 
 import {
   Box,
+  darken,
   Divider,
   Paper,
   Table,
@@ -58,7 +59,7 @@ export default function RecentProducts({ recentProducts }: Props) {
       sx={{
         borderRadius: CONSTANTS.BORDER_RADIUS,
         backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper,
+          theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
       }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 2 }}>
         <CardTitle>Recent Products</CardTitle>

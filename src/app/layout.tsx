@@ -22,17 +22,19 @@ type Props = {
 
 export default async function RootLayout({ children }: Props) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
-        <SpeedInsights />
-        <AxiomWebVitals />
-      </body>
+    <html
+      lang="en"
+      suppressHydrationWarning>
       {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
         <Suspense fallback={null}>
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         </Suspense>
       )}
+      <body>
+        <Providers>{children}</Providers>
+        <SpeedInsights />
+        <AxiomWebVitals />
+      </body>
     </html>
   );
 }

@@ -1,17 +1,28 @@
 'use client';
 
-import * as React from 'react';
-// import Card from '@mui/material/Card';
-// import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useTheme } from '@mui/material/styles';
 import { Paper, darken } from '@mui/material';
+import { calculateTotalMonthlyConversions, calculateTotalMonthlySales } from '@/utils/calculate';
+import dayjs from 'dayjs';
+import { OrderDateTotal } from '@/types';
+import { formatCurrency } from '@/utils/format';
 
-export default function SalesBarChart() {
+type Props = {
+  monthlyPageViews: number[];
+  orderData: OrderDateTotal[] | null;
+};
+
+export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData }: Props) {
   const theme = useTheme();
+  const cumulativeSales = orderData ? calculateTotalMonthlySales(orderData) : undefined;
+  const monthlyConversions = orderData ? calculateTotalMonthlyConversions(orderData) : undefined;
+  const totalSales = orderData?.reduce((acc, order) => {
+    return (acc += order.orderTotal);
+  }, 0);
+  const monthNames = Array.from(Array(12)).map((_, index) => dayjs().month(index).format('MMM'));
   const barColors = [theme.palette.primary.dark, theme.palette.primary.main, theme.palette.primary.light];
 
   return (
@@ -40,18 +51,18 @@ export default function SalesBarChart() {
           <Typography
             variant="h4"
             component="p">
-            1.3M
+            {formatCurrency(totalSales ?? 0)}
           </Typography>
-          <Chip
+          {/* <Chip
             size="small"
             color="error"
             label="-8%"
-          />
+          /> */}
         </Stack>
         <Typography
           variant="caption"
           sx={{ color: 'text.secondary' }}>
-          Page views and sales for the last year
+          Page views and sales for the current year
         </Typography>
       </Stack>
       <BarChart
@@ -62,7 +73,7 @@ export default function SalesBarChart() {
             {
               scaleType: 'band',
               categoryGapRatio: 0.5,
-              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+              data: monthNames,
             },
           ] as any
         }
@@ -70,19 +81,20 @@ export default function SalesBarChart() {
           {
             id: 'page-views',
             label: 'Page views',
-            data: [2234, 3872, 2998, 4125, 3357, 2789, 2998],
+            data: monthlyPageViews,
             stack: 'A',
           },
           {
             id: 'sales',
             label: 'Sales',
-            data: [3098, 4215, 2384, 2101, 4752, 3593, 2384],
+            data: cumulativeSales,
             stack: 'A',
+            valueFormatter: (value) => formatCurrency(value ?? 0),
           },
           {
             id: 'conversions',
             label: 'Conversions',
-            data: [4051, 2275, 3129, 4693, 3904, 2038, 2275],
+            data: monthlyConversions,
             stack: 'A',
           },
         ]}

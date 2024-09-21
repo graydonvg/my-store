@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { analyticsDataClient } from './client';
 
-export async function fetchActiveUsersForDays(numberOfDays: number) {
+async function fetchActiveUsersForDays(numberOfDays: number) {
   const today = dayjs();
   const startDate = today.subtract(numberOfDays, 'day').format('YYYY-MM-DD');
 
@@ -20,11 +20,11 @@ export async function fetchActiveUsersForDays(numberOfDays: number) {
   return activeUsers;
 }
 
-export type ActiveUsers = {
+type ActiveUsers = {
   rows: [{ dimensionValues: { value: string }[]; metricValues: { value: string }[] }];
 };
 
-export function processActiveUsers(activeUsers: ActiveUsers) {
+function processActiveUsers(activeUsers: ActiveUsers) {
   const activeUsersDates = activeUsers?.rows?.map((row) => row.dimensionValues?.[0].value) || [];
   const activeUsersValues = activeUsers?.rows?.map((row) => Number(row.metricValues?.[0].value)) || [];
 
@@ -36,7 +36,8 @@ export function processActiveUsers(activeUsers: ActiveUsers) {
   return activeUsersMap;
 }
 
-export function prepareActiveUsersArrays(activeUsersMap: Map<string, number>, numberOfDays: number) {
+function prepareActiveUsersArrays(activeUsersMap: Map<string, number>, numberOfDays: number) {
+  const periodLength = Math.floor(numberOfDays / 2);
   const currentPeriodUsers = [];
   const previousPeriodUsers = [];
   const period = dayjs().subtract(numberOfDays, 'day');
@@ -44,7 +45,7 @@ export function prepareActiveUsersArrays(activeUsersMap: Map<string, number>, nu
   for (let i = 0; i < numberOfDays; i++) {
     const currentDate = period.add(i, 'day').format('YYYY-MM-DD');
 
-    if (i < numberOfDays / 2) {
+    if (i < periodLength) {
       previousPeriodUsers.push(activeUsersMap.get(currentDate) || 0);
     } else {
       currentPeriodUsers.push(activeUsersMap.get(currentDate) || 0);
@@ -54,19 +55,22 @@ export function prepareActiveUsersArrays(activeUsersMap: Map<string, number>, nu
   return { currentPeriodUsers, previousPeriodUsers };
 }
 
-export function calculateActiveUserTotalsAndPercentageChange(
-  currentPeriodUsers: number[],
-  previousPeriodUsers: number[]
-) {
+function calculateActiveUserTotalsAndPercentageChange(currentPeriodUsers: number[], previousPeriodUsers: number[]) {
   const totalCurrentUsers = currentPeriodUsers.reduce((sum, current) => sum + current, 0);
   const totalPreviousUsers = previousPeriodUsers.reduce((sum, current) => sum + current, 0);
 
-  let percentageChange = 0;
-  if (totalPreviousUsers !== 0) {
-    percentageChange = ((totalCurrentUsers - totalPreviousUsers) / totalPreviousUsers) * 100;
-  } else if (totalCurrentUsers > 0) {
-    percentageChange = 100; // If previous total is 0 and current total is greater than 0
-  }
+  return { totalCurrentUsers, totalPreviousUsers };
+}
 
-  return { totalCurrentUsers, totalPreviousUsers, percentageChange };
+export async function getActiveUsersData(daysOfDataToFetch: number) {
+  const activeUsers = await fetchActiveUsersForDays(daysOfDataToFetch);
+  const activeUsersMap = processActiveUsers(activeUsers as ActiveUsers);
+  const { currentPeriodUsers, previousPeriodUsers } = prepareActiveUsersArrays(activeUsersMap, daysOfDataToFetch);
+
+  const { totalCurrentUsers, totalPreviousUsers } = calculateActiveUserTotalsAndPercentageChange(
+    currentPeriodUsers,
+    previousPeriodUsers
+  );
+
+  return { totalCurrentUsers, currentPeriodUsers, totalPreviousUsers };
 }
