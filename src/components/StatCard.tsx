@@ -146,7 +146,7 @@ export default function StatCard({
             showTooltip
             xAxis={{
               scaleType: 'band',
-              data: daysInWeek, // Use the correct property 'data' for xAxis
+              data: daysInWeek,
             }}
             sx={{
               [`& .${areaElementClasses.root}`]: {

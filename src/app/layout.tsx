@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import '@fontsource/roboto/300.css';
@@ -29,7 +29,9 @@ export default async function RootLayout({ children }: Props) {
         <AxiomWebVitals />
       </body>
       {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-        <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        <Suspense fallback={null}>
+          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        </Suspense>
       )}
     </html>
   );
