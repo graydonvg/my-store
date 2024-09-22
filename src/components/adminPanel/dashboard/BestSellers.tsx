@@ -16,10 +16,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { CONSTANTS } from '@/constants';
-import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import CardTitle from './CardTitle';
 
 const headCellLabels = ['#', 'Products', 'Units'];
 
@@ -52,6 +52,7 @@ export default function BestSellers({ bestSellers }: Props) {
         borderRadius: CONSTANTS.BORDER_RADIUS,
         backgroundColor: (theme) =>
           theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
+        containerType: 'inline-size',
       }}>
       <Box sx={{ padding: 2 }}>
         <CardTitle>Best Sellers</CardTitle>
@@ -68,6 +69,9 @@ export default function BestSellers({ bestSellers }: Props) {
                   key={label}
                   sx={{
                     backgroundColor: 'inherit',
+                    '@container (max-width: 335px)': {
+                      paddingX: 1,
+                    },
                   }}>
                   {label}
                 </TableCell>
@@ -82,8 +86,24 @@ export default function BestSellers({ bestSellers }: Props) {
                     onClick={() => navigateToProductPage(bestSeller.category, bestSeller.name, bestSeller.productId)}
                     hover
                     sx={{ cursor: 'pointer' }}>
-                    <TableCell width={1}>{index + 1}</TableCell>
-                    <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <TableCell
+                      width={1}
+                      sx={{
+                        '@container (max-width: 335px)': {
+                          paddingX: 1,
+                        },
+                      }}>
+                      {index + 1}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        '@container (max-width: 335px)': {
+                          paddingX: 1,
+                        },
+                      }}>
                       <Box
                         sx={{
                           position: 'relative',
@@ -110,7 +130,14 @@ export default function BestSellers({ bestSellers }: Props) {
                         {bestSeller.name}
                       </Typography>
                     </TableCell>
-                    <TableCell>{bestSeller.totalQuantitySold}</TableCell>
+                    <TableCell
+                      sx={{
+                        '@container (max-width: 335px)': {
+                          paddingX: 1,
+                        },
+                      }}>
+                      {bestSeller.totalQuantitySold}
+                    </TableCell>
                   </TableRow>
                 ))
               : null}

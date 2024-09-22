@@ -10,6 +10,7 @@ import { areaElementClasses } from '@mui/x-charts/LineChart';
 import { darken, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatCurrency } from '@/utils/format';
+import CardTitle from './CardTitle';
 
 export type StatCardProps = {
   title: string;
@@ -117,12 +118,7 @@ export default function StatCard({
         backgroundColor: (theme) =>
           theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
       }}>
-      <Typography
-        component="h2"
-        variant="subtitle2"
-        gutterBottom>
-        {title}
-      </Typography>
+      <CardTitle gutterBottom>{title}</CardTitle>
       <Stack
         direction="column"
         sx={{ justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>

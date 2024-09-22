@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { OrderDateTotal } from '@/types';
 import { formatCurrency } from '@/utils/format';
 import { CONSTANTS } from '@/constants';
+import CardTitle from './CardTitle';
 
 type Props = {
   monthlyPageViews: number[];
@@ -34,18 +35,13 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData 
         width: '100%',
         padding: 2,
         paddingBottom: 3,
-        height: { xs: 449, sm: 569 },
+        height: { xs: 449, sm: 557.58 },
         minHeight: 1,
         borderRadius: CONSTANTS.BORDER_RADIUS,
         backgroundColor: (theme) =>
           theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
       }}>
-      <Typography
-        component="h2"
-        variant="subtitle2"
-        gutterBottom>
-        Page views and sales
-      </Typography>
+      <CardTitle gutterBottom>Page views and sales</CardTitle>
       <Stack sx={{ justifyContent: 'space-between' }}>
         <Stack
           direction="row"
