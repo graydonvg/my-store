@@ -50,7 +50,7 @@ export default function OrdersPageStorefront({ orders, pageNumber, maxOrdersPerP
           );
         })}
       </Box>
-      {totalRowCount !== maxOrdersPerPage ? (
+      {totalRowCount > maxOrdersPerPage ? (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             sx={{

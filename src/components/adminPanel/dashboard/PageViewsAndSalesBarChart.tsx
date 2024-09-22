@@ -9,6 +9,7 @@ import { calculateTotalMonthlyConversions, calculateTotalMonthlySales } from '@/
 import dayjs from 'dayjs';
 import { OrderDateTotal } from '@/types';
 import { formatCurrency } from '@/utils/format';
+import { CONSTANTS } from '@/constants';
 
 type Props = {
   monthlyPageViews: number[];
@@ -28,9 +29,14 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData 
   return (
     <Paper
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         padding: 2,
         paddingBottom: 3,
+        height: { xs: 449, sm: 569 },
+        minHeight: 1,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         backgroundColor: (theme) =>
           theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
       }}>
@@ -98,7 +104,6 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData 
             stack: 'A',
           },
         ]}
-        height={250}
         margin={{ left: 50, right: 0, top: 20, bottom: 20 }}
         grid={{ horizontal: true }}
         slotProps={{
