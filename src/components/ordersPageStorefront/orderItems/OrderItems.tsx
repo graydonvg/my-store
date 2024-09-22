@@ -1,4 +1,4 @@
-import { Box, Divider, Grid2, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { CONSTANTS } from '@/constants';
 import { OrderData } from '@/types';
 import OrderItemImage from './OrderItemImage';
@@ -22,7 +22,7 @@ export default function OrderItems({ order }: Props) {
         borderBottomLeftRadius: CONSTANTS.BORDER_RADIUS,
         borderBottomRightRadius: CONSTANTS.BORDER_RADIUS,
       })}>
-      <Grid2
+      <Grid
         container
         spacing={2}>
         {order.orderItems.map((item, index) => {
@@ -33,10 +33,12 @@ export default function OrderItems({ order }: Props) {
           const isLastItem = numberOfItems - 1 === index;
 
           return (
-            <Grid2
+            <Grid
               key={item.orderItemId}
-              size={{ xs: 12, lg: 6 }}>
-              <Grid2
+              item
+              xs={12}
+              lg={6}>
+              <Grid
                 container
                 spacing={2}
                 sx={{
@@ -45,21 +47,29 @@ export default function OrderItems({ order }: Props) {
                     lg: numberOfItems > 2 && !isLastItem && !isFirstItem && !isSecondItem && !isSecondLastItem ? 2 : 0,
                   },
                 }}>
-                <Grid2 size={{ xs: 4, md: 2, lg: 4 }}>
+                <Grid
+                  item
+                  xs={4}
+                  md={2}
+                  lg={4}>
                   <OrderItemImage
                     orderItem={item}
                     imageUrl={item.product?.productImageData[0].imageUrl ?? ''}
                   />
-                </Grid2>
-                <Grid2 size={{ xs: 8, md: 10, lg: 8 }}>
+                </Grid>
+                <Grid
+                  item
+                  xs={8}
+                  md={10}
+                  lg={8}>
                   <OrderItemDetails orderItem={item} />
-                </Grid2>
-              </Grid2>
+                </Grid>
+              </Grid>
               {isBelowLarge && !isLastItem ? <Divider sx={{ borderColor: theme.palette.custom.border }} /> : null}
-            </Grid2>
+            </Grid>
           );
         })}
-      </Grid2>
+      </Grid>
     </Box>
   );
 }
