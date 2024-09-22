@@ -79,7 +79,7 @@ export function calculateTotalConversions(
 
     if (daysAgo < periodLength) {
       // current period
-      const index = periodLength - daysAgo;
+      const index = periodLength - daysAgo - 1;
       currentPeriodConversions[index] += 1;
     } else if (daysAgo >= periodLength && daysAgo < numberOfDays) {
       // previous period
@@ -129,29 +129,29 @@ export function calculateAverageOrderValues(
     const daysAgo = today.diff(orderDate, 'day');
 
     if (daysAgo < periodLength) {
-      const index = periodLength - 1 - daysAgo;
+      const index = periodLength - daysAgo - 1;
       currentPeriodTotalOrderValues[index] += order.orderTotal;
       currentPeriodOrderCounts[index] += 1;
     } else if (daysAgo >= periodLength && daysAgo < numberOfDays) {
-      const index = daysAgo - periodLength;
+      const index = daysAgo - periodLength - 1;
       previousPeriodTotalOrderValues[index] += order.orderTotal;
       previousPeriodOrderCounts[index] += 1;
     }
   });
 
   const currentPeriodDailyAverageOrderValues = currentPeriodTotalOrderValues.map((total, index) =>
-    currentPeriodOrderCounts[index] > 0 ? total / currentPeriodOrderCounts[index] : 0
+    currentPeriodOrderCounts[index] > 0 ? Math.round(total / currentPeriodOrderCounts[index]) : 0
   );
 
   const totalCurrentPeriodValue = currentPeriodTotalOrderValues.reduce((acc, val) => acc + val, 0);
   const totalOrdersInCurrentPeriod = currentPeriodOrderCounts.reduce((acc, val) => acc + val, 0);
   const totalAverageCurrentPeriod =
-    totalOrdersInCurrentPeriod > 0 ? totalCurrentPeriodValue / totalOrdersInCurrentPeriod : 0;
+    totalOrdersInCurrentPeriod > 0 ? Math.round(totalCurrentPeriodValue / totalOrdersInCurrentPeriod) : 0;
 
   const totalPreviousPeriodValue = previousPeriodTotalOrderValues.reduce((acc, val) => acc + val, 0);
   const totalOrdersInPreviousPeriod = previousPeriodOrderCounts.reduce((acc, val) => acc + val, 0);
   const totalAveragePreviousPeriod =
-    totalOrdersInCurrentPeriod > 0 ? totalPreviousPeriodValue / totalOrdersInPreviousPeriod : 0;
+    totalOrdersInCurrentPeriod > 0 ? Math.round(totalPreviousPeriodValue / totalOrdersInPreviousPeriod) : 0;
 
   return {
     currentPeriodDailyAverageOrderValues,
