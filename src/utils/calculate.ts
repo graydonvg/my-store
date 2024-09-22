@@ -1,4 +1,4 @@
-import { OrderDateTotal, QueryPageDataGrid } from '@/types';
+import { OrderDateTotal, OrderStatus, QueryPageDataGrid } from '@/types';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
@@ -94,12 +94,6 @@ export function calculateTotalConversions(
   return { currentPeriodConversions, totalCurrentPeriodConversions, totalPreviosPeriodConversions };
 }
 
-export function calculateTotalPeriodConverions(dailyConversion: number[]) {
-  return dailyConversion.reduce((acc, totalConverions) => {
-    return (acc += totalConverions);
-  }, 0);
-}
-
 export function calculateAverageOrderValues(
   orderData: OrderDateTotal[],
   numberOfDays: number
@@ -158,4 +152,105 @@ export function calculateAverageOrderValues(
     totalAverageCurrentPeriod,
     totalAveragePreviousPeriod,
   };
+}
+
+export function calculateRefundRates(
+  successfulOrderData: OrderDateTotal[],
+  unsuccessfulOrders: { createdAt: string; orderStatus: OrderStatus }[],
+  numberOfDays: number
+) {
+  // Ensure numberOfDays is even for splitting the periods
+  const periodLength = Math.floor(numberOfDays / 2);
+
+  const initArray = () => Array(periodLength).fill(0);
+  const currentPeriodRefunds = initArray();
+  const previousPeriodRefunds = initArray();
+  const currentPeriodOtherUnsuccessfulOrders = initArray();
+  const previousPeriodOtherUnsuccessfulOrders = initArray();
+  const currentPeriodSuccessfulOrders = initArray();
+  const previousPeriodSuccessfulOrders = initArray();
+
+  const today = dayjs();
+  const startDate = today.subtract(numberOfDays, 'day');
+
+  const refundedOrders = unsuccessfulOrders.filter((order) => order.orderStatus === 'refunded');
+  const otherUnsuccessfulOrders = unsuccessfulOrders.filter((order) => order.orderStatus !== 'refunded');
+
+  const successfulOrderDates = successfulOrderData.map((order) => order.createdAt);
+  const refundedOrderDates = refundedOrders.map((order) => order.createdAt);
+  const otherUnsuccessfulOrderDates = otherUnsuccessfulOrders.map((order) => order.createdAt);
+
+  // Filter orders within the last numberOfDays
+  const filteredSuccessfulOrderDates = successfulOrderDates.filter((date) => {
+    const orderDate = dayjs(date);
+    return orderDate.isBetween(startDate, today, null, '[]'); // Inclusive of both bounds
+  });
+
+  // Helper to aggregate orders for each day into periods
+  function aggregateOrders(orderDates: string[], currentPeriodArray: number[], previousPeriodArray: number[]) {
+    return orderDates.forEach((date) => {
+      const daysAgo = today.diff(dayjs(date), 'day');
+      if (daysAgo < periodLength) {
+        currentPeriodArray[periodLength - daysAgo - 1] += 1;
+      } else if (daysAgo < numberOfDays) {
+        previousPeriodArray[daysAgo - periodLength - 1] += 1;
+      }
+    });
+  }
+
+  aggregateOrders(refundedOrderDates, currentPeriodRefunds, previousPeriodRefunds);
+  aggregateOrders(
+    otherUnsuccessfulOrderDates,
+    currentPeriodOtherUnsuccessfulOrders,
+    previousPeriodOtherUnsuccessfulOrders
+  );
+  aggregateOrders(filteredSuccessfulOrderDates, currentPeriodSuccessfulOrders, previousPeriodSuccessfulOrders);
+
+  function calculateTotalOrders(refunds: number[], otherUnsuccessful: number[], successful: number[]) {
+    return refunds.map((_, index) => refunds[index] + otherUnsuccessful[index] + successful[index]);
+  }
+
+  const currentPeriodAllOrders = calculateTotalOrders(
+    currentPeriodRefunds,
+    currentPeriodOtherUnsuccessfulOrders,
+    currentPeriodSuccessfulOrders
+  );
+  const previousPeriodAllOrders = calculateTotalOrders(
+    previousPeriodRefunds,
+    previousPeriodOtherUnsuccessfulOrders,
+    previousPeriodSuccessfulOrders
+  );
+
+  const currentPeriodRefundRates = currentPeriodRefunds.map((refundCount, index) => {
+    const orderCount = currentPeriodAllOrders[index];
+
+    if (orderCount === 0 && refundCount === 0) return 0;
+
+    if (orderCount === 0 && refundCount > 0) return 100;
+
+    return (refundCount / orderCount) * 100;
+  });
+
+  function totalRefunds(arr: number[]) {
+    return arr.reduce((acc, count) => acc + count, 0);
+  }
+
+  function totalOrders(arr: number[]) {
+    return arr.reduce((acc, count) => acc + count, 0);
+  }
+
+  function overallRefundRate(totalRefunds: number, totalOrders: number) {
+    return totalOrders === 0 ? 0 : (totalRefunds / totalOrders) * 100;
+  }
+
+  const overallCurrentPeriodRefundRate = overallRefundRate(
+    totalRefunds(currentPeriodRefunds),
+    totalOrders(currentPeriodAllOrders)
+  );
+  const overallPreviousPeriodRefundRate = overallRefundRate(
+    totalRefunds(previousPeriodRefunds),
+    totalOrders(previousPeriodAllOrders)
+  );
+
+  return { currentPeriodRefundRates, overallCurrentPeriodRefundRate, overallPreviousPeriodRefundRate };
 }

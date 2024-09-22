@@ -21,6 +21,7 @@ export type StatCardProps = {
     previousPeriod: number;
   };
   isCurrency?: boolean;
+  isPercentage?: boolean;
 };
 
 function calculatePercentageChange(totalCurrentPeriod: number, totalPreviousPeriod: number) {
@@ -86,11 +87,19 @@ export default function StatCard({
   currentPeriodData,
   periodTotals,
   isCurrency = false,
+  isPercentage = false,
 }: StatCardProps) {
   const theme = useTheme();
   const daysInWeek = getDates(numberOfDays);
   const trend = getTrend(periodTotals.currentPeriod, periodTotals.previousPeriod);
   const percentageChange = calculatePercentageChange(periodTotals.currentPeriod, periodTotals.previousPeriod);
+  let value: string | number = periodTotals.currentPeriod;
+
+  if (isCurrency) {
+    value = formatCurrency(periodTotals.currentPeriod);
+  } else if (isPercentage) {
+    value = `${periodTotals.currentPeriod.toFixed(2)}%`;
+  }
 
   const trendColors = {
     up: theme.palette.mode === 'light' ? theme.palette.success.main : theme.palette.success.dark,
@@ -129,7 +138,7 @@ export default function StatCard({
             <Typography
               variant="h4"
               component="p">
-              {isCurrency ? formatCurrency(periodTotals.currentPeriod) : periodTotals.currentPeriod}
+              {value}
             </Typography>
             <Chip
               size="small"
@@ -150,7 +159,9 @@ export default function StatCard({
             area
             showHighlight
             showTooltip
-            valueFormatter={isCurrency ? (v) => formatCurrency(v ?? 0) : undefined}
+            valueFormatter={
+              isCurrency ? (v) => formatCurrency(v ?? 0) : isPercentage ? (v) => `${v?.toFixed(2)}%` : undefined
+            }
             xAxis={{
               scaleType: 'band',
               data: daysInWeek,
