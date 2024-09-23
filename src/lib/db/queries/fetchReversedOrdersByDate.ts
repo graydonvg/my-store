@@ -5,7 +5,7 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function fetchUnsuccessfulOrderDates(numberOfDays: number) {
+export default async function fetchReversedOrdersByDate(numberOfDays: number) {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchRefundedOrders' });

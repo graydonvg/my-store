@@ -507,62 +507,41 @@ export type Database = {
         };
         Returns: Json;
       };
-      filterProducts:
-        | {
-            Args: {
-              p_category?: string;
-              p_brands?: string[];
-              p_sizes?: string[];
-              p_min_price?: number;
-              p_max_price?: number;
-            };
-            Returns: {
-              productId: number;
-              createdAt: string;
-              category: Database['public']['Enums']['productCategory'];
-              name: string;
-              brand: string;
-              details: string;
-              price: number;
-              isOnSale: boolean;
-              salePercentage: number;
-              sizes: string[];
-              deliveryInfo: string;
-              returnInfo: string;
-              productImageData: Json;
-            }[];
-          }
-        | {
-            Args: {
-              p_category?: string;
-              p_brands?: string[];
-              p_sizes?: string[];
-              p_min_price?: number;
-              p_max_price?: number;
-              p_on_sale?: boolean;
-            };
-            Returns: {
-              productId: number;
-              createdAt: string;
-              category: Database['public']['Enums']['productCategory'];
-              name: string;
-              brand: string;
-              details: string;
-              price: number;
-              isOnSale: boolean;
-              salePercentage: number;
-              sizes: string[];
-              deliveryInfo: string;
-              returnInfo: string;
-              productImageData: Json;
-            }[];
-          };
+      filterProducts: {
+        Args: {
+          p_category?: string;
+          p_brands?: string[];
+          p_sizes?: string[];
+          p_min_price?: number;
+          p_max_price?: number;
+          p_on_sale?: boolean;
+        };
+        Returns: {
+          productId: number;
+          createdAt: string;
+          category: Database['public']['Enums']['productCategory'];
+          name: string;
+          brand: string;
+          details: string;
+          price: number;
+          isOnSale: boolean;
+          salePercentage: number;
+          sizes: string[];
+          deliveryInfo: string;
+          returnInfo: string;
+          productImageData: Json;
+        }[];
+      };
       getBestSellers: {
         Args: Record<PropertyKey, never>;
         Returns: {
           productId: number;
           totalQuantitySold: number;
         }[];
+      };
+      getPreviousYearSalesTotal: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
       };
       getProductFilterOptions: {
         Args: Record<PropertyKey, never>;

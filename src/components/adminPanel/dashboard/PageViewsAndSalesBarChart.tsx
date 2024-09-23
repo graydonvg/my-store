@@ -4,8 +4,12 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useTheme } from '@mui/material/styles';
-import { Paper, darken } from '@mui/material';
-import { calculateTotalMonthlyConversions, calculateTotalMonthlySales } from '@/utils/calculate';
+import { Chip, Paper, darken } from '@mui/material';
+import {
+  calculatePercentageChange,
+  calculateTotalMonthlyConversions,
+  calculateTotalMonthlySales,
+} from '@/utils/calculate';
 import dayjs from 'dayjs';
 import { OrderDateTotal } from '@/types';
 import { formatCurrency } from '@/utils/format';
@@ -15,17 +19,38 @@ import CardTitle from './CardTitle';
 type Props = {
   monthlyPageViews: number[];
   orderData: OrderDateTotal[] | null;
+  previousYearSalesTotal: number;
 };
 
-export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData }: Props) {
+function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' | 'neutral' {
+  let trend = 'neutral';
+
+  if (currentPeriod - previousPeriod > 0) trend = 'up';
+  if (currentPeriod - previousPeriod < 0) trend = 'down';
+
+  return trend as 'up' | 'down' | 'neutral';
+}
+
+export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData, previousYearSalesTotal }: Props) {
   const theme = useTheme();
   const cumulativeSales = orderData ? calculateTotalMonthlySales(orderData) : undefined;
   const monthlyConversions = orderData ? calculateTotalMonthlyConversions(orderData) : undefined;
   const totalSales = orderData?.reduce((acc, order) => {
     return (acc += order.orderTotal);
   }, 0);
+  const percentageChange = calculatePercentageChange(totalSales ?? 0, previousYearSalesTotal);
+  const trend = getTrend(totalSales ?? 0, previousYearSalesTotal);
   const monthNames = Array.from(Array(12)).map((_, index) => dayjs().month(index).format('MMM'));
   const barColors = [theme.palette.primary.dark, theme.palette.primary.main, theme.palette.primary.light];
+
+  const badgeColors = {
+    up: 'success' as const,
+    down: 'error' as const,
+    neutral: 'default' as const,
+  };
+
+  const badgeColor = badgeColors[trend];
+  const trendSymbol = { up: '+', down: '', neutral: '' };
 
   return (
     <Paper
@@ -55,11 +80,11 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData 
             component="p">
             {formatCurrency(totalSales ?? 0)}
           </Typography>
-          {/* <Chip
+          <Chip
             size="small"
-            color="error"
-            label="-8%"
-          /> */}
+            color={badgeColor}
+            label={`${trendSymbol[trend]}${Math.round(percentageChange)}%`}
+          />
         </Stack>
         <Typography
           variant="caption"

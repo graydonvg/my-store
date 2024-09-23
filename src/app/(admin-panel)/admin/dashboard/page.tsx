@@ -12,7 +12,8 @@ import PageViewsAndSalesBarChart from '@/components/adminPanel/dashboard/PageVie
 import { getActiveUsersData } from '@/lib/googleAnalytics/activeUsers';
 import { getMonthlyPageViewsForYear } from '@/lib/googleAnalytics/pageViews';
 import { calculateAverageOrderValues, calculateTotalConversions, calculateRefundRates } from '@/utils/calculate';
-import fetchUnsuccessfulOrderDates from '@/lib/db/queries/fetchRefundedOrders';
+import fetchUnsuccessfulOrderDates from '@/lib/db/queries/fetchReversedOrdersByDate';
+import fetchPreviousYearSalesTotal from '@/lib/db/queries/fetchPreviousYearSalesTotal';
 
 const NUMBER_OF_DAYS_FOR_REPORT = 30;
 const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;
@@ -20,6 +21,7 @@ const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;
 export default async function AdminPanelDashboard() {
   const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
+  const previousYearSalesTotal = await fetchPreviousYearSalesTotal();
   const orderTotalsThisYear = await fetchOrderTotalsThisYear();
   const refundedOrders = await fetchUnsuccessfulOrderDates(DAYS_OF_DATA_TO_FETCH);
   const sortedBestSellers = await fetchSortedBestSellers();
@@ -86,6 +88,7 @@ export default async function AdminPanelDashboard() {
         <PageViewsAndSalesBarChart
           monthlyPageViews={monthlyPageViews}
           orderData={orderTotalsThisYear}
+          previousYearSalesTotal={previousYearSalesTotal ?? 0}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>

@@ -11,8 +11,9 @@ import { darken, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatCurrency } from '@/utils/format';
 import CardTitle from './CardTitle';
+import { calculatePercentageChange } from '@/utils/calculate';
 
-export type StatCardProps = {
+type StatCardProps = {
   title: string;
   numberOfDays: number;
   currentPeriodData: number[];
@@ -23,18 +24,6 @@ export type StatCardProps = {
   isCurrency?: boolean;
   isPercentage?: boolean;
 };
-
-function calculatePercentageChange(totalCurrentPeriod: number, totalPreviousPeriod: number) {
-  let percentageChange = 0;
-
-  if (totalPreviousPeriod !== 0) {
-    percentageChange = ((totalCurrentPeriod - totalPreviousPeriod) / totalPreviousPeriod) * 100;
-  } else if (totalCurrentPeriod > 0) {
-    percentageChange = 100;
-  }
-
-  return percentageChange;
-}
 
 function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' | 'neutral' {
   let trend = 'neutral';
@@ -93,13 +82,7 @@ export default function StatCard({
   const daysInWeek = getDates(numberOfDays);
   const trend = getTrend(periodTotals.currentPeriod, periodTotals.previousPeriod);
   const percentageChange = calculatePercentageChange(periodTotals.currentPeriod, periodTotals.previousPeriod);
-  let value: string | number = periodTotals.currentPeriod;
-
-  if (isCurrency) {
-    value = formatCurrency(periodTotals.currentPeriod);
-  } else if (isPercentage) {
-    value = `${periodTotals.currentPeriod.toFixed(2)}%`;
-  }
+  let value = handleValueFormat(periodTotals.currentPeriod);
 
   const trendColors = {
     up: theme.palette.mode === 'light' ? theme.palette.success.main : theme.palette.success.dark,
@@ -107,15 +90,23 @@ export default function StatCard({
     neutral: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[700],
   };
 
-  const labelColors = {
+  const badgeColors = {
     up: 'success' as const,
     down: 'error' as const,
     neutral: 'default' as const,
   };
 
-  const color = labelColors[trend];
+  const badgeColor = badgeColors[trend];
   const chartColor = trendColors[trend];
   const trendSymbol = { up: '+', down: '', neutral: '' };
+
+  function handleValueFormat(value: number) {
+    if (isCurrency) return formatCurrency(value);
+
+    if (isPercentage) return `${value.toFixed(2)}%`;
+
+    return `${value}`;
+  }
 
   return (
     <Paper
@@ -142,7 +133,7 @@ export default function StatCard({
             </Typography>
             <Chip
               size="small"
-              color={color}
+              color={badgeColor}
               label={`${trendSymbol[trend]}${Math.round(percentageChange)}%`}
             />
           </Stack>
@@ -159,9 +150,7 @@ export default function StatCard({
             area
             showHighlight
             showTooltip
-            valueFormatter={
-              isCurrency ? (v) => formatCurrency(v ?? 0) : isPercentage ? (v) => `${v?.toFixed(2)}%` : undefined
-            }
+            valueFormatter={(value) => handleValueFormat(value ?? 0)}
             xAxis={{
               scaleType: 'band',
               data: daysInWeek,
