@@ -7,8 +7,8 @@ import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 import { selectCheckoutData } from '@/lib/redux/features/checkout/checkoutSelectors';
-import { getLineItemsFromCartItems } from '@/utils/stripe/getStripeLineItems';
-import { createNewStripeCheckoutSession } from '@/utils/stripe/stripeCheckout';
+import { getLineItemsFromCartItems } from '@/utils/getStripeLineItems';
+import { createNewStripeCheckoutSession } from '@/services/stripe/checkout';
 
 export default function PaymentButton() {
   const dispatch = useAppDispatch();

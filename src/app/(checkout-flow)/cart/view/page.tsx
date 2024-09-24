@@ -1,5 +1,5 @@
 import CartPageClient from '@/components/checkoutFlow/cart/CartPageClient';
-import fetchCartAndWishlistData from '@/lib/db/queries/fetchCartAndWishlistData';
+import fetchCartAndWishlistData from '@/services/db/queries/fetchCartAndWishlistData';
 
 export default async function CartPage() {
   const { cartItems, wishlistData } = await fetchCartAndWishlistData();

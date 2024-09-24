@@ -1,6 +1,6 @@
 import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAdminPanelClient';
 import { CONSTANTS } from '@/constants';
-import fetchUsers from '@/lib/db/queries/fetchUsers';
+import fetchUsers from '@/services/db/queries/fetchUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
 

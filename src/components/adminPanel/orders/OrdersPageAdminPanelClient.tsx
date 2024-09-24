@@ -99,8 +99,9 @@ export default function OrdersPageAdminPanelClient({
     }
   }
 
-  function handleRowUpdateError(_error: unknown) {
-    // Axiom error log
+  function handleRowUpdateError(error: unknown) {
+    log.error('Failed to update order', { error });
+
     toast.error('Failed to process update. An unexpected error occured.');
   }
 

@@ -1,7 +1,7 @@
 import OrdersPageStorefront from '@/components/ordersPageStorefront/OrdersPageStorefront';
 import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
 import { CONSTANTS } from '@/constants';
-import { fetchOrdersForUser } from '@/lib/db/queries/fetchOrders';
+import { fetchOrdersForUser } from '@/services/db/queries/fetchOrders';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 

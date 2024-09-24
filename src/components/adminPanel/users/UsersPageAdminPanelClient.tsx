@@ -145,8 +145,9 @@ export default function UsersPageAdminPanelClient({
     }
   }
 
-  function handleRowUpdateError(_error: unknown) {
-    // Axiom error log
+  function handleRowUpdateError(error: unknown) {
+    log.error('Failed to user order', { error });
+
     toast.error('Failed to process update. An unexpected error occured.');
   }
 

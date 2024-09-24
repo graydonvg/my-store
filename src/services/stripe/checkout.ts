@@ -1,10 +1,16 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { createStripeCheckoutSession } from '@/services/stripe/create-stripe-checkout-session';
 import { StripeLineItem } from '@/types';
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export async function createNewStripeCheckoutSession(orderId: number, lineItems: StripeLineItem[]) {
+  const logger = log.with({ context: 'createNewStripeCheckoutSession' });
+  logger.info('Creating new stripe checkout session');
+
   try {
     const stripe = await stripePromise;
 
@@ -26,7 +32,8 @@ export async function createNewStripeCheckoutSession(orderId: number, lineItems:
     });
 
     if (error?.error) {
-      // Axiom error log
+      logger.error('Failed to process payment', { error });
+
       if (error.error.type === 'card_error') {
         return { success: false, message: error.error.message };
       } else {
@@ -36,6 +43,8 @@ export async function createNewStripeCheckoutSession(orderId: number, lineItems:
 
     return { success: true, message: 'Payment processed successfully.' };
   } catch (error) {
+    logger.error('Failed to process payment', { error });
+
     return {
       success: false,
       message: 'Failed to process payment. An unexpected error occured.',
@@ -45,20 +54,32 @@ export async function createNewStripeCheckoutSession(orderId: number, lineItems:
 }
 
 export async function resumeStripeCheckout(sessionId: string) {
-  const stripe = await stripePromise;
+  const logger = log.with({ context: 'resumeStripeCheckout' });
+  logger.info('Resuming stripe checkout');
 
-  const error = await stripe?.redirectToCheckout({
-    sessionId,
-  });
+  try {
+    const stripe = await stripePromise;
 
-  if (error?.error) {
-    // Axiom error log
-    if (error.error.type === 'card_error') {
-      return { success: false, message: error.error.message };
-    } else {
-      return { success: false, message: 'Failed to process payment. Please try again later' };
+    const error = await stripe?.redirectToCheckout({
+      sessionId,
+    });
+
+    if (error?.error) {
+      if (error.error.type === 'card_error') {
+        return { success: false, message: error.error.message };
+      } else {
+        return { success: false, message: 'Failed to process payment. Please try again later' };
+      }
     }
-  }
 
-  return { success: true, message: 'Payment processed successfully.' };
+    return { success: true, message: 'Payment processed successfully.' };
+  } catch (error) {
+    logger.error('Failed to process payment', { error });
+
+    return {
+      success: false,
+      message: 'Failed to process payment. An unexpected error occured.',
+      data: error,
+    };
+  }
 }

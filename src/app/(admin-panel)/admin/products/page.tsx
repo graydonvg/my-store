@@ -2,7 +2,7 @@ import ProductsPageAdminPanelClient from '@/components/adminPanel/products/Produ
 import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
 import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
 import { CONSTANTS } from '@/constants';
-import { fetchProductsForAdmin } from '@/lib/db/queries/fetchProductsFormAdmin';
+import { fetchProductsForAdmin } from '@/services/db/queries/fetchProductsFormAdmin';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };

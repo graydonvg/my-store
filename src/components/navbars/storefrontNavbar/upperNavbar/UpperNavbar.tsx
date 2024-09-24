@@ -1,7 +1,7 @@
 import UpperNavbarContainer from './UpperNavbarContainer';
 import AuthenticatedUpperNavbarOptions from './upperNavbarOptions/authenticatedUpperNavbarOptions/AuthenticatedUpperNavbarOptions';
 import UnauthenticatedUpperNavbarOptions from './upperNavbarOptions/unauthenticatedUpperNavbarOptions/UnauthenticatedUpperNavbarOptions';
-import fetchUserSessionData from '@/lib/db/queries/fetchUserSessionData';
+import fetchUserSessionData from '@/services/db/queries/fetchUserSessionData';
 import DataInitializer from '@/components/DataInitializer';
 import UpperNavbarOptions from './upperNavbarOptions/UpperNavbarOptions';
 import { Suspense } from 'react';

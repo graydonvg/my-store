@@ -1,19 +1,19 @@
 import Grid2 from '@mui/material/Grid2';
 import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTable';
-import { fetchOrdersForAdmin } from '@/lib/db/queries/fetchOrders';
+import { fetchOrdersForAdmin } from '@/services/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
-import fetchSortedBestSellers from '@/lib/db/queries/fetchSortedBestSellers';
+import fetchSortedBestSellers from '@/services/db/queries/fetchSortedBestSellers';
 import { CONSTANTS } from '@/constants';
-import fetchRecentProducts from '@/lib/db/queries/fetchRecentProducts';
+import fetchRecentProducts from '@/services/db/queries/fetchRecentProducts';
 import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
-import fetchOrderTotalsThisYear from '@/lib/db/queries/fetchOrderTotalsThisYear';
+import fetchOrderTotalsThisYear from '@/services/db/queries/fetchOrderTotalsThisYear';
 import StatCard from '@/components/adminPanel/dashboard/StatCard';
 import PageViewsAndSalesBarChart from '@/components/adminPanel/dashboard/PageViewsAndSalesBarChart';
 import { getActiveUsersData } from '@/lib/googleAnalytics/activeUsers';
 import { getMonthlyPageViewsForYear } from '@/lib/googleAnalytics/pageViews';
 import { calculateAverageOrderValues, calculateTotalConversions, calculateRefundRates } from '@/utils/calculate';
-import fetchUnsuccessfulOrderDates from '@/lib/db/queries/fetchReversedOrdersByDate';
-import fetchPreviousYearSalesTotal from '@/lib/db/queries/fetchPreviousYearSalesTotal';
+import fetchUnsuccessfulOrderDates from '@/services/db/queries/fetchReversedOrdersByDate';
+import fetchPreviousYearSalesTotal from '@/services/db/queries/fetchPreviousYearSalesTotal';
 
 const NUMBER_OF_DAYS_FOR_REPORT = 30;
 const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;
