@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import AccountPageForm from './AccountPageForm';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
 import { UserPersonalInfoSchema } from '@/types';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { CONSTANTS } from '@/constants';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';

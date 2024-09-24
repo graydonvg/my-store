@@ -1,6 +1,6 @@
 import DatePickerForDataGridFilter from '@/components/dataGrid/DatePickerForDataGridFilter';
 import { OrderStatus, OrdersDataGrid } from '@/types';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import {
   GridColDef,
   getGridDateOperators,

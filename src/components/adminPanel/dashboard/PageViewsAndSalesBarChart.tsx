@@ -9,10 +9,10 @@ import {
   calculatePercentageChange,
   calculateTotalMonthlyConversions,
   calculateTotalMonthlySales,
-} from '@/utils/calculate';
+} from '@/utils/calculations';
 import dayjs from 'dayjs';
 import { OrderDateTotal } from '@/types';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { CONSTANTS } from '@/constants';
 import CardTitle from './CardTitle';
 

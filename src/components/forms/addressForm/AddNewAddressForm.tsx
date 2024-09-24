@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/features/addressForm/addressFormSlice';
 import AddressForm from './AddressForm';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import { useLogger } from 'next-axiom';

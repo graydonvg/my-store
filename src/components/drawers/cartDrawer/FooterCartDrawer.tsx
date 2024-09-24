@@ -4,7 +4,7 @@ import { setIsCartOpen } from '@/lib/redux/features/cart/cartSlice';
 import { useRouter } from 'next/navigation';
 import OutlinedButton from '../../ui/buttons/simple/OutlinedButton';
 import { selectOrderTotal, selectRoundedDiscountTotal } from '@/lib/redux/features/cart/cartSelectors';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import CheckoutButton from '../../ui/buttons/complex/CheckoutButton';
 
 export default function FooterCartDrawer() {

@@ -3,7 +3,7 @@ import { ResponseWithNoData, UpdateAddress, UpdateAddressSchema } from '@/types'
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();

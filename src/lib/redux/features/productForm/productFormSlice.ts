@@ -1,5 +1,5 @@
 import { ProductForm } from '@/types';
-import { sortItemSizesArrayForStore } from '@/utils/sort';
+import { sortItemSizesArrayForStore } from '@/utils/sortingHelpers';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 function handleSetProductDataOnChange(

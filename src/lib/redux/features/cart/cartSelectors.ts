@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../../store';
-import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculations';
 
 export function selectIsCartOpen(state: RootState) {
   return state.cart.isCartOpen;

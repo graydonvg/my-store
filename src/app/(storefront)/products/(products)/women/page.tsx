@@ -4,7 +4,7 @@ import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getProductsByCategory } from '@/services/products/get';
 import { Product } from '@/types';
-import { getObjectKeyCount } from '@/utils/checkObject';
+import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 

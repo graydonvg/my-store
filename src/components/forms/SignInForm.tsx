@@ -18,7 +18,7 @@ import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSele
 import { UserAuthDataSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
 import { useLogger } from 'next-axiom';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 const formFields = [
   { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email', required: true, icon: <Email /> },

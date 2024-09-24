@@ -1,9 +1,9 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { Product } from '@/types';
-import { calculateRoundedDiscountedPrice } from '@/utils/calculate';
+import { calculateRoundedDiscountedPrice } from '@/utils/calculations';
 
 type Props = {
   product: Product;

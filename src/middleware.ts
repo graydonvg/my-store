@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { CONSTANTS, ERROR_MESSAGES } from './constants';
 import { updateSession } from './lib/supabase/middleware';
-import { getUserRoleFromSession } from './utils/getUserRole';
+import { getUserRoleFromSession } from './utils/auth';
 
 export async function middleware(request: NextRequest) {
   let { response, supabase } = await updateSession(request);

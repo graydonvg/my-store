@@ -3,7 +3,7 @@ import { ResponseWithNoData, StringIdSchema } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { CONSTANTS } from '@/constants';
 
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {

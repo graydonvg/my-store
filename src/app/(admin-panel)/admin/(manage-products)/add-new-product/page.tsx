@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { addProduct } from '@/services/admin/add';
-import { getEmptyObjectKeys } from '@/utils/checkObject';
-import { getObjectKeyCount } from '@/utils/checkObject';
+import { getEmptyObjectKeys } from '@/utils/objectHelpers';
+import { getObjectKeyCount } from '@/utils/objectHelpers';
 import ProductFormAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormAdminPanel';
 import { Add } from '@mui/icons-material';
 import ManageProductImages from '@/components/adminPanel/products/manageProductImages/ManageProductImages';
@@ -20,7 +20,7 @@ import {
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { AddProductSchema } from '@/types';
 import { CONSTANTS } from '@/constants';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 

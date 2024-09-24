@@ -9,9 +9,9 @@ import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { areaElementClasses } from '@mui/x-charts/LineChart';
 import { darken, Paper } from '@mui/material';
 import dayjs from 'dayjs';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import CardTitle from './CardTitle';
-import { calculatePercentageChange } from '@/utils/calculate';
+import { calculatePercentageChange } from '@/utils/calculations';
 
 type StatCardProps = {
   title: string;

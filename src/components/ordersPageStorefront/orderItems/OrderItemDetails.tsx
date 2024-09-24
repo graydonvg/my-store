@@ -1,5 +1,5 @@
 import { OrderItem } from '@/types';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 

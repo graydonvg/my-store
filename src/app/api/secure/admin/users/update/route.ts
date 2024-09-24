@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import { UpdateUserAdmin, ResponseWithNoData, UpdateUserAdminSchema } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getObjectKeyCount } from '@/utils/checkObject';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
+import { getObjectKeyCount } from '@/utils/objectHelpers';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { CONSTANTS } from '@/constants';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();

@@ -1,24 +1,5 @@
+import { fetchActiveUsersForDays } from '@/services/googleAnalytics/activeUsers';
 import dayjs from 'dayjs';
-import { analyticsDataClient } from './client';
-
-async function fetchActiveUsersForDays(numberOfDays: number) {
-  const today = dayjs();
-  const startDate = today.subtract(numberOfDays, 'day').format('YYYY-MM-DD');
-
-  const [activeUsers] = await analyticsDataClient.runReport({
-    property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID!}`,
-    dateRanges: [
-      {
-        startDate,
-        endDate: today.format('YYYY-MM-DD'),
-      },
-    ],
-    dimensions: [{ name: 'date' }],
-    metrics: [{ name: 'activeUsers' }],
-  });
-
-  return activeUsers;
-}
 
 type ActiveUsers = {
   rows: [{ dimensionValues: { value: string }[]; metricValues: { value: string }[] }];
@@ -55,7 +36,7 @@ function prepareActiveUsersArrays(activeUsersMap: Map<string, number>, numberOfD
   return { currentPeriodUsers, previousPeriodUsers };
 }
 
-function calculateActiveUserTotalsAndPercentageChange(currentPeriodUsers: number[], previousPeriodUsers: number[]) {
+function calculateActiveUserTotals(currentPeriodUsers: number[], previousPeriodUsers: number[]) {
   const totalCurrentUsers = currentPeriodUsers.reduce((sum, current) => sum + current, 0);
   const totalPreviousUsers = previousPeriodUsers.reduce((sum, current) => sum + current, 0);
 
@@ -67,10 +48,7 @@ export async function getActiveUsersData(daysOfDataToFetch: number) {
   const activeUsersMap = processActiveUsers(activeUsers as ActiveUsers);
   const { currentPeriodUsers, previousPeriodUsers } = prepareActiveUsersArrays(activeUsersMap, daysOfDataToFetch);
 
-  const { totalCurrentUsers, totalPreviousUsers } = calculateActiveUserTotalsAndPercentageChange(
-    currentPeriodUsers,
-    previousPeriodUsers
-  );
+  const { totalCurrentUsers, totalPreviousUsers } = calculateActiveUserTotals(currentPeriodUsers, previousPeriodUsers);
 
   return { totalCurrentUsers, currentPeriodUsers, totalPreviousUsers };
 }

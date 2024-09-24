@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { Box, Typography } from '@mui/material';
 
 type Props = {

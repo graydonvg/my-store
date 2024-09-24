@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../../ui/buttons/simple/ToggleButtons';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { CONSTANTS } from '@/constants';
-import { sortItemSizesArrayForToggleButtons } from '@/utils/sort';
+import { sortItemSizesArrayForToggleButtons } from '@/utils/sortingHelpers';
 
 type Props = {
   product: Product;

@@ -1,7 +1,7 @@
 import OrdersPageAdminPanelClient from '@/components/adminPanel/orders/OrdersPageAdminPanelClient';
 import { CONSTANTS } from '@/constants';
 import { fetchOrdersForAdmin } from '@/services/db/queries/fetchOrders';
-import { getDataGridQueryDataFromSearchParams } from '@/utils/getDataFromSearchParams';
+import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
 import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
 
 type Props = {

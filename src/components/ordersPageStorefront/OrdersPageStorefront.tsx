@@ -7,7 +7,7 @@ import OrderItems from './orderItems/OrderItems';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { calculatePagination } from '@/utils/calculate';
+import { calculatePagination } from '@/utils/calculations';
 
 type Props = {
   orders: OrderData[];

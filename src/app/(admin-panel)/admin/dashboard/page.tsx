@@ -9,11 +9,11 @@ import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
 import fetchOrderTotalsThisYear from '@/services/db/queries/fetchOrderTotalsThisYear';
 import StatCard from '@/components/adminPanel/dashboard/StatCard';
 import PageViewsAndSalesBarChart from '@/components/adminPanel/dashboard/PageViewsAndSalesBarChart';
-import { getActiveUsersData } from '@/lib/googleAnalytics/activeUsers';
-import { getMonthlyPageViewsForYear } from '@/lib/googleAnalytics/pageViews';
-import { calculateAverageOrderValues, calculateTotalConversions, calculateRefundRates } from '@/utils/calculate';
+import { calculateAverageOrderValues, calculateTotalConversions, calculateRefundRates } from '@/utils/calculations';
 import fetchUnsuccessfulOrderDates from '@/services/db/queries/fetchReversedOrdersByDate';
 import fetchPreviousYearSalesTotal from '@/services/db/queries/fetchPreviousYearSalesTotal';
+import { getActiveUsersData } from '@/utils/googleAnalytics/activeUsers';
+import { getMonthlyPageViewsForYear } from '@/utils/googleAnalytics/pageViews';
 
 const NUMBER_OF_DAYS_FOR_REPORT = 30;
 const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;

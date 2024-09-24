@@ -1,5 +1,5 @@
 import { CartItem, OrderItem } from '@/types';
-import { calculateRoundedDiscountedPrice } from './calculate';
+import { calculateRoundedDiscountedPrice } from './calculations';
 
 export function getLineItemsFromCartItems(cartItems: CartItem[]) {
   const lineItems = cartItems.map((item) => {

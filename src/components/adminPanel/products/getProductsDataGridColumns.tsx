@@ -1,6 +1,6 @@
 import DatePickerForDataGridFilter from '@/components/dataGrid/DatePickerForDataGridFilter';
 import { Product } from '@/types';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { Box } from '@mui/material';
 import {
   GridColDef,

@@ -15,7 +15,7 @@ import {
 import { ReactNode, useEffect, useMemo } from 'react';
 import CustomNoRowsOverlay from './CustomNoRowsOverlay';
 import { toast } from 'react-toastify';
-import { calculatePagination } from '@/utils/calculate';
+import { calculatePagination } from '@/utils/calculations';
 
 type Props = {
   data: {}[] | null;

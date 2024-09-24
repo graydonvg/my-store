@@ -14,7 +14,7 @@ import SelectField from '../ui/inputFields/SelectField';
 import { UserAuthDataSchema, UserPersonalInfoSchema, UserRole } from '@/types';
 import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 
 const formFields = [

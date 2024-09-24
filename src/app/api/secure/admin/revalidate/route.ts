@@ -1,6 +1,6 @@
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import { AxiomRequest, withAxiom } from 'next-axiom';

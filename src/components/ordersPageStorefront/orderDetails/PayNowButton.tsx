@@ -1,7 +1,7 @@
 import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
 import { createNewStripeCheckoutSession, resumeStripeCheckout } from '@/services/stripe/checkout';
 import { OrderData } from '@/types';
-import { getLineItemsFromDatabaseOrderItems } from '@/utils/getStripeLineItems';
+import { getLineItemsFromDatabaseOrderItems } from '@/utils/stripeHelpers';
 import { Payment } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 

@@ -15,7 +15,7 @@ import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSele
 import { useLogger } from 'next-axiom';
 import { CONSTANTS } from '@/constants';
 import { UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 const formFields = [
   {

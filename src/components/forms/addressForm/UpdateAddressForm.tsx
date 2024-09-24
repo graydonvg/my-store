@@ -8,7 +8,7 @@ import { clearAddressFormData, setAddressFormDataOnChange } from '@/lib/redux/fe
 import { updateUserAddress } from '@/services/users/update';
 import AddressForm from './AddressForm';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { CONSTANTS } from '@/constants';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';

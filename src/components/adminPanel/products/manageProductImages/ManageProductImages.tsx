@@ -7,7 +7,7 @@ import ContainedButton from '../../../ui/buttons/simple/ContainedButton';
 import ImageInput from '../../../ui/inputFields/ImageInput';
 import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
-import { generateUniqueFileName } from '@/utils/generate';
+import { generateUniqueFileName } from '@/utils/fileUtils';
 import EditProductImagesDrawer from '../../../drawers/EditProductImagesDrawer';
 import {
   clearImageUploadProgess,

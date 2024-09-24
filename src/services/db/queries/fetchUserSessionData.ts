@@ -1,6 +1,6 @@
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getUserRoleFromSession } from '@/utils/getUserRole';
+import { getUserRoleFromSession } from '@/utils/auth';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();

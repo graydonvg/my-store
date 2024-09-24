@@ -9,7 +9,7 @@ import { Lock } from '@mui/icons-material';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
 import { CONSTANTS } from '@/constants';
 import { UpdatePasswordSchema } from '@/types';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useLogger } from 'next-axiom';
 

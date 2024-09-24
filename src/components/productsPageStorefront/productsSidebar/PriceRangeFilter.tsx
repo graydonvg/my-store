@@ -4,7 +4,7 @@ import { Box, Slider, Typography } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { PriceRangeFilterType } from '@/types';
 
 type Props = {

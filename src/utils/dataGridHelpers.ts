@@ -1,4 +1,17 @@
 import { CONSTANTS } from '@/constants';
+import { GridValidRowModel } from '@mui/x-data-grid';
+
+export function getChangedDataGridValue(newObj: GridValidRowModel, oldObj: GridValidRowModel): GridValidRowModel {
+  const changedValue: GridValidRowModel = {};
+
+  Object.keys(newObj).forEach((key) => {
+    if (newObj[key] !== oldObj[key]) {
+      changedValue[key] = newObj[key] === '' ? null : newObj[key];
+    }
+  });
+
+  return changedValue;
+}
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 

@@ -3,7 +3,7 @@ import { NumericIdSchema, ResponseWithNoData } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();

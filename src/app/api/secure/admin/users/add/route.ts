@@ -9,12 +9,12 @@ import {
 } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyObjectKeys } from '@/utils/checkObject';
-import { getObjectKeyCount } from '@/utils/checkObject';
+import { getEmptyObjectKeys } from '@/utils/objectHelpers';
+import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { withAxiom, AxiomRequest } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { CONSTANTS } from '@/constants';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();

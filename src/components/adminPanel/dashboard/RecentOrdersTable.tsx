@@ -14,7 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { OrdersDataGrid } from '@/types';
 import dayjs from 'dayjs';
 import Link from 'next/link';

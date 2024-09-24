@@ -3,7 +3,7 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { sortItemSizesArrayForStore } from '@/utils/sort';
+import { sortItemSizesArrayForStore } from '@/utils/sortingHelpers';
 import { useMemo } from 'react';
 
 type Props = {

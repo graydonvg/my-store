@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/utils/formatting';
 import { Box, alpha, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
 import { usePathname } from 'next/navigation';

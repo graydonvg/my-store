@@ -4,8 +4,8 @@ import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/getUserRole';
-import { constructZodErrorMessage } from '@/utils/construct';
+import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
+import { constructZodErrorMessage } from '@/utils/constructZodError';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
