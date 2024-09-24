@@ -8,11 +8,11 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, Id, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { deleteProductImagesFromStorage } from '@/utils/deleteProductImages';
 import ProductsDataGridToolbar from './ProductsDataGridToolbar';
 import { deleteSelectedProducts } from '@/services/admin/delete';
 import getProductsDataGridColumns from './getProductsDataGridColumns';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
+import { deleteProductImagesFromStorage } from '@/services/admin/image-deletion';
 
 type Props = {
   products: Product[] | null;

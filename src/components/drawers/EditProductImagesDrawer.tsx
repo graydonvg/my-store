@@ -3,7 +3,6 @@ import { DeleteForever } from '@mui/icons-material';
 import ContainedButton from '../ui/buttons/simple/ContainedButton';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteAllProductImages } from '@/utils/deleteProductImages';
 import { Box, Divider, useTheme } from '@mui/material';
 import DrawerHeader from './DrawerHeader';
 import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';
@@ -14,6 +13,7 @@ import {
   selectIsDeletingImage,
   selectIsEditImagesDrawerOpen,
 } from '@/lib/redux/features/productImages/productImagesSelectors';
+import { deleteAllProductImages } from '@/services/admin/image-deletion';
 
 export default function EditProductImagesDrawer() {
   const theme = useTheme();

@@ -4,9 +4,9 @@ import { selectImageData } from '@/lib/redux/features/productImages/productImage
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteProduct } from '@/services/admin/delete';
+import { deleteAllProductImages, deleteProductImagesFromStorage } from '@/services/admin/image-deletion';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
 import { Product, ResponseWithNoData } from '@/types';
-import { deleteAllProductImages, deleteProductImagesFromStorage } from '@/utils/deleteProductImages';
 import { DeleteForever, Edit, Preview } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
