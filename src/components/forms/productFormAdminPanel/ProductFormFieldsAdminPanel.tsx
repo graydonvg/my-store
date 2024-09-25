@@ -92,7 +92,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
-        placeholder="e.g. Black, Regular fit, ..."
+        placeholder="e.g. Blue & White Striped, 100% Cotton, Sleeveless, Round neck, Cute bowknot, ..."
         required
         hasValue={productFormData.details.length > 0}
       />

@@ -7,11 +7,11 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { areaElementClasses } from '@mui/x-charts/LineChart';
-import { darken, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatCurrency } from '@/utils/formatting';
 import CardTitle from './CardTitle';
 import { calculatePercentageChange } from '@/utils/calculations';
+import { AdminDashboardCard } from './AdminDashboradCard';
 
 type StatCardProps = {
   title: string;
@@ -109,64 +109,58 @@ export default function StatCard({
   }
 
   return (
-    <Paper
-      sx={{
-        height: '100%',
-        flexGrow: 1,
-        padding: 2,
-        paddingBottom: 3,
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? darken(theme.palette.grey[900], 0.3) : theme.palette.background.paper,
-      }}>
-      <CardTitle gutterBottom>{title}</CardTitle>
-      <Stack
-        direction="column"
-        sx={{ justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>
-        <Stack sx={{ justifyContent: 'space-between' }}>
-          <Stack
-            direction="row"
-            sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+    <AdminDashboardCard>
+      <Box sx={{ padding: 2, paddingBottom: 3 }}>
+        <CardTitle gutterBottom>{title}</CardTitle>
+        <Stack
+          direction="column"
+          sx={{ justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>
+          <Stack sx={{ justifyContent: 'space-between' }}>
+            <Stack
+              direction="row"
+              sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography
+                variant="h4"
+                component="p">
+                {value}
+              </Typography>
+              <Chip
+                size="small"
+                color={badgeColor}
+                label={`${trendSymbol[trend]}${Math.round(percentageChange)}%`}
+              />
+            </Stack>
             <Typography
-              variant="h4"
-              component="p">
-              {value}
+              variant="caption"
+              sx={{ color: 'text.secondary' }}>
+              Last {numberOfDays} days
             </Typography>
-            <Chip
-              size="small"
-              color={badgeColor}
-              label={`${trendSymbol[trend]}${Math.round(percentageChange)}%`}
-            />
           </Stack>
-          <Typography
-            variant="caption"
-            sx={{ color: 'text.secondary' }}>
-            Last {numberOfDays} days
-          </Typography>
+          <Box sx={{ width: '100%', height: 50 }}>
+            <SparkLineChart
+              colors={[chartColor]}
+              data={currentPeriodData}
+              area
+              showHighlight
+              showTooltip
+              valueFormatter={(value) => handleValueFormat(value ?? 0)}
+              xAxis={{
+                scaleType: 'band',
+                data: daysInWeek,
+              }}
+              sx={{
+                [`& .${areaElementClasses.root}`]: {
+                  fill: `url(#area-gradient-${periodTotals.currentPeriod})`,
+                },
+              }}>
+              <AreaGradient
+                color={chartColor}
+                id={`area-gradient-${periodTotals.currentPeriod}`}
+              />
+            </SparkLineChart>
+          </Box>
         </Stack>
-        <Box sx={{ width: '100%', height: 50 }}>
-          <SparkLineChart
-            colors={[chartColor]}
-            data={currentPeriodData}
-            area
-            showHighlight
-            showTooltip
-            valueFormatter={(value) => handleValueFormat(value ?? 0)}
-            xAxis={{
-              scaleType: 'band',
-              data: daysInWeek,
-            }}
-            sx={{
-              [`& .${areaElementClasses.root}`]: {
-                fill: `url(#area-gradient-${periodTotals.currentPeriod})`,
-              },
-            }}>
-            <AreaGradient
-              color={chartColor}
-              id={`area-gradient-${periodTotals.currentPeriod}`}
-            />
-          </SparkLineChart>
-        </Box>
-      </Stack>
-    </Paper>
+      </Box>
+    </AdminDashboardCard>
   );
 }
