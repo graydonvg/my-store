@@ -4,7 +4,6 @@ import SizeFilter from './SizeFilter';
 import PrimaryColourFilter from './PrimaryColourFilter';
 import MaterialFilter from './MaterialFilter';
 import PriceRangeFilter from './PriceRangeFilter';
-import { PriceRangeFilterType } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 
 export default async function ProductsSidebar() {
@@ -25,11 +24,11 @@ export default async function ProductsSidebar() {
       <Divider />
       <SizeFilter sizes={filterOptions?.[0].distinctSizes ?? []} />
       <Divider />
-      <PrimaryColourFilter />
+      <PrimaryColourFilter colors={filterOptions?.[0].distinctFilterColors ?? []} />
       <Divider />
-      <MaterialFilter />
+      <MaterialFilter materials={filterOptions?.[0].distinctFilterMaterials ?? []} />
       <Divider />
-      <PriceRangeFilter highestPrices={(filterOptions?.[0].highestPrices as PriceRangeFilterType) ?? {}} />
+      <PriceRangeFilter maxPrice={filterOptions?.[0].maxPrice ?? 0} />
     </>
   );
 }

@@ -266,6 +266,8 @@ export type Database = {
           createdAt: string;
           deliveryInfo: string;
           details: string;
+          filterColors: string[] | null;
+          filterMaterials: string[] | null;
           isOnSale: boolean;
           name: string;
           price: number;
@@ -280,6 +282,8 @@ export type Database = {
           createdAt?: string;
           deliveryInfo: string;
           details: string;
+          filterColors?: string[] | null;
+          filterMaterials?: string[] | null;
           isOnSale?: boolean;
           name: string;
           price: number;
@@ -294,6 +298,8 @@ export type Database = {
           createdAt?: string;
           deliveryInfo?: string;
           details?: string;
+          filterColors?: string[] | null;
+          filterMaterials?: string[] | null;
           isOnSale?: boolean;
           name?: string;
           price?: number;
@@ -512,6 +518,8 @@ export type Database = {
           p_category?: string;
           p_brands?: string[];
           p_sizes?: string[];
+          p_filter_colors?: string[];
+          p_filter_materials?: string[];
           p_min_price?: number;
           p_max_price?: number;
           p_on_sale?: boolean;
@@ -544,11 +552,15 @@ export type Database = {
         Returns: number;
       };
       getProductFilterOptions: {
-        Args: Record<PropertyKey, never>;
+        Args: {
+          category_input?: Database['public']['Enums']['productCategory'];
+        };
         Returns: {
           distinctBrands: string[];
           distinctSizes: string[];
-          highestPrices: Json;
+          distinctFilterColors: string[];
+          distinctFilterMaterials: string[];
+          maxPrice: number;
         }[];
       };
       updateProductWithImages: {

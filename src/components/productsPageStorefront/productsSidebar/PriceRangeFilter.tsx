@@ -3,25 +3,17 @@
 import { Box, Slider, Typography } from '@mui/material';
 import ProductsSidebarAccordion from './ProductsSidebarAccordion';
 import { useEffect, useMemo, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { formatCurrency } from '@/utils/formatting';
-import { PriceRangeFilterType } from '@/types';
 
 type Props = {
-  highestPrices: PriceRangeFilterType;
+  maxPrice: number;
 };
 
-export default function PriceRangeFilter({ highestPrices }: Props) {
+export default function PriceRangeFilter({ maxPrice }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const priceMapping = {
-    '/products/men': highestPrices.highestPriceMen,
-    '/products/women': highestPrices.highestPriceWomen,
-    '/products/kids': highestPrices.highestPriceKids,
-  };
-  const highestPrice = priceMapping[pathname as keyof typeof priceMapping] || highestPrices.highestPrice;
-  const roundedHighestPrice = Math.ceil(highestPrice / 100) * 100;
+  const roundedHighestPrice = Math.ceil(maxPrice / 100) * 100;
   const priceRange = useMemo(() => [0, roundedHighestPrice], [roundedHighestPrice]);
   const [selectedPriceRange, setSelectedPriceRange] = useState(priceRange);
   const selectedLowerPriceRange = useMemo(() => formatCurrency(selectedPriceRange[0]), [selectedPriceRange]);

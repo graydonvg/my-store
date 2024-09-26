@@ -16,6 +16,8 @@ type Props = {
   searchParams: {
     brand: string | string[];
     size: string | string[];
+    colour: string | string[];
+    material: string | string[];
     min_price: number;
     max_price: number;
   };
@@ -56,6 +58,16 @@ async function FilteredProducts({ searchParams }: Props) {
       ? typeof searchParams.size === 'string'
         ? [searchParams.size]
         : searchParams.size
+      : undefined,
+    p_filter_colors: searchParams.colour
+      ? typeof searchParams.colour === 'string'
+        ? [searchParams.colour]
+        : searchParams.colour
+      : undefined,
+    p_filter_materials: searchParams.material
+      ? typeof searchParams.material === 'string'
+        ? [searchParams.material]
+        : searchParams.material
       : undefined,
     p_min_price: searchParams.min_price ? searchParams.min_price : undefined,
     p_max_price: searchParams.max_price ? searchParams.max_price : undefined,
