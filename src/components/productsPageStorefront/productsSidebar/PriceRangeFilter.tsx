@@ -16,8 +16,6 @@ export default function PriceRangeFilter({ maxPrice }: Props) {
   const roundedHighestPrice = Math.ceil(maxPrice / 100) * 100;
   const priceRange = useMemo(() => [0, roundedHighestPrice], [roundedHighestPrice]);
   const [selectedPriceRange, setSelectedPriceRange] = useState(priceRange);
-  const selectedLowerPriceRange = useMemo(() => formatCurrency(selectedPriceRange[0]), [selectedPriceRange]);
-  const selectedUpperPriceRange = useMemo(() => formatCurrency(selectedPriceRange[1]), [selectedPriceRange]);
 
   useEffect(() => {
     if (!searchParams.get('min_price') && !searchParams.get('max_price')) return;
@@ -81,8 +79,8 @@ export default function PriceRangeFilter({ maxPrice }: Props) {
       defaultExpanded={true}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography>{selectedLowerPriceRange}</Typography>
-          <Typography>{selectedUpperPriceRange}</Typography>
+          <Typography>{formatCurrency(selectedPriceRange[0])}</Typography>
+          <Typography>{formatCurrency(selectedPriceRange[1])}</Typography>
         </Box>
         <Slider
           value={selectedPriceRange}

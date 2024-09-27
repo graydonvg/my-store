@@ -12,6 +12,7 @@ const PARAM_NAME = 'colour';
 
 export default function PrimaryColourFilter({ colors }: Props) {
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const selectedColors = searchParams.getAll(PARAM_NAME);
 
@@ -32,7 +33,7 @@ export default function PrimaryColourFilter({ colors }: Props) {
       label="Primary colour"
       defaultExpanded={true}>
       <FormGroup>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
           {colors.map((color) => (
             <Box
               key={color}
@@ -63,8 +64,9 @@ export default function PrimaryColourFilter({ colors }: Props) {
                           background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)',
                         }),
                         ...(selectedColors.includes(color) && {
-                          outline: '1px solid grey',
-                          outlineOffset: 2,
+                          outline: '2px solid',
+                          outlineColor: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
+                          outlineOffset: 3,
                         }),
                       }}
                     />

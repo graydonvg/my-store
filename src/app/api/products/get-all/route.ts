@@ -6,9 +6,8 @@ import { log, withAxiom } from 'next-axiom';
 
 export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Product[] | null>>> => {
   const supabase = await createSupabaseServerClient();
-  let logger = log.with({ scope: 'route handler', path: '/api/products/get-all' });
 
-  logger.info('Attempting to fetch all products');
+  log.info('Attempting to fetch all products');
 
   try {
     const { data: products, error } = await supabase
@@ -18,7 +17,7 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
       .order('createdAt', { ascending: false });
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
 
       return NextResponse.json(
         {

@@ -16,6 +16,7 @@ export default function ProductsLayout({ children }: { children: ReactNode }) {
           overflowY: 'auto',
           overflowX: 'hidden',
           display: { xs: 'none', md: 'block' },
+          scrollbarWidth: 'thin',
         }}>
         <ProductsSidebar />
       </Box>

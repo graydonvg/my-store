@@ -6,9 +6,8 @@ import { log, withAxiom } from 'next-axiom';
 
 export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Product[] | null>>> => {
   const supabase = await createSupabaseServerClient();
-  let logger = log.with({ scope: 'route handler', path: '/api/products/get-limited-latest' });
 
-  logger.info('Attempting to fetch limited latest products');
+  log.info('Attempting to fetch limited latest products');
 
   try {
     const { data: products, error } = await supabase
@@ -19,7 +18,7 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
       .limit(3);
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
 
       return NextResponse.json(
         {

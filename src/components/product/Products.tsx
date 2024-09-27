@@ -1,7 +1,6 @@
 import { Box, Grid2, Skeleton } from '@mui/material';
 import ProductCard from './productCard/ProductCard';
 import { Product } from '@/types';
-
 import { CONSTANTS } from '@/constants';
 
 type Props = {

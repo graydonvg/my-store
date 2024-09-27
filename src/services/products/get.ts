@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@/constants';
-import { ResponseWithData, Product } from '@/types';
+import { ResponseWithData, Product, ProductsFilterOptions, ProductsFilterCriteria } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -140,6 +140,35 @@ export async function getLimitedLatestProducts(): Promise<ResponseWithData<Produ
     const response = await fetch(url, {
       method: 'GET',
       cache: 'force-cache',
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+
+    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+  } finally {
+    await logger.flush();
+  }
+}
+
+export async function getProductsFilterOptions({
+  category,
+  onSale,
+}: ProductsFilterCriteria): Promise<ResponseWithData<ProductsFilterOptions[] | null>> {
+  const logger = log.with({ context: 'service: getProductsFilterOptions' });
+
+  logger.info('Attempting to fetch products filter options');
+
+  try {
+    const url = `${CONSTANTS.URL}/api/products/get-filter-options`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      cache: 'force-cache',
+      body: JSON.stringify({ category, onSale }),
     });
 
     const result = await response.json();

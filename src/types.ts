@@ -476,6 +476,19 @@ export const UpdateProductSchema = z.object({
 });
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
 
+export type ProductsFilterOptions = {
+  distinctBrands: string[];
+  distinctSizes: string[];
+  distinctFilterColors: string[];
+  distinctFilterMaterials: string[];
+  maxPrice: number;
+};
+
+export type ProductsFilterCriteria = {
+  category?: ProductCategory;
+  onSale?: boolean;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Payment
