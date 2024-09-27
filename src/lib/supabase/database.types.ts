@@ -551,32 +551,19 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
-      getProductFilterOptions:
-        | {
-            Args: {
-              category_input?: Database['public']['Enums']['productCategory'];
-            };
-            Returns: {
-              distinctBrands: string[];
-              distinctSizes: string[];
-              distinctFilterColors: string[];
-              distinctFilterMaterials: string[];
-              maxPrice: number;
-            }[];
-          }
-        | {
-            Args: {
-              category_input?: Database['public']['Enums']['productCategory'];
-              onsale?: boolean;
-            };
-            Returns: {
-              distinctBrands: string[];
-              distinctSizes: string[];
-              distinctFilterColors: string[];
-              distinctFilterMaterials: string[];
-              maxPrice: number;
-            }[];
-          };
+      getProductFilterOptions: {
+        Args: {
+          category_input?: Database['public']['Enums']['productCategory'];
+          onsale?: boolean;
+        };
+        Returns: {
+          distinctBrands: string[];
+          distinctSizes: string[];
+          distinctFilterColors: string[];
+          distinctFilterMaterials: string[];
+          maxPrice: number;
+        }[];
+      };
       updateProductWithImages: {
         Args: {
           product_data: Json;

@@ -1,8 +1,16 @@
+import Products from '@/components/product/Products';
 import ProductsSidebar from '@/components/productsPageStorefront/productsSidebar/ProductsSidebar';
+import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import { Product, ProductsFilterOptions } from '@/types';
 import { Box, Container } from '@mui/material';
-import { ReactNode } from 'react';
 
-export default function ProductsLayout({ children }: { children: ReactNode }) {
+type Props = {
+  header: string;
+  filterOptions: ProductsFilterOptions[] | null;
+  products: Product[] | null;
+};
+
+export default function ProductsLayout({ header, filterOptions, products }: Props) {
   return (
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
       <Box
@@ -18,13 +26,14 @@ export default function ProductsLayout({ children }: { children: ReactNode }) {
           display: { xs: 'none', md: 'block' },
           scrollbarWidth: 'thin',
         }}>
-        <ProductsSidebar />
+        <ProductsSidebar filterOptions={filterOptions} />
       </Box>
 
       <Container
         component="main"
         disableGutters>
-        {children}
+        <PageHeaderWithBorder label={header} />
+        {products ? <Products products={products} /> : 'No results.'}
       </Container>
     </Box>
   );
