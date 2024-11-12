@@ -167,7 +167,7 @@ export default function SignUpForm({ headerComponent, children }: Props) {
                 required={field.required}
                 fullWidth={true}
                 onChange={handleInputChange}
-                backgroundColor={theme.palette.custom.dialog.background.accent}
+                sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
                 icon={field.icon}
                 hasValue={formData[field.name as keyof typeof formData].length > 0}
               />

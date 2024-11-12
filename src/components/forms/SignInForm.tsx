@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Box, Divider, Grid2, Typography, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -15,24 +15,10 @@ import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
 import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
 import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
+import useForm from '@/hooks/use-form';
 import { UserAuthDataSchema } from '@/types';
-import { CONSTANTS } from '@/constants';
-import { useLogger } from 'next-axiom';
-import { constructZodErrorMessage } from '@/utils/constructZodError';
 
-const formFields = [
-  { label: 'Email Address', name: 'email', type: 'email', autoComplete: 'email', required: true, icon: <Email /> },
-  {
-    label: 'Password',
-    name: 'password',
-    type: 'password',
-    autoComplete: 'current-password',
-    required: true,
-    icon: <Lock />,
-  },
-];
-
-const defaultFormData = {
+const DEFAULT_FORM_DATA = {
   email: '',
   password: '',
 };
@@ -43,48 +29,26 @@ type Props = {
 };
 
 export default function SignInForm({ headerComponent, children }: Props) {
-  const log = useLogger();
+  const form = useForm(UserAuthDataSchema, DEFAULT_FORM_DATA);
   const theme = useTheme();
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const isSignInDialogOpen = useAppSelector(selectIsSignInDialogOpen);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(defaultFormData);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setFormData((prevFormValues) => ({ ...prevFormValues, [name]: value }));
-  }
-
-  async function handleSignInWithPassword(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function handleSignInWithPassword() {
     setIsLoading(true);
 
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const validation = UserAuthDataSchema.safeParse(formData);
-
-    if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
-        payload: { email: formData.email },
-        error: validation.error,
-      });
-
-      const errorMessage = constructZodErrorMessage(validation.error);
-
-      toast.error(errorMessage);
-      return;
-    }
-
-    const { success, message } = await signInWithPassword(formData);
+    const { success, message } = await signInWithPassword(form.values);
 
     if (success === true) {
       dispatch(closeDialog());
-      setFormData(defaultFormData);
+      form.reset();
       router.refresh();
     } else {
       toast.error(message);
@@ -136,32 +100,53 @@ export default function SignInForm({ headerComponent, children }: Props) {
       />
       <Box
         component="form"
-        onSubmit={handleSignInWithPassword}
+        noValidate
+        onSubmit={form.handleSubmit(handleSignInWithPassword)}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingX: 2 }}>
         <Grid2
           container
           spacing={2}>
-          {formFields.map((field) => (
-            <Grid2
-              size={{ xs: 12 }}
-              key={field.name}>
-              <CustomTextField
-                key={field.name}
-                label={field.label}
-                name={field.name}
-                type={field.type}
-                value={formData[field.name as keyof typeof formData]}
-                autoComplete={field.autoComplete}
-                autoFocus={field.name === 'email'}
-                required={field.required}
-                fullWidth={true}
-                onChange={handleInputChange}
-                backgroundColor={theme.palette.custom.dialog.background.accent}
-                icon={field.icon}
-                hasValue={formData[field.name as keyof typeof formData].length > 0}
-              />
-            </Grid2>
-          ))}
+          <Grid2 size={12}>
+            <CustomTextField
+              label="Email"
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={form.values.email}
+              onChange={form.handleChange}
+              hasValue={form.values.email.length > 0}
+              autoFocus
+              fullWidth
+              required
+              icon={<Email />}
+              aria-invalid={!!form.errors.email}
+              error={!!form.errors.email}
+              helperText={form.errors.email}
+              aria-describedby="email-helper-text"
+              sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
+            />
+          </Grid2>
+          <Grid2 size={12}>
+            <CustomTextField
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={form.values.password}
+              onChange={form.handleChange}
+              hasValue={form.values.password.length > 0}
+              fullWidth
+              required
+              icon={<Lock />}
+              aria-invalid={!!form.errors.password}
+              error={!!form.errors.password}
+              helperText={form.errors.password}
+              aria-describedby="password-helper-text"
+              sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
+            />
+          </Grid2>
         </Grid2>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 1 }}>
           <ContainedButton

@@ -35,7 +35,7 @@ export const StringIdSchema = z.string();
 const FirstNameSchema = NoNumbersInString;
 const LastNameSchema = NoNumbersInString;
 const ContactNumberSchema = z.string().trim().min(1);
-const PasswordSchema = z.string().trim().min(6);
+const PasswordSchema = z.string().min(6, { message: 'Password must be at least 6 characters' });
 
 const ComplexOrBuildingSchema = z.string().trim().nullable();
 const StreetAddressSchema = z.string().min(1).trim();
@@ -65,7 +65,11 @@ export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
 export const UserAuthDataSchema = z.object({
-  email: z.string().trim().email(),
+  email: z
+    .string()
+    .trim()
+    .email('Please enter a valid email address')
+    .max(254, 'Email cannot be longer than 254 characters'),
   password: PasswordSchema,
 });
 export type UserAuthData = z.infer<typeof UserAuthDataSchema>;

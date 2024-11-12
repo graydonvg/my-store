@@ -1,14 +1,14 @@
 import { CONSTANTS } from '@/constants';
-import { InputAdornment, TextField, TextFieldProps, useTheme } from '@mui/material';
+import { InputAdornment, SxProps, TextField, TextFieldProps, Theme, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type Props = {
   icon?: ReactNode;
-  backgroundColor?: string;
   hasValue: boolean;
+  sxStyles?: SxProps<Theme>;
 } & TextFieldProps;
 
-export default function CustomTextField({ icon, backgroundColor, hasValue, ...props }: Props) {
+export default function CustomTextField({ icon, hasValue, sxStyles, ...props }: Props) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
 
@@ -18,8 +18,6 @@ export default function CustomTextField({ icon, backgroundColor, hasValue, ...pr
       onBlur={() => setFocused(false)}
       sx={{
         borderRadius: CONSTANTS.BORDER_RADIUS,
-        boxShadow: focused ? theme.palette.custom.textField.boxShadow : 0,
-        backgroundColor,
 
         '& label': {
           color: theme.palette.custom.textField.label,
@@ -39,36 +37,67 @@ export default function CustomTextField({ icon, backgroundColor, hasValue, ...pr
           },
 
           '&.Mui-focused fieldset': {
-            border: `1px solid ${theme.palette.custom.textField.focused}`,
-
+            border: `2px solid ${theme.palette.custom.textField.focused}`,
             '&:hover': {
               border: `1px solid ${theme.palette.custom.textField.hover}`,
             },
           },
         },
+
+        ...(props.error && {
+          '& label': {
+            color: theme.palette.error.main,
+          },
+
+          '& label.Mui-focused': {
+            color: theme.palette.error.main,
+          },
+
+          '& fieldset': {
+            borderColor: theme.palette.error.main,
+          },
+
+          '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: theme.palette.error.main,
+            },
+
+            '&.Mui-focused fieldset': {
+              borderColor: theme.palette.error.main,
+              '&:hover': {
+                borderColor: theme.palette.error.main,
+              },
+            },
+          },
+        }),
+
+        ...sxStyles,
       }}
-      InputLabelProps={{
-        shrink: focused || hasValue,
-        sx: {
-          marginLeft: 0,
-          ...(icon &&
-            !focused &&
-            !hasValue && {
-              marginLeft: 4,
-            }),
+      slotProps={{
+        inputLabel: {
+          shrink: focused || hasValue,
+          sx: {
+            marginLeft: 0,
+            ...(icon &&
+              !focused &&
+              !hasValue && {
+                marginLeft: 4,
+              }),
+          },
         },
-      }}
-      InputProps={{
-        startAdornment: icon ? (
-          <InputAdornment
-            position="start"
-            sx={{
-              color: theme.palette.custom.textField.label,
-              ...(focused && { color: theme.palette.custom.textField.labelFocused }),
-            }}>
-            {icon}
-          </InputAdornment>
-        ) : null,
+        input: {
+          startAdornment: icon ? (
+            <InputAdornment
+              position="start"
+              sx={{
+                color: theme.palette.custom.textField.label,
+                ...(focused && { color: theme.palette.custom.textField.labelFocused }),
+                ...(props.error && { color: theme.palette.error.main }),
+              }}>
+              {icon}
+            </InputAdornment>
+          ) : null,
+        },
       }}
       {...props}
     />

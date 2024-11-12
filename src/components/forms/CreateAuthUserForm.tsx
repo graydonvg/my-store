@@ -180,7 +180,7 @@ export default function CreateAuthUserForm({ children }: Props) {
                 onChange={handleInputChange}
                 icon={field.icon}
                 hasValue={formData[field.name as keyof typeof formData].length > 0}
-                backgroundColor={theme.palette.custom.dialog.background.accent}
+                sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
               />
             </Grid2>
           ))}

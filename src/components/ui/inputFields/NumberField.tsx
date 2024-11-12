@@ -57,28 +57,30 @@ export default function NumberField({ styles, icon, hasValue, backgroundColor, .
           MozAppearance: 'textfield',
         },
       })}
-      InputLabelProps={{
-        shrink: focused || hasValue,
-        sx: {
-          marginLeft: 0,
-          ...(icon &&
-            !focused &&
-            !hasValue && {
-              marginLeft: 4,
-            }),
+      slotProps={{
+        inputLabel: {
+          shrink: focused || hasValue,
+          sx: {
+            marginLeft: 0,
+            ...(icon &&
+              !focused &&
+              !hasValue && {
+                marginLeft: 4,
+              }),
+          },
         },
-      }}
-      InputProps={{
-        startAdornment: icon ? (
-          <InputAdornment
-            position="start"
-            sx={{
-              color: theme.palette.custom.textField.label,
-              ...(focused && { color: theme.palette.custom.textField.labelFocused }),
-            }}>
-            {icon}
-          </InputAdornment>
-        ) : null,
+        input: {
+          startAdornment: icon ? (
+            <InputAdornment
+              position="start"
+              sx={{
+                color: theme.palette.custom.textField.label,
+                ...(focused && { color: theme.palette.custom.textField.labelFocused }),
+              }}>
+              {icon}
+            </InputAdornment>
+          ) : null,
+        },
       }}
       {...props}
     />

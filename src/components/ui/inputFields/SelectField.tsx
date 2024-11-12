@@ -49,27 +49,29 @@ export default function SelectField({ options, icon, hasValue, backgroundColor, 
           },
         },
       })}
-      InputLabelProps={{
-        shrink: hasValue,
-        sx: {
-          marginLeft: 0,
-          ...(icon &&
-            !hasValue && {
-              marginLeft: 4,
-            }),
+      slotProps={{
+        inputLabel: {
+          shrink: hasValue,
+          sx: {
+            marginLeft: 0,
+            ...(icon &&
+              !hasValue && {
+                marginLeft: 4,
+              }),
+          },
         },
-      }}
-      InputProps={{
-        startAdornment: icon ? (
-          <InputAdornment
-            position="start"
-            sx={{
-              color: theme.palette.custom.textField.label,
-              ...(focused && { color: theme.palette.custom.textField.labelFocused }),
-            }}>
-            {icon}
-          </InputAdornment>
-        ) : null,
+        input: {
+          startAdornment: icon ? (
+            <InputAdornment
+              position="start"
+              sx={{
+                color: theme.palette.custom.textField.label,
+                ...(focused && { color: theme.palette.custom.textField.labelFocused }),
+              }}>
+              {icon}
+            </InputAdornment>
+          ) : null,
+        },
       }}
       {...textFieldProps}>
       {options.map((option) => (

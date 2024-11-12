@@ -30,7 +30,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           fullWidth={true}
           onChange={onInputChange}
           hasValue={addressFormData.complexOrBuilding !== '' && addressFormData.complexOrBuilding?.length !== null}
-          backgroundColor={theme.palette.custom.dialog.background.accent}
+          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
@@ -43,7 +43,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           fullWidth={true}
           onChange={onInputChange}
           hasValue={addressFormData.streetAddress.length > 0}
-          backgroundColor={theme.palette.custom.dialog.background.accent}
+          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
@@ -56,7 +56,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           fullWidth={true}
           onChange={onInputChange}
           hasValue={addressFormData.suburb.length > 0}
-          backgroundColor={theme.palette.custom.dialog.background.accent}
+          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
@@ -69,7 +69,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           fullWidth={true}
           onChange={onInputChange}
           hasValue={addressFormData.province.length > 0}
-          backgroundColor={theme.palette.custom.dialog.background.accent}
+          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
@@ -82,7 +82,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
           fullWidth={true}
           onChange={onInputChange}
           hasValue={addressFormData.city.length > 0}
-          backgroundColor={theme.palette.custom.dialog.background.accent}
+          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>

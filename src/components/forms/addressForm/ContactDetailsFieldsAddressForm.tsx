@@ -66,7 +66,7 @@ export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props
               addressFormData[field.name as keyof AddressStore] !== '' &&
               addressFormData[field.name as keyof AddressStore] !== null
             }
-            backgroundColor={theme.palette.custom.dialog.background.accent}
+            sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
           />
         </Grid2>
       ))}
