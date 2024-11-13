@@ -18,6 +18,29 @@ import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSele
 import useForm from '@/hooks/use-form';
 import { UserAuthDataSchema } from '@/types';
 
+const fieldConfigs = [
+  {
+    label: 'Email',
+    id: 'email',
+    name: 'email',
+    type: 'email',
+    autoComplete: 'email',
+    icon: <Email />,
+    ariaDescribedBy: 'email-helper-text',
+    required: true,
+  },
+  {
+    label: 'Password',
+    id: 'password',
+    name: 'password',
+    type: 'password',
+    autoComplete: 'current-password',
+    icon: <Lock />,
+    ariaDescribedBy: 'password-helper-text',
+    required: true,
+  },
+];
+
 const DEFAULT_FORM_DATA = {
   email: '',
   password: '',
@@ -106,47 +129,30 @@ export default function SignInForm({ headerComponent, children }: Props) {
         <Grid2
           container
           spacing={2}>
-          <Grid2 size={12}>
-            <CustomTextField
-              label="Email"
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              value={form.values.email}
-              onChange={form.handleChange}
-              hasValue={form.values.email.length > 0}
-              autoFocus
-              fullWidth
-              required
-              icon={<Email />}
-              aria-invalid={!!form.errors.email}
-              error={!!form.errors.email}
-              helperText={form.errors.email}
-              aria-describedby="email-helper-text"
-              sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-            />
-          </Grid2>
-          <Grid2 size={12}>
-            <CustomTextField
-              label="Password"
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={form.values.password}
-              onChange={form.handleChange}
-              hasValue={form.values.password.length > 0}
-              fullWidth
-              required
-              icon={<Lock />}
-              aria-invalid={!!form.errors.password}
-              error={!!form.errors.password}
-              helperText={form.errors.password}
-              aria-describedby="password-helper-text"
-              sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-            />
-          </Grid2>
+          {fieldConfigs.map((field) => (
+            <Grid2
+              key={field.id}
+              size={12}>
+              <CustomTextField
+                label={field.label}
+                id={field.id}
+                name={field.name}
+                type={field.type}
+                autoComplete={field.autoComplete}
+                value={form.values[field.name as keyof typeof form.values]}
+                onChange={form.handleChange}
+                hasValue={!!form.values[field.name as keyof typeof form.values]}
+                fullWidth
+                required={field.required}
+                icon={field.icon}
+                aria-invalid={!!form.errors[field.name as keyof typeof form.errors]}
+                error={!!form.errors[field.name as keyof typeof form.errors]}
+                helperText={form.errors[field.name as keyof typeof form.errors]}
+                aria-describedby={field.ariaDescribedBy}
+                sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
+              />
+            </Grid2>
+          ))}
         </Grid2>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 1 }}>
           <ContainedButton

@@ -1,6 +1,6 @@
 'use client';
 
-import { z, ZodError } from 'zod';
+import { z, ZodError, ZodIssueCode } from 'zod';
 import { ChangeEvent, FormEvent, SetStateAction, useState } from 'react';
 import { CONSTANTS } from '@/constants';
 import { useLogger } from 'next-axiom';
@@ -17,6 +17,16 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
 
     if (errors[name]) {
       // Validate on change to remove errors as soon as valid data is entered
+      if ('password' in values && 'confirmPassword' in values) {
+        if (values.password === value || values.confirmPassword === value) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: null,
+            confirmPassword: null,
+          }));
+        }
+      }
+
       try {
         schema.shape[name].parse(value);
         setErrors((prevErrors) => ({ ...prevErrors, [name]: null }));
@@ -31,10 +41,33 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
     }
   }
 
+  function checkPasswordsMatch() {
+    if ('password' in values && 'confirmPassword' in values) {
+      if (values.password !== values.confirmPassword) {
+        const customZodError = new ZodError([]);
+
+        customZodError.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['password'],
+          message: 'Passwords do not match',
+        });
+
+        customZodError.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['confirmPassword'],
+          message: 'Passwords do not match',
+        });
+
+        throw customZodError;
+      }
+    }
+  }
+
   function validate() {
     // Validate on submit
     try {
       schema.parse(values);
+      checkPasswordsMatch();
       return true;
     } catch (error) {
       if (error instanceof ZodError) {

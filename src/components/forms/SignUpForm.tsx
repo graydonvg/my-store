@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { Box, Grid2, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -12,53 +12,80 @@ import { useRouter } from 'next/navigation';
 import signUpNewUser from '@/services/auth/sign-up';
 import { Call, Email, Lock, Person } from '@mui/icons-material';
 import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
-import { useLogger } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
-import { UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
-import { constructZodErrorMessage } from '@/utils/constructZodError';
+import { PasswordSchema, UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
+import useForm from '@/hooks/use-form';
+import { z } from 'zod';
 
-const formFields = [
+const fieldConfigs = [
   {
     label: 'First Name',
+    id: 'first-name',
     name: 'firstName',
-    type: 'text',
     autoComplete: 'given-name',
-    required: false,
     icon: <Person />,
+    ariaDescribedBy: 'first-name-helper-text',
+    required: false,
   },
   {
     label: 'Last Name',
+    id: 'last-name',
     name: 'lastName',
-    type: 'text',
     autoComplete: 'family-name',
-    required: false,
     icon: <Person />,
+    ariaDescribedBy: 'last-name-helper-text',
+    required: false,
   },
-  { label: 'Contact number', name: 'contactNumber', type: 'tel', required: false, icon: <Call /> },
-  { label: 'Email Address', name: 'email', type: 'text', autoComplete: 'email', required: true, icon: <Email /> },
+  {
+    label: 'Contact Number',
+    id: 'contact-number',
+    name: 'contactNumber',
+    type: 'tel',
+    autoComplete: 'tel',
+    icon: <Call />,
+    ariaDescribedBy: 'contact-number-helper-text',
+    required: false,
+  },
+  {
+    label: 'Email',
+    id: 'email',
+    name: 'email',
+    type: 'email',
+    autoComplete: 'email',
+    icon: <Email />,
+    ariaDescribedBy: 'email-helper-text',
+    required: true,
+  },
   {
     label: 'Password',
+    id: 'password',
     name: 'password',
     type: 'password',
     autoComplete: 'new-password',
-    required: true,
     icon: <Lock />,
+    ariaDescribedBy: 'password-helper-text',
+    required: true,
   },
   {
     label: 'Confirm Password',
+    id: 'confirm-password',
     name: 'confirmPassword',
     type: 'password',
     autoComplete: 'new-password',
-    required: true,
     icon: <Lock />,
+    ariaDescribedBy: 'confirm-password-helper-text',
+    required: true,
   },
 ];
 
-const defaultFormData = {
+const SignUpSchema = UserAuthDataSchema.merge(UserPersonalInfoSchema).merge(
+  z.object({ confirmPassword: PasswordSchema })
+);
+
+const DEFAULT_FORM_DATA = {
   firstName: '',
   lastName: '',
-  email: '',
   contactNumber: '',
+  email: '',
   password: '',
   confirmPassword: '',
 };
@@ -69,58 +96,27 @@ type Props = {
 };
 
 export default function SignUpForm({ headerComponent, children }: Props) {
-  const log = useLogger();
+  const form = useForm(SignUpSchema, DEFAULT_FORM_DATA);
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const isSignUpDialogOpen = useAppSelector(selectIsSignInDialogOpen);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(defaultFormData);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  }
-
-  async function handleSignUp(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
+  async function handleSignUp() {
     setIsLoading(true);
 
     if (isSignUpDialogOpen) {
       dispatch(setIsDialogLoading(true));
     }
 
-    const { confirmPassword, password, ...restOfFormData } = formData;
+    const { confirmPassword, ...restOfFormData } = form.values;
 
-    const validation = UserAuthDataSchema.merge(UserPersonalInfoSchema).safeParse({ password, ...restOfFormData });
-
-    if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
-        payload: restOfFormData,
-        error: validation.error,
-      });
-
-      const errorMessage = constructZodErrorMessage(validation.error);
-
-      toast.error(errorMessage);
-      return;
-    }
-
-    const { success, message } = await signUpNewUser({ password, ...restOfFormData });
+    const { success, message } = await signUpNewUser({ ...restOfFormData });
 
     if (success === true) {
       dispatch(closeDialog());
-      setFormData(defaultFormData);
+      form.reset();
       router.refresh();
     } else {
       toast.error(message);
@@ -148,28 +144,33 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       />
       <Box
         component="form"
-        onSubmit={handleSignUp}
+        noValidate
+        onSubmit={form.handleSubmit(handleSignUp)}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingX: 2 }}>
         <Grid2
           container
           spacing={2}>
-          {formFields.map((field) => (
+          {fieldConfigs.map((field) => (
             <Grid2
-              size={{ xs: 12, sm: field.name === 'firstName' || field.name === 'lastName' ? 6 : false }}
-              key={field.name}>
+              key={field.id}
+              size={{ xs: 12, sm: field.name === 'firstName' || field.name === 'lastName' ? 6 : false }}>
               <CustomTextField
                 label={field.label}
+                id={field.id}
                 name={field.name}
-                type={field.type}
-                value={formData[field.name as keyof typeof formData]}
+                type={field.type || 'text'}
                 autoComplete={field.autoComplete}
-                autoFocus={field.name === 'firstName'}
+                value={form.values[field.name as keyof typeof form.values]}
+                onChange={form.handleChange}
+                hasValue={!!form.values[field.name as keyof typeof form.values]}
+                fullWidth
                 required={field.required}
-                fullWidth={true}
-                onChange={handleInputChange}
-                sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
                 icon={field.icon}
-                hasValue={formData[field.name as keyof typeof formData].length > 0}
+                aria-invalid={!!form.errors[field.name as keyof typeof form.errors]}
+                error={!!form.errors[field.name as keyof typeof form.errors]}
+                helperText={form.errors[field.name as keyof typeof form.errors]}
+                aria-describedby={field.ariaDescribedBy}
+                sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
               />
             </Grid2>
           ))}

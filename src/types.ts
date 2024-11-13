@@ -21,36 +21,132 @@ import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 // Common schemas
 
-const NoNumbersInString = z
+export const NumericIdSchema = z.coerce
+  .number()
+  .int({ message: 'ID must be an integer' })
+  .positive({ message: 'ID must be a positive number' });
+
+export const StringIdSchema = z
   .string()
   .trim()
-  .min(1)
-  .refine((value) => !/\d/.test(value), {
-    message: 'String must not contain numbers',
+  .min(1, { message: 'ID cannot be empty' })
+  .max(1000, { message: 'ID cannot exceed 1000 characters' });
+
+const NameSchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'Name must contain at least two characters' })
+  .max(50, { message: 'Name cannot exceed 50 characters' })
+  .regex(/^[\p{L}\p{M}'-]+$/u, {
+    message: 'Name can only contain letters, hyphens, and apostrophes',
   });
 
-export const NumericIdSchema = z.coerce.number().int().positive();
-export const StringIdSchema = z.string();
+export const PasswordSchema = z
+  .string()
+  .min(6, { message: 'Password must be at least 6 characters' })
+  .max(255, { message: 'Password cannot exceed 255 characters' });
 
-const FirstNameSchema = NoNumbersInString;
-const LastNameSchema = NoNumbersInString;
-const ContactNumberSchema = z.string().trim().min(1);
-const PasswordSchema = z.string().min(6, { message: 'Password must be at least 6 characters' });
+const FirstNameSchema = NameSchema;
 
-const ComplexOrBuildingSchema = z.string().trim().nullable();
-const StreetAddressSchema = z.string().min(1).trim();
-const SuburbSchema = NoNumbersInString;
-const CitySchema = NoNumbersInString;
-const ProvinceSchema = NoNumbersInString;
-const PostalCodeSchema = z.coerce.number().int().min(1000).max(9999);
+const LastNameSchema = NameSchema;
 
-const ItemQuantitySchema = z.number().int().positive();
-const ItemSizeSchema = z.string();
+const ContactNumberSchema = z.string().refine(
+  (value) => {
+    const validSouthAfricanContactNumberPattern = /^(\+27|0)[1-9][0-9]{8}$/;
+    return validSouthAfricanContactNumberPattern.test(value);
+  },
+  {
+    message: 'Please enter a valid South African contact number',
+  }
+);
 
-const ProductIdSchema = z.number().int().positive();
+const ComplexOrBuildingSchema = z
+  .string()
+  .trim()
+  .max(100, { message: 'Complex or building name cannot exceed 100 characters' })
+  .regex(/^[A-Za-z0-9\s,'\-\/]+$/, {
+    message:
+      'Complex or building name can contain letters, numbers, spaces, commas, apostrophes, hyphens, and slashes only',
+  })
+  .nullable();
 
-const PriceSchema = z.number().positive();
-const NonnegativeNumberSchema = z.number().nonnegative();
+const StreetAddressSchema = z
+  .string()
+  .trim()
+  .min(3, { message: 'Street address must contain at least 3 characters' })
+  .max(255, { message: 'Street address cannot exceed 255 characters' })
+  .regex(/^[A-Za-z0-9\s,.-]+$/, {
+    message: 'Street address can contain letters, numbers, spaces, commas, periods, and hyphens only',
+  })
+  .trim();
+
+const SuburbSchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'Suburb name must contain at least 2 characters' })
+  .max(100, { message: 'Suburb name cannot exceed 100 characters' })
+  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+    message: 'Suburb name can only contain letters and spaces',
+  });
+
+const CitySchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'City name must contain at least 2 characters' })
+  .max(100, { message: 'City name cannot exceed 100 characters' })
+  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+    message: 'City name can only contain letters and spaces',
+  });
+
+const ProvinceSchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'Province name must contain at least 2 characters' })
+  .max(100, { message: 'Province name cannot exceed 100 characters' })
+  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+    message: 'Province name can only contain letters and spaces',
+  });
+
+const PostalCodeSchema = z.coerce
+  .number()
+  .int({ message: 'Postal code must be a whole number' })
+  .min(1000, { message: 'Postal code must be at least 1000' })
+  .max(9999, { message: 'Postal code cannot exceed 9999' });
+
+const ItemQuantitySchema = z
+  .number()
+  .int({ message: 'Quantity must be an integer' })
+  .positive({ message: 'Quantity must be a positive number' })
+  .max(10000, { message: 'Quantity cannot exceed 10000' });
+
+const ItemSizeSchema = z
+  .string()
+  .min(1, { message: 'Item size cannot be empty' })
+  .max(50, { message: 'Item size cannot exceed 50 characters' });
+
+const ProductIdSchema = z
+  .number()
+  .int({ message: 'Product ID must be an integer' })
+  .positive({ message: 'Product ID must be a positive number' })
+  .max(1000000, { message: 'Product ID cannot exceed 1,000,000' });
+
+const ProductNameSchema = z
+  .string()
+  .trim()
+  .min(1, { message: 'Product name is required' })
+  .max(255, { message: 'Product name cannot exceed 255 characters' });
+
+const ProductImageUrlSchema = z
+  .string()
+  .trim()
+  .url({ message: 'Invalid URL format for the image' })
+  .min(1, { message: 'Image URL cannot be empty' })
+  .max(255, { message: 'Image URL cannot exceed 255 characters' });
+
+const PriceSchema = z
+  .number()
+  .positive({ message: 'Price must be a positive number' })
+  .max(1000000, { message: 'Price cannot exceed 1,000,000' });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,9 +182,9 @@ export type UserData = {
 };
 
 export const UserPersonalInfoSchema = z.object({
-  firstName: FirstNameSchema.optional(),
-  lastName: LastNameSchema.optional(),
-  contactNumber: ContactNumberSchema.optional(),
+  firstName: FirstNameSchema.optional().or(z.literal('')),
+  lastName: LastNameSchema.optional().or(z.literal('')),
+  contactNumber: ContactNumberSchema.optional().or(z.literal('')),
 });
 export type UserPersonalInfo = z.infer<typeof UserPersonalInfoSchema>;
 
@@ -211,7 +307,7 @@ export const InsertAddressSchema = z.object({
   recipientFirstName: FirstNameSchema,
   recipientLastName: LastNameSchema,
   recipientContactNumber: ContactNumberSchema,
-  complexOrBuilding: ComplexOrBuildingSchema,
+  complexOrBuilding: ComplexOrBuildingSchema.or(z.literal('')),
   streetAddress: StreetAddressSchema,
   suburb: SuburbSchema,
   city: CitySchema,
@@ -225,7 +321,7 @@ export const UpdateAddressSchema = z.object({
   recipientFirstName: FirstNameSchema,
   recipientLastName: LastNameSchema,
   recipientContactNumber: ContactNumberSchema,
-  complexOrBuilding: ComplexOrBuildingSchema,
+  complexOrBuilding: ComplexOrBuildingSchema.or(z.literal('')),
   streetAddress: StreetAddressSchema,
   suburb: SuburbSchema,
   city: CitySchema,
@@ -268,7 +364,7 @@ const OrderShippingDetailsSchema = z.object({
   recipientFirstName: FirstNameSchema,
   recipientLastName: LastNameSchema,
   recipientContactNumber: ContactNumberSchema,
-  complexOrBuilding: ComplexOrBuildingSchema,
+  complexOrBuilding: ComplexOrBuildingSchema.or(z.literal('')),
   streetAddress: StreetAddressSchema,
   suburb: SuburbSchema,
   city: CitySchema,
@@ -287,8 +383,14 @@ type InsertOrderItem = z.infer<typeof InsertOrderItemSchema>;
 
 const OrderDetailsSchema = z.object({
   cartTotal: PriceSchema,
-  deliveryFee: NonnegativeNumberSchema,
-  discountTotal: NonnegativeNumberSchema,
+  deliveryFee: z
+    .number()
+    .nonnegative({ message: 'Delivery fee must be nonnegative' })
+    .max(1000000, { message: 'Delivery fee cannot exceed 1,000,000' }),
+  discountTotal: z
+    .number()
+    .nonnegative({ message: 'Discount total must be nonnegative' })
+    .max(1000000, { message: 'Discount total cannot exceed 1,000,000' }),
   orderTotal: PriceSchema,
   orderStatus: OrderStatusSchema,
 });
@@ -356,7 +458,7 @@ export const UpdateOrderSchema = z.object({
   complexOrBuilding: ComplexOrBuildingSchema.optional(),
   streetAddress: StreetAddressSchema.optional(),
   suburb: SuburbSchema.optional(),
-  city: NoNumbersInString.optional(),
+  city: CitySchema.optional(),
   province: ProvinceSchema.optional(),
   postalCode: PostalCodeSchema.optional(),
   orderStatus: OrderStatusSchema.optional(),
@@ -401,8 +503,6 @@ export type InsertWishlistItemDb = z.infer<typeof InsertWishlistItemSchema>;
 export const ProductCategorySchema = z.enum(['Men', 'Women', 'Kids']);
 export type ProductCategory = z.infer<typeof ProductCategorySchema>;
 
-const ProductSalePercentageSchema = z.number().min(0).max(100);
-
 export type ProductImageUploadProgress = {
   fileName: string;
   progress: number;
@@ -410,9 +510,17 @@ export type ProductImageUploadProgress = {
 
 const ProductImageDataSchema = z.object({
   productImageId: NumericIdSchema.optional(),
-  imageIndex: z.number().int().nonnegative(),
-  fileName: z.string(),
-  imageUrl: z.string().url(),
+  imageIndex: z
+    .number()
+    .int({ message: 'Image index must be an integer' })
+    .nonnegative({ message: 'Image index cannot be negative' })
+    .max(4, { message: 'Image index cannot exceed 4' }),
+  fileName: z
+    .string()
+    .trim()
+    .min(1, { message: 'File name cannot be empty' })
+    .max(255, { message: 'File name cannot exceed 255 characters' }),
+  imageUrl: ProductImageUrlSchema,
 });
 export type ProductImageData = z.infer<typeof ProductImageDataSchema>;
 
@@ -451,15 +559,38 @@ export type ProductForm = {
 
 const ProductDataSchema = z.object({
   category: ProductCategorySchema,
-  name: z.string().trim(),
-  brand: z.string().trim(),
-  details: z.string().trim(),
-  sizes: z.string().array(),
-  deliveryInfo: z.string().trim(),
-  returnInfo: z.string().trim(),
+  name: ProductNameSchema,
+  brand: z
+    .string()
+    .trim()
+    .min(1, { message: 'Brand name is required' })
+    .max(255, { message: 'Brand name cannot exceed 255 characters' })
+    .trim(),
+  details: z
+    .string()
+    .trim()
+    .min(1, { message: 'Product details are required' })
+    .max(1000, { message: 'Product details cannot exceed 1000 characters' })
+    .trim(),
+  sizes: z.array(z.string().trim()).max(5, { message: 'You can only specify up to 5 sizes' }),
+  deliveryInfo: z
+    .string()
+    .trim()
+    .min(1, { message: 'Delivery information is required' })
+    .max(500, { message: 'Delivery information cannot exceed 500 characters' }),
+  returnInfo: z
+    .string()
+    .trim()
+    .min(1, { message: 'Return information is required' })
+    .max(500, { message: 'Return information cannot exceed 500 characters' }),
   price: PriceSchema,
-  isOnSale: z.boolean(),
-  salePercentage: ProductSalePercentageSchema,
+  isOnSale: z.boolean().refine((value) => typeof value === 'boolean', {
+    message: 'Sale status must be true or false',
+  }),
+  salePercentage: z
+    .number()
+    .nonnegative({ message: 'Sale percentage cannot be negative' })
+    .max(100, { message: 'Sale percentage cannot exceed 100' }),
 });
 
 export type InsertProductData = z.infer<typeof ProductDataSchema>;
@@ -499,10 +630,10 @@ export type ProductsFilterCriteria = {
 
 const LineItemSchema = z.object({
   price_data: z.object({
-    currency: z.string(),
+    currency: z.string().length(3, { message: 'Currency code must be a 3-letter ISO code' }),
     product_data: z.object({
-      name: z.string(),
-      images: z.string().array(),
+      name: ProductNameSchema,
+      images: ProductImageUrlSchema.array().max(1, { message: 'A maximum of 1 image is allowed per product' }),
     }),
     unit_amount: PriceSchema,
   }),
