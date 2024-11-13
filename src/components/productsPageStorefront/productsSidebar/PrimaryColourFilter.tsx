@@ -42,7 +42,7 @@ export default function PrimaryColourFilter({ colors }: Props) {
                 control={<span />}
                 label={
                   <Tooltip
-                    title={<Typography>{color}</Typography>}
+                    title={<Typography sx={{ textTransform: 'capitalize' }}>{color}</Typography>}
                     placement="top"
                     arrow>
                     <Box
@@ -60,7 +60,7 @@ export default function PrimaryColourFilter({ colors }: Props) {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        ...(color === 'Multi' && {
+                        ...(color === 'multi' && {
                           background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)',
                         }),
                         ...(selectedColors.includes(color) && {

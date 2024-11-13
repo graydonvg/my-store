@@ -42,6 +42,7 @@ export default function MaterialFilter({ materials }: Props) {
               />
             }
             label={material}
+            sx={{ textTransform: 'capitalize' }}
           />
         ))}
       </FormGroup>

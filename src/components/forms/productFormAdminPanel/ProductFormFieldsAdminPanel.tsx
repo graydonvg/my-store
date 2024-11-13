@@ -33,7 +33,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
     dispatch(setProductFormData({ field: name as keyof ProductForm, value }));
   }
 
-  function getSelectFieldValue(isOnSale: boolean | '') {
+  function getOnSaleSelectFieldValue(isOnSale: boolean | '') {
     if (isOnSale) {
       return 'Yes';
     }
@@ -92,9 +92,31 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
-        placeholder="e.g. Blue & White Striped, 100% Cotton, Sleeveless, Round neck, Cute bowknot, ..."
+        placeholder="e.g. Blue & White Striped, 100% Cotton, Sleeveless, ..."
         required
         hasValue={productFormData.details.length > 0}
+      />
+      <CustomTextField
+        label="Filter colors"
+        name="filterColors"
+        value={productFormData.filterColors.join(', ')}
+        onChange={handleInputChange}
+        disabled={isFieldDisabled}
+        multiline
+        placeholder="e.g. blue, white, multi, ..."
+        required
+        hasValue={productFormData.filterColors.length > 0}
+      />
+      <CustomTextField
+        label="Filter materials"
+        name="filterMaterials"
+        value={productFormData.filterMaterials.join(', ')}
+        onChange={handleInputChange}
+        disabled={isFieldDisabled}
+        multiline
+        placeholder="e.g. cotton blend, wool blend, ..."
+        required
+        hasValue={productFormData.filterMaterials.length > 0}
       />
       <CustomTextField
         label="Delivery info"
@@ -129,7 +151,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
       <SelectField
         label="On sale"
         name="isOnSale"
-        value={getSelectFieldValue(productFormData.isOnSale)}
+        value={getOnSaleSelectFieldValue(productFormData.isOnSale)}
         onChange={handleInputChange}
         options={['No', 'Yes']}
         disabled={isFieldDisabled}

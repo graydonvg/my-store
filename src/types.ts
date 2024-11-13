@@ -537,6 +537,8 @@ export type ProductData = {
   sizes: string[];
   deliveryInfo: string;
   returnInfo: string;
+  filterColors: string[];
+  filterMaterials: string[];
 };
 
 export type Product = ProductData & {
@@ -555,6 +557,8 @@ export type ProductForm = {
   sizes: string[];
   price: '' | number;
   salePercentage: '' | number;
+  filterColors: string[];
+  filterMaterials: string[];
 };
 
 const ProductDataSchema = z.object({
@@ -591,6 +595,14 @@ const ProductDataSchema = z.object({
     .number()
     .nonnegative({ message: 'Sale percentage cannot be negative' })
     .max(100, { message: 'Sale percentage cannot exceed 100' }),
+  filterColors: z
+    .array(z.string().trim())
+    .min(1, { message: 'At least 1 filter color is required' })
+    .max(10, { message: 'You can only specify up to 10 filter colors' }),
+  filterMaterials: z
+    .array(z.string().trim())
+    .min(1, { message: 'At least 1 filter material is required' })
+    .max(10, { message: 'You can only specify up to 10 filter materials' }),
 });
 
 export type InsertProductData = z.infer<typeof ProductDataSchema>;
