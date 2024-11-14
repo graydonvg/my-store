@@ -27,7 +27,6 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
           overflow: 'hidden',
         }}>
         <Image
-          priority
           style={{
             objectFit: 'cover',
             cursor: 'pointer',

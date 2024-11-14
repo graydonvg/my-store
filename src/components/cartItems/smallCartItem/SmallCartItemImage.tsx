@@ -35,7 +35,6 @@ export default function SmallCartItemImage({ imageUrl, productName, onClick }: P
         sizes="60px"
         src={imageUrl!}
         alt={`Image for ${productName}`}
-        priority
         onLoad={() => setIsImageLoading(false)}
       />
 
