@@ -5,11 +5,7 @@ const STORE_NAME = 'MyStore';
 export const CONSTANTS = {
   URL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://my-store-henna.vercel.app',
   STORE_NAME,
-  STORE_DESCRIPTION: 'Online Shopping - Shop the latest fashion at unbeatable prices.',
-  STORE_SLOGAN: 'Where Fashion Meets Passion',
-  STORE_INTRODUCTION: `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`,
   BORDER_RADIUS: '4px',
-  FREE_DELIVERY_THRESHOLD: 500,
   MAXIMUM_PRODUCT_IMAGES: 5,
   USER_ROLE_OPTIONS: ['none', 'admin', 'manager', 'owner'] as UserRoleSelectOptions[],
   HAS_ADMIN_PANEL_ACCESS: ['admin', 'manager', 'owner'],
@@ -20,7 +16,6 @@ export const CONSTANTS = {
     { label: 'L', value: 'L' },
     { label: 'XL', value: 'XL' },
   ],
-  ORDERED_SIZES_FOR_STORE: ['XS', 'S', 'M', 'L', 'XL'],
   STOREFRONT_NAV_OPTIONS: [
     {
       label: 'Home',
@@ -130,10 +125,4 @@ export const CONSTANTS = {
     DATABASE_DELETE: 'Database delete error',
     UNEXPECTED: 'An unexpected error occurred',
   },
-};
-
-export const ERROR_MESSAGES = {
-  NO_DATA_RECEIVED: 'No data was received in the request body.',
-  NOT_AUTHENTICATED: 'Not authenticated.',
-  NO_ID_RECEIVED: 'Please provide a valid ID.',
 };

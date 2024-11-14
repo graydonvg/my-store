@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Box, FormControl, Grid2, useTheme } from '@mui/material';
+import { Box, Grid2, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
 import { CONSTANTS } from '@/constants';
-import SelectField from '../ui/inputFields/SelectField';
 import { UserAuthDataSchema, UserPersonalInfoSchema, UserRole } from '@/types';
 import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
@@ -185,20 +184,21 @@ export default function CreateAuthUserForm({ children }: Props) {
             </Grid2>
           ))}
           <Grid2 size={{ xs: 12 }}>
-            <FormControl fullWidth>
-              <SelectField
-                label="Role"
-                name="role"
-                options={restricedUserRoleOptions}
-                value={formData.role}
-                fullWidth
-                required
-                onChange={handleInputChange}
-                icon={<AdminPanelSettings />}
-                hasValue={formData.role.length > 0}
-                backgroundColor={theme.palette.custom.dialog.background.accent}
-              />
-            </FormControl>
+            {/* <FormControl fullWidth> */}
+            <CustomTextField
+              select
+              label="Role"
+              name="role"
+              selectOptions={restricedUserRoleOptions}
+              value={formData.role}
+              fullWidth
+              required
+              onChange={handleInputChange}
+              icon={<AdminPanelSettings />}
+              hasValue={formData.role.length > 0}
+              sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
+            />
+            {/* </FormControl> */}
           </Grid2>
         </Grid2>
         {children}

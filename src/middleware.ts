@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { CONSTANTS, ERROR_MESSAGES } from './constants';
+import { CONSTANTS } from './constants';
 import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/auth';
 
@@ -45,7 +45,10 @@ export async function middleware(request: NextRequest) {
 
   if (authRequiredPath && !authUser) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json({ success: false, message: ERROR_MESSAGES.NOT_AUTHENTICATED }, { status: 401 });
+      response = NextResponse.json(
+        { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED },
+        { status: 401 }
+      );
     } else {
       const redirectUrl = new URL('/welcome/sign-in', request.url);
       response = NextResponse.redirect(redirectUrl);

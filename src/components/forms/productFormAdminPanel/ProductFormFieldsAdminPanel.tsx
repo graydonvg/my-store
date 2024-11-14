@@ -1,9 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import ToggleButtons from '@/components/ui/buttons/simple/ToggleButtons';
-import SelectField from '@/components/ui/inputFields/SelectField';
 import CustomTextField from '@/components/ui/inputFields/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import NumberField from '@/components/ui/inputFields/NumberField';
 import { CONSTANTS } from '@/constants';
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
@@ -57,12 +55,13 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
           disabled={isFieldDisabled}
         />
       </Box>
-      <SelectField
+      <CustomTextField
+        select
         label="Category"
         name="category"
         onChange={handleInputChange}
         value={productFormData.category}
-        options={categoryOptionsCapitalised}
+        selectOptions={categoryOptionsCapitalised}
         disabled={isFieldDisabled}
         required
         hasValue={productFormData.category.length > 0}
@@ -138,7 +137,8 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
         required
         hasValue={productFormData.returnInfo.length > 0}
       />
-      <NumberField
+      <CustomTextField
+        type="number"
         label="Price"
         name="price"
         value={productFormData.price}
@@ -148,17 +148,19 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
         required
         hasValue={productFormData.price !== ''}
       />
-      <SelectField
+      <CustomTextField
+        select
         label="On sale"
         name="isOnSale"
         value={getOnSaleSelectFieldValue(productFormData.isOnSale)}
         onChange={handleInputChange}
-        options={['No', 'Yes']}
+        selectOptions={['No', 'Yes']}
         disabled={isFieldDisabled}
         required
         hasValue={productFormData.isOnSale !== ''}
       />
-      <NumberField
+      <CustomTextField
+        type="number"
         label="Sale %"
         name="salePercentage"
         onChange={handleInputChange}

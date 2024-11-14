@@ -18,9 +18,11 @@ export function sortItemSizesArrayForToggleButtons(
   }
 }
 
+const ORDERED_SIZES_FOR_STORE = ['XS', 'S', 'M', 'L', 'XL'];
+
 export function sortItemSizesArrayForStore(a: string, b: string) {
-  const indexOfA = CONSTANTS.ORDERED_SIZES_FOR_STORE.indexOf(a);
-  const indexOfB = CONSTANTS.ORDERED_SIZES_FOR_STORE.indexOf(b);
+  const indexOfA = ORDERED_SIZES_FOR_STORE.indexOf(a);
+  const indexOfB = ORDERED_SIZES_FOR_STORE.indexOf(b);
 
   if (indexOfA !== -1 && indexOfB !== -1) {
     return indexOfA - indexOfB;

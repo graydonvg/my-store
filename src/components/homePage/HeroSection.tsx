@@ -8,6 +8,9 @@ import { useState } from 'react';
 import heroImage from '../../../public/stylish-woman-with-shopping-bags.jpg';
 import { useRouter } from 'next/navigation';
 
+const STORE_SLOGAN = 'Where Fashion Meets Passion';
+const STORE_INTRODUCTION = `Immerse yourself in a world of self-expression at ${CONSTANTS.STORE_NAME}, where each piece tells a story and every outfit is a statement`;
+
 export default function HeroSection() {
   const router = useRouter();
   const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
@@ -61,7 +64,7 @@ export default function HeroSection() {
               color: (theme) => theme.palette.grey[900],
               maxWidth: { xs: '40%', sm: '45%', lg: '50%' },
             }}>
-            {CONSTANTS.STORE_SLOGAN}
+            {STORE_SLOGAN}
           </Typography>
           <Typography
             component="p"
@@ -72,7 +75,7 @@ export default function HeroSection() {
               maxWidth: { sm: '35%', lg: '40%' },
               display: { xs: 'none', sm: 'block' },
             }}>
-            {CONSTANTS.STORE_INTRODUCTION}
+            {STORE_INTRODUCTION}
           </Typography>
           <Box sx={{ paddingTop: 2, alignSelf: { xs: 'center', sm: 'flex-start' } }}>
             <ContainedButton

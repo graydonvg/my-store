@@ -1,7 +1,8 @@
-import { CONSTANTS } from '@/constants';
 import { selectOrderTotal } from '@/lib/redux/features/cart/cartSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Divider, Typography } from '@mui/material';
+
+const FREE_DELIVERY_THRESHOLD = 500;
 
 type Props = {
   returnInfo: string;
@@ -16,7 +17,7 @@ export default function LargeCartItemBottomDetails({ returnInfo }: Props) {
       component="p"
       fontSize={{ xs: 14, sm: 16 }}
       sx={{ color: (theme) => theme.palette.text.secondary }}>
-      {orderTotal > CONSTANTS.FREE_DELIVERY_THRESHOLD ? (
+      {orderTotal > FREE_DELIVERY_THRESHOLD ? (
         <>
           Delivery Free
           <Divider

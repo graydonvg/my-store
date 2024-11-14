@@ -1,14 +1,15 @@
 import { CONSTANTS } from '@/constants';
-import { InputAdornment, SxProps, TextField, TextFieldProps, Theme, useTheme } from '@mui/material';
+import { InputAdornment, MenuItem, SxProps, TextField, TextFieldProps, Theme, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
-type Props = {
+type Props = TextFieldProps & {
   icon?: ReactNode;
   hasValue: boolean;
   sxStyles?: SxProps<Theme>;
-} & TextFieldProps;
+  selectOptions?: string[];
+};
 
-export default function CustomTextField({ icon, hasValue, sxStyles, ...props }: Props) {
+export default function CustomTextField({ icon, hasValue, sxStyles, selectOptions, ...props }: Props) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
 
@@ -43,6 +44,16 @@ export default function CustomTextField({ icon, hasValue, sxStyles, ...props }: 
             },
           },
         },
+
+        ...(props.type === 'number' && {
+          '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            display: 'none',
+          },
+
+          '& input[type=number]': {
+            MozAppearance: 'textfield',
+          },
+        }),
 
         ...(props.error && {
           '& label': {
@@ -99,7 +110,15 @@ export default function CustomTextField({ icon, hasValue, sxStyles, ...props }: 
           ) : null,
         },
       }}
-      {...props}
-    />
+      {...props}>
+      {props.select &&
+        selectOptions?.map((option) => (
+          <MenuItem
+            key={option}
+            value={option}>
+            {option}
+          </MenuItem>
+        ))}
+    </TextField>
   );
 }
