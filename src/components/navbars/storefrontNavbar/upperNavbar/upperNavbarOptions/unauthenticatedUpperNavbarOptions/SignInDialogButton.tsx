@@ -3,7 +3,7 @@
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useTheme } from '@mui/material';
-import TextButton from '@/components/ui/buttons/simple/TextButton';
+import TextButton from '@/components/ui/buttons/TextButton';
 
 export default function SignInDialogButton() {
   const theme = useTheme();

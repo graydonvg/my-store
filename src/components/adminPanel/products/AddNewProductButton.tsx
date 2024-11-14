@@ -1,4 +1,4 @@
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 

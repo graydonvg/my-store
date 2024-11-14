@@ -4,7 +4,7 @@ import NavDrawer from '@/components/drawers/navDrawer/NavDrawer';
 import { Box, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import NavbarTitle from '@/components/navbars/NavbarTitle';
-import NavDrawerButton from '@/components/ui/buttons/complex/NavDrawerButton';
+import NavDrawerButton from '@/components/NavDrawerButton';
 
 type Props = {
   children?: ReactNode;

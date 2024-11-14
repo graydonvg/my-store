@@ -3,7 +3,7 @@ import { setAccountFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/feature
 import { updateUserPassword } from '@/services/users/update';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import CustomTextField from '@/components/ui/inputFields/CustomTextField';
+import CustomTextField from '@/components/ui/CustomTextField';
 import AccountPageForm from './AccountPageForm';
 import { Lock } from '@mui/icons-material';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';

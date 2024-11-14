@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setIsMovingToWishlist } from '@/lib/redux/features/editCartItemDrawer/editCartItemDrawerSlice';
 import addItemToWishlist from '@/services/wishlist/add';
 import { toast } from 'react-toastify';
-import TextButton from '@/components/ui/buttons/simple/TextButton';
+import TextButton from '@/components/ui/buttons/TextButton';
 import { selectWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSelectors';
 
 type Props = {

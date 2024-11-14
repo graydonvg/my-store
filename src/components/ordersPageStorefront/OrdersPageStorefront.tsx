@@ -4,7 +4,7 @@ import { OrderData } from '@/types';
 import { Box, Grid2, useMediaQuery, useTheme } from '@mui/material';
 import OrderDetails from './orderDetails/OrderDetails';
 import OrderItems from './orderItems/OrderItems';
-import OutlinedButton from '../ui/buttons/simple/OutlinedButton';
+import OutlinedButton from '../ui/buttons/OutlinedButton';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { calculatePagination } from '@/utils/calculations';

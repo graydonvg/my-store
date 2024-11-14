@@ -1,4 +1,4 @@
-import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import updateOrderStatus from '@/services/orders/update';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

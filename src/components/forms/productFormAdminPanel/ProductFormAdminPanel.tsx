@@ -1,13 +1,13 @@
 import { Box } from '@mui/material';
 import { FormEvent, ReactNode, useState } from 'react';
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { DeleteForever } from '@mui/icons-material';
 import { getEmptyObjectKeys } from '@/utils/objectHelpers';
 import { getObjectKeyCount } from '@/utils/objectHelpers';
 import ProductFormFieldsAdminPanel from '@/components/forms/productFormAdminPanel/ProductFormFieldsAdminPanel';
 import { clearProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
-import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 

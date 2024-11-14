@@ -1,5 +1,5 @@
 import { Grid2, Typography, useTheme } from '@mui/material';
-import CustomTextField from '../../ui/inputFields/CustomTextField';
+import CustomTextField from '../../ui/CustomTextField';
 import { ChangeEvent } from 'react';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';

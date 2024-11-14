@@ -1,14 +1,14 @@
 import { useTheme, Typography } from '@mui/material';
-import { ArrowDropDown, AccountCircle, ViewList, Favorite, Security } from '@mui/icons-material';
+import { ArrowDropDown, AccountCircle, ViewList, Favorite, Security, Logout } from '@mui/icons-material';
 import { ThemeToggleIcon } from '../../../../../../theme/ThemeToggleIcon';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toggleTheme } from '@/lib/redux/features/theme/themeSlice';
 import HoverDropdownMenu from './HoverDropdownMenu';
 import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
-import SignOutButton from '../../../../../../ui/buttons/complex/SignOutButton';
 import { CONSTANTS } from '@/constants';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import SignOutButtonWrapper from '@/components/SignOutButtonWrapper';
 
 const iconSize = 'small';
 
@@ -88,10 +88,17 @@ export default function AccountDropdownMenu() {
         icon={<ThemeToggleIcon size={iconSize} />}
         onClick={changeTheme}
       />
-      <SignOutButton
-        buttonVariant="dropdownMenu"
-        accountMenuIconSize={iconSize}
-      />
+      <SignOutButtonWrapper>
+        {({ signOutUser }) => {
+          return (
+            <AccountDropdownMenuItem
+              label={'Sign Out'}
+              icon={<Logout fontSize={iconSize} />}
+              onClick={signOutUser}
+            />
+          );
+        }}
+      </SignOutButtonWrapper>
     </HoverDropdownMenu>
   );
 }

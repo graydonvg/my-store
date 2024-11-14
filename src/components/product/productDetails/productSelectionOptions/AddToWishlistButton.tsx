@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { setWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSlice';
-import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { selectWishlistData } from '@/lib/redux/features/wishlistData/wishlistDataSelectors';
 

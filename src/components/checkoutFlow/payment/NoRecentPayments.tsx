@@ -1,6 +1,6 @@
 'use client';
 
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

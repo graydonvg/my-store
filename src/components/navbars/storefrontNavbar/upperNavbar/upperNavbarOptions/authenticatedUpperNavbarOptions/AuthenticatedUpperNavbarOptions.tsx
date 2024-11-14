@@ -3,7 +3,7 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Box, List, ListItem } from '@mui/material';
 import CartDrawer from '../../../../../drawers/cartDrawer/CartDrawer';
-import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
+import CheckoutButton from '@/components/CheckoutButton';
 import DividerUpperNavbarOptions from '../DividerUpperNavbarOptions';
 import CartDrawerButton from './CartDrawerButton';
 import WishlistButton from './WishlistButton';

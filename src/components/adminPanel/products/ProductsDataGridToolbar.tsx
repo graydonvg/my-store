@@ -7,7 +7,7 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import { DeleteForever } from '@mui/icons-material';
-import ContainedButton from '../../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import AddNewProductButton from './AddNewProductButton';
 import RevalidateButton from './RevalidateButton';
 

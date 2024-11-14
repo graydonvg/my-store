@@ -2,7 +2,7 @@ import { AppBar, Box } from '@mui/material';
 import ThemeToggleButton from '@/components/theme/ThemeToggleButton';
 import NavDrawer from '@/components/drawers/navDrawer/NavDrawer';
 import AdminPanelNavbarTitle from './AdminPanelNavbarTitle';
-import NavDrawerButton from '@/components/ui/buttons/complex/NavDrawerButton';
+import NavDrawerButton from '@/components/NavDrawerButton';
 import UpperNavbarContainer from '../storefrontNavbar/upperNavbar/UpperNavbarContainer';
 import { ElevationScroll } from '@/components/ui/ElevationScroll';
 

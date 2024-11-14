@@ -1,5 +1,5 @@
 import { Grid2, Typography, useTheme } from '@mui/material';
-import CustomTextField from '../../ui/inputFields/CustomTextField';
+import CustomTextField from '../../ui/CustomTextField';
 import { AddressStore } from '@/types';
 import { ChangeEvent, useEffect } from 'react';
 import { Call, Person } from '@mui/icons-material';

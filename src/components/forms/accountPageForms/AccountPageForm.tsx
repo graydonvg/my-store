@@ -1,7 +1,7 @@
 import { FormEvent, KeyboardEvent, ReactNode } from 'react';
 import { Box } from '@mui/material';
-import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
 type Props = {
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;

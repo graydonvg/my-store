@@ -1,7 +1,7 @@
 import { CONSTANTS } from '@/constants';
 import { Product } from '@/types';
 import { Box, Grid2, Paper, Typography } from '@mui/material';
-import ContainedButton from '../../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import ProductCard from '../../product/productCard/ProductCard';
 
 type Props = {

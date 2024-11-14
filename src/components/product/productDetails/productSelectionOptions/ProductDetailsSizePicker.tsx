@@ -1,6 +1,6 @@
 import { Product } from '@/types';
 import { Box, Typography } from '@mui/material';
-import ToggleButtons from '../../../ui/buttons/simple/ToggleButtons';
+import ToggleButtons from '../../../ui/buttons/ToggleButtons';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { CONSTANTS } from '@/constants';
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortingHelpers';

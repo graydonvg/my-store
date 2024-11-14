@@ -1,10 +1,8 @@
-import { CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import ProductImageBoxes from '../../../product/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
 import { Box } from '@mui/material';
-import ContainedButton from '../../../ui/buttons/simple/ContainedButton';
-import ImageInput from '../../../ui/inputFields/ImageInput';
+import UploadImageButton from './UploadImageButton';
 import { toast } from 'react-toastify';
 import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/fileUtils';
@@ -78,20 +76,10 @@ export default function ManageProductImages() {
       <ProductImageBoxes />
       <EditProductImagesDrawerButton />
       <EditProductImagesDrawer />
-      <ContainedButton
-        tabIndex={-1}
-        color="primary"
-        label={
-          <>
-            {!uploadInProgress ? 'upload images' : ''}
-            <ImageInput onChange={handleImageUpload} />
-          </>
-        }
-        isLoading={uploadInProgress}
-        disabled={isSubmitting}
-        startIcon={<CloudUpload />}
-        fullWidth
-        component="label"
+      <UploadImageButton
+        onChange={handleImageUpload}
+        uploadInProgress={uploadInProgress}
+        isSubmitting={isSubmitting}
       />
     </Box>
   );

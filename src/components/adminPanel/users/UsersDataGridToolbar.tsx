@@ -8,7 +8,7 @@ import {
 } from '@mui/x-data-grid';
 import CreateAuthUserDialogButton from './CreateAuthUserDialogButton';
 import { DeleteForever } from '@mui/icons-material';
-import ContainedButton from '../../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import CreateAuthUserDialog from '@/components/dialogs/CreateAuthUserDialog';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';

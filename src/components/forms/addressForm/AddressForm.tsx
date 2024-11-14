@@ -1,6 +1,6 @@
 import { Box, Divider } from '@mui/material';
 import { ChangeEvent, FormEvent } from 'react';
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import FormHeader from '../FormHeader';
 import ContactDetailsFieldsAddressForm from './ContactDetailsFieldsAddressForm';
 import DeliveryAddressFieldsAddressForm from './DeliveryAddressFieldsAddressForm';

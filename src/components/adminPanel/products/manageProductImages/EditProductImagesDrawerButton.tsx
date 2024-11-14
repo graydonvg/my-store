@@ -1,4 +1,4 @@
-import OutlinedButton from '@/components/ui/buttons/simple/OutlinedButton';
+import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';

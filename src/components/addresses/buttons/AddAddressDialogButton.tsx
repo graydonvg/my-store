@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Add } from '@mui/icons-material';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { clearAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
 

@@ -3,10 +3,10 @@ import { setIsNavDrawerOpen } from '@/lib/redux/features/navDrawer/navDrawerSlic
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { usePathname } from 'next/navigation';
 import NavDrawerOption from '../navDrawerOption/NavDrawerOption';
-import SignOutButton from '@/components/ui/buttons/complex/SignOutButton';
 import { CONSTANTS } from '@/constants';
 import ThemeButtonNavDrawerOptions from './ThemeButtonNavDrawerOptions';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import SignOutButtonWrapper from '@/components/SignOutButtonWrapper';
 
 export default function NavDrawerOptions() {
   const userData = useAppSelector(selectUserData);
@@ -15,6 +15,12 @@ export default function NavDrawerOptions() {
   const isAdminPath = pathname.startsWith('/admin');
 
   function closeDrawer() {
+    dispatch(setIsNavDrawerOpen(false));
+  }
+
+  async function signOutAndCloseDrawer(signOutUser: () => Promise<void>) {
+    await signOutUser();
+
     dispatch(setIsNavDrawerOpen(false));
   }
 
@@ -62,7 +68,18 @@ export default function NavDrawerOptions() {
             ))
           : null}
 
-        {userData || isAdminPath ? <SignOutButton buttonVariant="temporaryDrawer" /> : null}
+        {userData || isAdminPath ? (
+          <SignOutButtonWrapper>
+            {({ signOutUser }) => {
+              return (
+                <NavDrawerOption
+                  onClick={() => signOutAndCloseDrawer(signOutUser)}
+                  label="Sign Out"
+                />
+              );
+            }}
+          </SignOutButtonWrapper>
+        ) : null}
 
         {!isAdminPath ? <ThemeButtonNavDrawerOptions /> : null}
       </List>

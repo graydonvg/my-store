@@ -5,7 +5,7 @@ import { Box, Grid2, useTheme } from '@mui/material';
 import FormHeader from './FormHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { closeDialog, setIsDialogLoading } from '@/lib/redux/features/dialog/dialogSlice';
-import CustomTextField from '../ui/inputFields/CustomTextField';
+import CustomTextField from '../ui/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';

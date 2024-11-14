@@ -1,4 +1,4 @@
-import { ChevronLeft, Dashboard, LocalShipping, People, ShoppingCart, Store } from '@mui/icons-material';
+import { ChevronLeft, Dashboard, LocalShipping, Logout, People, ShoppingCart, Store } from '@mui/icons-material';
 import {
   Divider,
   Drawer,
@@ -11,9 +11,9 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import SignOutButton from '../ui/buttons/complex/SignOutButton';
 import { CONSTANTS } from '@/constants';
 import { usePathname } from 'next/navigation';
+import SignOutButtonWrapper from '../SignOutButtonWrapper';
 
 function getIcon(icon: string) {
   const icons = {
@@ -95,7 +95,20 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
             <ListItemText primary="Storefront" />
           </ListItemButton>
         </Link>
-        <SignOutButton buttonVariant="permanentDrawer" />
+        <SignOutButtonWrapper>
+          {({ signOutUser }) => {
+            return (
+              <ListItemButton
+                onClick={signOutUser}
+                sx={{ color: theme.palette.text.secondary }}>
+                <ListItemIcon sx={{ color: theme.palette.text.secondary, marginLeft: 0.5 }}>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary="Sign Out" />
+              </ListItemButton>
+            );
+          }}
+        </SignOutButtonWrapper>
       </List>
     </Drawer>
   );

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import CheckoutOrderTotals from '@/components/checkoutFlow/CheckoutOrderTotals';
 import CheckoutNavbar from '@/components/navbars/checkoutNavbar/CheckoutNavbar';
 import { CONSTANTS } from '@/constants';
-import CheckoutButton from '@/components/ui/buttons/complex/CheckoutButton';
+import CheckoutButton from '@/components/CheckoutButton';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectCartItems } from '@/lib/redux/features/cart/cartSelectors';
 import PaymentButton from '@/components/checkoutFlow/PaymentButton';

@@ -1,7 +1,7 @@
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { toast } from 'react-toastify';
-import ContainedButton from '../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
 import { InsertOrder } from '@/types';
 import addOrder from '@/services/orders/add';
 import { Payment } from '@mui/icons-material';

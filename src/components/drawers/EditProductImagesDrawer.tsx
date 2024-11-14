@@ -1,6 +1,6 @@
 import DrawerComponent from '../ui/DrawerComponent';
 import { DeleteForever } from '@mui/icons-material';
-import ContainedButton from '../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, useTheme } from '@mui/material';

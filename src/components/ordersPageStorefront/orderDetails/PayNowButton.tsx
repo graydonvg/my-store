@@ -1,4 +1,4 @@
-import ContainedButton from '@/components/ui/buttons/simple/ContainedButton';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 import { createNewStripeCheckoutSession, resumeStripeCheckout } from '@/services/stripe/checkout';
 import { OrderData } from '@/types';
 import { getLineItemsFromDatabaseOrderItems } from '@/utils/stripeHelpers';

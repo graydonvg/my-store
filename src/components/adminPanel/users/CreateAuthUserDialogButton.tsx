@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
-import ContainedButton from '../../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
 
 export default function CreateAuthUserDialogButton() {

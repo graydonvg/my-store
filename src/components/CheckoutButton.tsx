@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import ContainedButton from '../simple/ContainedButton';
+import ContainedButton from './ui/buttons/ContainedButton';
 import { calculateRoundedDiscountedPrice } from '@/utils/calculations';
 import { setCheckoutData } from '@/lib/redux/features/checkout/checkoutSlice';
 import {

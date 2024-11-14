@@ -4,7 +4,7 @@ import { updateCartItemQuantity } from '@/services/cart/update';
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
-import ContainedButton from '../../../ui/buttons/simple/ContainedButton';
+import ContainedButton from '../../../ui/buttons/ContainedButton';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { CartItem, Product } from '@/types';
 import { AddShoppingCart } from '@mui/icons-material';

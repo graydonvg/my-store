@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, ReactNode, useState } from 'react';
-import CustomTextField from '@/components/ui/inputFields/CustomTextField';
+import CustomTextField from '@/components/ui/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setAccountFieldToEdit, setIsUpdatingAccount } from '@/lib/redux/features/account/accountSlice';
 import { useRouter } from 'next/navigation';
