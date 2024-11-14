@@ -54,20 +54,26 @@ export default function ManageProductImages() {
 
     const uploadImagePromiseResults = await Promise.allSettled(uploadImagePromises);
 
+    let imageIndex = imageData.length;
+
     const uploadImagelResults = uploadImagePromiseResults.map((result, index) => {
       if (result.status === 'fulfilled') {
         const { fileName, imageUrl } = result.value;
 
-        const imageIndex = imageData.length > 0 ? imageData.length + index : index;
+        const newImageIndex = imageIndex;
+        imageIndex++;
 
-        return { fileName, imageUrl, imageIndex };
+        return { fileName, imageUrl, imageIndex: newImageIndex };
       } else {
-        toast.error(`Image ${index + 1} failed to upload. ${result.reason}`);
+        const { error, fileName } = result.reason;
+        toast.error(`Image ${fileName} failed to upload. ${error}`);
         return { fileName: '', imageUrl: '', imageIndex: index };
       }
     });
 
-    dispatch(setImageData(uploadImagelResults));
+    const successfullyUploadedImages = uploadImagelResults.filter((image) => image.imageUrl.length > 0);
+
+    dispatch(setImageData(successfullyUploadedImages));
     dispatch(clearImageUploadProgess());
   }
 

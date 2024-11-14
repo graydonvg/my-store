@@ -42,7 +42,7 @@ export async function uploadProductImageToStorage(
       observer,
       (error) => {
         logger.error('Upload state change error', { error, fileName });
-        reject(error);
+        reject({ error, fileName });
       },
       async () => {
         try {
@@ -51,7 +51,7 @@ export async function uploadProductImageToStorage(
           resolve({ imageUrl: downloadURL, fileName });
         } catch (error) {
           logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error, fileName });
-          reject(error);
+          reject({ error, fileName });
         } finally {
           await logger.flush();
         }

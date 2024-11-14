@@ -85,7 +85,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
         }}>
         <Grid2
           size={{ xs: 2 }}
-          sx={{ display: 'grid2', placeItems: 'center' }}>
+          sx={{ display: 'grid', placeItems: 'center' }}>
           <IconButton
             {...listeners}
             {...restOfAttributes}
@@ -107,7 +107,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
         </Grid2>
         <Grid2
           size={{ xs: 4 }}
-          sx={{ display: 'grid2' }}>
+          sx={{ display: 'grid' }}>
           <Box
             sx={{
               position: 'relative',
@@ -141,7 +141,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
           <Box
             sx={{
               height: 1,
-              display: 'grid2',
+              display: 'grid',
               placeItems: 'center',
             }}>
             <TextButton
