@@ -126,3 +126,7 @@ export const CONSTANTS = {
     UNEXPECTED: 'An unexpected error occurred',
   },
 };
+
+export const ADMIN_PATHS = ['/api/secure/admin', '/admin'];
+
+export const AUTH_REQUIRED_PATHS = ['/api/secure', '/account', '/orders', '/wishlist', '/cart', '/checkout'];

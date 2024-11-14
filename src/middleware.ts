@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { CONSTANTS } from './constants';
+import { ADMIN_PATHS, AUTH_REQUIRED_PATHS, CONSTANTS } from './constants';
 import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/auth';
 
@@ -21,18 +21,12 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.redirect(redirectUrl);
   }
 
-  const isAdminPath = checkPathStartsWith('/api/secure/admin') || checkPathStartsWith('/admin');
+  const isAdminPath = ADMIN_PATHS.some((path) => checkPathStartsWith(path));
 
-  const authRequiredPath =
-    checkPathStartsWith('/api/secure') ||
-    checkPathStartsWith('/account') ||
-    checkPathStartsWith('/orders') ||
-    checkPathStartsWith('/wishlist') ||
-    checkPathStartsWith('/cart') ||
-    checkPathStartsWith('/checkout');
+  const authRequired = AUTH_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
 
   const userRole = await getUserRoleFromSession(supabase);
-  const hasAdminPanelAccess = CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userRole ?? '');
+  const hasAdminPanelAccess = userRole && CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userRole);
 
   if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
@@ -43,7 +37,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (authRequiredPath && !authUser) {
+  if (authRequired && !authUser) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json(
         { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED },
