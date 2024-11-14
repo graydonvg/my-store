@@ -20,7 +20,7 @@ export default async function WishlistPage() {
           component="ul"
           container
           spacing={{ xs: 2, md: 3 }}>
-          {wishlist?.map((item) => (
+          {wishlist.map((item) => (
             <Grid2
               component="li"
               key={item.wishlistItemId}
