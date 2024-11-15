@@ -1,13 +1,6 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 body {
+  /* opening dialogs sets overflow hidden and adds padding right to the body which creates a gap between the content and the right side of the page */
   padding-right: 0 !important;
 }

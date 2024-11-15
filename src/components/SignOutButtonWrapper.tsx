@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 
-const REDIRECT_ON_SIGN_OUT_PATHS = ['/admin', '/account', '/orders', '/wishlist'];
+const REDIRECT_ON_SIGN_OUT_PATHS = ['/wishlist', '/orders', '/account', '/admin'];
 
 type Props = {
   children: (args: { signOutUser: () => Promise<void> }) => ReactNode;

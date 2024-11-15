@@ -1,12 +1,8 @@
-import DrawerComponent from '../ui/DrawerComponent';
 import { DeleteForever } from '@mui/icons-material';
-import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, useTheme } from '@mui/material';
-import DrawerHeader from './DrawerHeader';
 import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';
-import DraggableProductImages from '../adminPanel/products/manageProductImages/draggableProductImages/DraggableProductImages';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import {
   selectImageData,
@@ -14,6 +10,10 @@ import {
   selectIsEditImagesDrawerOpen,
 } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { deleteAllProductImages } from '@/services/admin/image-deletion';
+import DrawerComponent from '@/components/ui/DrawerComponent';
+import DrawerHeader from '@/components/drawers/DrawerHeader';
+import DraggableProductImages from './draggableProductImages/DraggableProductImages';
+import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
 export default function EditProductImagesDrawer() {
   const theme = useTheme();
