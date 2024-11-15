@@ -90,6 +90,7 @@ export default function PriceRangeFilter({ maxPrice }: Props) {
           min={priceRange[0]}
           max={priceRange[1]}
           step={50}
+          getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
         />
       </Box>
     </ProductsSidebarAccordion>
