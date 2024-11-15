@@ -1,32 +1,31 @@
-import { Product } from '@/types';
-import SmallProductImageBox from './SmallProductImageBox';
+import { ProductImageData } from '@/types';
+import SmallProductImage from './SmallProductImage';
 
 type Props = {
-  product: Product;
+  productName: string;
+  productImageData: ProductImageData[];
   selectImage: (index: number) => void;
   selectedImageIndex: number;
-  boxBorderColor: string;
 };
 
-export default function SmallProductImageBoxStorefront({
-  product,
+export default function SmallProductImagesStorefront({
+  productName,
+  productImageData,
   selectImage,
   selectedImageIndex,
-  boxBorderColor,
 }: Props) {
   return (
     <>
-      {product.productImageData
+      {productImageData
         .sort((a, b) => a.imageIndex - b.imageIndex)
         .map((data) => (
-          <SmallProductImageBox
+          <SmallProductImage
             key={data.fileName}
-            productName={product?.name}
+            productName={productName}
             productImageData={data}
-            selectImage={() => selectImage(data.imageIndex)}
+            onClick={() => selectImage(data.imageIndex)}
             imageIndex={data.imageIndex}
             selectedImageIndex={selectedImageIndex}
-            boxBorderColor={boxBorderColor}
           />
         ))}
     </>

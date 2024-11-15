@@ -1,4 +1,4 @@
-import { ProductsSkeleton } from '@/components/product/Products';
+import { ProductsSkeleton } from '@/components/product/ProductsSkeleton';
 import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
 import { Box, Container, Skeleton } from '@mui/material';
 

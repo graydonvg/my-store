@@ -1,9 +1,9 @@
 import { Product } from '@/types';
 import { Box, Divider, Grid2 } from '@mui/material';
-import ProductImageBoxes from '../productImageBoxes/ProductImageBoxes';
 import ProductSelectionOptions from './productSelectionOptions/ProductSelectionOptions';
 import BottomProductDetails from './bottomProductDetails/BottomProductDetails';
 import TopProductDetails from './TopProductDetails';
+import ProductImagesStorefront from '../productImages/ProductImagesStorefront';
 
 type Props = {
   product: Product;
@@ -17,7 +17,10 @@ export default function ProductDetails({ product }: Props) {
       rowSpacing={2}
       sx={{ height: 1 }}>
       <Grid2 size={{ xs: 12, md: 6 }}>
-        <ProductImageBoxes product={product} />
+        <ProductImagesStorefront
+          productName={product.name}
+          productImageData={product.productImageData}
+        />
       </Grid2>
       <Grid2 size={{ xs: 12, md: 6 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>

@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import ProductImageBoxes from '../../../product/productImageBoxes/ProductImageBoxes';
 import { ChangeEvent } from 'react';
 import { Box } from '@mui/material';
 import UploadImageButton from './UploadImageButton';
@@ -17,6 +16,7 @@ import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/
 import { CONSTANTS } from '@/constants';
 import { useLogger } from 'next-axiom';
 import EditProductImagesDrawer from './EditProductImagesDrawer';
+import ProductImagesAdminPanel from '@/components/product/productImages/ProductImagesAdminPanel';
 
 export default function ManageProductImages() {
   const logger = useLogger();
@@ -98,7 +98,7 @@ export default function ManageProductImages() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
-      <ProductImageBoxes />
+      <ProductImagesAdminPanel />
       <EditProductImagesDrawerButton />
       <EditProductImagesDrawer />
       <UploadImageButton
