@@ -4,10 +4,10 @@ import { CloudUpload } from '@mui/icons-material';
 
 type Props = {
   uploadInProgress: boolean;
-  isSubmitting: boolean;
+  disabled: boolean;
 } & InputProps;
 
-export default function UploadImageButton({ uploadInProgress, isSubmitting, ...InputProps }: Props) {
+export default function UploadImageButton({ uploadInProgress, disabled, ...InputProps }: Props) {
   return (
     <ContainedButton
       tabIndex={-1}
@@ -34,7 +34,7 @@ export default function UploadImageButton({ uploadInProgress, isSubmitting, ...I
         </>
       }
       isLoading={uploadInProgress}
-      disabled={isSubmitting}
+      disabled={disabled}
       startIcon={<CloudUpload />}
       fullWidth
       component="label"

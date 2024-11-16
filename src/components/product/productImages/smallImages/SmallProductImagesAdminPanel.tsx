@@ -1,9 +1,9 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import SmallBoxWithUploadProgress from './SmallBoxWithUploadProgress';
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
 import SmallProductImage from './SmallProductImage';
 import { CONSTANTS } from '@/constants';
 import SmallProductImageContainer from './SmallProductImageContainer';
+import { CircularProgressWithLabel } from '@/components/ui/progress/CircularProgressWithLabel';
 
 type Props = {
   selectImage: (index: number) => void;
@@ -20,38 +20,42 @@ type Props = {
 export default function SmallProductImagesAdminPanel({ selectImage, selectedImageIndex, getBoxBorderColor }: Props) {
   const imageData = useAppSelector(selectImageData);
   const { imageUploadProgress } = useAppSelector((state) => state.productImages);
-  const numberOfEmptyBoxes = CONSTANTS.MAXIMUM_PRODUCT_IMAGES - imageData.length - imageUploadProgress.length;
 
   return (
     <>
-      {imageData.length > 0
-        ? imageData.map((data) => (
-            <SmallProductImage
-              key={data.fileName}
-              productImageData={data}
-              onClick={() => selectImage(data.imageIndex)}
-              imageIndex={data.imageIndex}
-              selectedImageIndex={selectedImageIndex}
-            />
-          ))
-        : null}
+      {Array.from(Array(CONSTANTS.MAXIMUM_PRODUCT_IMAGES)).map((_, index) => {
+        const imageUploadInfo = imageUploadProgress[index];
+        const currentImageData = imageData.find((image) => image.imageIndex === index);
 
-      {imageData.length === 0 && imageUploadProgress.length > 0
-        ? imageUploadProgress.map((data) => (
-            <SmallBoxWithUploadProgress
-              key={data.fileName}
-              progress={data.progress}
-              boxBorderColor={getBoxBorderColor({ focusedBorderColor: true })}
-            />
-          ))
-        : null}
+        const isDefaultBorderColor = !currentImageData;
+        const isFocusedBorderColor = imageUploadInfo?.fileName?.length > 0;
 
-      {Array.from(Array(numberOfEmptyBoxes)).map((_, index) => (
-        <SmallProductImageContainer
-          key={`empty-small-box-${index}`}
-          boxBorderColor={getBoxBorderColor({ defaultBorderColor: true })}
-        />
-      ))}
+        function handleImageClick() {
+          if (currentImageData?.imageIndex !== undefined) {
+            selectImage(currentImageData.imageIndex);
+          }
+        }
+
+        return (
+          <SmallProductImageContainer
+            key={index}
+            boxBorderColor={getBoxBorderColor({
+              defaultBorderColor: isDefaultBorderColor,
+              focusedBorderColor: isFocusedBorderColor,
+            })}>
+            {imageUploadInfo?.fileName && <CircularProgressWithLabel value={imageUploadInfo.progress} />}
+
+            {currentImageData?.imageUrl && (
+              <SmallProductImage
+                productImageData={currentImageData}
+                onClick={handleImageClick}
+                imageIndex={currentImageData.imageIndex}
+                selectedImageIndex={selectedImageIndex}
+              />
+            )}
+          </SmallProductImageContainer>
+        );
+      })}
     </>
   );
 }

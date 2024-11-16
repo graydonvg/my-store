@@ -104,7 +104,7 @@ export default function ManageProductImages() {
       <UploadImageButton
         onChange={handleImageUpload}
         uploadInProgress={uploadInProgress}
-        isSubmitting={isSubmitting}
+        disabled={isSubmitting || imageData.length === CONSTANTS.MAXIMUM_PRODUCT_IMAGES}
       />
     </Box>
   );
