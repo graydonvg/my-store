@@ -96,7 +96,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to delete product(s). Please try again later.',
+          message: `Failed to delete product(s). ${deleteError.message}.`,
         },
         { status: 500 }
       );

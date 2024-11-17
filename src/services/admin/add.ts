@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@/constants';
-import { AddProduct, CreateUser, ResponseWithNoData, UserAuthData } from '@/types';
+import { AddProduct, CreateUser, ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -28,7 +28,7 @@ export async function addProduct(data: AddProduct): Promise<ResponseWithNoData> 
   }
 }
 
-export async function createNewUser(data: UserAuthData & CreateUser): Promise<ResponseWithNoData> {
+export async function createNewUser(data: CreateUser): Promise<ResponseWithNoData> {
   const logger = log.with({ context: 'service: createNewUser' });
 
   logger.info('Attempting to create user');

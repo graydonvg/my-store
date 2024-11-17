@@ -143,7 +143,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         return NextResponse.json(
           {
             success: false,
-            message: 'Failed to update user. Please try again later.',
+            message: `Failed to update user. ${updateError.message}.`,
           },
           { status: 500 }
         );
@@ -151,8 +151,6 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     }
 
     if (roleToAssign) {
-      const errorMessage = 'Failed to update user role. Please try again later.';
-
       if (roleToAssign === 'none') {
         const { error: deleteError } = await supabase.from('userRoles').delete().eq('userId', userToUpdateId);
 
@@ -162,7 +160,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           return NextResponse.json(
             {
               success: false,
-              message: errorMessage,
+              message: `Failed to update user role. ${deleteError.message}`,
             },
             { status: 500 }
           );
@@ -179,7 +177,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           return NextResponse.json(
             {
               success: false,
-              message: errorMessage,
+              message: `Failed to update user role. ${insertError.message}`,
             },
             { status: 500 }
           );
@@ -196,7 +194,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           return NextResponse.json(
             {
               success: false,
-              message: errorMessage,
+              message: `Failed to update user role. ${updateError.message}`,
             },
             { status: 500 }
           );

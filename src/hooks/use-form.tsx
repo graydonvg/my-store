@@ -18,7 +18,10 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
     if (errors[name]) {
       // Validate on change to remove errors as soon as valid data is entered
       if ('password' in values && 'confirmPassword' in values) {
-        if (values.password === value || values.confirmPassword === value) {
+        if (
+          (name === 'confirmPassword' && value === values.password) ||
+          (name === 'password' && value === values.confirmPassword)
+        ) {
           setErrors((prevErrors) => ({
             ...prevErrors,
             password: null,

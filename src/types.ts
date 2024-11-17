@@ -152,10 +152,14 @@ const PriceSchema = z
 
 // User
 
-export const UserRoleSchema = z.enum(['admin', 'manager', 'owner']).nullable();
+export const UserRoleSchema = z
+  .enum(['admin', 'manager', 'owner'], { message: 'Please provide a valid role' })
+  .nullable();
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
-const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', 'owner']);
+export const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', 'owner'], {
+  message: 'Please select a role',
+});
 export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
 
 export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
@@ -223,12 +227,10 @@ export type UsersDataGrid = {
   role: UserRole;
 };
 
-export type CreateUser = {
-  contactNumber?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: UserRole;
-};
+export const CreateUserSchema = UserAuthDataSchema.merge(UserPersonalInfoSchema).merge(
+  z.object({ role: UserRoleSchema })
+);
+export type CreateUser = z.infer<typeof CreateUserSchema>;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

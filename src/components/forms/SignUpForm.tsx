@@ -81,7 +81,7 @@ const SignUpSchema = UserAuthDataSchema.merge(UserPersonalInfoSchema).merge(
   z.object({ confirmPassword: PasswordSchema })
 );
 
-const DEFAULT_FORM_DATA = {
+const defaultFormData = {
   firstName: '',
   lastName: '',
   contactNumber: '',
@@ -96,7 +96,7 @@ type Props = {
 };
 
 export default function SignUpForm({ headerComponent, children }: Props) {
-  const form = useForm(SignUpSchema, DEFAULT_FORM_DATA);
+  const form = useForm(SignUpSchema, defaultFormData);
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();

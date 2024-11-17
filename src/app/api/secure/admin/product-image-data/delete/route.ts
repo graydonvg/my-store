@@ -82,7 +82,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to delete product image data from database. Please try again later.',
+          message: `Failed to delete product image data from database. ${deleteError.message}.`,
         },
         { status: 500 }
       );

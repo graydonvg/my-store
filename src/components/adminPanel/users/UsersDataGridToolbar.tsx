@@ -6,10 +6,10 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import CreateAuthUserDialogButton from './CreateAuthUserDialogButton';
+import CreateUserDialogButton from './CreateUserDialogButton';
 import { DeleteForever } from '@mui/icons-material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
-import CreateAuthUserDialog from '@/components/dialogs/CreateAuthUserDialog';
+import CreateUserDialog from '@/components/dialogs/CreateUserDialog';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectIsDialogLoading } from '@/lib/redux/features/dialog/dialogSelectors';
 
@@ -76,8 +76,8 @@ export default function UsersDataGridToolbar({ isDeleting, isUpdating, onDeleteC
           />
         ) : (
           <>
-            <CreateAuthUserDialogButton />
-            <CreateAuthUserDialog>
+            <CreateUserDialogButton />
+            <CreateUserDialog>
               <ContainedButton
                 label="create user"
                 disabled={isDialogLoading || isDeleting || isUpdating}
@@ -89,7 +89,7 @@ export default function UsersDataGridToolbar({ isDeleting, isUpdating, onDeleteC
                 fullWidth
                 color="secondary"
               />
-            </CreateAuthUserDialog>
+            </CreateUserDialog>
           </>
         )}
       </Box>

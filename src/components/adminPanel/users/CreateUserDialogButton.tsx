@@ -3,7 +3,7 @@ import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import { Add } from '@mui/icons-material';
 
-export default function CreateAuthUserDialogButton() {
+export default function CreateUserDialogButton() {
   const dispatch = useAppDispatch();
 
   function openAddUserDialog() {

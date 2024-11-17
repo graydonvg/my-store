@@ -1,12 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-  UserAuthData,
-  CreateUser,
-  UserAuthDataSchema,
-  UserPersonalInfoSchema,
-  UserRoleSchema,
-  ResponseWithNoData,
-} from '@/types';
+import { CreateUser, ResponseWithNoData, CreateUserSchema } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyObjectKeys } from '@/utils/objectHelpers';
@@ -70,7 +63,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    let userData: UserAuthData & CreateUser;
+    let userData: CreateUser;
 
     try {
       userData = await request.json();
@@ -86,75 +79,44 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const { email, password, ...userDataToUpdate } = userData;
+    const validation = CreateUserSchema.safeParse(userData);
+
+    if (!validation.success) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+
+      const errorMessage = constructZodErrorMessage(validation.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { email, password, ...userDataToUpdate } = validation.data;
     const { role: roleToAssign, ...restOfUserDataToUpdate } = userDataToUpdate;
 
-    const userAuthValidation = UserAuthDataSchema.safeParse({ email, password });
-
-    if (!userAuthValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userAuthValidation.error });
-
-      const errorMessage = constructZodErrorMessage(userAuthValidation.error);
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: errorMessage,
-        },
-        { status: 400 }
-      );
-    }
-
-    const userDataValidation = UserPersonalInfoSchema.safeParse(restOfUserDataToUpdate);
-
-    if (!userDataValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });
-
-      const errorMessage = constructZodErrorMessage(userDataValidation.error);
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: errorMessage,
-        },
-        { status: 400 }
-      );
-    }
-
-    const userRoleValidation = UserRoleSchema.safeParse(roleToAssign);
-
-    if (!userRoleValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userRoleValidation.error });
-
-      const errorMessage = constructZodErrorMessage(userRoleValidation.error);
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: errorMessage,
-        },
-        { status: 400 }
-      );
-    }
-
     if (
-      (userRoleValidation.data === 'owner' && !isOwner) ||
-      (userRoleValidation.data === 'manager' && !isOwner) ||
-      (userRoleValidation.data === 'admin' && !(isOwner || isManager))
+      (roleToAssign === 'owner' && !isOwner) ||
+      (roleToAssign === 'manager' && !isOwner) ||
+      (roleToAssign === 'admin' && !(isOwner || isManager))
     ) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign: userRoleValidation.data });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign });
 
       return NextResponse.json(
         {
           success: false,
-          message: `Not authorized to assign role '${userRoleValidation.data}'.`,
+          message: `Not authorized to assign role '${roleToAssign}'.`,
         },
         { status: 401 }
       );
     }
 
     const { data: createUserData, error: createUserError } = await supabaseService.auth.admin.createUser({
-      ...userAuthValidation.data,
+      email,
+      password,
       email_confirm: true,
     });
 
@@ -164,7 +126,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to create user. Please try again later.',
+          message: `Failed to create user. ${createUserError.message}.`,
         },
         { status: 500 }
       );
@@ -178,7 +140,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       // Using supabaseService since anyone can sign up
       const { error: updateError } = await supabaseService
         .from('users')
-        .update(userDataValidation.data)
+        .update(restOfUserDataToUpdate)
         .eq('userId', createUserData.user.id);
 
       if (updateError) {
@@ -187,17 +149,17 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         return NextResponse.json(
           {
             success: false,
-            message: 'User created successfully, but failed to update users table entry.',
+            message: `User created successfully, but failed to update users table entry. ${updateError.message}.`,
           },
           { status: 500 }
         );
       }
 
-      if (userRoleValidation.data) {
+      if (roleToAssign) {
         // Not using supabaseService since not everyone can assign roles
         const { error: insertUserRoleError } = await supabase
           .from('userRoles')
-          .insert({ userId: createUserData.user.id, role: userRoleValidation.data });
+          .insert({ userId: createUserData.user.id, role: roleToAssign });
 
         if (insertUserRoleError) {
           log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertUserRoleError });
@@ -205,7 +167,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
           return NextResponse.json(
             {
               success: false,
-              message: 'User created successfully, but failed to assign user role.',
+              message: `User created successfully, but failed to assign user role. ${insertUserRoleError.message}.`,
             },
             { status: 500 }
           );
@@ -218,8 +180,8 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     log.info(successMessage, {
       data: {
         userId: createUserData.user.id,
-        ...userDataValidation.data,
-        role: roleToAssign,
+        email,
+        userDataToUpdate,
       },
     });
 

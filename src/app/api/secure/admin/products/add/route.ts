@@ -105,7 +105,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to add product. Please try again later.',
+          message: `Failed to add product. ${insertProductError.message}.`,
         },
         { status: 500 }
       );
@@ -126,12 +126,10 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteProductError });
       }
 
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertProductError });
-
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to add product image data. Please try again later.',
+          message: `Failed to add product image data. ${insertProductImageDataError.message}.`,
         },
         { status: 500 }
       );

@@ -117,7 +117,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       return NextResponse.json(
         {
           success: false,
-          message: `Failed to delete ${numberOfPromiseRejections} user(s). Please try again later.`,
+          message: `Failed to delete ${numberOfPromiseRejections} user(s). ${deleteUserRejections[0].message}.`,
         },
         { status: 500 }
       );
@@ -129,7 +129,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       return NextResponse.json(
         {
           success: false,
-          message: `Failed to delete ${numberOfDeleteErrors} user(s). Please try again later.`,
+          message: `Failed to delete ${numberOfDeleteErrors} user(s). ${deleteUserErrors[0].message}.`,
         },
         { status: 500 }
       );

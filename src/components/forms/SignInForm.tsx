@@ -41,7 +41,7 @@ const fieldConfigs = [
   },
 ];
 
-const DEFAULT_FORM_DATA = {
+const defaultFormData = {
   email: '',
   password: '',
 };
@@ -52,7 +52,7 @@ type Props = {
 };
 
 export default function SignInForm({ headerComponent, children }: Props) {
-  const form = useForm(UserAuthDataSchema, DEFAULT_FORM_DATA);
+  const form = useForm(UserAuthDataSchema, defaultFormData);
   const theme = useTheme();
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();

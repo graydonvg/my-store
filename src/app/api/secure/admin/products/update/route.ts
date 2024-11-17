@@ -108,7 +108,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         return NextResponse.json(
           {
             success: false,
-            message: 'Failed to update product. Please try again later.',
+            message: `Failed to update product. ${updateProductError.message}.`,
           },
           { status: 500 }
         );
@@ -125,7 +125,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         return NextResponse.json(
           {
             success: false,
-            message: 'Failed to update product. Please try again later.',
+            message: `Failed to update product. ${updateProductDataError.message}.`,
           },
           { status: 500 }
         );
