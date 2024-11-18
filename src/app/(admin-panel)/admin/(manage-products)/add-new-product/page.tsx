@@ -23,6 +23,7 @@ import { CONSTANTS } from '@/constants';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
 
 export default function AdminPanelAddNewProductPage() {
   const log = useLogger();
@@ -65,6 +66,10 @@ export default function AdminPanelAddNewProductPage() {
 
   async function handleAddProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const isAuthorized = await checkAuthorizationClient('products.insert');
+
+    if (!isAuthorized) return;
 
     const productData = {
       productData: productFormData,

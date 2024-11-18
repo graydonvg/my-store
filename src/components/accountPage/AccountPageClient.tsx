@@ -6,7 +6,7 @@ import AccountSection from '@/components/accountPage/sections/accountSection/Acc
 import PersonalInformationSection from '@/components/accountPage/sections/PersonalInformationSection';
 import Addresses from '@/components/addresses/Addresses';
 import SectionWrapperAccountPage from '@/components/accountPage/SectionWrapperAccountPage';
-import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import PageHeaderWithBorder from '@/components/PageHeaderWithBorder';
 import { useEffect } from 'react';
 import { setAddresses } from '@/lib/redux/features/addresses/addressesSlice';
 import { AddressType } from '@/types';

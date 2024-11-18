@@ -1,6 +1,6 @@
 import Products from '@/components/product/Products';
 import ProductsSidebar from '@/components/productsPageStorefront/productsSidebar/ProductsSidebar';
-import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import PageHeaderWithBorder from '@/components/PageHeaderWithBorder';
 import { Product, ProductsFilterOptions } from '@/types';
 import { Box, Container } from '@mui/material';
 

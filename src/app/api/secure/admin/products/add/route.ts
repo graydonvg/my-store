@@ -4,8 +4,9 @@ import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
+import { getUserRoleFromSession } from '@/utils/auth';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -46,9 +47,10 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     log = request.log.with({ callerUserId: authUser.id });
 
     const userRole = await getUserRoleFromSession(supabase);
-    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
 
-    if (!isAdmin && !isManager && !isOwner) {
+    const isAuthorized = await checkAuthorizationServer(supabase, 'products.insert');
+
+    if (!isAuthorized) {
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
 
       return NextResponse.json(

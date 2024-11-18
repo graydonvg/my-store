@@ -1,5 +1,5 @@
 import OrdersPageStorefront from '@/components/ordersPageStorefront/OrdersPageStorefront';
-import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import PageHeaderWithBorder from '@/components/PageHeaderWithBorder';
 import { CONSTANTS } from '@/constants';
 import { fetchOrdersForUser } from '@/services/db/queries/fetchOrders';
 import { Metadata } from 'next';

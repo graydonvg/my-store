@@ -1,4 +1,4 @@
-import PageHeaderWithBorder from '@/components/ui/PageHeaderWithBorder';
+import PageHeaderWithBorder from '@/components/PageHeaderWithBorder';
 import ProductCard from '@/components/product/productCard/ProductCard';
 import fetchWishlist from '@/services/db/queries/fetchWishlist';
 import { Grid2 } from '@mui/material';

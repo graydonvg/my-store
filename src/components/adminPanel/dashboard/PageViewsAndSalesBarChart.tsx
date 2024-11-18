@@ -33,7 +33,7 @@ function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' 
 
 export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData, previousYearSalesTotal }: Props) {
   const theme = useTheme();
-  const cumulativeSales = orderData ? calculateTotalMonthlySales(orderData) : undefined;
+  const monthlySales = orderData ? calculateTotalMonthlySales(orderData) : undefined;
   const monthlyConversions = orderData ? calculateTotalMonthlyConversions(orderData) : undefined;
   const totalSales = orderData?.reduce((acc, order) => {
     return (acc += order.orderTotal);
@@ -111,7 +111,7 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData,
             {
               id: 'sales',
               label: 'Sales',
-              data: cumulativeSales,
+              data: monthlySales,
               stack: 'A',
               valueFormatter: (value) => formatCurrency(value ?? 0),
             },

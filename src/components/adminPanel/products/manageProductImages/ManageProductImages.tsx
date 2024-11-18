@@ -17,6 +17,7 @@ import { CONSTANTS } from '@/constants';
 import { useLogger } from 'next-axiom';
 import EditProductImagesDrawer from './EditProductImagesDrawer';
 import ProductImagesAdminPanel from '@/components/product/productImages/ProductImagesAdminPanel';
+import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
 
 export default function ManageProductImages() {
   const logger = useLogger();
@@ -27,6 +28,10 @@ export default function ManageProductImages() {
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
+    const isAuthorized = await checkAuthorizationClient('productImageData.insert');
+
+    if (!isAuthorized) return;
+
     const files = event.target.files;
 
     if (!files) return;

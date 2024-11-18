@@ -499,6 +499,12 @@ export type Database = {
         };
         Returns: boolean;
       };
+      authorizeInvoker: {
+        Args: {
+          requestedPermission: Database['public']['Enums']['appPermission'];
+        };
+        Returns: boolean;
+      };
       custom_access_token_hook: {
         Args: {
           event: Json;

@@ -17,7 +17,6 @@ export default async function fetchUserSessionData() {
     } = await supabase.auth.getUser();
 
     if (!authUser) {
-      logger.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED);
       return {
         authUser: null,
         userData: null,

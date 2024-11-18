@@ -192,9 +192,9 @@ export function calculateRefundRates(
     return (refundCount / orderCount) * 100;
   });
 
-  const overallRefundRate = (totalRefunds: number, totalOrders: number) => {
+  function overallRefundRate(totalRefunds: number, totalOrders: number) {
     return totalOrders === 0 ? 0 : (totalRefunds / totalOrders) * 100;
-  };
+  }
 
   const overallCurrentPeriodRefundRate = overallRefundRate(
     sumArrayValues(currentPeriodRefunds),
