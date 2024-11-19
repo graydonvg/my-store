@@ -62,21 +62,19 @@ export default function ProductsDataGridActions({ params }: Props) {
 
   async function permanentlyDeleteProduct() {
     setIsDeletingProduct(true);
-    const productImagesToastId = toast.loading('Deleting product images...');
-    const productDataToastId = toast.loading('Deleting product data...');
+
+    const toastId = toast.loading('Deleting product...');
 
     const deleteImagesPromise = deleteProductImagesFromStorage(productImageData);
     const deleteProductDataPromise = deleteProduct(params.row.productId);
 
-    const [deleteImagesResponse, deleteProductDataResponse] = await Promise.all([
-      deleteImagesPromise,
-      deleteProductDataPromise,
-    ]);
+    const results = await Promise.all([deleteImagesPromise, deleteProductDataPromise]);
 
-    handleToastUpdate(deleteImagesResponse, productImagesToastId);
-    handleToastUpdate(deleteProductDataResponse, productDataToastId);
+    const success = results.every((result) => result.success);
 
-    if (deleteImagesResponse.success && deleteProductDataResponse.success) {
+    handleToastUpdate(results, success, toastId);
+
+    if (success) {
       await revalidateAndRefresh();
       router.refresh();
       setIsDeletingProduct(false);
@@ -85,12 +83,11 @@ export default function ProductsDataGridActions({ params }: Props) {
     setIsDeletingProduct(false);
   }
 
-  function handleToastUpdate(response: ResponseWithNoData, toastId: Id) {
-    if (response.success) {
-      const { success, message } = response;
+  function handleToastUpdate(results: ResponseWithNoData[], success: boolean, toastId: Id) {
+    if (success) {
       toast.update(toastId, {
-        render: message,
-        type: success ? 'success' : 'error',
+        render: 'Product deleted successfully',
+        type: 'success',
         isLoading: false,
         autoClose: 4000,
         closeButton: true,
@@ -98,14 +95,12 @@ export default function ProductsDataGridActions({ params }: Props) {
         transition: Flip,
       });
     } else {
-      toast.update(toastId, {
-        render: response.message,
-        type: 'error',
-        isLoading: false,
-        autoClose: 4000,
-        closeButton: true,
-        closeOnClick: true,
-        transition: Flip,
+      const errorMessages = results.filter((result) => !result.success).map((result) => result.message);
+
+      toast.dismiss(toastId);
+
+      errorMessages.forEach((message) => {
+        toast.error(message);
       });
     }
   }

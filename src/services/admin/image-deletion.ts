@@ -31,8 +31,8 @@ export async function deleteProductImagesFromStorage(imageData: ProductImageData
   if (success) {
     return { success: true, message: 'Product images deleted successfully from storage.' };
   } else {
-    log.error('Failed to delete some images from storage', { results });
-    return { success: false, message: 'Failed to delete some product images from storage.' };
+    log.error('Failed to delete images from storage', { results });
+    return { success: false, message: 'Failed to delete product images from storage.' };
   }
 }
 
@@ -43,8 +43,8 @@ export async function deleteProductImagesDataFromDb(imageData: ProductImageData[
   if (success) {
     return { success: true, message: 'Product image data deleted successfully from the database.' };
   } else {
-    log.error('Failed to delete some product image data from the database', { results });
-    return { success: false, message: 'Failed to delete some product image data from the database.' };
+    log.error('Failed to delete product image data from the database', { results });
+    return { success: false, message: 'Failed to delete product image data from the database.' };
   }
 }
 

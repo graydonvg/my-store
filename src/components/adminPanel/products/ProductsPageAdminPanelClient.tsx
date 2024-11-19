@@ -57,8 +57,7 @@ export default function ProductsPageAdminPanelClient({
   async function handleDeleteProducts() {
     setIsDeleting(true);
 
-    // Show a single toast for the entire delete operation
-    const productToastId = toast.loading('Deleting product...');
+    const toastId = toast.loading('Deleting product...');
 
     const imagesToDelete = selectedProductIds
       .map((selectedProductId) => {
@@ -70,24 +69,28 @@ export default function ProductsPageAdminPanelClient({
     const deleteProductImagesFromStoragePromise = deleteProductImagesFromStorage(imagesToDelete);
     const deleteSelectedProductsPromise = deleteSelectedProducts(selectedProductIds);
 
-    const [deleteProductImagesFromStorageResult, deleteSelectedProductsResult] = await Promise.allSettled([
-      deleteProductImagesFromStoragePromise,
-      deleteSelectedProductsPromise,
-    ]);
+    const results = await Promise.allSettled([deleteProductImagesFromStoragePromise, deleteSelectedProductsPromise]);
 
-    handleToastUpdate([deleteProductImagesFromStorageResult, deleteSelectedProductsResult], productToastId);
+    const hasError = results.some((result) => result.status === 'rejected' || !result.value.success);
+    const hasSuccess = results.some((result) => result.status === 'fulfilled' && result.value.success);
 
-    await revalidateAndRefresh();
-    setSelectedProductIds([]);
+    handleToastUpdate(results, hasError, toastId);
+
+    if (hasSuccess) {
+      await revalidateAndRefresh();
+    }
+
+    if (!hasError) {
+      setSelectedProductIds([]);
+    }
+
     setIsDeleting(false);
   }
 
-  function handleToastUpdate(results: PromiseSettledResult<ResponseWithNoData>[], toastId: Id) {
-    const hasError = results.some((result) => result.status === 'rejected' || !result.value.success);
-
+  function handleToastUpdate(results: PromiseSettledResult<ResponseWithNoData>[], hasError: boolean, toastId: Id) {
     if (!hasError) {
       toast.update(toastId, {
-        render: 'Product deleted successfully',
+        render: 'Products deleted successfully',
         type: 'success',
         isLoading: false,
         autoClose: 4000,
@@ -96,19 +99,14 @@ export default function ProductsPageAdminPanelClient({
         transition: Flip,
       });
     } else {
-      const errorMessage = results
+      const errorMessages = results
         .filter((result) => result.status === 'rejected' || !result.value.success)
-        .map((result) => (result.status === 'rejected' ? result.reason : result.value.message))
-        .join('. ');
+        .map((result) => (result.status === 'rejected' ? result.reason : result.value.message));
 
-      toast.update(toastId, {
-        render: errorMessage,
-        type: 'error',
-        isLoading: false,
-        autoClose: 4000,
-        closeButton: true,
-        closeOnClick: true,
-        transition: Flip,
+      toast.dismiss(toastId);
+
+      errorMessages.slice(0, 5).forEach((message) => {
+        toast.error(message);
       });
     }
   }

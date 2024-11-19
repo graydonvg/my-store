@@ -72,11 +72,6 @@ export default function ManageProductImages() {
 
       if (successfulUploads.length > 0) {
         dispatch(setImageData(successfulUploads));
-
-        const numberOfSuccessfulUploads =
-          successfulUploads.length === uploadImagePromises.length ? 'All' : successfulUploads.length;
-
-        toast.success(`${numberOfSuccessfulUploads} images uploaded successfully.`);
       }
     } catch (error) {
       logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
