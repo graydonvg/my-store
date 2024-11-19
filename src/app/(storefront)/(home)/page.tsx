@@ -1,13 +1,14 @@
 import HeroSection from '@/components/homePage/HeroSection';
 import ProductPreviewSection from '@/components/homePage/productPreviewSection/ProductPreviewSection';
 import ShopByCategorySection from '@/components/homePage/shopByCategorySection/ShopByCategorySection';
-import { CONSTANTS } from '@/constants';
+import { STORE_NAME } from '@/constants';
+
 import { getLimitedLatestProducts, getLimitedProductsOnSale } from '@/services/products/get';
 import { Box } from '@mui/material';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: `Home | ${CONSTANTS.STORE_NAME}`,
+  title: `Home | ${STORE_NAME}`,
 };
 
 export default async function HomePage() {

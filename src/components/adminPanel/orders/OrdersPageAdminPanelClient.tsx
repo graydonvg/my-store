@@ -15,7 +15,7 @@ import getOrdersDataGridColumns from './getOrdersDataGridColumns';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useLogger } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 type Props = {
   orders: OrdersDataGrid[] | null;
@@ -47,7 +47,7 @@ export default function OrdersPageAdminPanelClient({
     const validation = UpdateOrderSchema.safeParse(newRow);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: newRow,
         error: validation.error,

@@ -20,8 +20,9 @@ import MuiLink from '../../ui/MuiLink';
 import CardTitle from './CardTitle';
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import { ArrowForward } from '@mui/icons-material';
-import { CONSTANTS } from '@/constants';
+
 import { AdminDashboardCard } from './AdminDashboradCard';
+import { BORDER_RADIUS } from '@/constants';
 
 const headCellLabels = ['ID', 'Date', 'Name', 'Ship To', 'Status', 'Order Total'];
 
@@ -39,7 +40,7 @@ export default function RecentOrdersTable({ orders }: Props) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           overflow: 'hidden',
         }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 2 }}>

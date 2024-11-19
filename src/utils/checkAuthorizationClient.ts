@@ -2,7 +2,7 @@ import { Database } from '@/lib/supabase/database.types';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
 import { toast } from 'react-toastify';
 import { Logger } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+import { USER_ERROR_MESSAGES } from '@/constants';
 
 const log = new Logger();
 
@@ -26,7 +26,7 @@ export default async function checkAuthorizationClient(
       return false;
     }
 
-    if (!isAuthorized) toast.error(CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED);
+    if (!isAuthorized) toast.error(USER_ERROR_MESSAGES.notAuthorized);
 
     logger.info('Checked authorization successfully', { isAuthorized });
 

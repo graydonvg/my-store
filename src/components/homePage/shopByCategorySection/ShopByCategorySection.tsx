@@ -1,9 +1,9 @@
 'use client';
 
-import { CONSTANTS } from '@/constants';
 import { Box, Divider, Grid2, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import CategoryItem from './CategoryItem';
+import { HOME_PAGE_SHOP_BY_CATEGORY } from '@/constants';
 
 export default function ShopByCategorySection() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function ShopByCategorySection() {
           component="ul"
           container
           spacing={{ xs: 2, sm: 3 }}>
-          {CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) => (
+          {HOME_PAGE_SHOP_BY_CATEGORY.map((category) => (
             <Grid2
               component="li"
               key={category.label}

@@ -3,7 +3,7 @@ import RecentOrdersTable from '@/components/adminPanel/dashboard/RecentOrdersTab
 import { fetchOrdersForAdmin } from '@/services/db/queries/fetchOrders';
 import BestSellers from '@/components/adminPanel/dashboard/BestSellers';
 import fetchSortedBestSellers from '@/services/db/queries/fetchSortedBestSellers';
-import { CONSTANTS } from '@/constants';
+import { DATA_GRID_DEFAULTS } from '@/constants';
 import fetchRecentProducts from '@/services/db/queries/fetchRecentProducts';
 import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
 import fetchOrderTotalsThisYear from '@/services/db/queries/fetchOrderTotalsThisYear';
@@ -19,7 +19,7 @@ const NUMBER_OF_DAYS_FOR_REPORT = 30;
 const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;
 
 export default async function AdminPanelDashboard() {
-  const { page, sort, filter } = CONSTANTS.DATA_GRID_DEFAULTS;
+  const { page, sort, filter } = DATA_GRID_DEFAULTS;
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
   const previousYearSalesTotal = await fetchPreviousYearSalesTotal();
   const orderTotalsThisYear = await fetchOrderTotalsThisYear();

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
@@ -11,7 +11,7 @@ export default function ProductCardSalePercentageBadge({ percentage }: Props) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
         paddingX: 0.5,
         backgroundColor: (theme) => theme.palette.primary.main,
         width: 'min-content',

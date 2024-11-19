@@ -19,7 +19,7 @@ import {
 } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { AddProductSchema } from '@/types';
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
@@ -74,7 +74,7 @@ export default function AdminPanelAddNewProductPage() {
     const validation = AddProductSchema.safeParse(productData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: productData,
         error: validation.error,

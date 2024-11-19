@@ -1,7 +1,7 @@
 import { Box, Divider, Grid2, IconButton, Skeleton, useTheme } from '@mui/material';
 import { ProductImageData } from '@/types';
 import Image from 'next/image';
-import { CONSTANTS } from '@/constants';
+
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { deleteProductImageFromStorage } from '@/lib/firebase';
@@ -20,6 +20,7 @@ import { selectProductFormData } from '@/lib/redux/features/productForm/productF
 import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { deleteProductImageDataFromDb } from '@/services/admin/delete';
 import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
+import { BORDER_RADIUS } from '@/constants';
 
 export type Props = {
   imageDataProps: ProductImageData & { id: string };
@@ -86,7 +87,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
         container
         ref={setNodeRef}
         sx={{
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           paddingY: 2,
           backgroundColor: imageDataProps.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
@@ -122,7 +123,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               position: 'relative',
               aspectRatio: 3 / 4,
               alignSelf: 'center',
-              borderRadius: CONSTANTS.BORDER_RADIUS,
+              borderRadius: BORDER_RADIUS,
               overflow: 'hidden',
             }}>
             <Image

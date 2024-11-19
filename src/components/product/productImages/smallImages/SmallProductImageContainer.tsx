@@ -1,7 +1,8 @@
 import { Box, Grid2 } from '@mui/material';
 import { ProductImageData } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import { ReactNode } from 'react';
+import { BORDER_RADIUS } from '@/constants';
 
 type Props = {
   productImageData?: ProductImageData;
@@ -31,7 +32,7 @@ export default function SmallProductImageContainer({
           alignItems: 'center',
           aspectRatio: 3 / 4,
           outline: boxBorderColor ? `1px solid ${boxBorderColor}` : null,
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           overflow: 'hidden',
           opacity: productImageData && imageIndex !== selectedImageIndex ? '50%' : null,
         }}>

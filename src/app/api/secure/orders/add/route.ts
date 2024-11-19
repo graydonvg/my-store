@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { InsertOrder, AddOrderResponse, InsertOrderSchema, ResponseWithData } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const POST = withAxiom(
   async (request: AxiomRequest): Promise<NextResponse<ResponseWithData<AddOrderResponse | null>>> => {
@@ -18,12 +19,12 @@ export const POST = withAxiom(
       } = await supabase.auth.getUser();
 
       if (authError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+        log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+            message: USER_ERROR_MESSAGES.authentication,
             data: null,
           },
           { status: 500 }
@@ -31,12 +32,12 @@ export const POST = withAxiom(
       }
 
       if (!authUser) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+        log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+            message: USER_ERROR_MESSAGES.notAuthenticated,
             data: null,
           },
           { status: 401 }
@@ -50,12 +51,12 @@ export const POST = withAxiom(
       try {
         orderData = await request.json();
       } catch (error) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+        log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            message: USER_ERROR_MESSAGES.unexpected,
             data: null,
           },
           { status: 400 }
@@ -65,12 +66,12 @@ export const POST = withAxiom(
       const validation = InsertOrderSchema.safeParse(orderData);
 
       if (!validation.success) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: orderData, error: validation.error });
+        log.error(LOGGER_ERROR_MESSAGES.validation, { payload: orderData, error: validation.error });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            message: USER_ERROR_MESSAGES.unexpected,
             data: null,
           },
           { status: 400 }
@@ -84,7 +85,7 @@ export const POST = withAxiom(
       });
 
       if (addOrderError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: addOrderError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: addOrderError });
 
         return NextResponse.json(
           {
@@ -111,12 +112,12 @@ export const POST = withAxiom(
         }
       );
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+      log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
           data: null,
         },
         { status: 500 }

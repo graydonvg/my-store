@@ -11,9 +11,10 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import { CONSTANTS } from '@/constants';
+
 import { usePathname } from 'next/navigation';
 import SignOutButtonWrapper from '../SignOutButtonWrapper';
+import { ADMIN_PANEL_NAV_OPTIONS } from '@/constants';
 
 function getIcon(icon: string) {
   const icons = {
@@ -70,7 +71,7 @@ export default function AdminPanelNavDrawer({ isDrawerOpen, toggleDrawer, drawer
       </Toolbar>
       <Divider />
       <List component="nav">
-        {CONSTANTS.ADMIN_PANEL_NAV_OPTIONS.map((item) => (
+        {ADMIN_PANEL_NAV_OPTIONS.map((item) => (
           <Link
             key={item.label}
             href={item.path}>

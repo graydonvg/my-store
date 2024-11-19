@@ -1,9 +1,10 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
 import SmallProductImage from './SmallProductImage';
-import { CONSTANTS } from '@/constants';
+
 import SmallProductImageContainer from './SmallProductImageContainer';
 import { CircularProgressWithLabel } from '@/components/ui/progress/CircularProgressWithLabel';
+import { MAXIMUM_PRODUCT_IMAGES } from '@/constants';
 
 type Props = {
   selectImage: (index: number) => void;
@@ -23,7 +24,7 @@ export default function SmallProductImagesAdminPanel({ selectImage, selectedImag
 
   return (
     <>
-      {Array.from(Array(CONSTANTS.MAXIMUM_PRODUCT_IMAGES)).map((_, index) => {
+      {Array.from(Array(MAXIMUM_PRODUCT_IMAGES)).map((_, index) => {
         const imageUploadInfo = imageUploadProgress[index];
         const currentImageData = imageData.find((image) => image.imageIndex === index);
 

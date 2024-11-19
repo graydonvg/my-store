@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
@@ -42,7 +42,7 @@ export async function fetchOrdersForUser({ pageNumber, ordersPerPage }: Params) 
       .range(rangeStart, rangeEnd);
 
     if (ordersError) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error: ordersError });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error: ordersError });
       return { orders: null, totalRowCount: count ?? 0 };
     }
 
@@ -50,7 +50,7 @@ export async function fetchOrdersForUser({ pageNumber, ordersPerPage }: Params) 
 
     return { orders, totalRowCount: count ?? 0 };
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return { orders: null, totalRowCount: 0 };
   } finally {
     await logger.flush();
@@ -82,7 +82,7 @@ export async function fetchOrdersForAdmin(
     const { data: orders, count, error } = await builtOrdersQuery;
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
       return {
         success: false,
         message: error.message,
@@ -98,10 +98,10 @@ export async function fetchOrdersForAdmin(
       data: { orders, totalRowCount: count ?? 0 },
     };
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return {
       success: false,
-      message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      message: USER_ERROR_MESSAGES.unexpected,
       data: { orders: null, totalRowCount: 0 },
     };
   } finally {

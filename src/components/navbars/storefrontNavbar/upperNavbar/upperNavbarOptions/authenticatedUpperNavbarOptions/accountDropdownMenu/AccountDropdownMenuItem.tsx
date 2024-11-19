@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { ListItemIcon, MenuItem, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -14,7 +14,7 @@ export default function AccountDropdownMenuItem({ icon, label, onClick }: Props)
   return (
     <MenuItem
       sx={{
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
         color: theme.palette.custom.navbar.upper.text,
         '&:hover': { backgroundColor: theme.palette.primary.main },
       }}

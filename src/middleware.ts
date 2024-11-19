@@ -1,5 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { AUTHENTICATION_REQUIRED_PATHS, AUTHORIZATION_REQUIRED_PATHS, CONSTANTS } from './constants';
+import {
+  AUTHENTICATION_REQUIRED_PATHS,
+  AUTHORIZATION_REQUIRED_PATHS,
+  HAS_ADMIN_PANEL_ACCESS,
+  USER_ERROR_MESSAGES,
+} from './constants';
 import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/auth';
 
@@ -26,7 +31,7 @@ export async function middleware(request: NextRequest) {
   const authenticationRequired = AUTHENTICATION_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
 
   const userRole = await getUserRoleFromSession(supabase);
-  const hasAdminPanelAccess = userRole && CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userRole);
+  const hasAdminPanelAccess = userRole && HAS_ADMIN_PANEL_ACCESS.includes(userRole);
 
   if (authorizationRequired && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
@@ -39,10 +44,7 @@ export async function middleware(request: NextRequest) {
 
   if (authenticationRequired && !authUser) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json(
-        { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED },
-        { status: 401 }
-      );
+      response = NextResponse.json({ success: false, message: USER_ERROR_MESSAGES.notAuthenticated }, { status: 401 });
     } else {
       const redirectUrl = new URL('/welcome/sign-in', request.url);
       response = NextResponse.redirect(redirectUrl);

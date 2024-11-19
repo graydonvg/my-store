@@ -1,5 +1,6 @@
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { CONSTANTS } from '@/constants';
+
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -14,7 +15,7 @@ export default async function fetchPreviousYearSalesTotal() {
     const { data, error } = await supabase.rpc('getPreviousYearSalesTotal');
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
       return null;
     }
 
@@ -22,7 +23,7 @@ export default async function fetchPreviousYearSalesTotal() {
 
     return data;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return null;
   } finally {
     await logger.flush();

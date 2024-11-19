@@ -4,9 +4,10 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { getUserRoleFromSession } from '@/utils/auth';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -21,24 +22,24 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          message: USER_ERROR_MESSAGES.authentication,
         },
         { status: 500 }
       );
     }
 
     if (!authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          message: USER_ERROR_MESSAGES.notAuthenticated,
         },
         { status: 401 }
       );
@@ -50,12 +51,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     if (!isAuthorized) {
       const userRole = await getUserRoleFromSession(supabase);
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED,
+          message: USER_ERROR_MESSAGES.notAuthorized,
         },
         { status: 401 }
       );
@@ -66,12 +67,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     try {
       orderData = await request.json();
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -80,7 +81,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     const validation = UpdateOrderSchema.safeParse(orderData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: orderData, error: validation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { payload: orderData, error: validation.error });
 
       const errorMessage = constructZodErrorMessage(validation.error);
 
@@ -106,7 +107,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
       const { error: ordersUpdateError } = await supabase.from('orders').update(orderDetails).eq('orderId', orderId);
 
       if (ordersUpdateError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: ordersUpdateError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: ordersUpdateError });
 
         return NextResponse.json(
           {
@@ -125,7 +126,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         .eq('orderId', orderId);
 
       if (shippingDetailsUpdateError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: shippingDetailsUpdateError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: shippingDetailsUpdateError });
 
         return NextResponse.json(
           {
@@ -149,12 +150,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

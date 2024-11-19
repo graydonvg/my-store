@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Skeleton } from '@mui/material';
 
 export default function PageHeaderSkeleton() {
@@ -6,7 +6,7 @@ export default function PageHeaderSkeleton() {
     <Skeleton
       variant="rectangular"
       width="100%"
-      sx={{ height: { xs: 55, sm: 61 }, marginBottom: 3, borderRadius: CONSTANTS.BORDER_RADIUS }}
+      sx={{ height: { xs: 55, sm: 61 }, marginBottom: 3, borderRadius: BORDER_RADIUS }}
     />
   );
 }

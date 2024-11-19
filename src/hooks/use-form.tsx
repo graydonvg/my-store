@@ -2,8 +2,9 @@
 
 import { z, ZodError, ZodIssueCode } from 'zod';
 import { ChangeEvent, FormEvent, SetStateAction, useState } from 'react';
-import { CONSTANTS } from '@/constants';
+
 import { useLogger } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T, initialValues: z.infer<T>) {
   const log = useLogger();
@@ -80,7 +81,7 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
           newErrors[err.path[0] as keyof typeof initialValues] = err.message;
         });
 
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+        log.warn(LOGGER_ERROR_MESSAGES.validation, {
           error: newErrors,
         });
 

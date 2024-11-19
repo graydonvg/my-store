@@ -1,12 +1,13 @@
 import OrdersPageStorefront from '@/components/ordersPageStorefront/OrdersPageStorefront';
 import PageHeaderWithBorder from '@/components/PageHeaderWithBorder';
-import { CONSTANTS } from '@/constants';
+import { STORE_NAME } from '@/constants';
+
 import { fetchOrdersForUser } from '@/services/db/queries/fetchOrders';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: `${CONSTANTS.STORE_NAME} - Orders`,
+  title: `${STORE_NAME} - Orders`,
 };
 
 type Props = {

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithData, Product } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -10,7 +10,7 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
   logger.info('Attempting to fetch all products');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-all`;
+    const url = `${URL}/api/products/get-all`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -21,9 +21,9 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }
@@ -35,7 +35,7 @@ export async function getProductById(id: string): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch product by id');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-by-id?product_id=${id}`;
+    const url = `${URL}/api/products/get-by-id?product_id=${id}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -46,9 +46,9 @@ export async function getProductById(id: string): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }
@@ -60,7 +60,7 @@ export async function getProductsByCategory(category: string): Promise<ResponseW
   logger.info('Attempting to fetch products by category');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-by-category?category=${category}`;
+    const url = `${URL}/api/products/get-by-category?category=${category}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -71,9 +71,9 @@ export async function getProductsByCategory(category: string): Promise<ResponseW
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }
@@ -85,7 +85,7 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
   logger.info('Attempting to fetch products on sale');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-on-sale`;
+    const url = `${URL}/api/products/get-on-sale`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -96,9 +96,9 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }
@@ -110,7 +110,7 @@ export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch limited products on sale');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-limited-on-sale`;
+    const url = `${URL}/api/products/get-limited-on-sale`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -121,9 +121,9 @@ export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }
@@ -135,7 +135,7 @@ export async function getLimitedLatestProducts(): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch limited latest products');
 
   try {
-    const url = `${CONSTANTS.URL}/api/products/get-limited-latest`;
+    const url = `${URL}/api/products/get-limited-latest`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -146,9 +146,9 @@ export async function getLimitedLatestProducts(): Promise<ResponseWithData<Produ
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }

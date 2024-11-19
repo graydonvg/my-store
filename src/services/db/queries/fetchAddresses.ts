@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Logger } from 'next-axiom';
 
@@ -22,7 +22,7 @@ export default async function fetchAddresses() {
       .order('createdAt', { ascending: true });
 
     if (addressesError) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error: addressesError });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error: addressesError });
       return null;
     }
 
@@ -30,7 +30,7 @@ export default async function fetchAddresses() {
 
     return addresses;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return null;
   } finally {
     await logger.flush();

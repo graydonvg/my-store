@@ -1,5 +1,6 @@
 import DatePickerForDataGridFilter from '@/components/dataGrid/DatePickerForDataGridFilter';
-import { CONSTANTS } from '@/constants';
+import { USER_ROLE_OPTIONS } from '@/constants';
+
 import { UsersDataGrid } from '@/types';
 import {
   GridColDef,
@@ -35,7 +36,7 @@ export default function getUsersDataGridColumns(
       editable: userRole.isAdmin ? false : !isUpdating ? true : false,
       type: 'singleSelect',
       valueOptions: (params) => {
-        const filteredOptions = CONSTANTS.USER_ROLE_OPTIONS.filter((role) => {
+        const filteredOptions = USER_ROLE_OPTIONS.filter((role) => {
           if (userRole.isAdmin) {
             return role === 'none';
           } else if (userRole.isManager) {

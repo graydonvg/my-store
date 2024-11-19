@@ -7,11 +7,12 @@ import CustomTextField from '@/components/ui/CustomTextField';
 import AccountPageForm from './AccountPageForm';
 import { Lock } from '@mui/icons-material';
 import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSelectors';
-import { CONSTANTS } from '@/constants';
+
 import { UpdatePasswordSchema } from '@/types';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useLogger } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 const initialFormData = {
   currentPassword: '',
@@ -56,7 +57,7 @@ export default function UpdatePasswordForm() {
     const validation = UpdatePasswordSchema.safeParse(passwordData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         error: validation.error,
       });

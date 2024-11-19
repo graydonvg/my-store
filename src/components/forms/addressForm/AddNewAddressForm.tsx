@@ -12,7 +12,7 @@ import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { updateUserPersonalInformation } from '@/services/users/update';
 import { useLogger } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 export default function AddNewAddressForm() {
   const log = useLogger();
@@ -35,7 +35,7 @@ export default function AddNewAddressForm() {
     const validation = InsertAddressSchema.safeParse(addressFormData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: addressFormData,
         error: validation.error,

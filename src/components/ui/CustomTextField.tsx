@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { InputAdornment, MenuItem, SxProps, TextField, TextFieldProps, Theme, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
@@ -18,7 +18,7 @@ export default function CustomTextField({ icon, hasValue, sxStyles, selectOption
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       sx={{
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
 
         '& label': {
           color: theme.palette.custom.textField.label,

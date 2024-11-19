@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
@@ -12,7 +12,7 @@ export default function Loading() {
           variant="rectangular"
           height={130}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
@@ -20,7 +20,7 @@ export default function Loading() {
           variant="rectangular"
           height={130}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
@@ -28,7 +28,7 @@ export default function Loading() {
           variant="rectangular"
           height={130}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, sm: 6, xl: 3 }}>
@@ -36,7 +36,7 @@ export default function Loading() {
           variant="rectangular"
           height={130}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, xl: 6 }}>
@@ -46,7 +46,7 @@ export default function Loading() {
           sx={{
             height: { xs: 300, md: 360, lg: 420 },
             minHeight: { xs: 300, md: 360, lg: 420, xl: 1 },
-            borderRadius: CONSTANTS.BORDER_RADIUS,
+            borderRadius: BORDER_RADIUS,
           }}
         />
       </Grid2>
@@ -55,7 +55,7 @@ export default function Loading() {
           variant="rectangular"
           height={568}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, lg: 6, xl: 3 }}>
@@ -63,7 +63,7 @@ export default function Loading() {
           variant="rectangular"
           height={568}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12 }}>
@@ -71,7 +71,7 @@ export default function Loading() {
           variant="rectangular"
           height={418}
           width="100%"
-          sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+          sx={{ borderRadius: BORDER_RADIUS }}
         />
       </Grid2>
     </Grid2>

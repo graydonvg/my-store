@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithNoData, UpdateCartItemQuantity, UpdateCartItemSize } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -20,9 +20,9 @@ export async function updateCartItemSize(data: UpdateCartItemSize): Promise<Resp
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -44,9 +44,9 @@ export async function updateCartItemQuantity(data: UpdateCartItemQuantity): Prom
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }

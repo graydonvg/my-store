@@ -1,6 +1,7 @@
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import dayjs from 'dayjs';
-import { CONSTANTS } from '@/constants';
+
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
@@ -21,7 +22,7 @@ export default async function fetchReversedOrdersByDate(numberOfDays: number) {
       .gte('createdAt', startDate);
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
       return null;
     }
 
@@ -29,7 +30,7 @@ export default async function fetchReversedOrdersByDate(numberOfDays: number) {
 
     return data;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return null;
   } finally {
     await logger.flush();

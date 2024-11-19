@@ -1,5 +1,6 @@
 import ProductDetails from '@/components/product/productDetails/ProductDetails';
-import { CONSTANTS } from '@/constants';
+import { STORE_NAME } from '@/constants';
+
 import { getAllProducts, getProductById } from '@/services/products/get';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
@@ -22,7 +23,7 @@ export async function generateMetadata({ params: { product_id } }: Params) {
   }
 
   return {
-    title: `${product?.name} | ${CONSTANTS.STORE_NAME}`,
+    title: `${product?.name} | ${STORE_NAME}`,
   };
 }
 

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import { UserRole } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { jwtDecode } from 'jwt-decode';
@@ -32,7 +32,7 @@ export async function getUserRoleFromSession(supabase: SupabaseClient) {
 
     return role;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return null;
   } finally {
     await logger.flush();

@@ -1,9 +1,10 @@
 import { CustomResponse, StripeCheckoutData, StripeCheckoutDataSchema, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
@@ -23,12 +24,12 @@ export const POST = withAxiom(
       } = await supabase.auth.getUser();
 
       if (authError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+        log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+            message: USER_ERROR_MESSAGES.authentication,
             data: null,
           },
           { status: 500 }
@@ -36,12 +37,12 @@ export const POST = withAxiom(
       }
 
       if (!authUser) {
-        log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+        log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+            message: USER_ERROR_MESSAGES.notAuthenticated,
             data: null,
           },
           { status: 401 }
@@ -55,12 +56,12 @@ export const POST = withAxiom(
       try {
         checkoutData = await request.json();
       } catch (error) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+        log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            message: USER_ERROR_MESSAGES.unexpected,
             data: null,
           },
           { status: 400 }
@@ -70,12 +71,12 @@ export const POST = withAxiom(
       const validation = StripeCheckoutDataSchema.safeParse(checkoutData);
 
       if (!validation.success) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { payload: checkoutData, error: validation.error });
+        log.error(LOGGER_ERROR_MESSAGES.validation, { payload: checkoutData, error: validation.error });
 
         return NextResponse.json(
           {
             success: false,
-            message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+            message: USER_ERROR_MESSAGES.unexpected,
             data: null,
           },
           { status: 400 }
@@ -86,8 +87,8 @@ export const POST = withAxiom(
         payment_method_types: ['card'],
         line_items: validation.data.lineItems,
         mode: 'payment',
-        success_url: `${CONSTANTS.URL}/checkout/payment/confirmation?payment_status=success&order_id=${validation.data.orderId}`,
-        cancel_url: `${CONSTANTS.URL}/cart/view?payment_status=cancelled&order_id=${validation.data.orderId}`,
+        success_url: `${URL}/checkout/payment/confirmation?payment_status=success&order_id=${validation.data.orderId}`,
+        cancel_url: `${URL}/cart/view?payment_status=cancelled&order_id=${validation.data.orderId}`,
         metadata: { userId: authUser.id, orderId: validation.data.orderId },
         payment_intent_data: {
           metadata: { userId: authUser.id, orderId: validation.data.orderId },
@@ -99,7 +100,7 @@ export const POST = withAxiom(
         .insert({ sessionId: session.id, userId: authUser.id, orderId: validation.data.orderId });
 
       if (insertError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: insertError });
 
         return NextResponse.json(
           {
@@ -126,12 +127,12 @@ export const POST = withAxiom(
         }
       );
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+      log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
           data: null,
         },
         { status: 500 }

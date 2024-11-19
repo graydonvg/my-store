@@ -1,6 +1,7 @@
+import { BORDER_RADIUS } from '@/constants';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
-import { CONSTANTS } from '@/constants';
+
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -22,7 +23,7 @@ export default function LargeCartItemImage({ imageUrl, productName, productHref 
           aspectRatio: 3 / 4,
           width: { xs: '60px', sm: '160px' },
           flexShrink: 0,
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           overflow: 'hidden',
         }}>
         <Image

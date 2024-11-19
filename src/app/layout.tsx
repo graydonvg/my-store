@@ -6,7 +6,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
-import { CONSTANTS } from '@/constants';
+import { STORE_NAME } from '@/constants';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
@@ -14,7 +14,7 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 const STORE_DESCRIPTION = 'Online Shopping - Shop the latest fashion at unbeatable prices.';
 
 export const metadata: Metadata = {
-  title: CONSTANTS.STORE_NAME,
+  title: STORE_NAME,
   description: STORE_DESCRIPTION,
 };
 

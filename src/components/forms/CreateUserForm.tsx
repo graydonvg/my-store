@@ -9,7 +9,7 @@ import CustomTextField from '../ui/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Person, Call, Email, Lock, AdminPanelSettings } from '@mui/icons-material';
-import { CONSTANTS } from '@/constants';
+
 import {
   PasswordSchema,
   UserAuthDataSchema,
@@ -21,6 +21,7 @@ import { createNewUser } from '@/services/admin/add';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { z } from 'zod';
 import useForm from '@/hooks/use-form';
+import { USER_ROLE_OPTIONS } from '@/constants';
 
 function getFieldConfigs(selectOptions: UserRoleSelectOptions[]) {
   return [
@@ -119,7 +120,7 @@ export default function CreateUserForm({ children }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectUserData);
-  const restricedUserRoleOptions = CONSTANTS.USER_ROLE_OPTIONS.filter((role) => {
+  const restricedUserRoleOptions = USER_ROLE_OPTIONS.filter((role) => {
     if (userData?.role === 'admin') {
       return role === 'none';
     } else if (userData?.role === 'manager') {

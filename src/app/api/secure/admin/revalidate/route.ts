@@ -1,10 +1,10 @@
-import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { ResponseWithNoData } from '@/types';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -20,12 +20,12 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     } = await supabase.auth.getUser();
 
     if (authError || !authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { authError, user: authUser });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { authError, user: authUser });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          message: USER_ERROR_MESSAGES.notAuthenticated,
         },
 
         { status: 401 }
@@ -36,12 +36,12 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     const { isAdmin, isManager, isOwner } = getUserRoleBoolean(callerRole);
 
     if (!isAdmin && !isManager && !isOwner) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userId: authUser.id, callerRole });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userId: authUser.id, callerRole });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED,
+          message: USER_ERROR_MESSAGES.notAuthorized,
         },
 
         { status: 401 }
@@ -54,12 +54,12 @@ export const GET = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     return NextResponse.json({ success: true, message: 'Revalidation successful' });
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
 
       { status: 500 }

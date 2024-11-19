@@ -2,7 +2,7 @@ import { Box, Paper } from '@mui/material';
 import { Divider } from '@mui/material';
 import { CartItemWithPriceDetails } from '@/types';
 import EditCartItemDrawer from '../../drawers/editCartItemDrawer/EditCartItemDrawer';
-import { CONSTANTS } from '@/constants';
+
 import LargeCartItemSaleBadge from './LargeCartItemSaleBadge';
 import LargeCartItemBottomDetails from './LargeCartItemBottomDetails';
 import LargeCartItemSelectionDetails from './LargeCartItemSelectionDetails';
@@ -10,6 +10,7 @@ import LargeCartItemTopDetails from './LargeCartItemTopDetails';
 import LargeCartItemImage from './LargeCartItemImage';
 import LargeCartItemPrice from './LargeCartItemPrice';
 import EditCartItemDrawerButton from './EditCartItemDrawerButton';
+import { BORDER_RADIUS } from '@/constants';
 
 type Props = {
   item: CartItemWithPriceDetails;
@@ -25,7 +26,7 @@ export default function LargeCartItem({ item }: Props) {
     <Paper
       sx={{
         padding: 2,
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
         position: 'relative',
       }}>
       <Box

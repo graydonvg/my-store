@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { ResponseWithNoData } from '@/types';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { log, withAxiom } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -17,12 +17,12 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          message: USER_ERROR_MESSAGES.authentication,
         },
         { status: 500 }
       );
@@ -66,12 +66,12 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithNoData>>
       { status: 200 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

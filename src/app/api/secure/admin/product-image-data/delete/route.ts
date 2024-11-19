@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { NumericIdSchema, ResponseWithNoData } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -17,24 +18,24 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          message: USER_ERROR_MESSAGES.authentication,
         },
         { status: 500 }
       );
     }
 
     if (!authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          message: USER_ERROR_MESSAGES.notAuthenticated,
         },
         { status: 401 }
       );
@@ -46,12 +47,12 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     const productImageId = searchParams.get('product_image_id');
 
     if (!productImageId) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NO_DATA);
+      log.error(LOGGER_ERROR_MESSAGES.noData);
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -60,12 +61,12 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     const validation = NumericIdSchema.safeParse(productImageId);
 
     if (!validation.success) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { data: productImageId, error: validation.error });
+      log.error(LOGGER_ERROR_MESSAGES.validation, { data: productImageId, error: validation.error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -77,7 +78,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       .eq('productImageId', validation.data);
 
     if (deleteError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteError });
+      log.error(LOGGER_ERROR_MESSAGES.databaseDelete, { error: deleteError });
 
       return NextResponse.json(
         {
@@ -100,12 +101,12 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       { status: 200 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

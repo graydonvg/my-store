@@ -1,8 +1,9 @@
 import { Box, Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
-import { CONSTANTS } from '@/constants';
+
 import { OrderData } from '@/types';
 import OrderItemImage from './OrderItemImage';
 import OrderItemDetails from './OrderItemDetails';
+import { BORDER_RADIUS } from '@/constants';
 
 type Props = {
   order: OrderData;
@@ -18,9 +19,9 @@ export default function OrderItems({ order }: Props) {
         border: `1px solid ${theme.palette.custom.border}`,
         borderTop: { xs: 'none', md: `1px solid ${theme.palette.custom.border}` },
         padding: 2,
-        borderRadius: { xs: 'none', md: CONSTANTS.BORDER_RADIUS },
-        borderBottomLeftRadius: CONSTANTS.BORDER_RADIUS,
-        borderBottomRightRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: { xs: 'none', md: BORDER_RADIUS },
+        borderBottomLeftRadius: BORDER_RADIUS,
+        borderBottomRightRadius: BORDER_RADIUS,
       })}>
       <Grid
         container

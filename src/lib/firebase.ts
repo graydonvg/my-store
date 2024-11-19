@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import { initializeApp } from 'firebase/app';
 import {
   StorageObserver,
@@ -50,7 +50,7 @@ export async function uploadProductImageToStorage(
           logger.info('Product image uploaded successfully', { fileName, downloadURL });
           resolve({ imageUrl: downloadURL, fileName });
         } catch (error) {
-          logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error, fileName });
+          logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error, fileName });
           reject({ error, fileName });
         } finally {
           await logger.flush();
@@ -70,7 +70,7 @@ export async function deleteProductImageFromStorage(fileName: string) {
     await deleteObject(imageRef);
     logger.info('Product image deleted successfully', { fileName });
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error, fileName });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error, fileName });
     throw error;
   } finally {
     await logger.flush();

@@ -13,12 +13,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { CONSTANTS } from '@/constants';
+
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import CardTitle from './CardTitle';
 import { AdminDashboardCard } from './AdminDashboradCard';
+import { BORDER_RADIUS } from '@/constants';
 
 const headCellLabels = ['#', 'Products', 'Units'];
 
@@ -110,7 +111,7 @@ export default function BestSellers({ bestSellers }: Props) {
                             src={bestSeller.productImageData[0].imageUrl}
                             alt={`Image for ${bestSeller.name}`}
                             fill
-                            style={{ objectFit: 'cover', borderRadius: CONSTANTS.BORDER_RADIUS }}
+                            style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS }}
                             sizes="50px"
                           />
                         </Box>

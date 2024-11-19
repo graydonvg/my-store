@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 
 type CategoryItemProps = {
   category: {
@@ -21,7 +21,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
       sx={{
         position: 'relative',
         aspectRatio: 4 / 5,
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
         overflow: 'hidden',
         cursor: 'pointer',
         '&:before': {
@@ -32,7 +32,7 @@ function CategoryItem({ category, onClick }: CategoryItemProps) {
           width: 1,
           height: 1,
           background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.6))',
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           zIndex: 1,
         },
       }}>

@@ -10,8 +10,9 @@ import { selectIsUpdatingAccount } from '@/lib/redux/features/account/accountSel
 import { UserPersonalInfoSchema } from '@/types';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
-import { CONSTANTS } from '@/constants';
+
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 type Props = {
   field: 'firstName' | 'lastName' | 'contactNumber';
@@ -53,7 +54,7 @@ export default function UpdatePersonalInfoForm({ field, label, data, icon }: Pro
     const validation = UserPersonalInfoSchema.safeParse({ [field]: formData });
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: { [field]: formData },
         error: validation.error,

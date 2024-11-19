@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { OrderItem } from '@/types';
 import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
@@ -23,7 +23,7 @@ export default function OrderItemImage({ imageUrl, orderItem }: Props) {
         sx={{
           position: 'relative',
           aspectRatio: 25 / 36,
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           overflow: 'hidden',
         }}>
         <Image

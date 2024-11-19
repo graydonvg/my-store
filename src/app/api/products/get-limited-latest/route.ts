@@ -1,8 +1,9 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { ResponseWithData, Product } from '@/types';
 import { NextResponse } from 'next/server';
-import { CONSTANTS } from '@/constants';
+
 import { log, withAxiom } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Product[] | null>>> => {
   const supabase = await createSupabaseServerClient();
@@ -18,7 +19,7 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
       .limit(3);
 
     if (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      log.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
 
       return NextResponse.json(
         {
@@ -43,12 +44,12 @@ export const GET = withAxiom(async (): Promise<NextResponse<ResponseWithData<Pro
       { status: 200 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
         data: null,
       },
       { status: 500 }

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getUserRoleFromSession } from '@/utils/auth';
 import { Logger } from 'next-axiom';
@@ -37,7 +37,7 @@ export default async function fetchUserSessionData() {
       .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
     if (userDataError) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error: userDataError });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error: userDataError });
       return {
         authUser,
         userData: null,
@@ -70,7 +70,7 @@ export default async function fetchUserSessionData() {
       wishlistData: wishlist,
     };
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return {
       authUser: null,
       userData: null,

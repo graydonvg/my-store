@@ -1,5 +1,6 @@
 import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
+
 import { Box, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
@@ -21,14 +22,14 @@ export default function Loading() {
                 <Skeleton
                   height={500}
                   variant="rectangular"
-                  sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                  sx={{ borderRadius: BORDER_RADIUS }}
                 />
               </Grid2>
               <Grid2 size={{ xs: 12, md: 9 }}>
                 <Skeleton
                   height={500}
                   variant="rectangular"
-                  sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                  sx={{ borderRadius: BORDER_RADIUS }}
                 />
               </Grid2>
             </Grid2>

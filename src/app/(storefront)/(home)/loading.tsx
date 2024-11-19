@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS, HOME_PAGE_SHOP_BY_CATEGORY } from '@/constants';
 import { Box, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
@@ -6,7 +6,7 @@ export default function Loading() {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
       <Skeleton
         variant="rectangular"
-        sx={{ height: { xs: '300px', sm: '500px', md: '700px' }, borderRadius: CONSTANTS.BORDER_RADIUS }}
+        sx={{ height: { xs: '300px', sm: '500px', md: '700px' }, borderRadius: BORDER_RADIUS }}
       />
       {Array.from(Array(2)).map((_, index) => (
         <Grid2
@@ -21,7 +21,7 @@ export default function Loading() {
               variant="rectangular"
               width="100%"
               height="100%"
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
           </Grid2>
           {Array.from(Array(3)).map((_, index) => (
@@ -34,7 +34,7 @@ export default function Loading() {
                   variant="rectangular"
                   width="100%"
                   height="100%"
-                  sx={{ aspectRatio: 25 / 36, borderRadius: CONSTANTS.BORDER_RADIUS }}
+                  sx={{ aspectRatio: 25 / 36, borderRadius: BORDER_RADIUS }}
                 />
                 <Box sx={{ paddingY: 1 }}>
                   <Skeleton variant="text" />
@@ -58,7 +58,7 @@ export default function Loading() {
         component="ul"
         container
         spacing={{ xs: 2, sm: 3 }}>
-        {CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((_, index) => (
+        {HOME_PAGE_SHOP_BY_CATEGORY.map((_, index) => (
           <Grid2
             component="li"
             key={index}
@@ -67,7 +67,7 @@ export default function Loading() {
               variant="rectangular"
               height="100%"
               width="100%"
-              sx={{ aspectRatio: 4 / 5, borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ aspectRatio: 4 / 5, borderRadius: BORDER_RADIUS }}
             />
           </Grid2>
         ))}

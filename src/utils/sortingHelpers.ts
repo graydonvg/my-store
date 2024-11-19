@@ -1,11 +1,11 @@
-import { CONSTANTS } from '@/constants';
+import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/constants';
 
 export function sortItemSizesArrayForToggleButtons(
   a: { label: string; value: string },
   b: { label: string; value: string }
 ) {
-  const indexOfA = CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS.indexOf(a);
-  const indexOfB = CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS.indexOf(b);
+  const indexOfA = ORDERED_SIZES_FOR_TOGGLE_BUTTONS.indexOf(a);
+  const indexOfB = ORDERED_SIZES_FOR_TOGGLE_BUTTONS.indexOf(b);
 
   if (indexOfA !== -1 && indexOfB !== -1) {
     return indexOfA - indexOfB;

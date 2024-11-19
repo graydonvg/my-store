@@ -1,9 +1,9 @@
-import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Product, ProductCategorySchema, ResponseWithData } from '@/types';
 import { NextResponse } from 'next/server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const GET = withAxiom(
   async (request: AxiomRequest): Promise<NextResponse<ResponseWithData<Product[] | null>>> => {
@@ -17,7 +17,7 @@ export const GET = withAxiom(
       const category = searchParams.get('category');
 
       if (!category) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NO_DATA);
+        log.error(LOGGER_ERROR_MESSAGES.noData);
 
         return NextResponse.json(
           {
@@ -32,7 +32,7 @@ export const GET = withAxiom(
       const validation = ProductCategorySchema.safeParse(category);
 
       if (!validation.success) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { value: category, error: validation.error });
+        log.error(LOGGER_ERROR_MESSAGES.validation, { value: category, error: validation.error });
 
         const errorMessage = constructZodErrorMessage(validation.error);
 
@@ -54,7 +54,7 @@ export const GET = withAxiom(
         .order('createdAt', { ascending: false });
 
       if (error) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+        log.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
 
         return NextResponse.json(
           {
@@ -79,12 +79,12 @@ export const GET = withAxiom(
         { status: 200 }
       );
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+      log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
           data: null,
         },
         { status: 500 }

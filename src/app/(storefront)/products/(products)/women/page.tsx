@@ -1,4 +1,3 @@
-import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getProductsByCategory } from '@/services/products/get';
 import { Product } from '@/types';
@@ -6,13 +5,14 @@ import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { Metadata } from 'next';
 import { Logger } from 'next-axiom';
 import ProductsLayout from '../ProductsLayout';
+import { STORE_NAME } from '@/constants';
 
 const log = new Logger();
 
 const CATEGORY = 'Women';
 
 export const metadata: Metadata = {
-  title: `${CATEGORY}'s Fashion | ${CONSTANTS.STORE_NAME}`,
+  title: `${CATEGORY}'s Fashion | ${STORE_NAME}`,
 };
 
 type Props = {

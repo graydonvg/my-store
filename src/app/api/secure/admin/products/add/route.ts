@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { AddProduct, AddProductSchema, ResponseWithNoData } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { getUserRoleFromSession } from '@/utils/auth';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -21,24 +22,24 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          message: USER_ERROR_MESSAGES.authentication,
         },
         { status: 500 }
       );
     }
 
     if (!authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          message: USER_ERROR_MESSAGES.notAuthenticated,
         },
         { status: 401 }
       );
@@ -50,12 +51,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
 
     if (!isAuthorized) {
       const userRole = await getUserRoleFromSession(supabase);
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED,
+          message: USER_ERROR_MESSAGES.notAuthorized,
         },
         { status: 401 }
       );
@@ -66,12 +67,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     try {
       dataToAdd = await request.json();
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -80,7 +81,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const validation = AddProductSchema.safeParse(dataToAdd);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { error: validation.error });
 
       const errorMessage = constructZodErrorMessage(validation.error);
 
@@ -101,7 +102,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       .select('productId');
 
     if (insertProductError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertProductError });
+      log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: insertProductError });
 
       return NextResponse.json(
         {
@@ -124,7 +125,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       const { error: deleteProductError } = await supabase.from('products').delete().eq('productId', productId);
 
       if (deleteProductError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteProductError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseDelete, { error: deleteProductError });
       }
 
       return NextResponse.json(
@@ -150,12 +151,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

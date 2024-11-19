@@ -4,9 +4,10 @@ import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
-import { CONSTANTS } from '@/constants';
+
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -21,24 +22,24 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     } = await supabase.auth.getUser();
 
     if (authError) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.AUTHENTICATION, { error: authError });
+      log.error(LOGGER_ERROR_MESSAGES.authentication, { error: authError });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.AUTHENTICATION,
+          message: USER_ERROR_MESSAGES.authentication,
         },
         { status: 500 }
       );
     }
 
     if (!authUser) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHENTICATED, { user: authUser });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthenticated, { user: authUser });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED,
+          message: USER_ERROR_MESSAGES.notAuthenticated,
         },
         { status: 401 }
       );
@@ -50,12 +51,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     const userRole = await getUserRoleFromSession(supabase);
 
     if (!isAuthorized) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
+      log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED,
+          message: USER_ERROR_MESSAGES.notAuthorized,
         },
         { status: 401 }
       );
@@ -66,12 +67,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     try {
       userData = await request.json();
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -80,7 +81,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     const userDataValidation = UpdateUserAdminSchema.safeParse(userData);
 
     if (!userDataValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { error: userDataValidation.error });
 
       const errorMessage = constructZodErrorMessage(userDataValidation.error);
 
@@ -103,7 +104,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
       (userToUpdateCurrentRole === 'manager' && !isOwner) ||
       (userToUpdateCurrentRole === 'admin' && !(isOwner || isManager))
     ) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, userToUpdateCurrentRole });
+      log.error(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole, userToUpdateCurrentRole });
 
       return NextResponse.json(
         {
@@ -128,7 +129,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         (roleToAssign === 'manager' && !isOwner) ||
         (roleToAssign === 'admin' && !(isOwner || isManager)))
     ) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign });
+      log.error(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole, roleToAssign });
 
       return NextResponse.json(
         {
@@ -146,7 +147,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
       const { error: updateError } = await supabase.from('users').update(userDataToUpdate).eq('userId', userToUpdateId);
 
       if (updateError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateError });
 
         return NextResponse.json(
           {
@@ -163,7 +164,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
         const { error: deleteError } = await supabase.from('userRoles').delete().eq('userId', userToUpdateId);
 
         if (deleteError) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_DELETE, { error: deleteError });
+          log.error(LOGGER_ERROR_MESSAGES.databaseDelete, { error: deleteError });
 
           return NextResponse.json(
             {
@@ -180,7 +181,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           .eq('userId', userToUpdateId);
 
         if (insertError) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_INSERT, { error: insertError });
+          log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: insertError });
 
           return NextResponse.json(
             {
@@ -197,7 +198,7 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
           .eq('userId', userToUpdateId);
 
         if (updateError) {
-          log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateError });
+          log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateError });
 
           return NextResponse.json(
             {
@@ -222,12 +223,12 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

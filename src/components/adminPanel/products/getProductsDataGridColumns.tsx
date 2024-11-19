@@ -13,7 +13,7 @@ import {
 import dayjs from 'dayjs';
 import ProductsDataGridActions from './ProductsDataGridActions';
 import Image from 'next/image';
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 
 export default function getProductsDataGridColumns() {
   const columns: GridColDef<Product>[] = [
@@ -34,7 +34,7 @@ export default function getProductsDataGridColumns() {
               src={params.row.productImageData[0].imageUrl}
               alt={`Image for ${params.row.name}`}
               fill
-              style={{ objectFit: 'cover', borderRadius: CONSTANTS.BORDER_RADIUS }}
+              style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS }}
               sizes="42px"
             />
           </Box>

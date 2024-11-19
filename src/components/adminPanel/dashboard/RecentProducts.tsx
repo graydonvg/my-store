@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { CONSTANTS } from '@/constants';
+
 import CustomNoRowsOverlay from '@/components/dataGrid/CustomNoRowsOverlay';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,6 +25,7 @@ import { useRouter } from 'next/navigation';
 import { ProductCategory } from '@/types';
 import CardTitle from './CardTitle';
 import { AdminDashboardCard } from './AdminDashboradCard';
+import { BORDER_RADIUS } from '@/constants';
 
 const headCellLabels = ['#', 'Products', 'Price'];
 
@@ -135,7 +136,7 @@ export default function RecentProducts({ recentProducts }: Props) {
                             fill
                             style={{
                               objectFit: 'cover',
-                              borderRadius: CONSTANTS.BORDER_RADIUS,
+                              borderRadius: BORDER_RADIUS,
                             }}
                             sizes="50px"
                           />

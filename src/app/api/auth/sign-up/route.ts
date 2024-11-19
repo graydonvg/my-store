@@ -7,12 +7,13 @@ import {
   UserAuthData,
   UserAuthDataSchema,
 } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { getEmptyObjectKeys } from '@/utils/objectHelpers';
 import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -42,12 +43,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     try {
       signUpData = await request.json();
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -58,7 +59,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const userAuthValidation = UserAuthDataSchema.safeParse({ email, password });
 
     if (!userAuthValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userAuthValidation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { error: userAuthValidation.error });
 
       const errorMessage = constructZodErrorMessage(userAuthValidation.error);
 
@@ -74,7 +75,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const userDataValidation = UserPersonalInfoSchema.safeParse(userDataToUpdate);
 
     if (!userDataValidation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: userDataValidation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { error: userDataValidation.error });
 
       const errorMessage = constructZodErrorMessage(userDataValidation.error);
 
@@ -114,7 +115,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
         .eq('userId', userId);
 
       if (updateUserError) {
-        log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_UPDATE, { error: updateUserError });
+        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateUserError });
 
         return NextResponse.json(
           {
@@ -138,12 +139,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       { status: 201 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

@@ -1,5 +1,5 @@
 import OrdersPageAdminPanelClient from '@/components/adminPanel/orders/OrdersPageAdminPanelClient';
-import { CONSTANTS } from '@/constants';
+import { DATA_GRID_DEFAULTS } from '@/constants';
 import { fetchOrdersForAdmin } from '@/services/db/queries/fetchOrders';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
 import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
@@ -24,9 +24,9 @@ export default async function AdminPanelOrdersPage({ searchParams }: Props) {
         totalRowCount={0}
         querySuccess={validationSuccess}
         queryMessage={validationMessage}
-        page={CONSTANTS.DATA_GRID_DEFAULTS.page}
-        sort={CONSTANTS.DATA_GRID_DEFAULTS.sort}
-        filter={CONSTANTS.DATA_GRID_DEFAULTS.filter}
+        page={DATA_GRID_DEFAULTS.page}
+        sort={DATA_GRID_DEFAULTS.sort}
+        filter={DATA_GRID_DEFAULTS.filter}
       />
     );
   }

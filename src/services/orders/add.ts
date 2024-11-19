@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { InsertOrder, AddOrderResponse, ResponseWithData } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -20,9 +20,9 @@ export default async function addOrder(data: InsertOrder): Promise<ResponseWithD
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED, data: null };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }

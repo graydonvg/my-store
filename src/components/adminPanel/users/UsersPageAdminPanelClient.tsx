@@ -22,8 +22,9 @@ import { deleteUser } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import getUsersDataGridColumns from './getUsersDataGridColumns';
-import { CONSTANTS } from '@/constants';
+
 import { useLogger } from 'next-axiom';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 type Props = {
   users: UsersDataGrid[] | null;
@@ -67,7 +68,7 @@ export default function UsersPageAdminPanelClient({
     const validation = UserDataToUpdateAdminSchema.safeParse(modifiedNewRow);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: modifiedNewRow,
         error: validation.error,

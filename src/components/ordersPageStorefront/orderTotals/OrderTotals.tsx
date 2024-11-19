@@ -2,7 +2,7 @@ import { formatCurrency } from '@/utils/formatting';
 import { Box, alpha, useTheme } from '@mui/material';
 import OrderTotalsRow from './OrderTotalsRow';
 import { usePathname } from 'next/navigation';
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 
 type Props = {
   cartTotal: number;
@@ -32,7 +32,7 @@ export default function OrderTotals({ orderTotal, discountTotal, deliveryFee, to
             backgroundImage: isOrdersPath
               ? 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))'
               : 'none',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
+            borderRadius: BORDER_RADIUS,
           }}>
           <OrderTotalsRow
             label="Discount total"

@@ -2,8 +2,9 @@ import { Product } from '@/types';
 import { Box, Typography } from '@mui/material';
 import ToggleButtons from '../../../ui/buttons/ToggleButtons';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
-import { CONSTANTS } from '@/constants';
+
 import { sortItemSizesArrayForToggleButtons } from '@/utils/sortingHelpers';
+import { ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/constants';
 
 type Props = {
   product: Product;
@@ -14,7 +15,7 @@ type Props = {
 export default function ProductDetailsSizePicker({ product, size, setSize }: Props) {
   function getItemSizeToggleButtonOptions() {
     const availableSizes = product.sizes
-      .map((size) => CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS.filter((option) => option.value === size)[0])
+      .map((size) => ORDERED_SIZES_FOR_TOGGLE_BUTTONS.filter((option) => option.value === size)[0])
       .sort(sortItemSizesArrayForToggleButtons);
 
     return availableSizes;

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Button, ButtonProps, SxProps, Theme, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -40,7 +40,7 @@ export default function OutlinedButton({
       sx={{
         pointerEvents: !isLoading ? 'auto' : 'none',
         minHeight: '48px',
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
         color: theme.palette.text.primary,
         borderColor: theme.palette.text.primary,
         backgroundColor: 'transparent',

@@ -6,9 +6,10 @@ import { toggleTheme } from '@/lib/redux/features/theme/themeSlice';
 import HoverDropdownMenu from './HoverDropdownMenu';
 import Link from 'next/link';
 import AccountDropdownMenuItem from './AccountDropdownMenuItem';
-import { CONSTANTS } from '@/constants';
+
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import SignOutButtonWrapper from '@/components/SignOutButtonWrapper';
+import { HAS_ADMIN_PANEL_ACCESS } from '@/constants';
 
 const iconSize = 'small';
 
@@ -63,7 +64,7 @@ export default function AccountDropdownMenu() {
           <ArrowDropDown sx={{ color: theme.palette.primary.main, marginLeft: 1 }} />
         </>
       }>
-      {CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) ? (
+      {HAS_ADMIN_PANEL_ACCESS.includes(userData?.role!) ? (
         <Link href="/admin/dashboard">
           <AccountDropdownMenuItem
             label="Admin Panel"

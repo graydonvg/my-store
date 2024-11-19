@@ -6,12 +6,13 @@ import { Product } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/formatting';
 import { calculateRoundedDiscountedPrice } from '@/utils/calculations';
-import { CONSTANTS } from '@/constants';
+
 import ProductCardSalePercentageBadge from './ProductCardSalePercentageBadge';
 import ProductCardImage from './ProductCardImage';
 import MoveToCartButton from './MoveToCartButton';
 import RemoveFromWishlistButton from './RemoveFromWishlistButton';
 import { useState } from 'react';
+import { BORDER_RADIUS } from '@/constants';
 
 type ProductCardProps = {
   product: Product;
@@ -29,7 +30,7 @@ export default function ProductCard({ product, imageSizes, wishlistSize, wishlis
   const [isRemovingWishlistItem, setIsRemovingWishlistItem] = useState(false);
 
   return (
-    <Box sx={{ borderRadius: CONSTANTS.BORDER_RADIUS, height: 1, opacity: isRemovingWishlistItem ? '50%' : null }}>
+    <Box sx={{ borderRadius: BORDER_RADIUS, height: 1, opacity: isRemovingWishlistItem ? '50%' : null }}>
       <Box
         sx={{
           display: 'flex',

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Box, Container, Divider, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
@@ -29,7 +29,7 @@ export default function Loading() {
                       variant="rectangular"
                       height="100%"
                       width="100%"
-                      sx={{ aspectRatio: 3 / 4, borderRadius: CONSTANTS.BORDER_RADIUS }}
+                      sx={{ aspectRatio: 3 / 4, borderRadius: BORDER_RADIUS }}
                     />
                   </Grid2>
                 ))}
@@ -42,7 +42,7 @@ export default function Loading() {
                 variant="rectangular"
                 height="100%"
                 width="100%"
-                sx={{ aspectRatio: 3 / 4, borderRadius: CONSTANTS.BORDER_RADIUS }}
+                sx={{ aspectRatio: 3 / 4, borderRadius: BORDER_RADIUS }}
               />
             </Grid2>
           </Grid2>
@@ -92,7 +92,7 @@ export default function Loading() {
               variant="rectangular"
               width="100%"
               height="56px"
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
           </Box>
           <Box
@@ -106,13 +106,13 @@ export default function Loading() {
               variant="rectangular"
               width="100%"
               height="48px"
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
             <Skeleton
               variant="rectangular"
               width="100%"
               height="48px"
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
           </Box>
           <Divider />

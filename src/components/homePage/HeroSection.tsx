@@ -1,15 +1,15 @@
 'use client';
 
-import { CONSTANTS } from '@/constants';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ContainedButton from '../ui/buttons/ContainedButton';
 import { useState } from 'react';
 import heroImage from '../../../public/stylish-woman-with-shopping-bags.jpg';
 import { useRouter } from 'next/navigation';
+import { BORDER_RADIUS, STORE_NAME } from '@/constants';
 
 const STORE_SLOGAN = 'Where Fashion Meets Passion';
-const STORE_INTRODUCTION = `Immerse yourself in a world of self-expression at ${CONSTANTS.STORE_NAME}, where each piece tells a story and every outfit is a statement`;
+const STORE_INTRODUCTION = `Immerse yourself in a world of self-expression at ${STORE_NAME}, where each piece tells a story and every outfit is a statement`;
 
 export default function HeroSection() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function HeroSection() {
         sx={{
           position: 'relative',
           height: { xs: '300px', sm: '500px', md: '700px' },
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
           overflow: 'hidden',
         }}>
         <Image
@@ -52,7 +52,7 @@ export default function HeroSection() {
             paddingX: { xs: '20px', sm: '50px' },
             height: 1,
             background: 'linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.8))',
-            borderRadius: CONSTANTS.BORDER_RADIUS,
+            borderRadius: BORDER_RADIUS,
             opacity: !isHeroImageLoaded ? 0 : 100,
           }}>
           <Typography

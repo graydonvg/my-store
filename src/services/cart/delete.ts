@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -18,9 +18,9 @@ export async function deleteItemFromCart(id: number): Promise<ResponseWithNoData
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }

@@ -2,11 +2,12 @@ import { Box, Typography } from '@mui/material';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { CONSTANTS } from '@/constants';
+
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { ProductForm } from '@/types';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
+import { HOME_PAGE_SHOP_BY_CATEGORY, ORDERED_SIZES_FOR_TOGGLE_BUTTONS } from '@/constants';
 
 type Props = {
   isSubmitting: boolean;
@@ -17,7 +18,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
   const dispatch = useAppDispatch();
   const productFormData = useAppSelector(selectProductFormData);
   const isFieldDisabled = isSubmitting || isClearingAllFields;
-  const categoryOptionsCapitalised = CONSTANTS.HOME_PAGE_SHOP_BY_CATEGORY.map((category) =>
+  const categoryOptionsCapitalised = HOME_PAGE_SHOP_BY_CATEGORY.map((category) =>
     category.label.replace(category.label.charAt(0), category.label.charAt(0).toUpperCase())
   );
 
@@ -51,7 +52,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
           aria-label="select available sizes"
           onChange={handleSelectSize}
           selection={productFormData.sizes}
-          buttons={CONSTANTS.ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
+          buttons={ORDERED_SIZES_FOR_TOGGLE_BUTTONS}
           disabled={isFieldDisabled}
         />
       </Box>

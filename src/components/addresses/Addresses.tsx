@@ -1,10 +1,11 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { CONSTANTS } from '@/constants';
+
 import AddressData from './AddressData';
 import AddAddressDialogButton from './buttons/AddAddressDialogButton';
 import AddAddressDialog from '../dialogs/AddAddressDialog';
 import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelectors';
+import { BORDER_RADIUS } from '@/constants';
 
 export default function Addresses() {
   const addresses = useAppSelector(selectAddresses);
@@ -15,7 +16,7 @@ export default function Addresses() {
         sx={{
           marginBottom: 2,
           border: (theme) => `1px solid ${theme.palette.custom.border}`,
-          borderRadius: CONSTANTS.BORDER_RADIUS,
+          borderRadius: BORDER_RADIUS,
         }}>
         <Table>
           <TableBody>

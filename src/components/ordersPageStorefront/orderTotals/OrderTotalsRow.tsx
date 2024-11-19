@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Box, Typography } from '@mui/material';
 
 type Props = {
@@ -19,7 +19,7 @@ export default function OrderTotalsRow({ label, price, fontSize, fontWeight, bac
         width: 1,
         padding: 1,
         backgroundColor,
-        borderRadius: CONSTANTS.BORDER_RADIUS,
+        borderRadius: BORDER_RADIUS,
       }}>
       <Typography
         paddingRight={2}

@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Logger } from 'next-axiom';
 
@@ -24,7 +24,7 @@ export default async function fetchWishlist() {
       .order('createdAt', { ascending: true });
 
     if (wishlistError) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error: wishlistError });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error: wishlistError });
       return null;
     }
 
@@ -40,7 +40,7 @@ export default async function fetchWishlist() {
 
     return wishlist;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return null;
   } finally {
     await logger.flush();

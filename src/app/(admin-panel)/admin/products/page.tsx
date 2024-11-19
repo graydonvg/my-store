@@ -1,7 +1,7 @@
 import ProductsPageAdminPanelClient from '@/components/adminPanel/products/ProductsPageAdminPanelClient';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
 import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
-import { CONSTANTS } from '@/constants';
+import { DATA_GRID_DEFAULTS } from '@/constants';
 import { fetchProductsForAdmin } from '@/services/db/queries/fetchProductsFormAdmin';
 
 type Props = {
@@ -24,9 +24,9 @@ export default async function AdminPanelProductsPage({ searchParams }: Props) {
         totalRowCount={0}
         querySuccess={validationSuccess}
         queryMessage={validationMessage}
-        page={CONSTANTS.DATA_GRID_DEFAULTS.page}
-        sort={CONSTANTS.DATA_GRID_DEFAULTS.sort}
-        filter={CONSTANTS.DATA_GRID_DEFAULTS.filter}
+        page={DATA_GRID_DEFAULTS.page}
+        sort={DATA_GRID_DEFAULTS.sort}
+        filter={DATA_GRID_DEFAULTS.filter}
       />
     );
   }

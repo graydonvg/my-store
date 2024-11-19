@@ -21,7 +21,7 @@ import { UpdateProductSchema } from '@/types';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { useLogger } from 'next-axiom';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 export default function AdminPanelEditProductPage() {
   const log = useLogger();
@@ -69,7 +69,7 @@ export default function AdminPanelEditProductPage() {
     const validation = UpdateProductSchema.safeParse(productData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, {
+      log.warn(LOGGER_ERROR_MESSAGES.validation, {
         userId: userData?.userId,
         payload: productData,
         error: validation.error,

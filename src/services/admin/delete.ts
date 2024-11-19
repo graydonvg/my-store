@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithNoData } from '@/types';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { Logger } from 'next-axiom';
@@ -19,9 +19,9 @@ export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -43,9 +43,9 @@ export async function deleteSelectedProducts(productIds: GridRowSelectionModel):
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -65,9 +65,9 @@ export async function deleteProductImageDataFromDb(id: number): Promise<Response
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -89,9 +89,9 @@ export async function deleteUser(userIds: GridRowSelectionModel): Promise<Respon
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }

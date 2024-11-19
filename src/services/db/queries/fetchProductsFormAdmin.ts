@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
 import buildQuery from '@/utils/queryBuilder/buildQuery';
@@ -29,7 +29,7 @@ export async function fetchProductsForAdmin(
     const { data: products, count, error } = await builtProductsQuery;
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
       return {
         success: false,
         message: error.message,
@@ -45,10 +45,10 @@ export async function fetchProductsForAdmin(
       data: { products, totalRowCount: count ?? 0 },
     };
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return {
       success: false,
-      message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+      message: USER_ERROR_MESSAGES.unexpected,
       data: { products: null, totalRowCount: 0 },
     };
   } finally {

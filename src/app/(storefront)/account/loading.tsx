@@ -1,5 +1,6 @@
 import PageHeaderSkeleton from '@/components/ui/PageHeaderSkeleton';
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
+
 import { Box, Grid2, Skeleton } from '@mui/material';
 
 export default function Loading() {
@@ -16,14 +17,14 @@ export default function Loading() {
                 variant="rectangular"
                 height={36}
                 width={120}
-                sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                sx={{ borderRadius: BORDER_RADIUS }}
               />
               {Array.from(Array(2)).map((_, index) => (
                 <Skeleton
                   key={index}
                   variant="rectangular"
                   height={42}
-                  sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                  sx={{ borderRadius: BORDER_RADIUS }}
                 />
               ))}
             </Box>
@@ -32,14 +33,14 @@ export default function Loading() {
                 variant="rectangular"
                 height={36}
                 width={260}
-                sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                sx={{ borderRadius: BORDER_RADIUS }}
               />
               {Array.from(Array(3)).map((_, index) => (
                 <Skeleton
                   key={index}
                   variant="rectangular"
                   height={42}
-                  sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+                  sx={{ borderRadius: BORDER_RADIUS }}
                 />
               ))}
             </Box>
@@ -51,18 +52,18 @@ export default function Loading() {
               variant="rectangular"
               height={36}
               width={150}
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
             <Skeleton
               variant="rectangular"
               height={110}
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ borderRadius: BORDER_RADIUS }}
             />
             <Skeleton
               variant="rectangular"
               height={48}
               width={153}
-              sx={{ borderRadius: CONSTANTS.BORDER_RADIUS, alignSelf: 'end' }}
+              sx={{ borderRadius: BORDER_RADIUS, alignSelf: 'end' }}
             />
           </Box>
         </Grid2>

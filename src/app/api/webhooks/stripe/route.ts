@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import { ResponseWithNoData } from '@/types';
-import { CONSTANTS } from '@/constants';
+import { USER_ERROR_MESSAGES } from '@/constants';
 
 const supabase = createSupabaseService();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -233,7 +233,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ResponseW
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

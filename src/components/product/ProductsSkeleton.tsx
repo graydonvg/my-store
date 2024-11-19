@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { BORDER_RADIUS } from '@/constants';
 import { Box, Grid2, Skeleton } from '@mui/material';
 
 export function ProductsSkeleton() {
@@ -17,7 +17,7 @@ export function ProductsSkeleton() {
               variant="rectangular"
               width="100%"
               height="100%"
-              sx={{ aspectRatio: 25 / 36, borderRadius: CONSTANTS.BORDER_RADIUS }}
+              sx={{ aspectRatio: 25 / 36, borderRadius: BORDER_RADIUS }}
             />
             <Box sx={{ paddingY: 1 }}>
               <Skeleton variant="text" />

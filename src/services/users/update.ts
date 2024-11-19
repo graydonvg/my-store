@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithNoData, UpdateAddress, UserPersonalInfo, UpdatePassword } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -20,9 +20,9 @@ export async function updateUserAddress(data: UpdateAddress): Promise<ResponseWi
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -44,9 +44,9 @@ export async function updateUserPersonalInformation(data: UserPersonalInfo): Pro
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }
@@ -68,9 +68,9 @@ export async function updateUserPassword(data: UpdatePassword): Promise<Response
 
     return result;
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
   } finally {
     await logger.flush();
   }

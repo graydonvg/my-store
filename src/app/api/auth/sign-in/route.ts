@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { ResponseWithNoData, UserAuthData, UserAuthDataSchema } from '@/types';
-import { CONSTANTS } from '@/constants';
+
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -33,12 +34,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     try {
       signInData = await request.json();
     } catch (error) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.PARSE, { error });
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
           success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+          message: USER_ERROR_MESSAGES.unexpected,
         },
         { status: 400 }
       );
@@ -47,7 +48,7 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const validation = UserAuthDataSchema.safeParse(signInData);
 
     if (!validation.success) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.VALIDATION, { error: validation.error });
+      log.warn(LOGGER_ERROR_MESSAGES.validation, { error: validation.error });
 
       const errorMessage = constructZodErrorMessage(validation.error);
 
@@ -86,12 +87,12 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       { status: 200 }
     );
   } catch (error) {
-    log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    log.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
     return NextResponse.json(
       {
         success: false,
-        message: CONSTANTS.USER_ERROR_MESSAGES.UNEXPECTED,
+        message: USER_ERROR_MESSAGES.unexpected,
       },
       { status: 500 }
     );

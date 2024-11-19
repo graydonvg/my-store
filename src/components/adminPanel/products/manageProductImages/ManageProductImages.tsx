@@ -13,11 +13,12 @@ import {
 import EditProductImagesDrawerButton from './EditProductImagesDrawerButton';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSelectors';
-import { CONSTANTS } from '@/constants';
+
 import { useLogger } from 'next-axiom';
 import EditProductImagesDrawer from './EditProductImagesDrawer';
 import ProductImagesAdminPanel from '@/components/product/productImages/ProductImagesAdminPanel';
 import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
+import { LOGGER_ERROR_MESSAGES, MAXIMUM_PRODUCT_IMAGES } from '@/constants';
 
 export default function ManageProductImages() {
   const logger = useLogger();
@@ -40,8 +41,8 @@ export default function ManageProductImages() {
 
     if (!files) return;
 
-    if (files.length + imageData.length > CONSTANTS.MAXIMUM_PRODUCT_IMAGES) {
-      toast.error(`Maximum of ${CONSTANTS.MAXIMUM_PRODUCT_IMAGES} images allowed.`);
+    if (files.length + imageData.length > MAXIMUM_PRODUCT_IMAGES) {
+      toast.error(`Maximum of ${MAXIMUM_PRODUCT_IMAGES} images allowed.`);
       return;
     }
 
@@ -78,7 +79,7 @@ export default function ManageProductImages() {
         toast.success(`${numberOfSuccessfulUploads} images uploaded successfully.`);
       }
     } catch (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
       toast.error('An unexpected error occurred during the image upload.');
     } finally {
@@ -113,7 +114,7 @@ export default function ManageProductImages() {
       <UploadImageButton
         onChange={handleImageUpload}
         isLoading={isLoading}
-        disabled={isSubmitting || imageData.length === CONSTANTS.MAXIMUM_PRODUCT_IMAGES}
+        disabled={isSubmitting || imageData.length === MAXIMUM_PRODUCT_IMAGES}
       />
     </Box>
   );

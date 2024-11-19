@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { DATA_GRID_DEFAULTS } from '@/constants';
 import { GridValidRowModel } from '@mui/x-data-grid';
 
 export function getChangedDataGridValue(newObj: GridValidRowModel, oldObj: GridValidRowModel): GridValidRowModel {
@@ -16,7 +16,7 @@ export function getChangedDataGridValue(newObj: GridValidRowModel, oldObj: GridV
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 export function getDataGridQueryDataFromSearchParams(searchParams: SearchParams) {
-  const { page: pageDefault, sort: sortDefalut, filter: filterDefault } = CONSTANTS.DATA_GRID_DEFAULTS;
+  const { page: pageDefault, sort: sortDefalut, filter: filterDefault } = DATA_GRID_DEFAULTS;
 
   const pageString = (searchParams['page'] ?? `${pageDefault.number}`) as string;
   const pageNumber = Number(pageString);

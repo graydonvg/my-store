@@ -1,4 +1,4 @@
-import { CONSTANTS } from '@/constants';
+import { LOGGER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { Logger } from 'next-axiom';
 
@@ -25,7 +25,7 @@ export default async function fetchCartAndWishlistData() {
       .order('createdAt', { ascending: true, referencedTable: 'cart' });
 
     if (error) {
-      logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.DATABASE_SELECT, { error });
+      logger.error(LOGGER_ERROR_MESSAGES.databaseSelect, { error });
       return {
         cartItems: null,
         wishlistData: null,
@@ -41,7 +41,7 @@ export default async function fetchCartAndWishlistData() {
       wishlistData: wishlist,
     };
   } catch (error) {
-    logger.error(CONSTANTS.LOGGER_ERROR_MESSAGES.UNEXPECTED, { error });
+    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
     return {
       cartItems: null,
       wishlistData: null,
