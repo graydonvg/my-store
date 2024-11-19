@@ -2,7 +2,7 @@ import { UserRoleSelectOptions } from './types';
 
 export const STORE_NAME = 'MyStore';
 
-export const URL =
+export const SITE_URL =
   process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://my-store-henna.vercel.app';
 
 export const BORDER_RADIUS = '4px';

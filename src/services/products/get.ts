@@ -1,4 +1,4 @@
-import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, SITE_URL, USER_ERROR_MESSAGES } from '@/constants';
 import { ResponseWithData, Product } from '@/types';
 import { Logger } from 'next-axiom';
 
@@ -10,7 +10,7 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
   logger.info('Attempting to fetch all products');
 
   try {
-    const url = `${URL}/api/products/get-all`;
+    const url = `${SITE_URL}/api/products/get-all`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -35,7 +35,7 @@ export async function getProductById(id: string): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch product by id');
 
   try {
-    const url = `${URL}/api/products/get-by-id?product_id=${id}`;
+    const url = `${SITE_URL}/api/products/get-by-id?product_id=${id}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -60,7 +60,7 @@ export async function getProductsByCategory(category: string): Promise<ResponseW
   logger.info('Attempting to fetch products by category');
 
   try {
-    const url = `${URL}/api/products/get-by-category?category=${category}`;
+    const url = `${SITE_URL}/api/products/get-by-category?category=${category}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -85,7 +85,7 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
   logger.info('Attempting to fetch products on sale');
 
   try {
-    const url = `${URL}/api/products/get-on-sale`;
+    const url = `${SITE_URL}/api/products/get-on-sale`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -110,7 +110,7 @@ export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch limited products on sale');
 
   try {
-    const url = `${URL}/api/products/get-limited-on-sale`;
+    const url = `${SITE_URL}/api/products/get-limited-on-sale`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -135,7 +135,7 @@ export async function getLimitedLatestProducts(): Promise<ResponseWithData<Produ
   logger.info('Attempting to fetch limited latest products');
 
   try {
-    const url = `${URL}/api/products/get-limited-latest`;
+    const url = `${SITE_URL}/api/products/get-limited-latest`;
 
     const response = await fetch(url, {
       method: 'GET',
