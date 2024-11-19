@@ -1,7 +1,7 @@
 'use client';
 
 import { Box } from '@mui/material';
-import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
+import CommonNavbarContainer from '@/components/navbars/CommonNavbarContainer';
 import { ReactNode } from 'react';
 
 type Props = {

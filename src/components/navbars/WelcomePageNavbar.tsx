@@ -1,7 +1,7 @@
 'use client';
 
 import { AppBar, Box, useTheme } from '@mui/material';
-import CommonNavbarContainer from '../ui/containers/CommonNavbarContainer';
+import CommonNavbarContainer from './CommonNavbarContainer';
 import NavbarTitle from './NavbarTitle';
 import { ElevationScroll } from '../ui/ElevationScroll';
 import ThemeToggleButton from '../theme/ThemeToggleButton';

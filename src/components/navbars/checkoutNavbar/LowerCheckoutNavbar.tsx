@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { LocalShippingOutlined, Payment, ShoppingCart, ThumbUp } from '@mui/icons-material';
-import CommonNavbarContainer from '@/components/ui/containers/CommonNavbarContainer';
+import CommonNavbarContainer from '@/components/navbars/CommonNavbarContainer';
 import BreadcrumbsComponent from '@/components/checkoutFlow/breadcrumbs/BreadcrumbsComponent';
 import BreadcrumbItem from '@/components/checkoutFlow/breadcrumbs/BreadcrumbItem';
 

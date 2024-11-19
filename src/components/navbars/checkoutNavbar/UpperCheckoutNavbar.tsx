@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@mui/material';
-import CommonNavbarContainer from '../../ui/containers/CommonNavbarContainer';
+import CommonNavbarContainer from '../CommonNavbarContainer';
 import NavbarTitle from '../NavbarTitle';
 import ThemeToggleButton from '../../theme/ThemeToggleButton';
 
