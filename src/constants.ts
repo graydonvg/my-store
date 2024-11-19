@@ -127,6 +127,6 @@ export const CONSTANTS = {
   },
 };
 
-export const ADMIN_PATHS = ['/api/secure/admin', '/admin'];
+export const AUTHORIZATION_REQUIRED_PATHS = ['/api/secure/admin', '/admin'];
 
-export const AUTH_REQUIRED_PATHS = ['/api/secure', '/account', '/orders', '/wishlist', '/cart', '/checkout'];
+export const AUTHENTICATION_REQUIRED_PATHS = ['/api/secure', '/account', '/orders', '/wishlist', '/cart', '/checkout'];

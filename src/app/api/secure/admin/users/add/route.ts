@@ -8,6 +8,7 @@ import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { CONSTANTS } from '@/constants';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 
 export const POST = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -48,21 +49,6 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
 
     log = request.log.with({ callerUserId: authUser.id });
 
-    const userRole = await getUserRoleFromSession(supabase);
-    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
-
-    if (!isAdmin && !isManager && !isOwner) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHORIZED,
-        },
-        { status: 401 }
-      );
-    }
-
     let userData: CreateUser;
 
     try {
@@ -98,10 +84,21 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
     const { email, password, ...userDataToUpdate } = validation.data;
     const { role: roleToAssign, ...restOfUserDataToUpdate } = userDataToUpdate;
 
+    const userRole = await getUserRoleFromSession(supabase);
+    const { isManager, isOwner } = getUserRoleBoolean(userRole);
+
+    let isAuthorizedToAssignRoles = false;
+
+    if (roleToAssign) {
+      isAuthorizedToAssignRoles = await checkAuthorizationServer(supabase, 'userRoles.insert');
+    }
+
     if (
-      (roleToAssign === 'owner' && !isOwner) ||
-      (roleToAssign === 'manager' && !isOwner) ||
-      (roleToAssign === 'admin' && !(isOwner || isManager))
+      roleToAssign &&
+      (!isAuthorizedToAssignRoles ||
+        (roleToAssign === 'owner' && !isOwner) ||
+        (roleToAssign === 'manager' && !isOwner) ||
+        (roleToAssign === 'admin' && !(isOwner || isManager)))
     ) {
       log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign });
 

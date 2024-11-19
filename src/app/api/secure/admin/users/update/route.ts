@@ -6,6 +6,7 @@ import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
 import { CONSTANTS } from '@/constants';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
+import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 
 export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -45,15 +46,11 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     log = request.log.with({ userId: authUser.id });
 
-    const callerRole = await getUserRoleFromSession(supabase);
-    const {
-      isAdmin: callerIsAdmin,
-      isManager: callerIsManager,
-      isOwner: callerIsOwner,
-    } = getUserRoleBoolean(callerRole);
+    const isAuthorized = await checkAuthorizationServer(supabase, 'users.update');
+    const userRole = await getUserRoleFromSession(supabase);
 
-    if (!callerIsAdmin && !callerIsManager && !callerIsOwner) {
-      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { callerRole });
+    if (!isAuthorized) {
+      log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
 
       return NextResponse.json(
         {
@@ -99,28 +96,39 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     const { userId: userToUpdateId, currentRole: userToUpdateCurrentRole, dataToUpdate } = userDataValidation.data;
     const { role: roleToAssign, ...userDataToUpdate } = dataToUpdate;
 
+    const { isManager, isOwner } = getUserRoleBoolean(userRole);
+
     if (
-      (userToUpdateCurrentRole === 'owner' && !callerIsOwner) ||
-      (userToUpdateCurrentRole === 'manager' && !callerIsOwner) ||
-      (userToUpdateCurrentRole === 'admin' && !(callerIsOwner || callerIsManager))
+      (userToUpdateCurrentRole === 'owner' && !isOwner) ||
+      (userToUpdateCurrentRole === 'manager' && !isOwner) ||
+      (userToUpdateCurrentRole === 'admin' && !(isOwner || isManager))
     ) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { callerRole, userToUpdateCurrentRole });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, userToUpdateCurrentRole });
 
       return NextResponse.json(
         {
           success: false,
-          message: `Not authorized to update ${userToUpdateCurrentRole}.`,
+          message: `Not authorized to update ${userToUpdateCurrentRole} account.`,
         },
         { status: 401 }
       );
     }
 
+    let isAuthorizedToAssignRoles = false;
+
+    if (roleToAssign) {
+      isAuthorizedToAssignRoles = await checkAuthorizationServer(supabase, 'userRoles.update');
+    }
+
     if (
-      (roleToAssign === 'owner' && !callerIsOwner) ||
-      (roleToAssign === 'manager' && !callerIsOwner) ||
-      (roleToAssign === 'admin' && !(callerIsOwner || callerIsManager))
+      roleToAssign &&
+      roleToAssign !== 'none' &&
+      (!isAuthorizedToAssignRoles ||
+        (roleToAssign === 'owner' && !isOwner) ||
+        (roleToAssign === 'manager' && !isOwner) ||
+        (roleToAssign === 'admin' && !(isOwner || isManager)))
     ) {
-      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { callerRole, roleToAssign: roleToAssign });
+      log.error(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole, roleToAssign });
 
       return NextResponse.json(
         {

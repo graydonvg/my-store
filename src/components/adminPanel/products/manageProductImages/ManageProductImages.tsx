@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Box } from '@mui/material';
 import UploadImageButton from './UploadImageButton';
 import { toast } from 'react-toastify';
@@ -25,10 +25,14 @@ export default function ManageProductImages() {
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
+  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
+  const isLoading = checkingAuthorization || uploadInProgress;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
+    setCheckingAuthorization(true);
     const isAuthorized = await checkAuthorizationClient('productImageData.insert');
+    setCheckingAuthorization(false);
 
     if (!isAuthorized) return;
 
@@ -108,7 +112,7 @@ export default function ManageProductImages() {
       <EditProductImagesDrawer />
       <UploadImageButton
         onChange={handleImageUpload}
-        uploadInProgress={uploadInProgress}
+        isLoading={isLoading}
         disabled={isSubmitting || imageData.length === CONSTANTS.MAXIMUM_PRODUCT_IMAGES}
       />
     </Box>

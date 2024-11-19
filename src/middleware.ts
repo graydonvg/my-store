@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { ADMIN_PATHS, AUTH_REQUIRED_PATHS, CONSTANTS } from './constants';
+import { AUTHENTICATION_REQUIRED_PATHS, AUTHORIZATION_REQUIRED_PATHS, CONSTANTS } from './constants';
 import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/auth';
 
@@ -21,14 +21,14 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.redirect(redirectUrl);
   }
 
-  const isAdminPath = ADMIN_PATHS.some((path) => checkPathStartsWith(path));
+  const authorizationRequired = AUTHORIZATION_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
 
-  const authRequired = AUTH_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
+  const authenticationRequired = AUTHENTICATION_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
 
   const userRole = await getUserRoleFromSession(supabase);
   const hasAdminPanelAccess = userRole && CONSTANTS.HAS_ADMIN_PANEL_ACCESS.includes(userRole);
 
-  if (isAdminPath && (!authUser || !hasAdminPanelAccess)) {
+  if (authorizationRequired && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json({ success: false, message: 'Not Authorized.' }, { status: 401 });
     } else {
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (authRequired && !authUser) {
+  if (authenticationRequired && !authUser) {
     if (checkPathStartsWith('/api')) {
       response = NextResponse.json(
         { success: false, message: CONSTANTS.USER_ERROR_MESSAGES.NOT_AUTHENTICATED },

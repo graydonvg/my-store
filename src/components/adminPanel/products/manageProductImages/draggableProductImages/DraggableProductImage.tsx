@@ -19,6 +19,7 @@ import TextButton from '@/components/ui/buttons/TextButton';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { deleteProductImageDataFromDb } from '@/services/admin/delete';
+import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
 
 export type Props = {
   imageDataProps: ProductImageData & { id: string };
@@ -33,7 +34,9 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
   const isDeletingImage = useAppSelector(selectIsDeletingImage);
   const [imageToDeleteId, setImageToDeleteId] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
   const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageDataProps.id;
+  const isLoading = checkingAuthorization || isDeletingCurrentImage;
   const {
     attributes: { role, ...restOfAttributes },
     listeners,
@@ -47,6 +50,12 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
   const containerBgColor = darkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)';
 
   async function deleteImage() {
+    setCheckingAuthorization(true);
+    const isAuthorized = await checkAuthorizationClient('productImageData.delete');
+    setCheckingAuthorization(false);
+
+    if (!isAuthorized) return;
+
     dispatch(setIsDeletingImage(true));
     setImageToDeleteId(imageDataProps.id);
 
@@ -145,9 +154,9 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               placeItems: 'center',
             }}>
             <TextButton
-              label={!isDeletingCurrentImage ? 'delete' : ''}
+              label={!isLoading ? 'delete' : ''}
               onClick={deleteImage}
-              isLoading={isDeletingCurrentImage}
+              isLoading={isLoading}
               startIcon={<DeleteForever />}
               sxStyles={{
                 color: theme.palette.text.secondary,

@@ -3,7 +3,8 @@ import { NumericIdSchema, ResponseWithNoData } from '@/types';
 import { CONSTANTS } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
+import { getUserRoleFromSession } from '@/utils/auth';
+import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 
 export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextResponse<ResponseWithNoData>> => {
   const supabase = await createSupabaseServerClient();
@@ -43,10 +44,10 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
 
     log = request.log.with({ userId: authUser.id });
 
-    const userRole = await getUserRoleFromSession(supabase);
-    const { isAdmin, isManager, isOwner } = getUserRoleBoolean(userRole);
+    const isAuthorized = await checkAuthorizationServer(supabase, 'products.delete');
 
-    if (!isAdmin && !isManager && !isOwner) {
+    if (!isAuthorized) {
+      const userRole = await getUserRoleFromSession(supabase);
       log.warn(CONSTANTS.LOGGER_ERROR_MESSAGES.NOT_AUTHORIZED, { userRole });
 
       return NextResponse.json(

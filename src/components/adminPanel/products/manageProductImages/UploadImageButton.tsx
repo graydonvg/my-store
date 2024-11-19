@@ -3,18 +3,18 @@ import ContainedButton from '../../../ui/buttons/ContainedButton';
 import { CloudUpload } from '@mui/icons-material';
 
 type Props = {
-  uploadInProgress: boolean;
+  isLoading: boolean;
   disabled: boolean;
 } & InputProps;
 
-export default function UploadImageButton({ uploadInProgress, disabled, ...InputProps }: Props) {
+export default function UploadImageButton({ isLoading, disabled, ...InputProps }: Props) {
   return (
     <ContainedButton
       tabIndex={-1}
       color="primary"
       label={
         <>
-          {!uploadInProgress ? 'upload images' : ''}
+          {!isLoading ? 'upload images' : ''}
           <Input
             inputProps={{ accept: 'image/*', multiple: true }}
             type="file"
@@ -33,7 +33,7 @@ export default function UploadImageButton({ uploadInProgress, disabled, ...Input
           />
         </>
       }
-      isLoading={uploadInProgress}
+      isLoading={isLoading}
       disabled={disabled}
       startIcon={<CloudUpload />}
       fullWidth

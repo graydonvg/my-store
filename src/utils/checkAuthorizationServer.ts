@@ -5,7 +5,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 const log = new Logger();
 
 export default async function checkAuthorizationServer(
-  supabase: SupabaseClient,
+  supabase: SupabaseClient<Database>,
   requestedPermission: Database['public']['Enums']['appPermission']
 ) {
   const logger = log.with({ context: 'utils: checkAuthorizationServer', requestedPermission });

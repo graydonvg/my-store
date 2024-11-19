@@ -14,6 +14,7 @@ import DrawerComponent from '@/components/ui/DrawerComponent';
 import DrawerHeader from '@/components/drawers/DrawerHeader';
 import DraggableProductImages from './draggableProductImages/DraggableProductImages';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
+import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
 
 export default function EditProductImagesDrawer() {
   const theme = useTheme();
@@ -23,6 +24,8 @@ export default function EditProductImagesDrawer() {
   const isEditImagesDrawerOpen = useAppSelector(selectIsEditImagesDrawerOpen);
   const imageData = useAppSelector(selectImageData);
   const isDeletingImage = useAppSelector(selectIsDeletingImage);
+  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
+  const isLoading = checkingAuthorization || isDeletingAllImages;
 
   function closeEditImageDrawer() {
     if (isDeletingAllImages || isDeletingImage) return;
@@ -30,6 +33,12 @@ export default function EditProductImagesDrawer() {
   }
 
   async function deleteAllImages() {
+    setCheckingAuthorization(true);
+    const isAuthorized = await checkAuthorizationClient('productImageData.delete');
+    setCheckingAuthorization(false);
+
+    if (!isAuthorized) return;
+
     setIsDeletingAllImages(true);
 
     await deleteAllProductImages(imageData, productFormData.productId);
@@ -67,8 +76,8 @@ export default function EditProductImagesDrawer() {
         }}>
         <ContainedButton
           onClick={deleteAllImages}
-          isLoading={isDeletingAllImages}
-          label={!isDeletingAllImages ? 'Delete all' : ''}
+          isLoading={isLoading}
+          label={!isLoading ? 'Delete all' : ''}
           color="secondary"
           fullWidth
           startIcon={<DeleteForever />}
