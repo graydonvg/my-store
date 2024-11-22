@@ -27,8 +27,17 @@ export async function createNewStripeCheckoutSession(orderId: number, lineItems:
       };
     }
 
+    if (!createStripeSessionData) {
+      const errorMessage = 'Failed to get stripe session ID';
+      logger.error(errorMessage);
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+
     const error = await stripe?.redirectToCheckout({
-      sessionId: createStripeSessionData?.sessionId!,
+      sessionId: createStripeSessionData.sessionId,
     });
 
     if (error?.error) {

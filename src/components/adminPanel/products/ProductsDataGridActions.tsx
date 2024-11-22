@@ -3,16 +3,15 @@ import { clearProductFormData, setProductFormData } from '@/lib/redux/features/p
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { deleteProduct } from '@/services/admin/delete';
-import { deleteAllProductImages, deleteProductImagesFromStorage } from '@/services/admin/image-deletion';
+import { deleteProductImages, deleteProducts } from '@/services/admin/delete';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
-import { Product, ResponseWithNoData } from '@/types';
+import { Product } from '@/types';
 import { DeleteForever, Edit, Preview } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Flip, Id, toast } from 'react-toastify';
+import { Flip, toast } from 'react-toastify';
 
 type Props = {
   params: GridRenderCellParams<Product>;
@@ -24,16 +23,22 @@ export default function ProductsDataGridActions({ params }: Props) {
   const imageData = useAppSelector(selectImageData);
   const productFormData = useAppSelector(selectProductFormData);
   const { productImageData, ...restOfProductData } = params.row;
-  const [isDeletingProduct, setIsDeletingProduct] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   async function editProduct() {
     setIsLoading(true);
 
     if (imageData.length > 0 && !productFormData.productId) {
-      const { success, message } = await deleteAllProductImages(imageData);
+      // Image data is persisted. This deletes any images that were uploaded but not used before clearing the store.
+      // Unless changes were saved, an image will not have an ID.
+      const fileNames = imageData
+        .filter((item) => item.productImageId === undefined)
+        .map((item) => ({ fileName: item.fileName }));
 
-      if (success === false) {
+      const { success, message } = await deleteProductImages(fileNames);
+
+      if (!success) {
         toast.error(message);
       }
     }
@@ -49,44 +54,27 @@ export default function ProductsDataGridActions({ params }: Props) {
   async function revalidateAndRefresh() {
     setIsLoading(true);
 
-    const data = await revalidateAllData();
+    const result = await revalidateAllData();
 
-    if (data.success === true) {
+    if (result.success) {
       router.refresh();
     } else {
-      toast.error(data.message);
+      toast.error(result.message);
     }
 
     setIsLoading(false);
   }
 
   async function permanentlyDeleteProduct() {
-    setIsDeletingProduct(true);
+    setIsDeleting(true);
 
     const toastId = toast.loading('Deleting product...');
 
-    const deleteImagesPromise = deleteProductImagesFromStorage(productImageData);
-    const deleteProductDataPromise = deleteProduct(params.row.productId);
+    const { success, message } = await deleteProducts([params.row.productId]);
 
-    const results = await Promise.all([deleteImagesPromise, deleteProductDataPromise]);
-
-    const success = results.every((result) => result.success);
-
-    handleToastUpdate(results, success, toastId);
-
-    if (success) {
-      await revalidateAndRefresh();
-      router.refresh();
-      setIsDeletingProduct(false);
-    }
-
-    setIsDeletingProduct(false);
-  }
-
-  function handleToastUpdate(results: ResponseWithNoData[], success: boolean, toastId: Id) {
     if (success) {
       toast.update(toastId, {
-        render: 'Product deleted successfully',
+        render: message,
         type: 'success',
         isLoading: false,
         autoClose: 4000,
@@ -94,22 +82,27 @@ export default function ProductsDataGridActions({ params }: Props) {
         closeOnClick: true,
         transition: Flip,
       });
+      await revalidateAndRefresh();
     } else {
-      const errorMessages = results.filter((result) => !result.success).map((result) => result.message);
-
-      toast.dismiss(toastId);
-
-      errorMessages.forEach((message) => {
-        toast.error(message);
+      toast.update(toastId, {
+        render: message,
+        type: 'error',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
       });
     }
+
+    setIsDeleting(false);
   }
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: 1 }}>
       <Tooltip title="View product">
         <IconButton
-          disabled={isLoading || isDeletingProduct}
+          disabled={isLoading || isDeleting}
           onClick={() =>
             router.push(
               `/products/${params.row.category?.toLowerCase()}/${params.row.name.toLowerCase().split(' ').join('-')}/${
@@ -122,14 +115,14 @@ export default function ProductsDataGridActions({ params }: Props) {
       </Tooltip>
       <Tooltip title="Edit product">
         <IconButton
-          disabled={isLoading || isDeletingProduct}
+          disabled={isLoading || isDeleting}
           onClick={editProduct}>
           <Edit />
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete product">
         <IconButton
-          disabled={isLoading || isDeletingProduct}
+          disabled={isLoading || isDeleting}
           onClick={permanentlyDeleteProduct}>
           <DeleteForever />
         </IconButton>

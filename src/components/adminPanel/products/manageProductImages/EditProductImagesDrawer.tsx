@@ -3,29 +3,25 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { Box, Divider, useTheme } from '@mui/material';
 import { clearImageData, setIsEditImagesDrawerOpen } from '@/lib/redux/features/productImages/productImagesSlice';
-import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import {
   selectImageData,
   selectIsDeletingImage,
   selectIsEditImagesDrawerOpen,
 } from '@/lib/redux/features/productImages/productImagesSelectors';
-import { deleteAllProductImages } from '@/services/admin/image-deletion';
 import DrawerComponent from '@/components/ui/DrawerComponent';
 import DrawerHeader from '@/components/drawers/DrawerHeader';
 import DraggableProductImages from './draggableProductImages/DraggableProductImages';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
-import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
+import { deleteProductImages } from '@/services/admin/delete';
+import { toast } from 'react-toastify';
 
 export default function EditProductImagesDrawer() {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
-  const productFormData = useAppSelector(selectProductFormData);
   const isEditImagesDrawerOpen = useAppSelector(selectIsEditImagesDrawerOpen);
   const imageData = useAppSelector(selectImageData);
   const isDeletingImage = useAppSelector(selectIsDeletingImage);
-  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
-  const isLoading = checkingAuthorization || isDeletingAllImages;
 
   function closeEditImageDrawer() {
     if (isDeletingAllImages || isDeletingImage) return;
@@ -33,19 +29,24 @@ export default function EditProductImagesDrawer() {
   }
 
   async function deleteAllImages() {
-    setCheckingAuthorization(true);
-    const isAuthorized = await checkAuthorizationClient('productImageData.delete');
-    setCheckingAuthorization(false);
-
-    if (!isAuthorized) return;
-
     setIsDeletingAllImages(true);
 
-    await deleteAllProductImages(imageData, productFormData.productId);
+    const imagesToDeleteData = imageData.map((item) => ({
+      productImageId: item.productImageId,
+      fileName: item.fileName,
+    }));
 
-    dispatch(clearImageData());
+    const { success, message } = await deleteProductImages(imagesToDeleteData);
+
+    if (success) {
+      toast.success(message);
+      dispatch(setIsEditImagesDrawerOpen(false));
+      dispatch(clearImageData());
+    } else {
+      toast.error(message);
+    }
+
     setIsDeletingAllImages(false);
-    dispatch(setIsEditImagesDrawerOpen(false));
   }
 
   return (
@@ -76,8 +77,8 @@ export default function EditProductImagesDrawer() {
         }}>
         <ContainedButton
           onClick={deleteAllImages}
-          isLoading={isLoading}
-          label={!isLoading ? 'Delete all' : ''}
+          isLoading={isDeletingAllImages}
+          label={!isDeletingAllImages ? 'Delete all' : ''}
           color="secondary"
           fullWidth
           startIcon={<DeleteForever />}

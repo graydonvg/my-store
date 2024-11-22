@@ -1,39 +1,17 @@
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
-import { ResponseWithNoData } from '@/types';
+import { DeleteProductImage, ResponseWithNoData } from '@/types';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteProduct(id: number): Promise<ResponseWithNoData> {
-  const logger = log.with({ context: 'service: deleteProduct' });
+export async function deleteProducts(productIds: number[]): Promise<ResponseWithNoData> {
+  const logger = log.with({ context: 'service: deleteProducts' });
 
-  logger.info('Attempting to delete product');
-
-  try {
-    const response = await fetch(`/api/secure/admin/products/delete?product_id=${id}`, {
-      method: 'DELETE',
-    });
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
-
-    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
-  } finally {
-    await logger.flush();
-  }
-}
-
-export async function deleteSelectedProducts(productIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
-  const logger = log.with({ context: 'service: deleteSelectedProducts' });
-
-  logger.info('Attempting to delete selected products');
+  logger.info('Attempting to delete product(s)');
 
   try {
-    const response = await fetch(`/api/secure/admin/products/delete/many`, {
+    const response = await fetch('/api/secure/admin/products/delete', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productIds),
@@ -51,14 +29,16 @@ export async function deleteSelectedProducts(productIds: GridRowSelectionModel):
   }
 }
 
-export async function deleteProductImageDataFromDb(id: number): Promise<ResponseWithNoData> {
-  const logger = log.with({ context: 'service: deleteProductImageDataFromDb' });
+export async function deleteProductImages(imageData: DeleteProductImage): Promise<ResponseWithNoData> {
+  const logger = log.with({ context: 'service: deleteProductImages' });
 
-  logger.info('Attempting to delete product image data from db');
+  logger.info('Attempting to delete product image(s)');
 
   try {
-    const response = await fetch(`/api/secure/admin/product-image-data/delete?product_image_id=${id}`, {
+    const response = await fetch('/api/secure/admin/products/images/delete', {
       method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(imageData),
     });
 
     const result = await response.json();
@@ -73,10 +53,10 @@ export async function deleteProductImageDataFromDb(id: number): Promise<Response
   }
 }
 
-export async function deleteUser(userIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
+export async function deleteUsers(userIds: GridRowSelectionModel): Promise<ResponseWithNoData> {
   const logger = log.with({ context: 'service: deleteUser' });
 
-  logger.info('Attempting to delete user');
+  logger.info('Attempting to delete user(s)');
 
   try {
     const response = await fetch('/api/secure/admin/users/delete', {

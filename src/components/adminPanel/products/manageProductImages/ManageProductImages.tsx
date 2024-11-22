@@ -1,9 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { Box } from '@mui/material';
 import UploadImageButton from './UploadImageButton';
 import { toast } from 'react-toastify';
-import { uploadProductImageToStorage } from '@/lib/firebase';
 import { generateUniqueFileName } from '@/utils/fileUtils';
 import {
   clearImageUploadProgess,
@@ -13,12 +12,13 @@ import {
 import EditProductImagesDrawerButton from './EditProductImagesDrawerButton';
 import { selectImageData, selectImageUploadProgress } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { selectIsProductFormSubmitting } from '@/lib/redux/features/productForm/productFormSelectors';
-
 import { useLogger } from 'next-axiom';
 import EditProductImagesDrawer from './EditProductImagesDrawer';
 import ProductImagesAdminPanel from '@/components/product/productImages/ProductImagesAdminPanel';
-import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
 import { LOGGER_ERROR_MESSAGES, MAXIMUM_PRODUCT_IMAGES } from '@/constants';
+import { uploadFileResumable } from '@/utils/uploadFileResumable';
+import { DetailedError } from 'tus-js-client';
+import { UploadResult } from '@/types';
 
 export default function ManageProductImages() {
   const logger = useLogger();
@@ -26,16 +26,16 @@ export default function ManageProductImages() {
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
-  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
+  // const [checkingAuthorization, setCheckingAuthorization] = useState(false);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-  const isLoading = checkingAuthorization || uploadInProgress;
+  // const isLoading = checkingAuthorization || uploadInProgress;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    setCheckingAuthorization(true);
-    const isAuthorized = await checkAuthorizationClient('productImageData.insert');
-    setCheckingAuthorization(false);
+    // setCheckingAuthorization(true);
+    // const isAuthorized = await checkAuthorizationClient('productImages.insert');
+    // setCheckingAuthorization(false);
 
-    if (!isAuthorized) return;
+    // if (!isAuthorized) return;
 
     const files = event.target.files;
 
@@ -50,8 +50,8 @@ export default function ManageProductImages() {
       const uploadImagePromises = Array.from(files).map((file) => {
         const uniqueFileName = generateUniqueFileName(file.name);
 
-        return uploadProductImageToStorage(file, uniqueFileName, (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        return uploadFileResumable('product-images', uniqueFileName, file, (uploadedBytes, totalBytes) => {
+          const progress = (uploadedBytes / totalBytes) * 100;
 
           dispatch(
             setImageUploadProgress({
@@ -82,7 +82,7 @@ export default function ManageProductImages() {
     }
   }
 
-  function processUploadResults(results: PromiseSettledResult<{ fileName: string; imageUrl: string }>[]) {
+  function processUploadResults(results: PromiseSettledResult<UploadResult>[]) {
     const successfulUploads: { fileName: string; imageUrl: string; imageIndex: number }[] = [];
     const failedUploads: { fileName: string; error: string }[] = [];
 
@@ -90,11 +90,33 @@ export default function ManageProductImages() {
 
     results.forEach((result, index) => {
       if (result.status === 'fulfilled') {
-        const { fileName, imageUrl } = result.value;
-        successfulUploads.push({ fileName, imageUrl, imageIndex: imageIndex++ });
+        const value = result.value;
+
+        if ('imageUrl' in value) {
+          const { fileName, imageUrl } = value;
+
+          successfulUploads.push({ fileName, imageUrl: imageUrl || '', imageIndex: imageIndex++ });
+        }
       } else {
-        const { fileName, error } = result.reason;
-        failedUploads.push({ fileName: fileName || `Image ${index + 1}`, error: error.message || 'Unknown error' });
+        const reason = result.reason;
+
+        const fileName = reason.fileName || `Image ${index + 1}`;
+        let error = reason.error;
+
+        if (reason.error instanceof DetailedError && reason.error.originalResponse) {
+          try {
+            const errorData = JSON.parse(reason.error.originalResponse.getBody() as string);
+            error = errorData.message;
+          } catch (error) {
+            error = 'Failed to parse error.';
+          }
+        }
+
+        if (reason.error instanceof Error) {
+          error = reason.error.message;
+        }
+
+        failedUploads.push({ fileName, error });
       }
     });
 
@@ -108,7 +130,7 @@ export default function ManageProductImages() {
       <EditProductImagesDrawer />
       <UploadImageButton
         onChange={handleImageUpload}
-        isLoading={isLoading}
+        isLoading={uploadInProgress}
         disabled={isSubmitting || imageData.length === MAXIMUM_PRODUCT_IMAGES}
       />
     </Box>

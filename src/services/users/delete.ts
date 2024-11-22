@@ -1,10 +1,10 @@
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
-import { CustomResponse } from '@/types';
+import { ResponseWithNoData } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function deleteAddress(id: number): Promise<CustomResponse> {
+export async function deleteAddress(id: number): Promise<ResponseWithNoData> {
   const logger = log.with({ context: 'service: deleteAddress' });
 
   logger.info('Attempting to delete address');

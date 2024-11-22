@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { NumericIdSchema, ResponseWithNoData } from '@/types';
-
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { AxiomRequest, withAxiom } from 'next-axiom';
+import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleFromSession } from '@/utils/auth';
+
 import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 
@@ -11,7 +11,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
   const supabase = await createSupabaseServerClient();
   let log = request.log;
 
-  log.info('Attempting to delete product');
+  log.info('Attempting to delete product(s)');
 
   try {
     const {
@@ -60,11 +60,12 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       );
     }
 
-    const searchParams = request.nextUrl.searchParams;
-    const productId = searchParams.get('product_id');
+    let productIdsArray: number[];
 
-    if (!productId) {
-      log.error(LOGGER_ERROR_MESSAGES.noData);
+    try {
+      productIdsArray = await request.json();
+    } catch (error) {
+      log.error(LOGGER_ERROR_MESSAGES.parse, { error });
 
       return NextResponse.json(
         {
@@ -75,7 +76,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       );
     }
 
-    const validation = NumericIdSchema.safeParse(productId);
+    const validation = NumericIdSchema.array().safeParse(productIdsArray);
 
     if (!validation.success) {
       log.error(LOGGER_ERROR_MESSAGES.validation, { error: validation.error });
@@ -89,21 +90,43 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
       );
     }
 
-    const { error: deleteError } = await supabase.from('products').delete().eq('productId', validation.data);
+    const { data: productData, error: deleteProductError } = await supabase
+      .from('products')
+      .delete()
+      .in('productId', validation.data)
+      .select('productImageData(fileName)');
 
-    if (deleteError) {
-      log.error(LOGGER_ERROR_MESSAGES.databaseDelete, { error: deleteError });
+    const fileNames = productData?.[0]?.productImageData.map((item) => item.fileName);
+
+    const { error: storageError } = fileNames?.length
+      ? await supabase.storage.from('product-images').remove(fileNames)
+      : { error: null };
+
+    if (deleteProductError) {
+      log.error(LOGGER_ERROR_MESSAGES.databaseDelete, { error: deleteProductError });
 
       return NextResponse.json(
         {
           success: false,
-          message: `Failed to delete product. ${deleteError.message}.`,
+          message: `Failed to delete product(s). ${deleteProductError.message}.`,
         },
         { status: 500 }
       );
     }
 
-    const successMessage = 'Product deleted successfully';
+    if (storageError) {
+      log.error(LOGGER_ERROR_MESSAGES.storageDelete, { error: storageError });
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Product(s) deleted, but failed to delete image(s) from storage. ${storageError.message}.`,
+        },
+        { status: 500 }
+      );
+    }
+
+    const successMessage = `Product(s) deleted successfully`;
 
     log.info(successMessage);
 
@@ -120,7 +143,7 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
     return NextResponse.json(
       {
         success: false,
-        message: USER_ERROR_MESSAGES.unexpected,
+        message: `Failed to delete product data. ${USER_ERROR_MESSAGES.unexpected}`,
       },
       { status: 500 }
     );

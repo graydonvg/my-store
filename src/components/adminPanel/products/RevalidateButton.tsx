@@ -22,13 +22,13 @@ export default function RevalidateButton({ isDeleting, commonStyle }: Props) {
   async function revalidateAndRefresh() {
     setIsLoading(true);
 
-    const data = await revalidateAllData();
+    const { success, message } = await revalidateAllData();
 
-    if (data.success === true) {
-      toast.success(data.message);
+    if (success) {
+      toast.success(message);
       router.refresh();
     } else {
-      toast.error(data.message);
+      toast.error(message);
     }
 
     setIsLoading(false);

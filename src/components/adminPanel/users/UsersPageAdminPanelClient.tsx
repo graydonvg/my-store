@@ -18,7 +18,7 @@ import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { getChangedDataGridValue } from '@/utils/dataGridHelpers';
 import { getUserRoleBoolean } from '@/utils/auth';
 import { updateUser } from '@/services/admin/update';
-import { deleteUser } from '@/services/admin/delete';
+import { deleteUsers } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import getUsersDataGridColumns from './getUsersDataGridColumns';
@@ -159,7 +159,7 @@ export default function UsersPageAdminPanelClient({
   async function handleDeleteUsers() {
     setIsDeleting(true);
 
-    const { success, message } = await deleteUser(selectedUserIds);
+    const { success, message } = await deleteUsers(selectedUserIds);
 
     if (success) {
       toast.success(message);

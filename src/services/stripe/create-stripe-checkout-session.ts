@@ -1,12 +1,12 @@
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
-import { CustomResponse, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
+import { ResponseWithData, StripeCheckoutData, StripeCheckoutSessionResponse } from '@/types';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
 export async function createStripeCheckoutSession(
   data: StripeCheckoutData
-): Promise<CustomResponse<StripeCheckoutSessionResponse>> {
+): Promise<ResponseWithData<StripeCheckoutSessionResponse | null>> {
   const logger = log.with({ context: 'service: createStripeCheckoutSession' });
 
   logger.info('Attempting to create Stripe checkout session');
@@ -24,7 +24,7 @@ export async function createStripeCheckoutSession(
   } catch (error) {
     logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
 
-    return { success: false, message: USER_ERROR_MESSAGES.unexpected };
+    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
   } finally {
     await logger.flush();
   }

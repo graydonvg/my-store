@@ -24,7 +24,7 @@ export default async function fetchRecentProducts() {
       return null;
     }
 
-    logger.info('Fetched recent successfully');
+    logger.info('Fetched recent products successfully');
 
     return products;
   } catch (error) {

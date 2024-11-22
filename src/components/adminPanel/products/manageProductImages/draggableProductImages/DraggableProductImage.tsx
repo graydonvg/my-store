@@ -4,9 +4,8 @@ import Image from 'next/image';
 
 import { DeleteForever, DragHandle } from '@mui/icons-material';
 import { toast } from 'react-toastify';
-import { deleteProductImageFromStorage } from '@/lib/firebase';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import {
   deleteImageData,
   setIsDeletingImage,
@@ -16,28 +15,23 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import TextButton from '@/components/ui/buttons/TextButton';
-import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { selectImageData, selectIsDeletingImage } from '@/lib/redux/features/productImages/productImagesSelectors';
-import { deleteProductImageDataFromDb } from '@/services/admin/delete';
-import checkAuthorizationClient from '@/utils/checkAuthorizationClient';
+import { deleteProductImages } from '@/services/admin/delete';
 import { BORDER_RADIUS } from '@/constants';
 
 export type Props = {
-  imageDataProps: ProductImageData & { id: string };
+  imageDataProp: ProductImageData & { id: string };
   activeItemId: UniqueIdentifier | null;
 };
 
-export default function DraggableProductImage({ imageDataProps, activeItemId }: Props) {
+export default function DraggableProductImage({ imageDataProp, activeItemId }: Props) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const productFormData = useAppSelector(selectProductFormData);
-  const selectedImageData = useAppSelector(selectImageData);
+  const imageDataStore = useAppSelector(selectImageData);
   const isDeletingImage = useAppSelector(selectIsDeletingImage);
   const [imageToDeleteId, setImageToDeleteId] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [checkingAuthorization, setCheckingAuthorization] = useState(false);
-  const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageDataProps.id;
-  const isLoading = checkingAuthorization || isDeletingCurrentImage;
+  const isDeletingCurrentImage = isDeletingImage && imageToDeleteId === imageDataProp.id;
   const {
     attributes: { role, ...restOfAttributes },
     listeners,
@@ -45,38 +39,32 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
     transform,
     transition,
   } = useSortable({
-    id: imageDataProps.id,
+    id: imageDataProp.id,
   });
   const darkMode = theme.palette.mode === 'dark';
   const containerBgColor = darkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)';
 
-  async function deleteImage() {
-    setCheckingAuthorization(true);
-    const isAuthorized = await checkAuthorizationClient('productImageData.delete');
-    setCheckingAuthorization(false);
-
-    if (!isAuthorized) return;
+  async function deleteImage(event: MouseEvent) {
+    // stopPropagation to prevent the drawer from closing on button click
+    event.stopPropagation();
 
     dispatch(setIsDeletingImage(true));
-    setImageToDeleteId(imageDataProps.id);
+    setImageToDeleteId(imageDataProp.id);
 
-    if (imageDataProps.fileName.length > 0) {
-      await deleteProductImageFromStorage(imageDataProps.fileName);
+    const { success, message } = await deleteProductImages([
+      { productImageId: imageDataProp.productImageId, fileName: imageDataProp.fileName },
+    ]);
+
+    if (success) {
+      dispatch(deleteImageData({ fileName: imageDataProp.fileName }));
+    } else {
+      toast.error(message);
     }
 
-    if (productFormData.productId && imageDataProps.productImageId) {
-      const { success, message } = await deleteProductImageDataFromDb(imageDataProps.productImageId);
-
-      if (success === false) {
-        toast.error(message);
-      }
-    }
-
-    dispatch(deleteImageData({ fileName: imageDataProps.fileName }));
     setImageToDeleteId(null);
     dispatch(setIsDeletingImage(false));
 
-    if (selectedImageData.length === 1) {
+    if (imageDataStore.length === 1) {
       dispatch(setIsEditImagesDrawerOpen(false));
     }
   }
@@ -89,7 +77,7 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
         sx={{
           borderRadius: BORDER_RADIUS,
           paddingY: 2,
-          backgroundColor: imageDataProps.id === activeItemId ? containerBgColor : 'transparent',
+          backgroundColor: imageDataProp.id === activeItemId ? containerBgColor : 'transparent',
           transform: CSS.Translate.toString(transform),
           transition,
         }}>
@@ -133,8 +121,8 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               }}
               fill
               sizes="(min-width: 600px) 113px, calc(35vw - 15px)"
-              src={imageDataProps.imageUrl}
-              alt={`Image for ${imageDataProps.fileName}`}
+              src={imageDataProp.imageUrl}
+              alt={`Image for ${imageDataProp.fileName}`}
               onLoad={() => setIsImageLoaded(true)}
             />
 
@@ -155,9 +143,9 @@ export default function DraggableProductImage({ imageDataProps, activeItemId }: 
               placeItems: 'center',
             }}>
             <TextButton
-              label={!isLoading ? 'delete' : ''}
+              label={!isDeletingCurrentImage ? 'delete' : ''}
               onClick={deleteImage}
-              isLoading={isLoading}
+              isLoading={isDeletingCurrentImage}
               startIcon={<DeleteForever />}
               sxStyles={{
                 color: theme.palette.text.secondary,

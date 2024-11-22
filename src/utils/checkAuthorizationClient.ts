@@ -5,7 +5,6 @@ import { Logger } from 'next-axiom';
 import { USER_ERROR_MESSAGES } from '@/constants';
 
 const log = new Logger();
-
 const supabase = createSupabaseBrowserClient();
 
 export default async function checkAuthorizationClient(

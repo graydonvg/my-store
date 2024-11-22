@@ -1,4 +1,4 @@
-import { CustomResponse, StripeCheckoutData, StripeCheckoutDataSchema, StripeCheckoutSessionResponse } from '@/types';
+import { ResponseWithData, StripeCheckoutData, StripeCheckoutDataSchema, StripeCheckoutSessionResponse } from '@/types';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export const POST = withAxiom(
-  async (request: AxiomRequest): Promise<NextResponse<CustomResponse<StripeCheckoutSessionResponse | null>>> => {
+  async (request: AxiomRequest): Promise<NextResponse<ResponseWithData<StripeCheckoutSessionResponse | null>>> => {
     const supabase = await createSupabaseServerClient();
     let log = request.log;
 

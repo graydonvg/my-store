@@ -87,6 +87,7 @@ export const LOGGER_ERROR_MESSAGES = {
   databaseInsert: 'Database insert error',
   databaseUpdate: 'Database update error',
   databaseDelete: 'Database delete error',
+  storageDelete: 'Storage delete error',
   unexpected: 'An unexpected error occurred',
 };
 

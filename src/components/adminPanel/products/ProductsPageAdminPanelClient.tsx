@@ -1,18 +1,17 @@
 'use client';
 
-import { QueryPageDataGrid, QueryFilterDataGrid, QuerySortDataGrid, Product, ResponseWithNoData } from '@/types';
+import { QueryPageDataGrid, QueryFilterDataGrid, QuerySortDataGrid, Product } from '@/types';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import CustomDataGrid from '../../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Flip, Id, toast } from 'react-toastify';
+import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import ProductsDataGridToolbar from './ProductsDataGridToolbar';
-import { deleteSelectedProducts } from '@/services/admin/delete';
 import getProductsDataGridColumns from './getProductsDataGridColumns';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
-import { deleteProductImagesFromStorage } from '@/services/admin/image-deletion';
+import { deleteProducts } from '@/services/admin/delete';
 
 type Props = {
   products: Product[] | null;
@@ -45,52 +44,25 @@ export default function ProductsPageAdminPanelClient({
   }
 
   async function revalidateAndRefresh() {
-    const data = await revalidateAllData();
+    const { success, message } = await revalidateAllData();
 
-    if (data.success === true) {
+    if (success) {
       router.refresh();
     } else {
-      toast.error(data.message);
+      toast.error(message);
     }
   }
 
   async function handleDeleteProducts() {
     setIsDeleting(true);
 
-    const toastId = toast.loading('Deleting product...');
+    const toastId = toast.loading('Deleting product(s)...');
 
-    const imagesToDelete = selectedProductIds
-      .map((selectedProductId) => {
-        const productsToDelete = products!.filter((product) => product.productId === selectedProductId);
-        return productsToDelete.map((product) => product.productImageData);
-      })
-      .flat(2);
+    const { success, message } = await deleteProducts(selectedProductIds as number[]);
 
-    const deleteProductImagesFromStoragePromise = deleteProductImagesFromStorage(imagesToDelete);
-    const deleteSelectedProductsPromise = deleteSelectedProducts(selectedProductIds);
-
-    const results = await Promise.allSettled([deleteProductImagesFromStoragePromise, deleteSelectedProductsPromise]);
-
-    const hasError = results.some((result) => result.status === 'rejected' || !result.value.success);
-    const hasSuccess = results.some((result) => result.status === 'fulfilled' && result.value.success);
-
-    handleToastUpdate(results, hasError, toastId);
-
-    if (hasSuccess) {
-      await revalidateAndRefresh();
-    }
-
-    if (!hasError) {
-      setSelectedProductIds([]);
-    }
-
-    setIsDeleting(false);
-  }
-
-  function handleToastUpdate(results: PromiseSettledResult<ResponseWithNoData>[], hasError: boolean, toastId: Id) {
-    if (!hasError) {
+    if (success) {
       toast.update(toastId, {
-        render: 'Products deleted successfully',
+        render: message,
         type: 'success',
         isLoading: false,
         autoClose: 4000,
@@ -98,17 +70,20 @@ export default function ProductsPageAdminPanelClient({
         closeOnClick: true,
         transition: Flip,
       });
+      await revalidateAndRefresh();
     } else {
-      const errorMessages = results
-        .filter((result) => result.status === 'rejected' || !result.value.success)
-        .map((result) => (result.status === 'rejected' ? result.reason : result.value.message));
-
-      toast.dismiss(toastId);
-
-      errorMessages.slice(0, 5).forEach((message) => {
-        toast.error(message);
+      toast.update(toastId, {
+        render: message,
+        type: 'error',
+        isLoading: false,
+        autoClose: 4000,
+        closeButton: true,
+        closeOnClick: true,
+        transition: Flip,
       });
     }
+
+    setIsDeleting(false);
   }
 
   return (

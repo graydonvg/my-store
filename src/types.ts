@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Database } from './lib/supabase/database.types';
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
+import { DetailedError } from 'tus-js-client';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -625,6 +626,14 @@ export const UpdateProductSchema = z.object({
 });
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
 
+export const DeleteProductImageSchema = z
+  .object({
+    productImageId: NumericIdSchema.optional(),
+    fileName: z.string(),
+  })
+  .array();
+export type DeleteProductImage = z.infer<typeof DeleteProductImageSchema>;
+
 export type ProductsFilterOptions = {
   distinctBrands: string[];
   distinctSizes: string[];
@@ -690,12 +699,15 @@ export type QueryFilterDataGrid = {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Misc
-export type CustomResponse<T = any> = { success: boolean; message: string; data?: T };
 
 export type ResponseWithNoData = { success: boolean; message: string };
 
 export type ResponseWithData<T = any> = { success: boolean; message: string; data: T };
 
 export type QueryFilterBuilder = PostgrestFilterBuilder<Database['public'], any, any[], string, any[]>;
+
+export type UploadResult =
+  | { error: Error | DetailedError | string; fileName: string }
+  | { imageUrl: string | null; fileName: string };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
