@@ -1,6 +1,6 @@
 import ProductsPageAdminPanelClient from '@/components/adminPanel/products/ProductsPageAdminPanelClient';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
-import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
+import { validateSearchParamsForDataGridQuery } from '@/utils/dataGridQueryBuilder/validateQuery';
 import { DATA_GRID_DEFAULTS } from '@/constants';
 import { fetchProductsForAdmin } from '@/services/db/queries/fetchProductsFormAdmin';
 

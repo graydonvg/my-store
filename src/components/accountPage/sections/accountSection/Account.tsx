@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/lib/redux/hooks';
 import DisplayUserDataAccountPage from '../../DisplayUserDataAccountPage';
-import UpdatePasswordForm from '@/components/forms/accountPageForms/UpdatePasswordForm';
+import UpdatePasswordFormFields from '@/components/forms/accountPageForms/UpdatePasswordFormFields';
 import PasswordMask from './PasswordMask';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { selectAccountFieldToEdit } from '@/lib/redux/features/account/accountSelectors';
@@ -18,7 +18,7 @@ export default function AccountSection() {
         {userData?.email ?? ''}
       </DisplayUserDataAccountPage>
 
-      {!isOAuthSignIn && (accountFieldToEdit !== 'password' ? <PasswordMask /> : <UpdatePasswordForm />)}
+      {!isOAuthSignIn && (accountFieldToEdit !== 'password' ? <PasswordMask /> : <UpdatePasswordFormFields />)}
     </>
   );
 }

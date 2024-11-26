@@ -1,8 +1,7 @@
-import { UserAccountFieldToEdit } from '@/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
-  accountFieldToEdit: UserAccountFieldToEdit | null;
+  accountFieldToEdit: string | null;
   isUpdatingAccount: boolean;
 };
 

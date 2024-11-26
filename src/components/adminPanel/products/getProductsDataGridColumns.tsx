@@ -31,7 +31,7 @@ export default function getProductsDataGridColumns() {
               width: 1,
             }}>
             <Image
-              src={params.row.productImageData[0].imageUrl}
+              src={params.row.productImageData[0]?.imageUrl}
               alt={`Image for ${params.row.name}`}
               fill
               style={{ objectFit: 'cover', borderRadius: BORDER_RADIUS }}

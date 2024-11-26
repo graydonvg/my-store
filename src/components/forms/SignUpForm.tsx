@@ -18,7 +18,7 @@ import { z } from 'zod';
 
 const fieldConfigs = [
   {
-    label: 'First Name',
+    label: 'First name',
     id: 'first-name',
     name: 'firstName',
     autoComplete: 'given-name',
@@ -27,7 +27,7 @@ const fieldConfigs = [
     required: false,
   },
   {
-    label: 'Last Name',
+    label: 'Last name',
     id: 'last-name',
     name: 'lastName',
     autoComplete: 'family-name',
@@ -36,7 +36,7 @@ const fieldConfigs = [
     required: false,
   },
   {
-    label: 'Contact Number',
+    label: 'Contact number',
     id: 'contact-number',
     name: 'contactNumber',
     type: 'tel',
@@ -66,7 +66,7 @@ const fieldConfigs = [
     required: true,
   },
   {
-    label: 'Confirm Password',
+    label: 'Confirm password',
     id: 'confirm-password',
     name: 'confirmPassword',
     type: 'password',

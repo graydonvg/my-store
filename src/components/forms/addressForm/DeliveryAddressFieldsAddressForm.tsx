@@ -87,7 +87,7 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
       <Grid2 size={{ xs: 12 }}>
         <CustomTextField
           type="number"
-          label="Postal Code"
+          label="Postal code"
           name="postalCode"
           value={addressFormData.postalCode}
           placeholder="e.g. 7405"

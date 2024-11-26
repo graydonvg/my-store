@@ -9,10 +9,10 @@ import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
 
 const contactDetailsFormFields = [
-  { label: 'First Name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true, icon: <Person /> },
-  { label: 'Last Name', name: 'recipientLastName', placeholder: 'e.g. Doe', required: true, icon: <Person /> },
+  { label: 'First name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true, icon: <Person /> },
+  { label: 'Last name', name: 'recipientLastName', placeholder: 'e.g. Doe', required: true, icon: <Person /> },
   {
-    label: 'Contact Number',
+    label: 'Contact number',
     name: 'recipientContactNumber',
     placeholder: 'e.g. 0721234567',
     required: true,

@@ -4,7 +4,7 @@ import OutlinedButton from '@/components/ui/buttons/OutlinedButton';
 import ContainedButton from '@/components/ui/buttons/ContainedButton';
 
 type Props = {
-  onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (e: FormEvent<Element>) => void;
   disableSubmit: boolean;
   onCancel: () => void;
   isSubmitting: boolean;
@@ -21,6 +21,7 @@ export default function AccountPageForm({ onSubmit, disableSubmit, onCancel, isS
   return (
     <Box
       component="form"
+      noValidate
       onSubmit={onSubmit}
       onKeyDown={handleOnKeyDown}
       sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 1.1 }}>

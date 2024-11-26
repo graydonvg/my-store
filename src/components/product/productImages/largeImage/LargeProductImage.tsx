@@ -18,7 +18,7 @@ export default function LargeProductImage({ productName, productImageData }: Pro
         style={{ objectFit: 'cover', opacity: !isImageLoaded ? 0 : 100 }}
         fill
         sizes="(min-width: 1200px) 464px, (min-width: 900px) calc(34.72vw + 28px), (min-width: 660px) 497px, (min-width: 600px) calc(28.57vw + 286px), calc(100vw - 45px)"
-        src={productImageData.imageUrl}
+        src={productImageData?.imageUrl}
         alt={`Image for ${productName || 'product'}`}
         priority
         onLoad={() => setIsImageLoaded(true)}

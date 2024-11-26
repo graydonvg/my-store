@@ -1,7 +1,7 @@
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { QueryFilterDataGrid, QueryPageDataGrid, QuerySortDataGrid } from '@/types';
-import buildQuery from '@/utils/queryBuilder/buildQuery';
+import buildQuery from '@/utils/dataGridQueryBuilder/buildQuery';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();

@@ -2,7 +2,6 @@
 
 import { z, ZodError, ZodIssueCode } from 'zod';
 import { ChangeEvent, FormEvent, SetStateAction, useState } from 'react';
-
 import { useLogger } from 'next-axiom';
 import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
@@ -31,6 +30,19 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
         }
       }
 
+      if ('newPassword' in values && 'confirmPassword' in values) {
+        if (
+          (name === 'confirmPassword' && value === values.newPassword) ||
+          (name === 'newPassword' && value === values.confirmPassword)
+        ) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            newPassword: null,
+            confirmPassword: null,
+          }));
+        }
+      }
+
       try {
         schema.shape[name].parse(value);
         setErrors((prevErrors) => ({ ...prevErrors, [name]: null }));
@@ -38,7 +50,7 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
         if (error instanceof ZodError) {
           setErrors((prevErrors) => ({
             ...prevErrors,
-            [name]: error.errors[0]?.message || null,
+            [name]: error.errors[0].message,
           }));
         }
       }
@@ -53,6 +65,26 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
         customZodError.addIssue({
           code: ZodIssueCode.custom,
           path: ['password'],
+          message: 'Passwords do not match',
+        });
+
+        customZodError.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['confirmPassword'],
+          message: 'Passwords do not match',
+        });
+
+        throw customZodError;
+      }
+    }
+
+    if ('newPassword' in values && 'confirmPassword' in values) {
+      if (values.newPassword !== values.confirmPassword) {
+        const customZodError = new ZodError([]);
+
+        customZodError.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['newPassword'],
           message: 'Passwords do not match',
         });
 
@@ -86,6 +118,8 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
         });
 
         setErrors(newErrors as SetStateAction<typeof errors>);
+      } else {
+        log.error('An unexpected error occured during form validation', { error });
       }
 
       return false;

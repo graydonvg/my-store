@@ -2,7 +2,7 @@ import OrdersPageAdminPanelClient from '@/components/adminPanel/orders/OrdersPag
 import { DATA_GRID_DEFAULTS } from '@/constants';
 import { fetchOrdersForAdmin } from '@/services/db/queries/fetchOrders';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
-import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
+import { validateSearchParamsForDataGridQuery } from '@/utils/dataGridQueryBuilder/validateQuery';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };

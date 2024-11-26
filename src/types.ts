@@ -33,25 +33,30 @@ export const StringIdSchema = z
   .min(1, { message: 'ID cannot be empty' })
   .max(1000, { message: 'ID cannot exceed 1000 characters' });
 
-const NameSchema = z
-  .string()
-  .trim()
-  .min(2, { message: 'Name must contain at least two characters' })
-  .max(50, { message: 'Name cannot exceed 50 characters' })
-  .regex(/^[\p{L}\p{M}'-]+$/u, {
-    message: 'Name can only contain letters, hyphens, and apostrophes',
-  });
-
 export const PasswordSchema = z
   .string()
   .min(6, { message: 'Password must be at least 6 characters' })
   .max(255, { message: 'Password cannot exceed 255 characters' });
 
-const FirstNameSchema = NameSchema;
+export const FirstNameSchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'First name must contain at least two characters' })
+  .max(50, { message: 'First name cannot exceed 50 characters' })
+  .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
+    message: 'First name can only contain letters, hyphens, apostrophes, and spaces',
+  });
 
-const LastNameSchema = NameSchema;
+export const LastNameSchema = z
+  .string()
+  .trim()
+  .min(2, { message: 'Last name must contain at least two characters' })
+  .max(50, { message: 'Last name cannot exceed 50 characters' })
+  .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
+    message: 'Last name can only contain letters, hyphens, apostrophes, and spaces',
+  });
 
-const ContactNumberSchema = z.string().refine(
+export const ContactNumberSchema = z.string().refine(
   (value) => {
     const validSouthAfricanContactNumberPattern = /^(\+27|0)[1-9][0-9]{8}$/;
     return validSouthAfricanContactNumberPattern.test(value);
@@ -162,8 +167,6 @@ export const UserRoleSelectOptionsSchema = z.enum(['none', 'admin', 'manager', '
   message: 'Please select a role',
 });
 export type UserRoleSelectOptions = z.infer<typeof UserRoleSelectOptionsSchema>;
-
-export type UserAccountFieldToEdit = 'password' | 'firstName' | 'lastName' | 'contactNumber';
 
 export const UserAuthDataSchema = z.object({
   email: z

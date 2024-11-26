@@ -131,7 +131,7 @@ export default function RecentProducts({ recentProducts }: Props) {
                             width: 50,
                           }}>
                           <Image
-                            src={product.productImageData[0].imageUrl}
+                            src={product.productImageData[0]?.imageUrl}
                             alt={`Image for ${product.name}`}
                             fill
                             style={{

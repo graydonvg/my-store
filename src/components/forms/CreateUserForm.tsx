@@ -26,7 +26,7 @@ import { USER_ROLE_OPTIONS } from '@/constants';
 function getFieldConfigs(selectOptions: UserRoleSelectOptions[]) {
   return [
     {
-      label: 'First Name',
+      label: 'First name',
       id: 'first-name',
       name: 'firstName',
       autoComplete: 'given-name',
@@ -35,7 +35,7 @@ function getFieldConfigs(selectOptions: UserRoleSelectOptions[]) {
       required: false,
     },
     {
-      label: 'Last Name',
+      label: 'Last name',
       id: 'last-name',
       name: 'lastName',
       autoComplete: 'family-name',
@@ -44,7 +44,7 @@ function getFieldConfigs(selectOptions: UserRoleSelectOptions[]) {
       required: false,
     },
     {
-      label: 'Contact Number',
+      label: 'Contact number',
       id: 'contact-number',
       name: 'contactNumber',
       type: 'tel',
@@ -74,7 +74,7 @@ function getFieldConfigs(selectOptions: UserRoleSelectOptions[]) {
       required: true,
     },
     {
-      label: 'Confirm Password',
+      label: 'Confirm password',
       id: 'confirm-password',
       name: 'confirmPassword',
       type: 'password',

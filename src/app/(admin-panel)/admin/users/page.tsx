@@ -2,7 +2,7 @@ import UsersPageAdminPanelClient from '@/components/adminPanel/users/UsersPageAd
 import { DATA_GRID_DEFAULTS } from '@/constants';
 import fetchUsers from '@/services/db/queries/fetchUsers';
 import { getDataGridQueryDataFromSearchParams } from '@/utils/dataGridHelpers';
-import { validateSearchParamsForDataGridQuery } from '@/utils/queryBuilder/validateQuery';
+import { validateSearchParamsForDataGridQuery } from '@/utils/dataGridQueryBuilder/validateQuery';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
