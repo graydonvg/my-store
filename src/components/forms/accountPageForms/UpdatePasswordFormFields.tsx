@@ -46,7 +46,9 @@ const initialFormData = {
 export default function UpdatePasswordFormFields() {
   const dispatch = useAppDispatch();
   const isUpdatingAccount = useAppSelector(selectIsUpdatingAccount);
-  const form = useForm(UpdatePasswordSchema, initialFormData);
+  const form = useForm(UpdatePasswordSchema, initialFormData, {
+    checkEquality: [{ fields: ['newPassword', 'confirmPassword'], message: 'Passwords do not match' }],
+  });
   const emptyFormFields = getEmptyObjectKeys(form.values);
 
   function cancelUpdate() {

@@ -115,7 +115,9 @@ type Props = {
 };
 
 export default function CreateUserForm({ children }: Props) {
-  const form = useForm(CreateUserFormSchema, defaultFormData);
+  const form = useForm(CreateUserFormSchema, defaultFormData, {
+    checkEquality: [{ fields: ['password', 'confirmPassword'], message: 'Passwords do not match' }],
+  });
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();

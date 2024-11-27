@@ -1,11 +1,17 @@
 'use client';
 
-import { z, ZodError, ZodIssueCode } from 'zod';
+import { z, ZodError, ZodIssueCode, ZodObject } from 'zod';
 import { ChangeEvent, FormEvent, SetStateAction, useState } from 'react';
 import { useLogger } from 'next-axiom';
 import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
-export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T, initialValues: z.infer<T>) {
+export default function useForm<T extends ZodObject<any, any, any>>(
+  schema: T,
+  initialValues: z.infer<T>,
+  options?: {
+    checkEquality?: Array<{ fields: [keyof z.infer<T>, keyof z.infer<T>]; message: string }>;
+  }
+) {
   const log = useLogger();
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<{ [key in keyof typeof initialValues]?: string | null }>({});
@@ -17,30 +23,29 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
 
     if (errors[name]) {
       // Validate on change to remove errors as soon as valid data is entered
-      if ('password' in values && 'confirmPassword' in values) {
-        if (
-          (name === 'confirmPassword' && value === values.password) ||
-          (name === 'password' && value === values.confirmPassword)
-        ) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            password: null,
-            confirmPassword: null,
-          }));
-        }
-      }
+      if (options?.checkEquality) {
+        options.checkEquality.forEach(({ fields, message }) => {
+          const [field1, field2] = fields;
 
-      if ('newPassword' in values && 'confirmPassword' in values) {
-        if (
-          (name === 'confirmPassword' && value === values.newPassword) ||
-          (name === 'newPassword' && value === values.confirmPassword)
-        ) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            newPassword: null,
-            confirmPassword: null,
-          }));
-        }
+          // If the updated field is part of the equality check
+          if (field1 === name || field2 === name) {
+            if (value === values[field1] || value === values[field2]) {
+              // Clear errors if the values are now equal
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                [field1]: null,
+                [field2]: null,
+              }));
+            } else {
+              // Set errors if values are still unequal
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                [field1]: message,
+                [field2]: message,
+              }));
+            }
+          }
+        });
       }
 
       try {
@@ -57,45 +62,28 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
     }
   }
 
-  function checkPasswordsMatch() {
-    if ('password' in values && 'confirmPassword' in values) {
-      if (values.password !== values.confirmPassword) {
-        const customZodError = new ZodError([]);
+  function checkEquality() {
+    if (options?.checkEquality) {
+      options.checkEquality.forEach(({ fields, message }) => {
+        const [field1, field2] = fields;
+        if (values[field1] !== values[field2]) {
+          const customError = new ZodError([]);
 
-        customZodError.addIssue({
-          code: ZodIssueCode.custom,
-          path: ['password'],
-          message: 'Passwords do not match',
-        });
+          customError.addIssue({
+            code: ZodIssueCode.custom,
+            path: [field1 as string],
+            message,
+          });
 
-        customZodError.addIssue({
-          code: ZodIssueCode.custom,
-          path: ['confirmPassword'],
-          message: 'Passwords do not match',
-        });
+          customError.addIssue({
+            code: ZodIssueCode.custom,
+            path: [field2 as string],
+            message,
+          });
 
-        throw customZodError;
-      }
-    }
-
-    if ('newPassword' in values && 'confirmPassword' in values) {
-      if (values.newPassword !== values.confirmPassword) {
-        const customZodError = new ZodError([]);
-
-        customZodError.addIssue({
-          code: ZodIssueCode.custom,
-          path: ['newPassword'],
-          message: 'Passwords do not match',
-        });
-
-        customZodError.addIssue({
-          code: ZodIssueCode.custom,
-          path: ['confirmPassword'],
-          message: 'Passwords do not match',
-        });
-
-        throw customZodError;
-      }
+          throw customError;
+        }
+      });
     }
   }
 
@@ -103,7 +91,7 @@ export default function useForm<T extends z.ZodObject<any, any, any>>(schema: T,
     // Validate on submit
     try {
       schema.parse(values);
-      checkPasswordsMatch();
+      checkEquality();
       return true;
     } catch (error) {
       if (error instanceof ZodError) {

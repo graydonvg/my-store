@@ -96,11 +96,13 @@ type Props = {
 };
 
 export default function SignUpForm({ headerComponent, children }: Props) {
-  const form = useForm(SignUpSchema, defaultFormData);
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const isSignUpDialogOpen = useAppSelector(selectIsSignInDialogOpen);
+  const form = useForm(SignUpSchema, defaultFormData, {
+    checkEquality: [{ fields: ['password', 'confirmPassword'], message: 'Passwords do not match' }],
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSignUp() {
