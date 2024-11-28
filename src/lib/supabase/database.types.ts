@@ -9,7 +9,7 @@ export type Database = {
           city: string;
           complexOrBuilding: string | null;
           createdAt: string;
-          postalCode: number;
+          postalCode: string;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
@@ -23,7 +23,7 @@ export type Database = {
           city: string;
           complexOrBuilding?: string | null;
           createdAt?: string;
-          postalCode: number;
+          postalCode: string;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
@@ -37,7 +37,7 @@ export type Database = {
           city?: string;
           complexOrBuilding?: string | null;
           createdAt?: string;
-          postalCode?: number;
+          postalCode?: string;
           province?: string;
           recipientContactNumber?: string;
           recipientFirstName?: string;
@@ -333,7 +333,7 @@ export type Database = {
           city: string;
           complexOrBuilding: string | null;
           orderId: number;
-          postalCode: number;
+          postalCode: string;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
@@ -347,7 +347,7 @@ export type Database = {
           city: string;
           complexOrBuilding?: string | null;
           orderId: number;
-          postalCode: number;
+          postalCode: string;
           province: string;
           recipientContactNumber: string;
           recipientFirstName: string;
@@ -361,7 +361,7 @@ export type Database = {
           city?: string;
           complexOrBuilding?: string | null;
           orderId?: number;
-          postalCode?: number;
+          postalCode?: string;
           province?: string;
           recipientContactNumber?: string;
           recipientFirstName?: string;

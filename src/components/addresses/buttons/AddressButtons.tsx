@@ -14,8 +14,9 @@ export default function AddressButtons({ addressId }: Props) {
 
   return (
     <>
-      {addressToDeleteId === addressId ? <AddressLoader isLoading={addressToDeleteId === addressId} /> : null}
-      {addressToDeleteId !== addressId ? (
+      {addressToDeleteId === addressId ? (
+        <AddressLoader isLoading={addressToDeleteId === addressId} />
+      ) : (
         <Box sx={{ display: 'flex', alignItems: 'center', padding: 0, borderBottom: 0 }}>
           <UpdateAddressDialogButton addressId={addressId} />
           <UpdateAddressDialog />
@@ -29,7 +30,7 @@ export default function AddressButtons({ addressId }: Props) {
             setAddressToDeleteId={setAddressToDeleteId}
           />
         </Box>
-      ) : null}
+      )}
     </>
   );
 }

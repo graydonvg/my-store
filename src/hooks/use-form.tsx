@@ -3,7 +3,6 @@
 import { z, ZodError, ZodIssueCode, ZodObject } from 'zod';
 import { ChangeEvent, FormEvent, SetStateAction, useState } from 'react';
 import { useLogger } from 'next-axiom';
-import { LOGGER_ERROR_MESSAGES } from '@/constants';
 
 export default function useForm<T extends ZodObject<any, any, any>>(
   schema: T,
@@ -99,10 +98,6 @@ export default function useForm<T extends ZodObject<any, any, any>>(
 
         error.errors.forEach((err) => {
           newErrors[err.path[0] as keyof typeof initialValues] = err.message;
-        });
-
-        log.warn(LOGGER_ERROR_MESSAGES.validation, {
-          error: newErrors,
         });
 
         setErrors(newErrors as SetStateAction<typeof errors>);

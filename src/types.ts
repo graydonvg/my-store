@@ -41,30 +41,28 @@ export const PasswordSchema = z
 export const FirstNameSchema = z
   .string()
   .trim()
-  .min(2, { message: 'First name must contain at least two characters' })
   .max(50, { message: 'First name cannot exceed 50 characters' })
   .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
     message: 'First name can only contain letters, hyphens, apostrophes, and spaces',
+  })
+  .refine((value) => value.length >= 2, {
+    message: 'First name must contain at least 2 characters',
   });
 
 export const LastNameSchema = z
   .string()
   .trim()
-  .min(2, { message: 'Last name must contain at least two characters' })
   .max(50, { message: 'Last name cannot exceed 50 characters' })
   .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
     message: 'Last name can only contain letters, hyphens, apostrophes, and spaces',
+  })
+  .refine((value) => value.length >= 2, {
+    message: 'Last name must contain at least 2 characters',
   });
 
-export const ContactNumberSchema = z.string().refine(
-  (value) => {
-    const validSouthAfricanContactNumberPattern = /^(\+27|0)[1-9][0-9]{8}$/;
-    return validSouthAfricanContactNumberPattern.test(value);
-  },
-  {
-    message: 'Please enter a valid South African contact number',
-  }
-);
+export const ContactNumberSchema = z.string().regex(/^(\+27|0)[1-9][0-9]{8}$/, {
+  message: 'Please enter a valid South African contact number',
+});
 
 const ComplexOrBuildingSchema = z
   .string()
@@ -79,45 +77,52 @@ const ComplexOrBuildingSchema = z
 const StreetAddressSchema = z
   .string()
   .trim()
-  .min(3, { message: 'Street address must contain at least 3 characters' })
   .max(255, { message: 'Street address cannot exceed 255 characters' })
   .regex(/^[A-Za-z0-9\s,.-]+$/, {
     message: 'Street address can contain letters, numbers, spaces, commas, periods, and hyphens only',
   })
-  .trim();
+  .refine((value) => value.length >= 3, {
+    message: 'Street address must contain at least 3 characters',
+  });
 
 const SuburbSchema = z
   .string()
   .trim()
-  .min(2, { message: 'Suburb name must contain at least 2 characters' })
   .max(100, { message: 'Suburb name cannot exceed 100 characters' })
-  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+  .regex(/^[A-Za-z\s]+$/, {
     message: 'Suburb name can only contain letters and spaces',
+  })
+  .refine((value) => value.length >= 2, {
+    message: 'Suburb name must contain at least 2 characters',
   });
 
 const CitySchema = z
   .string()
   .trim()
-  .min(2, { message: 'City name must contain at least 2 characters' })
   .max(100, { message: 'City name cannot exceed 100 characters' })
-  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+  .regex(/^[A-Za-z\s]+$/, {
     message: 'City name can only contain letters and spaces',
+  })
+  .refine((value) => value.length >= 2, {
+    message: 'City name must contain at least 2 characters',
   });
 
 const ProvinceSchema = z
   .string()
   .trim()
-  .min(2, { message: 'Province name must contain at least 2 characters' })
   .max(100, { message: 'Province name cannot exceed 100 characters' })
-  .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+  .regex(/^[A-Za-z\s]+$/, {
     message: 'Province name can only contain letters and spaces',
+  })
+  .refine((value) => value.length >= 2, {
+    message: 'Province name must contain at least 2 characters',
   });
 
-const PostalCodeSchema = z.coerce
-  .number()
-  .int({ message: 'Postal code must be a whole number' })
-  .min(1000, { message: 'Postal code must be at least 1000' })
-  .max(9999, { message: 'Postal code cannot exceed 9999' });
+const PostalCodeSchema = z.preprocess(
+  (value) => (value === '' ? undefined : value),
+  z.coerce.string().regex(/^\d{4}$/, { message: 'Postal code must be 4 digits' })
+);
+export type PostalCode = z.infer<typeof PostalCodeSchema>;
 
 const ItemQuantitySchema = z
   .number()
@@ -336,10 +341,8 @@ export const UpdateAddressSchema = z.object({
 });
 export type UpdateAddress = z.infer<typeof UpdateAddressSchema>;
 
-type PostalCode = z.infer<typeof PostalCodeSchema>;
-
 export type AddressStore = {
-  addressId: number | null;
+  addressId: number;
   recipientFirstName: string;
   recipientLastName: string;
   recipientContactNumber: string;
@@ -348,7 +351,7 @@ export type AddressStore = {
   suburb: string;
   city: string;
   province: string;
-  postalCode: '' | PostalCode;
+  postalCode: PostalCode;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

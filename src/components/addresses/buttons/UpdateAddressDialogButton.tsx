@@ -4,7 +4,7 @@ import { setAddressFormData } from '@/lib/redux/features/addressForm/addressForm
 import { openDialog } from '@/lib/redux/features/dialog/dialogSlice';
 import { setAccountFieldToEdit } from '@/lib/redux/features/account/accountSlice';
 import { selectAddresses } from '@/lib/redux/features/addresses/addressesSelectors';
-import { AddressStore } from '@/types';
+import { toast } from 'react-toastify';
 
 type Props = {
   addressId: number;
@@ -17,7 +17,12 @@ export default function UpdateAddressDialogButton({ addressId }: Props) {
   async function selectAddressToEdit() {
     const addressToEdit = addresses?.filter((address) => address.addressId === addressId)[0];
 
-    dispatch(setAddressFormData(addressToEdit as AddressStore));
+    if (!addressToEdit) {
+      toast.error('Address not found');
+      return;
+    }
+
+    dispatch(setAddressFormData(addressToEdit));
     dispatch(setAccountFieldToEdit(null));
     dispatch(openDialog('updateAddressDialog'));
   }

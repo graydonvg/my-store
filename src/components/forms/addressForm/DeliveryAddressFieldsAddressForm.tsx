@@ -1,16 +1,86 @@
 import { Grid2, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/CustomTextField';
 import { ChangeEvent } from 'react';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
+import { InsertAddress, UpdateAddress } from '@/types';
+
+const fieldConfigs = [
+  {
+    label: 'Complex / Building',
+    id: 'complex-or-building',
+    name: 'complexOrBuilding',
+    placeholder: 'Name, unit number or floor',
+    ariaDescribedBy: 'complex-or-building-helper-text',
+    required: false,
+  },
+  {
+    label: 'Street address',
+    id: 'street-address',
+    name: 'streetAddress',
+    placeholder: 'e.g. 24 Kingfisher Walk',
+    ariaDescribedBy: 'street-address-helper-text',
+    required: true,
+  },
+  {
+    label: 'Suburb',
+    id: 'suburb',
+    name: 'suburb',
+    placeholder: 'e.g. Pinelands',
+    ariaDescribedBy: 'suburb-helper-text',
+    required: true,
+  },
+  {
+    label: 'Province',
+    id: 'province',
+    name: 'province',
+    placeholder: 'e.g. Western Cape',
+    ariaDescribedBy: 'province-helper-text',
+    required: true,
+  },
+  {
+    label: 'City',
+    id: 'city',
+    name: 'city',
+    placeholder: 'e.g. Cape Town',
+    ariaDescribedBy: 'city-helper-text',
+    required: true,
+  },
+  {
+    label: 'Postal code',
+    id: 'postal-code',
+    name: 'postalCode',
+    type: 'number',
+    placeholder: 'e.g. 7405',
+    ariaDescribedBy: 'postal-code-helper-text',
+    required: true,
+  },
+];
 
 type Props = {
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  addressData: Partial<InsertAddress> | Partial<UpdateAddress>;
+  addressErrors: {
+    complexOrBuilding?: string | null;
+    streetAddress?: string | null;
+    suburb?: string | null;
+    city?: string | null;
+    province?: string | null;
+    postalCode?: string | null;
+  };
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Props) {
+export default function DeliveryAddressFieldsAddressForm({ addressData, addressErrors, onChange }: Props) {
   const theme = useTheme();
-  const addressFormData = useAppSelector(selectAddressFromData);
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    if (name === 'postalCode') {
+      const numericValue = parseInt(value, 10);
+      if (numericValue > 9999) return;
+    }
+
+    onChange(event);
+  }
 
   return (
     <Grid2
@@ -19,85 +89,32 @@ export default function DeliveryAddressFieldsAddressForm({ onInputChange }: Prop
       <Grid2 size={{ xs: 12 }}>
         <Typography fontSize={18}>Delivery Address</Typography>
       </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          label="Complex / Building"
-          name="complexOrBuilding"
-          value={addressFormData.complexOrBuilding}
-          placeholder="Name, unit number or floor"
-          required={false}
-          fullWidth={true}
-          onChange={onInputChange}
-          hasValue={addressFormData.complexOrBuilding !== '' && addressFormData.complexOrBuilding?.length !== null}
-          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          label="Street address"
-          name="streetAddress"
-          value={addressFormData.streetAddress}
-          placeholder="e.g. 24 Kingfisher Walk"
-          required={true}
-          fullWidth={true}
-          onChange={onInputChange}
-          hasValue={addressFormData.streetAddress.length > 0}
-          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          label="Suburb"
-          name="suburb"
-          value={addressFormData.suburb}
-          placeholder="e.g. Pinelands"
-          required={true}
-          fullWidth={true}
-          onChange={onInputChange}
-          hasValue={addressFormData.suburb.length > 0}
-          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          label="Province"
-          name="province"
-          value={addressFormData.province}
-          placeholder="e.g. Western Cape"
-          required={true}
-          fullWidth={true}
-          onChange={onInputChange}
-          hasValue={addressFormData.province.length > 0}
-          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          label="City"
-          name="city"
-          value={addressFormData.city}
-          placeholder="e.g. Cape Town"
-          required={true}
-          fullWidth={true}
-          onChange={onInputChange}
-          hasValue={addressFormData.city.length > 0}
-          sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
-      <Grid2 size={{ xs: 12 }}>
-        <CustomTextField
-          type="number"
-          label="Postal code"
-          name="postalCode"
-          value={addressFormData.postalCode}
-          placeholder="e.g. 7405"
-          required={true}
-          fullWidth={false}
-          onChange={onInputChange}
-          hasValue={addressFormData.postalCode !== ''}
-          sxStyles={{ maxWidth: '130px', backgroundColor: theme.palette.custom.dialog.background.accent }}
-        />
-      </Grid2>
+      {fieldConfigs.map((field) => (
+        <Grid2
+          key={field.id}
+          size={{ xs: 12 }}>
+          <CustomTextField
+            label={field.label}
+            id={field.id}
+            name={field.name}
+            type={field.type || 'text'}
+            placeholder={field.placeholder}
+            value={addressData[field.name as keyof typeof addressData]}
+            onChange={handleChange}
+            hasValue={!!addressData[field.name as keyof typeof addressData]}
+            required={field.required}
+            aria-invalid={!!addressErrors[field.name as keyof typeof addressErrors]}
+            error={!!addressErrors[field.name as keyof typeof addressErrors]}
+            helperText={addressErrors[field.name as keyof typeof addressErrors]}
+            aria-describedby={field.ariaDescribedBy}
+            fullWidth
+            sxStyles={{
+              backgroundColor: theme.palette.custom.dialog.background.accent,
+              ...(field.name === 'postalCode' && { maxWidth: '130px' }),
+            }}
+          />
+        </Grid2>
+      ))}
     </Grid2>
   );
 }

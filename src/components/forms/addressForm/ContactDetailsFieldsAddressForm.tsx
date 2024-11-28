@@ -1,44 +1,52 @@
 import { Grid2, Typography, useTheme } from '@mui/material';
 import CustomTextField from '../../ui/CustomTextField';
-import { AddressStore } from '@/types';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import { Call, Person } from '@mui/icons-material';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { selectAddressFromData } from '@/lib/redux/features/addressForm/addressFormSelectors';
-import { selectUserData } from '@/lib/redux/features/user/userSelectors';
-import { setAddressFormData } from '@/lib/redux/features/addressForm/addressFormSlice';
+import { InsertAddress, UpdateAddress } from '@/types';
 
-const contactDetailsFormFields = [
-  { label: 'First name', name: 'recipientFirstName', placeholder: 'e.g. John', required: true, icon: <Person /> },
-  { label: 'Last name', name: 'recipientLastName', placeholder: 'e.g. Doe', required: true, icon: <Person /> },
+const fieldConfigs = [
+  {
+    label: 'First name',
+    id: 'recipient-first-name',
+    name: 'recipientFirstName',
+    autoComplete: 'given-name',
+    placeholder: 'e.g. John',
+    icon: <Person />,
+    ariaDescribedBy: 'recipient-first-name-helper-text',
+  },
+  {
+    label: 'Last name',
+    id: 'recipient-last-name',
+    name: 'recipientLastName',
+    autoComplete: 'family-name',
+    placeholder: 'e.g. Doe',
+    icon: <Person />,
+    ariaDescribedBy: 'recipient-last-name-helper-text',
+  },
   {
     label: 'Contact number',
+    id: 'recipient-contact-number',
     name: 'recipientContactNumber',
+    type: 'tel',
+    autoComplete: 'tel',
     placeholder: 'e.g. 0721234567',
-    required: true,
     icon: <Call />,
+    ariaDescribedBy: 'recipient-contact-number-helper-text',
   },
 ];
 
 type Props = {
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  contactDetails: Partial<InsertAddress> | Partial<UpdateAddress>;
+  contactFormErrors: {
+    recipientFirstNameError?: string | null;
+    recipientLastNameError?: string | null;
+    recipientContactNumberError?: string | null;
+  };
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props) {
+export default function ContactDetailsFieldsAddressForm({ contactDetails, contactFormErrors, onChange }: Props) {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
-  const addressFormData = useAppSelector(selectAddressFromData);
-  const userData = useAppSelector(selectUserData);
-
-  useEffect(() => {
-    dispatch(
-      setAddressFormData({
-        recipientFirstName: userData?.firstName ?? '',
-        recipientLastName: userData?.lastName ?? '',
-        recipientContactNumber: userData?.contactNumber ?? '',
-      })
-    );
-  }, [dispatch, userData]);
 
   return (
     <Grid2
@@ -47,26 +55,31 @@ export default function ContactDetailsFieldsAddressForm({ onInputChange }: Props
       <Grid2 size={{ xs: 12 }}>
         <Typography fontSize={18}>Contact Details</Typography>
       </Grid2>
-      {contactDetailsFormFields.map((field) => (
+      {fieldConfigs.map((field) => (
         <Grid2
           size={{ xs: 12 }}
           key={field.name}>
           <CustomTextField
-            key={field.name}
             label={field.label}
+            id={field.id}
             name={field.name}
-            value={addressFormData[field.name as keyof AddressStore]}
-            placeholder={field.placeholder ?? ''}
+            type={field.type}
+            autoComplete={field.autoComplete}
             autoFocus={field.name === 'recipientFirstName'}
-            required={field.required}
-            fullWidth={true}
-            onChange={onInputChange}
+            value={contactDetails[field.name as keyof typeof contactDetails]}
+            onChange={onChange}
             icon={field.icon}
-            hasValue={
-              addressFormData[field.name as keyof AddressStore] !== '' &&
-              addressFormData[field.name as keyof AddressStore] !== null
-            }
+            aria-invalid={!!contactFormErrors[`${field.name}Error` as keyof typeof contactFormErrors]}
+            error={!!contactFormErrors[`${field.name}Error` as keyof typeof contactFormErrors]}
+            helperText={contactFormErrors[`${field.name}Error` as keyof typeof contactFormErrors]}
+            aria-describedby={field.ariaDescribedBy}
             sxStyles={{ backgroundColor: theme.palette.custom.dialog.background.accent }}
+            hasValue={
+              contactDetails[field.name as keyof typeof contactDetails] !== '' &&
+              contactDetails[field.name as keyof typeof contactDetails] !== null
+            }
+            fullWidth
+            required
           />
         </Grid2>
       ))}
