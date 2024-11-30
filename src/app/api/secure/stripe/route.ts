@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
+import { LOGGER_ERROR_MESSAGES, SITE_URL, USER_ERROR_MESSAGES } from '@/constants';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
@@ -87,8 +87,8 @@ export const POST = withAxiom(
         payment_method_types: ['card'],
         line_items: validation.data.lineItems,
         mode: 'payment',
-        success_url: `${URL}/checkout/payment/confirmation?payment_status=success&order_id=${validation.data.orderId}`,
-        cancel_url: `${URL}/cart/view?payment_status=cancelled&order_id=${validation.data.orderId}`,
+        success_url: `${SITE_URL}/checkout/payment/confirmation?payment_status=success&order_id=${validation.data.orderId}`,
+        cancel_url: `${SITE_URL}/cart/view?payment_status=cancelled&order_id=${validation.data.orderId}`,
         metadata: { userId: authUser.id, orderId: validation.data.orderId },
         payment_intent_data: {
           metadata: { userId: authUser.id, orderId: validation.data.orderId },
