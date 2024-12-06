@@ -11,11 +11,9 @@ import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
-const STORE_DESCRIPTION = 'Online Shopping - Shop the latest fashion at unbeatable prices.';
-
 export const metadata: Metadata = {
   title: STORE_NAME,
-  description: STORE_DESCRIPTION,
+  description: 'Online Shopping - Shop the latest fashion at unbeatable prices.',
 };
 
 type Props = {

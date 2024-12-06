@@ -20,7 +20,7 @@ export default function ProductsLayout({ header, filterOptions, products }: Prop
           left: 0,
           flexBasis: '240px',
           flexShrink: 0,
-          maxHeight: '870px',
+          maxHeight: 'calc(100vh - 146px)',
           overflowY: 'auto',
           overflowX: 'hidden',
           display: { xs: 'none', md: 'block' },

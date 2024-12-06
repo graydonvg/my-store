@@ -2,7 +2,6 @@ import { Box, Typography } from '@mui/material';
 import ToggleButtons from '@/components/ui/buttons/ToggleButtons';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-
 import { ChangeEvent, MouseEvent } from 'react';
 import { setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { ProductForm } from '@/types';
