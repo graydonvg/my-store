@@ -31,6 +31,7 @@ export default function SelectShippingAddressCheckbox({ address }: Props) {
     <TableCell
       sx={{ display: 'flex', borderBottom: (theme) => `1px solid ${theme.palette.custom.border}`, paddingRight: 0 }}>
       <Checkbox
+        aria-label="select address checkbox"
         checked={orderAddressId === address.addressId}
         onChange={selectShippingAddress}
         disableRipple
