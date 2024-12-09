@@ -22,7 +22,9 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
         paddingX: paddingX,
         height: 1,
       }}>
-      {cartItems.length === 0 ? (
+      {cartItems.length > 0 ? (
+        <SmallCartItems />
+      ) : (
         <Box
           sx={{
             padding: 1,
@@ -37,8 +39,7 @@ export default function SmallCartItemList({ paddingX = 0 }: Props) {
             Your cart is empty.
           </Typography>
         </Box>
-      ) : null}
-      {cartItems.length > 0 ? <SmallCartItems /> : null}
+      )}
     </List>
   );
 }

@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/lib/redux/hooks';
-import { Divider } from '@mui/material';
+import { Divider, ListItem } from '@mui/material';
 import { Fragment } from 'react';
 import SmallCartItem from '../smallCartItem/SmallCartItem';
 import { usePathname } from 'next/navigation';
@@ -23,7 +23,13 @@ export default function SmallCartItems() {
     return (
       <Fragment key={item?.cartItemId}>
         <SmallCartItem item={item} />
-        {showDivider ? <Divider /> : null}
+        {showDivider ? (
+          <ListItem
+            disableGutters
+            disablePadding>
+            <Divider sx={{ width: 1 }} />
+          </ListItem>
+        ) : null}
       </Fragment>
     );
   });
