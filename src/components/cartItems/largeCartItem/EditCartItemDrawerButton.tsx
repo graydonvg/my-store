@@ -16,7 +16,9 @@ export default function EditCartItemDrawerButton({ cartItem }: Props) {
   }
 
   return (
-    <IconButton onClick={openDrawer}>
+    <IconButton
+      aria-label="edit cart item"
+      onClick={openDrawer}>
       <Edit
         fontSize="small"
         sx={{ color: (theme) => theme.palette.text.secondary }}
