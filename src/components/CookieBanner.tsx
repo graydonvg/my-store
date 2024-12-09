@@ -40,17 +40,17 @@ export default function CookieBanner() {
         padding: 2,
         backgroundColor: (theme) => theme.palette.custom.navbar.upper.background,
       }}>
-      <Typography>This site uses cookies.</Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
+      <Typography>This site uses cookies to analyze traffic.</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <TextButton
           label="Decline"
           onClick={() => setCookieConsent(false)}
-          sxStyles={{ minHeight: '32px', height: '32px' }}
+          sxStyles={{ minHeight: '32px' }}
         />
         <ContainedButton
           label="Allow Cookies"
           onClick={() => setCookieConsent(true)}
-          sxStyles={{ minHeight: '32px', height: '32px' }}
+          sxStyles={{ minHeight: '32px' }}
         />
       </Box>
     </Box>
