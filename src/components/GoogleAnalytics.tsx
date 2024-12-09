@@ -37,7 +37,9 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
 
-                
+                gtag('consent','default', {
+										'analytics_storage': 'denied'
+								});
                 
                 gtag('config', '${GA_MEASUREMENT_ID}', {
                     page_path: window.location.pathname,
