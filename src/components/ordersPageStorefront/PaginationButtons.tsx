@@ -52,10 +52,10 @@ export default function PaginationButtons({ orders, pageNumber, maxOrdersPerPage
               aria-label={`page ${index + 1}`}
               key={index}
               sx={{
-                fontSize: 20,
+                fontSize: 24,
                 color: theme.palette.text.secondary,
                 ...(pageNumber === index + 1 && {
-                  fontSize: 24,
+                  fontSize: 28,
                   color: theme.palette.text.primary,
                   fontWeight: 'bold',
                   lineHeight: '24px',
