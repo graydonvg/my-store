@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Providers } from '@/app/providers';
 import '@fontsource/roboto/300.css';
@@ -9,8 +9,8 @@ import './globals.css';
 import { STORE_NAME } from '@/constants';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
-import CookieBanner from '@/components/CookieBanner';
+// import GoogleAnalytics from '@/components/GoogleAnalytics';
+// import CookieBanner from '@/components/CookieBanner';
 
 export const metadata: Metadata = {
   title: STORE_NAME,
@@ -26,15 +26,15 @@ export default async function RootLayout({ children }: Props) {
     <html
       lang="en"
       suppressHydrationWarning>
-      {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+      {/* {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
         <Suspense fallback={null}>
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         </Suspense>
-      )}
+      )} */}
       <body>
         <Providers>
           {children}
-          <CookieBanner />
+          {/* <CookieBanner /> */}
         </Providers>
         <SpeedInsights />
         <AxiomWebVitals />
