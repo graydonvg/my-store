@@ -6,19 +6,19 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export default async function fetchReversedOrdersByDate(numberOfDays: number) {
+export default async function fetchRegisteredCustomersByDate(numberOfDays: number) {
   const supabase = await createSupabaseServerClient();
 
-  const logger = log.with({ context: 'dbQuery: fetchReversedOrdersByDate' });
-  logger.info('Fetching reversed orders');
+  const logger = log.with({ context: 'dbQuery: fetchRegisteredCustomersByDate' });
+  logger.info('Fetching registered customers');
 
   const startDate = dayjs().subtract(numberOfDays, 'day').format('YYYY-MM-DD');
 
   try {
     const { data, error } = await supabase
-      .from('orders')
-      .select('createdAt, orderStatus')
-      .or('orderStatus.eq.refunded, orderStatus.eq.returned')
+      .from('users')
+      .select('createdAt, ...userRoles(role)')
+      .is('userRoles.role', null)
       .gte('createdAt', startDate);
 
     if (error) {
@@ -26,7 +26,7 @@ export default async function fetchReversedOrdersByDate(numberOfDays: number) {
       return null;
     }
 
-    logger.info('Fetched reversed orders successfully');
+    logger.info('Fetched registered customers successfully');
 
     return data;
   } catch (error) {

@@ -22,7 +22,6 @@ import { deleteUsers } from '@/services/admin/delete';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import getUsersDataGridColumns from './getUsersDataGridColumns';
-
 import { useLogger } from 'next-axiom';
 import { LOGGER_ERROR_MESSAGES } from '@/constants';
 

@@ -17,7 +17,6 @@ import CardTitle from './CardTitle';
 import { AdminDashboardCard } from './AdminDashboradCard';
 
 type Props = {
-  monthlyPageViews: number[];
   orderData: OrderDateTotal[] | null;
   previousYearSalesTotal: number;
 };
@@ -31,7 +30,7 @@ function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' 
   return trend as 'up' | 'down' | 'neutral';
 }
 
-export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData, previousYearSalesTotal }: Props) {
+export default function SalesAndConversionsBarChart({ orderData, previousYearSalesTotal }: Props) {
   const theme = useTheme();
   const monthlySales = orderData ? calculateTotalMonthlySales(orderData) : undefined;
   const monthlyConversions = orderData ? calculateTotalMonthlyConversions(orderData) : undefined;
@@ -63,7 +62,7 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData,
           height: { xs: 449, sm: 557.58 },
           minHeight: 1,
         }}>
-        <CardTitle gutterBottom>Page views and sales</CardTitle>
+        <CardTitle gutterBottom>Sales And Conversions</CardTitle>
         <Stack sx={{ justifyContent: 'space-between' }}>
           <Stack
             direction="row"
@@ -86,7 +85,7 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData,
           <Typography
             variant="caption"
             sx={{ color: 'text.secondary' }}>
-            Page views and sales for the current year
+            Sales and conversions for the current year
           </Typography>
         </Stack>
         <BarChart
@@ -102,12 +101,6 @@ export default function PageViewsAndSalesBarChart({ monthlyPageViews, orderData,
             ] as any
           }
           series={[
-            {
-              id: 'page-views',
-              label: 'Page views',
-              data: monthlyPageViews,
-              stack: 'A',
-            },
             {
               id: 'sales',
               label: 'Sales',

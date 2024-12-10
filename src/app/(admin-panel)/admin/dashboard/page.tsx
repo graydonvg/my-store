@@ -8,12 +8,16 @@ import fetchRecentProducts from '@/services/db/queries/fetchRecentProducts';
 import RecentProducts from '@/components/adminPanel/dashboard/RecentProducts';
 import fetchOrderTotalsThisYear from '@/services/db/queries/fetchOrderTotalsThisYear';
 import StatCard from '@/components/adminPanel/dashboard/StatCard';
-import PageViewsAndSalesBarChart from '@/components/adminPanel/dashboard/PageViewsAndSalesBarChart';
-import { calculateAverageOrderValues, calculateTotalConversions, calculateRefundRates } from '@/utils/calculations';
-import fetchUnsuccessfulOrderDates from '@/services/db/queries/fetchReversedOrdersByDate';
+import SalesAndConversionsBarChart from '@/components/adminPanel/dashboard/SalesAndConversionsBarChart';
+import {
+  calculateAverageOrderValues,
+  calculateTotalConversions,
+  calculateRefundRates,
+  calculateTotalRegisteredCustomers,
+} from '@/utils/calculations';
 import fetchPreviousYearSalesTotal from '@/services/db/queries/fetchPreviousYearSalesTotal';
-import { getActiveUsersData } from '@/utils/googleAnalytics/activeUsers';
-import { getMonthlyPageViewsForYear } from '@/utils/googleAnalytics/pageViews';
+import fetchRegisteredCustomersByDate from '@/services/db/queries/fetchRegisteredCustomersByDate';
+import fetchReversedOrdersByDate from '@/services/db/queries/fetchReversedOrdersByDate';
 
 const NUMBER_OF_DAYS_FOR_REPORT = 30;
 const DAYS_OF_DATA_TO_FETCH = NUMBER_OF_DAYS_FOR_REPORT * 2;
@@ -23,18 +27,21 @@ export default async function AdminPanelDashboard() {
   const { data: orderData } = await fetchOrdersForAdmin(page, sort, filter);
   const previousYearSalesTotal = await fetchPreviousYearSalesTotal();
   const orderTotalsThisYear = await fetchOrderTotalsThisYear();
-  const refundedOrders = await fetchUnsuccessfulOrderDates(DAYS_OF_DATA_TO_FETCH);
+  const registeredCustomers = await fetchRegisteredCustomersByDate(DAYS_OF_DATA_TO_FETCH);
+  const reversedOrders = await fetchReversedOrdersByDate(DAYS_OF_DATA_TO_FETCH);
   const sortedBestSellers = await fetchSortedBestSellers();
   const recentProducts = await fetchRecentProducts();
-  const { currentPeriodUsers, totalCurrentUsers, totalPreviousUsers } = await getActiveUsersData(DAYS_OF_DATA_TO_FETCH);
-  const monthlyPageViews = await getMonthlyPageViewsForYear();
+  const totalRegistrations =
+    registeredCustomers && calculateTotalRegisteredCustomers(registeredCustomers, DAYS_OF_DATA_TO_FETCH);
   const totalConversions = orderTotalsThisYear && calculateTotalConversions(orderTotalsThisYear, DAYS_OF_DATA_TO_FETCH);
   const averageOrderValues =
     orderTotalsThisYear && calculateAverageOrderValues(orderTotalsThisYear, DAYS_OF_DATA_TO_FETCH);
   const refundRates =
     orderTotalsThisYear &&
-    refundedOrders &&
-    calculateRefundRates(orderTotalsThisYear, refundedOrders, DAYS_OF_DATA_TO_FETCH);
+    reversedOrders &&
+    calculateRefundRates(orderTotalsThisYear, reversedOrders, DAYS_OF_DATA_TO_FETCH);
+
+  console.log(registeredCustomers);
 
   return (
     <Grid2
@@ -43,10 +50,13 @@ export default async function AdminPanelDashboard() {
       sx={{ padding: { xs: 2, sm: 3 } }}>
       <Grid2 size={{ xs: 12, sm: 6, lg: 3 }}>
         <StatCard
-          title="Active Users"
+          title="Registered Customers"
           numberOfDays={NUMBER_OF_DAYS_FOR_REPORT}
-          currentPeriodData={currentPeriodUsers}
-          periodTotals={{ currentPeriod: totalCurrentUsers, previousPeriod: totalPreviousUsers }}
+          currentPeriodData={totalRegistrations?.currentPeriodRegistrations ?? []}
+          periodTotals={{
+            currentPeriod: totalRegistrations?.totalCurrentPeriodRegistrations ?? 0,
+            previousPeriod: totalRegistrations?.totalPreviosPeriodRegistrations ?? 0,
+          }}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, sm: 6, lg: 3 }}>
@@ -85,8 +95,7 @@ export default async function AdminPanelDashboard() {
         />
       </Grid2>
       <Grid2 size={{ xs: 12, xl: 6 }}>
-        <PageViewsAndSalesBarChart
-          monthlyPageViews={monthlyPageViews}
+        <SalesAndConversionsBarChart
           orderData={orderTotalsThisYear}
           previousYearSalesTotal={previousYearSalesTotal ?? 0}
         />

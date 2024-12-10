@@ -13,7 +13,7 @@ import CardTitle from './CardTitle';
 import { calculatePercentageChange } from '@/utils/calculations';
 import { AdminDashboardCard } from './AdminDashboradCard';
 
-type StatCardProps = {
+type Props = {
   title: string;
   numberOfDays: number;
   currentPeriodData: number[];
@@ -77,7 +77,7 @@ export default function StatCard({
   periodTotals,
   isCurrency = false,
   isPercentage = false,
-}: StatCardProps) {
+}: Props) {
   const theme = useTheme();
   const daysInWeek = getDates(numberOfDays);
   const trend = getTrend(periodTotals.currentPeriod, periodTotals.previousPeriod);

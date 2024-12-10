@@ -49,6 +49,29 @@ export function calculateTotalMonthlyConversions(orderData: OrderDateTotal[]) {
   return aggregateSalesOrConversions(orderData, 'conversion', 12);
 }
 
+export function calculateTotalRegisteredCustomers(signUpDates: { createdAt: string }[], numberOfDays: number) {
+  const periodLength = Math.floor(numberOfDays / 2);
+  const currentPeriodRegistrations = initArray(periodLength);
+  const previousPeriodRegistrations = initArray(periodLength);
+  const today = dayjs();
+
+  signUpDates.forEach((signUpDate) => {
+    const daysAgo = today.diff(dayjs(signUpDate.createdAt), 'day');
+
+    if (daysAgo < periodLength) {
+      currentPeriodRegistrations[periodLength - daysAgo - 1] += 1;
+    } else if (daysAgo < numberOfDays) {
+      previousPeriodRegistrations[daysAgo - periodLength - 1] += 1;
+    }
+  });
+
+  return {
+    currentPeriodRegistrations,
+    totalCurrentPeriodRegistrations: sumArrayValues(currentPeriodRegistrations),
+    totalPreviosPeriodRegistrations: sumArrayValues(previousPeriodRegistrations),
+  };
+}
+
 export function calculateTotalConversions(orderData: OrderDateTotal[], numberOfDays: number) {
   const periodLength = Math.floor(numberOfDays / 2);
   const currentPeriodConversions = initArray(periodLength);

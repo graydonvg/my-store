@@ -9,8 +9,6 @@ import './globals.css';
 import { STORE_NAME } from '@/constants';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-// import GoogleAnalytics from '@/components/GoogleAnalytics';
-// import CookieBanner from '@/components/CookieBanner';
 
 export const metadata: Metadata = {
   title: STORE_NAME,
@@ -26,16 +24,8 @@ export default async function RootLayout({ children }: Props) {
     <html
       lang="en"
       suppressHydrationWarning>
-      {/* {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-        <Suspense fallback={null}>
-          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
-        </Suspense>
-      )} */}
       <body>
-        <Providers>
-          {children}
-          {/* <CookieBanner /> */}
-        </Providers>
+        <Providers>{children}</Providers>
         <SpeedInsights />
         <AxiomWebVitals />
       </body>
