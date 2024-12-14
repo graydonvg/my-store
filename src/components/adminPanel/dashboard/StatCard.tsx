@@ -23,6 +23,7 @@ type Props = {
   };
   isCurrency?: boolean;
   isPercentage?: boolean;
+  isReverseTrend?: boolean;
 };
 
 function getTrend(currentPeriod: number, previousPeriod: number): 'up' | 'down' | 'neutral' {
@@ -77,6 +78,7 @@ export default function StatCard({
   periodTotals,
   isCurrency = false,
   isPercentage = false,
+  isReverseTrend = false,
 }: Props) {
   const theme = useTheme();
   const daysInWeek = getDates(numberOfDays);
@@ -96,8 +98,8 @@ export default function StatCard({
     neutral: 'default' as const,
   };
 
-  const badgeColor = badgeColors[trend];
-  const chartColor = trendColors[trend];
+  const badgeColor = isReverseTrend ? badgeColors[trend === 'down' ? 'up' : 'down'] : badgeColors[trend];
+  const chartColor = isReverseTrend ? trendColors[trend === 'down' ? 'up' : 'down'] : trendColors[trend];
   const trendSymbol = { up: '+', down: '', neutral: '' };
 
   function handleValueFormat(value: number) {

@@ -16,6 +16,8 @@ import { ReactNode, useEffect, useMemo } from 'react';
 import CustomNoRowsOverlay from './CustomNoRowsOverlay';
 import { toast } from 'react-toastify';
 import { calculatePagination } from '@/utils/calculations';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   data: {}[] | null;
@@ -39,6 +41,7 @@ export default function CustomDataGrid({
   toolbar,
   ...dataGridProps
 }: Props) {
+  const userData = useAppSelector(selectUserData);
   const theme = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -154,7 +157,6 @@ export default function CustomDataGrid({
         rows={data ?? []}
         rowCount={totalRowCount}
         pageSizeOptions={rowsPerPageOptionsArraySorted}
-        disableRowSelectionOnClick
         pagination
         paginationMode="server"
         paginationModel={{ page: dataGridCurrentPageNumber, pageSize: page.rows }}
@@ -170,6 +172,13 @@ export default function CustomDataGrid({
         disableColumnMenu
         scrollbarSize={16}
         initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
+        isRowSelectable={(params) =>
+          (params.row.createdBy === userData?.userId && params.row.userId !== userData?.userId) ||
+          userData?.role === 'owner'
+        }
+        isCellEditable={(params) => {
+          return params.row.createdBy === userData?.userId || userData?.role === 'owner';
+        }}
         slots={{
           toolbar: () => toolbar,
           noResultsOverlay: () => <CustomNoRowsOverlay text="No results found." />,

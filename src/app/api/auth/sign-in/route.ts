@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { ResponseWithNoData, UserAuthData, UserAuthDataSchema } from '@/types';
-
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/constructZodError';

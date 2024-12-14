@@ -15,6 +15,7 @@ import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSele
 import { PasswordSchema, UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
 import useForm from '@/hooks/use-form';
 import { z } from 'zod';
+import { signInAsAdmin } from '@/services/auth/sign-in';
 
 const fieldConfigs = [
   {
@@ -90,6 +91,11 @@ const defaultFormData = {
   confirmPassword: '',
 };
 
+const defaultLoadingStates = {
+  signUp: false,
+  signInAsAdmin: false,
+};
+
 type Props = {
   headerComponent: 'h1' | 'h2';
   children: ReactNode;
@@ -103,10 +109,11 @@ export default function SignUpForm({ headerComponent, children }: Props) {
   const form = useForm(SignUpSchema, defaultFormData, {
     checkEquality: [{ fields: ['password', 'confirmPassword'], message: 'Passwords do not match' }],
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(defaultLoadingStates);
+  const disableButtons = isLoading.signUp || isLoading.signInAsAdmin;
 
   async function handleSignUp() {
-    setIsLoading(true);
+    setIsLoading((prev) => ({ ...prev, signUp: true }));
 
     if (isSignUpDialogOpen) {
       dispatch(setIsDialogLoading(true));
@@ -124,7 +131,31 @@ export default function SignUpForm({ headerComponent, children }: Props) {
       toast.error(message);
     }
 
-    setIsLoading(false);
+    setIsLoading((prev) => ({ ...prev, signUp: false }));
+
+    if (isSignUpDialogOpen) {
+      dispatch(setIsDialogLoading(false));
+    }
+  }
+
+  async function handleSignInAsAdmin() {
+    setIsLoading((prev) => ({ ...prev, signInAsAdmin: true }));
+
+    if (isSignUpDialogOpen) {
+      dispatch(setIsDialogLoading(true));
+    }
+
+    const { success, message } = await signInAsAdmin();
+
+    if (success) {
+      dispatch(closeDialog());
+      form.reset();
+      router.refresh();
+    } else {
+      toast.error(message);
+    }
+
+    setIsLoading((prev) => ({ ...prev, signInAsAdmin: false }));
 
     if (isSignUpDialogOpen) {
       dispatch(setIsDialogLoading(false));
@@ -178,14 +209,23 @@ export default function SignUpForm({ headerComponent, children }: Props) {
           ))}
         </Grid2>
         <ContainedButton
-          label={!isSignUpDialogOpen && isLoading ? '' : 'sign up'}
-          disabled={isSignUpDialogOpen && isLoading}
-          isLoading={!isSignUpDialogOpen && isLoading}
+          label={!isSignUpDialogOpen && isLoading.signUp ? '' : 'sign up'}
+          disabled={disableButtons}
+          isLoading={!isSignUpDialogOpen && isLoading.signUp}
           type="submit"
           fullWidth
           color="primary"
         />
         {children}
+        <ContainedButton
+          type="button"
+          onClick={handleSignInAsAdmin}
+          label={!isSignUpDialogOpen && isLoading.signInAsAdmin ? '' : 'sign in as admin'}
+          disabled={disableButtons}
+          isLoading={!isSignUpDialogOpen && isLoading.signInAsAdmin}
+          fullWidth
+          color="secondary"
+        />
       </Box>
     </Box>
   );

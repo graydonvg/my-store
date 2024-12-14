@@ -229,6 +229,7 @@ export type Database = {
       };
       productImageData: {
         Row: {
+          createdBy: string;
           fileName: string;
           imageIndex: number;
           imageUrl: string;
@@ -236,6 +237,7 @@ export type Database = {
           productImageId: number;
         };
         Insert: {
+          createdBy?: string;
           fileName: string;
           imageIndex: number;
           imageUrl: string;
@@ -243,6 +245,7 @@ export type Database = {
           productImageId?: number;
         };
         Update: {
+          createdBy?: string;
           fileName?: string;
           imageIndex?: number;
           imageUrl?: string;
@@ -264,6 +267,7 @@ export type Database = {
           brand: string;
           category: Database['public']['Enums']['productCategory'];
           createdAt: string;
+          createdBy: string;
           deliveryInfo: string;
           details: string;
           filterColors: string[];
@@ -280,6 +284,7 @@ export type Database = {
           brand: string;
           category: Database['public']['Enums']['productCategory'];
           createdAt?: string;
+          createdBy?: string;
           deliveryInfo: string;
           details: string;
           filterColors: string[];
@@ -296,6 +301,7 @@ export type Database = {
           brand?: string;
           category?: Database['public']['Enums']['productCategory'];
           createdAt?: string;
+          createdBy?: string;
           deliveryInfo?: string;
           details?: string;
           filterColors?: string[];
@@ -504,6 +510,10 @@ export type Database = {
           requestedPermission: Database['public']['Enums']['appPermission'];
         };
         Returns: boolean;
+      };
+      create_random_user: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
       };
       custom_access_token_hook: {
         Args: {

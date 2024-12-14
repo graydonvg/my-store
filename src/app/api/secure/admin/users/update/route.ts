@@ -47,20 +47,21 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
 
     log = request.log.with({ userId: authUser.id });
 
-    const isAuthorized = await checkAuthorizationServer(supabase, 'users.update');
+    // Commented out for now to allow demo admin users to update their own data
+    // const isAuthorized = await checkAuthorizationServer(supabase, 'users.update');
     const userRole = await getUserRoleFromSession(supabase);
 
-    if (!isAuthorized) {
-      log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole });
+    // if (!isAuthorized) {
+    // 	log.warn(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole });
 
-      return NextResponse.json(
-        {
-          success: false,
-          message: USER_ERROR_MESSAGES.notAuthorized,
-        },
-        { status: 401 }
-      );
-    }
+    //   return NextResponse.json(
+    // 		{
+    // 			success: false,
+    //       message: USER_ERROR_MESSAGES.notAuthorized,
+    //     },
+    //     { status: 401 }
+    //   );
+    // }
 
     let userData: UpdateUserAdmin;
 
@@ -102,7 +103,8 @@ export const PUT = withAxiom(async (request: AxiomRequest): Promise<NextResponse
     if (
       (userToUpdateCurrentRole === 'owner' && !isOwner) ||
       (userToUpdateCurrentRole === 'manager' && !isOwner) ||
-      (userToUpdateCurrentRole === 'admin' && !(isOwner || isManager))
+      // Check userToUpdateId === authUser.id to allow demo admin users to update their own data
+      (userToUpdateCurrentRole === 'admin' && !(isOwner || isManager || userToUpdateId === authUser.id))
     ) {
       log.error(LOGGER_ERROR_MESSAGES.notAuthorized, { userRole, userToUpdateCurrentRole });
 

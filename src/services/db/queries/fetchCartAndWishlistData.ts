@@ -8,7 +8,7 @@ export default async function fetchCartAndWishlistData() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchCartAndWishlistData' });
-  logger.info('Fetching user cart and wishlist data');
+  logger.info('Attempting to fetch user cart and wishlist data');
 
   try {
     const {

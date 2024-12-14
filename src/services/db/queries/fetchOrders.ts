@@ -17,7 +17,7 @@ export async function fetchOrdersForUser({ pageNumber, ordersPerPage }: Params) 
   const rangeEnd = rangeStart + (ordersPerPage - 1);
 
   const logger = log.with({ context: 'dbQuery: fetchOrdersForUser' });
-  logger.info('Fetching orders for user');
+  logger.info('Attempting to fetch orders for user');
 
   try {
     const {
@@ -38,7 +38,7 @@ export async function fetchOrdersForUser({ pageNumber, ordersPerPage }: Params) 
       )
       .eq('userId', authUser?.id ?? '')
       .eq('orderItems.products.productImageData.imageIndex', 0)
-      .order('createdAt', { ascending: false })
+      .order('orderId', { ascending: false })
       .range(rangeStart, rangeEnd);
 
     if (ordersError) {
@@ -65,13 +65,13 @@ export async function fetchOrdersForAdmin(
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchOrdersForAdmin' });
-  logger.info('Fetching orders for admin');
+  logger.info('Attempting to fetch orders for admin');
 
   try {
     let ordersQuery = supabase
       .from('orders')
       .select(
-        'createdAt, orderId, orderTotal, orderStatus, ...users!inner(firstName, lastName, contactNumber), ...shippingDetails!inner(complexOrBuilding, streetAddress, suburb, province, city, postalCode, recipientFirstName, recipientLastName, recipientContactNumber)',
+        'createdAt, orderId, orderTotal, orderStatus, createdBy, ...users!inner(firstName, lastName, contactNumber), ...shippingDetails!inner(complexOrBuilding, streetAddress, suburb, province, city, postalCode, recipientFirstName, recipientLastName, recipientContactNumber)',
         {
           count: 'exact',
         }

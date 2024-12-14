@@ -10,7 +10,7 @@ export default async function fetchOrderTotalsThisYear() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchOrderTotalsThisYear' });
-  logger.info('Fetching order totals for current year');
+  logger.info('Attempting to fetch order totals for current year');
 
   const startOfYear = dayjs().startOf('year');
 

@@ -8,7 +8,7 @@ export default async function fetchWishlist() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchWishlist' });
-  logger.info('Fetching user wishlist');
+  logger.info('Attempting to fetch user wishlist');
 
   try {
     const {

@@ -10,7 +10,7 @@ import CustomTextField from '../ui/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
-import signInWithPassword from '@/services/auth/sign-in';
+import signInWithPassword, { signInAsAdmin } from '@/services/auth/sign-in';
 import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
@@ -46,6 +46,12 @@ const defaultFormData = {
   password: '',
 };
 
+const defaultLoadingStates = {
+  signInWithPassword: false,
+  signInWithGoogle: false,
+  signInAsAdmin: false,
+};
+
 type Props = {
   headerComponent: 'h1' | 'h2';
   children: ReactNode;
@@ -58,10 +64,11 @@ export default function SignInForm({ headerComponent, children }: Props) {
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
   const isSignInDialogOpen = useAppSelector(selectIsSignInDialogOpen);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(defaultLoadingStates);
+  const disableButtons = isLoading.signInWithPassword || isLoading.signInWithGoogle || isLoading.signInAsAdmin;
 
   async function handleSignInWithPassword() {
-    setIsLoading(true);
+    setIsLoading((prev) => ({ ...prev, signInWithPassword: true }));
 
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(true));
@@ -77,7 +84,7 @@ export default function SignInForm({ headerComponent, children }: Props) {
       toast.error(message);
     }
 
-    setIsLoading(false);
+    setIsLoading((prev) => ({ ...prev, signInWithPassword: false }));
 
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(false));
@@ -85,6 +92,8 @@ export default function SignInForm({ headerComponent, children }: Props) {
   }
 
   async function signInWithGoogle() {
+    setIsLoading((prev) => ({ ...prev, signInWithGoogle: true }));
+
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(true));
     }
@@ -103,6 +112,32 @@ export default function SignInForm({ headerComponent, children }: Props) {
     if (error) {
       toast.error(error.message);
     }
+
+    setIsLoading((prev) => ({ ...prev, signInWithGoogle: false }));
+
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(false));
+    }
+  }
+
+  async function handleSignInAsAdmin() {
+    setIsLoading((prev) => ({ ...prev, signInAsAdmin: true }));
+
+    if (isSignInDialogOpen) {
+      dispatch(setIsDialogLoading(true));
+    }
+
+    const { success, message } = await signInAsAdmin();
+
+    if (success) {
+      dispatch(closeDialog());
+      form.reset();
+      router.refresh();
+    } else {
+      toast.error(message);
+    }
+
+    setIsLoading((prev) => ({ ...prev, signInAsAdmin: false }));
 
     if (isSignInDialogOpen) {
       dispatch(setIsDialogLoading(false));
@@ -157,12 +192,13 @@ export default function SignInForm({ headerComponent, children }: Props) {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 1 }}>
           <ContainedButton
             type="submit"
-            label={!isSignInDialogOpen && isLoading ? '' : 'sign in'}
-            disabled={isSignInDialogOpen && isLoading}
-            isLoading={!isSignInDialogOpen && isLoading}
+            label={!isSignInDialogOpen && isLoading.signInWithPassword ? '' : 'sign in'}
+            disabled={disableButtons}
+            isLoading={!isSignInDialogOpen && isLoading.signInWithPassword}
             fullWidth
             color="primary"
           />
+
           <Divider>
             <Typography
               component="span"
@@ -172,14 +208,24 @@ export default function SignInForm({ headerComponent, children }: Props) {
           </Divider>
           <OutlinedButton
             onClick={signInWithGoogle}
-            disabled={isLoading}
-            label="sign in with google"
+            disabled={disableButtons}
+            isLoading={!isSignInDialogOpen && isLoading.signInWithGoogle}
+            label={!isSignInDialogOpen && isLoading.signInAsAdmin ? '' : 'sign in with google'}
             type="button"
             fullWidth
             startIcon={<GoogleIcon />}
           />
         </Box>
         {children}
+        <ContainedButton
+          type="button"
+          onClick={handleSignInAsAdmin}
+          label={!isSignInDialogOpen && isLoading.signInAsAdmin ? '' : 'sign in as admin'}
+          disabled={disableButtons}
+          isLoading={!isSignInDialogOpen && isLoading.signInAsAdmin}
+          fullWidth
+          color="secondary"
+        />
       </Box>
     </Box>
   );

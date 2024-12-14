@@ -8,7 +8,7 @@ export default async function fetchAddresses() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchAddresses' });
-  logger.info('Fetching user addresses');
+  logger.info('Attempting to fetch user addresses');
 
   try {
     const {

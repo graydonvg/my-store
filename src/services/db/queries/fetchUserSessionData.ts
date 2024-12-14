@@ -9,7 +9,7 @@ export default async function fetchUserSessionData() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchUserSessionData' });
-  logger.info('Fetching user session data');
+  logger.info('Attempting to fetch user session data');
 
   try {
     const {

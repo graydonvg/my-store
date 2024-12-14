@@ -1,6 +1,9 @@
 import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { STORE_NAME } from '@/constants';
-import { getAllProducts, getProductById } from '@/services/products/get';
+import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import { fetchProductByIdDynamic } from '@/services/db/queries/fetchProductsDynamic';
+import { getAllProductsCached, getProductByIdCached } from '@/services/products/get';
+import { getUserRoleFromSession } from '@/utils/auth';
 import { notFound } from 'next/navigation';
 
 type Params = {
@@ -8,7 +11,11 @@ type Params = {
 };
 
 export async function generateMetadata({ params: { product_id } }: Params) {
-  const { data: product } = await getProductById(product_id);
+  const supabase = await createSupabaseServerClient();
+  const userRole = await getUserRoleFromSession(supabase);
+  // Demo users signed in as admin require auth to view products they create
+  const { data: product } =
+    userRole === 'admin' ? await fetchProductByIdDynamic(product_id) : await getProductByIdCached(product_id);
 
   if (!product?.productId) {
     return {
@@ -22,7 +29,11 @@ export async function generateMetadata({ params: { product_id } }: Params) {
 }
 
 export default async function ProductPage({ params: { product_id } }: Params) {
-  const { data: product } = await getProductById(product_id);
+  const supabase = await createSupabaseServerClient();
+  const userRole = await getUserRoleFromSession(supabase);
+  // Demo users signed in as admin require auth to view products they create
+  const { data: product } =
+    userRole === 'admin' ? await fetchProductByIdDynamic(product_id) : await getProductByIdCached(product_id);
 
   if (!product) return notFound();
 
@@ -30,7 +41,7 @@ export default async function ProductPage({ params: { product_id } }: Params) {
 }
 
 export async function generateStaticParams() {
-  const { data: productsData } = await getAllProducts();
+  const { data: productsData } = await getAllProductsCached();
 
   const products = productsData ?? [];
 

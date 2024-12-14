@@ -9,7 +9,7 @@ export default async function fetchPreviousYearSalesTotal() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchPreviousYearSalesTotal' });
-  logger.info('Fetching sales total for previous year');
+  logger.info('Attempting to fetch sales total for previous year');
 
   try {
     const { data, error } = await supabase.rpc('getPreviousYearSalesTotal');

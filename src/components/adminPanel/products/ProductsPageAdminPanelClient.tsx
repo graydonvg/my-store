@@ -4,10 +4,8 @@ import { QueryPageDataGrid, QueryFilterDataGrid, QuerySortDataGrid, Product } fr
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import CustomDataGrid from '../../dataGrid/CustomDataGrid';
 import { useMemo, useState } from 'react';
-import { useAppSelector } from '@/lib/redux/hooks';
 import { Flip, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import ProductsDataGridToolbar from './ProductsDataGridToolbar';
 import getProductsDataGridColumns from './getProductsDataGridColumns';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
@@ -33,7 +31,6 @@ export default function ProductsPageAdminPanelClient({
   filter,
 }: Props) {
   const router = useRouter();
-  const userData = useAppSelector(selectUserData);
   const [selectedProductIds, setSelectedProductIds] = useState<GridRowSelectionModel>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const columns = getProductsDataGridColumns();
@@ -98,7 +95,7 @@ export default function ProductsPageAdminPanelClient({
       filter={filter}
       columns={memoizedColumns}
       onRowSelectionModelChange={handleRowSelection}
-      checkboxSelection={userData?.role === 'admin' ? false : true}
+      checkboxSelection
       toolbar={
         <ProductsDataGridToolbar
           isDeleting={isDeleting}

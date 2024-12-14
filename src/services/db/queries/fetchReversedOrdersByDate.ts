@@ -10,7 +10,7 @@ export default async function fetchReversedOrdersByDate(numberOfDays: number) {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchReversedOrdersByDate' });
-  logger.info('Fetching reversed orders');
+  logger.info('Attempting to fetch reversed orders');
 
   const startDate = dayjs().subtract(numberOfDays, 'day').format('YYYY-MM-DD');
 

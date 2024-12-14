@@ -4,8 +4,8 @@ import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
-export async function getAllProducts(): Promise<ResponseWithData<Product[] | null>> {
-  const logger = log.with({ context: 'service: getAllProducts' });
+export async function getAllProductsCached(): Promise<ResponseWithData<Product[] | null>> {
+  const logger = log.with({ context: 'service: getAllProductsCached' });
 
   logger.info('Attempting to fetch all products');
 
@@ -29,8 +29,8 @@ export async function getAllProducts(): Promise<ResponseWithData<Product[] | nul
   }
 }
 
-export async function getProductById(id: string): Promise<ResponseWithData<Product | null>> {
-  const logger = log.with({ context: 'service: getProductById' });
+export async function getProductByIdCached(id: string): Promise<ResponseWithData<Product | null>> {
+  const logger = log.with({ context: 'service: getProductByIdCached' });
 
   logger.info('Attempting to fetch product by id');
 
@@ -54,8 +54,8 @@ export async function getProductById(id: string): Promise<ResponseWithData<Produ
   }
 }
 
-export async function getProductsByCategory(category: string): Promise<ResponseWithData<Product[] | null>> {
-  const logger = log.with({ context: 'service: getProductsByCategory' });
+export async function getProductsByCategoryCached(category: string): Promise<ResponseWithData<Product[] | null>> {
+  const logger = log.with({ context: 'service: getProductsByCategoryCached' });
 
   logger.info('Attempting to fetch products by category');
 
@@ -79,8 +79,8 @@ export async function getProductsByCategory(category: string): Promise<ResponseW
   }
 }
 
-export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
-  const logger = log.with({ context: 'service: getProductsOnSale' });
+export async function getProductsOnSaleCached(): Promise<ResponseWithData<Product[] | null>> {
+  const logger = log.with({ context: 'service: getProductsOnSaleCached' });
 
   logger.info('Attempting to fetch products on sale');
 
@@ -104,38 +104,15 @@ export async function getProductsOnSale(): Promise<ResponseWithData<Product[] | 
   }
 }
 
-export async function getLimitedProductsOnSale(): Promise<ResponseWithData<Product[] | null>> {
-  const logger = log.with({ context: 'service: getLimitedProductsOnSale' });
+export async function getHomePageProductsCached(): Promise<
+  ResponseWithData<{ limitedLatestProducts: Product[] | null; limitedOnSaleProducts: Product[] | null } | null>
+> {
+  const logger = log.with({ context: 'service: getHomePageProductsCached' });
 
-  logger.info('Attempting to fetch limited products on sale');
-
-  try {
-    const url = `${SITE_URL}/api/products/get-limited-on-sale`;
-
-    const response = await fetch(url, {
-      method: 'GET',
-      cache: 'force-cache',
-    });
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    logger.error(LOGGER_ERROR_MESSAGES.unexpected, { error });
-
-    return { success: false, message: USER_ERROR_MESSAGES.unexpected, data: null };
-  } finally {
-    await logger.flush();
-  }
-}
-
-export async function getLimitedLatestProducts(): Promise<ResponseWithData<Product[] | null>> {
-  const logger = log.with({ context: 'service: getLimitedLatestProducts' });
-
-  logger.info('Attempting to fetch limited latest products');
+  logger.info('Attempting to fetch home page products');
 
   try {
-    const url = `${SITE_URL}/api/products/get-limited-latest`;
+    const url = `${SITE_URL}/api/products/get-home-page`;
 
     const response = await fetch(url, {
       method: 'GET',

@@ -89,7 +89,9 @@ export default function UsersPageAdminPanelClient({
     if (
       (modifiedOldRow.role === 'owner' && !userRole.isOwner) ||
       (modifiedOldRow.role === 'manager' && !userRole.isOwner) ||
-      (modifiedOldRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
+      (modifiedOldRow.role === 'admin' &&
+        // Check userData?.userId === modifiedNewRow.userId to allow demo admin users to update their own data
+        !(userRole.isOwner || userRole.isManager || userData?.userId === modifiedNewRow.userId))
     ) {
       toast.error(`Not authorized to update ${modifiedOldRow.role}`);
 
@@ -97,11 +99,11 @@ export default function UsersPageAdminPanelClient({
     }
 
     if (
-      (modifiedNewRow.role === 'owner' && !userRole.isOwner) ||
-      (modifiedNewRow.role === 'manager' && !userRole.isOwner) ||
-      (modifiedNewRow.role === 'admin' && !(userRole.isOwner || userRole.isManager))
+      (changedValue.role === 'owner' && !userRole.isOwner) ||
+      (changedValue.role === 'manager' && !userRole.isOwner) ||
+      (changedValue.role === 'admin' && !(userRole.isOwner || userRole.isManager))
     ) {
-      toast.error(`Not authorized to assign role '${modifiedNewRow.role}'`);
+      toast.error(`Not authorized to assign role '${changedValue.role}'`);
 
       return oldRow;
     }
@@ -185,7 +187,7 @@ export default function UsersPageAdminPanelClient({
       processRowUpdate={handleRowUpdate}
       onProcessRowUpdateError={handleRowUpdateError}
       onRowSelectionModelChange={handleRowSelection}
-      checkboxSelection={userData?.role === 'admin' ? false : true}
+      checkboxSelection
       toolbar={
         <UsersDataGridToolbar
           isDeleting={isDeleting}

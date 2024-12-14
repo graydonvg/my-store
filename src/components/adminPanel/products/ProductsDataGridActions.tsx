@@ -2,6 +2,7 @@ import { selectProductFormData } from '@/lib/redux/features/productForm/productF
 import { clearProductFormData, setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
 import { clearAllProductImagesData, setImageData } from '@/lib/redux/features/productImages/productImagesSlice';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { deleteProductImages, deleteProducts } from '@/services/admin/delete';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
@@ -20,6 +21,7 @@ type Props = {
 export default function ProductsDataGridActions({ params }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const userData = useAppSelector(selectUserData);
   const imageData = useAppSelector(selectImageData);
   const productFormData = useAppSelector(selectProductFormData);
   const { productImageData, ...restOfProductData } = params.row;
@@ -101,31 +103,42 @@ export default function ProductsDataGridActions({ params }: Props) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: 1 }}>
       <Tooltip title="View product">
-        <IconButton
-          disabled={isLoading || isDeleting}
-          onClick={() =>
-            router.push(
-              `/products/${params.row.category?.toLowerCase()}/${params.row.name.toLowerCase().split(' ').join('-')}/${
-                params.row.productId
-              }`
-            )
-          }>
-          <Preview />
-        </IconButton>
+        <span>
+          <IconButton
+            disabled={isLoading || isDeleting}
+            onClick={() =>
+              router.push(
+                `/products/${params.row.category?.toLowerCase()}/${params.row.name
+                  .toLowerCase()
+                  .split(' ')
+                  .join('-')}/${params.row.productId}`
+              )
+            }>
+            <Preview />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title="Edit product">
-        <IconButton
-          disabled={isLoading || isDeleting}
-          onClick={editProduct}>
-          <Edit />
-        </IconButton>
+        <span>
+          <IconButton
+            disabled={
+              isLoading || isDeleting || (params.row.createdBy !== userData?.userId && userData?.role !== 'owner')
+            }
+            onClick={editProduct}>
+            <Edit />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title="Delete product">
-        <IconButton
-          disabled={isLoading || isDeleting}
-          onClick={permanentlyDeleteProduct}>
-          <DeleteForever />
-        </IconButton>
+        <span>
+          <IconButton
+            disabled={
+              isLoading || isDeleting || (params.row.createdBy !== userData?.userId && userData?.role !== 'owner')
+            }
+            onClick={permanentlyDeleteProduct}>
+            <DeleteForever />
+          </IconButton>
+        </span>
       </Tooltip>
     </Box>
   );

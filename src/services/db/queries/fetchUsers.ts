@@ -14,7 +14,7 @@ export default async function fetchUsers(
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchUsers' });
-  logger.info('Fetching users for admin');
+  logger.info('Attempting to fetch users for admin');
 
   try {
     let usersQuery: QueryFilterBuilder;

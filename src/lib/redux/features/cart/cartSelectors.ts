@@ -10,6 +10,8 @@ export function selectCartItems(state: RootState) {
   return state.cart.cartItems;
 }
 
+export const selectTotalCartItems = createSelector([selectCartItems], (cartItems) => cartItems.length);
+
 export const selectCartItemsWithPriceDetails = createSelector([selectCartItems], (items) =>
   items.map((item) => {
     if (item.product?.isOnSale) {
@@ -54,6 +56,6 @@ export const selectDeliveryFee = createSelector(
 );
 
 export const selectOrderTotal = createSelector(
-  [selectCartTotal, selectRoundedDiscountTotal],
-  (cartTotal, discountTotal) => cartTotal - discountTotal
+  [selectCartTotal, selectRoundedDiscountTotal, selectDeliveryFee],
+  (cartTotal, discountTotal, deliveryFee) => cartTotal - discountTotal + deliveryFee
 );

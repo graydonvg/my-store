@@ -2,11 +2,8 @@ import { NextResponse } from 'next/server';
 import { CreateUser, ResponseWithNoData, CreateUserSchema } from '@/types';
 import createSupabaseService from '@/lib/supabase/supabase-service';
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyObjectKeys } from '@/utils/objectHelpers';
-import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { withAxiom, AxiomRequest } from 'next-axiom';
 import { getUserRoleBoolean, getUserRoleFromSession } from '@/utils/auth';
-
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import checkAuthorizationServer from '@/utils/checkAuthorizationServer';
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
@@ -130,46 +127,40 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const emptyFormFields = getEmptyObjectKeys(restOfUserDataToUpdate);
-    const numberOfFormFields = getObjectKeyCount(restOfUserDataToUpdate);
-    const hasDataToUpdate = emptyFormFields.length !== numberOfFormFields;
+    // Using supabaseService since anyone can sign up
+    const { error: updateError } = await supabaseService
+      .from('users')
+      .update({ ...restOfUserDataToUpdate, createdBy: authUser.id })
+      .eq('userId', createUserData.user.id);
 
-    if (hasDataToUpdate) {
-      // Using supabaseService since anyone can sign up
-      const { error: updateError } = await supabaseService
-        .from('users')
-        .update(restOfUserDataToUpdate)
-        .eq('userId', createUserData.user.id);
+    if (updateError) {
+      log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateError });
 
-      if (updateError) {
-        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateError });
+      return NextResponse.json(
+        {
+          success: false,
+          message: `User created successfully, but failed to update users table entry. ${updateError.message}.`,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (roleToAssign) {
+      // Not using supabaseService since not everyone can assign roles
+      const { error: insertUserRoleError } = await supabase
+        .from('userRoles')
+        .insert({ userId: createUserData.user.id, role: roleToAssign });
+
+      if (insertUserRoleError) {
+        log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: insertUserRoleError });
 
         return NextResponse.json(
           {
             success: false,
-            message: `User created successfully, but failed to update users table entry. ${updateError.message}.`,
+            message: `User created successfully, but failed to assign user role. ${insertUserRoleError.message}.`,
           },
           { status: 500 }
         );
-      }
-
-      if (roleToAssign) {
-        // Not using supabaseService since not everyone can assign roles
-        const { error: insertUserRoleError } = await supabase
-          .from('userRoles')
-          .insert({ userId: createUserData.user.id, role: roleToAssign });
-
-        if (insertUserRoleError) {
-          log.error(LOGGER_ERROR_MESSAGES.databaseInsert, { error: insertUserRoleError });
-
-          return NextResponse.json(
-            {
-              success: false,
-              message: `User created successfully, but failed to assign user role. ${insertUserRoleError.message}.`,
-            },
-            { status: 500 }
-          );
-        }
       }
     }
 

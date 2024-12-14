@@ -26,17 +26,9 @@ export default function ManageProductImages() {
   const isSubmitting = useAppSelector(selectIsProductFormSubmitting);
   const imageUploadProgress = useAppSelector(selectImageUploadProgress);
   const imageData = useAppSelector(selectImageData);
-  // const [checkingAuthorization, setCheckingAuthorization] = useState(false);
   const uploadInProgress = imageUploadProgress.some((upload) => upload.progress < 100);
-  // const isLoading = checkingAuthorization || uploadInProgress;
 
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
-    // setCheckingAuthorization(true);
-    // const isAuthorized = await checkAuthorizationClient('productImages.insert');
-    // setCheckingAuthorization(false);
-
-    // if (!isAuthorized) return;
-
     const files = event.target.files;
 
     if (!files) return;

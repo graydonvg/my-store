@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-
 import {
   ResponseWithNoData,
   UserPersonalInfo,
@@ -7,10 +6,7 @@ import {
   UserAuthData,
   UserAuthDataSchema,
 } from '@/types';
-
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getEmptyObjectKeys } from '@/utils/objectHelpers';
-import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { constructZodErrorMessage } from '@/utils/constructZodError';
 import { LOGGER_ERROR_MESSAGES, USER_ERROR_MESSAGES } from '@/constants';
@@ -102,29 +98,23 @@ export const POST = withAxiom(async (request: AxiomRequest): Promise<NextRespons
       );
     }
 
-    const emptyFormFields = getEmptyObjectKeys(userDataValidation.data);
-    const numberOfFromFields = getObjectKeyCount(userDataValidation.data);
-    const hasDataToUpdate = emptyFormFields.length !== numberOfFromFields;
+    const userId = signUpResponse?.user?.id ?? '';
 
-    if (hasDataToUpdate) {
-      const userId = signUpResponse?.user?.id ?? '';
+    const { error: updateUserError } = await supabase
+      .from('users')
+      .update({ ...userDataValidation.data, createdBy: userId })
+      .eq('userId', userId);
 
-      const { error: updateUserError } = await supabase
-        .from('users')
-        .update(userDataValidation.data)
-        .eq('userId', userId);
+    if (updateUserError) {
+      log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateUserError });
 
-      if (updateUserError) {
-        log.error(LOGGER_ERROR_MESSAGES.databaseUpdate, { error: updateUserError });
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Sign up successful, but failed to insert name and/or contact number.',
-          },
-          { status: 500 }
-        );
-      }
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Sign up successful, but failed to insert name and/or contact number.',
+        },
+        { status: 500 }
+      );
     }
 
     const successMessage = 'Sign up successful';

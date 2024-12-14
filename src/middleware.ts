@@ -9,7 +9,7 @@ import { updateSession } from './lib/supabase/middleware';
 import { getUserRoleFromSession } from './utils/auth';
 
 export async function middleware(request: NextRequest) {
-  let { response, supabase } = await updateSession(request);
+  let { supabaseResponse, supabase } = await updateSession(request);
 
   const {
     data: { user: authUser },
@@ -22,8 +22,9 @@ export async function middleware(request: NextRequest) {
   }
 
   if (authUser && checkPathStartsWith('/welcome')) {
-    const redirectUrl = new URL('/', request.url);
-    response = NextResponse.redirect(redirectUrl);
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    return NextResponse.redirect(url);
   }
 
   const authorizationRequired = AUTHORIZATION_REQUIRED_PATHS.some((path) => checkPathStartsWith(path));
@@ -35,23 +36,25 @@ export async function middleware(request: NextRequest) {
 
   if (authorizationRequired && (!authUser || !hasAdminPanelAccess)) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json({ success: false, message: 'Not Authorized.' }, { status: 401 });
+      return NextResponse.json({ success: false, message: 'Not Authorized.' }, { status: 401 });
     } else {
-      const redirectUrl = new URL('/welcome/sign-in', request.url);
-      response = NextResponse.redirect(redirectUrl);
+      const url = request.nextUrl.clone();
+      url.pathname = '/welcome/sign-in';
+      return NextResponse.redirect(url);
     }
   }
 
   if (authenticationRequired && !authUser) {
     if (checkPathStartsWith('/api')) {
-      response = NextResponse.json({ success: false, message: USER_ERROR_MESSAGES.notAuthenticated }, { status: 401 });
+      return NextResponse.json({ success: false, message: USER_ERROR_MESSAGES.notAuthenticated }, { status: 401 });
     } else {
-      const redirectUrl = new URL('/welcome/sign-in', request.url);
-      response = NextResponse.redirect(redirectUrl);
+      const url = request.nextUrl.clone();
+      url.pathname = '/welcome/sign-in';
+      return NextResponse.redirect(url);
     }
   }
 
-  return response;
+  return supabaseResponse;
 }
 
 export const config = {

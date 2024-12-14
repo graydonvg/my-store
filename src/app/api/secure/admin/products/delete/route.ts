@@ -98,8 +98,11 @@ export const DELETE = withAxiom(async (request: AxiomRequest): Promise<NextRespo
 
     const fileNames = productData?.[0]?.productImageData.map((item) => item.fileName);
 
-    const { error: storageError } = fileNames?.length
-      ? await supabase.storage.from('product-images').remove(fileNames)
+    // Filter out the demo product image
+    const filteredFileNames = fileNames?.filter((fileName) => fileName !== 'demo-product-image.jpg');
+
+    const { error: storageError } = filteredFileNames?.length
+      ? await supabase.storage.from('product-images').remove(filteredFileNames)
       : { error: null };
 
     if (deleteProductError) {

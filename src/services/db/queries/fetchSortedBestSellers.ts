@@ -1,14 +1,14 @@
 import { LOGGER_ERROR_MESSAGES } from '@/constants';
-import createSupabaseServerClient from '@/lib/supabase/supabase-server';
+import createSupabaseService from '@/lib/supabase/supabase-service';
 import { Logger } from 'next-axiom';
 
 const log = new Logger();
 
 export default async function fetchSortedBestSellers() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabaseService();
 
   const logger = log.with({ context: 'dbQuery: fetchSortedBestSellers' });
-  logger.info('Fetching best sellers');
+  logger.info('Attempting to fetch best sellers');
 
   try {
     const { data: bestSellers } = await supabase.rpc('getBestSellers');

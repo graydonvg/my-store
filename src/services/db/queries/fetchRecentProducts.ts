@@ -8,7 +8,7 @@ export default async function fetchRecentProducts() {
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchRecentProducts' });
-  logger.info('Fetching recent products');
+  logger.info('Attempting to fetch recent products');
 
   try {
     const { data: products, error: productsError } = await supabase

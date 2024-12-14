@@ -234,6 +234,7 @@ export type UsersDataGrid = {
   email: string;
   contactNumber: string | null;
   role: UserRole;
+  createdBy: string;
 };
 
 export const CreateUserSchema = UserAuthDataSchema.merge(UserPersonalInfoSchema).merge(
@@ -457,6 +458,7 @@ export type OrdersDataGrid = {
   postalCode: PostalCode;
   orderStatus: OrderStatus;
   orderTotal: number;
+  createdBy: string;
 };
 
 export const UpdateOrderSchema = z.object({
@@ -548,6 +550,7 @@ export type ProductData = {
   returnInfo: string;
   filterColors: string[];
   filterMaterials: string[];
+  createdBy: string;
 };
 
 export type Product = ProductData & {
@@ -664,7 +667,7 @@ const LineItemSchema = z.object({
       name: ProductNameSchema,
       images: ProductImageUrlSchema.array().max(1, { message: 'A maximum of 1 image is allowed per product' }),
     }),
-    unit_amount: PriceSchema,
+    unit_amount: z.number().positive({ message: 'Price must be a positive number' }),
   }),
   quantity: ItemQuantitySchema,
 });

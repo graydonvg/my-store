@@ -14,7 +14,7 @@ export async function fetchProductsForAdmin(
   const supabase = await createSupabaseServerClient();
 
   const logger = log.with({ context: 'dbQuery: fetchProductsForAdmin' });
-  logger.info('Fetching products for admin');
+  logger.info('Attempting to fetch products for admin');
 
   try {
     let productsQuery = supabase

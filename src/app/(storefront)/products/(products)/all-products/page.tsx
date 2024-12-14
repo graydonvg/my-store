@@ -1,11 +1,13 @@
 import createSupabaseServerClient from '@/lib/supabase/supabase-server';
-import { getAllProducts } from '@/services/products/get';
+import { getAllProductsCached } from '@/services/products/get';
 import { Product } from '@/types';
 import { getObjectKeyCount } from '@/utils/objectHelpers';
 import { Metadata } from 'next';
 import { Logger } from 'next-axiom';
 import ProductsLayout from '../ProductsLayout';
 import { STORE_NAME } from '@/constants';
+import { getUserRoleFromSession } from '@/utils/auth';
+import { fetchAllProductsDynamic } from '@/services/db/queries/fetchProductsDynamic';
 
 const log = new Logger();
 
@@ -33,7 +35,9 @@ export default async function AllProductsPage({ searchParams }: Props) {
   }
 
   if (!getObjectKeyCount(searchParams)) {
-    const { data: products } = await getAllProducts();
+    const userRole = await getUserRoleFromSession(supabase);
+    // Demo users signed in as admin require auth to view products they create
+    const { data: products } = userRole === 'admin' ? await fetchAllProductsDynamic() : await getAllProductsCached();
 
     return (
       <ProductsLayout
