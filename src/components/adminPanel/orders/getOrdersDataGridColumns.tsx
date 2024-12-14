@@ -61,7 +61,7 @@ export default function getOrdersDataGridColumns(
       field: 'orderStatus',
       headerName: 'Status',
       type: 'singleSelect',
-      width: 150,
+      width: 165,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
         params.row.createdBy === userId || !userRole.isAdmin ? (
