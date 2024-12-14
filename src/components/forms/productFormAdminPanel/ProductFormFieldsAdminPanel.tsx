@@ -98,7 +98,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
       <CustomTextField
         label="Filter colors"
         name="filterColors"
-        value={productFormData.filterColors.join(', ')}
+        value={productFormData.filterColors.length ? productFormData.filterColors.join(', ') : ''}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
@@ -109,7 +109,7 @@ export default function ProductFormFieldsAdminPanel({ isClearingAllFields, isSub
       <CustomTextField
         label="Filter materials"
         name="filterMaterials"
-        value={productFormData.filterMaterials.join(', ')}
+        value={productFormData.filterMaterials.length ? productFormData.filterMaterials.join(', ') : ''}
         onChange={handleInputChange}
         disabled={isFieldDisabled}
         multiline
