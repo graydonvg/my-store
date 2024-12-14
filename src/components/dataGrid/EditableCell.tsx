@@ -10,12 +10,22 @@ type Props = {
 export default function EditableCell({ children }: Props) {
   return (
     <CustomTooltip title="Double-click to edit">
-      <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          gap: 1,
+        }}>
         {children}
-        <Edit
-          fontSize="small"
-          color="primary"
-        />
+        <Box sx={{ marginLeft: 'auto', height: 1, width: 'fit-content' }}>
+          <Edit
+            fontSize="small"
+            color="info"
+          />
+        </Box>
       </Box>
     </CustomTooltip>
   );

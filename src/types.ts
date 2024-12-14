@@ -45,6 +45,7 @@ export const FirstNameSchema = z
   .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
     message: 'First name can only contain letters, hyphens, apostrophes, and spaces',
   })
+  .or(z.literal(''))
   .refine((value) => value.length >= 2, {
     message: 'First name must contain at least 2 characters',
   });
@@ -56,6 +57,7 @@ export const LastNameSchema = z
   .regex(/^[\p{L}\p{M}'-]+(?: [\p{L}\p{M}'-]+)*$/u, {
     message: 'Last name can only contain letters, hyphens, apostrophes, and spaces',
   })
+  .or(z.literal(''))
   .refine((value) => value.length >= 2, {
     message: 'Last name must contain at least 2 characters',
   });
@@ -209,8 +211,8 @@ export const UpdatePasswordSchema = z.object({
 export type UpdatePassword = z.infer<typeof UpdatePasswordSchema>;
 
 export const UserDataToUpdateAdminSchema = z.object({
-  firstName: FirstNameSchema.optional(),
-  lastName: LastNameSchema.optional(),
+  firstName: FirstNameSchema.nullable().optional(),
+  lastName: LastNameSchema.nullable().optional(),
   contactNumber: ContactNumberSchema.nullable().optional(),
   role: UserRoleSelectOptionsSchema.optional(),
 });

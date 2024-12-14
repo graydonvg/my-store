@@ -26,8 +26,8 @@ export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, num
   const commonStyle = { height: '32px', color: darkMode ? theme.palette.primary.light : theme.palette.primary.main };
 
   return (
-    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
-      <Box sx={{ display: 'flex', columnGap: 1, flexWrap: 'wrap' }}>
+    <GridToolbarContainer sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', columnGap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
         <GridToolbarColumnsButton
           slotProps={{
             tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },
@@ -59,7 +59,7 @@ export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, num
           />
         ) : null}
       </Box>
-      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
         <GridToolbarExport
           slotProps={{
             tooltip: { disableHoverListener: true, disableFocusListener: true, disableTouchListener: true },

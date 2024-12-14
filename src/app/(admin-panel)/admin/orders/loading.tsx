@@ -15,7 +15,15 @@ export default function Loading() {
       page={{ number: 1, rows: 5 }}
       sort={{ column: 'createdAt', direction: 'desc' }}
       filter={{ column: null, operator: null, value: null }}
-      columns={getOrdersDataGridColumns('', false)}
+      columns={getOrdersDataGridColumns(
+        '',
+        {
+          isAdmin: false,
+          isManager: false,
+          isOwner: false,
+        },
+        false
+      )}
       toolbar={<OrdersDataGridToolbar />}
     />
   );

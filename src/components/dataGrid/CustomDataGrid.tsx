@@ -170,6 +170,7 @@ export default function CustomDataGrid({
         showCellVerticalBorder
         showColumnVerticalBorder
         disableColumnMenu
+        disableRowSelectionOnClick
         scrollbarSize={16}
         initialState={{ density: isBelowSmall ? 'compact' : 'standard' }}
         isRowSelectable={(params) =>

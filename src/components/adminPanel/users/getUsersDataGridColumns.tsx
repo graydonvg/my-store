@@ -23,7 +23,11 @@ export default function getUsersDataGridColumns(
       width: 150,
       editable: !isUpdating ? true : false,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -32,7 +36,11 @@ export default function getUsersDataGridColumns(
       width: 150,
       editable: !isUpdating ? true : false,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -82,7 +90,11 @@ export default function getUsersDataGridColumns(
       width: 165,
       editable: !isUpdating ? true : false,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {

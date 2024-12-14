@@ -12,7 +12,11 @@ import dayjs from 'dayjs';
 import { Box } from '@mui/material';
 import EditableCell from '@/components/dataGrid/EditableCell';
 
-export default function getOrdersDataGridColumns(userId: string, isUpdating: boolean) {
+export default function getOrdersDataGridColumns(
+  userId: string,
+  userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean },
+  isUpdating: boolean
+) {
   const columns: GridColDef<OrdersDataGrid>[] = [
     {
       field: 'orderId',
@@ -60,7 +64,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 150,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       valueOptions: [
         'awaiting payment',
         'paid',
@@ -91,7 +99,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 180,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -102,7 +114,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 160,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -113,7 +129,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 150,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -124,7 +144,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 150,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -135,7 +159,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 150,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -149,7 +177,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 130,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridNumericOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -160,7 +192,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 180,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -169,7 +205,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 180,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -178,7 +218,11 @@ export default function getOrdersDataGridColumns(userId: string, isUpdating: boo
       width: 180,
       editable: isUpdating ? false : true,
       renderCell: (params) =>
-        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
+        params.row.createdBy === userId || !userRole.isAdmin ? (
+          <EditableCell>{params.value}</EditableCell>
+        ) : (
+          params.value
+        ),
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
   ];

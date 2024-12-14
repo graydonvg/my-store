@@ -16,6 +16,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 import { useLogger } from 'next-axiom';
 import { LOGGER_ERROR_MESSAGES } from '@/constants';
+import { getUserRoleBoolean } from '@/utils/auth';
 
 type Props = {
   orders: OrdersDataGrid[] | null;
@@ -40,7 +41,8 @@ export default function OrdersPageAdminPanelClient({
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const userData = useAppSelector(selectUserData);
-  const columns = getOrdersDataGridColumns(userData?.userId ?? '', isUpdating);
+  const userRole = getUserRoleBoolean(userData?.role!);
+  const columns = getOrdersDataGridColumns(userData?.userId ?? '', userRole, isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
