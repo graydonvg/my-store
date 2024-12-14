@@ -1,4 +1,5 @@
 import DatePickerForDataGridFilter from '@/components/dataGrid/DatePickerForDataGridFilter';
+import EditableCell from '@/components/dataGrid/EditableCell';
 import { USER_ROLE_OPTIONS } from '@/constants';
 
 import { UsersDataGrid } from '@/types';
@@ -11,6 +12,7 @@ import {
 import dayjs from 'dayjs';
 
 export default function getUsersDataGridColumns(
+  userId: string,
   userRole: { isAdmin: boolean; isManager: boolean; isOwner: boolean },
   isUpdating: boolean
 ) {
@@ -20,6 +22,8 @@ export default function getUsersDataGridColumns(
       headerName: 'First name',
       width: 150,
       editable: !isUpdating ? true : false,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -27,6 +31,8 @@ export default function getUsersDataGridColumns(
       headerName: 'Last name',
       width: 150,
       editable: !isUpdating ? true : false,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -66,7 +72,6 @@ export default function getUsersDataGridColumns(
       field: 'email',
       headerName: 'Email',
       width: 200,
-      editable: false,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -76,6 +81,8 @@ export default function getUsersDataGridColumns(
       headerName: 'Contact number',
       width: 165,
       editable: !isUpdating ? true : false,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {

@@ -1,3 +1,4 @@
+import CustomTooltip from '@/components/ui/CustomTooltip';
 import { selectProductFormData } from '@/lib/redux/features/productForm/productFormSelectors';
 import { clearProductFormData, setProductFormData } from '@/lib/redux/features/productForm/productFormSlice';
 import { selectImageData } from '@/lib/redux/features/productImages/productImagesSelectors';
@@ -8,7 +9,7 @@ import { deleteProductImages, deleteProducts } from '@/services/admin/delete';
 import revalidateAllData from '@/services/admin/revalidate-all-data';
 import { Product } from '@/types';
 import { DeleteForever, Edit, Preview } from '@mui/icons-material';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -102,7 +103,7 @@ export default function ProductsDataGridActions({ params }: Props) {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: 1 }}>
-      <Tooltip title="View product">
+      <CustomTooltip title="View product">
         <span>
           <IconButton
             disabled={isLoading || isDeleting}
@@ -117,8 +118,8 @@ export default function ProductsDataGridActions({ params }: Props) {
             <Preview />
           </IconButton>
         </span>
-      </Tooltip>
-      <Tooltip title="Edit product">
+      </CustomTooltip>
+      <CustomTooltip title="Edit product">
         <span>
           <IconButton
             disabled={
@@ -128,8 +129,8 @@ export default function ProductsDataGridActions({ params }: Props) {
             <Edit />
           </IconButton>
         </span>
-      </Tooltip>
-      <Tooltip title="Delete product">
+      </CustomTooltip>
+      <CustomTooltip title="Delete product">
         <span>
           <IconButton
             disabled={
@@ -139,7 +140,7 @@ export default function ProductsDataGridActions({ params }: Props) {
             <DeleteForever />
           </IconButton>
         </span>
-      </Tooltip>
+      </CustomTooltip>
     </Box>
   );
 }

@@ -40,7 +40,7 @@ export default function OrdersPageAdminPanelClient({
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const userData = useAppSelector(selectUserData);
-  const columns = getOrdersDataGridColumns(isUpdating);
+  const columns = getOrdersDataGridColumns(userData?.userId ?? '', isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {

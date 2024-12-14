@@ -9,8 +9,10 @@ import {
   getGridStringOperators,
 } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
+import { Box } from '@mui/material';
+import EditableCell from '@/components/dataGrid/EditableCell';
 
-export default function getOrdersDataGridColumns(isUpdating: boolean) {
+export default function getOrdersDataGridColumns(userId: string, isUpdating: boolean) {
   const columns: GridColDef<OrdersDataGrid>[] = [
     {
       field: 'orderId',
@@ -49,6 +51,7 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Contact number',
       width: 160,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
+      renderCell: (params) => <Box>{params.row.contactNumber}</Box>,
     },
     {
       field: 'orderStatus',
@@ -56,6 +59,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       type: 'singleSelect',
       width: 150,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       valueOptions: [
         'awaiting payment',
         'paid',
@@ -85,6 +90,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Complex / Building',
       width: 180,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -94,6 +101,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Street Address',
       width: 160,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -103,6 +112,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Suburb',
       width: 150,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -112,6 +123,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Province',
       width: 150,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -121,6 +134,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'City',
       width: 150,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
@@ -133,17 +148,19 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       align: 'left',
       width: 130,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridNumericOperators().filter(
         (operator) => operator.value !== 'isAnyOf' && operator.value !== 'isEmpty' && operator.value !== 'isNotEmpty'
       ),
-      // renderCell to remove thousands comma (eg 1,234)
-      renderCell: (params) => params.row.postalCode,
     },
     {
       field: 'recipientFirstName',
       headerName: 'Recipient first name',
       width: 180,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -151,6 +168,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Recipient last name',
       width: 180,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
     {
@@ -158,6 +177,8 @@ export default function getOrdersDataGridColumns(isUpdating: boolean) {
       headerName: 'Recipient contact number',
       width: 180,
       editable: isUpdating ? false : true,
+      renderCell: (params) =>
+        params.row.createdBy === userId ? <EditableCell>{params.value}</EditableCell> : params.value,
       filterOperators: getGridStringOperators().filter((operator) => operator.value !== 'isAnyOf'),
     },
   ];

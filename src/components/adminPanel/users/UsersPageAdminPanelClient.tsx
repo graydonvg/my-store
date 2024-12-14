@@ -51,7 +51,7 @@ export default function UsersPageAdminPanelClient({
   const [selectedUserIds, setSelectedUserIds] = useState<GridRowSelectionModel>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const columns = getUsersDataGridColumns(userRole!, isUpdating);
+  const columns = getUsersDataGridColumns(userData?.userId ?? '', userRole!, isUpdating);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
   async function handleRowUpdate(newRow: GridValidRowModel, oldRow: GridValidRowModel) {
