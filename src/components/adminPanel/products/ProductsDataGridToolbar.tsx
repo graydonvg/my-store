@@ -10,6 +10,8 @@ import { DeleteForever } from '@mui/icons-material';
 import ContainedButton from '../../ui/buttons/ContainedButton';
 import AddNewProductButton from './AddNewProductButton';
 import RevalidateButton from './RevalidateButton';
+import { useAppSelector } from '@/lib/redux/hooks';
+import { selectUserData } from '@/lib/redux/features/user/userSelectors';
 
 type Props = {
   isDeleting: boolean;
@@ -18,6 +20,7 @@ type Props = {
 };
 
 export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, numberOfSelectedRows }: Props) {
+  const userData = useAppSelector(selectUserData);
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const commonStyle = { height: '32px', color: darkMode ? theme.palette.primary.light : theme.palette.primary.main };
@@ -49,10 +52,12 @@ export default function ProductsDataGridToolbar({ isDeleting, onDeleteClick, num
             },
           }}
         />
-        <RevalidateButton
-          commonStyle={commonStyle}
-          isDeleting={isDeleting}
-        />
+        {userData?.role === 'owner' || userData?.role === 'manager' ? (
+          <RevalidateButton
+            commonStyle={commonStyle}
+            isDeleting={isDeleting}
+          />
+        ) : null}
       </Box>
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         <GridToolbarExport
