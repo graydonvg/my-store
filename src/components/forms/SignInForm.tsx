@@ -10,13 +10,14 @@ import CustomTextField from '../ui/CustomTextField';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import createSupabaseBrowserClient from '@/lib/supabase/supabase-browser';
-import signInWithPassword, { signInAsAdmin } from '@/services/auth/sign-in';
+import signInWithPassword from '@/services/auth/sign-in';
 import { Email, Lock } from '@mui/icons-material';
 import GoogleIcon from '../ui/GoogleIcon';
 import OutlinedButton from '../ui/buttons/OutlinedButton';
 import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSelectors';
 import useForm from '@/hooks/use-form';
 import { UserAuthDataSchema } from '@/types';
+import SignInAsAdminButton from '../SignInAsAdminButton';
 
 const fieldConfigs = [
   {
@@ -120,30 +121,6 @@ export default function SignInForm({ headerComponent, children }: Props) {
     }
   }
 
-  async function handleSignInAsAdmin() {
-    setIsLoading((prev) => ({ ...prev, signInAsAdmin: true }));
-
-    if (isSignInDialogOpen) {
-      dispatch(setIsDialogLoading(true));
-    }
-
-    const { success, message } = await signInAsAdmin();
-
-    if (success) {
-      dispatch(closeDialog());
-      form.reset();
-      router.refresh();
-    } else {
-      toast.error(message);
-    }
-
-    setIsLoading((prev) => ({ ...prev, signInAsAdmin: false }));
-
-    if (isSignInDialogOpen) {
-      dispatch(setIsDialogLoading(false));
-    }
-  }
-
   return (
     <Box
       sx={{
@@ -217,14 +194,10 @@ export default function SignInForm({ headerComponent, children }: Props) {
           />
         </Box>
         {children}
-        <ContainedButton
-          type="button"
-          onClick={handleSignInAsAdmin}
-          label={!isSignInDialogOpen && isLoading.signInAsAdmin ? '' : 'sign in as admin'}
-          disabled={disableButtons}
+        <SignInAsAdminButton
           isLoading={!isSignInDialogOpen && isLoading.signInAsAdmin}
-          fullWidth
-          color="secondary"
+          isDisabled={disableButtons}
+          setIsLoading={() => setIsLoading((prev) => ({ ...prev, signInAsAdmin: !prev.signInAsAdmin }))}
         />
       </Box>
     </Box>

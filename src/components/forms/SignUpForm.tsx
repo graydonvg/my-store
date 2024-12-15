@@ -15,7 +15,7 @@ import { selectIsSignInDialogOpen } from '@/lib/redux/features/dialog/dialogSele
 import { PasswordSchema, UserAuthDataSchema, UserPersonalInfoSchema } from '@/types';
 import useForm from '@/hooks/use-form';
 import { z } from 'zod';
-import { signInAsAdmin } from '@/services/auth/sign-in';
+import SignInAsAdminButton from '../SignInAsAdminButton';
 
 const fieldConfigs = [
   {
@@ -138,30 +138,6 @@ export default function SignUpForm({ headerComponent, children }: Props) {
     }
   }
 
-  async function handleSignInAsAdmin() {
-    setIsLoading((prev) => ({ ...prev, signInAsAdmin: true }));
-
-    if (isSignUpDialogOpen) {
-      dispatch(setIsDialogLoading(true));
-    }
-
-    const { success, message } = await signInAsAdmin();
-
-    if (success) {
-      dispatch(closeDialog());
-      form.reset();
-      router.refresh();
-    } else {
-      toast.error(message);
-    }
-
-    setIsLoading((prev) => ({ ...prev, signInAsAdmin: false }));
-
-    if (isSignUpDialogOpen) {
-      dispatch(setIsDialogLoading(false));
-    }
-  }
-
   return (
     <Box
       sx={{
@@ -217,14 +193,10 @@ export default function SignUpForm({ headerComponent, children }: Props) {
           color="primary"
         />
         {children}
-        <ContainedButton
-          type="button"
-          onClick={handleSignInAsAdmin}
-          label={!isSignUpDialogOpen && isLoading.signInAsAdmin ? '' : 'sign in as admin'}
-          disabled={disableButtons}
+        <SignInAsAdminButton
           isLoading={!isSignUpDialogOpen && isLoading.signInAsAdmin}
-          fullWidth
-          color="secondary"
+          isDisabled={disableButtons}
+          setIsLoading={() => setIsLoading((prev) => ({ ...prev, signInAsAdmin: !prev.signInAsAdmin }))}
         />
       </Box>
     </Box>
