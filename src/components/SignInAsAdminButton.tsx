@@ -44,7 +44,7 @@ export default function SignInAsAdminButton({ isLoading, isDisabled, setIsLoadin
     <ContainedButton
       type="button"
       onClick={handleSignInAsAdmin}
-      label={!isSignInDialogOpen && isLoading ? '' : 'sign in as admin'}
+      label={!isSignInDialogOpen && isLoading ? '' : 'admin demo'}
       disabled={isDisabled}
       isLoading={!isSignInDialogOpen && isLoading}
       fullWidth

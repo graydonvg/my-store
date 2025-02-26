@@ -11,7 +11,11 @@ import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
-  title: STORE_NAME,
+  title: {
+    default: STORE_NAME,
+    // Update page titles (remove store name. only add page title)
+    template: `%s - ${STORE_NAME}`,
+  },
   description: 'Online Shopping - Shop the latest fashion at unbeatable prices.',
 };
 

@@ -192,13 +192,13 @@ export default function SignInForm({ headerComponent, children }: Props) {
             fullWidth
             startIcon={<GoogleIcon />}
           />
+          <SignInAsAdminButton
+            isLoading={!isSignInDialogOpen && isLoading.signInAsAdmin}
+            isDisabled={disableButtons}
+            setIsLoading={() => setIsLoading((prev) => ({ ...prev, signInAsAdmin: !prev.signInAsAdmin }))}
+          />
         </Box>
         {children}
-        <SignInAsAdminButton
-          isLoading={!isSignInDialogOpen && isLoading.signInAsAdmin}
-          isDisabled={disableButtons}
-          setIsLoading={() => setIsLoading((prev) => ({ ...prev, signInAsAdmin: !prev.signInAsAdmin }))}
-        />
       </Box>
     </Box>
   );
